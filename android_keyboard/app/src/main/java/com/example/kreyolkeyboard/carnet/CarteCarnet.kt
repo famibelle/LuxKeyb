@@ -213,6 +213,20 @@ object CarteCarnet {
      *   de la capture n'y est plus : il ne se lit que par sa saison, au
      *   poinçon gravé juste après le numéro (voir [Ornement.dessinerSaison]).
      */
+    /**
+     * Calcule sur le fil appelant, un fil de fond, ce que la carte complète
+     * de [c] calculerait à sa première image : son métal, ses rayons et son
+     * paysage, à la largeur [largeurPx]. Le lecteur s'en sert pour les deux
+     * cartes voisines, si bien qu'on feuillette sans attendre.
+     */
+    fun preparer(context: Context, c: ContenuCarte, largeurPx: Int) {
+        if (largeurPx <= 0) return
+        Ornement.metal(context, c.rarete, largeurPx, vignette = false)
+        Ornement.rayons(c.rarete, largeurPx, vignette = false)
+        Motif(c.carte.forme, c.rarete, Ornement.FENETRE, c.blason, Souvenir.de(c.carte.premiereFois))
+            .rendreLieu(largeurPx / Ornement.LARGEUR)
+    }
+
     fun complete(context: Context, c: ContenuCarte): View {
         val jeu = c.carte.origine
         val metal = Ornement.metal(c.rarete)

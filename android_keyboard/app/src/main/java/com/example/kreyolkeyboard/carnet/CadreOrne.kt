@@ -1083,11 +1083,16 @@ object Ornement {
      * de large font un cadre de 5 Mo, que `LruCache` évince aussitôt posé. Le
      * métal se redessinait donc à chaque trame de l'inclinaison, sans que rien
      * ne le montre. Depuis que la moulure se calcule au pixel, ce n'est plus
-     * tenable : un seizième du tas, entre 4 et 24 Mo, tient la carte ouverte,
-     * ses rayons et une page de vignettes.
+     * tenable.
+     *
+     * Un huitième du tas, entre 4 et 32 Mo : le métal des quatre paliers de
+     * vignettes, la carte ouverte et ses deux voisines préparées d'avance
+     * (voir `LecteurCartes.preparerVoisines`), avec leurs rayons. Au seizième,
+     * 12 Mo sur un Galaxy A21s, les voisines auraient évincé le métal des
+     * vignettes, recalculé ensuite sur le fil principal au retour à la grille.
      */
     private val CACHE = object : LruCache<String, Bitmap>(
-        (Runtime.getRuntime().maxMemory() / 16).coerceIn(4L * 1024 * 1024, 24L * 1024 * 1024).toInt()
+        (Runtime.getRuntime().maxMemory() / 8).coerceIn(4L * 1024 * 1024, 32L * 1024 * 1024).toInt()
     ) {
         override fun sizeOf(cle: String, valeur: Bitmap): Int = valeur.byteCount
     }
@@ -3806,6 +3811,63 @@ class CarteOrnee(
     }
 
     /**
+     * Faux tant que le paysage et le métal se préparent hors du fil principal :
+     * voir [attendreSaMatiere]. La carte ne se dessine pas d'ici là.
+     */
+    private var matierePrete = true
+    private var quandPrete: (() -> Unit)? = null
+    private var largeurPreparee = 0
+
+    /**
+     * Pour le lecteur de cartes : le paysage et le métal de la carte ouverte
+     * se calculent sur deux fils de fond dès qu'elle connaît sa taille, et
+     * [pret] est appelé sur le fil principal quand elle peut se dessiner.
+     *
+     * Sur un Galaxy A21s (2026-10-12), les deux se calculaient l'un après
+     * l'autre à la première image de la carte, 240 ms et 230 ms : l'écran se
+     * figeait une demi-seconde au toucher, et le retournement démarrait en
+     * retard. Menés de front, ils laissent le voile apparaître tout de suite
+     * et la carte se retourner sans à-coup.
+     *
+     * Réservé au lecteur : le partage, la révision et la pochette dessinent la
+     * carte tout de suite et gardent le rendu direct.
+     */
+    fun attendreSaMatiere(pret: () -> Unit): CarteOrnee {
+        matierePrete = false
+        quandPrete = pret
+        return this
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, ancienneL: Int, ancienneH: Int) {
+        super.onSizeChanged(w, h, ancienneL, ancienneH)
+        if (matierePrete || w <= 0 || w == largeurPreparee) return
+        largeurPreparee = w
+        val principal = android.os.Handler(android.os.Looper.getMainLooper())
+        var restants = 2
+        val fini: () -> Unit = {
+            restants--
+            if (restants == 0 && largeurPreparee == w) {
+                matierePrete = true
+                invalidate()
+                quandPrete?.invoke()
+                quandPrete = null
+            }
+        }
+        val ctx = context
+        Thread({
+            // Un échec ne bloque pas la carte : elle retombe sur le rendu direct.
+            try {
+                Ornement.metal(ctx, rarete, w, vignette)
+                Ornement.rayons(rarete, w, vignette)
+            } catch (e: Throwable) {
+                android.util.Log.w("CarteOrnee", "Métal non préparé : ${e.message}")
+            }
+            principal.post(fini)
+        }, "metal").start()
+        motif.preparer(w / Ornement.LARGEUR, principal, fini)
+    }
+
+    /**
      * L'ordre est celui d'une carte imprimée : la face, ce qui rayonne
      * derrière l'illustration, l'illustration, puis le métal par-dessus.
      *
@@ -3815,6 +3877,7 @@ class CarteOrnee(
      * dégradé, le motif du mot, et une poignée de joyaux.
      */
     override fun onDraw(canvas: Canvas) {
+        if (!matierePrete) return
         val u = width / Ornement.LARGEUR
         if (u <= 0f) return
 
@@ -3947,6 +4010,34 @@ class Motif(
             intArrayOf(heure.cielHaut, heure.cielMilieu ?: heure.cielBas, heure.cielBas),
             null, Shader.TileMode.CLAMP
         )
+    }
+
+    /**
+     * Rend le lieu à l'échelle [echelle] sur un fil de fond, puis appelle
+     * [pret] par [principal]. Voir [CarteOrnee.attendreSaMatiere].
+     */
+    fun preparer(echelle: Float, principal: android.os.Handler, pret: () -> Unit) {
+        Thread({
+            val image = rendreLieu(echelle)
+            principal.post {
+                if (image != null) rendu = image
+                pret()
+            }
+        }, "paysage").start()
+    }
+
+    /**
+     * Rend le lieu à l'échelle [echelle] sur le fil appelant, et le met dans
+     * le cache de [Paysages]. `null` si la mémoire manque.
+     */
+    fun rendreLieu(echelle: Float): Bitmap? {
+        val l = (visible.width() * echelle).toInt()
+        val h = (visible.height() * echelle).toInt()
+        return try {
+            Paysages.image(lieu, heure, teinteChamp, l, h, souvenir)
+        } catch (e: OutOfMemoryError) {
+            null
+        }
     }
 
     /** Le lieu rendu à [l] × [h], ou `null` s'il est en route vers une vignette. */
