@@ -9,6 +9,17 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.1.0] - 2026-10-12
+
+Chaque carte rare a désormais sa propre façon d'arriver.
+
+### ✨ Nouveautés
+
+- **Une carte peu commune ◆◆** se pose avec un reflet de lumière qui la traverse.
+- **Une carte rare ★★★** se devine avant d'apparaître : le dos frémit trois fois dans la pochette, le téléphone vibre, puis, une fois la carte retournée, son poinçon se frappe avec une onde.
+- **Une carte très rare ✦✦✦✦** change toute la scène : la nuit tombe, la carte monte en tournant, un premier éclair violet, puis elle se dévoile lentement sous des rayons de lumière.
+- Les vibrations suivent le réglage du téléphone, et tout reste sobre quand le téléphone demande moins d'animations.
+
 ## [37.0.1] - 2026-10-12
 
 Des cartes plus fluides dans la Boîte de Leitner et en fin de partie.
