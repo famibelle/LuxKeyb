@@ -227,6 +227,15 @@ object CarteCarnet {
             .rendreLieu(largeurPx / Ornement.LARGEUR)
     }
 
+    /**
+     * Demande le paysage de la vignette de [c], au côté [cote] : voir
+     * `CarnetFragment.chargerEnFond`. [pret] est appelé quand il est en cache.
+     */
+    fun preparerVignette(c: ContenuCarte, cote: Int, pret: () -> Unit) {
+        Motif(c.carte.forme, c.rarete, Ornement.FENETRE_VIGNETTE, c.blason, Souvenir.de(c.carte.premiereFois))
+            .demanderLieu(cote / Ornement.LARGEUR, pret)
+    }
+
     fun complete(context: Context, c: ContenuCarte): View {
         val jeu = c.carte.origine
         val metal = Ornement.metal(c.rarete)

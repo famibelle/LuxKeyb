@@ -4027,6 +4027,22 @@ class Motif(
     }
 
     /**
+     * Demande le lieu à l'échelle [echelle] aux fils de fond de [Paysages],
+     * depuis n'importe quel fil, et appelle [pret] quand il est en cache.
+     * Une vignette qui se dessine ensuite le trouve, ou rejoint la demande en
+     * vol au lieu d'en lancer une seconde.
+     */
+    fun demanderLieu(echelle: Float, pret: () -> Unit) {
+        val l = (visible.width() * echelle).toInt()
+        val h = (visible.height() * echelle).toInt()
+        if (Paysages.enCache(lieu, heure, teinteChamp, l, h, souvenir) != null) {
+            pret()
+            return
+        }
+        Paysages.demander(lieu, heure, teinteChamp, l, h, souvenir) { pret() }
+    }
+
+    /**
      * Rend le lieu à l'échelle [echelle] sur le fil appelant, et le met dans
      * le cache de [Paysages]. `null` si la mémoire manque.
      */
