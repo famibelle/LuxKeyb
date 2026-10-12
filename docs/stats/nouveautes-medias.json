@@ -1,5 +1,23 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "36.3.2": {
+    "images": [
+      {
+        "image": "Screenshots/lux_carte_ouverture.gif",
+        "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s. On touche la carte « eeleren » dans le carnet, puis on glisse deux fois vers la carte suivante. À gauche, en 36.3.1, l'écran reste figé un instant après le toucher, et à chaque glissé le fond s'éclaircit et la grille reste immobile avant que la carte suivante apparaisse. À droite, en 36.3.2, le fond s'assombrit aussitôt, la carte se retourne, et « neiem » puis « jour » glissent sans attendre.",
+        "legende": "Filmé en temps réel sur un Galaxy A21s : la carte s'ouvre, puis deux glissés vers les voisines. À gauche, chaque geste fige l'écran un instant ; à droite, plus du tout."
+      }
+    ]
+  },
+  "36.3.1": {
+    "images": [
+      {
+        "image": "Screenshots/lux_carnet_ouverture.gif",
+        "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s, avec un chronomètre sous chacun. On touche « Ouvrir » sur le carnet. À gauche, en 36.2.0, « Ouverture du carnet… » reste affiché et la grille n'apparaît qu'au bout de 11,6 secondes. À droite, en 36.3.2, la grille apparaît au bout de 1,7 seconde, les cartes montrent d'abord le ciel puis leurs paysages arrivent un à un.",
+        "legende": "Filmé en temps réel sur un Galaxy A21s, un téléphone d'entrée de gamme, avec un carnet de 36 cartes : 11,6 s avant, 1,7 s maintenant."
+      }
+    ]
+  },
   "36.3.0": {
     "images": [
       {
@@ -20,6 +38,20 @@
         "image": "Screenshots/lux_carnet_saisons_album.png",
         "alt": "Une page du carnet, douze vignettes. Des feux d'artifice au-dessus de « eeleren », « Jeans » et « empfänken », des guirlandes de lumières du marché de Noël devant « neiem » et « reell », des fanions au-dessus de « wéinst », la neige sur « Spidol » et « reell », des fleurs autour de « Lockdown », un feuillage roux derrière « jour » et « Engel ».",
         "legende": "Les fêtes laissent aussi leur trace : feu d'artifice du Nouvel An, feu du Buergbrennen, fanions de la fête nationale, Schueberfouer, lumières du Chrëschtmaart."
+      }
+    ]
+  },
+  "36.1.2": {
+    "images": [
+      {
+        "image": "Screenshots/lux_album_tablette.gif",
+        "alt": "Deux tablettes couchées, l'une au-dessus de l'autre, qui descendent dans la série « Les paysages » du carnet, un écran à la fois. En haut, en 36.1.1, quatre grandes cartes par rangée : il faut six écrans pour voir les 36 paysages. En bas, en 36.3.2, huit cartes par rangée, deux lieux du matin à la nuit : deux écrans suffisent.",
+        "legende": "Sur une tablette couchée, la série des paysages tient en deux écrans au lieu de six."
+      },
+      {
+        "image": "Screenshots/lux_carnet_vue_en_haut.gif",
+        "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s. On descend dans la vue « Séries » du carnet, puis on touche « Étagère ». À gauche, en 36.1.1, l'étagère s'ouvre au milieu de la liste, sans son titre. À droite, en 36.3.2, elle s'ouvre en haut, sur « Revient dans 1 jour ».",
+        "legende": "Descendu dans les séries, on passe à l'étagère : elle s'ouvre maintenant en haut, avec son titre."
       }
     ]
   },
