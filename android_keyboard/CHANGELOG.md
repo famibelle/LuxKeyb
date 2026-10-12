@@ -9,6 +9,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [36.3.5] - 2026-10-12
+
+Une correction pour les cartes ouvertes.
+
+### 🐛 Corrections
+
+- **Une carte ouverte reste entière quand on la touche.** Depuis la 36.3.4, après un appui du doigt, la carte perdait son dessin et ne gardait que son texte.
+
 ## [36.3.4] - 2026-10-12
 
 Des cartes ouvertes plus fluides.
