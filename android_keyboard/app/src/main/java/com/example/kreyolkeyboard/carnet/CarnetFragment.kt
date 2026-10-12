@@ -291,7 +291,7 @@ class CarnetFragment : DialogFragment() {
                     remplirGrille()
                     // Une autre vue repart d'en haut : descendu dans les
                     // séries, « Étagère » s'ouvrait au milieu, sans son titre.
-                    defilementGrille.scrollTo(0, 0)
+                    remonterEnHaut()
                 }
             })
         }
@@ -446,7 +446,7 @@ class CarnetFragment : DialogFragment() {
                 filtre = jeu
                 surlignerFiltres()
                 remplirGrille()
-                defilementGrille.scrollTo(0, 0)
+                remonterEnHaut()
             }
         }
 
@@ -534,6 +534,22 @@ class CarnetFragment : DialogFragment() {
         val couche = if (dedans) View.LAYER_TYPE_HARDWARE else View.LAYER_TYPE_NONE
         if (v.visibility != visibilite) v.visibility = visibilite
         if (v.layerType != couche) v.setLayerType(couche, null)
+    }
+
+    /**
+     * Ramène la grille en haut, élan compris.
+     *
+     * `scrollTo(0, 0)` seul ne suffisait pas : touché pendant que la liste
+     * filait encore sur l'élan d'un glissé, il la remettait à 0, puis l'élan
+     * reprenait et la ramenait au milieu de la nouvelle vue (vu sur un Galaxy
+     * A21s le 2026-10-12, de 0 à 3 351 px dans la trame suivante). Un `fling`
+     * de vitesse nulle remplace l'élan en cours et s'arrête là où il part :
+     * il se lance donc après la remontée, sinon il ramène la liste où elle
+     * était.
+     */
+    private fun remonterEnHaut() {
+        defilementGrille.scrollTo(0, 0)
+        defilementGrille.fling(0)
     }
 
     /** Le nombre de colonnes de la grille, et le côté d'une vignette en pixels. */
