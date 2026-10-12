@@ -9,6 +9,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.0.0] - 2026-10-12
+
+Les cartes ouvertes prennent vie : chacune garde le temps qu'il faisait le jour où vous l'avez gagnée.
+
+### ✨ Nouveautés
+
+- **Une ambiance par saison dans la fenêtre de la carte.** La neige tombe sur les cartes d'hiver, les feuilles sur celles d'automne, des pétales au printemps ; l'été, des aigrettes de pissenlit flottent le jour et des lucioles s'allument le soir.
+- **Les fêtes ont leur effet.** Feux d'artifice au Nouvel An et à la Fête nationale, braises qui montent au Buergbrennen, confettis à la Schueberfouer, neige et lumières au Chrëschtmaart.
+- **Comme une boule à neige.** Penchez le téléphone, tout tombe vers le vrai bas ; retournez-le, tout remonte ; secouez-le, tout tourbillonne avant de retomber doucement.
+
+### 💡 À savoir
+
+- L'animation ne vit que sur la carte ouverte, jamais dans la grille, et s'efface si votre téléphone demande moins d'animations.
+
 ## [36.3.5] - 2026-10-12
 
 Une correction pour les cartes ouvertes.
