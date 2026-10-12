@@ -305,6 +305,12 @@ internal class EventailCasier(
         super.onDetachedFromWindow()
     }
 
+    /** Refait le recto de [forme] au prochain tracé : son paysage vient d'arriver. */
+    fun rafraichir(forme: String) {
+        images.remove(forme)
+        invalidate()
+    }
+
     private fun image(c: ContenuCarte): Bitmap =
         images.get(c.carte.forme)
             ?: rendre(c, largeurCarte.toInt().coerceAtLeast(1)).also { images.put(c.carte.forme, it) }

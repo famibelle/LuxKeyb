@@ -324,6 +324,7 @@ object Booster {
             val rarete = c.rarete
             val neuve = c.carte.forme in nouvelles
 
+            val carte = CarteCarnet.complete(ctx, c)
             val face = ScrollView(ctx).apply {
                 layoutParams = FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
@@ -331,7 +332,7 @@ object Booster {
                     Gravity.CENTER
                 )
                 isVerticalScrollBarEnabled = false
-                addView(CarteCarnet.complete(ctx, c))
+                addView(carte)
             }
 
             if (!animations || !decouverte) {
@@ -378,6 +379,23 @@ object Booster {
             } else null
 
             halo?.let { page.addView(it) }
+
+            // La face se pose tout de suite, cachée sous le dos : son paysage
+            // et son métal se calculent en fond pendant que le dos attend
+            // (voir [CarteOrnee.attendreSaMatiere]). Elle se construisait au
+            // moment de tourner ; sur un Galaxy A21s (2026-10-12), chaque carte
+            // marquait alors 0,4 à 0,9 s d'arrêt, puis tournait à 27 images par
+            // seconde, tracée à chaque angle.
+            var prete = carte !is CarteOrnee
+            var tourner: (() -> Unit)? = null
+            (carte as? CarteOrnee)?.attendreSaMatiere {
+                prete = true
+                tourner?.invoke()
+                tourner = null
+            }
+            face.visibility = View.INVISIBLE
+            face.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+            page.addView(face)
             page.addView(dos)
 
             // La cérémonie appartient à cette page-là. Si le joueur glisse
@@ -406,6 +424,7 @@ object Booster {
                 if (abandonnee()) return@postDelayed
                 dos.cameraDistance = 12000f * d
                 face.cameraDistance = 12000f * d
+                dos.setLayerType(View.LAYER_TYPE_HARDWARE, null)
                 dos.animate().rotationY(90f).setDuration(170)
                     .setInterpolator(AccelerateInterpolator())
                     .withEndAction {
@@ -415,31 +434,34 @@ object Booster {
                         // doucement : la lueur ne s'éteint pas au moment où
                         // elle a enfin quelque chose à éclairer.
                         halo?.animate()?.alpha(0.35f)?.setDuration(900)?.start()
-                        page.addView(face)
                         face.rotationY = -90f
-                        face.animate().rotationY(0f)
-                            .setDuration(if (rarete.distinguee) 300L else 210L)
-                            .setInterpolator(
-                                if (rarete.distinguee) OvershootInterpolator(1.2f)
-                                else DecelerateInterpolator()
-                            )
-                            .withEndAction {
-                                if (abandonnee()) return@withEndAction
-                                // La carte a fini de se poser : elle suit
-                                // maintenant l'inclinaison de l'appareil.
-                                Inclinaison.suivre(face)
-                                if (rarete == Rarete.TRES_RARE) eclater(page, rarete)
-                                feter(page, rarete, c.carte.forme)
-                                if (neuve) {
-                                    bandeau.visibility = View.VISIBLE
-                                    bandeau.alpha = 0f
-                                    bandeau.scaleX = 0.8f
-                                    bandeau.scaleY = 0.8f
-                                    bandeau.animate().alpha(1f).scaleX(1f).scaleY(1f)
-                                        .setDuration(220).start()
+                        face.visibility = View.VISIBLE
+                        val retourner = {
+                            if (!abandonnee()) face.animate().rotationY(0f)
+                                .setDuration(if (rarete.distinguee) 300L else 210L)
+                                .setInterpolator(
+                                    if (rarete.distinguee) OvershootInterpolator(1.2f)
+                                    else DecelerateInterpolator()
+                                )
+                                .withEndAction {
+                                    if (abandonnee()) return@withEndAction
+                                    // La carte a fini de se poser : elle suit
+                                    // maintenant l'inclinaison de l'appareil.
+                                    Inclinaison.suivre(face)
+                                    if (rarete == Rarete.TRES_RARE) eclater(page, rarete)
+                                    feter(page, rarete, c.carte.forme)
+                                    if (neuve) {
+                                        bandeau.visibility = View.VISIBLE
+                                        bandeau.alpha = 0f
+                                        bandeau.scaleX = 0.8f
+                                        bandeau.scaleY = 0.8f
+                                        bandeau.animate().alpha(1f).scaleX(1f).scaleY(1f)
+                                            .setDuration(220).start()
+                                    }
                                 }
-                            }
-                            .start()
+                                .start()
+                        }
+                        if (prete) retourner() else tourner = retourner
                     }.start()
             }, attente)
         }

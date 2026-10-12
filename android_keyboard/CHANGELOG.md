@@ -9,6 +9,19 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.0.1] - 2026-10-12
+
+Des cartes plus fluides dans la Boîte de Leitner et en fin de partie.
+
+### 🐛 Corrections
+
+- **Les cartes de la Boîte de Leitner retrouvent leur paysage.** Quand on ouvrait un casier, les cartes étalées ne montraient plus que le ciel.
+
+### ⚡ Rapidité
+
+- **La révision retourne ses cartes sans à-coup.** La carte se prépare pendant que vous lisez la question, au lieu de figer l'écran au milieu du geste.
+- **La pochette de fin de partie aussi.** Chaque carte gagnée se retourne d'un seul mouvement.
+
 ## [37.0.0] - 2026-10-12
 
 Les cartes ouvertes prennent vie : chacune garde le temps qu'il faisait le jour où vous l'avez gagnée.

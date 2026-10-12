@@ -341,6 +341,10 @@ class BoiteFragment : Fragment(), com.example.kreyolkeyboard.SettingsActivity.Je
         // et l'éventail d'une tablette demande des cartes de 220 dp.
         val largeur = maxOf((160 * d).toInt(), cible)
         val vue = CarteCarnet.vignette(requireContext(), c, largeur)
+        // Le paysage d'une vignette arrive en différé : tant qu'il manque, la
+        // photo n'a que le ciel. Quand il est là, l'éventail la refait, et le
+        // paysage, désormais en cache, y entre. Régression de la 36.3.0.
+        (vue as? CarteOrnee)?.quandLieuArrive = { eventail?.rafraichir(c.carte.forme) }
         vue.measure(
             View.MeasureSpec.makeMeasureSpec(largeur, View.MeasureSpec.EXACTLY),
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)

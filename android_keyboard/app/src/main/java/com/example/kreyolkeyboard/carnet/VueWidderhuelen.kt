@@ -103,6 +103,36 @@ class VueWidderhuelen(
 
     private var dos: DosRevision? = null
 
+    /** La face de la question posée, préparée cachée derrière le dos. */
+    private var reponse: Reponse? = null
+
+    /**
+     * La face d'une carte, posée cachée dans la scène pendant qu'on lit la
+     * question : son paysage et son métal se calculent en fond (voir
+     * [CarteOrnee.attendreSaMatiere]) le temps que le joueur cherche le mot.
+     *
+     * Elle se construisait au milieu du retournement, une fois le dos de
+     * profil. Sur un Galaxy A21s (2026-10-12), l'écran se figeait alors 0,45 à
+     * 0,6 s carte invisible, puis la face finissait de tourner à 11-17 images
+     * par seconde, tracée à chaque angle.
+     */
+    private class Reponse(val vue: View) {
+        private var prete = vue !is CarteOrnee
+        private var enAttente: (() -> Unit)? = null
+
+        init {
+            (vue as? CarteOrnee)?.attendreSaMatiere {
+                prete = true
+                enAttente?.invoke()
+                enAttente = null
+            }
+        }
+
+        fun quandPrete(action: () -> Unit) {
+            if (prete) action() else enAttente = action
+        }
+    }
+
     private fun dp(v: Float) = (v * d).toInt()
 
     /**
@@ -203,6 +233,11 @@ class VueWidderhuelen(
         )
 
         poserCarton(carton)
+        // La face attend derrière le dos, à la même place et à la même
+        // taille : la scène ne change pas de hauteur entre les deux.
+        val face = CarteCarnet.complete(ctx, q.contenu).apply { visibility = View.INVISIBLE }
+        reponse = Reponse(face)
+        poserCarton(face, derriere = true)
         // Le dos entre sans animation : rien n'écrit dans sa rotation, il
         // peut prendre le doigt tout de suite. Les deux faces y répondent —
         // une question qui suivrait la main et une réponse qui n'y
@@ -301,19 +336,32 @@ class VueWidderhuelen(
                     })
                 })
 
-            val recto = CarteCarnet.complete(ctx, q.contenu)
-            poserCarton(recto)
+            val prete = reponse ?: Reponse(CarteCarnet.complete(ctx, q.contenu)).also { poserCarton(it.vue) }
+            reponse = null
+            val recto = prete.vue
+            // Le dos s'en va, la face déjà mesurée reste seule.
+            for (i in scene.childCount - 1 downTo 0) {
+                if (scene.getChildAt(i) !== recto) scene.removeViewAt(i)
+            }
+            // La carte tourne d'un bloc, comme celle du lecteur : sans couche,
+            // chaque angle refaisait tous ses tracés.
+            recto.setLayerType(View.LAYER_TYPE_HARDWARE, null)
             val armer = { (recto as? Carton)?.sensibleAuDoigt = true }
             if (recto is Carton && !Pochette.animationsReduites(ctx)) {
                 recto.rotationY = -90f
-                // Le second temps n'est lancé qu'une fois la scène remesurée.
-                recto.post {
-                    recto.animate().rotationY(0f).setDuration(220)
-                        .setInterpolator(DecelerateInterpolator())
-                        .withEndAction { armer() }
-                        .start()
+                recto.visibility = View.VISIBLE
+                prete.quandPrete {
+                    recto.post {
+                        recto.animate().rotationY(0f).setDuration(220)
+                            .setInterpolator(DecelerateInterpolator())
+                            .withEndAction { armer() }
+                            .start()
+                    }
                 }
-            } else armer()
+            } else {
+                recto.visibility = View.VISIBLE
+                prete.quandPrete(armer)
+            }
         }
 
         // Lâché tout de suite : un second appui pendant le retournement
@@ -328,6 +376,7 @@ class VueWidderhuelen(
         // cents millisecondes et écrit lui aussi dans la rotation. Il rend la
         // main avant que le retournement ne commence.
         sortant.reposer()
+        sortant.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         // Premier temps : le dos se met de profil. C'est là, et pas ailleurs,
         // que la carte change de taille — de profil, elle est invisible.
         sortant.animate().rotationY(90f).setDuration(170)
@@ -336,12 +385,15 @@ class VueWidderhuelen(
             .start()
     }
 
-    /** Pose un carton au centre de la scène, ajusté à ce qui reste de hauteur. */
-    private fun poserCarton(carton: View) {
-        scene.removeAllViews()
+    /**
+     * Pose un carton au centre de la scène, ajusté à ce qui reste de hauteur.
+     * [derriere] le glisse sous celui qui y est déjà, sans rien retirer.
+     */
+    private fun poserCarton(carton: View, derriere: Boolean = false) {
+        if (!derriere) scene.removeAllViews()
         (carton as? Carton)?.ajusteALaHauteur = true
         carton.cameraDistance = 12000f * d
-        scene.addView(carton, FrameLayout.LayoutParams(
+        scene.addView(carton, if (derriere) 0 else scene.childCount, FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT,
             FrameLayout.LayoutParams.WRAP_CONTENT,
             Gravity.CENTER
@@ -366,6 +418,7 @@ class VueWidderhuelen(
     private fun afficherBilan() {
         tvProgres.text = ""
         dos = null
+        reponse = null
         scene.removeAllViews()
         bas.removeAllViews()
 
