@@ -363,9 +363,19 @@ class CarnetFragment : DialogFragment() {
         val cote = grilleDeVignettes().second
         Thread { Ornement.prechauffer(ctx, cote) }.start()
         Thread {
-            TranslationDictionary.charger(ctx)
-            TranslationDictionary.chargerExemples(ctx)
-            Carnet.preparer(ctx)
+            // Quatre chargements qui ne dépendent pas l'un de l'autre, menés
+            // de front. L'un après l'autre, et la première carte payant ensuite
+            // les familles, les catégories et les blasons, ils faisaient
+            // l'essentiel des 9,5 s d'« Ouverture du carnet… » sur un Galaxy
+            // A21s (2026-10-12).
+            val deFront = listOf(
+                Thread { TranslationDictionary.charger(ctx); TranslationDictionary.chargerFamilles(ctx) },
+                Thread { TranslationDictionary.chargerExemples(ctx) },
+                Thread { TranslationDictionary.chargerCategories(ctx); Armorial.precharger(ctx) },
+                Thread { Carnet.preparer(ctx) }
+            )
+            deFront.forEach { it.start() }
+            deFront.forEach { it.join() }
             // Donner une échéance aux cartes qui n'en ont pas, ici et non à la
             // capture : c'est ce qui étale un carnet déjà rempli au lieu de le
             // rendre entièrement dû le même jour. Voir [Carnet.planifier].

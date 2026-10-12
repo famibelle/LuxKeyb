@@ -242,13 +242,17 @@ object TranslationDictionary {
                 }
             }
 
-            proposables = exactes.asSequence()
-                .filter { (forme, glose) ->
-                    gloseInstructive(forme, glose) &&
-                        forme !in nomsPropres &&
-                        !MotsEcartes.estEcarte(forme)
-                }
-                .mapTo(HashSet()) { AccentTolerantMatcher.normalize(it.key) }
+            // Chaque forme pliée une seule fois : les trois conditions la
+            // repliaient chacune. Avec le pliage par tableau
+            // d'AccentTolerantMatcher, 5,5 s → 1,9 s sur un Galaxy A21s
+            // (2026-10-12), que le carnet attendait à son ouverture.
+            val retenus = HashSet<String>()
+            for ((forme, glose) in exactes) {
+                if (forme in nomsPropres) continue
+                val plie = AccentTolerantMatcher.normalize(forme)
+                if (gloseInstructive(plie, glose) && !MotsEcartes.estEcartePlie(plie)) retenus.add(plie)
+            }
+            proposables = retenus
 
             traductionsExemplesLangue = racine.optJSONObject("exemples_traductions")?.let { t ->
                 val lues = HashMap<String, List<String?>>(t.length())
@@ -296,7 +300,7 @@ object TranslationDictionary {
     }
 
     @Synchronized
-    private fun chargerFamilles(context: Context) {
+    fun chargerFamilles(context: Context) {
         if (famillesChargees) return
         famillesChargees = true
 
@@ -766,11 +770,17 @@ object TranslationDictionary {
      *
      * La comparaison passe par [AccentTolerantMatcher.normalize], qui plie déjà
      * la casse et les accents pour le correcteur : sans cela « Enquête » →
-     * « enquête » passerait au travers.
+     * « enquête » passerait au travers. Le mot arrive déjà plié, et la glose
+     * se parcourt sans être découpée en liste : voir [proposables].
      */
-    private fun gloseInstructive(mot: String, glose: String): Boolean {
-        val motPlie = AccentTolerantMatcher.normalize(mot)
-        return glose.split(",").any { AccentTolerantMatcher.normalize(it.trim()) != motPlie }
+    private fun gloseInstructive(motPlie: String, glose: String): Boolean {
+        var debut = 0
+        while (true) {
+            val fin = glose.indexOf(',', debut).let { if (it < 0) glose.length else it }
+            if (AccentTolerantMatcher.normalize(glose.substring(debut, fin).trim()) != motPlie) return true
+            if (fin == glose.length) return false
+            debut = fin + 1
+        }
     }
 
     /**

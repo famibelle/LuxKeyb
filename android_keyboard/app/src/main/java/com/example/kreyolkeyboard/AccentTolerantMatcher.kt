@@ -35,18 +35,41 @@ object AccentTolerantMatcher {
     fun normalize(text: String): String {
         if (text.isEmpty()) return text
 
-        val result = StringBuilder(text.length)
-        for (c in text) {
-            val lower = c.lowercaseChar()
-            if (lower == 'ß') {
-                result.append("ss")
-            } else {
-                result.append(NORMALIZATION_MAP[lower] ?: lower)
-            }
+        // Une forme déjà pliée (la plupart) ressort telle quelle, sans copie.
+        val n = text.length
+        var i = 0
+        while (i < n) {
+            val c = text[i]
+            if (c == 'ß' || plier(c) != c) break
+            i++
+        }
+        if (i == n) return text
+
+        val result = StringBuilder(n + 1)
+        result.append(text, 0, i)
+        while (i < n) {
+            val lower = text[i].lowercaseChar()
+            if (lower == 'ß') result.append("ss") else result.append(plier(lower))
+            i++
         }
         return result.toString()
     }
-    
+
+    /**
+     * La même table que [NORMALIZATION_MAP], indexée par le code du
+     * caractère : la Map emballait chaque caractère dans un objet, et le
+     * carnet plie les 88 852 formes glosées à chaque ouverture (5,5 s sur un
+     * Galaxy A21s, 2026-10-12). Toutes ses clés sont sous U+0180.
+     */
+    private val TABLE = CharArray(0x180) { it.toChar() }.also { t ->
+        NORMALIZATION_MAP.forEach { (de, vers) -> t[de.code] = vers }
+    }
+
+    private fun plier(c: Char): Char {
+        val lower = c.lowercaseChar()
+        return if (lower.code < 0x180) TABLE[lower.code] else lower
+    }
+
     /**
      * Vérifie si deux mots correspondent après normalisation des accents
      */
