@@ -42,6 +42,7 @@ class KeyboardSettingsActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        com.example.kreyolkeyboard.carnet.FigerOrientation.portraitSurTelephone(this)
         super.onCreate(savedInstanceState)
         // Le thème de l'application est Theme.AppCompat, qui pose une barre d'action
         // sombre : elle doublerait le bandeau bleu ci-dessous. SettingsActivity la
