@@ -222,16 +222,30 @@ internal class LecteurCartes(
         }
         // Le paysage et le métal se préparent en fond : la carte reste cachée,
         // puis se retourne d'un seul geste. Voir [CarteOrnee.attendreSaMatiere].
+        //
+        // Puis une image est dessinée **avant** le geste, la carte de profil
+        // ou presque transparente : la toute première carte ouverte coûtait
+        // 0,3 s de préparation graphique à cette image-là (Galaxy A21s,
+        // 2026-10-12), et cette pause tombait au début du retournement, qui
+        // sautait alors son premier tiers.
         val ornee = carte as? CarteOrnee
+        chaud = true
         if (ornee != null) {
             carte.visibility = View.INVISIBLE
             ornee.attendreSaMatiere {
+                if (sens == 0) carte.rotationY = -89f
+                else carte.alpha = 0.01f
                 carte.visibility = View.VISIBLE
-                lancer()
-                preparerVoisines(carte.width)
+                apresUneImage {
+                    lancer()
+                    preparerVoisines(carte.width)
+                }
             }
         } else lancer()
     }
+
+    /** [action] une fois l'image suivante dessinée. */
+    private fun apresUneImage(action: () -> Unit) = uneImagePlusTard { if (ouvert) action() }
 
     /**
      * Prépare en fond les deux cartes voisines de celle qu'on regarde, pour
@@ -282,4 +296,50 @@ internal class LecteurCartes(
             .withEndAction { hote.removeView(v) }.start()
         surFermeture()
     }
+
+    companion object {
+        /** Une carte complète a-t-elle déjà été dessinée dans ce processus ? */
+        @Volatile
+        private var chaud = false
+
+        /**
+         * Dessine une fois, presque transparente et sous tout le reste, une
+         * carte complète dans [hote], puis la retire.
+         *
+         * La toute première carte ouverte depuis le lancement de l'appli
+         * attendait 0,3 à 0,7 s de préparation graphique avant de se
+         * retourner, les suivantes non (Galaxy A21s, 2026-10-12). Le carnet
+         * appelle ceci pendant son écran de chargement, où cette attente ne
+         * se voit pas.
+         */
+        fun prechauffer(hote: FrameLayout, c: ContenuCarte) {
+            if (chaud) return
+            chaud = true
+            val ctx = hote.context
+            val d = ctx.resources.displayMetrics.density
+            val carte = CarteCarnet.complete(ctx, c)
+            val ornee = carte as? CarteOrnee ?: return
+            ornee.ajusteALaHauteur = true
+            ornee.avecAmbiance()
+            carte.alpha = 0.01f
+            carte.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+            carte.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+            carte.visibility = View.INVISIBLE
+            val marge = (22 * d).toInt()
+            hote.addView(carte, 0, FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            ).apply { setMargins(marge, (24 * d).toInt(), marge, (84 * d).toInt()) })
+            ornee.attendreSaMatiere {
+                carte.visibility = View.VISIBLE
+                uneImagePlusTard { hote.removeView(carte) }
+            }
+        }
+    }
+}
+
+/** [action] une fois l'image suivante dessinée. */
+private fun uneImagePlusTard(action: () -> Unit) {
+    val ch = android.view.Choreographer.getInstance()
+    ch.postFrameCallback { ch.postFrameCallback { action() } }
 }

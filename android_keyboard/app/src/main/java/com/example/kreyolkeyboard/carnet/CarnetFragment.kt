@@ -74,6 +74,12 @@ class CarnetFragment : DialogFragment() {
          */
         private const val ATTENTE_PAYSAGES = 600L
 
+        /**
+         * Ce que le chargement attend au plus les vignettes construites
+         * d'avance ; au-delà, la grille construit elle-même celles qui manquent.
+         */
+        private const val ATTENTE_VIGNETTES = 1500L
+
         /** Les rangées de la vue Séries posées à chaque trame, une fois le premier écran rempli. */
         private const val ETAPES_PAR_TRAME = 3
 
@@ -125,6 +131,17 @@ class CarnetFragment : DialogFragment() {
     private var generationGrille = 0
     private var filtre: JeuCarte? = null
     private var contenus: List<ContenuCarte> = emptyList()
+
+    /**
+     * Les vignettes déjà construites, par forme et par taille, reprises quand
+     * la grille se refait (tri, filtre, étagère) au lieu d'être reconstruites.
+     * Refaire les 64 vignettes d'un carnet bloquait l'écran 0,2 s à chaque
+     * changement de tri (Galaxy A21s, 2026-10-12) : leur construction, texte
+     * compris, pèse bien plus que leur déplacement. La référence au contenu
+     * vérifie qu'on reprend la vignette de la même carte, pas d'une homonyme
+     * d'un chargement précédent.
+     */
+    private val vignettesFaites = HashMap<String, Pair<ContenuCarte, View>>()
 
     /**
      * La carte entière ouverte, s'il y en a une : elle passe avant le casier.
@@ -383,6 +400,10 @@ class CarnetFragment : DialogFragment() {
         val premierEcran = if (enAlbum() || triOuvert == Tri.ETAGERE || triOuvert == Tri.SERIES) 0
         else (resources.displayMetrics.heightPixels / cote.coerceAtLeast(1)) * colonnes
         val cotesSeries = Serie.values().map { caseDeSerie(it).second }.distinct() - cote
+        // Le contexte de l'activité, pas celui de l'application : les vignettes
+        // construites d'avance doivent être celles que la grille construirait.
+        val ctxVues = requireContext()
+        val album = enAlbum()
         Thread {
             Ornement.prechauffer(ctx, cote)
             cotesSeries.forEach { Ornement.prechauffer(ctx, it) }
@@ -407,10 +428,37 @@ class CarnetFragment : DialogFragment() {
             // rendre entièrement dû le même jour. Voir [Carnet.planifier].
             Carnet.planifier(ctx)
             val prets = Carnet.cartes(ctx).map { CarteCarnet.contenu(ctx, it) }
+            // Pendant que le premier écran se peint ici, le fil principal
+            // dessine une carte complète invisible : voir [LecteurCartes.prechauffer].
+            prets.firstOrNull()?.let { premiere ->
+                principal.post { if (isAdded) LecteurCartes.prechauffer(racine, premiere) }
+            }
+            // Les vignettes elles-mêmes se construisent sur le fil de rendu
+            // pendant que le premier écran se peint : la grille n'a plus qu'à
+            // les poser. Construites à son arrivée, sur le fil principal, les
+            // 64 vignettes d'un carnet la figeaient 0,3 s au moment même où
+            // elle paraissait (Galaxy A21s, 2026-10-12).
+            val faites = java.util.concurrent.ConcurrentHashMap<String, Pair<ContenuCarte, View>>()
+            val construites = java.util.concurrent.CountDownLatch(1)
+            if (album) construites.countDown()
+            else FilDeRendu.handler.post {
+                try {
+                    for (c in prets) {
+                        faites["${c.carte.forme}|$cote"] = c to CarteCarnet.vignette(ctxVues, c, cote)
+                    }
+                } catch (e: Throwable) {
+                    // La grille construira ce qui manque, comme avant.
+                } finally {
+                    construites.countDown()
+                }
+            }
             peindrePremierEcran(prets, filtreOuvert, triOuvert, premierEcran, cote)
+            construites.await(ATTENTE_VIGNETTES, java.util.concurrent.TimeUnit.MILLISECONDS)
             principal.post {
                 if (!isAdded) return@post
                 contenus = prets
+                vignettesFaites.clear()
+                vignettesFaites.putAll(faites)
                 ligneTri.visibility = if (prets.isEmpty()) View.GONE else View.VISIBLE
                 construireFiltres()
                 surlignerTri()
@@ -1278,7 +1326,7 @@ class CarnetFragment : DialogFragment() {
                 }
                 hote.addView(ligne)
             }
-            ligne?.addView(CarteCarnet.vignette(ctx, c, cote).apply {
+            ligne?.addView(vignette(ctx, c, cote).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     cote, LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply { if (posColonne != colonnes - 1) rightMargin = gouttiere }
@@ -1286,6 +1334,17 @@ class CarnetFragment : DialogFragment() {
                 setOnClickListener { montrerCarte(c, ordre) }
             })
         }
+    }
+
+    /** La vignette de [c] à la taille [cote], reprise si elle existe déjà : voir [vignettesFaites]. */
+    private fun vignette(ctx: Context, c: ContenuCarte, cote: Int): View {
+        val cle = "${c.carte.forme}|$cote"
+        val faite = vignettesFaites[cle]?.takeIf { it.first === c }?.second
+        if (faite != null) {
+            (faite.parent as? ViewGroup)?.removeView(faite)
+            return faite
+        }
+        return CarteCarnet.vignette(ctx, c, cote).also { vignettesFaites[cle] = c to it }
     }
 
     /** La carte entière, feuilletable dans l'ordre de l'écran d'où on l'ouvre : voir [LecteurCartes]. */

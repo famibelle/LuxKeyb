@@ -257,12 +257,24 @@ internal class EventailCasier(
             else -> min(2f, liste.size - 1f)
         }
         rangSenti = decalage.roundToInt()
-        // Rendues avant la première image : sinon la première trame de
-        // l'animation porterait le coût de toutes, et c'est elle qu'on voit.
-        visibles(liste).forEach { image(liste[it]) }
         contentDescription = "$titre, $sousTitre. " +
             if (liste.isEmpty()) messageVide else context.getString(R.string.eventail_parcourir)
-        animDeploiement = animer(0f, 1f, 560, null) { deploiement = it }
+        // Les rectos visibles sont rendus avant le déploiement, sinon sa
+        // première trame porterait le coût de tous, et c'est elle qu'on voit.
+        // Ils l'étaient sur le fil principal : une cinquantaine de
+        // millisecondes chacun, l'écran gelait 0,3 à 0,4 s au toucher du
+        // casier (Galaxy A21s, 2026-10-12). Ils se rendent maintenant en fond
+        // pendant que le voile s'ouvre, et l'éventail part quand ils sont là.
+        val aRendre = visibles(liste).map { liste[it] }.filter { images.get(it.carte.forme) == null }
+        var restants = aRendre.size
+        val deployer = {
+            if (!fermeture) {
+                cartes = liste
+                animDeploiement = animer(0f, 1f, 560, null) { deploiement = it }
+            }
+        }
+        if (restants == 0) deployer()
+        else aRendre.forEach { c -> demander(c) { if (--restants == 0) deployer() } }
     }
 
     /** Range les cartes dans leur casier, puis rend la main à l'appelant. */
@@ -305,15 +317,49 @@ internal class EventailCasier(
         super.onDetachedFromWindow()
     }
 
-    /** Refait le recto de [forme] au prochain tracé : son paysage vient d'arriver. */
+    /**
+     * Refait le recto de [forme] : son paysage vient d'arriver. L'ancien reste
+     * à l'écran jusqu'à ce que le nouveau soit prêt.
+     */
     fun rafraichir(forme: String) {
-        images.remove(forme)
-        invalidate()
+        val c = cartes?.firstOrNull { it.carte.forme == forme } ?: return
+        demander(c, refaire = true) {}
     }
 
-    private fun image(c: ContenuCarte): Bitmap =
-        images.get(c.carte.forme)
-            ?: rendre(c, largeurCarte.toInt().coerceAtLeast(1)).also { images.put(c.carte.forme, it) }
+    /** Les rectos demandés et pas encore rendus. */
+    private val enCours = HashSet<String>()
+
+    /**
+     * Rend le recto de [c] sur le fil de fond, puis le range et redessine.
+     * [fait] est appelé sur le fil principal, rendu réussi ou non.
+     */
+    private fun demander(c: ContenuCarte, refaire: Boolean = false, fait: () -> Unit) {
+        val forme = c.carte.forme
+        if (!refaire && !enCours.add(forme)) return
+        val largeur = largeurCarte.toInt().coerceAtLeast(1)
+        FilDeRendu.handler.post {
+            val b = try {
+                rendre(c, largeur)
+            } catch (e: Throwable) {
+                null
+            }
+            post {
+                enCours.remove(forme)
+                if (b != null && !fermeture) {
+                    images.put(forme, b)
+                    invalidate()
+                }
+                fait()
+            }
+        }
+    }
+
+    /** Le recto de [c] s'il est prêt ; sinon il est demandé, et l'emplacement attend. */
+    private fun image(c: ContenuCarte): Bitmap? =
+        images.get(c.carte.forme) ?: run {
+            demander(c) {}
+            null
+        }
 
     // ---- le tracé ----------------------------------------------------------
 
@@ -416,7 +462,12 @@ internal class EventailCasier(
         pinceau.color = Color.argb((110 * eprogres).toInt(), 0, 0, 0)
         canvas.drawRoundRect(ombre, rayon, rayon, pinceau)
 
-        canvas.drawBitmap(image(c), null, cadre, pinceauImage)
+        val recto = image(c)
+        if (recto != null) canvas.drawBitmap(recto, null, cadre, pinceauImage)
+        else {
+            pinceau.color = ATTENTE
+            canvas.drawRoundRect(cadre, rayon, rayon, pinceau)
+        }
 
         if (Widderhuelen.estDue(c.carte.boite, c.carte.jourEcheance, aujourdHui)) {
             pinceau.style = Paint.Style.STROKE
@@ -558,5 +609,24 @@ internal class EventailCasier(
         const val HAUTEUR_BASSE = 420f
 
         const val PALE = 0xFFE6DCCB.toInt()
+
+        /** La place d'un recto pas encore rendu : le papier de la carte. */
+        const val ATTENTE = 0xFFEDE3CF.toInt()
+
+
+    }
+}
+
+/**
+ * Le fil où se rendent les rectos de la boîte et de l'éventail, un seul pour
+ * tous : les rendus se suivent dans l'ordre demandé, le centre d'abord. Il a
+ * sa boucle, parce qu'une vue construite hors du fil principal veut un
+ * `Handler` : sur un simple `Thread`, la construction d'une vignette échoue.
+ */
+internal object FilDeRendu {
+    val handler: android.os.Handler by lazy {
+        val fil = android.os.HandlerThread("rectos", android.os.Process.THREAD_PRIORITY_DISPLAY)
+        fil.start()
+        android.os.Handler(fil.looper)
     }
 }
