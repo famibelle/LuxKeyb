@@ -9,6 +9,17 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.1.1] - 2026-10-12
+
+Le carnet et la Boîte de Leitner répondent sans à-coup.
+
+### ⚡ Rapidité
+
+- **Changer de tri ou passer à l'Étagère ne fige plus le carnet.** Les cartes déjà affichées sont reprises au lieu d'être refaites.
+- **Le carnet s'ouvre plus vite**, et sa grille se laisse faire défiler dès qu'elle paraît.
+- **La première carte ouverte se retourne aussi vite que les suivantes**, d'un seul mouvement.
+- **Ouvrir un casier de la Boîte de Leitner ne bloque plus l'écran** : l'éventail se déploie dès que ses cartes sont prêtes.
+
 ## [37.1.0] - 2026-10-12
 
 Chaque carte rare a désormais sa propre façon d'arriver.
