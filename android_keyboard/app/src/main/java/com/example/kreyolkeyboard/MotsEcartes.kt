@@ -299,8 +299,10 @@ object MotsEcartes {
         FORMES + SUJETS.map { AccentTolerantMatcher.normalize(it) }
 
     /** Vrai si l'application doit s'abstenir de proposer ce mot. */
-    fun estEcarte(mot: String): Boolean =
-        AccentTolerantMatcher.normalize(mot) in FORMES
+    fun estEcarte(mot: String): Boolean = estEcartePlie(AccentTolerantMatcher.normalize(mot))
+
+    /** [estEcarte] pour une forme déjà pliée par [AccentTolerantMatcher.normalize]. */
+    fun estEcartePlie(plie: String): Boolean = plie in FORMES
 
     /**
      * Vrai si le mot relève du registre obscène — voir [GROSSIERETES].
