@@ -182,6 +182,27 @@ object LevenshteinDistance {
         return prec[n]
     }
 
+    /**
+     * Distance d'abord, puis la fréquence multipliée par [multiplicateur]
+     * (5 pour une faute de touche voisine, voir [VoisinsClavier]). Le moteur
+     * applique le même multiplicateur dans son score : sans lui ici, la coupe
+     * à [maxResults] pouvait écarter la bonne correction avant même que le
+     * moteur ne la voie.
+     */
+    private fun classer(
+        matches: List<Triple<String, Int, Int>>,
+        maxResults: Int,
+        multiplicateur: (String) -> Int
+    ): List<Triple<String, Int, Int>> =
+        matches
+            .map { it to it.second.toLong() * multiplicateur(it.first) }
+            .sortedWith(
+                compareBy<Pair<Triple<String, Int, Int>, Long>> { it.first.third }
+                    .thenByDescending { it.second }
+            )
+            .take(maxResults)
+            .map { it.first }
+
     /** Une forme sur [PAS_ANNULATION] seulement interroge l'annulation. */
     private const val PAS_ANNULATION = 4096
 
@@ -226,7 +247,8 @@ object LevenshteinDistance {
         maxDistance: Int = 2,
         maxResults: Int = 5,
         lengthTolerance: Int = 2,
-        estAnnule: () -> Boolean = { false }
+        estAnnule: () -> Boolean = { false },
+        multiplicateur: (String) -> Int = { 1 }
     ): List<Triple<String, Int, Int>> {
         
         if (input.isEmpty()) return emptyList()
@@ -256,12 +278,7 @@ object LevenshteinDistance {
         
         Log.d(TAG, "Spell check '$input': $examined/${dictionary.size} candidates after length filter")
         
-        val ranked = matches
-            .sortedWith(
-                compareBy<Triple<String, Int, Int>> { it.third }  // Sort by distance (lower is better)
-                    .thenByDescending { it.second }  // Then by frequency (higher is better)
-            )
-            .take(maxResults)
+        val ranked = classer(matches, maxResults, multiplicateur)
 
         if (ranked.isNotEmpty()) {
             Log.d(TAG, "✓ Found ${ranked.size} corrections for '$input': ${ranked.take(3).map { it.first }}")
@@ -290,7 +307,8 @@ object LevenshteinDistance {
         normalizer: (String) -> String,
         maxDistance: Int = 2,
         maxResults: Int = 5,
-        estAnnule: () -> Boolean = { false }
+        estAnnule: () -> Boolean = { false },
+        multiplicateur: (String) -> Int = { 1 }
     ): List<Triple<String, Int, Int>> {
         
         if (input.isEmpty()) return emptyList()
@@ -327,12 +345,7 @@ object LevenshteinDistance {
             }
         }
 
-        val ranked = matches
-            .sortedWith(
-                compareBy<Triple<String, Int, Int>> { it.third }
-                    .thenByDescending { it.second }
-            )
-            .take(maxResults)
+        val ranked = classer(matches, maxResults, multiplicateur)
 
         Log.d(TAG, "Normalized spell check '$input': ${ranked.size} matches found")
         

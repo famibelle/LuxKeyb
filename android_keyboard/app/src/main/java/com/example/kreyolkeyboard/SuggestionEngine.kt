@@ -125,6 +125,27 @@ class SuggestionEngine(private val context: Context) {
         internal const val NGRAM_CONTEXT_WEIGHT = 150_000.0
 
         /**
+         * Multiplicateur de fréquence d'une correction qui ne fait que
+         * remplacer des lettres par leurs voisines sur le clavier
+         * ([VoisinsClavier]) : le doigt tombé à côté, première faute de frappe
+         * sur téléphone.
+         *
+         * Multiplicateur et non bonus fixe, mesuré sur l'émulateur le
+         * 2026-10-13 : un bonus fixe supérieur à toute fréquence faisait bien
+         * passer « Haus » (772, le s touche le d) devant « haut » (1 167), mais
+         * il faisait aussi passer « Noen » (57, le n touche le m) devant
+         * « Moien » (1 703) pour « moen », où c'est une lettre oubliée, faute
+         * tout aussi courante. À 5, « Haus » vaut 3 860 et gagne, « Noen » vaut
+         * 285 et perd, « Kari » (9) reste derrière « Kaf » (106) pour « kafi ».
+         *
+         * La fréquence maximale multipliée doit rester sous
+         * [EDIT_DISTANCE_WEIGHT] : une correction à une faute passe toujours
+         * avant une à deux. `VoisinsClavierTest` le vérifie sur le dictionnaire
+         * livré.
+         */
+        internal const val VOISINAGE_FACTEUR = 5
+
+        /**
          * Formes attestées par le LOD et absentes du relevé de fréquences.
          *
          * Le corpus est du journalisme RTL : il n'écrit jamais ce qu'on tape
@@ -290,7 +311,8 @@ class SuggestionEngine(private val context: Context) {
             input: String,
             frequency: Int,
             levenshteinDistance: Int = 0,
-            usageCount: Int = 0
+            usageCount: Int = 0,
+            parVoisines: Boolean = false
         ): Double {
             var score = frequency.toDouble()
 
@@ -317,6 +339,7 @@ class SuggestionEngine(private val context: Context) {
             // dictionnaire réellement livré.
             if (levenshteinDistance > 0) {
                 score += (3 - levenshteinDistance) * EDIT_DISTANCE_WEIGHT
+                if (parVoisines) score += frequency.toDouble() * (VOISINAGE_FACTEUR - 1)
             }
 
             // Bonus si le mot commence par l'input, comparaison insensible aux accents :
@@ -713,7 +736,7 @@ class SuggestionEngine(private val context: Context) {
         
         // Ajouter suggestions dictionnaire
         dictionaryMatches.forEach { (word, frequency, distance) ->
-            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word))
+            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word), parVoisines(input, word, distance))
             allLux[word] = score.toFloat()
         }
         
@@ -800,7 +823,7 @@ class SuggestionEngine(private val context: Context) {
                 // Trier uniquement par score de dictionnaire (fréquence + proximité + distance)
                 dictionaryMatches
                     .map { (word, frequency, distance) ->
-                        Pair(word, calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word)))
+                        Pair(word, calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word), parVoisines(input, word, distance)))
                     }
                     .sortedByDescending { it.second }
                     .take(MAX_SUGGESTIONS)
@@ -1183,7 +1206,8 @@ class SuggestionEngine(private val context: Context) {
             normalizer = { str -> AccentTolerantMatcher.normalize(str) },
             maxDistance = 2,
             maxResults = MAX_SUGGESTIONS,
-            estAnnule = estAnnule
+            estAnnule = estAnnule,
+            multiplicateur = { if (voisins.parVoisines(input, it)) VOISINAGE_FACTEUR else 1 }
         )
         
         // Si on trouve des correspondances normalisées, les retourner
@@ -1207,7 +1231,8 @@ class SuggestionEngine(private val context: Context) {
             dictionary = dictionary,
             maxDistance = 2,
             maxResults = MAX_SUGGESTIONS,
-            estAnnule = estAnnule
+            estAnnule = estAnnule,
+            multiplicateur = { if (voisins.parVoisines(input, it)) VOISINAGE_FACTEUR else 1 }
         )
         
         if (directMatches.isNotEmpty()) {
@@ -1269,7 +1294,7 @@ class SuggestionEngine(private val context: Context) {
         // Ajouter les suggestions du dictionnaire avec score basé sur la fréquence et la position
         dictionarySuggestions.forEach { (word, frequency, distance) ->
             val casedWord = applyCasingPattern(input, word)
-            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word))
+            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word), parVoisines(input, word, distance))
             allSuggestions[casedWord] = score
         }
         
@@ -1301,6 +1326,17 @@ class SuggestionEngine(private val context: Context) {
     /**
      * Active/désactive le support français
      */
+    fun setDisposition(disposition: DispositionClavier) {
+        voisins = VoisinsClavier.de(disposition)
+    }
+
+    /** Touches voisines de la disposition choisie dans les réglages. */
+    @Volatile
+    private var voisins = VoisinsClavier.de(DispositionClavier.DEFAUT)
+
+    private fun parVoisines(input: String, word: String, distance: Int): Boolean =
+        distance > 0 && voisins.parVoisines(input, word)
+
     fun setFrenchSupport(enabled: Boolean) {
         bilingualConfig = bilingualConfig.copy(enableFrenchSupport = enabled)
         Log.d(TAG, "Support français: $enabled")

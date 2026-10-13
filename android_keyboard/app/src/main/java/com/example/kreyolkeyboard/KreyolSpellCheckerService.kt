@@ -47,6 +47,7 @@ class KreyolSpellCheckerService : SpellCheckerService() {
 
         override fun onCreate() {
             suggestionEngine = SuggestionEngine(applicationContext)
+            suggestionEngine.setDisposition(KeyboardPreferences.disposition(applicationContext))
             // onCreate()/onGetSuggestions*() tournent sur un handler thread interne à
             // SpellCheckerService (jamais le thread UI de l'app dans laquelle on tape) :
             // un chargement bloquant du dictionnaire ici est le pattern standard.
