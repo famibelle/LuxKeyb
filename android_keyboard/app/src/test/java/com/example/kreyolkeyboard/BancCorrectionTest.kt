@@ -168,6 +168,37 @@ class BancCorrectionTest {
                     q?.let { qq -> voisinDe(sans[qq].lowercaseChar())?.let { v -> sans.substring(0, qq) + v + sans.substring(qq + 1) } }
                 }
             },
+            "première lettre voisine" to { w ->
+                if (w[0].lowercaseChar() !in alphabet) null
+                else voisinDe(w[0].lowercaseChar())?.let { v ->
+                    (if (w[0].isUpperCase()) v.uppercaseChar() else v) + w.substring(1)
+                }
+            },
+            "lettre doublée simple" to { w ->
+                val pos = (1 until w.length).filter { w[it] == w[it - 1] }
+                pos.randomOrNull(alea)?.let { p -> w.removeRange(p, p + 1) }
+            },
+            "deux touches voisines" to { w ->
+                if (w.length < 5) null else {
+                    val pos = w.indices.filter { w[it].lowercaseChar() in alphabet }.shuffled(alea).take(2)
+                    if (pos.size < 2) null else {
+                        val c = w.toCharArray()
+                        var ok = true
+                        for (p in pos) { val v = voisinDe(c[p].lowercaseChar()); if (v == null) ok = false else c[p] = v }
+                        if (ok) String(c) else null
+                    }
+                }
+            },
+            "touche voisine, mot de 3-4 lettres" to { w ->
+                if (w.length > 4) null else w.indices.filter { w[it].lowercaseChar() in alphabet }.randomOrNull(alea)?.let { p ->
+                    voisinDe(w[p].lowercaseChar())?.let { v -> w.substring(0, p) + v + w.substring(p + 1) }
+                }
+            },
+            "touche voisine, mot de 8 lettres et plus" to { w ->
+                if (w.length < 8) null else w.indices.filter { w[it].lowercaseChar() in alphabet }.randomOrNull(alea)?.let { p ->
+                    voisinDe(w[p].lowercaseChar())?.let { v -> w.substring(0, p) + v + w.substring(p + 1) }
+                }
+            },
             "mot juste" to { w -> w },
         )
 
@@ -272,12 +303,34 @@ class BancCorrectionTest {
             }
         }
 
+        // Vitesse : des phrases tapées lettre à lettre, une barre par frappe,
+        // comme sur le téléphone. Le JVM d'un ordinateur va bien plus vite
+        // qu'un Galaxy A21s : ce sont les écarts qui comptent, pas l'absolu.
+        val durees = ArrayList<Long>()
+        run {
+            val toutes = phrases().shuffled(Random(graine)).take(300)
+            for (phrase in toutes) {
+                moteur.clearHistory()
+                for (mot in mots(phrase)) {
+                    for (n in 1..mot.length) {
+                        val debut = System.nanoTime()
+                        moteur.rangeeLuxembourgeoise(mot.substring(0, n))
+                        durees.add(System.nanoTime() - debut)
+                    }
+                    moteur.addWordToHistory(mot)
+                }
+            }
+            durees.sort()
+        }
         val pct = { a: Int, n: Int -> if (n == 0) "–" else "%.1f %%".format(100.0 * a / n) }
         val texte = buildString {
             appendLine("# Banc de correction, seuil sur préfixe : $ratio")
             appendLine()
             appendLine("Corpus ZLS : $motsVus mots, ${pct(horsVocabulaire, motsVus)} hors vocabulaire (exclus : aucune correction ne peut les rendre).")
             appendLine("Graine $graine, $parType fautes par type au plus, disposition ${DispositionClavier.DEFAUT.cle}.")
+            appendLine()
+            val q = { f: Double -> "%.2f".format(durees[((durees.size - 1) * f).toInt()] / 1e6) }
+            appendLine("Vitesse, ${durees.size} frappes sur 300 phrases : médiane ${q(0.5)} ms, 95 % sous ${q(0.95)} ms, 99 % sous ${q(0.99)} ms, pire ${q(1.0)} ms.")
             appendLine()
             appendLine("| Type | n | 1re place | dans les 3 | barre vide | faute = autre vrai mot | faute = début d'un mot | dont ratées | ms / mot |")
             appendLine("|---|---:|---:|---:|---:|---:|---:|---:|---:|")
