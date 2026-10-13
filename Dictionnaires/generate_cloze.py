@@ -520,6 +520,12 @@ def selectionner(questions, rng):
         plafonds[(niveau, "LuxAlign")] = quota - plafonds[(niveau, "LETZ")]
 
     par_reponse = Counter()
+    # Deux phrases du corpus qui ne diffèrent que par le mot masqué donnent
+    # la même question une fois trouée, avec deux réponses différentes : le
+    # joueur la reverrait et la seconde fois, « sa » réponse serait fausse.
+    # Arrivé le 2026-10-13, quand le retrait de 14 coquilles du dictionnaire a
+    # rebattu le tirage (ClozeAssetTest l'a vu en CI).
+    phrases_retenues = set()
     comptes = Counter()
     comptes_source = Counter()
     retenues = []
@@ -532,10 +538,13 @@ def selectionner(questions, rng):
             return False
         if par_reponse[question["a"]] >= MAX_PAR_REPONSE:
             return False
+        if question["s"] in phrases_retenues:
+            return False
         cle = (niveau, question["src"])
         if avec_plafond and comptes_source[cle] >= plafonds.get(cle, 0):
             return False
         par_reponse[question["a"]] += 1
+        phrases_retenues.add(question["s"])
         comptes[niveau] += 1
         comptes_source[cle] += 1
         retenues.append(question)
