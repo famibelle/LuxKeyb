@@ -771,12 +771,24 @@ def main():
         print('avertissement — enluminés hors du carnet (aucune carte ne les '
               'portera) : ' + ', '.join(absents))
 
+    # Un enluminé hors des grilles peut encore sortir de Wuertsich, Wuertmix
+    # ou Wuertriet, qui tirent dans le dictionnaire glosé, sauf s'il est un
+    # nom propre : ces jeux les écartent. « Paräis » est sorti des grilles
+    # le 2026-10-13, et son meuble ne pouvait plus orner aucune carte
+    # (BlasonsAssetTest). L'entrée de MEUBLES reste : si une régénération le
+    # remet dans une grille, il retrouve sa tour Eiffel.
+    with open(os.path.join(ACTIFS, 'luxemburgish_translations.json'), encoding='utf-8') as f:
+        noms_propres = set(json.load(f).get('noms_propres', []))
+    injouables = {m for m in absents if m in noms_propres}
+    if injouables:
+        print('meuble retiré, nom propre hors des grilles : ' + ', '.join(sorted(injouables)))
+
     blasons = {}
-    for lemme in sorted(set(champs) | set(MEUBLES)):
+    for lemme in sorted(set(champs) | (set(MEUBLES) - injouables)):
         entree = {}
         if lemme in champs:
             entree['c'] = champs[lemme]
-        if lemme in MEUBLES:
+        if lemme in MEUBLES and lemme not in injouables:
             entree['m'] = MEUBLES[lemme]
         blasons[lemme] = entree
 
