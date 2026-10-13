@@ -105,6 +105,7 @@ footer.page{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);fo
   <a href="corpus.html">📚 Les corpus</a> ·
   <a href="dossier.html">📄 Dossier</a> ·
   <strong>🎁 Nouveautés</strong> ·
+  <a href="historique.html">📜 Historique</a> ·
   <a href="labs.html">🔬 Labs</a> ·
   <a href="comparatif.html">⚖️ Comparatif</a> ·
   <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
@@ -172,8 +173,8 @@ footer.page{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);fo
 <footer class="page">
   <p>
     Une question ? Écrivez à <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>
-    Journal complet des versions :
-    <a href="https://github.com/famibelle/LuxKeyb/blob/main/android_keyboard/CHANGELOG.md">CHANGELOG.md</a>
+    Toutes les versions depuis la première :
+    <a href="historique.html">l'historique complet</a>
   </p>
   <p>Lëtzebuergesch Clavier</p>
 </footer>
@@ -287,9 +288,8 @@ footer.page{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);fo
       });
 
       var p = el('p', 'muted');
-      p.innerHTML = 'Les versions plus anciennes sont dans le ' +
-        '<a href="https://github.com/famibelle/LuxKeyb/blob/main/android_keyboard/CHANGELOG.md">' +
-        'journal complet</a>.';
+      p.innerHTML = 'Les versions plus anciennes sont dans ' +
+        '<a href="historique.html">l\'historique complet</a>.';
       liste.appendChild(p);
     })
     .catch(function () {

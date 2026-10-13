@@ -12,7 +12,9 @@ les aurait condamnés à diverger du journal des versions dès la release suivan
 
     python docs/scripts/generate_nouveautes.py
 
-Écrit docs/stats/nouveautes.json.
+Écrit docs/stats/nouveautes.json (les dernières versions, pour nouveautes.html)
+et docs/stats/historique.json (toutes les versions luxembourgeoises, pour
+historique.html, qui les pagine).
 """
 
 import html
@@ -25,6 +27,7 @@ from pathlib import Path
 RACINE = Path(__file__).resolve().parents[2]
 CHANGELOG = RACINE / "android_keyboard" / "CHANGELOG.md"
 SORTIE = RACINE / "docs" / "stats" / "nouveautes.json"
+SORTIE_HISTORIQUE = RACINE / "docs" / "stats" / "historique.json"
 # Illustrations tenues à la main, par version : le CHANGELOG ne porte pas
 # d'images (il est aussi lu tel quel sur GitHub), donc la capture d'une
 # nouveauté vit à côté et se fusionne ici. Absent ou incomplet, on s'en passe.
@@ -38,6 +41,21 @@ VERSIONS_AFFICHEES = 6
 # embarqué, certificats, chronomètre de diagnostic). Ce qu'elle apportait aux
 # utilisateurs est repris dans la 32.1.0.
 VERSIONS_NON_PUBLIEES = {"31.0.0"}
+
+# Le journal continue sous la 10.9.2 luxembourgeoise avec l'histoire de la base
+# commune, côté créole. Cet en-tête la sépare ; rien en dessous n'est lu.
+FIN_DU_JOURNAL_LUXEMBOURGEOIS = "base amont"
+
+# Le site ne parle pas de la filiation créole du code. Les versions de
+# synchronisation la mentionnent ; la phrase qui la nomme est retirée (le point
+# entier si c'est son titre), le reste de la version reste.
+FILIATION = re.compile(r'cr[ée]ole|kr[ée]y[oò]l|guadeloup|karuk', re.I)
+FIN_DE_PHRASE = re.compile(r'(?<=[.!?…])\s+(?=[A-ZÀ-Ý«*`])')
+
+
+def sans_filiation(texte):
+    return " ".join(p for p in FIN_DE_PHRASE.split(texte)
+                    if not FILIATION.search(p)).strip()
 
 EN_TETE_VERSION = re.compile(r'^## \[([0-9]+\.[0-9]+\.[0-9]+)\](?: — .*?)? - (\d{4}-\d{2}-\d{2})\s*$')
 EN_TETE_SECTION = re.compile(r'^### (.+)$')
@@ -93,18 +111,34 @@ def lire_versions(lignes):
     def clore_puce(acc):
         if not acc or not section:
             return
-        titre, texte = separer_puce(" ".join(acc).strip())
+        brut = " ".join(acc).strip()
+        m = re.match(r'^(\*\*.+?\*\*)(.*)$', brut, re.S)
+        if m and FILIATION.search(m.group(1)):
+            return
+        brut = (m.group(1) + " " + sans_filiation(m.group(2))) if m else sans_filiation(brut)
+        titre, texte = separer_puce(brut)
         if titre or texte:
             section["points"].append({"titre": titre, "texte": texte})
 
     acc = []
     intro = []
     for ligne in lignes:
+        if ligne.startswith("## [") and FIN_DU_JOURNAL_LUXEMBOURGEOIS in ligne:
+            break
         m = EN_TETE_VERSION.match(ligne)
+        if not m and ligne.startswith("## ["):
+            # En-tête hors numérotation (« Non publié, abandonné ») : son
+            # contenu n'appartient pas à la version qui précède.
+            clore_puce(acc); acc = []
+            if courante:
+                courante["intro"] = en_html(sans_filiation(" ".join(intro)))
+            intro = []
+            courante = section = None
+            continue
         if m:
             clore_puce(acc); acc = []
             if courante:
-                courante["intro"] = en_html(" ".join(intro).strip())
+                courante["intro"] = en_html(sans_filiation(" ".join(intro)))
             intro = []
             courante = {"version": m.group(1), "date": m.group(2),
                         "intro": "", "sections": []}
@@ -169,7 +203,7 @@ def lire_versions(lignes):
 
     clore_puce(acc)
     if courante:
-        courante["intro"] = en_html(" ".join(intro).strip())
+        courante["intro"] = en_html(sans_filiation(" ".join(intro)))
     return versions
 
 
@@ -209,12 +243,13 @@ def main():
 
     for v in versions:
         for s in v["sections"]:
-            s["texte"] = en_html(" ".join(s["texte"]).strip())
+            s["texte"] = en_html(sans_filiation(" ".join(s["texte"])))
         # Une section sans puce, sans texte et sans tableau n'a rien à afficher.
         v["sections"] = [s for s in v["sections"]
                          if s["points"] or s["texte"] or s["tableau"]]
-    versions = [v for v in versions
-                if v["sections"] and v["version"] not in VERSIONS_NON_PUBLIEES][:VERSIONS_AFFICHEES]
+    toutes = [v for v in versions
+              if v["sections"] and v["version"] not in VERSIONS_NON_PUBLIEES]
+    versions = toutes[:VERSIONS_AFFICHEES]
     if not versions:
         sys.exit("Aucune version exploitable dans le CHANGELOG.")
 
@@ -230,6 +265,15 @@ def main():
 
     points = sum(len(s["points"]) for v in versions for s in v["sections"])
     print(f"Écrit {SORTIE} — {len(versions)} versions, {points} points",
+          file=sys.stderr)
+
+    historique = dict(resultat, versions=toutes,
+                      premiere_version=toutes[-1]["version"],
+                      premiere_date=toutes[-1]["date"])
+    SORTIE_HISTORIQUE.write_text(
+        json.dumps(historique, ensure_ascii=False, separators=(",", ":")), "utf-8")
+    print(f"Écrit {SORTIE_HISTORIQUE} — {len(toutes)} versions, "
+          f"de la {toutes[-1]['version']} à la {toutes[0]['version']}",
           file=sys.stderr)
 
 
