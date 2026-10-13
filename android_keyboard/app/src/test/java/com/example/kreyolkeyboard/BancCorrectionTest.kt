@@ -212,6 +212,8 @@ class BancCorrectionTest {
         val (r, lg) = (ratio.split("@") + listOf("")).let { it[0] to it[1] }
         moteur.ratioCorrectionSurPrefixe = if (r == "off") Double.MAX_VALUE else r.toDouble()
         if (lg.isNotEmpty()) moteur.longueurCorrectionSurPrefixe = lg.toInt()
+        // BANC_DOUBLEMENT=9 : multiplicateur des corrections par lettre doublée.
+        System.getenv("BANC_DOUBLEMENT")?.let { moteur.facteurDoublement = it.toInt() }
         alea = Random(graine)
         val resultats = LinkedHashMap<String, Ligne>()
         fun mesurer(nom: String, occ: Occurrence, tape: String, attendu: String, casseExacte: Boolean) {
@@ -324,7 +326,7 @@ class BancCorrectionTest {
         }
         val pct = { a: Int, n: Int -> if (n == 0) "–" else "%.1f %%".format(100.0 * a / n) }
         val texte = buildString {
-            appendLine("# Banc de correction, seuil sur préfixe : $ratio")
+            appendLine("# Banc de correction, seuil sur préfixe : $ratio, lettre doublée × ${moteur.facteurDoublement}")
             appendLine()
             appendLine("Corpus ZLS : $motsVus mots, ${pct(horsVocabulaire, motsVus)} hors vocabulaire (exclus : aucune correction ne peut les rendre).")
             appendLine("Graine $graine, $parType fautes par type au plus, disposition ${DispositionClavier.DEFAUT.cle}.")

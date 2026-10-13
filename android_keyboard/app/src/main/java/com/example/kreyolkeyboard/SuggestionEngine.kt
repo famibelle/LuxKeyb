@@ -146,6 +146,28 @@ class SuggestionEngine(private val context: Context) {
         internal const val VOISINAGE_FACTEUR = 5
 
         /**
+         * `true` quand [mot] est [saisie] avec une lettre doublée de plus :
+         * « Kafi » → « Kaffi », « kont » → « konnt », « acht » → « aacht ».
+         * Accents repliés des deux côtés.
+         *
+         * Le luxembourgeois double ses voyelles longues et beaucoup de
+         * consonnes, et le pouce pressé tape la lettre une fois : c'est
+         * une lettre oubliée parmi d'autres pour la distance d'édition, mais
+         * bien plus probable que l'oubli d'une lettre quelconque.
+         */
+        internal fun parDoublement(saisie: String, mot: String): Boolean {
+            if (mot.length != saisie.length + 1) return false
+            val s = AccentTolerantMatcher.normalize(saisie)
+            val m = AccentTolerantMatcher.normalize(mot)
+            if (m.length != s.length + 1) return false
+            var i = 0
+            while (i < s.length && s[i] == m[i]) i++
+            // m[i] est la lettre en plus : elle doit répéter la précédente,
+            // et le reste doit suivre à l'identique.
+            return i > 0 && m[i] == m[i - 1] && s.regionMatches(i, m, i + 1, s.length - i)
+        }
+
+        /**
          * Formes attestées par le LOD et absentes du relevé de fréquences.
          *
          * Le corpus est du journalisme RTL : il n'écrit jamais ce qu'on tape
@@ -336,7 +358,7 @@ class SuggestionEngine(private val context: Context) {
             frequency: Int,
             levenshteinDistance: Int = 0,
             usageCount: Int = 0,
-            parVoisines: Boolean = false
+            facteurFrappe: Int = 1
         ): Double {
             var score = frequency.toDouble()
 
@@ -363,7 +385,7 @@ class SuggestionEngine(private val context: Context) {
             // dictionnaire réellement livré.
             if (levenshteinDistance > 0) {
                 score += (3 - levenshteinDistance) * EDIT_DISTANCE_WEIGHT
-                if (parVoisines) score += frequency.toDouble() * (VOISINAGE_FACTEUR - 1)
+                score += frequency.toDouble() * (facteurFrappe - 1)
             }
 
             // Bonus si le mot commence par l'input, comparaison insensible aux accents :
@@ -787,7 +809,7 @@ class SuggestionEngine(private val context: Context) {
         
         // Ajouter suggestions dictionnaire
         dictionaryMatches.forEach { (word, frequency, distance) ->
-            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word), parVoisines(input, word, distance))
+            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word), facteurFrappe(input, word, distance))
             allLux[word] = score.toFloat()
         }
         
@@ -874,7 +896,7 @@ class SuggestionEngine(private val context: Context) {
                 // Trier uniquement par score de dictionnaire (fréquence + proximité + distance)
                 dictionaryMatches
                     .map { (word, frequency, distance) ->
-                        Pair(word, calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word), parVoisines(input, word, distance)))
+                        Pair(word, calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word), facteurFrappe(input, word, distance)))
                     }
                     .sortedByDescending { it.second }
                     .take(MAX_SUGGESTIONS)
@@ -1352,6 +1374,32 @@ class SuggestionEngine(private val context: Context) {
      */
     internal var ratioCorrectionSurPrefixe = 64.0
 
+    /**
+     * Multiplicateur de fréquence d'une correction par lettre doublée
+     * ([parDoublement]), dans le classement comme face au seuil de
+     * [correctionSurPrefixe] : à 32, une lettre doublée passe devant les
+     * complétions dès qu'elle pèse deux fois la meilleure : « ener » donne
+     * « ënner » (1 631) et non « Energie » (299), « ales » donne « alles ».
+     *
+     * Réglé sur le banc de correction le 2026-10-13 (1re place / dans les 3) :
+     *
+     * ```
+     * facteur  lettre doublée   lettre oubliée   mot juste en cours de frappe
+     *    1     67,0 / 78,5      63,0 / 80,5      49,6 / 75,3
+     *    5     73,4 / 80,6      63,8 / 80,8      49,6 / 75,3
+     *   16     76,8 / 82,2      64,6 / 81,5      49,6 / 75,3
+     *   32     78,1 / 83,2      64,9 / 81,7      49,6 / 75,3   ← retenu
+     *   64     78,7 / 83,6      64,9 / 81,8      49,6 / 75,3
+     * ```
+     *
+     * Le reste des ratés est hors de portée : un tiers des fautes donnent un
+     * autre vrai mot (« den » pour « deen ») et la plupart des autres
+     * retombent sur un mot une fois les accents repliés (« Schäfe » →
+     * « Schafe »). Aucun risque pour l'ordre des distances : le doublement
+     * n'existe qu'à une lettre près.
+     */
+    internal var facteurDoublement = 32
+
     /** Longueur minimale de ce qui est tapé pour [correctionSurPrefixe]. */
     internal var longueurCorrectionSurPrefixe = 3
 
@@ -1362,7 +1410,7 @@ class SuggestionEngine(private val context: Context) {
         estAnnule: () -> Boolean
     ): Triple<String, Int, Int>? {
         val meilleureCompletion = completions.maxOf { it.second }
-        val multiplicateur = { mot: String -> if (voisins.parVoisines(input, mot)) VOISINAGE_FACTEUR else 1 }
+        val multiplicateur = { mot: String -> facteurFrappe(input, mot) }
         val correction = LevenshteinDistance.findClosestMatchesNormalized(
             input = input,
             dictionary = dictionary,
@@ -1406,7 +1454,7 @@ class SuggestionEngine(private val context: Context) {
             maxDistance = 2,
             maxResults = MAX_SUGGESTIONS,
             estAnnule = estAnnule,
-            multiplicateur = { if (voisins.parVoisines(input, it)) VOISINAGE_FACTEUR else 1 }
+            multiplicateur = { facteurFrappe(input, it) }
         )
         
         // Si on trouve des correspondances normalisées, les retourner
@@ -1431,7 +1479,7 @@ class SuggestionEngine(private val context: Context) {
             maxDistance = 2,
             maxResults = MAX_SUGGESTIONS,
             estAnnule = estAnnule,
-            multiplicateur = { if (voisins.parVoisines(input, it)) VOISINAGE_FACTEUR else 1 }
+            multiplicateur = { facteurFrappe(input, it) }
         )
         
         if (directMatches.isNotEmpty()) {
@@ -1493,7 +1541,7 @@ class SuggestionEngine(private val context: Context) {
         // Ajouter les suggestions du dictionnaire avec score basé sur la fréquence et la position
         dictionarySuggestions.forEach { (word, frequency, distance) ->
             val casedWord = applyCasingPattern(input, word)
-            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word), parVoisines(input, word, distance))
+            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word), facteurFrappe(input, word, distance))
             allSuggestions[casedWord] = score
         }
         
@@ -1533,8 +1581,18 @@ class SuggestionEngine(private val context: Context) {
     @Volatile
     private var voisins = VoisinsClavier.de(DispositionClavier.DEFAUT)
 
-    private fun parVoisines(input: String, word: String, distance: Int): Boolean =
-        distance > 0 && voisins.parVoisines(input, word)
+    /**
+     * Combien une correction est plus vraisemblable qu'une autre à la même
+     * distance, d'après la faute qu'elle suppose : le doigt tombé sur une
+     * touche voisine ([VOISINAGE_FACTEUR]) ou une lettre doublée tapée une
+     * seule fois ([facteurDoublement]).
+     */
+    private fun facteurFrappe(input: String, word: String, distance: Int = 1): Int = when {
+        distance <= 0 -> 1
+        voisins.parVoisines(input, word) -> VOISINAGE_FACTEUR
+        parDoublement(input, word) -> facteurDoublement
+        else -> 1
+    }
 
     fun setFrenchSupport(enabled: Boolean) {
         bilingualConfig = bilingualConfig.copy(enableFrenchSupport = enabled)

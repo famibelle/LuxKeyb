@@ -50,15 +50,15 @@ class VoisinsClavierTest {
         val max = (0 until t.length()).maxOf { t.getJSONArray(it).getInt(1) }
         // Haus (772, voisine) devant haut (1 167) ; Noen (57, voisine) derrière
         // Moien (1 703, lettre oubliée).
-        val haus = SuggestionEngine.calculateDictionaryScore("Haus", "haud", 772, 1, 0, parVoisines = true)
+        val haus = SuggestionEngine.calculateDictionaryScore("Haus", "haud", 772, 1, 0, facteurFrappe = SuggestionEngine.VOISINAGE_FACTEUR)
         val haut = SuggestionEngine.calculateDictionaryScore("haut", "haud", 1167, 1)
         assertTrue("$haus vs $haut", haus > haut)
-        val noen = SuggestionEngine.calculateDictionaryScore("Noen", "moen", 57, 1, 0, parVoisines = true)
+        val noen = SuggestionEngine.calculateDictionaryScore("Noen", "moen", 57, 1, 0, facteurFrappe = SuggestionEngine.VOISINAGE_FACTEUR)
         val moien = SuggestionEngine.calculateDictionaryScore("Moien", "moen", 1703, 1)
         assertTrue("$moien vs $noen", moien > noen)
         // Deux fautes voisines, mot le plus fréquent, contre une faute
         // quelconque du mot le plus rare : la distance garde le dernier mot.
-        val deuxVoisines = SuggestionEngine.calculateDictionaryScore("freq", "xxxx", max, 2, 1000, parVoisines = true)
+        val deuxVoisines = SuggestionEngine.calculateDictionaryScore("freq", "xxxx", max, 2, 1000, facteurFrappe = SuggestionEngine.VOISINAGE_FACTEUR)
         val uneFaute = SuggestionEngine.calculateDictionaryScore("rare", "xxxx", 3, 1)
         assertTrue("$uneFaute vs $deuxVoisines", uneFaute > deuxVoisines)
     }
