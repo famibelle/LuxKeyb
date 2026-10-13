@@ -563,6 +563,30 @@ class SuggestionEngine(private val context: Context) {
     /**
      * Initialise le moteur de suggestions (luxembourgeois + français)
      */
+    /**
+     * Lecture des actifs. Remplaçable pour faire tourner le moteur hors
+     * d'Android : le banc de correction (`BancCorrectionTest`) lit les mêmes
+     * fichiers depuis `src/main/assets`.
+     */
+    internal var ouvrirActif: (String) -> java.io.InputStream = { context.assets.open(it) }
+
+    /** Dictionnaire et n-grammes seuls, sans le français : pour le banc. */
+    internal suspend fun chargerLuxembourgeois() {
+        loadDictionary()
+        loadNgramModel()
+    }
+
+    /**
+     * Ce que la rangée luxembourgeoise afficherait pour [input], calculé sur
+     * le fil appelant. Même chemin que [generateBilingualSuggestions], sans
+     * les coroutines ni le français : c'est ce que mesure le banc.
+     */
+    internal fun rangeeLuxembourgeoise(input: String): List<String> {
+        if (input.length < MIN_WORD_LENGTH) return emptyList()
+        generationFrappe++
+        return sansGrossieretesBilingues(getLuxSuggestions(input)).map { it.word }
+    }
+
     suspend fun initialize() = withContext(Dispatchers.IO) {
         try {
             Log.d(TAG, "🚀 Initialisation du moteur bilingue...")
@@ -986,7 +1010,7 @@ class SuggestionEngine(private val context: Context) {
      */
     private suspend fun loadDictionary() = withContext(Dispatchers.IO) {
         try {
-            val jsonString = context.assets.open("luxemburgish_dict.json").bufferedReader().use { it.readText() }
+            val jsonString = ouvrirActif("luxemburgish_dict.json").bufferedReader().use { it.readText() }
             val wordsArray = JSONArray(jsonString)
             
             val loadedDictionary = mutableListOf<Pair<String, Int>>()
@@ -1031,7 +1055,7 @@ class SuggestionEngine(private val context: Context) {
                 ) { AccentTolerantMatcher.normalize(it) }
             }
 
-            withContext(Dispatchers.Main) {
+            if (suggestionListener != null) withContext(Dispatchers.Main) {
                 // Le compte annoncé reste celui du corpus : c'est lui que
                 // LuxLevels utilise comme dénominateur des paliers, et un
                 // dictionnaire qui triple ferait reculer tous les joueurs.
@@ -1069,7 +1093,7 @@ class SuggestionEngine(private val context: Context) {
 
     private fun loadLodForms(): FormesLod {
         return try {
-            val jsonString = context.assets.open(LOD_FORMS_ASSET)
+            val jsonString = ouvrirActif(LOD_FORMS_ASSET)
                 .bufferedReader().use { it.readText() }
             val racine = JSONObject(jsonString)
             FormesLod(
@@ -1101,7 +1125,7 @@ class SuggestionEngine(private val context: Context) {
     private suspend fun loadNgramModel() = withContext(Dispatchers.IO) {
         Log.d(TAG, "Chargement du modèle N-grams...")
         try {
-            val inputStream = context.assets.open("luxemburgish_ngrams.json")
+            val inputStream = ouvrirActif("luxemburgish_ngrams.json")
             val jsonString = inputStream.bufferedReader().use { it.readText() }
             inputStream.close()
 
@@ -1133,7 +1157,7 @@ class SuggestionEngine(private val context: Context) {
             
             Log.d(TAG, "Modèle N-grams chargé avec ${ngramModel.size} entrées")
             
-            withContext(Dispatchers.Main) {
+            if (suggestionListener != null) withContext(Dispatchers.Main) {
                 suggestionListener?.onNgramModelLoaded()
             }
             
