@@ -110,13 +110,18 @@ class BancCorrectionTest {
         }
 
         val occurrences = ArrayList<Occurrence>()
+        val inconnus = ArrayList<Occurrence>()
         var motsVus = 0
         var horsVocabulaire = 0
         for (phrase in phrases()) {
             val m = mots(phrase)
             for ((i, mot) in m.withIndex()) {
                 motsVus++
-                if (mot.lowercase() !in connus) { horsVocabulaire++; continue }
+                if (mot.lowercase() !in connus) {
+                    horsVocabulaire++
+                    inconnus.add(Occurrence(mot, m.subList(maxOf(0, i - 2), i), i == 0, m.getOrNull(i + 1)))
+                    continue
+                }
                 occurrences.add(Occurrence(mot, m.subList(maxOf(0, i - 2), i), i == 0, m.getOrNull(i + 1)))
             }
         }
@@ -191,6 +196,9 @@ class BancCorrectionTest {
             if (barre.isEmpty()) l.vide++
             if (barre.firstOrNull()?.let(::egal) == true) l.top1++
             val dansLes3 = barre.take(3).any(::egal)
+            if (System.getenv("BANC_DETAILS") == nom && l.n <= 400 && !barre.take(3).any(::egal)) {
+                println("RATE\t$tape\t$attendu\t$barre")
+            }
             if (dansLes3) l.top3++
             if (tape.lowercase() != attendu.lowercase() && debutDeMot(tape)) {
                 l.prefixe++
@@ -229,6 +237,27 @@ class BancCorrectionTest {
                 if (occ.enTete || occ.mot.length < 3 || !occ.mot[0].isUpperCase() || occ.mot.drop(1).any { it.isUpperCase() }) continue
                 mesurer("minuscule (casse exacte)", occ, occ.mot.lowercase(), occ.mot, casseExacte = true)
                 pris++
+            }
+        }
+        // Un mot juste mais absent du dictionnaire (un composé, un nom) : la
+        // barre ne doit pas proposer de le couper en deux. Ici « 1re place »
+        // et « dans les 3 » comptent les fois où AUCUNE coupure n'y figure.
+        run {
+            val l = resultats.getOrPut("mot inconnu non coupé") { Ligne() }
+            for (occ in inconnus.shuffled(Random(graine)).take(parType)) {
+                if (occ.mot.length < 4) continue
+                moteur.clearHistory()
+                occ.avant.forEach { moteur.addWordToHistory(it) }
+                val debut = System.nanoTime()
+                val barre = moteur.rangeeLuxembourgeoise(occ.mot)
+                l.nanos += System.nanoTime() - debut
+                l.n++
+                if (barre.isEmpty()) l.vide++
+                if (barre.firstOrNull()?.contains(' ') != true) l.top1++
+                if (System.getenv("BANC_DETAILS") == "mot inconnu non coupé" && barre.take(3).any { ' ' in it }) {
+                    println("COUPE\t${occ.mot}\t$barre")
+                }
+                if (barre.take(3).none { ' ' in it }) l.top3++
             }
         }
         // Deux mots collés : la barre propose-t-elle les deux mots séparés ?

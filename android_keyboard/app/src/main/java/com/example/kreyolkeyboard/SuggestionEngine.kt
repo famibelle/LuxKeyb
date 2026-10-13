@@ -177,6 +177,30 @@ class SuggestionEngine(private val context: Context) {
          */
         internal const val LOD_FREQUENCY = 1
 
+        /** Seuil d'un mot-outil pour recoller deux mots ([coupure]). */
+        internal const val FREQUENCE_MOT_OUTIL = 1000
+
+        /**
+         * Mots-outils qui sont aussi des terminaisons : collés à un mot connu,
+         * ils font presque toujours une forme fléchie, pas deux mots.
+         */
+        private val TERMINAISONS = setOf("en", "de", "den", "der", "dem", "des", "er", "em", "es", "et", "ent", "end", "ten", "te")
+
+        /**
+         * Particules de verbes séparables : un verbe s'écrit soudé à elles
+         * (« ausbruecht », « opkommen »), et une forme absente du dictionnaire
+         * n'est pas pour autant deux mots.
+         */
+        private val PARTICULES = setOf(
+            "an", "op", "of", "un", "aus", "ëm", "iwwer", "ënner", "duerch", "no", "mat", "zou",
+            "vir", "bäi", "bei", "fort", "ewech", "zréck", "erëm", "weider", "do", "dra", "drop",
+            "dran", "eran", "erof", "erop", "eraus", "dobäi", "derbäi", "dervir", "hannert", "géint",
+            "zesummen", "fräi", "ze"
+        )
+
+        /** Occurrences du corpus livré, pour estimer la fréquence d'une paire. */
+        private const val OCCURRENCES_CORPUS = 3_084_201.0
+
         // Nombre de correspondances par préfixe retenues avant scoring. Le
         // dictionnaire est parcouru par fréquence corpus décroissante : une fenêtre
         // trop étroite écarterait un mot rare dans le corpus mais très utilisé par
@@ -458,6 +482,9 @@ class SuggestionEngine(private val context: Context) {
     // Formes normalisées (sans accents) alignées index à index avec `dictionary`,
     // précalculées au chargement pour éviter de normaliser 3600+ mots à chaque frappe
     private var normalizedWords: List<String> = emptyList()
+    // Les mots-outils, pour recoller deux mots tapés sans espace ([coupure]) :
+    // formes en minuscules fréquentes, quelques centaines d'entrées.
+    private var motsOutils: Map<String, Int> = emptyMap()
     // Vrai si une forme du dictionnaire contient « ß » : seul cas où le second
     // passage de la correction orthographique peut servir. Aucune aujourd'hui.
     private var dictionnaireAvecEszett = false
@@ -1036,6 +1063,9 @@ class SuggestionEngine(private val context: Context) {
 
             dictionary = corpusWords + lodForms.proposables.map { Pair(it, LOD_FREQUENCY) }
             normalizedWords = dictionary.map { AccentTolerantMatcher.normalize(it.first) }
+            motsOutils = corpusWords
+                .filter { it.second >= FREQUENCE_MOT_OUTIL && it.first == it.first.lowercase() && it.first.length >= 2 }
+                .associate { it.first to it.second }
             dictionnaireAvecEszett = dictionary.any { 'ß' in it.first }
             // `normalizedWordSet` (123 000 entrées) et `extraKnownForms`
             // (26 000 chaînes qui n'existaient que pour elle) sont remplacés
@@ -1197,7 +1227,9 @@ class SuggestionEngine(private val context: Context) {
         // s'empilaient sur le processeur derrière celui qui compte.
         if (matches.isEmpty() && devraitCorriger(input, isFrenchWord(input))) {
             val frappe = generationFrappe
-            return getSpellCorrectionSuggestions(input) { generationFrappe != frappe }
+            val corrections = getSpellCorrectionSuggestions(input) { generationFrappe != frappe }
+            val coupe = coupure(input) ?: return corrections
+            return listOf(coupe) + corrections
         }
 
         // Une faute peut aussi être le début d'un autre mot : « mar » pour
@@ -1216,6 +1248,84 @@ class SuggestionEngine(private val context: Context) {
         }
 
         return matches
+    }
+
+    /**
+     * Deux mots tapés sans l'espace entre eux : « echhunn » → « ech hunn ».
+     *
+     * Le banc de correction donnait 0 % sur cette faute, la barre restant vide
+     * une fois sur deux. On essaie chaque coupure de ce qui est tapé et on ne
+     * retient que celles que **le modèle de mots suivants atteste** : « hunn »
+     * doit figurer parmi les mots qui suivent « ech » dans le corpus. C'est le
+     * garde-fou essentiel en luxembourgeois, qui écrit ses mots composés d'un
+     * seul tenant : un composé absent du dictionnaire (« Schoulbus ») se coupe
+     * en deux mots connus, mais « Schoul » suivi de « Bus » n'est pas une
+     * suite attestée, et rien n'est proposé.
+     *
+     * Le modèle ne retient que les suites les plus fréquentes de chaque mot,
+     * et laissait passer « ech war », « och gëschter », « et kann ». Second
+     * cas donc : l'un des deux morceaux est un **mot-outil** (forme en
+     * minuscules d'au moins [FREQUENCE_MOT_OUTIL] occurrences : ech, och, et,
+     * ze, huet, hunn…) et l'autre un mot connu. Un composé se coupe rarement
+     * ainsi, ses morceaux étant des noms. Le banc mesure à part combien de
+     * mots justes absents du dictionnaire se feraient couper : sur ses
+     * premiers relevés, deux familles revenaient, que ce second cas écarte.
+     * Une terminaison prise pour un mot à droite (« honorabel en »,
+     * « virleien den ») : voir [TERMINAISONS]. Une particule de verbe à
+     * gauche (« aus bruecht », « op kommend ») : voir [PARTICULES]. Le
+     * premier cas, attesté par le n-gramme, garde « an der » ou « op de ».
+     *
+     * Le poids rendu estime le nombre de fois où la paire apparaît dans le
+     * corpus, pour se comparer aux fréquences des corrections : probabilité
+     * du second mot après le premier fois la fréquence du premier, ou, sans
+     * n-gramme, le produit des fréquences rapporté au corpus. La coupure se
+     * classe comme une correction à une faute, l'espace manquante. Les
+     * morceaux d'une lettre sont exclus : « dLeit » s'écrit « d'Leit ».
+     */
+    private fun coupure(input: String): Triple<String, Int, Int>? {
+        if (input.length < 4 || ngramModel.isEmpty()) return null
+        val bas = input.lowercase()
+        var meilleure: String? = null
+        var meilleurPoids = 0.0
+        for (i in 2..bas.length - 2) {
+            val gauche = bas.substring(0, i)
+            val droite = bas.substring(i)
+            val suite = ngramModel[gauche]?.firstOrNull { (it["word"] as? String)?.lowercase() == droite }
+            val probabilite = (suite?.get("probability") as? Number)?.toDouble()
+            val (poids, mot) = if (suite != null && probabilite != null) {
+                probabilite * (motsOutils[gauche] ?: frequenceCorpus(gauche)) to suite["word"] as String
+            } else {
+                val fg = motsOutils[gauche]?.takeIf { gauche !in PARTICULES }
+                val fd = motsOutils[droite]?.takeIf { droite !in TERMINAISONS }
+                if (fg == null && fd == null) continue
+                if (!isKnownWord(gauche) || !isKnownWord(droite)) continue
+                val autre = { m: String -> frequenceCorpus(m).coerceAtLeast(LOD_FREQUENCY) }
+                (fg ?: autre(gauche)).toDouble() * (fd ?: autre(droite)) / OCCURRENCES_CORPUS to
+                    (formeCanonique(droite) ?: droite)
+            }
+            if (poids > meilleurPoids) {
+                meilleurPoids = poids
+                meilleure = input.substring(0, i) + " " + mot
+            }
+        }
+        return meilleure?.let { Triple(it, meilleurPoids.toInt().coerceAtLeast(1), 1) }
+    }
+
+    /** Fréquence corpus d'une forme, 0 si absente. Balayage linéaire : rare. */
+    private fun frequenceCorpus(motBas: String): Int =
+        indiceCorpus(motBas)?.let { dictionary[it].second } ?: 0
+
+    /** Casse du dictionnaire (« Rezept »), ou `null` si la forme n'y est pas. */
+    private fun formeCanonique(motBas: String): String? =
+        indiceCorpus(motBas)?.let { dictionary[it].first }
+
+    private fun indiceCorpus(motBas: String): Int? {
+        val replie = AccentTolerantMatcher.normalize(motBas)
+        for (i in dictionary.indices) {
+            if (dictionary[i].second <= LOD_FREQUENCY) break
+            if (normalizedWords[i] == replie && dictionary[i].first.lowercase() == motBas) return i
+        }
+        return null
     }
 
     /**
