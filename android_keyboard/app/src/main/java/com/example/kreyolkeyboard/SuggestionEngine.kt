@@ -1200,7 +1200,72 @@ class SuggestionEngine(private val context: Context) {
             return getSpellCorrectionSuggestions(input) { generationFrappe != frappe }
         }
 
+        // Une faute peut aussi être le début d'un autre mot : « mar » pour
+        // « muer » commence Marc, Marché, Martine. Le banc de correction l'a
+        // mesuré le 2026-10-13 : c'était le cas de 22,5 % des fautes de touche
+        // voisine et de 20 % des inversions, et toutes étaient ratées, parce
+        // que la correction ne se cherchait que faute de complétion. Quand ce
+        // qui est tapé n'est pas un mot connu, on cherche donc aussi le mot à
+        // une faute près, et il passe en tête s'il pèse assez face à la
+        // meilleure complétion. Une seule faute, pas deux : c'est le cas
+        // courant, et la recherche reste deux fois moins chère.
+        if (input.length >= longueurCorrectionSurPrefixe && devraitCorriger(input, isFrenchWord(input)) && !isKnownWord(input)) {
+            val frappe = generationFrappe
+            correctionSurPrefixe(input, normalizedInput, matches) { generationFrappe != frappe }
+                ?.let { matches.add(0, it) }
+        }
+
         return matches
+    }
+
+    /**
+     * Seuil de [correctionSurPrefixe] : la correction passe en tête quand sa
+     * fréquence (multipliée pour une touche voisine) vaut au moins tant de
+     * fois celle de la meilleure complétion.
+     *
+     * Réglé sur le banc de correction le 2026-10-13 (1re place / dans les 3) :
+     *
+     * ```
+     * seuil   touche voisine   inversion       mot juste en cours de frappe
+     * jamais  72,2 / 76,2      70,6 / 78,8     51,3 / 76,4
+     *   1     82,2 / 86,2      78,0 / 86,2     41,0 / 74,4
+     *  16     82,0 / 86,0      77,7 / 85,9     47,8 / 75,7
+     *  64     81,2 / 85,2      77,4 / 85,5     49,5 / 76,1   ← retenu
+     * 256     80,1 / 84,1      75,8 / 83,9     50,4 / 76,3
+     * ```
+     *
+     * Un seuil bas corrige aussi les débuts de mots justes : taper « dee »
+     * pour « deem » propose « den ». À 64, presque tout le gain reste et la
+     * frappe en cours ne perd que 0,3 point dans les 3. Partir de 4 lettres
+     * au lieu de 3 perdait l'essentiel du gain : les pièges sont surtout des
+     * mots courts.
+     */
+    internal var ratioCorrectionSurPrefixe = 64.0
+
+    /** Longueur minimale de ce qui est tapé pour [correctionSurPrefixe]. */
+    internal var longueurCorrectionSurPrefixe = 3
+
+    private fun correctionSurPrefixe(
+        input: String,
+        normalizedInput: String,
+        completions: List<Triple<String, Int, Int>>,
+        estAnnule: () -> Boolean
+    ): Triple<String, Int, Int>? {
+        val meilleureCompletion = completions.maxOf { it.second }
+        val multiplicateur = { mot: String -> if (voisins.parVoisines(input, mot)) VOISINAGE_FACTEUR else 1 }
+        val correction = LevenshteinDistance.findClosestMatchesNormalized(
+            input = input,
+            dictionary = dictionary,
+            normalizedWords = normalizedWords,
+            normalizer = { str -> AccentTolerantMatcher.normalize(str) },
+            maxDistance = 1,
+            maxResults = 10,
+            estAnnule = estAnnule,
+            multiplicateur = multiplicateur
+        ).firstOrNull { !AccentTolerantMatcher.normalize(it.first).startsWith(normalizedInput) }
+            ?: return null
+        val poids = correction.second.toDouble() * multiplicateur(correction.first)
+        return if (poids >= ratioCorrectionSurPrefixe * meilleureCompletion) correction else null
     }
     
     /**

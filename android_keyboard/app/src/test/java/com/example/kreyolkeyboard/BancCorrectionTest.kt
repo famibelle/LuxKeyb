@@ -16,8 +16,12 @@ import kotlin.random.Random
  *
  * Ne tourne que sur demande, il prend une à deux minutes :
  * ```
- * BANC_CORRECTION=1 ./gradlew testDebugUnitTest --tests "*BancCorrectionTest"
+ * BANC_CORRECTION=1 ./gradlew testDebugUnitTest --tests "*BancCorrectionTest" --rerun
  * ```
+ * `--rerun` est indispensable : Gradle ne voit pas les variables
+ * d'environnement et rendrait sinon le résultat d'un passage précédent, tiré
+ * de son cache. `BANC_RATIOS="off,16,64"` produit un tableau par seuil de
+ * correction sur préfixe (`64@4` : seuil 64 à partir de 4 lettres).
  * Le tableau s'affiche et s'écrit dans `app/build/banc-correction.md`.
  *
  * **Les phrases** viennent du corpus de traduction de la ZLS (CC0), qui
@@ -116,9 +120,9 @@ class BancCorrectionTest {
                 occurrences.add(Occurrence(mot, m.subList(maxOf(0, i - 2), i), i == 0, m.getOrNull(i + 1)))
             }
         }
-        val alea = Random(graine)
-        occurrences.shuffle(alea)
+        occurrences.shuffle(Random(graine))
 
+        var alea = Random(graine)
         val voisins = VoisinsClavier.de(DispositionClavier.DEFAUT)
         val alphabet = ('a'..'z').toList()
         fun voisinDe(c: Char): Char? = alphabet.filter { voisins.sontVoisines(c, it) }.randomOrNull(alea)
@@ -162,6 +166,17 @@ class BancCorrectionTest {
             "mot juste" to { w -> w },
         )
 
+        // BANC_RATIOS="1,2" : un tableau par seuil de correction sur préfixe
+        // ("off" pour ne jamais corriger un début de mot).
+        val ratios = (System.getenv("BANC_RATIOS") ?: moteur.ratioCorrectionSurPrefixe.toString())
+            .split(",").map { it.trim() }
+        val sortie = StringBuilder()
+        for (ratio in ratios) {
+        // « 4@5 » : seuil 4, à partir de 5 lettres.
+        val (r, lg) = (ratio.split("@") + listOf("")).let { it[0] to it[1] }
+        moteur.ratioCorrectionSurPrefixe = if (r == "off") Double.MAX_VALUE else r.toDouble()
+        if (lg.isNotEmpty()) moteur.longueurCorrectionSurPrefixe = lg.toInt()
+        alea = Random(graine)
         val resultats = LinkedHashMap<String, Ligne>()
         fun mesurer(nom: String, occ: Occurrence, tape: String, attendu: String, casseExacte: Boolean) {
             val l = resultats.getOrPut(nom) { Ligne() }
@@ -194,6 +209,18 @@ class BancCorrectionTest {
                 pris++
             }
         }
+        // Un mot juste en cours de frappe : le début seul doit déjà le
+        // proposer. Ce que la correction ne doit pas abîmer.
+        run {
+            var pris = 0
+            for (occ in occurrences) {
+                if (pris >= parType) break
+                if (occ.mot.length < 5) continue
+                val n = alea.nextInt(3, occ.mot.length)
+                mesurer("mot juste en cours de frappe", occ, occ.mot.substring(0, n), occ.mot, casseExacte = false)
+                pris++
+            }
+        }
         // Un nom au milieu d'une phrase, tapé tout en minuscules.
         run {
             var pris = 0
@@ -218,7 +245,7 @@ class BancCorrectionTest {
 
         val pct = { a: Int, n: Int -> if (n == 0) "–" else "%.1f %%".format(100.0 * a / n) }
         val texte = buildString {
-            appendLine("# Banc de correction")
+            appendLine("# Banc de correction, seuil sur préfixe : $ratio")
             appendLine()
             appendLine("Corpus ZLS : $motsVus mots, ${pct(horsVocabulaire, motsVus)} hors vocabulaire (exclus : aucune correction ne peut les rendre).")
             appendLine("Graine $graine, $parType fautes par type au plus, disposition ${DispositionClavier.DEFAUT.cle}.")
@@ -231,6 +258,8 @@ class BancCorrectionTest {
             }
         }
         println(texte)
-        File("build/banc-correction.md").writeText(texte)
+        sortie.appendLine(texte)
+        }
+        File("build/banc-correction.md").writeText(sortie.toString())
     }
 }
