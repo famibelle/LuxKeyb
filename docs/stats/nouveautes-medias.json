@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "37.2.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_correction_frappe.gif",
+        "alt": "Le clavier dans une conversation de messages. On tape « echhunn » sans espace : la barre propose « Ech hunn », on la touche. Puis « geschter » sans accent : la barre propose « gëschter ». Puis « an der » sans faute, puis « schiul », le doigt tombé sur le i à côté du o : la barre propose « Schoul ». Enfin « gescahfft », deux lettres inversées : la barre propose « geschafft ». La phrase finale est « Ech hunn gëschter an der Schoul geschafft ». Un disque bleu montre chaque toucher.",
+        "legende": "Mots collés, accent oublié, touche d'à côté, lettres inversées : on tape vite, la barre propose le bon mot, un toucher suffit."
+      }
+    ]
+  },
   "37.0.0": {
     "images": [
       {
