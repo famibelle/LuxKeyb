@@ -36,7 +36,8 @@ class RepliAllegeTest {
         "Haux", "schaffn", "geschwat", "Freidg", "Moein", "Lëtzbuerg", "Kanner",
         "Schoull", "wéi", "geet", "dech", "unserer", "deshalb", "voulais",
         "processus", "kryptowaerung", "miteinander", "Bettel", "abrogeassions",
-        "ECH", "Dag", "Owen", "Ament", "zesumme", "Regierng", "Minster"
+        "ECH", "Dag", "Owen", "Ament", "zesumme", "Regierng", "Minster",
+        "ehc", "mioen", "Haeus", "gesechter"
     )
 
     @Test
@@ -47,10 +48,11 @@ class RepliAllegeTest {
                 val entree = CharArray(saisie.length) { saisie[it].lowercaseChar() }
                 val l1 = IntArray(saisie.length + 1)
                 val l2 = IntArray(saisie.length + 1)
+                val l3 = IntArray(saisie.length + 1)
                 for (forme in formes) {
                     val attendu = LevenshteinDistance.calculateBounded(saisie, forme, max)
                         .coerceAtMost(max + 1)
-                    val obtenu = LevenshteinDistance.distanceBornee(entree, forme, max, l1, l2)
+                    val obtenu = LevenshteinDistance.distanceBornee(entree, forme, max, l1, l2, l3)
                     assertEquals("'$saisie' / '$forme' au seuil $max", attendu, obtenu)
                 }
             }
