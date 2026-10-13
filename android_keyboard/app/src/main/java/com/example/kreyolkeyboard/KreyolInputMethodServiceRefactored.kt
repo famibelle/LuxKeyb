@@ -2195,6 +2195,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         // vue perd ou retrouve sa seconde rangée, d'où la reconstruction.
         val francais = KeyboardPreferences.propositionsFrancais(this)
         suggestionEngine.setFrenchSupport(francais)
+        suggestionEngine.setDisposition(KeyboardPreferences.disposition(this))
         val francaisChange = francaisDeLaVue != null && francaisDeLaVue != francais
 
         KeyboardTheme.refresh(this)

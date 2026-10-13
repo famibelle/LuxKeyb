@@ -125,6 +125,27 @@ class SuggestionEngine(private val context: Context) {
         internal const val NGRAM_CONTEXT_WEIGHT = 150_000.0
 
         /**
+         * Multiplicateur de fréquence d'une correction qui ne fait que
+         * remplacer des lettres par leurs voisines sur le clavier
+         * ([VoisinsClavier]) : le doigt tombé à côté, première faute de frappe
+         * sur téléphone.
+         *
+         * Multiplicateur et non bonus fixe, mesuré sur l'émulateur le
+         * 2026-10-13 : un bonus fixe supérieur à toute fréquence faisait bien
+         * passer « Haus » (772, le s touche le d) devant « haut » (1 167), mais
+         * il faisait aussi passer « Noen » (57, le n touche le m) devant
+         * « Moien » (1 703) pour « moen », où c'est une lettre oubliée, faute
+         * tout aussi courante. À 5, « Haus » vaut 3 860 et gagne, « Noen » vaut
+         * 285 et perd, « Kari » (9) reste derrière « Kaf » (106) pour « kafi ».
+         *
+         * La fréquence maximale multipliée doit rester sous
+         * [EDIT_DISTANCE_WEIGHT] : une correction à une faute passe toujours
+         * avant une à deux. `VoisinsClavierTest` le vérifie sur le dictionnaire
+         * livré.
+         */
+        internal const val VOISINAGE_FACTEUR = 5
+
+        /**
          * Formes attestées par le LOD et absentes du relevé de fréquences.
          *
          * Le corpus est du journalisme RTL : il n'écrit jamais ce qu'on tape
@@ -155,6 +176,30 @@ class SuggestionEngine(private val context: Context) {
          * à la frappe courante.
          */
         internal const val LOD_FREQUENCY = 1
+
+        /** Seuil d'un mot-outil pour recoller deux mots ([coupure]). */
+        internal const val FREQUENCE_MOT_OUTIL = 1000
+
+        /**
+         * Mots-outils qui sont aussi des terminaisons : collés à un mot connu,
+         * ils font presque toujours une forme fléchie, pas deux mots.
+         */
+        private val TERMINAISONS = setOf("en", "de", "den", "der", "dem", "des", "er", "em", "es", "et", "ent", "end", "ten", "te")
+
+        /**
+         * Particules de verbes séparables : un verbe s'écrit soudé à elles
+         * (« ausbruecht », « opkommen »), et une forme absente du dictionnaire
+         * n'est pas pour autant deux mots.
+         */
+        private val PARTICULES = setOf(
+            "an", "op", "of", "un", "aus", "ëm", "iwwer", "ënner", "duerch", "no", "mat", "zou",
+            "vir", "bäi", "bei", "fort", "ewech", "zréck", "erëm", "weider", "do", "dra", "drop",
+            "dran", "eran", "erof", "erop", "eraus", "dobäi", "derbäi", "dervir", "hannert", "géint",
+            "zesummen", "fräi", "ze"
+        )
+
+        /** Occurrences du corpus livré, pour estimer la fréquence d'une paire. */
+        private const val OCCURRENCES_CORPUS = 3_084_201.0
 
         // Nombre de correspondances par préfixe retenues avant scoring. Le
         // dictionnaire est parcouru par fréquence corpus décroissante : une fenêtre
@@ -290,7 +335,8 @@ class SuggestionEngine(private val context: Context) {
             input: String,
             frequency: Int,
             levenshteinDistance: Int = 0,
-            usageCount: Int = 0
+            usageCount: Int = 0,
+            parVoisines: Boolean = false
         ): Double {
             var score = frequency.toDouble()
 
@@ -317,6 +363,7 @@ class SuggestionEngine(private val context: Context) {
             // dictionnaire réellement livré.
             if (levenshteinDistance > 0) {
                 score += (3 - levenshteinDistance) * EDIT_DISTANCE_WEIGHT
+                if (parVoisines) score += frequency.toDouble() * (VOISINAGE_FACTEUR - 1)
             }
 
             // Bonus si le mot commence par l'input, comparaison insensible aux accents :
@@ -435,6 +482,9 @@ class SuggestionEngine(private val context: Context) {
     // Formes normalisées (sans accents) alignées index à index avec `dictionary`,
     // précalculées au chargement pour éviter de normaliser 3600+ mots à chaque frappe
     private var normalizedWords: List<String> = emptyList()
+    // Les mots-outils, pour recoller deux mots tapés sans espace ([coupure]) :
+    // formes en minuscules fréquentes, quelques centaines d'entrées.
+    private var motsOutils: Map<String, Int> = emptyMap()
     // Vrai si une forme du dictionnaire contient « ß » : seul cas où le second
     // passage de la correction orthographique peut servir. Aucune aujourd'hui.
     private var dictionnaireAvecEszett = false
@@ -540,6 +590,30 @@ class SuggestionEngine(private val context: Context) {
     /**
      * Initialise le moteur de suggestions (luxembourgeois + français)
      */
+    /**
+     * Lecture des actifs. Remplaçable pour faire tourner le moteur hors
+     * d'Android : le banc de correction (`BancCorrectionTest`) lit les mêmes
+     * fichiers depuis `src/main/assets`.
+     */
+    internal var ouvrirActif: (String) -> java.io.InputStream = { context.assets.open(it) }
+
+    /** Dictionnaire et n-grammes seuls, sans le français : pour le banc. */
+    internal suspend fun chargerLuxembourgeois() {
+        loadDictionary()
+        loadNgramModel()
+    }
+
+    /**
+     * Ce que la rangée luxembourgeoise afficherait pour [input], calculé sur
+     * le fil appelant. Même chemin que [generateBilingualSuggestions], sans
+     * les coroutines ni le français : c'est ce que mesure le banc.
+     */
+    internal fun rangeeLuxembourgeoise(input: String): List<String> {
+        if (input.length < MIN_WORD_LENGTH) return emptyList()
+        generationFrappe++
+        return sansGrossieretesBilingues(getLuxSuggestions(input)).map { it.word }
+    }
+
     suspend fun initialize() = withContext(Dispatchers.IO) {
         try {
             Log.d(TAG, "🚀 Initialisation du moteur bilingue...")
@@ -713,7 +787,7 @@ class SuggestionEngine(private val context: Context) {
         
         // Ajouter suggestions dictionnaire
         dictionaryMatches.forEach { (word, frequency, distance) ->
-            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word))
+            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word), parVoisines(input, word, distance))
             allLux[word] = score.toFloat()
         }
         
@@ -800,7 +874,7 @@ class SuggestionEngine(private val context: Context) {
                 // Trier uniquement par score de dictionnaire (fréquence + proximité + distance)
                 dictionaryMatches
                     .map { (word, frequency, distance) ->
-                        Pair(word, calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word)))
+                        Pair(word, calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word), parVoisines(input, word, distance)))
                     }
                     .sortedByDescending { it.second }
                     .take(MAX_SUGGESTIONS)
@@ -963,7 +1037,7 @@ class SuggestionEngine(private val context: Context) {
      */
     private suspend fun loadDictionary() = withContext(Dispatchers.IO) {
         try {
-            val jsonString = context.assets.open("luxemburgish_dict.json").bufferedReader().use { it.readText() }
+            val jsonString = ouvrirActif("luxemburgish_dict.json").bufferedReader().use { it.readText() }
             val wordsArray = JSONArray(jsonString)
             
             val loadedDictionary = mutableListOf<Pair<String, Int>>()
@@ -989,6 +1063,9 @@ class SuggestionEngine(private val context: Context) {
 
             dictionary = corpusWords + lodForms.proposables.map { Pair(it, LOD_FREQUENCY) }
             normalizedWords = dictionary.map { AccentTolerantMatcher.normalize(it.first) }
+            motsOutils = corpusWords
+                .filter { it.second >= FREQUENCE_MOT_OUTIL && it.first == it.first.lowercase() && it.first.length >= 2 }
+                .associate { it.first to it.second }
             dictionnaireAvecEszett = dictionary.any { 'ß' in it.first }
             // `normalizedWordSet` (123 000 entrées) et `extraKnownForms`
             // (26 000 chaînes qui n'existaient que pour elle) sont remplacés
@@ -1008,7 +1085,7 @@ class SuggestionEngine(private val context: Context) {
                 ) { AccentTolerantMatcher.normalize(it) }
             }
 
-            withContext(Dispatchers.Main) {
+            if (suggestionListener != null) withContext(Dispatchers.Main) {
                 // Le compte annoncé reste celui du corpus : c'est lui que
                 // LuxLevels utilise comme dénominateur des paliers, et un
                 // dictionnaire qui triple ferait reculer tous les joueurs.
@@ -1046,7 +1123,7 @@ class SuggestionEngine(private val context: Context) {
 
     private fun loadLodForms(): FormesLod {
         return try {
-            val jsonString = context.assets.open(LOD_FORMS_ASSET)
+            val jsonString = ouvrirActif(LOD_FORMS_ASSET)
                 .bufferedReader().use { it.readText() }
             val racine = JSONObject(jsonString)
             FormesLod(
@@ -1078,7 +1155,7 @@ class SuggestionEngine(private val context: Context) {
     private suspend fun loadNgramModel() = withContext(Dispatchers.IO) {
         Log.d(TAG, "Chargement du modèle N-grams...")
         try {
-            val inputStream = context.assets.open("luxemburgish_ngrams.json")
+            val inputStream = ouvrirActif("luxemburgish_ngrams.json")
             val jsonString = inputStream.bufferedReader().use { it.readText() }
             inputStream.close()
 
@@ -1110,7 +1187,7 @@ class SuggestionEngine(private val context: Context) {
             
             Log.d(TAG, "Modèle N-grams chargé avec ${ngramModel.size} entrées")
             
-            withContext(Dispatchers.Main) {
+            if (suggestionListener != null) withContext(Dispatchers.Main) {
                 suggestionListener?.onNgramModelLoaded()
             }
             
@@ -1150,10 +1227,155 @@ class SuggestionEngine(private val context: Context) {
         // s'empilaient sur le processeur derrière celui qui compte.
         if (matches.isEmpty() && devraitCorriger(input, isFrenchWord(input))) {
             val frappe = generationFrappe
-            return getSpellCorrectionSuggestions(input) { generationFrappe != frappe }
+            val corrections = getSpellCorrectionSuggestions(input) { generationFrappe != frappe }
+            val coupe = coupure(input) ?: return corrections
+            return listOf(coupe) + corrections
+        }
+
+        // Une faute peut aussi être le début d'un autre mot : « mar » pour
+        // « muer » commence Marc, Marché, Martine. Le banc de correction l'a
+        // mesuré le 2026-10-13 : c'était le cas de 22,5 % des fautes de touche
+        // voisine et de 20 % des inversions, et toutes étaient ratées, parce
+        // que la correction ne se cherchait que faute de complétion. Quand ce
+        // qui est tapé n'est pas un mot connu, on cherche donc aussi le mot à
+        // une faute près, et il passe en tête s'il pèse assez face à la
+        // meilleure complétion. Une seule faute, pas deux : c'est le cas
+        // courant, et la recherche reste deux fois moins chère.
+        if (input.length >= longueurCorrectionSurPrefixe && devraitCorriger(input, isFrenchWord(input)) && !isKnownWord(input)) {
+            val frappe = generationFrappe
+            correctionSurPrefixe(input, normalizedInput, matches) { generationFrappe != frappe }
+                ?.let { matches.add(0, it) }
         }
 
         return matches
+    }
+
+    /**
+     * Deux mots tapés sans l'espace entre eux : « echhunn » → « ech hunn ».
+     *
+     * Le banc de correction donnait 0 % sur cette faute, la barre restant vide
+     * une fois sur deux. On essaie chaque coupure de ce qui est tapé et on ne
+     * retient que celles que **le modèle de mots suivants atteste** : « hunn »
+     * doit figurer parmi les mots qui suivent « ech » dans le corpus. C'est le
+     * garde-fou essentiel en luxembourgeois, qui écrit ses mots composés d'un
+     * seul tenant : un composé absent du dictionnaire (« Schoulbus ») se coupe
+     * en deux mots connus, mais « Schoul » suivi de « Bus » n'est pas une
+     * suite attestée, et rien n'est proposé.
+     *
+     * Le modèle ne retient que les suites les plus fréquentes de chaque mot,
+     * et laissait passer « ech war », « och gëschter », « et kann ». Second
+     * cas donc : l'un des deux morceaux est un **mot-outil** (forme en
+     * minuscules d'au moins [FREQUENCE_MOT_OUTIL] occurrences : ech, och, et,
+     * ze, huet, hunn…) et l'autre un mot connu. Un composé se coupe rarement
+     * ainsi, ses morceaux étant des noms. Le banc mesure à part combien de
+     * mots justes absents du dictionnaire se feraient couper : sur ses
+     * premiers relevés, deux familles revenaient, que ce second cas écarte.
+     * Une terminaison prise pour un mot à droite (« honorabel en »,
+     * « virleien den ») : voir [TERMINAISONS]. Une particule de verbe à
+     * gauche (« aus bruecht », « op kommend ») : voir [PARTICULES]. Le
+     * premier cas, attesté par le n-gramme, garde « an der » ou « op de ».
+     *
+     * Le poids rendu estime le nombre de fois où la paire apparaît dans le
+     * corpus, pour se comparer aux fréquences des corrections : probabilité
+     * du second mot après le premier fois la fréquence du premier, ou, sans
+     * n-gramme, le produit des fréquences rapporté au corpus. La coupure se
+     * classe comme une correction à une faute, l'espace manquante. Les
+     * morceaux d'une lettre sont exclus : « dLeit » s'écrit « d'Leit ».
+     */
+    private fun coupure(input: String): Triple<String, Int, Int>? {
+        if (input.length < 4 || ngramModel.isEmpty()) return null
+        val bas = input.lowercase()
+        var meilleure: String? = null
+        var meilleurPoids = 0.0
+        for (i in 2..bas.length - 2) {
+            val gauche = bas.substring(0, i)
+            val droite = bas.substring(i)
+            val suite = ngramModel[gauche]?.firstOrNull { (it["word"] as? String)?.lowercase() == droite }
+            val probabilite = (suite?.get("probability") as? Number)?.toDouble()
+            val (poids, mot) = if (suite != null && probabilite != null) {
+                probabilite * (motsOutils[gauche] ?: frequenceCorpus(gauche)) to suite["word"] as String
+            } else {
+                val fg = motsOutils[gauche]?.takeIf { gauche !in PARTICULES }
+                val fd = motsOutils[droite]?.takeIf { droite !in TERMINAISONS }
+                if (fg == null && fd == null) continue
+                if (!isKnownWord(gauche) || !isKnownWord(droite)) continue
+                val autre = { m: String -> frequenceCorpus(m).coerceAtLeast(LOD_FREQUENCY) }
+                (fg ?: autre(gauche)).toDouble() * (fd ?: autre(droite)) / OCCURRENCES_CORPUS to
+                    (formeCanonique(droite) ?: droite)
+            }
+            if (poids > meilleurPoids) {
+                meilleurPoids = poids
+                meilleure = input.substring(0, i) + " " + mot
+            }
+        }
+        return meilleure?.let { Triple(it, meilleurPoids.toInt().coerceAtLeast(1), 1) }
+    }
+
+    /** Fréquence corpus d'une forme, 0 si absente. Balayage linéaire : rare. */
+    private fun frequenceCorpus(motBas: String): Int =
+        indiceCorpus(motBas)?.let { dictionary[it].second } ?: 0
+
+    /** Casse du dictionnaire (« Rezept »), ou `null` si la forme n'y est pas. */
+    private fun formeCanonique(motBas: String): String? =
+        indiceCorpus(motBas)?.let { dictionary[it].first }
+
+    private fun indiceCorpus(motBas: String): Int? {
+        val replie = AccentTolerantMatcher.normalize(motBas)
+        for (i in dictionary.indices) {
+            if (dictionary[i].second <= LOD_FREQUENCY) break
+            if (normalizedWords[i] == replie && dictionary[i].first.lowercase() == motBas) return i
+        }
+        return null
+    }
+
+    /**
+     * Seuil de [correctionSurPrefixe] : la correction passe en tête quand sa
+     * fréquence (multipliée pour une touche voisine) vaut au moins tant de
+     * fois celle de la meilleure complétion.
+     *
+     * Réglé sur le banc de correction le 2026-10-13 (1re place / dans les 3) :
+     *
+     * ```
+     * seuil   touche voisine   inversion       mot juste en cours de frappe
+     * jamais  72,2 / 76,2      70,6 / 78,8     51,3 / 76,4
+     *   1     82,2 / 86,2      78,0 / 86,2     41,0 / 74,4
+     *  16     82,0 / 86,0      77,7 / 85,9     47,8 / 75,7
+     *  64     81,2 / 85,2      77,4 / 85,5     49,5 / 76,1   ← retenu
+     * 256     80,1 / 84,1      75,8 / 83,9     50,4 / 76,3
+     * ```
+     *
+     * Un seuil bas corrige aussi les débuts de mots justes : taper « dee »
+     * pour « deem » propose « den ». À 64, presque tout le gain reste et la
+     * frappe en cours ne perd que 0,3 point dans les 3. Partir de 4 lettres
+     * au lieu de 3 perdait l'essentiel du gain : les pièges sont surtout des
+     * mots courts.
+     */
+    internal var ratioCorrectionSurPrefixe = 64.0
+
+    /** Longueur minimale de ce qui est tapé pour [correctionSurPrefixe]. */
+    internal var longueurCorrectionSurPrefixe = 3
+
+    private fun correctionSurPrefixe(
+        input: String,
+        normalizedInput: String,
+        completions: List<Triple<String, Int, Int>>,
+        estAnnule: () -> Boolean
+    ): Triple<String, Int, Int>? {
+        val meilleureCompletion = completions.maxOf { it.second }
+        val multiplicateur = { mot: String -> if (voisins.parVoisines(input, mot)) VOISINAGE_FACTEUR else 1 }
+        val correction = LevenshteinDistance.findClosestMatchesNormalized(
+            input = input,
+            dictionary = dictionary,
+            normalizedWords = normalizedWords,
+            normalizer = { str -> AccentTolerantMatcher.normalize(str) },
+            maxDistance = 1,
+            maxResults = 10,
+            estAnnule = estAnnule,
+            multiplicateur = multiplicateur
+        ).firstOrNull { !AccentTolerantMatcher.normalize(it.first).startsWith(normalizedInput) }
+            ?: return null
+        val poids = correction.second.toDouble() * multiplicateur(correction.first)
+        return if (poids >= ratioCorrectionSurPrefixe * meilleureCompletion) correction else null
     }
     
     /**
@@ -1183,7 +1405,8 @@ class SuggestionEngine(private val context: Context) {
             normalizer = { str -> AccentTolerantMatcher.normalize(str) },
             maxDistance = 2,
             maxResults = MAX_SUGGESTIONS,
-            estAnnule = estAnnule
+            estAnnule = estAnnule,
+            multiplicateur = { if (voisins.parVoisines(input, it)) VOISINAGE_FACTEUR else 1 }
         )
         
         // Si on trouve des correspondances normalisées, les retourner
@@ -1207,7 +1430,8 @@ class SuggestionEngine(private val context: Context) {
             dictionary = dictionary,
             maxDistance = 2,
             maxResults = MAX_SUGGESTIONS,
-            estAnnule = estAnnule
+            estAnnule = estAnnule,
+            multiplicateur = { if (voisins.parVoisines(input, it)) VOISINAGE_FACTEUR else 1 }
         )
         
         if (directMatches.isNotEmpty()) {
@@ -1269,7 +1493,7 @@ class SuggestionEngine(private val context: Context) {
         // Ajouter les suggestions du dictionnaire avec score basé sur la fréquence et la position
         dictionarySuggestions.forEach { (word, frequency, distance) ->
             val casedWord = applyCasingPattern(input, word)
-            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word))
+            val score = calculateDictionaryScore(word, input, frequency, distance, usageCountOf(word), parVoisines(input, word, distance))
             allSuggestions[casedWord] = score
         }
         
@@ -1301,6 +1525,17 @@ class SuggestionEngine(private val context: Context) {
     /**
      * Active/désactive le support français
      */
+    fun setDisposition(disposition: DispositionClavier) {
+        voisins = VoisinsClavier.de(disposition)
+    }
+
+    /** Touches voisines de la disposition choisie dans les réglages. */
+    @Volatile
+    private var voisins = VoisinsClavier.de(DispositionClavier.DEFAUT)
+
+    private fun parVoisines(input: String, word: String, distance: Int): Boolean =
+        distance > 0 && voisins.parVoisines(input, word)
+
     fun setFrenchSupport(enabled: Boolean) {
         bilingualConfig = bilingualConfig.copy(enableFrenchSupport = enabled)
         Log.d(TAG, "Support français: $enabled")

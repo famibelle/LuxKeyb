@@ -7,6 +7,8 @@ import android.util.Log
  * 
  * The Levenshtein distance measures the minimum number of single-character edits
  * (insertions, deletions, or substitutions) required to change one word into another.
+ * Two adjacent letters swapped also count as one edit (optimal string alignment):
+ * « ehc » is one keystroke slip away from « ech », not two.
  * 
  * This is used for spell correction when users make typos or mix up letters.
  * 
@@ -49,6 +51,16 @@ object LevenshteinDistance {
      * Renvoie une valeur strictement supérieure à [maxDistance] quand la
      * distance réelle l'est, sans garantir laquelle : l'appelant ne compare
      * qu'au seuil.
+     *
+     * **Deux lettres voisines inversées coûtent une modification, pas deux**
+     * (variante « optimal string alignment » de Damerau). C'est la faute de
+     * qui tape vite, et Levenshtein seul la comptait double : « ehc » était à
+     * 2 de « ech » mais à 1 de « Etc », « mioen » à 2 de « Moien » mais à 1
+     * de « Mien », si bien que la bonne forme ne venait jamais (mesuré sur
+     * l'émulateur le 2026-10-13). Il faut pour cela la ligne d'avant la
+     * précédente, d'où une troisième ligne. L'abandon anticipé reste juste :
+     * une inversion part de la ligne `i - 2`, dont chaque cellule majore déjà
+     * d'une unité une cellule de la ligne `i - 1`.
      */
     fun calculateBounded(s1: String, s2: String, maxDistance: Int): Int {
         val len1 = s1.length
@@ -63,6 +75,7 @@ object LevenshteinDistance {
         val a = CharArray(len1) { s1[it].lowercaseChar() }
         val b = CharArray(len2) { s2[it].lowercaseChar() }
 
+        var avantPrecedente = IntArray(len2 + 1)
         var precedente = IntArray(len2 + 1) { it }
         var courante = IntArray(len2 + 1)
 
@@ -71,16 +84,20 @@ object LevenshteinDistance {
             var minimumLigne = courante[0]
             for (j in 1..len2) {
                 val cout = if (a[i - 1] == b[j - 1]) 0 else 1
-                val v = minOf(
+                var v = minOf(
                     precedente[j] + 1,          // suppression
                     courante[j - 1] + 1,        // insertion
                     precedente[j - 1] + cout    // substitution
                 )
+                if (i > 1 && j > 1 && a[i - 1] == b[j - 2] && a[i - 2] == b[j - 1]) {
+                    v = minOf(v, avantPrecedente[j - 2] + 1)   // inversion
+                }
                 courante[j] = v
                 if (v < minimumLigne) minimumLigne = v
             }
             if (minimumLigne > maxDistance) return maxDistance + 1
-            val echange = precedente
+            val echange = avantPrecedente
+            avantPrecedente = precedente
             precedente = courante
             courante = echange
         }
@@ -103,13 +120,18 @@ object LevenshteinDistance {
      * - seule la **bande diagonale** de largeur `2 × maxDistance + 1` est
      *   calculée (Ukkonen) : hors d'elle, toute cellule dépasse déjà le seuil.
      *   Pour un seuil de 2, cinq cellules par ligne au lieu de toute la ligne.
+     *
+     * Les inversions de lettres voisines y coûtent un, comme dans
+     * [calculateBounded] : d'où la troisième ligne, [avantPrecedente]. La bande
+     * de la ligne `i - 2` couvre exactement les cellules `j - 2` lues.
      */
     internal fun distanceBornee(
         entree: CharArray,
         mot: String,
         maxDistance: Int,
         precedente: IntArray,
-        courante: IntArray
+        courante: IntArray,
+        avantPrecedente: IntArray
     ): Int {
         val n = entree.size
         val m = mot.length
@@ -118,10 +140,12 @@ object LevenshteinDistance {
         if (m == 0) return n
         if (n == 0) return m
 
+        var avant = avantPrecedente
         var prec = precedente
         var cour = courante
         for (j in 0..n) prec[j] = if (j <= maxDistance) j else horsSeuil
 
+        var cAvant = ' '
         for (i in 1..m) {
             val c = mot[i - 1].lowercaseChar()
             val debut = maxOf(1, i - maxDistance)
@@ -139,18 +163,45 @@ object LevenshteinDistance {
                 if (suppression < v) v = suppression
                 val insertion = cour[j - 1] + 1
                 if (insertion < v) v = insertion
+                if (i > 1 && j > 1 && entree[j - 1] == cAvant && entree[j - 2] == c) {
+                    val inversion = avant[j - 2] + 1
+                    if (inversion < v) v = inversion
+                }
                 if (v > horsSeuil) v = horsSeuil
                 cour[j] = v
                 if (v < minimumLigne) minimumLigne = v
             }
             if (fin < n) cour[fin + 1] = horsSeuil
             if (minimumLigne > maxDistance) return horsSeuil
-            val echange = prec
+            val echange = avant
+            avant = prec
             prec = cour
             cour = echange
+            cAvant = c
         }
         return prec[n]
     }
+
+    /**
+     * Distance d'abord, puis la fréquence multipliée par [multiplicateur]
+     * (5 pour une faute de touche voisine, voir [VoisinsClavier]). Le moteur
+     * applique le même multiplicateur dans son score : sans lui ici, la coupe
+     * à [maxResults] pouvait écarter la bonne correction avant même que le
+     * moteur ne la voie.
+     */
+    private fun classer(
+        matches: List<Triple<String, Int, Int>>,
+        maxResults: Int,
+        multiplicateur: (String) -> Int
+    ): List<Triple<String, Int, Int>> =
+        matches
+            .map { it to it.second.toLong() * multiplicateur(it.first) }
+            .sortedWith(
+                compareBy<Pair<Triple<String, Int, Int>, Long>> { it.first.third }
+                    .thenByDescending { it.second }
+            )
+            .take(maxResults)
+            .map { it.first }
 
     /** Une forme sur [PAS_ANNULATION] seulement interroge l'annulation. */
     private const val PAS_ANNULATION = 4096
@@ -196,7 +247,8 @@ object LevenshteinDistance {
         maxDistance: Int = 2,
         maxResults: Int = 5,
         lengthTolerance: Int = 2,
-        estAnnule: () -> Boolean = { false }
+        estAnnule: () -> Boolean = { false },
+        multiplicateur: (String) -> Int = { 1 }
     ): List<Triple<String, Int, Int>> {
         
         if (input.isEmpty()) return emptyList()
@@ -205,6 +257,7 @@ object LevenshteinDistance {
         val entree = CharArray(inputLength) { input[it].lowercaseChar() }
         val precedente = IntArray(inputLength + 1)
         val courante = IntArray(inputLength + 1)
+        val avantPrecedente = IntArray(inputLength + 1)
         
         // Un seul parcours, sans liste intermédiaire : le filtre par longueur
         // puis le calcul de distance allouaient chacun une copie du
@@ -219,18 +272,13 @@ object LevenshteinDistance {
             val (word, freq) = entreeDico
             if (kotlin.math.abs(word.length - inputLength) > lengthTolerance) continue
             examined++
-            val distance = distanceBornee(entree, word, maxDistance, precedente, courante)
+            val distance = distanceBornee(entree, word, maxDistance, precedente, courante, avantPrecedente)
             if (distance <= maxDistance) matches.add(Triple(word, freq, distance))
         }
         
         Log.d(TAG, "Spell check '$input': $examined/${dictionary.size} candidates after length filter")
         
-        val ranked = matches
-            .sortedWith(
-                compareBy<Triple<String, Int, Int>> { it.third }  // Sort by distance (lower is better)
-                    .thenByDescending { it.second }  // Then by frequency (higher is better)
-            )
-            .take(maxResults)
+        val ranked = classer(matches, maxResults, multiplicateur)
 
         if (ranked.isNotEmpty()) {
             Log.d(TAG, "✓ Found ${ranked.size} corrections for '$input': ${ranked.take(3).map { it.first }}")
@@ -259,7 +307,8 @@ object LevenshteinDistance {
         normalizer: (String) -> String,
         maxDistance: Int = 2,
         maxResults: Int = 5,
-        estAnnule: () -> Boolean = { false }
+        estAnnule: () -> Boolean = { false },
+        multiplicateur: (String) -> Int = { 1 }
     ): List<Triple<String, Int, Int>> {
         
         if (input.isEmpty()) return emptyList()
@@ -269,6 +318,7 @@ object LevenshteinDistance {
         val entree = CharArray(inputLength) { normalizedInput[it].lowercaseChar() }
         val precedente = IntArray(inputLength + 1)
         val courante = IntArray(inputLength + 1)
+        val avantPrecedente = IntArray(inputLength + 1)
 
         // `normalizedWords` est la liste précalculée au chargement du moteur,
         // alignée indice à indice avec `dictionary`. Sans elle, cette boucle
@@ -288,19 +338,14 @@ object LevenshteinDistance {
             if (i % PAS_ANNULATION == 0 && estAnnule()) return emptyList()
             val normalizedWord = normalizedWords[i]
             if (kotlin.math.abs(normalizedWord.length - inputLength) > maxDistance) continue
-            val distance = distanceBornee(entree, normalizedWord, maxDistance, precedente, courante)
+            val distance = distanceBornee(entree, normalizedWord, maxDistance, precedente, courante, avantPrecedente)
             if (distance <= maxDistance) {
                 val (word, freq) = dictionary[i]
                 matches.add(Triple(word, freq, distance))
             }
         }
 
-        val ranked = matches
-            .sortedWith(
-                compareBy<Triple<String, Int, Int>> { it.third }
-                    .thenByDescending { it.second }
-            )
-            .take(maxResults)
+        val ranked = classer(matches, maxResults, multiplicateur)
 
         Log.d(TAG, "Normalized spell check '$input': ${ranked.size} matches found")
         

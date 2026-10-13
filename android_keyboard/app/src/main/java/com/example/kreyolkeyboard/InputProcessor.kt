@@ -635,9 +635,15 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         inputConnection.commitText(ecrit, 1)
         espaceAutoApres = if (avecEspace) ecrit else null
         
-        // Finaliser le mot (le tracking se fera dans finalizeCurrentWord)
-        currentWord = suggestion
-        finalizeCurrentWord()
+        // Finaliser le mot (le tracking se fera dans finalizeCurrentWord).
+        // Une suggestion peut porter deux mots, quand elle recolle une espace
+        // oubliée (« echhunn » → « ech hunn ») : chacun est finalisé à part,
+        // sans quoi le contexte du mot suivant serait « ech hunn » d'un bloc,
+        // qu'aucun n-gramme ne connaît.
+        for (mot in suggestion.split(' ').filter { it.isNotEmpty() }) {
+            currentWord = mot
+            finalizeCurrentWord()
+        }
         
         // Gérer la capitalisation automatique après l'espace
         handleAutoCapitalization()

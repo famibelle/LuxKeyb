@@ -9,6 +9,21 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.2.0] - 2026-10-13
+
+Le clavier rattrape mieux les fautes de frappe.
+
+### ✨ Nouveautés
+
+- **Deux mots tapés sans espace se séparent** : pour « echhunn », la barre propose « ech hunn ». Les mots soudés du luxembourgeois (« ausbruecht », « Schoulbus ») ne sont pas coupés.
+- **Le doigt tombé sur la touche d'à côté est reconnu.** Pour « haud », la barre propose d'abord « Haus », parce que le s touche le d, avant « haut ».
+- **Deux lettres inversées comptent comme une seule faute** : « ehc » donne « ech », « mioen » donne « Moien ».
+- **Une faute qui ressemble au début d'un autre mot est corrigée quand même** : « gir » donne « fir », « vul » donne « vun ».
+
+### 🐛 Corrections
+
+- **Quelques fautes de frappe venues des textes qui ont servi à construire le dictionnaire en ont été retirées** : « hunnn », « dobai », « tescht »… Elles étaient acceptées telles quelles, et « hunnn » était même proposé sous « hunn ».
+
 ## [37.1.3] - 2026-10-13
 
 Les cartes restent à l'écran quand on tourne le téléphone.
