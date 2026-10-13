@@ -118,6 +118,21 @@ CORPUS_SOURCES = [
 # encore 97,3 % des occurrences du corpus.
 SEUIL_FREQUENCE_DICO = 3
 
+# Coquilles du corpus qui passent le seuil de fréquence.
+#
+# Une faute présente dans le dictionnaire n'est jamais corrigée par le clavier,
+# et elle est même proposée : « hunnn » arrivait en deuxième place dès qu'on
+# tapait « hunn ». Repérées le 2026-10-13 parmi les formes rares (≤ 5),
+# absentes du LOD et des gloses, à une faute près d'une forme au moins deux
+# cents fois plus fréquente, puis relues une à une. Noms propres, mots
+# étrangers et formes légitimes sont restés (« eneen » s'écrit « enee » devant
+# une consonne, « hanneru » de même, « kënnten » est un subjonctif). Comparaison en minuscules.
+FAUTES_DU_CORPUS = frozenset({
+    "hunnn", "vrum", "méigelech", "näicht", "neess", "dobai",
+    "allerdengs", "tescht", "keier", "nemmen", "bäim", "séngem", "eréicht",
+    "présentéiert",
+})
+
 # Seuil d'occurrences d'un contexte pour qu'il produise une prédiction.
 #
 # Mesuré sur 5 000 phrases tenues à l'écart de l'entraînement : passer de 20 à
@@ -552,7 +567,8 @@ class LuxembourgishPipelineUnique:
         total_formes = len(compteur_mots)
         total_occurrences = sum(compteur_mots.values())
         retenus = {mot: freq for mot, freq in compteur_mots.items()
-                   if freq >= SEUIL_FREQUENCE_DICO}
+                   if freq >= SEUIL_FREQUENCE_DICO
+                   and mot not in FAUTES_DU_CORPUS}
 
         # Chaque lemme retenu reçoit sa casse canonique. Les homographes de la
         # bande ambiguë sont livrés en deux entrées, la fréquence du lemme
