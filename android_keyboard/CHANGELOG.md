@@ -9,6 +9,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.3.0] - 2026-10-14
+
+Le clavier rattrape la lettre doublée tapée une seule fois.
+
+### ✨ Nouveautés
+
+- **Une lettre doublée oubliée est corrigée** : « Kafi » donne « Kaffi », « ales » donne « alles », « ener » donne « ënner » plutôt qu'« Energie ». Le luxembourgeois double beaucoup de lettres, et le pouce pressé n'en tape souvent qu'une.
+
 ## [37.2.0] - 2026-10-13
 
 Le clavier rattrape mieux les fautes de frappe.
