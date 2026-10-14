@@ -181,8 +181,8 @@ Every word you use raises your level, from **Ufänker** to
 used. Seven games complete the journey: **Wuertsich** (word search),
 **Wuertmix** (scrambled words), **Wuertriet**, where you guess a five-letter
 word in six tries, **Wuertlück**, a real Luxembourgish sentence with one word
-missing, **Zuelwuert**, where you write out the result of a multiplication in
-full, **Kräizwuert**, a crossword with clues in your language, and
+missing, **Zuelwuert**, where you write out the numbers from 0 to 100, or the
+result of a sum, in full, **Kräizwuert**, a crossword with clues in your language, and
 **Wuertplaz**, an empty grid and a list of words to fit into it.
 
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
@@ -211,24 +211,43 @@ full, **Kräizwuert**, a crossword with clues in your language, and
 ### The words you win stay with you
 
 A word found in one of the seven games does not vanish with the round: it
-becomes a **card** in **Mäi Carnet**. Each card carries the meaning of the word
-in your language, an example sentence from the official dictionary, with its
-translation when the State has published one, the other forms of the same
-family, and its rarity, that is its real rank in the corpus. The collection only
-ever grows.
+becomes a **card** in **Mäi Carnet**, handed to you at the end of the game in a
+pack whose opening grows more spectacular the rarer the card. Each card carries
+the meaning of the word in your language, an example sentence from the official
+dictionary, with its translation when the State has published one, the other
+forms of the same family, and its rarity, that is its real rank in the corpus.
 
-<div style="display:flex;justify-content:center;margin:24px 0;">
-  <figure style="margin:0;max-width:520px;text-align:center;">
-    <img src="Screenshots/lux_carnet.png" style="width:100%;border-radius:8px;"
-         alt="Two collection screens: on the left the two-column grid of cards with their picture, word and rarity symbol; on the right the open card “virgelies”, with a “Very rare” badge, its meaning, an example sentence and its family">
-    <figcaption>Thirty words won, and the card “virgelies” open (app in French)</figcaption>
+And each card opens a **window on the country**: the Rout Bréck, Veianen, the
+Musel, the Schueberfouer… The time of day in the landscape tells the rarity,
+morning for a common card, a starry night for a very rare one, and the metal of
+the frame says it again, from pewter to gold. The season is the one of the day
+you won it: open a winter card and its snow falls, shake the phone and it
+swirls. A **“GELÉIERT” seal** marks the words you have learnt, a **quill** the
+ones you have written yourself in a message.
+
+The collection is sorted into **series** to complete, like an album: the
+landscapes, the 101 numbers, the illustrations, the seven games. A card can be
+**shared** as a picture, or **given** hand to hand: two phones side by side, two
+QR codes, and the card leaves your collection for the other one, without going
+through the Internet and without ever existing twice.
+
+<div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
+  <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
+    <img src="Screenshots/lux_carnet_paysages.png" style="width:100%;border-radius:8px;"
+         alt="On the left, the collection: each thumbnail shows a Luxembourg landscape, the Schueberfouer big wheel, the red bridge, Veianen castle in the evening. On the right, the open card “Brëll”: a pair of glasses in front of the Mëllerdall rocks at sunset, in a silver frame">
+    <figcaption>Each card opens on a place in the country, at the hour of its rarity (app in French)</figcaption>
+  </figure>
+  <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
+    <img src="Screenshots/lux_carnet_echange.png" style="width:100%;border-radius:8px;"
+         alt="Two screens of a card exchange: on the left, “Receive a card” and its QR code; on the right, on the giver's phone, “Kaz has left your collection” and the code only the other phone can read">
+    <figcaption>Giving a card: two QR codes, and it changes collection (app in French)</figcaption>
   </figure>
 </div>
 
-The cards then come back on their own, through **Widderhuelen**: six boxes, one
+The cards then come back on their own, through the **Leitner box**: six boxes, one
 day, three days, a week, two weeks, a month, three months, then the word is
 learnt and leaves the queue. You flip the card, grade yourself, and it moves up
-or back down a box.
+a box, or goes back to the first one if you did not know it.
 
 <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">

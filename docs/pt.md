@@ -190,8 +190,8 @@ Cada palavra que usa faz subir o seu nível, de **Ufänker** a
 jogos completam o percurso: **Wuertsich** (sopa de letras), **Wuertmix**
 (palavras baralhadas), **Wuertriet**, em que adivinha uma palavra de cinco
 letras em seis tentativas, **Wuertlück**, uma frase luxemburguesa autêntica a
-que falta uma palavra, **Zuelwuert**, em que escreve por extenso o resultado de
-uma multiplicação, **Kräizwuert**, palavras cruzadas com pistas em português, e
+que falta uma palavra, **Zuelwuert**, em que escreve por extenso os números de 0 a
+100 ou o resultado de uma conta, **Kräizwuert**, palavras cruzadas com pistas em português, e
 **Wuertplaz**, uma grelha vazia e uma lista de palavras para lá colocar.
 
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
@@ -220,23 +220,43 @@ uma multiplicação, **Kräizwuert**, palavras cruzadas com pistas em português
 ### As palavras ganhas ficam consigo
 
 Uma palavra encontrada num dos sete jogos não desaparece com a partida:
-torna-se uma **carta** no **Mäi Carnet**. Cada carta mostra o significado da
-palavra na sua língua, uma frase de exemplo do dicionário oficial, as outras
-formas da mesma família e a sua raridade, ou seja, a sua posição real no
-corpus. A coleção só cresce.
+torna-se uma **carta** no **Mäi Carnet**, entregue no fim do jogo numa
+saqueta, tanto mais espetacular quanto mais rara for a carta. Cada carta mostra
+o significado da palavra na sua língua, uma frase de exemplo do dicionário
+oficial, as outras formas da mesma família e a sua raridade, ou seja, a sua
+posição real no corpus.
 
-<div style="display:flex;justify-content:center;margin:24px 0;">
-  <figure style="margin:0;max-width:520px;text-align:center;">
-    <img src="Screenshots/lux_carnet.png" style="width:100%;border-radius:8px;"
-         alt="Dois ecrãs da coleção: à esquerda a grelha de cartas em duas colunas, com a ilustração, a palavra e o símbolo de raridade; à direita a carta «virgelies» aberta, com o distintivo «Muito rara», o significado, uma frase de exemplo e a família">
-    <figcaption>Trinta palavras ganhas e a carta «virgelies» aberta (aplicação em francês)</figcaption>
+E cada carta abre uma **janela sobre o país**: a Rout Bréck, Veianen, a Musel,
+a Schueberfouer… A hora da paisagem diz a raridade, de manhã para uma carta
+comum, noite estrelada para uma muito rara, e o metal da moldura repete-o, do
+estanho ao ouro. A estação é a do dia em que a ganhou: aberta, a carta de
+inverno deixa cair a sua neve, e abanar o telemóvel fá-la rodopiar. Um **selo
+«GELÉIERT»** marca as palavras aprendidas, uma **pena** as que escreveu numa
+mensagem.
+
+A coleção organiza-se em **séries** para completar, como uma caderneta: as
+paisagens, os 101 números, as ilustrações, os sete jogos. Uma carta pode ser
+**partilhada** como imagem, ou **cedida** de mão em mão: dois telemóveis lado a
+lado, dois códigos QR, e a carta sai da sua coleção para a outra, sem passar
+pela Internet e sem nunca existir em duplicado.
+
+<div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
+  <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
+    <img src="Screenshots/lux_carnet_paysages.png" style="width:100%;border-radius:8px;"
+         alt="À esquerda, a coleção: cada miniatura mostra uma paisagem do Luxemburgo, a roda gigante da Schueberfouer, a ponte vermelha, o castelo de Veianen ao fim da tarde. À direita, a carta «Brëll» aberta: uns óculos diante dos rochedos do Mëllerdall ao pôr do sol, numa moldura de prata">
+    <figcaption>Cada carta abre sobre um lugar do país, à hora da sua raridade (aplicação em francês)</figcaption>
+  </figure>
+  <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
+    <img src="Screenshots/lux_carnet_echange.png" style="width:100%;border-radius:8px;"
+         alt="Dois ecrãs de uma troca de cartas: à esquerda, «Receber uma carta» e o seu código QR; à direita, no telemóvel de quem dá, «Kaz» saiu da sua coleção e o código que só o outro telemóvel consegue ler">
+    <figcaption>Ceder uma carta: dois códigos QR, e ela muda de coleção (aplicação em francês)</figcaption>
   </figure>
 </div>
 
-Depois, as cartas voltam sozinhas, através do **Widderhuelen**: seis
+Depois, as cartas voltam sozinhas, através da **Caixa de Leitner**: seis
 compartimentos, um dia, três dias, uma semana, duas semanas, um mês, três
 meses, e a palavra fica aprendida e sai da fila. Vira a carta, dá-se uma nota e
-ela avança ou recua um compartimento.
+ela avança um compartimento ou, se não sabia, volta ao primeiro.
 
 <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
