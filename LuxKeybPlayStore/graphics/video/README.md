@@ -44,7 +44,8 @@ par Chromium, le texte en Inter faute de Google Sans.
 `python3 reel.py` le refait : il découpe l'écran du téléphone dans la vidéo
 de présentation ci-dessus pour les séquences animées, et prend les captures de
 `captures-emulateur-pixel9` pour les écrans entiers. Le carnet montre les
-cartes au design de la 37 (Stad, Kaz, la grille de Mäi Carnet, puis une
-carte avec ses boutons Partager et Céder), tirées
+cartes au design de la 37, avec leurs décors de paysage (Sonn, Brëll, la
+grille de Mäi Carnet, la série des paysages). Les autres captures de cartes
+de `docs/Screenshots` ont l'ancien fond uni ou le filigrane « LuxKeyb », tirées
 de `docs/Screenshots`, comme sur la page des nouveautés. Rien n'est placé sous
 y = 1640, où Instagram pose la légende et les boutons.
