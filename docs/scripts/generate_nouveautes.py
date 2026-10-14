@@ -15,8 +15,14 @@ les aurait condamnés à diverger du journal des versions dès la release suivan
 Écrit docs/stats/nouveautes.json (les dernières versions, pour nouveautes.html)
 et docs/stats/historique.json (toutes les versions luxembourgeoises, pour
 historique.html, qui les pagine).
+
+Écrit aussi docs/stats/nouveautes-{en,de,pt}.json pour les traductions de la
+page, en fusionnant les textes tenus à la main dans docs/stats/traductions/.
+Le CHANGELOG reste en français : une version qui n'y est pas encore traduite
+est publiée en français, marquée « langue »: "fr", et la page le signale.
 """
 
+import copy
 import html
 import json
 import re
@@ -34,6 +40,11 @@ SORTIE_HISTORIQUE = RACINE / "docs" / "stats" / "historique.json"
 MEDIAS = RACINE / "docs" / "stats" / "nouveautes-medias.json"
 
 VERSIONS_AFFICHEES = 6
+
+# Les langues de la page d'accueil (en.md, de.md, pt.md), chacune avec sa page
+# nouveautes-xx.html et son fichier de textes tenu à la main.
+LANGUES = ("en", "de", "pt")
+TRADUCTIONS = RACINE / "docs" / "stats" / "traductions"
 
 # Versions du journal qui n'ont jamais été publiées sur GitHub et n'ont donc
 # rien à faire sur la page : la 31.0.0 était le test ouvert de la dictée sur le
@@ -207,6 +218,64 @@ def lire_versions(lignes):
     return versions
 
 
+def traduire_version(v, t, glossaire):
+    """La version v avec les textes de t, ou None si t n'en a plus la forme.
+
+    La correspondance se fait par position : mêmes sections, même nombre de
+    points, mêmes illustrations. Si le CHANGELOG a gagné ou perdu un point
+    depuis la traduction, mieux vaut la version française entière qu'un
+    mélange où un texte se retrouve sous le titre d'un autre.
+    """
+    sections = t.get("sections", [])
+    if len(sections) != len(v["sections"]):
+        return None
+    if len(t.get("images", [])) != len(v.get("images", [])):
+        return None
+    sortie = copy.deepcopy(v)
+    sortie["intro"] = t.get("intro", "")
+    for s, ts in zip(sortie["sections"], sections):
+        titre = ts.get("titre") or glossaire.get(s["titre"])
+        points = ts.get("points", [])
+        if not titre or len(points) != len(s["points"]):
+            return None
+        if s["texte"] and not ts.get("texte"):
+            return None
+        s["titre"] = titre
+        s["texte"] = ts.get("texte", "")
+        s["points"] = [{"titre": p.get("titre"), "texte": p.get("texte", "")}
+                       for p in points]
+        if s["tableau"] and ts.get("tableau"):
+            s["tableau"] = ts["tableau"]
+    for vue, tv in zip(sortie.get("images", []), t.get("images", [])):
+        vue["alt"] = tv.get("alt", vue["alt"])
+        vue["legende"] = tv.get("legende", vue["legende"])
+    if sortie.get("images"):
+        sortie["image_alt"] = sortie["images"][0]["alt"]
+        sortie["image_legende"] = sortie["images"][0]["legende"]
+    return sortie
+
+
+def ecrire_traductions(resultat):
+    for langue in LANGUES:
+        source = TRADUCTIONS / f"nouveautes-{langue}.json"
+        textes = json.loads(source.read_text("utf-8")) if source.exists() else {}
+        glossaire = textes.get("_sections", {})
+        versions, en_francais = [], []
+        for v in resultat["versions"]:
+            t = textes.get(v["version"])
+            traduite = traduire_version(v, t, glossaire) if t else None
+            if traduite is None:
+                traduite = dict(copy.deepcopy(v), langue="fr")
+                en_francais.append(v["version"])
+            versions.append(traduite)
+        sortie = SORTIE.with_name(f"nouveautes-{langue}.json")
+        sortie.write_text(json.dumps(dict(resultat, versions=versions),
+                                     ensure_ascii=False, indent=1), "utf-8")
+        reste = (f", en français faute de traduction : {', '.join(en_francais)}"
+                 if en_francais else "")
+        print(f"Écrit {sortie}{reste}", file=sys.stderr)
+
+
 def main():
     if not CHANGELOG.exists():
         sys.exit(f"CHANGELOG introuvable : {CHANGELOG}")
@@ -266,6 +335,8 @@ def main():
     points = sum(len(s["points"]) for v in versions for s in v["sections"])
     print(f"Écrit {SORTIE} — {len(versions)} versions, {points} points",
           file=sys.stderr)
+
+    ecrire_traductions(resultat)
 
     historique = dict(resultat, versions=toutes,
                       premiere_version=toutes[-1]["version"],

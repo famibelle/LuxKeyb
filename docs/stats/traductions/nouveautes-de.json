@@ -1,0 +1,186 @@
+{
+ "_comment": "Deutsche Übersetzung von nouveautes.html, nach Version. Von Hand gepflegt: generate_nouveautes.py führt sie in stats/nouveautes-de.json zusammen. Jede Version folgt der französischen aus dem CHANGELOG: dieselben Abschnitte, dieselbe Anzahl Punkte, in derselben Reihenfolge; der Titel eines Abschnitts darf fehlen, wenn _sections ihn übersetzt. Eine Version, die hier fehlt oder nicht mehr die französische Form hat, erscheint auf Französisch mit einem Hinweis. Der Text ist HTML: < und & maskieren.",
+ "_sections": {
+  "Nouveautés": "Neu",
+  "Corrections": "Korrekturen",
+  "Changements": "Änderungen",
+  "Rapidité": "Geschwindigkeit"
+ },
+ "37.3.0": {
+  "intro": "Die Tastatur fängt einen nur einmal getippten Doppelbuchstaben ab.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Ein vergessener Doppelbuchstabe wird korrigiert",
+      "texte": "„Kafi“ ergibt „Kaffi“, „ales“ ergibt „alles“, „ener“ ergibt „ënner“ statt „Energie“. Das Luxemburgische verdoppelt viele Buchstaben, und der eilige Daumen tippt oft nur einen."
+     }
+    ]
+   }
+  ]
+ },
+ "37.2.0": {
+  "intro": "Die Tastatur fängt Tippfehler besser ab.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Zwei ohne Leerzeichen getippte Wörter werden getrennt",
+      "texte": "Für „echhunn“ schlägt die Leiste „ech hunn“ vor. Zusammengesetzte luxemburgische Wörter („ausbruecht“, „Schoulbus“) werden nicht zerlegt."
+     },
+     {
+      "titre": "Ein Finger, der auf der Nachbartaste landet, wird erkannt",
+      "texte": "Für „haud“ schlägt die Leiste zuerst „Haus“ vor, weil das s neben dem d liegt, und erst dann „haut“."
+     },
+     {
+      "titre": "Zwei vertauschte Buchstaben zählen als ein einziger Fehler",
+      "texte": "„ehc“ ergibt „ech“, „mioen“ ergibt „Moien“."
+     },
+     {
+      "titre": "Ein Tippfehler, der wie der Anfang eines anderen Wortes aussieht, wird trotzdem korrigiert",
+      "texte": "„gir“ ergibt „fir“, „vul“ ergibt „vun“."
+     }
+    ]
+   },
+   {
+    "points": [
+     {
+      "titre": "Einige Tippfehler aus den Texten, mit denen das Wörterbuch aufgebaut wurde, sind daraus entfernt",
+      "texte": "„hunnn“, „dobai“, „tescht“… Sie wurden so akzeptiert, und „hunnn“ wurde sogar unter „hunn“ vorgeschlagen."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "Die Tastatur in einem Nachrichtenverlauf. „echhunn“ wird ohne Leerzeichen getippt: Die Leiste schlägt „Ech hunn“ vor, das angetippt wird. Dann „geschter“ ohne Akzent: Die Leiste schlägt „gëschter“ vor. Dann „an der“ ohne Fehler, dann „schiul“, der Finger auf dem i neben dem o: Die Leiste schlägt „Schoul“ vor. Schließlich „gescahfft“ mit zwei vertauschten Buchstaben: Die Leiste schlägt „geschafft“ vor. Der fertige Satz lautet „Ech hunn gëschter an der Schoul geschafft“. Ein blauer Punkt zeigt jedes Antippen.",
+    "legende": "Zusammengeschriebene Wörter, vergessener Akzent, Nachbartaste, vertauschte Buchstaben: Man tippt schnell, die Leiste schlägt das richtige Wort vor, ein Antippen genügt."
+   }
+  ]
+ },
+ "37.1.3": {
+  "intro": "Die Karten bleiben auf dem Bildschirm, wenn man das Handy dreht.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Eine in der Sammlung geöffnete Karte schließt sich nicht mehr",
+      "texte": "Wenn sich das Handy dreht, und ein geöffnetes Fach der Lernkartei auch nicht."
+     },
+     {
+      "titre": "Beim Wiederholen bleibt die gerade umgedrehte Karte umgedreht",
+      "texte": ""
+     },
+     {
+      "titre": null,
+      "texte": "Solange eine Karte zu sehen ist, bewegt das Neigen des Handys die Karte, statt den Bildschirm zu drehen."
+     }
+    ]
+   },
+   {
+    "points": [
+     {
+      "titre": "Auf dem Handy wird die App jetzt immer im Hochformat angezeigt",
+      "texte": "Quer gehalten ließ das Handy zu wenig Platz: Beim Wiederholen schrumpfte die Karte auf ein Symbol. Tablets behalten beide Ausrichtungen."
+     }
+    ]
+   }
+  ]
+ },
+ "37.1.2": {
+  "intro": "Das Kartenpäckchen am Ende eines Spiels hält, wenn man das Handy dreht.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Das Drehen des Handys lässt das Kartenpäckchen nicht mehr verschwinden",
+      "texte": "Der Bildschirm behält seine Ausrichtung, solange es geöffnet ist, und dreht sich wieder, sobald man es schließt. So kann man das Handy neigen, um mit der Karte zu spielen, ohne sie zu verlieren."
+     },
+     {
+      "titre": "Im Querformat erscheinen die gewonnenen Karten endlich",
+      "texte": "Die Rückseite dreht sich um, die Karte erscheint mit ihren Seltenheitseffekten und folgt der Neigung des Handys."
+     },
+     {
+      "titre": "Der Titel des Kartenpäckchens rutscht nicht mehr unter Uhrzeit und Symbole",
+      "texte": "Und „Überspringen“ nicht mehr unter die Navigationsleiste."
+     }
+    ]
+   }
+  ]
+ },
+ "37.1.1": {
+  "intro": "Die Sammlung und die Lernkartei reagieren ohne Ruckeln.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Das Ändern der Sortierung oder der Wechsel zum Regal lässt die Sammlung nicht mehr einfrieren",
+      "texte": "Die schon angezeigten Karten werden wiederverwendet, statt neu gezeichnet zu werden."
+     },
+     {
+      "titre": "Die Sammlung öffnet sich schneller",
+      "texte": "Und ihr Raster lässt sich scrollen, sobald es erscheint."
+     },
+     {
+      "titre": "Die erste geöffnete Karte dreht sich so schnell um wie die folgenden",
+      "texte": "In einer einzigen Bewegung."
+     },
+     {
+      "titre": "Das Öffnen eines Fachs der Lernkartei blockiert den Bildschirm nicht mehr",
+      "texte": "Der Kartenfächer breitet sich aus, sobald seine Karten bereit sind."
+     }
+    ]
+   }
+  ]
+ },
+ "37.1.0": {
+  "intro": "Jede seltene Karte hat jetzt ihren eigenen Auftritt.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Eine ungewöhnliche Karte ◆◆",
+      "texte": "Landet mit einem Lichtschimmer, der über sie hinwegzieht."
+     },
+     {
+      "titre": "Eine seltene Karte ★★★",
+      "texte": "Kündigt sich an, bevor sie erscheint: Die Rückseite zittert dreimal im Päckchen, das Handy vibriert, und sobald die Karte umgedreht ist, wird ihr Stempel mit einer Welle aufgeprägt."
+     },
+     {
+      "titre": "Eine sehr seltene Karte ✦✦✦✦",
+      "texte": "Verwandelt die ganze Szene: Die Nacht bricht herein, die Karte steigt kreisend auf, ein erster violetter Blitz, dann enthüllt sie sich langsam unter Lichtstrahlen."
+     },
+     {
+      "titre": null,
+      "texte": "Die Vibrationen folgen der Einstellung des Handys, und alles bleibt schlicht, wenn das Handy weniger Animationen verlangt."
+     }
+    ]
+   }
+  ]
+ },
+ "37.0.1": {
+  "intro": "Flüssigere Karten in der Lernkartei und am Ende eines Spiels.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Die Karten der Lernkartei bekommen ihre Landschaft zurück",
+      "texte": "Beim Öffnen eines Fachs zeigten die ausgebreiteten Karten nur noch den Himmel."
+     }
+    ]
+   },
+   {
+    "points": [
+     {
+      "titre": "Die Wiederholung dreht ihre Karten ohne Ruckeln um",
+      "texte": "Die Karte wird vorbereitet, während Sie die Frage lesen, statt den Bildschirm mitten in der Geste einzufrieren."
+     },
+     {
+      "titre": "Das Kartenpäckchen am Ende eines Spiels ebenso",
+      "texte": "Jede gewonnene Karte dreht sich in einer einzigen Bewegung um."
+     }
+    ]
+   }
+  ]
+ }
+}

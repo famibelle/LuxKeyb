@@ -1,0 +1,186 @@
+{
+ "_comment": "Tradução portuguesa de nouveautes.html, por versão. Mantida à mão: generate_nouveautes.py junta-a em stats/nouveautes-pt.json. Cada versão segue a francesa do CHANGELOG: as mesmas secções, o mesmo número de pontos, pela mesma ordem; o título de uma secção pode faltar quando _sections o traduz. Uma versão que falte aqui, ou que já não tenha a forma da francesa, aparece em francês com um aviso. O texto é HTML: escapar < e &.",
+ "_sections": {
+  "Nouveautés": "Novidades",
+  "Corrections": "Correções",
+  "Changements": "Alterações",
+  "Rapidité": "Rapidez"
+ },
+ "37.3.0": {
+  "intro": "O teclado apanha a letra dobrada escrita uma só vez.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Uma letra dobrada esquecida é corrigida",
+      "texte": "«Kafi» dá «Kaffi», «ales» dá «alles», «ener» dá «ënner» em vez de «Energie». O luxemburguês dobra muitas letras, e o polegar apressado muitas vezes só escreve uma."
+     }
+    ]
+   }
+  ]
+ },
+ "37.2.0": {
+  "intro": "O teclado apanha melhor os erros de digitação.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Duas palavras escritas sem espaço são separadas",
+      "texte": "Para «echhunn», a barra propõe «ech hunn». As palavras compostas do luxemburguês («ausbruecht», «Schoulbus») não são cortadas."
+     },
+     {
+      "titre": "O dedo que cai na tecla ao lado é reconhecido",
+      "texte": "Para «haud», a barra propõe primeiro «Haus», porque o s fica ao lado do d, antes de «haut»."
+     },
+     {
+      "titre": "Duas letras trocadas contam como um só erro",
+      "texte": "«ehc» dá «ech», «mioen» dá «Moien»."
+     },
+     {
+      "titre": "Um erro que parece o início de outra palavra é corrigido na mesma",
+      "texte": "«gir» dá «fir», «vul» dá «vun»."
+     }
+    ]
+   },
+   {
+    "points": [
+     {
+      "titre": "Alguns erros de digitação vindos dos textos que serviram para construir o dicionário foram retirados dele",
+      "texte": "«hunnn», «dobai», «tescht»… Eram aceites tal como estavam, e «hunnn» chegava a ser proposto debaixo de «hunn»."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "O teclado numa conversa de mensagens. Escreve-se «echhunn» sem espaço: a barra propõe «Ech hunn», em que se toca. Depois «geschter» sem acento: a barra propõe «gëschter». Depois «an der» sem erro, e a seguir «schiul», com o dedo caído no i ao lado do o: a barra propõe «Schoul». Por fim «gescahfft», com duas letras trocadas: a barra propõe «geschafft». A frase final é «Ech hunn gëschter an der Schoul geschafft». Um disco azul mostra cada toque.",
+    "legende": "Palavras coladas, acento esquecido, tecla ao lado, letras trocadas: escreve-se depressa, a barra propõe a palavra certa, basta um toque."
+   }
+  ]
+ },
+ "37.1.3": {
+  "intro": "As cartas ficam no ecrã quando se roda o telemóvel.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Uma carta aberta na coleção já não se fecha",
+      "texte": "Quando o telemóvel roda, e um compartimento aberto da Caixa de Leitner também não."
+     },
+     {
+      "titre": "Na revisão, a carta que acabou de virar fica virada",
+      "texte": ""
+     },
+     {
+      "titre": null,
+      "texte": "Enquanto uma carta está no ecrã, inclinar o telemóvel mexe a carta em vez de rodar o ecrã."
+     }
+    ]
+   },
+   {
+    "points": [
+     {
+      "titre": "No telemóvel, a aplicação aparece sempre na vertical",
+      "texte": "Deitado, o telemóvel deixava pouco espaço: na revisão, a carta ficava reduzida a um ícone. Os tablets mantêm as duas orientações."
+     }
+    ]
+   }
+  ]
+ },
+ "37.1.2": {
+  "intro": "O pacote de fim de jogo aguenta-se quando se roda o telemóvel.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Rodar o telemóvel já não faz desaparecer o pacote",
+      "texte": "O ecrã mantém a orientação enquanto o pacote está aberto, e volta a rodar assim que o fecha. Pode assim inclinar o telemóvel para fazer mexer a carta sem a perder."
+     },
+     {
+      "titre": "Na horizontal, as cartas ganhas aparecem finalmente",
+      "texte": "O verso vira-se, a carta aparece com os seus efeitos de raridade e acompanha a inclinação do telemóvel."
+     },
+     {
+      "titre": "O título do pacote já não fica por baixo da hora e dos ícones",
+      "texte": "Nem «Saltar» por baixo da barra de navegação."
+     }
+    ]
+   }
+  ]
+ },
+ "37.1.1": {
+  "intro": "A coleção e a Caixa de Leitner respondem sem solavancos.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Mudar a ordenação ou passar para a Prateleira já não congela a coleção",
+      "texte": "As cartas já mostradas são reaproveitadas em vez de serem refeitas."
+     },
+     {
+      "titre": "A coleção abre mais depressa",
+      "texte": "E a grelha pode ser percorrida assim que aparece."
+     },
+     {
+      "titre": "A primeira carta aberta vira-se tão depressa como as seguintes",
+      "texte": "Num só movimento."
+     },
+     {
+      "titre": "Abrir um compartimento da Caixa de Leitner já não bloqueia o ecrã",
+      "texte": "O leque abre-se assim que as suas cartas estão prontas."
+     }
+    ]
+   }
+  ]
+ },
+ "37.1.0": {
+  "intro": "Cada carta rara tem agora a sua própria maneira de chegar.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Uma carta pouco comum ◆◆",
+      "texte": "Pousa com um reflexo de luz que a atravessa."
+     },
+     {
+      "titre": "Uma carta rara ★★★",
+      "texte": "Adivinha-se antes de aparecer: o verso estremece três vezes no pacote, o telemóvel vibra e, depois de a carta virada, o seu selo é cunhado com uma onda."
+     },
+     {
+      "titre": "Uma carta muito rara ✦✦✦✦",
+      "texte": "Muda a cena toda: cai a noite, a carta sobe a rodar, um primeiro relâmpago violeta, e depois revela-se lentamente sob raios de luz."
+     },
+     {
+      "titre": null,
+      "texte": "As vibrações seguem a definição do telemóvel, e tudo fica sóbrio quando o telemóvel pede menos animações."
+     }
+    ]
+   }
+  ]
+ },
+ "37.0.1": {
+  "intro": "Cartas mais fluidas na Caixa de Leitner e no fim de jogo.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "As cartas da Caixa de Leitner recuperam a sua paisagem",
+      "texte": "Quando se abria um compartimento, as cartas espalhadas só mostravam o céu."
+     }
+    ]
+   },
+   {
+    "points": [
+     {
+      "titre": "A revisão vira as cartas sem solavancos",
+      "texte": "A carta prepara-se enquanto lê a pergunta, em vez de congelar o ecrã a meio do gesto."
+     },
+     {
+      "titre": "O pacote de fim de jogo também",
+      "texte": "Cada carta ganha vira-se num só movimento."
+     }
+    ]
+   }
+  ]
+ }
+}

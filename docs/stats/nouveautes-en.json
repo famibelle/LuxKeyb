@@ -1,0 +1,208 @@
+{
+ "genere_le": "2026-10-14",
+ "derniere_version": "37.3.0",
+ "derniere_date": "2026-10-14",
+ "depot": "https://github.com/famibelle/LuxKeyb",
+ "versions": [
+  {
+   "version": "37.3.0",
+   "date": "2026-10-14",
+   "intro": "The keyboard catches a double letter typed only once.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "New",
+     "points": [
+      {
+       "titre": "A forgotten double letter is corrected",
+       "texte": "“Kafi” gives “Kaffi”, “ales” gives “alles”, “ener” gives “ënner” rather than “Energie”. Luxembourgish doubles a lot of letters, and a hurried thumb often types only one."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.2.0",
+   "date": "2026-10-13",
+   "intro": "The keyboard is better at catching typos.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "New",
+     "points": [
+      {
+       "titre": "Two words typed without a space are split",
+       "texte": "For “echhunn”, the bar suggests “ech hunn”. Luxembourgish compound words (“ausbruecht”, “Schoulbus”) are not split."
+      },
+      {
+       "titre": "A finger that lands on the next key is recognised",
+       "texte": "For “haud”, the bar suggests “Haus” first, because the s is next to the d, before “haut”."
+      },
+      {
+       "titre": "Two swapped letters count as a single mistake",
+       "texte": "“ehc” gives “ech”, “mioen” gives “Moien”."
+      },
+      {
+       "titre": "A typo that looks like the start of another word is still corrected",
+       "texte": "“gir” gives “fir”, “vul” gives “vun”."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Fixes",
+     "points": [
+      {
+       "titre": "A few typos that came from the texts used to build the dictionary have been removed from it",
+       "texte": "“hunnn”, “dobai”, “tescht”… They were accepted as they were, and “hunnn” was even suggested under “hunn”."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_correction_frappe.gif",
+     "alt": "The keyboard in a messaging conversation. “echhunn” is typed without a space: the bar suggests “Ech hunn”, which is tapped. Then “geschter” without its accent: the bar suggests “gëschter”. Then “an der” with no mistake, then “schiul”, the finger having landed on the i next to the o: the bar suggests “Schoul”. Finally “gescahfft”, with two swapped letters: the bar suggests “geschafft”. The final sentence is “Ech hunn gëschter an der Schoul geschafft”. A blue dot shows each tap.",
+     "legende": "Words run together, a missing accent, the key next door, swapped letters: you type fast, the bar suggests the right word, one tap is enough."
+    }
+   ],
+   "image": "Screenshots/lux_correction_frappe.gif",
+   "image_alt": "The keyboard in a messaging conversation. “echhunn” is typed without a space: the bar suggests “Ech hunn”, which is tapped. Then “geschter” without its accent: the bar suggests “gëschter”. Then “an der” with no mistake, then “schiul”, the finger having landed on the i next to the o: the bar suggests “Schoul”. Finally “gescahfft”, with two swapped letters: the bar suggests “geschafft”. The final sentence is “Ech hunn gëschter an der Schoul geschafft”. A blue dot shows each tap.",
+   "image_legende": "Words run together, a missing accent, the key next door, swapped letters: you type fast, the bar suggests the right word, one tap is enough."
+  },
+  {
+   "version": "37.1.3",
+   "date": "2026-10-13",
+   "intro": "Cards stay on screen when you rotate the phone.",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Fixes",
+     "points": [
+      {
+       "titre": "A card opened in the collection no longer closes",
+       "texte": "When the phone rotates, and neither does an open compartment of the Leitner box."
+      },
+      {
+       "titre": "In review, the card you have just turned over stays turned over",
+       "texte": ""
+      },
+      {
+       "titre": null,
+       "texte": "While a card is on screen, tilting the phone moves the card instead of rotating the screen."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔄",
+     "titre": "Changes",
+     "points": [
+      {
+       "titre": "On phones, the app is now always shown upright",
+       "texte": "Held sideways, the phone left too little room: in review, the card shrank to an icon. Tablets keep both orientations."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.1.2",
+   "date": "2026-10-12",
+   "intro": "The end-of-game card pack holds firm when you rotate the phone.",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Fixes",
+     "points": [
+      {
+       "titre": "Rotating the phone no longer makes the card pack disappear",
+       "texte": "The screen keeps its orientation while the pack is open, and rotates again as soon as you close it. So you can tilt the phone to play with the card without losing it."
+      },
+      {
+       "titre": "In landscape, the cards you won finally appear",
+       "texte": "The back turns over, the card shows up with its rarity effects and follows the tilt of the phone."
+      },
+      {
+       "titre": "The card pack’s title no longer slips under the clock and icons",
+       "texte": "Nor does “Skip” slip under the navigation bar."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.1.1",
+   "date": "2026-10-12",
+   "intro": "The collection and the Leitner box respond without stuttering.",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Speed",
+     "points": [
+      {
+       "titre": "Changing the sort order or switching to the Shelf no longer freezes the collection",
+       "texte": "The cards already on screen are reused instead of being redrawn."
+      },
+      {
+       "titre": "The collection opens faster",
+       "texte": "And its grid can be scrolled as soon as it appears."
+      },
+      {
+       "titre": "The first card you open turns over as quickly as the next ones",
+       "texte": "In one smooth movement."
+      },
+      {
+       "titre": "Opening a compartment of the Leitner box no longer blocks the screen",
+       "texte": "The fan of cards opens as soon as its cards are ready."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.1.0",
+   "date": "2026-10-12",
+   "intro": "Each rare card now has its own way of arriving.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "New",
+     "points": [
+      {
+       "titre": "An uncommon card ◆◆",
+       "texte": "Lands with a gleam of light sweeping across it."
+      },
+      {
+       "titre": "A rare card ★★★",
+       "texte": "Can be sensed before it appears: the back quivers three times in the pack, the phone vibrates, then, once the card is turned over, its hallmark is stamped with a ripple."
+      },
+      {
+       "titre": "A very rare card ✦✦✦✦",
+       "texte": "Changes the whole scene: night falls, the card rises as it spins, a first purple flash, then it is slowly revealed under rays of light."
+      },
+      {
+       "titre": null,
+       "texte": "Vibrations follow the phone’s settings, and everything stays understated when the phone asks for fewer animations."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  }
+ ]
+}
