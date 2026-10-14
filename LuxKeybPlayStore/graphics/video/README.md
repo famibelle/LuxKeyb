@@ -30,9 +30,9 @@ reprennent la main), correcteur système coupé, carnet sauvegardé puis restaur
 
 ## Reel vertical (Instagram)
 
-`Letzebuergesch_Clavier_reel_fr.mp4` : 39 s, 1080 × 1920 (9:16), 30 i/s, en
+`Letzebuergesch_Clavier_reel_fr.mp4` : 34 s, 1080 × 1920 (9:16), 30 i/s, en
 français, avec une piste audio muette (la musique s'ajoute dans Instagram).
-Accroche, suggestions, accents, dictée, Wierderbuch, jeux, carnet, puis
+Accroche, suggestions, dictée, Wierderbuch, jeux, carnet, puis
 l'appel à installer.
 
 `python3 reel.py` le refait : il découpe l'écran du téléphone dans la vidéo

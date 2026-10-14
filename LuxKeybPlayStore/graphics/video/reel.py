@@ -1,6 +1,6 @@
 """Monte le Reel vertical 1080x1920 à 30 i/s, sans son, en français.
 
-Les séquences animées (frappe, accents, dictée) sont reprises de la vidéo de
+Les séquences animées (frappe, dictée) sont reprises de la vidéo de
 présentation 1920x1080 : l'écran du téléphone y est toujours au même endroit,
 on le découpe image par image. Wierderbuch, jeux et carnet viennent des
 captures pleine taille de `captures-emulateur-pixel9`, plus nettes que la
@@ -269,9 +269,6 @@ def main():
             Écran("Suggestions", "Il vous souffle les mots",
                   "Tapez « schue », il propose « Schueberfouer ». Après un espace, il devine la suite.",
                   séquence(tmp, 110, 425, 1.6, 1.4), 1120),
-            Écran("Accents", "Les accents sous le pouce",
-                  "é ä ë ont leur touche. Les autres attendent sous un appui long.",
-                  séquence(tmp, 450, 596, 1.25, 1.3), 1120),
             Écran("Dictée", "Parlez, il écrit",
                   "En luxembourgeois, avec LuxASR de l'Université du Luxembourg.",
                   séquence(tmp, 616, 743, 1.0, 1.4), 1120),
