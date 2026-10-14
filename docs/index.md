@@ -186,8 +186,8 @@ Chaque mot que vous employez fait avancer votre niveau, d'**Ufänker** à
 utilisée. Sept jeux complètent le parcours : **Wuertsich** (mots mêlés),
 **Wuertmix** (mots mélangés), **Wuertriet**, où il faut deviner un mot de cinq
 lettres en six essais, **Wuertlück**, une phrase luxembourgeoise authentique à
-laquelle il manque un mot, **Zuelwuert**, où l'on écrit en toutes lettres le
-résultat d'une multiplication, **Kräizwuert**, des mots croisés dont les
+laquelle il manque un mot, **Zuelwuert**, où l'on écrit en toutes lettres les
+nombres de 0 à 100, seuls ou en résultat d'un calcul, **Kräizwuert**, des mots croisés dont les
 définitions sont en français, et **Wuertplaz**, une grille vide et une liste de
 mots à y caser.
 
@@ -217,23 +217,43 @@ mots à y caser.
 ### Les mots gagnés vous restent
 
 Un mot trouvé dans l'un des sept jeux ne disparaît pas avec la partie : il
-devient une **carte** dans **Mäi Carnet**. Chaque carte porte le sens du mot en
-français, une phrase d'exemple tirée du dictionnaire officiel avec sa traduction
-quand l'État l'a publiée, les autres formes de la même famille, et sa rareté,
-c'est-à-dire son rang réel dans le corpus. Le carnet ne fait que grandir.
+devient une **carte** dans **Mäi Carnet**, et la fin de partie vous la tend
+dans une pochette, d'autant plus spectaculaire que la carte est rare. Chaque
+carte porte le sens du mot en français, une phrase d'exemple tirée du
+dictionnaire officiel, les autres formes de la même famille, et sa rareté,
+c'est-à-dire son rang réel dans le corpus.
 
-<div style="display:flex;justify-content:center;margin:24px 0;">
-  <figure style="margin:0;max-width:520px;text-align:center;">
-    <img src="Screenshots/lux_carnet.png" style="width:100%;border-radius:8px;"
-         alt="Deux écrans du carnet : à gauche la grille de cartes à deux colonnes avec leur illustration, leur mot et leur symbole de rareté ; à droite la carte « virgelies » ouverte, badge « Très rare », son sens, une phrase d'exemple et sa famille">
-    <figcaption>Trente mots gagnés, et la carte « virgelies » ouverte</figcaption>
+Et chaque carte ouvre une **fenêtre sur le pays** : la Rout Bréck, Veianen, la
+Musel, la Schueberfouer… L'heure du paysage dit la rareté, du matin pour une
+carte commune à la nuit étoilée pour une très rare, et le métal du cadre la
+redit, de l'étain à l'or. La saison est celle du jour où vous l'avez gagnée :
+ouverte, la carte d'hiver laisse tomber sa neige, et secouer le téléphone la
+fait tourbillonner. Un **sceau « GELÉIERT »** marque les mots appris, une
+**plume** ceux que vous avez écrits vous-même dans un message.
+
+Le carnet se range en **séries** à compléter, comme un album : les paysages,
+les 101 nombres, les illustrations, les sept jeux. Une carte se **partage** en
+image, ou s'**offre** de la main à la main : deux téléphones côte à côte, deux
+codes QR, et la carte quitte votre carnet pour entrer dans l'autre, sans passer
+par Internet et sans jamais exister en double.
+
+<div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
+  <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
+    <img src="Screenshots/lux_carnet_paysages.png" style="width:100%;border-radius:8px;"
+         alt="À gauche, le carnet : chaque vignette montre un paysage du Luxembourg, la grande roue de la Schueberfouer, le pont rouge, le château de Veianen au soir. À droite, la carte « Brëll » ouverte : une paire de lunettes devant les rochers du Mëllerdall au coucher du soleil, dans un cadre d'argent">
+    <figcaption>Chaque carte ouvre sur un lieu du pays, à l'heure de sa rareté</figcaption>
+  </figure>
+  <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
+    <img src="Screenshots/lux_carnet_echange.png" style="width:100%;border-radius:8px;"
+         alt="Deux écrans de l'échange d'une carte : à gauche, « Recevoir une carte » et son code QR ; à droite, chez le donneur, « « Kaz » a quitté votre carnet » et le code que seul l'autre téléphone peut lire">
+    <figcaption>Offrir une carte : deux codes QR, et elle change de carnet</figcaption>
   </figure>
 </div>
 
-Ces cartes reviennent ensuite d'elles-mêmes, par **Widderhuelen** : six casiers,
+Ces cartes reviennent ensuite d'elles-mêmes, par la **Boîte de Leitner** : six casiers,
 un jour, trois jours, une semaine, deux semaines, un mois, trois mois, puis le
 mot est acquis et sort de la file. Vous retournez la carte, vous vous notez, et
-elle avance ou redescend d'un casier.
+elle avance d'un casier, ou revient au premier si vous ne saviez pas.
 
 <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">

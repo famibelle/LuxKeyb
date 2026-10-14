@@ -192,8 +192,8 @@ bis zum **Sproochenmeeschter**, je nachdem, wie viel vom Wörterbuch Sie schon
 benutzt haben. Sieben Spiele ergänzen den Weg: **Wuertsich** (Buchstabensalat),
 **Wuertmix** (Wörter entwirren), **Wuertriet**, bei dem Sie ein Wort mit fünf
 Buchstaben in sechs Versuchen erraten, **Wuertlück**, ein echter luxemburgischer
-Satz, in dem ein Wort fehlt, **Zuelwuert**, bei dem Sie das Ergebnis einer
-Multiplikation ausschreiben, **Kräizwuert**, ein Kreuzworträtsel mit Hinweisen
+Satz, in dem ein Wort fehlt, **Zuelwuert**, bei dem Sie die Zahlen von 0 bis 100
+oder ein Rechenergebnis ausschreiben, **Kräizwuert**, ein Kreuzworträtsel mit Hinweisen
 auf Deutsch, und **Wuertplaz**, ein leeres Raster und eine Liste von Wörtern,
 die hineingehören.
 
@@ -223,24 +223,45 @@ die hineingehören.
 ### Die gewonnenen Wörter bleiben Ihnen
 
 Ein Wort, das Sie in einem der sieben Spiele finden, verschwindet nicht mit der
-Runde: Es wird zu einer **Karte** in **Mäi Carnet**. Jede Karte trägt die
-Bedeutung des Wortes in Ihrer Sprache, einen Beispielsatz aus dem offiziellen
-Wörterbuch, mit Übersetzung, wenn der Staat eine veröffentlicht hat, die
-anderen Formen derselben Wortfamilie und seine Seltenheit, also seinen
-tatsächlichen Rang im Korpus. Die Sammlung wächst nur.
+Runde: Es wird zu einer **Karte** in **Mäi Carnet**, die Ihnen am Ende der
+Partie in einem Päckchen überreicht wird, umso spektakulärer, je seltener die
+Karte ist. Jede Karte trägt die Bedeutung des Wortes in Ihrer Sprache, einen
+Beispielsatz aus dem offiziellen Wörterbuch, mit Übersetzung, wenn der Staat
+eine veröffentlicht hat, die anderen Formen derselben Wortfamilie und seine
+Seltenheit, also seinen tatsächlichen Rang im Korpus.
 
-<div style="display:flex;justify-content:center;margin:24px 0;">
-  <figure style="margin:0;max-width:520px;text-align:center;">
-    <img src="Screenshots/lux_carnet.png" style="width:100%;border-radius:8px;"
-         alt="Zwei Bildschirme der Sammlung: links das zweispaltige Raster der Karten mit Bild, Wort und Seltenheitssymbol; rechts die geöffnete Karte „virgelies“ mit dem Abzeichen „Sehr selten“, ihrer Bedeutung, einem Beispielsatz und ihrer Wortfamilie">
-    <figcaption>Dreißig gewonnene Wörter und die geöffnete Karte „virgelies“ (App auf Französisch)</figcaption>
+Und jede Karte öffnet ein **Fenster auf das Land**: die Rout Bréck, Veianen, die
+Musel, die Schueberfouer… Die Tageszeit der Landschaft verrät die Seltenheit,
+Morgen für eine gewöhnliche Karte, Sternennacht für eine sehr seltene, und das
+Metall des Rahmens sagt es noch einmal, von Zinn bis Gold. Die Jahreszeit ist
+die des Tages, an dem Sie die Karte gewonnen haben: Öffnen Sie eine Winterkarte,
+fällt ihr Schnee, schütteln Sie das Handy, wirbelt er auf. Ein **Siegel
+„GELÉIERT“** zeichnet gelernte Wörter aus, eine **Feder** die, die Sie selbst in
+einer Nachricht geschrieben haben.
+
+Die Sammlung ordnet sich in **Serien**, die man wie ein Album vervollständigt:
+die Landschaften, die 101 Zahlen, die Illustrationen, die sieben Spiele. Eine
+Karte lässt sich als Bild **teilen** oder von Hand zu Hand **abgeben**: zwei
+Handys nebeneinander, zwei QR-Codes, und die Karte verlässt Ihre Sammlung für
+die andere, ohne Internet und ohne je doppelt zu existieren.
+
+<div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
+  <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
+    <img src="Screenshots/lux_carnet_paysages.png" style="width:100%;border-radius:8px;"
+         alt="Links die Sammlung: Jede Vorschau zeigt eine Landschaft Luxemburgs, das Riesenrad der Schueberfouer, die rote Brücke, die Burg Veianen am Abend. Rechts die geöffnete Karte „Brëll“: eine Brille vor den Felsen des Mëllerdall bei Sonnenuntergang, in einem Silberrahmen">
+    <figcaption>Jede Karte öffnet sich auf einen Ort des Landes, zur Stunde ihrer Seltenheit (App auf Französisch)</figcaption>
+  </figure>
+  <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
+    <img src="Screenshots/lux_carnet_echange.png" style="width:100%;border-radius:8px;"
+         alt="Zwei Bildschirme eines Kartentauschs: links „Eine Karte empfangen“ mit seinem QR-Code; rechts, beim Gebenden, „„Kaz“ hat Ihre Sammlung verlassen“ und der Code, den nur das andere Handy lesen kann">
+    <figcaption>Eine Karte abgeben: zwei QR-Codes, und sie wechselt die Sammlung (App auf Französisch)</figcaption>
   </figure>
 </div>
 
-Diese Karten kommen dann von selbst wieder, über **Widderhuelen**: sechs Fächer,
+Diese Karten kommen dann von selbst wieder, über die **Lernkartei**: sechs Fächer,
 ein Tag, drei Tage, eine Woche, zwei Wochen, ein Monat, drei Monate, dann sitzt
 das Wort und verlässt die Reihe. Sie drehen die Karte um, bewerten sich selbst,
-und sie rückt ein Fach vor oder zurück.
+und sie rückt ein Fach vor oder, wenn Sie es nicht wussten, zurück ins erste.
 
 <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
