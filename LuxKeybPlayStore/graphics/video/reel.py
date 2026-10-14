@@ -204,8 +204,11 @@ class Écran:
 
 
 class Titre:
-    def __init__(self, sur, titre, sous, duree, pied=None):
+    def __init__(self, sur, titre, sous, duree, pied=None, apparition=True):
         self.duree = duree
+        # la première image sert de vignette (Instagram, GitHub) : l'accroche
+        # doit y être entière, pas encore en train d'apparaître
+        self.apparition = apparition
         self.calques = [(icone(220), None)]
         for texte, f, coul, il in ((sur, police(44, True), GRIS, 56),
                                    (titre, police(78, True), ENCRE, 88),
@@ -220,6 +223,8 @@ class Titre:
             self.pied = c.crop((0, 0, W, bas))
 
     def rendu(self, t):
+        if not self.apparition:
+            t += 10
         im = fond().convert("RGBA")
         hauteurs = [c.height for c, _ in self.calques]
         gaps = [50, 20, 36]
@@ -265,7 +270,7 @@ def main():
 
         scenes = [
             Titre("Lëtzebuergesch Clavier", "Vous le parlez.\nMaintenant, vous l'écrivez.",
-                  "Le clavier luxembourgeois pour Android", 2.8),
+                  "Le clavier luxembourgeois pour Android", 2.8, apparition=False),
             Écran("Suggestions", "Il vous souffle les mots",
                   "Tapez « schue », il propose « Schueberfouer ». Après un espace, il devine la suite.",
                   séquence(tmp, 110, 425, 1.6, 1.4), 1120),
