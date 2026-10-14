@@ -209,6 +209,34 @@ class Écran:
         return im.convert("RGB")
 
 
+class Accroche:
+    """Première image, qui sert aussi de vignette : le message, et dessous le
+    clavier qui propose « Moien ». Entière dès la première image, sans fondu."""
+
+    def __init__(self, duree):
+        self.duree = duree
+        self.calques = [icone(180)]
+        for texte, f, coul, il in (("Lëtzebuergesch Clavier", police(44, True), GRIS, 56),
+                                   ("Vous le parlez.\nMaintenant, vous l'écrivez.", police(78, True), ENCRE, 88),
+                                   ("Le clavier luxembourgeois pour Android", police(46, True), BLEU, 58)):
+            c = Image.new("RGBA", (W, 400))
+            bas = bloc_texte(ImageDraw.Draw(c), 0, texte, f, coul, il, centre=True, largeur=940)
+            self.calques.append(c.crop((0, 0, W, bas)))
+        self.gaps = [36, 18, 26, 0]
+        clavier = Image.open(CAP / "08-clavier-suggestions-lb-fr-recadre.png").convert("RGB").crop((0, 0, 1080, 1000))
+        self.tel, self.marge = téléphone(clavier, 820)
+
+    def rendu(self, t):
+        im = fond().convert("RGBA")
+        y = 170
+        for c, gap in zip(self.calques, self.gaps):
+            im.alpha_composite(c, ((W - c.width) // 2, y))
+            y += c.height + gap
+        y_tel = max(y + 60, BAS - (self.tel.height - 2 * self.marge))
+        im.alpha_composite(self.tel, ((W - self.tel.width) // 2, y_tel - self.marge))
+        return im.convert("RGB")
+
+
 class Appel:
     """Fin : l'appel à télécharger, badge Google Play qui bat doucement."""
 
@@ -279,9 +307,10 @@ def main():
                         str(tmp / "%04d.png")], check=True)
 
         scenes = [
+            Accroche(1.5),
             Écran("Suggestions", "Il vous souffle les mots",
                   "Tapez « schue », il propose « Schueberfouer ». Après un espace, il devine la suite.",
-                  séquence(tmp, 110, 425, 2.2, 1.2), 1120, apparition=False),
+                  séquence(tmp, 110, 425, 2.2, 1.2), 1120),
             Écran("Dictée", "Parlez, il écrit",
                   "En luxembourgeois, avec LuxASR de l'Université du Luxembourg.",
                   séquence(tmp, 616, 743, 1.4, 1.0), 1120),
