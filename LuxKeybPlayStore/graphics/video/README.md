@@ -37,7 +37,9 @@ c'est là qu'on la voit, pas dans la lecture. On y trouve
 le message et, dessous, le clavier qui propose « Schueberfouer ». Puis suggestions,
 dictée, Wierderbuch, jeux, carnet
 (20 s à eux cinq), puis
-l'appel à télécharger : badge Google Play et « Lien dans la bio ». Le badge
+l'appel à télécharger : badge Google Play, puis une barre de recherche qui
+tape « Lëtzebuergesch Clavier ». Pas de « lien dans la bio » : la vidéo est
+publiée depuis un compte personnel, elle doit se suffire à elle-même. Le badge
 (`badge_google_play_fr.png`) est `docs/assets/google-play-badge-fr.svg` rendu
 par Chromium, le texte en Inter faute de Google Sans.
 

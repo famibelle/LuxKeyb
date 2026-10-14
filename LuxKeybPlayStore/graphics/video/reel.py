@@ -244,28 +244,50 @@ class Accroche:
 
 
 class Appel:
-    """Fin : l'appel à télécharger, badge Google Play qui bat doucement."""
+    """Fin : l'appel à télécharger. Le badge Google Play bat doucement, et une
+    barre de recherche tape le nom à chercher dans le Play Store : la vidéo se
+    suffit à elle-même, sans lien dans la bio."""
+
+    NOM = "Lëtzebuergesch Clavier"
 
     def __init__(self, duree):
         self.duree = duree
         self.calques = [icone(200)]
-        for texte, f, coul, il in (("Lëtzebuergesch Clavier", police(44, True), GRIS, 56),
-                                   ("Téléchargez-le gratuitement", police(84, True), ENCRE, 92)):
+        for texte, f, coul, il in (("Téléchargez-le gratuitement", police(84, True), ENCRE, 92),):
             c = Image.new("RGBA", (W, 400))
             bas = bloc_texte(ImageDraw.Draw(c), 0, texte, f, coul, il, centre=True, largeur=940)
             self.calques.append(c.crop((0, 0, W, bas)))
         b = Image.open(BADGE).convert("RGBA")
         self.badge = b.resize((780, round(b.height * 780 / b.width)), Image.LANCZOS)
         self.calques.append(self.badge)
-        f = police(48, True)
-        texte = "Lien dans la bio"
-        w = round(f.getlength(texte)) + 110
-        pastille = Image.new("RGBA", (w, 96))
-        d = ImageDraw.Draw(pastille)
-        d.rounded_rectangle((0, 0, w - 1, 95), 48, fill=BLEU)
-        d.text((55, 20), texte, font=f, fill=(255, 255, 255))
-        self.calques.append(pastille)
-        self.gaps = [44, 16, 64, 48, 0]
+        c = Image.new("RGBA", (W, 400))
+        bas = bloc_texte(ImageDraw.Draw(c), 0, "Cherchez :", police(44, True), GRIS, 56, centre=True)
+        self.calques.append(c.crop((0, 0, W, bas)))
+        self.recherche = self.barre(len(self.NOM), False)  # taille de la barre
+        self.calques.append(self.recherche)
+        self.gaps = [44, 56, 64, 18, 0]
+
+    def barre(self, n, curseur):
+        """Barre de recherche, les n premières lettres du nom tapées."""
+        f = police(54, True)
+        w, h = 820, 120
+        out = Image.new("RGBA", (w + 40, h + 40))
+        ombre = Image.new("L", out.size, 0)
+        ImageDraw.Draw(ombre).rounded_rectangle((20, 28, 20 + w, 28 + h), h // 2, fill=70)
+        out.paste(ENCRE, (0, 0, *out.size), ombre.filter(ImageFilter.GaussianBlur(12)))
+        d = ImageDraw.Draw(out)
+        d.rounded_rectangle((20, 20, 20 + w, 20 + h), h // 2, fill=(255, 255, 255), outline=BLEU, width=5)
+        # loupe
+        cx, cy = 20 + 70, 20 + h // 2 - 6
+        d.ellipse((cx - 22, cy - 22, cx + 22, cy + 22), outline=GRIS, width=7)
+        d.line((cx + 15, cy + 15, cx + 34, cy + 34), fill=GRIS, width=9)
+        texte = self.NOM[:n]
+        x = 20 + 130
+        d.text((x, 20 + (h - 66) // 2), texte, font=f, fill=ENCRE)
+        if curseur:
+            xc = x + f.getlength(texte) + 4
+            d.rectangle((xc, 20 + 30, xc + 5, 20 + h - 30), fill=BLEU)
+        return out
 
     def rendu(self, t):
         import math
@@ -278,6 +300,11 @@ class Appel:
                 k = 1 + 0.035 * math.sin((t - 0.9) * 2 * math.pi / 1.1) ** 2
                 g = c.resize((round(c.width * k), round(c.height * k)), Image.BICUBIC)
                 poser(im, g, ((W - g.width) // 2, y - (g.height - c.height) // 2 + dy), a)
+            elif c is self.recherche:
+                # le nom se tape à partir de 0,6 s, puis le curseur clignote
+                n = max(0, min(len(self.NOM), int((t - 0.6) / 0.05)))
+                curseur = n < len(self.NOM) or int(t / 0.5) % 2 == 0
+                poser(im, self.barre(n, curseur), ((W - c.width) // 2, y + dy), a)
             else:
                 poser(im, c, ((W - c.width) // 2, y + dy), a)
             y += c.height + self.gaps[i]
