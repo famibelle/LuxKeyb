@@ -6,6 +6,9 @@ on le découpe image par image. Wierderbuch, jeux et carnet viennent des
 captures pleine taille de `captures-emulateur-pixel9`, plus nettes que la
 vidéo pour un écran entier.
 
+La scène du carnet pose les cartes elles-mêmes, au design de la 37, reprises
+des captures de `docs/Screenshots` (celles de la page des nouveautés).
+
 Les textes restent entre y=150 et y=1640 : en bas, Instagram pose la légende
 et les boutons par-dessus la vidéo.
 
@@ -17,6 +20,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 V = pathlib.Path(__file__).parent
 G = V.parent
 CAP = G / "captures-emulateur-pixel9"
+SHOTS = G.parents[1] / "docs" / "Screenshots"
 SOURCE = V / "Letzebuergesch_Clavier_presentation_fr.mp4"
 SORTIE = V / "Letzebuergesch_Clavier_reel_fr.mp4"
 ICONE = G / "feature-graphic" / "icone-et-presentation" / "Icône de l'application.png"
@@ -105,6 +109,22 @@ def téléphone(écran, hauteur):
     return out, marge
 
 
+def carte(image, hauteur):
+    """Pose une carte (ou un écran) sans cadre, coins arrondis et ombre."""
+    k = min(hauteur / image.height, LARGEUR_TEL / image.width)
+    image = image.resize((round(image.width * k), round(image.height * k)), Image.LANCZOS)
+    r, marge = round(image.width * 0.035), 60
+    out = Image.new("RGBA", (image.width + 2 * marge, image.height + 2 * marge))
+    ombre = Image.new("L", out.size, 0)
+    ImageDraw.Draw(ombre).rounded_rectangle(
+        (marge, marge + 24, marge + image.width, marge + image.height + 24), r, fill=110)
+    out.paste(ENCRE, (0, 0, *out.size), ombre.filter(ImageFilter.GaussianBlur(26)))
+    m = Image.new("L", image.size, 0)
+    ImageDraw.Draw(m).rounded_rectangle((0, 0, image.width - 1, image.height - 1), r, fill=255)
+    out.paste(image.convert("RGB"), (marge, marge), m)
+    return out, marge
+
+
 def ease(t):
     t = max(0.0, min(1.0, t))
     return 1 - (1 - t) ** 3
@@ -128,7 +148,9 @@ def poser(im, calque, xy, alpha):
 class Écran:
     """Une fonctionnalité : titre en haut, téléphone animé en dessous."""
 
-    def __init__(self, kicker, titre, sous, images, hauteur_tel):
+    def __init__(self, kicker, titre, sous, images, hauteur_tel, cadre=téléphone, retourne=False):
+        self.cadre = cadre
+        self.retourne = retourne  # chaque image arrive en se retournant, comme une carte
         self.images = images  # liste de (fonction -> Image, durée)
         self.duree = sum(d for _, d in images)
         self.hauteur_tel = hauteur_tel
@@ -144,7 +166,7 @@ class Écran:
         self.y_tel = y + 30
         self.cache = {}
         # téléphone plus court que la place libre : on centre le tout
-        tel, marge = téléphone(images[0][0](), self.hauteur_max())
+        tel, marge = cadre(images[0][0](), self.hauteur_max())
         decalage = max(0, (BAS - (self.y_tel + tel.height - 2 * marge)) // 2)
         self.textes = [(c, y + decalage) for c, y in self.textes]
         self.y_tel += decalage
@@ -165,12 +187,19 @@ class Écran:
         for i, (c, y) in enumerate(self.textes):
             a, dy = entrée(c, t, 0.08 * i)
             poser(im, c, (0, y + dy), a)
-        src, _ = self.image(t)
+        src, tl = self.image(t)
         if src not in self.cache:
-            self.cache = {src: téléphone(src(), self.hauteur_max())}
+            self.cache = {src: self.cadre(src(), self.hauteur_max())}
         tel, marge = self.cache[src]
         a, dy = entrée(tel, t, 0.2, dy=80)
-        poser(im, tel, ((W - tel.width) // 2, self.y_tel - marge + dy), a)
+        x = (W - tel.width) // 2
+        if self.retourne and t >= 0.2:
+            # demi-tour sur l'axe vertical, puis la carte se pose
+            sx = 0.08 + 0.92 * ease(tl / 0.32)
+            w = max(1, round(tel.width * sx))
+            tel = tel.resize((w, tel.height), Image.BILINEAR)
+            x = (W - w) // 2
+        poser(im, tel, (x, self.y_tel - marge + dy), a)
         return im.convert("RGB")
 
 
@@ -222,6 +251,10 @@ def capture(nom, d):
     return (lambda: Image.open(CAP / f"{nom}.png"), d)
 
 
+def cliché(nom, boite, d):
+    return (lambda: Image.open(SHOTS / nom).convert("RGB").crop(boite), d)
+
+
 def main():
     with tempfile.TemporaryDirectory() as tmp:
         tmp = pathlib.Path(tmp)
@@ -252,9 +285,12 @@ def main():
                    capture("16-jeu-kraizwuert-mots-croises", 1.1),
                    capture("11-jeu-wuertsich-mots-caches", 1.3)], 1120),
             Écran("Carnet", "Chaque mot gagné devient une carte",
-                  "Le carnet vous les fait réviser au bon moment.",
-                  [capture("07-carnet-carte-moien", 1.6),
-                   capture("19-boite-de-leitner-eventail-de-cartes", 1.9)], 1120),
+                  "Commune, rare ou très rare : à collectionner, puis à réviser au bon moment.",
+                  [cliché("lux_carte_stad.png", (17, 17, 783, 1143), 1.3),
+                   cliché("lux_carte_tres_rare.png", (17, 17, 783, 1143), 1.5),
+                   cliché("lux_carnet_paysages.png", (568, 72, 1052, 781), 1.4),
+                   cliché("lux_carnet_paysages.png", (0, 0, 540, 872), 1.9)],
+                  1060, cadre=carte, retourne=True),
             Titre("Lëtzebuergesch Clavier", "Lëtzebuergesch, sur votre téléphone.",
                   "Gratuit sur Google Play", 4.2,
                   pied="Essayez-le dans le navigateur :\nfamibelle.github.io/LuxKeyb"),
