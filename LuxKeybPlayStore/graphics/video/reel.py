@@ -263,10 +263,7 @@ class Appel:
         d.rounded_rectangle((0, 0, w - 1, 95), 48, fill=BLEU)
         d.text((55, 20), texte, font=f, fill=(255, 255, 255))
         self.calques.append(pastille)
-        c = Image.new("RGBA", (W, 60))
-        bloc_texte(ImageDraw.Draw(c), 0, "Sans publicité, sans traceur", police(38), GRIS, 50, centre=True)
-        self.calques.append(c)
-        self.gaps = [44, 16, 64, 48, 36, 0]
+        self.gaps = [44, 16, 64, 48, 0]
 
     def rendu(self, t):
         import math
