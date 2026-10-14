@@ -149,7 +149,11 @@ def poser(im, calque, xy, alpha):
 class Écran:
     """Une fonctionnalité : titre en haut, téléphone animé en dessous."""
 
-    def __init__(self, kicker, titre, sous, images, hauteur_tel, cadre=téléphone, retourne=False):
+    def __init__(self, kicker, titre, sous, images, hauteur_tel, cadre=téléphone, retourne=False,
+                 apparition=True):
+        # la première image sert de vignette (Instagram, GitHub) : la scène
+        # d'ouverture y est entière, pas encore en train d'apparaître
+        self.apparition = apparition
         self.cadre = cadre
         self.retourne = retourne  # chaque image arrive en se retournant, comme une carte
         self.images = images  # liste de (fonction -> Image, durée)
@@ -183,16 +187,17 @@ class Écran:
             acc += d
 
     def rendu(self, t):
+        ta = t if self.apparition else t + 10
         im = fond().convert("RGBA")
         poser(im, calque_entete(), (0, 0), 1)
         for i, (c, y) in enumerate(self.textes):
-            a, dy = entrée(c, t, 0.08 * i)
+            a, dy = entrée(c, ta, 0.08 * i)
             poser(im, c, (0, y + dy), a)
         src, tl = self.image(t)
         if src not in self.cache:
             self.cache = {src: self.cadre(src(), self.hauteur_max())}
         tel, marge = self.cache[src]
-        a, dy = entrée(tel, t, 0.2, dy=80)
+        a, dy = entrée(tel, ta, 0.2, dy=80)
         x = (W - tel.width) // 2
         if self.retourne and t >= 0.2:
             # demi-tour sur l'axe vertical, puis la carte se pose
@@ -201,43 +206,6 @@ class Écran:
             tel = tel.resize((w, tel.height), Image.BILINEAR)
             x = (W - w) // 2
         poser(im, tel, (x, self.y_tel - marge + dy), a)
-        return im.convert("RGB")
-
-
-class Titre:
-    def __init__(self, sur, titre, sous, duree, pied=None, apparition=True):
-        self.duree = duree
-        # la première image sert de vignette (Instagram, GitHub) : l'accroche
-        # doit y être entière, pas encore en train d'apparaître
-        self.apparition = apparition
-        self.calques = [(icone(220), None)]
-        for texte, f, coul, il in ((sur, police(44, True), GRIS, 56),
-                                   (titre, police(78, True), ENCRE, 88),
-                                   (sous, police(46, True), BLEU, 58)):
-            c = Image.new("RGBA", (W, 400))
-            bas = bloc_texte(ImageDraw.Draw(c), 0, texte, f, coul, il, centre=True, largeur=940)
-            self.calques.append((c.crop((0, 0, W, bas)), None))
-        self.pied = None
-        if pied:
-            c = Image.new("RGBA", (W, 200))
-            bas = bloc_texte(ImageDraw.Draw(c), 0, pied, police(38), GRIS, 50, centre=True)
-            self.pied = c.crop((0, 0, W, bas))
-
-    def rendu(self, t):
-        if not self.apparition:
-            t += 10
-        im = fond().convert("RGBA")
-        hauteurs = [c.height for c, _ in self.calques]
-        gaps = [50, 20, 36]
-        total = sum(hauteurs) + sum(gaps)
-        y = (H - total) // 2 - 120
-        for i, (c, _) in enumerate(self.calques):
-            a, dy = entrée(c, t, 0.12 * i)
-            poser(im, c, ((W - c.width) // 2, y + dy), a)
-            y += c.height + (gaps[i] if i < len(gaps) else 0)
-        if self.pied:
-            a, dy = entrée(self.pied, t, 0.6)
-            poser(im, self.pied, (0, y + 70 + dy), a)
         return im.convert("RGB")
 
 
@@ -311,29 +279,27 @@ def main():
                         str(tmp / "%04d.png")], check=True)
 
         scenes = [
-            Titre("Lëtzebuergesch Clavier", "Vous le parlez.\nMaintenant, vous l'écrivez.",
-                  "Le clavier luxembourgeois pour Android", 2.8, apparition=False),
             Écran("Suggestions", "Il vous souffle les mots",
                   "Tapez « schue », il propose « Schueberfouer ». Après un espace, il devine la suite.",
-                  séquence(tmp, 110, 425, 1.6, 1.4), 1120),
+                  séquence(tmp, 110, 425, 2.2, 1.2), 1120, apparition=False),
             Écran("Dictée", "Parlez, il écrit",
                   "En luxembourgeois, avec LuxASR de l'Université du Luxembourg.",
-                  séquence(tmp, 616, 743, 1.0, 1.4), 1120),
+                  séquence(tmp, 616, 743, 1.4, 1.0), 1120),
             Écran("Wierderbuch", "Un dictionnaire dans la poche",
                   "Le sens des mots et des exemples. Même sans connexion.",
-                  [capture("05-wierderbuch-recherche-gromperekichelchen", 1.3),
-                   capture("06-wierderbuch-fiche-gromperekichelchen", 2.2)], 1120),
+                  [capture("05-wierderbuch-recherche-gromperekichelchen", 1.0),
+                   capture("06-wierderbuch-fiche-gromperekichelchen", 1.8)], 1120),
             Écran("Jeux", "Apprenez en jouant",
                   "Sept jeux pour retrouver, écrire et placer les mots.",
-                  [capture("13-jeu-wuertriet-mot-de-5-lettres", 1.2),
-                   capture("16-jeu-kraizwuert-mots-croises", 1.1),
-                   capture("11-jeu-wuertsich-mots-caches", 1.3)], 1120),
+                  [capture("13-jeu-wuertriet-mot-de-5-lettres", 1.0),
+                   capture("16-jeu-kraizwuert-mots-croises", 0.9),
+                   capture("11-jeu-wuertsich-mots-caches", 1.0)], 1120),
             Écran("Carnet", "Chaque mot gagné devient une carte",
                   "Commune, rare ou très rare : à collectionner, puis à réviser au bon moment.",
-                  [cliché("lux_carte_stad.png", (17, 17, 783, 1143), 1.3),
-                   cliché("lux_carte_tres_rare.png", (17, 17, 783, 1143), 1.5),
-                   cliché("lux_carnet_paysages.png", (568, 72, 1052, 781), 1.4),
-                   cliché("lux_carnet_paysages.png", (0, 0, 540, 872), 1.9)],
+                  [cliché("lux_carte_stad.png", (17, 17, 783, 1143), 1.0),
+                   cliché("lux_carte_tres_rare.png", (17, 17, 783, 1143), 1.1),
+                   cliché("lux_carnet_paysages.png", (568, 72, 1052, 781), 1.0),
+                   cliché("lux_carnet_paysages.png", (0, 0, 540, 872), 1.2)],
                   1060, cadre=carte, retourne=True),
             Appel(4.8),
         ]

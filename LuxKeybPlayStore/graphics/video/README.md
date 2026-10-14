@@ -30,9 +30,10 @@ reprennent la main), correcteur système coupé, carnet sauvegardé puis restaur
 
 ## Reel vertical (Instagram)
 
-`Letzebuergesch_Clavier_reel_fr.mp4` : 34 s, 1080 × 1920 (9:16), 30 i/s, en
+`Letzebuergesch_Clavier_reel_fr.mp4` : 25 s, 1080 × 1920 (9:16), 30 i/s, en
 français, avec une piste audio muette (la musique s'ajoute dans Instagram).
-Accroche, suggestions, dictée, Wierderbuch, jeux, carnet, puis
+Suggestions dès la première image, dictée, Wierderbuch, jeux, carnet
+(20 s à eux cinq), puis
 l'appel à télécharger : badge Google Play et « Lien dans la bio ». Le badge
 (`badge_google_play_fr.png`) est `docs/assets/google-play-badge-fr.svg` rendu
 par Chromium, le texte en Inter faute de Google Sans.
