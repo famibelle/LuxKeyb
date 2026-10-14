@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What’s new in Lëtzebuergesch Clavier</title>
+<meta name="description" content="What has just arrived in the Luxembourgish keyboard: the latest published versions, what they change, and how to install them right now.">
+<link rel="alternate" hreflang="fr" href="nouveautes.html">
+<link rel="alternate" hreflang="en" href="nouveautes-en.html">
+<link rel="alternate" hreflang="de" href="nouveautes-de.html">
+<link rel="alternate" hreflang="pt" href="nouveautes-pt.html">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<link rel="stylesheet" href="assets/nouveautes.css">
+</head>
+<body>
+<div class="wrap">
+
+<!-- Traduction de nouveautes.html : même structure, mêmes liens. Le contenu
+     des versions vient de stats/nouveautes-en.json, que
+     docs/scripts/generate_nouveautes.py écrit à partir du CHANGELOG et de
+     stats/traductions/nouveautes-en.json. -->
+
+<nav class="site">
+  <a href="en.html">🏠 Home</a> ·
+  <a href="simulateur.html">⌨️ Try it online</a> (FR) ·
+  <strong>🎁 What’s new</strong> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Download</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <a href="nouveautes.html" hreflang="fr" lang="fr">FR</a> ·
+  <strong>EN</strong> ·
+  <a href="nouveautes-de.html" hreflang="de" lang="de">DE</a> ·
+  <a href="nouveautes-pt.html" hreflang="pt" lang="pt">PT</a> ·
+  <button type="button" class="theme-toggle" aria-label="Switch theme">🌙</button>
+</nav>
+
+<header class="page">
+  <p class="eyebrow">Lëtzebuergesch Clavier · what’s new</p>
+  <h1>Just arrived 🎁</h1>
+  <p class="lead">
+    The keyboard moves fast. Here is what the latest versions have changed, in order, and how to install them right now: each version can be downloaded the day it comes out.
+  </p>
+</header>
+
+<div class="card">
+  <div class="status">
+    <span>Latest version&nbsp; <span class="v" id="nv-version">…</span></span>
+    <span id="nv-date"></span>
+    <span class="sep"></span>
+    <span id="nv-maj"></span>
+  </div>
+  <div class="actions">
+    <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;hl=en&amp;referrer=utm_source%3Dsite%26utm_medium%3Dnouveautes-en%26utm_campaign%3Dinstaller" class="btn primary">📲 Install from Google&nbsp;Play</a>
+    <a href="en.html#install" class="btn">📘 How to install it</a>
+  </div>
+</div>
+
+<section id="nv-liste">
+  <div class="card"><p class="loading">Loading what’s new…</p></div>
+</section>
+
+<section>
+  <h2>Where to get the app</h2>
+  <p class="muted">
+    Lëtzebuergesch Clavier installs from <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;hl=en&amp;referrer=utm_source%3Dsite%26utm_medium%3Dnouveautes-en%26utm_campaign%3Dinstaller">Google&nbsp;Play</a>, like any other app, with automatic updates. Each version is also published on the <a href="https://github.com/famibelle/LuxKeyb/releases">GitHub releases</a> with its signed APK, as soon as it is ready, for anyone who wants it before Google&nbsp;Play rolls it out. The home page <a href="en.html#install-without-google-play">explains how</a>.
+  </p>
+  <div class="note">
+    <p>
+      💡 The APK published on GitHub is built by continuous integration from the code in this repository, and signed with the production key. Nothing else is added: no ads, no trackers, and nothing you type leaves the device; only your voice does, when you dictate. You can check for yourself: <a href="https://github.com/famibelle/LuxKeyb">all the code is open</a>.
+    </p>
+  </div>
+  <div class="actions">
+    <a href="simulateur.html" class="btn">⌨️ Try it in the browser first</a>
+    <a href="feedbacks_form.html" class="btn">💬 Give feedback</a>
+  </div>
+</section>
+
+<footer class="page">
+  <p>
+    A question? Write to <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>Every version since the first: <a href="historique.html">the full history</a> (in French)
+  </p>
+  <p>Lëtzebuergesch Clavier</p>
+</footer>
+
+</div>
+
+<script>
+window.NV = {
+  source: 'stats/nouveautes-en.json',
+  locale: 'en-GB',
+  textes: {
+      "plusRecente": "latest",
+      "changement": "change",
+      "changements": "changes",
+      "publiee": "released on",
+      "aJour": "Page updated on",
+      "nonTraduite": "This version has not been translated yet: here it is in French.",
+      "plusAnciennes": "Older versions are in <a href=\"historique.html\">the full history</a> (in French).",
+      "indisponible": "What’s new is unavailable right now, see the <a href=\"https://github.com/famibelle/LuxKeyb/blob/main/android_keyboard/CHANGELOG.md\">CHANGELOG</a> (in French)."
+  }
+};
+</script>
+<script src="assets/nouveautes.js"></script>
+</body>
+</html>

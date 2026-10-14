@@ -503,6 +503,7 @@ diese Hinweise besser.
 ## Mehr erfahren
 
 <p class="liens-secondaires">
+  <a href="nouveautes-de.html">🎁 Neuigkeiten</a> ·
   <a href="labs.html">🔬 Labs</a> (FR) ·
   <a href="ambassadeurs.html">📣 Botschafter</a> (FR) ·
   <a href="supports-communication.html">🖨️ Plakate und Flyer</a> (FR) ·

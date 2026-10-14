@@ -1,9 +1,28 @@
 {
- "genere_le": "2026-10-13",
- "derniere_version": "37.2.0",
- "derniere_date": "2026-10-13",
+ "genere_le": "2026-10-14",
+ "derniere_version": "37.3.0",
+ "derniere_date": "2026-10-14",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.3.0",
+   "date": "2026-10-14",
+   "intro": "Le clavier rattrape la lettre doublée tapée une seule fois.",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Une lettre doublée oubliée est corrigée",
+       "texte": "« Kafi » donne « Kaffi », « ales » donne « alles », « ener » donne « ënner » plutôt qu'« Energie ». Le luxembourgeois double beaucoup de lettres, et le pouce pressé n'en tape souvent qu'une."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "37.2.0",
    "date": "2026-10-13",
@@ -178,41 +197,6 @@
       {
        "titre": null,
        "texte": "Les vibrations suivent le réglage du téléphone, et tout reste sobre quand le téléphone demande moins d'animations."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.0.1",
-   "date": "2026-10-12",
-   "intro": "Des cartes plus fluides dans la Boîte de Leitner et en fin de partie.",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Les cartes de la Boîte de Leitner retrouvent leur paysage",
-       "texte": "Quand on ouvrait un casier, les cartes étalées ne montraient plus que le ciel."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "⚡",
-     "titre": "Rapidité",
-     "points": [
-      {
-       "titre": "La révision retourne ses cartes sans à-coup",
-       "texte": "La carte se prépare pendant que vous lisez la question, au lieu de figer l'écran au milieu du geste."
-      },
-      {
-       "titre": "La pochette de fin de partie aussi",
-       "texte": "Chaque carte gagnée se retourne d'un seul mouvement."
       }
      ],
      "texte": "",

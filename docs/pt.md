@@ -494,6 +494,7 @@ sobretudo graças a estas indicações.
 ## Para saber mais
 
 <p class="liens-secondaires">
+  <a href="nouveautes-pt.html">🎁 Novidades</a> ·
   <a href="labs.html">🔬 Labs</a> (FR) ·
   <a href="ambassadeurs.html">📣 Embaixadores</a> (FR) ·
   <a href="supports-communication.html">🖨️ Cartazes e folhetos</a> (FR) ·

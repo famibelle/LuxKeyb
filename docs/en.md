@@ -485,6 +485,7 @@ to these reports.
 ## Further reading
 
 <p class="liens-secondaires">
+  <a href="nouveautes-en.html">🎁 What’s new</a> ·
   <a href="labs.html?lang=en">🔬 Labs</a> ·
   <a href="ambassadeurs.html">📣 Ambassadors</a> (FR) ·
   <a href="supports-communication.html">🖨️ Posters and flyers</a> (FR) ·
