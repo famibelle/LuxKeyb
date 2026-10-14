@@ -23,6 +23,7 @@ CAP = G / "captures-emulateur-pixel9"
 SHOTS = G.parents[1] / "docs" / "Screenshots"
 SOURCE = V / "Letzebuergesch_Clavier_presentation_fr.mp4"
 SORTIE = V / "Letzebuergesch_Clavier_reel_fr.mp4"
+BADGE = V / "badge_google_play_fr.png"  # docs/assets/google-play-badge-fr.svg, rendu par Chromium
 ICONE = G / "feature-graphic" / "icone-et-presentation" / "Icône de l'application.png"
 
 W, H, FPS = 1080, 1920, 30
@@ -240,6 +241,50 @@ class Titre:
         return im.convert("RGB")
 
 
+class Appel:
+    """Fin : l'appel à télécharger, badge Google Play qui bat doucement."""
+
+    def __init__(self, duree):
+        self.duree = duree
+        self.calques = [icone(200)]
+        for texte, f, coul, il in (("Lëtzebuergesch Clavier", police(44, True), GRIS, 56),
+                                   ("Téléchargez-le gratuitement", police(84, True), ENCRE, 92)):
+            c = Image.new("RGBA", (W, 400))
+            bas = bloc_texte(ImageDraw.Draw(c), 0, texte, f, coul, il, centre=True, largeur=940)
+            self.calques.append(c.crop((0, 0, W, bas)))
+        b = Image.open(BADGE).convert("RGBA")
+        self.badge = b.resize((780, round(b.height * 780 / b.width)), Image.LANCZOS)
+        self.calques.append(self.badge)
+        f = police(48, True)
+        texte = "Lien dans la bio"
+        w = round(f.getlength(texte)) + 110
+        pastille = Image.new("RGBA", (w, 96))
+        d = ImageDraw.Draw(pastille)
+        d.rounded_rectangle((0, 0, w - 1, 95), 48, fill=BLEU)
+        d.text((55, 20), texte, font=f, fill=(255, 255, 255))
+        self.calques.append(pastille)
+        c = Image.new("RGBA", (W, 60))
+        bloc_texte(ImageDraw.Draw(c), 0, "Sans publicité, sans traceur", police(38), GRIS, 50, centre=True)
+        self.calques.append(c)
+        self.gaps = [44, 16, 64, 48, 36, 0]
+
+    def rendu(self, t):
+        import math
+        im = fond().convert("RGBA")
+        total = sum(c.height for c in self.calques) + sum(self.gaps)
+        y = 150 + (BAS - 150 - total) // 2
+        for i, c in enumerate(self.calques):
+            a, dy = entrée(c, t, 0.1 * i)
+            if c is self.badge and t > 0.9:
+                k = 1 + 0.035 * math.sin((t - 0.9) * 2 * math.pi / 1.1) ** 2
+                g = c.resize((round(c.width * k), round(c.height * k)), Image.BICUBIC)
+                poser(im, g, ((W - g.width) // 2, y - (g.height - c.height) // 2 + dy), a)
+            else:
+                poser(im, c, ((W - c.width) // 2, y + dy), a)
+            y += c.height + self.gaps[i]
+        return im.convert("RGB")
+
+
 def séquence(dossier, debut, fin, vitesse, tenue):
     """Images [debut, fin] de la vidéo source, accélérées, la dernière tenue."""
     pas = []
@@ -293,9 +338,7 @@ def main():
                    cliché("lux_carnet_paysages.png", (568, 72, 1052, 781), 1.4),
                    cliché("lux_carnet_paysages.png", (0, 0, 540, 872), 1.9)],
                   1060, cadre=carte, retourne=True),
-            Titre("Lëtzebuergesch Clavier", "Lëtzebuergesch, sur votre téléphone.",
-                  "Gratuit sur Google Play", 4.2,
-                  pied="Essayez-le dans le navigateur :\nfamibelle.github.io/LuxKeyb"),
+            Appel(4.8),
         ]
 
         ff = subprocess.Popen(
