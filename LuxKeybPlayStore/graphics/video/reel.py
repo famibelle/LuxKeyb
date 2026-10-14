@@ -331,10 +331,10 @@ def main():
                    capture("11-jeu-wuertsich-mots-caches", 1.0)], 1120),
             Écran("Carnet", "Chaque mot gagné devient une carte",
                   "À collectionner, ou à échanger.",
-                  [cliché("lux_carte_stad.png", (17, 17, 783, 1143), 0.9),
-                   cliché("lux_carte_tres_rare.png", (17, 17, 783, 1143), 1.0),
+                  [cliché("lux_carnet_serie_paysages.png", (567, 73, 1051, 781), 0.9),
+                   cliché("lux_carnet_paysages.png", (568, 72, 1052, 781), 1.0),
                    cliché("lux_carnet_paysages.png", (0, 0, 540, 872), 1.1),
-                   cliché("lux_carnet_cession.png", (540, 0, 1080, 872), 1.3)],
+                   cliché("lux_carnet_serie_paysages.png", (0, 0, 540, 872), 1.3)],
                   1060, cadre=carte, retourne=True),
             Appel(4.8),
         ]
