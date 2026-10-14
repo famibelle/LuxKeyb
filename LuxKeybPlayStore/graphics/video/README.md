@@ -30,9 +30,10 @@ reprennent la main), correcteur système coupé, carnet sauvegardé puis restaur
 
 ## Reel vertical (Instagram)
 
-`Letzebuergesch_Clavier_reel_fr.mp4` : 26 s, 1080 × 1920 (9:16), 30 i/s, en
+`Letzebuergesch_Clavier_reel_fr.mp4` : 25 s, 1080 × 1920 (9:16), 30 i/s, en
 français, avec une piste audio muette (la musique s'ajoute dans Instagram).
-Accroche de 1,5 s, entière dès la première image (elle sert de vignette) :
+Accroche de 0,1 s, entière dès la première image : elle sert de vignette,
+c'est là qu'on la voit, pas dans la lecture. On y trouve
 le message et, dessous, le clavier qui propose « Schueberfouer ». Puis suggestions,
 dictée, Wierderbuch, jeux, carnet
 (20 s à eux cinq), puis

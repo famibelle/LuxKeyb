@@ -313,7 +313,7 @@ def main():
                         str(tmp / "%04d.png")], check=True)
 
         scenes = [
-            Accroche(1.5, tmp),
+            Accroche(0.1, tmp),
             Écran("Suggestions", "Il vous souffle les mots",
                   "Tapez « schue », il propose « Schueberfouer ». Après un espace, il devine la suite.",
                   séquence(tmp, 110, 425, 2.2, 1.2), 1120),
