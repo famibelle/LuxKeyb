@@ -33,7 +33,7 @@ reprennent la main), correcteur système coupé, carnet sauvegardé puis restaur
 `Letzebuergesch_Clavier_reel_fr.mp4` : 26 s, 1080 × 1920 (9:16), 30 i/s, en
 français, avec une piste audio muette (la musique s'ajoute dans Instagram).
 Accroche de 1,5 s, entière dès la première image (elle sert de vignette) :
-le message et, dessous, le clavier qui propose « Moien ». Puis suggestions,
+le message et, dessous, le clavier qui propose « Schueberfouer ». Puis suggestions,
 dictée, Wierderbuch, jeux, carnet
 (20 s à eux cinq), puis
 l'appel à télécharger : badge Google Play et « Lien dans la bio ». Le badge
