@@ -164,6 +164,8 @@ class Écran:
         for texte, f, coul, il, gap in ((kicker.upper(), police(34, True), BLEU, 44, 8),
                                         (titre, police(76, True), ENCRE, 82, 18),
                                         (sous, police(40), GRIS, 52, 0)):
+            if not texte:
+                continue
             c = Image.new("RGBA", (W, 400))
             bas = bloc_texte(ImageDraw.Draw(c), 0, texte, f, coul, il)
             self.textes.append((c.crop((0, 0, W, bas)), y))
@@ -356,8 +358,7 @@ def main():
                   [capture("13-jeu-wuertriet-mot-de-5-lettres", 1.0),
                    capture("16-jeu-kraizwuert-mots-croises", 0.9),
                    capture("11-jeu-wuertsich-mots-caches", 1.0)], 1120),
-            Écran("Carnet", "Chaque mot gagné devient une carte",
-                  "À collectionner, ou à échanger.",
+            Écran("Carnet", "Chaque mot gagné devient une carte à collectionner", "",
                   [cliché("lux_carnet_serie_paysages.png", (567, 73, 1051, 781), 0.9),
                    cliché("lux_carnet_paysages.png", (568, 72, 1052, 781), 1.0),
                    cliché("lux_carnet_paysages.png", (0, 0, 540, 872), 1.1),
