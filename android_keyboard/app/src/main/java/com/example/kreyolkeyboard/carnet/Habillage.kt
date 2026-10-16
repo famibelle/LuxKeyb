@@ -76,6 +76,41 @@ internal object Habillage {
         s.fete?.let { fete(c, w, h, u, heure, it, mk, alea) }
     }
 
+    /**
+     * La même chose sur les trois calques de [Paysages.plans], chacun avec
+     * son propre masque et sa propre échelle ([ks]).
+     *
+     * La matière change plan par plan, et les fleurs du printemps restent sur
+     * le plan qui les porte. La neige se pose sur le haut de chaque plan, si
+     * bien que les toits du milieu en prennent aussi quand ils passent devant
+     * une colline. Ce qui flotte (flocons, pétales, feuilles, oiseaux) va sur
+     * le calque proche, par-dessus tout, comme sur le rendu à plat. Jamais de
+     * fête ici : voir [Paysages.plans].
+     */
+    fun appliquerPlans(
+        couches: Array<Bitmap>, masques: Array<Bitmap>, lieu: Lieu, heure: Heure, s: Souvenir, ks: Array<FloatArray>
+    ) {
+        val graine = lieu.ordinal * 1009 + s.saison.ordinal * 101 + heure.rang
+        val alea = Paysages.Alea(graine)
+        val p = Paint(Paint.ANTI_ALIAS_FLAG)
+        for (i in couches.indices) {
+            val b = couches[i]
+            val w = b.width
+            val h = b.height
+            val u = ks[i][0] / PIXELS_MAQUETTE_PAR_UNITE
+            val mk = IntArray(w * h)
+            masques[i].getPixels(mk, 0, w, 0, 0, w, h)
+            val px = IntArray(w * h)
+            b.getPixels(px, 0, w, 0, 0, w, h)
+            val fleurs = fond(px, mk, w, h, u, heure, s.saison, alea)
+            b.setPixels(px, 0, w, 0, 0, w, h)
+            fleurir(Canvas(b), p, u, alea, fleurs)
+        }
+        val devant = couches.last()
+        dessus(Canvas(devant), devant.width.toFloat(), devant.height.toFloat(), ks.last()[0] / PIXELS_MAQUETTE_PAR_UNITE,
+            heure, s.saison, alea, FloatArray(0))
+    }
+
     private fun objet(mk: IntArray, i: Int) = (mk[i] ushr 24) > SEUIL_MASQUE
 
     // ------------------------------------------------------------ le fond
@@ -205,12 +240,7 @@ internal object Habillage {
                 }
             }
             Saison.FREIJOER -> {
-                var i = 0
-                while (i < fleurs.size) {
-                    p.color = if (alea() < 0.7f) argb(0.95f, 0xFF, 0x9E, 0xC8) else argb(0.95f, 255, 255, 255)
-                    c.drawCircle(fleurs[i], fleurs[i + 1], (2f + alea() * 1.8f) * u, p)
-                    i += 2
-                }
+                fleurir(c, p, u, alea, fleurs)
                 p.color = argb(0.85f, 0xFF, 0xB8, 0xD6)
                 repeat(22) { ellipse(c, p, alea() * W, alea() * H * 0.8f, 2.6f * u, 1.3f * u, alea() * PI.toFloat()) }
             }
@@ -242,6 +272,16 @@ internal object Habillage {
                     ellipse(c, p, alea() * W, alea() * H * 0.85f, 3.4f * u, 1.7f * u, alea() * PI.toFloat())
                 }
             }
+        }
+    }
+
+    /** Les fleurs que [fond] a semées, aux pixels qu'il a retenus. */
+    private fun fleurir(c: Canvas, p: Paint, u: Float, alea: Paysages.Alea, fleurs: FloatArray) {
+        var i = 0
+        while (i < fleurs.size) {
+            p.color = if (alea() < 0.7f) argb(0.95f, 0xFF, 0x9E, 0xC8) else argb(0.95f, 255, 255, 255)
+            c.drawCircle(fleurs[i], fleurs[i + 1], (2f + alea() * 1.8f) * u, p)
+            i += 2
         }
     }
 

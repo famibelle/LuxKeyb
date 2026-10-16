@@ -346,8 +346,132 @@ object Paysages {
         return bitmap
     }
 
-    fun dessiner(c: Canvas, lieu: Lieu, heure: Heure, ciel: Boolean = true, lieuAussi: Boolean = true) {
-        val p = Peintre(c, heure)
+    /**
+     * De combien chaque plan glisse au plus quand la carte penche à fond, en
+     * part de la largeur (de la hauteur pour le tangage) : le lointain, le
+     * milieu, le proche.
+     *
+     * C'est le lointain qui bouge le plus, comme derrière une vitre : le
+     * cadre de la carte est ce qu'il y a de plus près, le dessin du mot est
+     * posé dessus en nacre et ne bouge pas, et plus un plan est loin du
+     * verre, plus il glisse quand l'œil change d'angle.
+     */
+    val GLISSEMENT = floatArrayOf(0.04f, 0.022f, 0.008f)
+
+    /**
+     * Le lieu en trois calques, pour la carte ouverte : voir [GLISSEMENT].
+     * Le premier porte le ciel et ne laisse rien de vide, les deux autres
+     * sont transparents autour de ce qu'ils portent.
+     *
+     * Chaque calque est agrandi de quoi glisser sans découvrir son bord. Le
+     * lointain est légèrement flou : c'est la profondeur de champ, l'œil fait
+     * le point sur le dessin du mot, au premier plan.
+     *
+     * `null` pour une carte gagnée un jour de fête, qui garde son rendu à
+     * plat : les feux, les braises et les lumières s'ajoutent à la lumière
+     * du paysage entier, et ne se répartissent pas en calques.
+     */
+    fun plans(lieu: Lieu, heure: Heure, teinte: Float?, largeurPx: Int, hauteurPx: Int,
+              souvenir: Souvenir? = null): Array<Bitmap>? {
+        if (largeurPx <= 0 || hauteurPx <= 0 || souvenir?.fete != null) return null
+        val cle = cle(lieu, heure, teinte, largeurPx, hauteurPx, souvenir)
+        val caches = Array(GLISSEMENT.size) { CACHE.get("${cle}_p$it")?.takeIf { b -> !b.isRecycled } }
+        if (caches.all { it != null }) return caches.requireNoNulls()
+        val rendus = rendrePlans(lieu, heure, largeurPx, hauteurPx, souvenir)
+        rendus.forEachIndexed { i, b -> CACHE.put("${cle}_p$i", b) }
+        return rendus
+    }
+
+    private fun rendrePlans(lieu: Lieu, heure: Heure, l: Int, h: Int, souvenir: Souvenir?): Array<Bitmap> {
+        val base = cadrage(l.toFloat(), h.toFloat())
+        val ks = Array(GLISSEMENT.size) { i ->
+            // De quoi glisser de chaque côté, plus un pixel de garde.
+            val e = base[0] * (1f + 2f * GLISSEMENT[i]) + 2f / LARGEUR
+            floatArrayOf(e, (l - LARGEUR * e) / 2f, (h - HAUTEUR * e) / 2f)
+        }
+        fun calque(i: Int, ciel: Boolean, lieuAussi: Boolean): Bitmap {
+            val b = Bitmap.createBitmap(l, h, Bitmap.Config.ARGB_8888)
+            val c = Canvas(b)
+            c.translate(ks[i][1], ks[i][2])
+            c.scale(ks[i][0], ks[i][0])
+            dessiner(c, lieu, heure, ciel = ciel, lieuAussi = lieuAussi, seul = i)
+            return b
+        }
+        // Le lointain : le ciel, puis la crête, floutée seule pour que la lune
+        // et les étoiles gardent leur netteté.
+        val fond = calque(0, ciel = true, lieuAussi = false)
+        val loin = calque(0, ciel = false, lieuAussi = true)
+        flouter(loin, max(1, (ks[0][0] * FLOU_LOINTAIN).roundToInt()))
+        Canvas(fond).drawBitmap(loin, 0f, 0f, null)
+        val couches = arrayOf(fond, calque(1, false, true), calque(2, false, true))
+        if (souvenir != null) {
+            Habillage.appliquerPlans(couches, arrayOf(loin, couches[1], couches[2]), lieu, heure, souvenir, ks)
+        }
+        loin.recycle()
+        return couches
+    }
+
+    /** Le flou du lointain, en unités de la boîte : à peine, de quoi ne plus être net. */
+    private const val FLOU_LOINTAIN = 0.22f
+
+    /**
+     * Deux passes de flou en boîte, à peu près gaussiennes, sur les couleurs
+     * prémultipliées : sans cela, le bord d'une colline fondrait vers le noir
+     * des pixels transparents.
+     */
+    private fun flouter(b: Bitmap, rayon: Int) {
+        val w = b.width
+        val h = b.height
+        val px = IntArray(w * h)
+        b.getPixels(px, 0, w, 0, 0, w, h)
+        val canaux = Array(4) { FloatArray(w * h) }
+        for (i in px.indices) {
+            val c = px[i]
+            val a = (c ushr 24) / 255f
+            canaux[0][i] = a
+            canaux[1][i] = ((c shr 16) and 0xFF) * a
+            canaux[2][i] = ((c shr 8) and 0xFF) * a
+            canaux[3][i] = (c and 0xFF) * a
+        }
+        val tampon = FloatArray(max(w, h))
+        repeat(2) {
+            for (v in canaux) {
+                boite(v, tampon, w, h, rayon, horizontal = true)
+                boite(v, tampon, w, h, rayon, horizontal = false)
+            }
+        }
+        for (i in px.indices) {
+            val a = canaux[0][i]
+            px[i] = if (a <= 0.002f) 0 else
+                ((a * 255f).roundToInt().coerceIn(0, 255) shl 24) or
+                    ((canaux[1][i] / a).roundToInt().coerceIn(0, 255) shl 16) or
+                    ((canaux[2][i] / a).roundToInt().coerceIn(0, 255) shl 8) or
+                    (canaux[3][i] / a).roundToInt().coerceIn(0, 255)
+        }
+        b.setPixels(px, 0, w, 0, 0, w, h)
+    }
+
+    /** Une moyenne glissante sur 2r + 1 pixels, bords prolongés, ligne par ligne ou colonne par colonne. */
+    private fun boite(v: FloatArray, t: FloatArray, w: Int, h: Int, r: Int, horizontal: Boolean) {
+        val n = if (horizontal) w else h
+        val lignes = if (horizontal) h else w
+        val pas = if (horizontal) 1 else w
+        val norme = 1f / (2 * r + 1)
+        for (j in 0 until lignes) {
+            val debut = if (horizontal) j * w else j
+            for (k in 0 until n) t[k] = v[debut + k * pas]
+            var somme = 0f
+            for (k in -r..r) somme += t[k.coerceIn(0, n - 1)]
+            for (k in 0 until n) {
+                v[debut + k * pas] = somme * norme
+                somme += t[(k + r + 1).coerceAtMost(n - 1)] - t[(k - r).coerceAtLeast(0)]
+            }
+        }
+    }
+
+    fun dessiner(c: Canvas, lieu: Lieu, heure: Heure, ciel: Boolean = true, lieuAussi: Boolean = true,
+                 seul: Int = -1) {
+        val p = Peintre(c, heure, seul)
         if (ciel) p.ciel()
         if (!lieuAussi) return
         when (lieu) {
@@ -413,9 +537,25 @@ object Paysages {
     }
 
     /** Tout l'outillage de tracé d'un lieu, sur un canevas déjà à l'échelle. */
-    private class Peintre(val c: Canvas, val P: Heure) {
+    private class Peintre(val c: Canvas, val P: Heure, private val seul: Int = -1) {
         val p = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
         val BAS = HAUTEUR
+
+        /**
+         * Le plan où l'on peint : 0 le lointain, 1 le milieu, 2 le proche.
+         * Chaque lieu le fait avancer à mesure qu'il approche, jamais reculer.
+         */
+        private var plan = 0
+
+        /**
+         * Faux quand on ne rend qu'un plan et que ce n'est pas celui-ci : le
+         * tracé est tu, mais tout le reste se déroule, si bien que les tirages
+         * au sort restent les mêmes et qu'un plan seul tombe exactement sur
+         * le lieu entier.
+         */
+        val actif: Boolean get() = seul < 0 || plan == seul
+
+        fun plan(n: Int) { plan = n }
 
         fun mix(a: Int, b: Int, t: Float) = Heure.melange(a, b, t)
 
@@ -426,26 +566,31 @@ object Paysages {
         }
 
         fun rect(x: Float, y: Float, w: Float, h: Float, col: Int, o: Float = 1f) {
+            if (!actif) return
             p.style = Paint.Style.FILL; teinte(col, o)
             c.drawRect(x, y, x + w, y + h, p)
         }
 
         fun rond(cx: Float, cy: Float, r: Float, col: Int, o: Float = 1f) {
+            if (!actif) return
             p.style = Paint.Style.FILL; teinte(col, o)
             c.drawCircle(cx, cy, r, p)
         }
 
         fun forme(d: String, col: Int, o: Float = 1f) {
+            if (!actif) return
             p.style = Paint.Style.FILL; teinte(col, o)
             c.drawPath(chemin(d), p)
         }
 
         fun forme(path: Path, col: Int, o: Float = 1f) {
+            if (!actif) return
             p.style = Paint.Style.FILL; teinte(col, o)
             c.drawPath(path, p)
         }
 
         fun trait(d: String, col: Int, largeur: Float, o: Float = 1f) {
+            if (!actif) return
             p.style = Paint.Style.STROKE; p.strokeWidth = largeur; p.strokeCap = Paint.Cap.BUTT
             teinte(col, o)
             c.drawPath(chemin(d), p)
@@ -453,12 +598,14 @@ object Paysages {
         }
 
         fun ligne(x1: Float, y1: Float, x2: Float, y2: Float, col: Int, largeur: Float, o: Float = 1f) {
+            if (!actif) return
             p.style = Paint.Style.STROKE; p.strokeWidth = largeur; teinte(col, o)
             c.drawLine(x1, y1, x2, y2, p)
             p.style = Paint.Style.FILL
         }
 
         fun anneau(cx: Float, cy: Float, r: Float, col: Int, largeur: Float) {
+            if (!actif) return
             p.style = Paint.Style.STROKE; p.strokeWidth = largeur; teinte(col, 1f)
             c.drawCircle(cx, cy, r, p)
             p.style = Paint.Style.FILL
@@ -585,6 +732,7 @@ object Paysages {
         fun veianen() {
             val r = Alea(3)
             crete(33f, 2.4f, 5, P.loin)
+            plan(1)
             forme("M0 66L0 45C14 41 30 36 42 32C52 29 66 29 76 32C86 35 94 40 100 42L100 66Z", P.milieu)
             val pi = P.pierre
             val om = mix(P.pierre, P.pres, 0.3f)
@@ -601,6 +749,7 @@ object Paysages {
             fenetre(47.4f, 19f, 1.1f, 1.8f, r); fenetre(72.4f, 17f, 1.2f, 2f, r); fenetre(72.4f, 22f, 1.2f, 2f, r)
             bosquet(30f, 44f, 34.5f, 2.4f, 8, mix(P.milieu, P.pres, 0.4f))
             bosquet(80f, 100f, 37f, 2.6f, 9, mix(P.milieu, P.pres, 0.4f))
+            plan(2)
             forme("M0 66L0 52C20 48 40 50 60 49C80 48 92 50 100 52L100 66Z", P.pres)
             x = 14f
             while (x < 90f) {
@@ -628,10 +777,12 @@ object Paysages {
                 i += 3
             }
             crete(37f, 1.6f, 6, P.loin)
+            plan(1)
             forme("M0 66L0 38C14 40 28 50 42 62L42 66Z", P.milieu)
             forme("M100 66L100 39C86 41 72 50 58 62L58 66Z", P.milieu)
             bosquet(0f, 40f, 46f, 2.2f, 7, mix(P.milieu, P.pres, 0.45f))
             bosquet(60f, 100f, 47f, 2.2f, 8, mix(P.milieu, P.pres, 0.45f))
+            plan(2)
             rect(0f, 58f, 100f, 8f, P.pres)
             bosquet(34f, 66f, 60f, 2f, 9, P.sol)
             val rouge = intArrayOf(0xFFC63A2E.toInt(), 0xFFC2432F.toInt(), 0xFF9C2F33.toInt(), 0xFF6B1F2A.toInt())[P.rang]
@@ -649,11 +800,13 @@ object Paysages {
         fun eschSauer() {
             val r = Alea(5)
             crete(30f, 2.6f, 15, P.loin)
+            plan(1)
             forme("M0 66L0 27C10 25 20 30 28 40C32 46 33 56 31 66Z", P.milieu)
             forme("M100 66L100 26C90 24 80 30 73 38C69 46 69 56 71 66Z", P.milieu)
             bosquet(0f, 28f, 30f, 2.4f, 16, mix(P.milieu, P.pres, 0.35f))
             bosquet(72f, 100f, 30f, 2.4f, 17, mix(P.milieu, P.pres, 0.35f))
             eau(52f, 18, 44f, 52f, 58f)
+            plan(2)
             forme("M30 66C31 54 38 42 50 37C62 42 69 54 70 66Z", mix(P.milieu, P.pres, 0.5f))
             val om = mix(P.pierre, P.pres, 0.3f)
             rect(47.5f, 25f, 5f, 12f, om)
@@ -672,6 +825,7 @@ object Paysages {
         fun musel() {
             val r = Alea(6)
             crete(30f, 2f, 20, P.loin, x0 = 30f)
+            plan(1)
             rect(0f, 40f, 100f, 7f, P.milieu)
             var x = 52f
             while (x < 100f) { maison(x, 45f, 3.4f, 2.6f + r() * 1.6f, r); x += 4.2f }
@@ -681,6 +835,7 @@ object Paysages {
             forme("M62 52.6L86 52.6L84 54.4L64 54.4Z", P.sol)
             rect(80f, 51f, 3.2f, 1.8f, P.sol)
             if (P.allume) rond(81.6f, 51.9f, 0.4f, P.fenetre)
+            plan(2)
             val vigne = mix(P.milieu, 0xFF6F8F3E.toInt(), if (P.nuit) 0.1f else 0.35f)
             forme("M0 66L0 14C18 20 38 34 60 66Z", vigne)
             val rang = mix(vigne, P.sol, 0.55f)
@@ -698,6 +853,7 @@ object Paysages {
         fun neimenster() {
             val r = Alea(7)
             crete(32f, 1.8f, 23, P.loin, x0 = 30f)
+            plan(1)
             val roc = mix(P.pierre, P.pres, 0.42f)
             val roc2 = mix(roc, P.sol, 0.3f)
             bosquet(80f, 100f, 36f, 2.6f, 24, mix(P.milieu, P.pres, 0.3f))
@@ -709,6 +865,7 @@ object Paysages {
             var x = 0f
             while (x < 30f) { rect(x, 5.4f, 1.2f, 1.3f, rempart); x += 2.2f }
             rect(21f, 2f, 4.5f, 6f, rempart)
+            plan(2)
             forme("M37 37.5L93 37.5L91 34L39 34Z", P.toit)
             rect(38f, 37.5f, 54f, 13f, P.pierre)
             rect(38f, 47.5f, 54f, 3f, mix(P.pierre, P.pres, 0.25f))
@@ -727,6 +884,7 @@ object Paysages {
         /** La Gëlle Fra : l'obélisque et sa statue dorée, le pont Adolphe derrière. */
         fun gelleFra() {
             crete(34f, 1.4f, 27, P.loin)
+            plan(1)
             val pi = mix(P.pierre, P.pres, 0.22f)
             rect(-1f, 22f, 102f, 2.6f, pi)
             trait("M6 54Q50 -6 94 54", pi, 3f)
@@ -738,6 +896,7 @@ object Paysages {
                 x += 4.5f
             }
             if (P.allume) { x = 3f; while (x < 100f) { rond(x, 21.6f, 0.45f, P.fenetre); x += 5f } }
+            plan(2)
             bosquet(0f, 100f, 50f, 2.8f, 28, P.milieu)
             bosquet(0f, 100f, 55f, 2.4f, 29, mix(P.milieu, P.pres, 0.5f))
             rect(0f, 58f, 100f, 8f, P.pres)
@@ -758,6 +917,7 @@ object Paysages {
         /** La Schueberfouer : la grande roue, les tentes, les guirlandes. */
         fun fouer() {
             crete(42f, 1.4f, 31, P.loin)
+            plan(1)
             val cx = 67f; val cy = 27f; val R = 19.5f
             val struct = if (P.nuit || P.rang == 2) mix(P.pierre, P.pres, 0.1f) else mix(0xFFFFFFFF.toInt(), P.pierre, 0.35f)
             trait("M57 60L$cx ${cy}L77 60M59.5 60L$cx ${cy}L74.5 60", mix(struct, P.pres, 0.35f), 0.9f)
@@ -781,9 +941,10 @@ object Paysages {
                 ligne(x, y, x, y + 1.4f, struct, 0.3f)
                 p.style = Paint.Style.FILL
                 teinte(if (P.nuit) mix(coul[k % 6], noir, 0.25f) else coul[k % 6], 1f)
-                c.drawRoundRect(x - 1.5f, y + 1.3f, x + 1.5f, y + 3.7f, 0.6f, 0.6f, p)
+                if (actif) c.drawRoundRect(x - 1.5f, y + 1.3f, x + 1.5f, y + 3.7f, 0.6f, 0.6f, p)
                 if (P.allume) rect(x - 0.9f, y + 1.8f, 1.8f, 0.9f, P.fenetre, 0.85f)
             }
+            plan(2)
             rect(0f, 58f, 100f, 8f, P.pres)
             fun tente(x: Float, w: Float, h: Float, col: Int) {
                 val toile = if (P.nuit) mix(0xFFF3ECE0.toInt(), noir, 0.55f) else 0xFFF6EFE2.toInt()
@@ -816,6 +977,7 @@ object Paysages {
             val r = Alea(10)
             crete(30f, 2.2f, 33, P.loin)
             bosquet(0f, 100f, 34f, 2.2f, 34, mix(P.loin, P.milieu, 0.5f))
+            plan(1)
             val roc = mix(P.pierre, 0xFFB48A55.toInt(), if (P.nuit) 0.15f else 0.32f)
             val roco = mix(roc, P.pres, 0.4f)
             val mousse = mix(P.milieu, 0xFF4F7D3A.toInt(), if (P.nuit) 0.1f else 0.35f)
@@ -831,6 +993,7 @@ object Paysages {
             }
             bosquet(0f, 16f, 12f, 2.2f, 35, mousse)
             bosquet(83f, 100f, 15f, 2.2f, 36, mousse)
+            plan(2)
             forme("M36 33L64 33L64 38.5L56 38.5C56 35.6 44 35.6 44 38.5L36 38.5Z", mix(P.pierre, P.pres, 0.2f))
             val blanc = if (P.nuit) 0xFF9FB3D8.toInt() else 0xFFFFFFFF.toInt()
             rect(44.6f, 37.5f, 10.8f, 7f, blanc, 0.85f)
@@ -852,6 +1015,7 @@ object Paysages {
         fun stad() {
             val r = Alea(11)
             crete(36f, 1.2f, 39, P.loin)
+            plan(1)
             val pi = P.pierre
             val om = mix(P.pierre, P.pres, 0.3f)
             var x = 0f
@@ -877,6 +1041,7 @@ object Paysages {
                 if (P.allume && r() < 0.5f) rect(x + 1.8f, 45.5f, 1.2f, 1.8f, P.fenetre)
                 x += 9f
             }
+            plan(2)
             bosquet(0f, 100f, 52.5f, 2.4f, 40, P.milieu)
             rect(0f, 54f, 100f, 12f, P.pres)
             x = 6f
