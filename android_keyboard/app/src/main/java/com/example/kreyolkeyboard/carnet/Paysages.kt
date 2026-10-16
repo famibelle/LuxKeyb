@@ -12,6 +12,7 @@ import android.os.Looper
 import android.util.LruCache
 import java.util.concurrent.Executors
 import kotlin.math.PI
+import kotlin.math.ceil
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.min
@@ -363,7 +364,8 @@ object Paysages {
      * Le premier porte le ciel et ne laisse rien de vide, les deux autres
      * sont transparents autour de ce qu'ils portent.
      *
-     * Chaque calque est agrandi de quoi glisser sans découvrir son bord. Le
+     * Chaque calque déborde de la fenêtre de quoi glisser sans découvrir son
+     * bord : voir [marge], et [CadreOrne] qui le peint centré sur elle. Le
      * lointain est légèrement flou : c'est la profondeur de champ, l'œil fait
      * le point sur le dessin du mot, au premier plan.
      *
@@ -382,15 +384,23 @@ object Paysages {
         return rendus
     }
 
+    /**
+     * Ce que le calque [i] déborde de chaque côté d'une fenêtre de [n] pixels :
+     * sa plus grande course, plus un pixel de garde.
+     *
+     * Jusqu'en 37.4.1 les calques avaient la taille exacte de la fenêtre, le
+     * dessin seul était agrandi dedans : en glissant, le bord de l'image
+     * découvrait une bande du fond de la fenêtre (vu sur un Galaxy A21s).
+     */
+    fun marge(i: Int, n: Int): Int = ceil(GLISSEMENT[i] * n).toInt() + 1
+
     private fun rendrePlans(lieu: Lieu, heure: Heure, l: Int, h: Int, souvenir: Souvenir?): Array<Bitmap> {
-        val base = cadrage(l.toFloat(), h.toFloat())
+        val tailles = Array(GLISSEMENT.size) { i -> intArrayOf(l + 2 * marge(i, l), h + 2 * marge(i, h)) }
         val ks = Array(GLISSEMENT.size) { i ->
-            // De quoi glisser de chaque côté, plus un pixel de garde.
-            val e = base[0] * (1f + 2f * GLISSEMENT[i]) + 2f / LARGEUR
-            floatArrayOf(e, (l - LARGEUR * e) / 2f, (h - HAUTEUR * e) / 2f)
+            cadrage(tailles[i][0].toFloat(), tailles[i][1].toFloat())
         }
         fun calque(i: Int, ciel: Boolean, lieuAussi: Boolean): Bitmap {
-            val b = Bitmap.createBitmap(l, h, Bitmap.Config.ARGB_8888)
+            val b = Bitmap.createBitmap(tailles[i][0], tailles[i][1], Bitmap.Config.ARGB_8888)
             val c = Canvas(b)
             c.translate(ks[i][1], ks[i][2])
             c.scale(ks[i][0], ks[i][0])

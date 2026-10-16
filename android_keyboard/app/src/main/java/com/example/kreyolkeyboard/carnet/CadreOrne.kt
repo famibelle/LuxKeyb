@@ -4442,7 +4442,7 @@ class Motif(
         if (!avecLieu) {
             // Le lieu viendra par [peindreLieu], à chaque trame.
         } else if (etages != null) {
-            peindrePlans(c, etages, regardX, regardY)
+            peindrePlans(c, etages, l, h, regardX, regardY)
         } else if (image != null) {
             c.drawBitmap(image, null, visible, peinture)
         } else {
@@ -4458,7 +4458,10 @@ class Motif(
 
     /** Les plans à la bonne taille, rendus sur place s'il le faut, ou `null` s'ils n'existent pas (fête). */
     private fun plansAPeindre(l: Int, h: Int): Array<Bitmap>? {
-        plans?.takeIf { it[0].width == l && it[0].height == h && it.none { b -> b.isRecycled } }?.let { return it }
+        plans?.takeIf {
+            it[0].width == l + 2 * Paysages.marge(0, l) && it[0].height == h + 2 * Paysages.marge(0, h) &&
+                it.none { b -> b.isRecycled }
+        }?.let { return it }
         if (plansManques) return null
         return try {
             Paysages.plans(lieu, heure, teinteChamp, l, h, souvenir)?.also { plans = it }
@@ -4469,11 +4472,22 @@ class Motif(
         }
     }
 
-    private fun peindrePlans(c: Canvas, etages: Array<Bitmap>, regardX: Float, regardY: Float) {
+    /**
+     * Chaque calque déborde de la fenêtre ([Paysages.marge]) : on le peint
+     * centré sur elle, à l'échelle de la fenêtre, puis décalé selon le regard.
+     */
+    private fun peindrePlans(c: Canvas, etages: Array<Bitmap>, l: Int, h: Int, regardX: Float, regardY: Float) {
+        val sx = visible.width() / l
+        val sy = visible.height() / h
         for (i in etages.indices) {
             val dx = Paysages.GLISSEMENT[i] * visible.width() * regardX
             val dy = Paysages.GLISSEMENT[i] * visible.height() * regardY
-            ouPlan.set(visible.left + dx, visible.top + dy, visible.right + dx, visible.bottom + dy)
+            val mx = Paysages.marge(i, l) * sx
+            val my = Paysages.marge(i, h) * sy
+            ouPlan.set(
+                visible.left - mx + dx, visible.top - my + dy,
+                visible.right + mx + dx, visible.bottom + my + dy
+            )
             c.drawBitmap(etages[i], null, ouPlan, peinture)
         }
     }
@@ -4483,10 +4497,12 @@ class Motif(
      * quand `avecLieu` est faux. Rien si le lieu n'est pas en plans.
      */
     fun peindreLieu(c: Canvas, decoupe: Path, echelle: Float, regardX: Float, regardY: Float) {
-        val etages = plansAPeindre((visible.width() * echelle).toInt(), (visible.height() * echelle).toInt()) ?: return
+        val l = (visible.width() * echelle).toInt()
+        val h = (visible.height() * echelle).toInt()
+        val etages = plansAPeindre(l, h) ?: return
         c.save()
         c.clipPath(decoupe)
-        peindrePlans(c, etages, regardX, regardY)
+        peindrePlans(c, etages, l, h, regardX, regardY)
         c.restore()
     }
 
