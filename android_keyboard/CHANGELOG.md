@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.4.5] - 2026-10-16
+
+### 🐛 Corrections
+
+- **Les cartes de la boîte de Leitner montrent leur paysage** : dans les casiers, les cartes empilées n'affichaient que le ciel ; elles montrent désormais leur lieu, leur saison et leur fête, comme dans le carnet.
+
 ## [37.4.4] - 2026-10-16
 
 ### 🐛 Corrections
