@@ -2,11 +2,15 @@
 <input-method xmlns:android="http://schemas.android.com/apk/res/android"
     android:settingsActivity="com.example.kreyolkeyboard.SettingsActivity"
     android:supportsSwitchingToNextInputMethod="true">
-    <!-- Le libellé du sous-type s'affiche sous le nom de l'application dans
-         « Clavier à l'écran » : y remettre le nom complet le répétait deux
-         fois de suite. C'est la place de la langue proposée. -->
+    <!-- Le libellé du sous-type est le nom du clavier, pas la langue.
+         Samsung (One UI, vu sur un Galaxy A21s le 2026-10-16) affiche ce
+         libellé dans son sélecteur de clavier quand il n'y a qu'un sous-type ;
+         et quand ce libellé n'est que « Lëtzebuergesch », il le remplace par
+         son propre « Clavier luxembourgeois Luxembourg ». Le prix : sous
+         Android standard, « Clavier à l'écran » répète le nom deux fois
+         (c'est pour l'éviter que la 10.9.2 avait mis la langue seule). -->
     <subtype
-        android:label="@string/subtype_kreyol_description"
+        android:label="@string/keyboard_name"
         android:languageTag="lb-LU"
         android:imeSubtypeMode="keyboard"
         android:isAuxiliary="false"

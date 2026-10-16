@@ -3,7 +3,7 @@
     <!-- Anglais : la langue par défaut, servie à tout téléphone dont la langue n'a pas de traduction. -->
     <string name="app_name" translatable="false">Lëtzebuergesch Clavier</string>
     <string name="app_name_full" translatable="false">Lëtzebuergesch Clavier • Luxembourg</string>
-    <string name="keyboard_name" translatable="false">Lëtzebuergesch Clavier</string>
+    <string name="keyboard_name" translatable="false">🇱🇺 Lëtzebuergesch Clavier</string>
     <string name="keyboard_description">Luxembourgish keyboard with word suggestions and accents</string>
     <string name="settings_title">Lëtzebuergesch Clavier settings</string>
     <string name="spell_checker_name">Lëtzebuergesch spell checker</string>
