@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.4.4] - 2026-10-16
+
+### 🐛 Corrections
+
+- **Les oiseaux d'été volent dans la fenêtre de la carte** : sur la carte ouverte et dans la pochette, ils battent doucement des ailes et planent en dérivant à peine. Ils étaient figés dans le paysage.
+
 ## [37.4.3] - 2026-10-16
 
 ### 🐛 Corrections
