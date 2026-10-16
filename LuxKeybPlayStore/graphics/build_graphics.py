@@ -68,6 +68,13 @@ lancement, clavier activé mais pas encore choisi : une fois le clavier choisi,
 l'application passe d'elle-même sur l'accueil « Haut » et l'ancien écran
 « 2/3 » n'existe plus.
 
+Les écrans du carnet (07, 18, 19) ont été refaits le 16 octobre 2026 sous la
+37.4.4 (plus la correction des piles de la boîte), dans les cinq langues, pour
+montrer les cartes à paysage, saisons et bordures : carnet de démonstration
+de 39 cartes poussé dans `shared_prefs/carnet_cartes.xml` d'une version de
+débogage, dates de capture choisies pour couvrir saisons et fêtes. La carte
+ouverte est « Artist » (rare, Schueberfouer, été), triée par rareté.
+
 Les neuf écrans des jeux et du carnet (11 à 19) ont été pris de même dans
 lb, de-DE, en-US et pt-PT le 7 octobre 2026 sous la 33.2.1, pour les visuels
 hors Console ; le français garde ceux de la racine (28 septembre). Wuertriet
@@ -143,7 +150,7 @@ ROUGE, BLEU, ENCRE, PAPIER = "#ED2939", "#00A1DE", "#1F2933", "#F5F5F3"
 CAPTURES = [
     ("Captures d'écran pour téléphone 1 (Suggestions)", "08-clavier-suggestions-lb-fr-recadre.png"),
     ("Captures d'écran pour téléphone 2 (Dictée)", "20-clavier-dictee-luxasr-recadre.png"),
-    ("Captures d'écran pour téléphone 3 (Carnet)", "07-carnet-carte-moien.png"),
+    ("Captures d'écran pour téléphone 3 (Carnet)", "07-carnet-carte-artist.png"),
     ("Captures d'écran pour téléphone 4 (Jeux)", "02-jeux-onglet-spiller.png"),
     ("Captures d'écran pour téléphone 5 (Wierderbuch)", "06-wierderbuch-fiche-gromperekichelchen.png"),
     ("Captures d'écran pour téléphone 6 (Accents)", "09-clavier-diacritiques-appui-long-recadre.png"),
@@ -436,11 +443,11 @@ HORS_CONSOLE_TABLETTE = [
     ("Carnet 1 (Boîte de Leitner)", "18-boite-de-leitner.png", ("hors", 7)),
     ("Carnet 2 (Éventail de cartes)", "19-boite-de-leitner-eventail.png", ("hors", 8)),
     ("Voix (Message parlé)", "21-clavier-dictee-luxasr.png", ("hors", 9)),
-    # l'album à pages n'existe que sur tablette ; la carte ouverte est « Sonn »,
-    # illustrée, dont la phrase n'a pas de traduction officielle : la légende
-    # n'en promet donc pas, à la différence de celle du téléphone (Moien)
+    # l'album à pages n'existe que sur tablette ; la carte ouverte est
+    # « Artist », comme sur le téléphone. 18, 19, 22 et 23 refaits le
+    # 16 octobre 2026 (37.4.4), avec le carnet de démonstration du téléphone
     ("Carnet 3 (Album de cartes)", "22-carnet-album.png", ("tab", 0)),
-    ("Carnet 4 (Carte ouverte)", "23-carnet-carte-sonn.png", ("tab", 1)),
+    ("Carnet 4 (Carte ouverte)", "23-carnet-carte-artist.png", ("tab", 1)),
 ]
 
 # Les légendes propres à la tablette, dans l'ordre des renvois ("tab", rang).
