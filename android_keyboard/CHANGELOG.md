@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.4.6] - 2026-10-16
+
+### ✨ Améliorations
+
+- **La rareté se dit en toutes lettres** : en tête du carnet, chaque palier est nommé (« ✦ 5 très rares ★ 11 rares… ») au lieu de symboles seuls ; dans la pochette, une carte rare ou très rare s'annonce au moment où elle se pose.
+
 ## [37.4.5] - 2026-10-16
 
 ### 🐛 Corrections
