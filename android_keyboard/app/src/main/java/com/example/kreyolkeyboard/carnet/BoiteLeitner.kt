@@ -248,6 +248,13 @@ internal class BoiteLeitner(context: Context) : View(context) {
         invalidate()
     }
 
+    /** Remplace un seul recto, celui dont le paysage vient d'arriver. */
+    fun poserRecto(forme: String, recto: Bitmap) {
+        if (forme !in rectos) return
+        rectos[forme] = recto
+        invalidate()
+    }
+
     /**
      * Le compte de la plaque est celui de la **session**, pas de l'arriéré.
      *

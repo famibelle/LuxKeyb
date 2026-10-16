@@ -204,7 +204,11 @@ class BoiteFragment : Fragment(), com.example.kreyolkeyboard.SettingsActivity.Je
                 boite.faceDuCasier(0).width().toInt()
             )
             boite.cartesVisibles()
-                .mapNotNull { c -> parForme[c.forme]?.let { c.forme to rendreRecto(it, cote) } }
+                .mapNotNull { c ->
+                    parForme[c.forme]?.let { contenu ->
+                        c.forme to rendreRecto(contenu, cote) { refaireRectoDePile(contenu, cote, gen) }
+                    }
+                }
                 .toMap()
         } catch (e: Throwable) {
             emptyMap()
@@ -217,6 +221,24 @@ class BoiteFragment : Fragment(), com.example.kreyolkeyboard.SettingsActivity.Je
             boite.poserRectos(rectos)
             eventail?.let { ev ->
                 if (ev.enAttente && casierOuvert >= 0) ev.poserCartes(cartesDuCasier(casierOuvert))
+            }
+        }
+    }
+
+    /**
+     * Refait le recto d'une pile quand son paysage arrive. Comme l'éventail, la
+     * boîte garde une photo de la vignette, qui sans cela restait au ciel seul
+     * sur toutes les piles.
+     */
+    private fun refaireRectoDePile(c: ContenuCarte, cote: Int, gen: Int) {
+        FilDeRendu.handler.post {
+            val recto = try {
+                rendreRecto(c, cote)
+            } catch (e: Throwable) {
+                return@post
+            }
+            activity?.runOnUiThread {
+                if (isAdded && gen == generation) boite.poserRecto(c.carte.forme, recto)
             }
         }
     }
@@ -349,7 +371,11 @@ class BoiteFragment : Fragment(), com.example.kreyolkeyboard.SettingsActivity.Je
      * les bitmaps de cadre qu'[Ornement] met en cache par largeur sont ainsi
      * partagés avec la grille. Le dessin est ensuite réduit à la cible.
      */
-    private fun rendreRecto(c: ContenuCarte, cible: Int): Bitmap {
+    private fun rendreRecto(
+        c: ContenuCarte,
+        cible: Int,
+        quandLieuArrive: () -> Unit = { eventail?.rafraichir(c.carte.forme) }
+    ): Bitmap {
         val d = resources.displayMetrics.density
         // Jamais plus petite que la cible : réduire est net, agrandir floute,
         // et l'éventail d'une tablette demande des cartes de 220 dp.
@@ -360,7 +386,7 @@ class BoiteFragment : Fragment(), com.example.kreyolkeyboard.SettingsActivity.Je
         // Le paysage d'une vignette arrive en différé : tant qu'il manque, la
         // photo n'a que le ciel. Quand il est là, l'éventail la refait, et le
         // paysage, désormais en cache, y entre. Régression de la 36.3.0.
-        (vue as? CarteOrnee)?.quandLieuArrive = { eventail?.rafraichir(c.carte.forme) }
+        (vue as? CarteOrnee)?.quandLieuArrive = quandLieuArrive
         vue.measure(
             View.MeasureSpec.makeMeasureSpec(largeur, View.MeasureSpec.EXACTLY),
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
