@@ -9,6 +9,14 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.4.0] - 2026-10-16
+
+La fenêtre de la carte prend de la profondeur.
+
+### ✨ Nouveautés
+
+- **Le paysage de la carte a trois plans** : penchez le téléphone, et le lointain, le milieu et le premier plan glissent chacun à leur vitesse, comme derrière une vitre. Les collines au loin sont légèrement floues ; le dessin du mot reste net, au premier plan. Sur la carte ouverte du carnet et dans la pochette de fin de partie.
+
 ## [37.3.1] - 2026-10-16
 
 ### 🐛 Corrections
