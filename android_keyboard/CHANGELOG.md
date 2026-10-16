@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.3.1] - 2026-10-16
+
+### 🐛 Corrections
+
+- **La carte gagnée en fin de partie s'anime enfin** : dans la pochette, la fenêtre de la carte montre maintenant le temps de sa saison (feuilles, neige, pétales, lucioles…), comme dans le carnet. Elle restait figée.
+
 ## [37.3.0] - 2026-10-14
 
 Le clavier rattrape la lettre doublée tapée une seule fois.
