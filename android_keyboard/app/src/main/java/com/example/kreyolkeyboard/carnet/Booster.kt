@@ -148,10 +148,6 @@ object Booster {
         colonne.addView(progres)
 
         val bandeau = TextView(ctx).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { bottomMargin = dp(8f) }
             text = ctx.getString(R.string.pochette_nouvelle_carte)
             textSize = 12f
             setTypeface(null, Typeface.BOLD)
@@ -163,7 +159,60 @@ object Booster {
             }
             visibility = View.INVISIBLE
         }
-        colonne.addView(bandeau)
+
+        // Le nom du palier, pour les rares et très rares seulement. La
+        // cérémonie le faisait sentir sans jamais le dire : il fallait
+        // connaître le code des bordures et des heures pour savoir ce qu'on
+        // venait de gagner. Une commune n'a pas d'annonce, comme elle n'a pas
+        // de halo.
+        val annonce = TextView(ctx).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { leftMargin = dp(8f) }
+            textSize = 12f
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(Color.WHITE)
+            setPadding(dp(12f), dp(5f), dp(12f), dp(5f))
+            visibility = View.GONE
+        }
+
+        val bandeaux = LinearLayout(ctx).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { bottomMargin = dp(8f) }
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER
+            addView(bandeau)
+            addView(annonce)
+        }
+        colonne.addView(bandeaux)
+
+        /** Montre l'annonce du palier de [rarete], avec un petit bond si [anime]. */
+        fun annoncer(rarete: Rarete, anime: Boolean) {
+            if (!rarete.distinguee) return
+            annonce.text = ctx.getString(
+                if (rarete == Rarete.TRES_RARE) R.string.pochette_carte_tres_rare
+                else R.string.pochette_carte_rare
+            )
+            annonce.background = GradientDrawable().apply {
+                cornerRadius = 20f * d
+                setColor(rarete.couleur)
+            }
+            annonce.visibility = View.VISIBLE
+            if (anime) {
+                val ampleur = if (rarete == Rarete.TRES_RARE) 0.5f else 0.7f
+                annonce.alpha = 0f
+                annonce.scaleX = ampleur
+                annonce.scaleY = ampleur
+                annonce.animate().alpha(1f).scaleX(1f).scaleY(1f)
+                    .setDuration(if (rarete == Rarete.TRES_RARE) 420L else 260L)
+                    .setInterpolator(OvershootInterpolator(2f))
+                    .start()
+            }
+            annonce.announceForAccessibility(annonce.text)
+        }
 
         // La scène : les cartes y défilent, elle ne bouge pas. C'est elle qui
         // lit le geste, et pas la carte — voir [ScenePochette].
@@ -272,6 +321,8 @@ object Booster {
          */
         fun chrome(index: Int) {
             bandeau.visibility = View.INVISIBLE
+            annonce.animate().cancel()
+            annonce.visibility = View.GONE
             val neuves = contenus.count { it.carte.forme in nouvelles }
             if (index >= ordre.size) {
                 progres.text = if (ordre.size > 1)
@@ -389,6 +440,7 @@ object Booster {
                 })
                 page.addView(face)
                 if (neuve) bandeau.visibility = View.VISIBLE
+                annoncer(rarete, anime = false)
                 // `suivre` se tait tout seul quand les animations sont coupées.
                 Inclinaison.suivre(face)
                 if (animations) feter(page, rarete, c.carte.forme)
@@ -531,6 +583,7 @@ object Booster {
                                         else -> {}
                                     }
                                     feter(page, rarete, c.carte.forme)
+                                    annoncer(rarete, anime = true)
                                     if (neuve) {
                                         bandeau.visibility = View.VISIBLE
                                         bandeau.alpha = 0f

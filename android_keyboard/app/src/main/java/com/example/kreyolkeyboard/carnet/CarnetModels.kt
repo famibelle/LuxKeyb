@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard.carnet
 
 import com.example.kreyolkeyboard.R
+import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import android.content.Context
 import android.graphics.Color
@@ -625,11 +626,17 @@ data class CarteMot(
  * comme le plus rare : c'est la lecture juste, une forme que le corpus ne
  * connaît pas est plus rare que tout ce qu'il connaît.
  */
-enum class Rarete(@StringRes val libelle: Int, val symbole: String, val couleur: Int) {
-    COMMUN(R.string.rarete_commun, "●", 0xFF78909C.toInt()),
-    PEU_COMMUN(R.string.rarete_peu_commun, "◆", 0xFF43A047.toInt()),
-    RARE(R.string.rarete_rare, "★", 0xFF1E88E5.toInt()),
-    TRES_RARE(R.string.rarete_tres_rare, "✦", 0xFF8E24AA.toInt());
+enum class Rarete(
+    @StringRes val libelle: Int,
+    val symbole: String,
+    val couleur: Int,
+    /** « 5 très rares » : la légende du compte en tête du carnet. */
+    @PluralsRes val compte: Int
+) {
+    COMMUN(R.string.rarete_commun, "●", 0xFF78909C.toInt(), R.plurals.rarete_compte_commun),
+    PEU_COMMUN(R.string.rarete_peu_commun, "◆", 0xFF43A047.toInt(), R.plurals.rarete_compte_peu_commun),
+    RARE(R.string.rarete_rare, "★", 0xFF1E88E5.toInt(), R.plurals.rarete_compte_rare),
+    TRES_RARE(R.string.rarete_tres_rare, "✦", 0xFF8E24AA.toInt(), R.plurals.rarete_compte_tres_rare);
 
     /**
      * Le symbole, répété autant de fois que le palier est haut.

@@ -140,6 +140,22 @@
     <string name="rarete_peu_commun">Uncommon</string>
     <string name="rarete_rare">Rare</string>
     <string name="rarete_tres_rare">Very rare</string>
+    <plurals name="rarete_compte_tres_rare">
+        <item quantity="one">%d very rare</item>
+        <item quantity="other">%d very rare</item>
+    </plurals>
+    <plurals name="rarete_compte_rare">
+        <item quantity="one">%d rare</item>
+        <item quantity="other">%d rare</item>
+    </plurals>
+    <plurals name="rarete_compte_peu_commun">
+        <item quantity="one">%d uncommon</item>
+        <item quantity="other">%d uncommon</item>
+    </plurals>
+    <plurals name="rarete_compte_commun">
+        <item quantity="one">%d common</item>
+        <item quantity="other">%d common</item>
+    </plurals>
     <string name="tri_recent">Recent</string>
     <string name="tri_alpha">A → Z</string>
     <string name="tri_rarete">Rarity</string>
@@ -182,6 +198,8 @@
     <string name="fermer">Close</string>
     <string name="pochette_titre">🎁 Your card pack: %1$s</string>
     <string name="pochette_nouvelle_carte">"✨  NEW CARD"</string>
+    <string name="pochette_carte_rare">"★  RARE CARD"</string>
+    <string name="pochette_carte_tres_rare">"✦  VERY RARE CARD"</string>
     <string name="pochette_passer">Skip</string>
     <string name="pochette_mon_carnet">📔 My collection</string>
     <string name="pochette_revoir">‹ swipe right to see your cards again</string>

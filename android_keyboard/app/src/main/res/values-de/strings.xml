@@ -136,6 +136,22 @@
     <string name="rarete_peu_commun">Ungewöhnlich</string>
     <string name="rarete_rare">Selten</string>
     <string name="rarete_tres_rare">Sehr selten</string>
+    <plurals name="rarete_compte_tres_rare">
+        <item quantity="one">%d sehr selten</item>
+        <item quantity="other">%d sehr selten</item>
+    </plurals>
+    <plurals name="rarete_compte_rare">
+        <item quantity="one">%d selten</item>
+        <item quantity="other">%d selten</item>
+    </plurals>
+    <plurals name="rarete_compte_peu_commun">
+        <item quantity="one">%d ungewöhnlich</item>
+        <item quantity="other">%d ungewöhnlich</item>
+    </plurals>
+    <plurals name="rarete_compte_commun">
+        <item quantity="one">%d häufig</item>
+        <item quantity="other">%d häufig</item>
+    </plurals>
     <string name="tri_recent">Neueste</string>
     <string name="tri_alpha">A → Z</string>
     <string name="tri_rarete">Seltenheit</string>
@@ -178,6 +194,8 @@
     <string name="fermer">Schließen</string>
     <string name="pochette_titre">🎁 Ihr Kartenpäckchen: %1$s</string>
     <string name="pochette_nouvelle_carte">"✨  NEUE KARTE"</string>
+    <string name="pochette_carte_rare">"★  SELTENE KARTE"</string>
+    <string name="pochette_carte_tres_rare">"✦  SEHR SELTENE KARTE"</string>
     <string name="pochette_passer">Überspringen</string>
     <string name="pochette_mon_carnet">📔 Meine Sammlung</string>
     <string name="pochette_revoir">‹ nach rechts wischen, um Ihre Karten erneut zu sehen</string>

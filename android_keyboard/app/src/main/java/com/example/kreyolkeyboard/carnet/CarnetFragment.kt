@@ -699,11 +699,18 @@ class CarnetFragment : DialogFragment() {
         tvResume.text = buildString {
             val mots = resources.getQuantityString(R.plurals.mots, visibles.size, visibles.size)
             append(filtre?.let { getString(R.string.carnet_mots_dans, mots, it.libelle(ctx)) } ?: mots)
-            append(" · ")
+            // Les symboles seuls ne disaient rien à qui ne les connaissait
+            // pas : « ✦ 5 » ne s'apprenait nulle part. Chaque compte porte son
+            // nom, sur une ligne à lui, et un groupe ne se coupe jamais.
+            append("\n")
             append(
                 Rarete.values().reversed()
                     .filter { (parRarete[it] ?: 0) > 0 }
-                    .joinToString("   ") { "${it.symbole} ${parRarete[it]}" }
+                    .joinToString("   ") {
+                        val n = parRarete[it] ?: 0
+                        "${it.symbole}\u00A0" + resources.getQuantityString(it.compte, n, n)
+                            .replace(' ', '\u00A0')
+                    }
             )
         }
 

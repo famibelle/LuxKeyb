@@ -136,6 +136,22 @@
     <string name="rarete_peu_commun">Net sou heefeg</string>
     <string name="rarete_rare">Seelen</string>
     <string name="rarete_tres_rare">Ganz seelen</string>
+    <plurals name="rarete_compte_tres_rare">
+        <item quantity="one">%d ganz seelen</item>
+        <item quantity="other">%d ganz seelen</item>
+    </plurals>
+    <plurals name="rarete_compte_rare">
+        <item quantity="one">%d seelen</item>
+        <item quantity="other">%d seelen</item>
+    </plurals>
+    <plurals name="rarete_compte_peu_commun">
+        <item quantity="one">%d net sou heefeg</item>
+        <item quantity="other">%d net sou heefeg</item>
+    </plurals>
+    <plurals name="rarete_compte_commun">
+        <item quantity="one">%d heefeg</item>
+        <item quantity="other">%d heefeg</item>
+    </plurals>
     <string name="tri_recent">Neiste</string>
     <string name="tri_alpha">A → Z</string>
     <string name="tri_rarete">Seelenheet</string>
@@ -178,6 +194,8 @@
     <string name="fermer">Zoumaachen</string>
     <string name="pochette_titre">🎁 Äre Kaartepak: %1$s</string>
     <string name="pochette_nouvelle_carte">"✨  NEI KAART"</string>
+    <string name="pochette_carte_rare">"★  SEELEN"</string>
+    <string name="pochette_carte_tres_rare">"✦  GANZ SEELEN"</string>
     <string name="pochette_passer">Iwwersprangen</string>
     <string name="pochette_mon_carnet">📔 Mäi Carnet</string>
     <string name="pochette_revoir">‹ no riets wëschen, fir Är Kaarten nach eng Kéier ze gesinn</string>
