@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.4.1] - 2026-10-16
+
+### 🐛 Corrections
+
+- **Les cartes gagnées font vibrer le téléphone, selon leur rareté** : un léger tic pour une peu commune, trois frémissements puis le coup du poinçon pour une rare, et pour une très rare une montée pendant le prélude, un coup plein à l'éclat et le crépitement des feux d'artifice. Ces vibrations existaient mais restaient muettes sur certains téléphones, dont le Galaxy A21s ; elles passent désormais par le même chemin que le relief des cartes du carnet. Elles suivent le réglage « Vibration à la frappe » des Réglages du clavier.
+
 ## [37.4.0] - 2026-10-16
 
 La fenêtre de la carte prend de la profondeur.
