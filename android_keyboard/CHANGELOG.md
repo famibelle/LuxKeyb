@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.4.3] - 2026-10-16
+
+### 🐛 Corrections
+
+- **Le clavier porte son nom dans le sélecteur de clavier** : sur les téléphones Samsung, il apparaissait comme « Clavier luxembourgeois Luxembourg » ; il s'appelle désormais partout « 🇱🇺 Lëtzebuergesch Clavier ».
+
 ## [37.4.2] - 2026-10-16
 
 ### 🐛 Corrections
