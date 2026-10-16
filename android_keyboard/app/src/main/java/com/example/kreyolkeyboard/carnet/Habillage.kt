@@ -107,8 +107,9 @@ internal object Habillage {
             fleurir(Canvas(b), p, u, alea, fleurs)
         }
         val devant = couches.last()
+        // Sans les oiseaux : sur la carte en plans, ils volent (voir Ambiance).
         dessus(Canvas(devant), devant.width.toFloat(), devant.height.toFloat(), ks.last()[0] / PIXELS_MAQUETTE_PAR_UNITE,
-            heure, s.saison, alea, FloatArray(0))
+            heure, s.saison, alea, FloatArray(0), oiseaux = false)
     }
 
     private fun objet(mk: IntArray, i: Int) = (mk[i] ushr 24) > SEUIL_MASQUE
@@ -221,7 +222,7 @@ internal object Habillage {
 
     private fun dessus(
         c: Canvas, W: Float, H: Float, u: Float, P: Heure, saison: Saison,
-        alea: Paysages.Alea, fleurs: FloatArray
+        alea: Paysages.Alea, fleurs: FloatArray, oiseaux: Boolean = true
     ) {
         val p = Paint(Paint.ANTI_ALIAS_FLAG)
         when (saison) {
@@ -244,7 +245,7 @@ internal object Habillage {
                 p.color = argb(0.85f, 0xFF, 0xB8, 0xD6)
                 repeat(22) { ellipse(c, p, alea() * W, alea() * H * 0.8f, 2.6f * u, 1.3f * u, alea() * PI.toFloat()) }
             }
-            Saison.SUMMER -> {
+            Saison.SUMMER -> if (oiseaux) {
                 p.style = Paint.Style.STROKE
                 p.strokeWidth = 1.3f * u
                 p.strokeCap = Paint.Cap.ROUND

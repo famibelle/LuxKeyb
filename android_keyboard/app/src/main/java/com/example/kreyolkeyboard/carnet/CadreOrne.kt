@@ -3960,7 +3960,10 @@ class CarteOrnee(
         val zone = RectF(fenetre.left, fenetre.top, fenetre.right, min(fenetre.bottom, Ornement.PLAQUE.top + 4f))
         // L'été, l'heure de la carte choisit : aigrettes le jour, lucioles
         // le soir et la nuit, les heures des deux paliers hauts.
-        ambiance = Ambiance.pour(souvenir, zone, mot.hashCode(), nuit = rarete.ordinal >= Rarete.RARE.ordinal)
+        ambiance = Ambiance.pour(
+            souvenir, zone, mot.hashCode(), nuit = rarete.ordinal >= Rarete.RARE.ordinal,
+            oiseaux = motif.profondeur
+        )
         oublierLesCouches()
         if (isAttachedToWindow) armerSecousse()
         return this

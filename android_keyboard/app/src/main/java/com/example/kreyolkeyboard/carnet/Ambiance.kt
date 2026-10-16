@@ -72,8 +72,13 @@ abstract class Ambiance(protected val zone: RectF, graine: Int) {
          * sur la saison ; l'été dépend de l'heure de la carte : des aigrettes
          * le jour, des lucioles le soir et la nuit ([nuit], les deux paliers
          * hauts).
+         *
+         * [oiseaux] : les oiseaux de l'été volent ici plutôt que d'être peints
+         * dans le paysage, ce que fait le rendu en plans de la carte ouverte
+         * (voir [Habillage.appliquerPlans]). Le rendu à plat les garde peints.
          */
-        fun pour(souvenir: Souvenir?, zone: RectF, graine: Int, nuit: Boolean = false): Ambiance? =
+        fun pour(souvenir: Souvenir?, zone: RectF, graine: Int, nuit: Boolean = false,
+                 oiseaux: Boolean = false): Ambiance? =
             when (souvenir?.fete) {
                 Fete.NEIJOERSCHDAG -> FeuxDArtifice(zone, graine, FeuxDArtifice.NOUVEL_AN)
                 Fete.NATIONALFEIERDAG -> FeuxDArtifice(zone, graine, FeuxDArtifice.DRAPEAU)
@@ -84,7 +89,10 @@ abstract class Ambiance(protected val zone: RectF, graine: Int) {
                     Saison.WANTER -> Neige(zone, graine)
                     Saison.HIERSCHT -> Tournoyants(zone, graine, Tournoyants.FEUILLES)
                     Saison.FREIJOER -> Tournoyants(zone, graine, Tournoyants.PETALES)
-                    Saison.SUMMER -> if (nuit) Lucioles(zone, graine) else Tournoyants(zone, graine, Tournoyants.AIGRETTES)
+                    Saison.SUMMER -> {
+                        val air = if (nuit) Lucioles(zone, graine) else Tournoyants(zone, graine, Tournoyants.AIGRETTES)
+                        if (oiseaux) Ensemble(Oiseaux(zone, graine, nuit), air) else air
+                    }
                     null -> null
                 }
             }
@@ -653,6 +661,59 @@ private class Lumieres(zone: RectF, graine: Int) : Ambiance(zone, graine) {
     private companion object {
         const val HALO = 0xFFFFC107.toInt()
         const val COEUR = 0xFFFFF8E1.toInt()
+    }
+}
+
+/**
+ * Les oiseaux d'un ciel d'été, ceux que [Habillage] peint dans le paysage à
+ * plat (37.4.4) : mêmes traits, même taille, même coin du ciel. Ils battent
+ * lentement des ailes, chacun à son rythme, et planent sur place en dérivant
+ * à peine. Ils ne traversent pas la fenêtre : on doit les voir vivre, pas
+ * les voir partir. La pesanteur et les secousses ne les touchent pas.
+ */
+private class Oiseaux(zone: RectF, graine: Int, nuit: Boolean) : Ambiance(zone, graine) {
+
+    // Un pixel de la maquette, en unités de carte : la boîte de 100 de large
+    // couvre la fenêtre, et la maquette en comptait 4,8 pixels par unité.
+    private val px = largeur / 100f / 4.8f
+    private val n = 6
+    private val x0 = FloatArray(n) { zone.left + largeur * (0.12f + hasard() * 0.5f) }
+    private val y0 = FloatArray(n) { zone.top + hauteur * (0.08f + hasard() * 0.22f) }
+    private val t = FloatArray(n) { (3f + hasard() * 3f) * px }
+    private val battement = FloatArray(n) { 0.5f + hasard() * 0.4f }
+    private val derive = FloatArray(n) { 0.15f + hasard() * 0.2f }
+    private val phase = FloatArray(n) { hasard() * 6.28f }
+    private val couleur = if (nuit) 0x99FFFFFF.toInt() else 0xB31E1A1E.toInt()
+    private val trait = 1.3f * px
+    private val chemin = android.graphics.Path()
+    private var temps = 0f
+
+    override fun avancer(dt: Float) {
+        temps += dt
+    }
+
+    override fun dessiner(c: Canvas, p: Paint) {
+        p.shader = null
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = trait
+        p.strokeCap = Paint.Cap.ROUND
+        p.color = couleur
+        for (i in 0 until n) {
+            // Une dérive de quelques pixels de maquette, en huit couché.
+            val a = temps * derive[i] + phase[i]
+            val x = x0[i] + sin(a) * 2.5f * px
+            val y = y0[i] + sin(a * 2f) * 0.8f * px
+            // L'aile monte et descend un peu autour de la pose peinte (0,7),
+            // moins d'un battement par seconde : un oiseau qui plane.
+            val aile = 0.7f + 0.15f * sin(temps * battement[i] * 2f * PI.toFloat() + phase[i])
+            val ti = t[i]
+            chemin.rewind()
+            chemin.moveTo(x - ti, y - ti * (1.2f - aile))
+            chemin.quadTo(x - ti * 0.4f, y - ti * aile, x, y)
+            chemin.quadTo(x + ti * 0.4f, y - ti * aile, x + ti, y - ti * (1.2f - aile))
+            c.drawPath(chemin, p)
+        }
+        p.style = Paint.Style.FILL
     }
 }
 
