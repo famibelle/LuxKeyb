@@ -3919,12 +3919,12 @@ class CarteOrnee(
         vivant(canvas, u)
     }
 
-    /** Ce qui bouge dans la fenêtre : voir [Ambiance]. Réservé au lecteur. */
+    /** Ce qui bouge dans la fenêtre : voir [Ambiance]. Réservé au lecteur et à la pochette. */
     private var ambiance: Ambiance? = null
     private var instantPrecedent = 0L
 
     /**
-     * Pour le lecteur de cartes : la fenêtre vit au temps de sa saison.
+     * Pour le lecteur de cartes et la pochette : la fenêtre vit au temps de sa saison.
      * Rien sur une vignette, rien si le téléphone demande des animations
      * réduites.
      */

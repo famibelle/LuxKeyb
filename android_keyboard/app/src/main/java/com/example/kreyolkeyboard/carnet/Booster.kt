@@ -346,6 +346,10 @@ object Booster {
             // le lecteur du carnet. Dans un défilement, elle prenait toute la
             // largeur : à l'italienne, elle faisait trois écrans de haut et ne
             // se dessinait jamais, ni retournement ni inclinaison (2026-10-12).
+            // Sa fenêtre vit au temps de sa saison, comme dans le lecteur :
+            // la découverte est le moment où ça compte le plus. Elle en a été
+            // privée jusqu'en 37.3.1 par simple oubli.
+            (carte as? CarteOrnee)?.avecAmbiance()
             val face: ViewGroup = if (carte is Carton) {
                 carte.ajusteALaHauteur = true
                 FrameLayout(ctx).apply {

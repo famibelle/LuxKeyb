@@ -20,8 +20,9 @@ import kotlin.math.sqrt
  *
  * ## Où, et où jamais
  *
- * Sur la carte ouverte du lecteur seulement, dans la fenêtre, devant le
- * paysage et derrière le métal. Jamais dans la grille : trente-six cartes qui
+ * Sur une carte montrée seule, celle du lecteur ou de la pochette de fin de
+ * jeu, dans la fenêtre, devant le paysage et derrière le métal. Jamais dans
+ * la grille : trente-six cartes qui
  * neigent ensemble coûteraient le défilement, et c'est la même règle que
  * l'inclinaison, qui ne descend pas non plus dans la grille. Rien quand le
  * téléphone demande des animations réduites.
