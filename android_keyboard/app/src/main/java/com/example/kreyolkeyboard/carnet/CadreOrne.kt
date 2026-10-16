@@ -3149,6 +3149,26 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
     /** Le roulis de l'appareil depuis le repos, dans [-1, 1], tel que dessiné. */
     private var pesanteur = 0f
 
+    /** Le tangage de l'appareil depuis le repos, dans [-1, 1], tel que dessiné. */
+    private var tangage = 0f
+
+    /**
+     * D'où l'œil regarde la carte, dans [-1, 1] sur chaque axe : x vers la
+     * droite, y vers le bas. C'est ce que lit la profondeur de la fenêtre
+     * ([Motif.peindreLieu]). La pesanteur seule, sans le doigt : comme la
+     * tranche, c'est l'orientation réelle du carton et non la lumière.
+     *
+     * Le signe suit [Posture] : bord droit qui descend, le roulis est négatif
+     * et le bord droit de la carte vient vers le joueur, qui la voit donc
+     * de sa droite.
+     *
+     * Amplifié de [GAIN_REGARD] : un roulis de 1, c'est le téléphone sur la
+     * tranche, et le poignet n'en donne jamais qu'un quart ou un tiers. Sans
+     * gain, les plans ne glissaient que d'un pour cent.
+     */
+    protected val regardX: Float get() = (-pesanteur * GAIN_REGARD).coerceIn(-1f, 1f)
+    protected val regardY: Float get() = (tangage * GAIN_REGARD).coerceIn(-1f, 1f)
+
     /** La même posture que celle qui fait pivoter la carte, voir [Posture]. */
     private val posture = Posture(this, LISSAGE)
 
@@ -3267,6 +3287,7 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
         capteurs = null
         posture.oublier()
         pesanteur = 0f
+        tangage = 0f
         // Un carton qui reviendrait à l'écran encore enfoncé se lirait comme
         // un bogue : l'appui appartient au geste, pas à la vue. Le test évite
         // au passage de fabriquer un état pour chacune des vignettes d'une
@@ -3312,8 +3333,9 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
      */
     override fun onSensorChanged(evenement: SensorEvent) {
         posture.echantillon(evenement.values)
-        if (abs(posture.roulis - pesanteur) < SEUIL) return
+        if (abs(posture.roulis - pesanteur) < SEUIL && abs(posture.tangage - tangage) < SEUIL) return
         pesanteur = posture.roulis
+        tangage = posture.tangage
         invalidate()
     }
 
@@ -3545,6 +3567,9 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
         // Sur le roulis déjà lissé, qui avance d'un cinquième de l'écart par
         // échantillon : 0,04 sur la cible d'avant vaut 0,008 ici.
         const val SEUIL = 0.008f
+
+        /** Voir [regardX] : pleine course vers vingt degrés de poignet. */
+        const val GAIN_REGARD = 3f
 
         /** L'enfoncement maximum, en degrés, au bord du carton. */
         const val APPUI = 2.6f
@@ -3907,7 +3932,7 @@ class CarteOrnee(
         // La neige passe derrière le dessin du mot : c'est le sujet de la
         // carte, quelques flocons dessus en brouillaient la lecture.
         val anime = ambiance != null && canvas.isHardwareAccelerated
-        dessous(canvas, u, avecIris = !anime, avecSujet = !anime)
+        dessous(canvas, u, avecIris = !anime, avecSujet = !anime, regard = canvas.isHardwareAccelerated)
         if (anime) {
             animer(canvas, u)
             canvas.save()
@@ -3924,12 +3949,14 @@ class CarteOrnee(
     private var instantPrecedent = 0L
 
     /**
-     * Pour le lecteur de cartes et la pochette : la fenêtre vit au temps de sa saison.
-     * Rien sur une vignette, rien si le téléphone demande des animations
-     * réduites.
+     * Pour le lecteur de cartes et la pochette : la fenêtre vit au temps de sa
+     * saison, et son lieu prend de la profondeur en trois plans qui glissent
+     * avec l'inclinaison ([Motif.profondeur]). Rien sur une vignette, rien si
+     * le téléphone demande des animations réduites.
      */
     fun avecAmbiance(): CarteOrnee {
         if (vignette || Pochette.animationsReduites(context)) return this
+        motif.profondeur = true
         val zone = RectF(fenetre.left, fenetre.top, fenetre.right, min(fenetre.bottom, Ornement.PLAQUE.top + 4f))
         // L'été, l'heure de la carte choisit : aigrettes le jour, lucioles
         // le soir et la nuit, les heures des deux paliers hauts.
@@ -4014,7 +4041,10 @@ class CarteOrnee(
     }
 
     /** La face, les rayons et le motif : tout ce que le métal recouvre. */
-    private fun dessous(canvas: Canvas, u: Float, avecIris: Boolean, avecSujet: Boolean = true) {
+    private fun dessous(
+        canvas: Canvas, u: Float, avecIris: Boolean, avecSujet: Boolean = true,
+        avecLieu: Boolean = true, regard: Boolean = false
+    ) {
         canvas.save()
         canvas.scale(u, u)
         Ornement.dessinerFace(canvas, pinceau, degradeFace, rarete, vignette)
@@ -4024,7 +4054,12 @@ class CarteOrnee(
 
         canvas.save()
         canvas.scale(u, u)
-        motif.peindre(canvas, pinceau, roulis, decoupe, u, avecIris, avecSujet)
+        // Le partage dessine la carte au repos : une image figée n'a pas à
+        // garder l'angle de l'instant.
+        motif.peindre(
+            canvas, pinceau, roulis, decoupe, u, avecIris, avecSujet, avecLieu,
+            if (regard) regardX else 0f, if (regard) regardY else 0f
+        )
         canvas.restore()
     }
 
@@ -4105,6 +4140,10 @@ class CarteOrnee(
         if (emprise >= 0.01f) return false
         if (!motif.aSonLieu || Ornement.metal(context, rarete, width, vignette) == null) return false
         val anime = ambiance != null
+        // Le lieu en plans glisse à chaque trame : il sort de la couche fixe,
+        // et le dessin du mot avec lui, qui doit passer devant.
+        val profond = motif.enPlans
+        val vivantDessous = anime || profond
         var bas = coucheDessous
         var haut = coucheDessus
         var sujet = coucheSujet
@@ -4113,19 +4152,19 @@ class CarteOrnee(
         // carte se trace en direct. Sur la 36.3.4, la carte revenait alors
         // sans son corps, texte et reflets seuls sur la grille (Galaxy A21s,
         // 2026-10-12). Elle se réenregistre donc dès qu'une couche est vide.
-        if (bas == null || haut == null || (anime && sujet == null) ||
-            !bas.hasDisplayList() || !haut.hasDisplayList() || (anime && sujet?.hasDisplayList() != true) ||
-            largeurDesCouches != width || hauteurDesCouches != height
+        if (bas == null || haut == null || (vivantDessous && sujet == null) ||
+            !bas.hasDisplayList() || !haut.hasDisplayList() || (vivantDessous && sujet?.hasDisplayList() != true) ||
+            largeurDesCouches != width || hauteurDesCouches != height || profondDesCouches != profond
         ) {
             bas = (bas ?: android.graphics.RenderNode("carte-dessous")).also {
                 it.setPosition(0, 0, width, height)
                 it.setUseCompositingLayer(true, null)
                 val c = it.beginRecording(width, height)
-                try { dessous(c, u, avecIris = false, avecSujet = !anime) } finally { it.endRecording() }
+                try { dessous(c, u, avecIris = false, avecSujet = !vivantDessous, avecLieu = !profond) } finally { it.endRecording() }
             }
             // Avec une ambiance, le dessin du mot a sa propre couche, posée
             // par-dessus la neige.
-            if (anime) sujet = (sujet ?: android.graphics.RenderNode("carte-sujet")).also {
+            if (vivantDessous) sujet = (sujet ?: android.graphics.RenderNode("carte-sujet")).also {
                 it.setPosition(0, 0, width, height)
                 it.setUseCompositingLayer(true, null)
                 val c = it.beginRecording(width, height)
@@ -4145,12 +4184,17 @@ class CarteOrnee(
             coucheSujet = sujet
             largeurDesCouches = width
             hauteurDesCouches = height
+            profondDesCouches = profond
         }
         canvas.drawRenderNode(bas)
-        if (anime) {
-            animer(canvas, u)
-            sujet?.let { canvas.drawRenderNode(it) }
+        if (profond) {
+            canvas.save()
+            canvas.scale(u, u)
+            motif.peindreLieu(canvas, decoupe, u, regardX, regardY)
+            canvas.restore()
         }
+        if (anime) animer(canvas, u)
+        if (vivantDessous) sujet?.let { canvas.drawRenderNode(it) }
         if (motif.irise) {
             canvas.save()
             canvas.scale(u, u)
@@ -4166,6 +4210,7 @@ class CarteOrnee(
     private var coucheSujet: android.graphics.RenderNode? = null
     private var largeurDesCouches = 0
     private var hauteurDesCouches = 0
+    private var profondDesCouches = false
 
     /** À appeler quand une partie fixe change : les couches se réenregistrent. */
     private fun oublierLesCouches() {
@@ -4270,6 +4315,19 @@ class Motif(
     private val peinture = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
     private var rendu: Bitmap? = null
     private var demande = ""
+
+    /**
+     * Vrai pour la carte ouverte qui vit (lecteur, pochette) : le lieu se
+     * rend alors en trois plans qui glissent avec l'inclinaison, voir
+     * [Paysages.plans]. À poser avant [preparer].
+     */
+    var profondeur = false
+    private var plans: Array<Bitmap>? = null
+    private var plansManques = false
+    private val ouPlan = RectF()
+
+    /** Vrai quand le lieu est en plans, et donc à peindre à chaque trame. */
+    val enPlans: Boolean get() = profondeur && plans != null
     private val ciel: LinearGradient by lazy {
         LinearGradient(
             0f, visible.top, 0f, visible.bottom,
@@ -4284,12 +4342,24 @@ class Motif(
      */
     fun preparer(echelle: Float, principal: android.os.Handler, pret: () -> Unit) {
         Thread({
-            val image = rendreLieu(echelle)
+            val etages = if (profondeur) rendrePlans(echelle) else null
+            val image = if (etages == null) rendreLieu(echelle) else null
             principal.post {
+                if (etages != null) plans = etages
                 if (image != null) rendu = image
                 pret()
             }
         }, "paysage").start()
+    }
+
+    private fun rendrePlans(echelle: Float): Array<Bitmap>? {
+        val l = (visible.width() * echelle).toInt()
+        val h = (visible.height() * echelle).toInt()
+        return try {
+            Paysages.plans(lieu, heure, teinteChamp, l, h, souvenir)
+        } catch (e: OutOfMemoryError) {
+            null
+        }
     }
 
     /**
@@ -4353,7 +4423,8 @@ class Motif(
      */
     fun peindre(
         c: Canvas, p: Paint, roulis: Float, decoupe: Path, echelle: Float,
-        avecIris: Boolean = true, avecSujet: Boolean = true
+        avecIris: Boolean = true, avecSujet: Boolean = true,
+        avecLieu: Boolean = true, regardX: Float = 0f, regardY: Float = 0f
     ) {
         c.save()
         c.clipPath(decoupe)
@@ -4362,11 +4433,17 @@ class Motif(
         // Sous la plaque, le sol du lieu : rien ne doit percer entre ses bords.
         peinture.color = heure.pres
         c.drawRect(zone, peinture)
+        val etages = if (profondeur && avecLieu) plansAPeindre(l, h) else null
         // La carte garde son paysage : le cache peut l'évincer pendant qu'une
         // grille défile, la carte ne le redessine pas pour autant.
-        val image = rendu?.takeIf { it.width == l && it.height == h && !it.isRecycled }
+        val image = if (!avecLieu || etages != null) null
+            else rendu?.takeIf { it.width == l && it.height == h && !it.isRecycled }
             ?: lieuAPeindre(l, h)?.also { rendu = it }
-        if (image != null) {
+        if (!avecLieu) {
+            // Le lieu viendra par [peindreLieu], à chaque trame.
+        } else if (etages != null) {
+            peindrePlans(c, etages, regardX, regardY)
+        } else if (image != null) {
             c.drawBitmap(image, null, visible, peinture)
         } else {
             // Le ciel de l'heure, le temps que le lieu arrive.
@@ -4376,6 +4453,40 @@ class Motif(
         }
         if (avecSujet) peindreSujet(c)
         if (avecIris) iris?.dessus(c, p, roulis)
+        c.restore()
+    }
+
+    /** Les plans à la bonne taille, rendus sur place s'il le faut, ou `null` s'ils n'existent pas (fête). */
+    private fun plansAPeindre(l: Int, h: Int): Array<Bitmap>? {
+        plans?.takeIf { it[0].width == l && it[0].height == h && it.none { b -> b.isRecycled } }?.let { return it }
+        if (plansManques) return null
+        return try {
+            Paysages.plans(lieu, heure, teinteChamp, l, h, souvenir)?.also { plans = it }
+        } catch (e: OutOfMemoryError) {
+            // La carte retombe sur son lieu à plat, sans réessayer à chaque trame.
+            plansManques = true
+            null
+        }
+    }
+
+    private fun peindrePlans(c: Canvas, etages: Array<Bitmap>, regardX: Float, regardY: Float) {
+        for (i in etages.indices) {
+            val dx = Paysages.GLISSEMENT[i] * visible.width() * regardX
+            val dy = Paysages.GLISSEMENT[i] * visible.height() * regardY
+            ouPlan.set(visible.left + dx, visible.top + dy, visible.right + dx, visible.bottom + dy)
+            c.drawBitmap(etages[i], null, ouPlan, peinture)
+        }
+    }
+
+    /**
+     * Le lieu seul, en plans décalés selon le regard : ce que [peindre] tait
+     * quand `avecLieu` est faux. Rien si le lieu n'est pas en plans.
+     */
+    fun peindreLieu(c: Canvas, decoupe: Path, echelle: Float, regardX: Float, regardY: Float) {
+        val etages = plansAPeindre((visible.width() * echelle).toInt(), (visible.height() * echelle).toInt()) ?: return
+        c.save()
+        c.clipPath(decoupe)
+        peindrePlans(c, etages, regardX, regardY)
         c.restore()
     }
 
@@ -4391,7 +4502,7 @@ class Motif(
     val irise: Boolean get() = iris != null
 
     /** Vrai quand le lieu est là : sans lui, le motif n'est qu'un ciel d'attente. */
-    val aSonLieu: Boolean get() = rendu != null
+    val aSonLieu: Boolean get() = rendu != null || plans != null
 
     /**
      * Ce que [peindre] tait quand `avecSujet` ou `avecIris` est faux : le
