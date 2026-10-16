@@ -1,5 +1,6 @@
 package com.example.kreyolkeyboard.carnet
 
+import com.example.kreyolkeyboard.KeyFeedback
 import com.example.kreyolkeyboard.R
 import android.animation.ValueAnimator
 import android.content.Context
@@ -509,12 +510,23 @@ object Booster {
                                     // maintenant l'inclinaison de l'appareil.
                                     Inclinaison.suivre(face)
                                     when (rarete) {
-                                        Rarete.PEU_COMMUN -> refleter(page, face, carte)
+                                        Rarete.PEU_COMMUN -> {
+                                            refleter(page, face, carte)
+                                            // Un seul tic, quand le reflet part.
+                                            vibrer(page, 0.25f, 130L)
+                                        }
                                         Rarete.RARE -> frapperPoincon(page, face, carte, rarete)
                                         Rarete.TRES_RARE -> {
                                             rayonner(page, face, rarete)
-                                            vibrer(page, 2)
                                             eclater(page, rarete)
+                                            // Le coup plein de l'éclat, son
+                                            // rebond, puis le crépitement des
+                                            // feux qui partent.
+                                            vibrer(page, 1f)
+                                            vibrer(page, 0.7f, 170L)
+                                            vibrer(page, 0.15f, 450L)
+                                            vibrer(page, 0.15f, 620L)
+                                            vibrer(page, 0.15f, 850L)
                                         }
                                         else -> {}
                                     }
@@ -654,7 +666,7 @@ object Booster {
                 val v = u - k
                 if (k != dernier) {
                     dernier = k
-                    vibrer(dos, 1, leger = true)
+                    vibrer(dos, FREMISSEMENTS[k])
                 }
                 val actif = v < 0.6f
                 val a = if (actif) amplitudes[k] * sin(v / 0.6f * Math.PI.toFloat() * 4f) else 0f
@@ -701,6 +713,12 @@ object Booster {
             .setStartDelay(300).setDuration(1200)
             .setInterpolator(DecelerateInterpolator(1.6f))
             .start()
+
+        // Le téléphone suit la montée : un coup quand le dos arrive, un quand
+        // le halo bat, un plus franc à l'éclair.
+        vibrer(dos, 0.3f, 1500L)
+        vibrer(dos, 0.4f, 1800L)
+        vibrer(dos, 0.6f, 2200L)
 
         // Le halo bat pendant l'attente.
         halo?.let { h ->
@@ -791,7 +809,7 @@ object Booster {
             if (page.parent == null) return@postDelayed
             page.addView(frappe)
             animerPuisRetirer(frappe, 700L, 0L) { frappe.avancement = it }
-            vibrer(page, 1)
+            vibrer(page, 0.75f)
             face.animate().scaleX(0.985f).scaleY(0.985f).translationY(3f * u).setDuration(90)
                 .withEndAction {
                     face.animate().scaleX(1f).scaleY(1f).translationY(0f).setDuration(120).start()
@@ -826,19 +844,28 @@ object Booster {
         }
     }
 
+    /** Les trois frémissements du dos d'une rare, de plus en plus forts. */
+    private val FREMISSEMENTS = floatArrayOf(0.2f, 0.35f, 0.5f)
+
     /**
-     * [fois] impulsions, à 170 ms d'écart. Passe par `performHapticFeedback`,
-     * qui ne demande aucune permission et suit le réglage haptique du système,
-     * comme le verrouillage d'un mot dans Wuertplaz.
+     * Un coup de [force] (0 à 1) dans [delai] millisecondes, si [v] est encore
+     * à l'écran : une page quittée en cours de cérémonie se tait.
+     *
+     * Chaque palier a sa partition, et elle ne joue qu'à la découverte, jamais
+     * au retour sur une carte ni animations coupées : commune, rien ; peu
+     * commune, un tic ; rare, trois frémissements puis le poinçon ; très rare,
+     * la montée du prélude, puis l'éclat et ses crépitements.
+     *
+     * Passe par [KeyFeedback.onRevelation], qui choisit ce que ce téléphone
+     * sait rendre. Jusqu'en 37.4.0 c'était `performHapticFeedback` en direct,
+     * muet sur un Galaxy A21s.
      */
-    private fun vibrer(v: View, fois: Int, leger: Boolean = false) {
-        val effet = when {
-            leger -> android.view.HapticFeedbackConstants.CLOCK_TICK
-            android.os.Build.VERSION.SDK_INT >= 30 -> android.view.HapticFeedbackConstants.CONFIRM
-            else -> android.view.HapticFeedbackConstants.LONG_PRESS
+    private fun vibrer(v: View, force: Float, delai: Long = 0L) {
+        if (delai == 0L) {
+            if (v.isAttachedToWindow) KeyFeedback.onRevelation(v, force)
+            return
         }
-        v.performHapticFeedback(effet)
-        for (k in 1 until fois) v.postDelayed({ v.performHapticFeedback(effet) }, 170L * k)
+        v.postDelayed({ if (v.isAttachedToWindow) KeyFeedback.onRevelation(v, force) }, delai)
     }
 
     /**
