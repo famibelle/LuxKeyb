@@ -247,6 +247,20 @@ object Booster {
         }
         colonne.addView(legende)
 
+        // Sa place est retenue dès l'ouverture d'une pochette qui en aura une :
+        // apparaître en cours de route rétrécissait la scène, et la carte se
+        // refaisait à sa nouvelle taille, paysage compris. Sur un Galaxy A21s
+        // (2026-10-17), 0,85 s d'arrêt juste après la pose, là où une très
+        // rare ordinaire n'en a aucun.
+        val legendeAttendue = premieres.isNotEmpty()
+        if (legendeAttendue) {
+            legende.text = ctx.getString(
+                if (ordre.any { it.carte.forme in premieres && it.rarete == Rarete.TRES_RARE })
+                    R.string.pochette_premiere_tres_rare else R.string.pochette_premiere_rare
+            )
+            legende.visibility = View.INVISIBLE
+        }
+
         /** La légende de la première [rarete], qui monte doucement si [anime]. */
         fun expliquer(rarete: Rarete, anime: Boolean) {
             legende.text = ctx.getString(
@@ -363,7 +377,7 @@ object Booster {
             annonce.animate().cancel()
             annonce.visibility = View.GONE
             legende.animate().cancel()
-            legende.visibility = View.GONE
+            legende.visibility = if (legendeAttendue) View.INVISIBLE else View.GONE
             val neuves = contenus.count { it.carte.forme in nouvelles }
             if (index >= ordre.size) {
                 progres.text = if (ordre.size > 1)
