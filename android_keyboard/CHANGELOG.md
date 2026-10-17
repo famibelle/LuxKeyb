@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.4.7] - 2026-10-17
+
+### ✨ Améliorations
+
+- **La première carte rare et la première très rare ont leur cérémonie** : la première rare frémit une seconde fois, plus fort, la première très rare monte plus lentement ; toutes deux ont un second bouquet et une phrase qui dit comment reconnaître leur palier (ciel du soir et bordure d'argent, nuit étoilée et bordure d'or). Une seule fois par palier.
+
 ## [37.4.6] - 2026-10-16
 
 ### ✨ Améliorations
