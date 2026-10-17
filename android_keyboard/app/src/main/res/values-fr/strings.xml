@@ -196,6 +196,8 @@
     <string name="pochette_nouvelle_carte">"✨  NOUVELLE CARTE"</string>
     <string name="pochette_carte_rare">"★  CARTE RARE"</string>
     <string name="pochette_carte_tres_rare">"✦  CARTE TRÈS RARE"</string>
+    <string name="pochette_premiere_rare">Votre première carte rare ! On la reconnaît à son ciel du soir et à sa bordure d\'argent.</string>
+    <string name="pochette_premiere_tres_rare">Votre première carte très rare ! On la reconnaît à sa nuit étoilée et à sa bordure d\'or.</string>
     <string name="pochette_passer">Passer</string>
     <string name="pochette_mon_carnet">📔 Mon carnet</string>
     <string name="pochette_revoir">‹ glissez à droite pour revoir vos cartes</string>

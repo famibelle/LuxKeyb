@@ -196,6 +196,8 @@
     <string name="pochette_nouvelle_carte">"✨  NEI KAART"</string>
     <string name="pochette_carte_rare">"★  SEELEN"</string>
     <string name="pochette_carte_tres_rare">"✦  GANZ SEELEN"</string>
+    <string name="pochette_premiere_rare">Är éischt seele Kaart! Dir erkennt se um Owendhimmel an um sëlwere Rand.</string>
+    <string name="pochette_premiere_tres_rare">Är éischt ganz seele Kaart! Dir erkennt se um Stärenhimmel an um gëllene Rand.</string>
     <string name="pochette_passer">Iwwersprangen</string>
     <string name="pochette_mon_carnet">📔 Mäi Carnet</string>
     <string name="pochette_revoir">‹ no riets wëschen, fir Är Kaarten nach eng Kéier ze gesinn</string>

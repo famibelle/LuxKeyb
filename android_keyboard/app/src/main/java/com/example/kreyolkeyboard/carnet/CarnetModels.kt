@@ -365,6 +365,17 @@ object Carnet {
         return Rarete.pourRang(rangs[carte.forme])
     }
 
+    /**
+     * Les paliers que le carnet possède déjà, sans compter les formes [sauf] :
+     * celles que la pochette en cours vient d'y verser. C'est ce qui dit si
+     * une rare est la **première** (voir [Booster.premieres]).
+     */
+    @Synchronized
+    fun paliersPossedes(context: Context, sauf: Set<String>): Set<Rarete> {
+        assurerRangs(context)
+        return cartes.filter { it.forme !in sauf }.mapTo(HashSet()) { rarete(context, it) }
+    }
+
     @Synchronized
     fun rang(context: Context, forme: String): Int? {
         assurerRangs(context)

@@ -200,6 +200,8 @@
     <string name="pochette_nouvelle_carte">"✨  NEW CARD"</string>
     <string name="pochette_carte_rare">"★  RARE CARD"</string>
     <string name="pochette_carte_tres_rare">"✦  VERY RARE CARD"</string>
+    <string name="pochette_premiere_rare">Your first rare card! You can tell by its evening sky and its silver frame.</string>
+    <string name="pochette_premiere_tres_rare">Your first very rare card! You can tell by its starry night and its gold frame.</string>
     <string name="pochette_passer">Skip</string>
     <string name="pochette_mon_carnet">📔 My collection</string>
     <string name="pochette_revoir">‹ swipe right to see your cards again</string>

@@ -110,6 +110,14 @@ object Booster {
         // seule carte inédite d'une grille arrive après six déjà connues.
         val ordre = contenus.sortedByDescending { it.carte.forme in nouvelles }
 
+        // La première rare et la première très rare du carnet ont droit à la
+        // version longue de leur cérémonie, une seule fois chacune.
+        val premieres = if (!animations) emptySet() else premieres(
+            ordre.map { it.carte.forme to it.rarete },
+            nouvelles,
+            runCatching { Carnet.paliersPossedes(ctx, nouvelles) }.getOrDefault(Rarete.values().toSet())
+        )
+
         val voile = FrameLayout(ctx).apply {
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -223,6 +231,37 @@ object Booster {
         }
         colonne.addView(scene)
 
+        // Sous la première rare et la première très rare : comment on les
+        // reconnaît. C'est le seul moment où le code des bordures et des
+        // heures est dit ; ensuite, la carte le rappelle d'elle-même.
+        val legende = TextView(ctx).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { topMargin = dp(8f) }
+            textSize = 14f
+            gravity = Gravity.CENTER
+            setLineSpacing(0f, 1.15f)
+            setTextColor(0xFFECEFF1.toInt())
+            visibility = View.GONE
+        }
+        colonne.addView(legende)
+
+        /** La légende de la première [rarete], qui monte doucement si [anime]. */
+        fun expliquer(rarete: Rarete, anime: Boolean) {
+            legende.text = ctx.getString(
+                if (rarete == Rarete.TRES_RARE) R.string.pochette_premiere_tres_rare
+                else R.string.pochette_premiere_rare
+            )
+            legende.visibility = View.VISIBLE
+            if (anime) {
+                legende.alpha = 0f
+                legende.translationY = 12f * d
+                legende.animate().alpha(1f).translationY(0f)
+                    .setStartDelay(500L).setDuration(500L).start()
+            }
+        }
+
         val boutons = LinearLayout(ctx).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -323,6 +362,8 @@ object Booster {
             bandeau.visibility = View.INVISIBLE
             annonce.animate().cancel()
             annonce.visibility = View.GONE
+            legende.animate().cancel()
+            legende.visibility = View.GONE
             val neuves = contenus.count { it.carte.forme in nouvelles }
             if (index >= ordre.size) {
                 progres.text = if (ordre.size > 1)
@@ -392,6 +433,7 @@ object Booster {
             val c = ordre[index]
             val rarete = c.rarete
             val neuve = c.carte.forme in nouvelles
+            val premiere = c.carte.forme in premieres
 
             val carte = CarteCarnet.complete(ctx, c)
             // Une carte ornée se règle sur la hauteur de la scène, comme dans
@@ -441,6 +483,7 @@ object Booster {
                 page.addView(face)
                 if (neuve) bandeau.visibility = View.VISIBLE
                 annoncer(rarete, anime = false)
+                if (premiere) expliquer(rarete, anime = false)
                 // `suivre` se tait tout seul quand les animations sont coupées.
                 Inclinaison.suivre(face)
                 if (animations) feter(page, rarete, c.carte.forme)
@@ -509,15 +552,21 @@ object Booster {
             face.cameraDistance = 12000f * d
             dos.setLayerType(View.LAYER_TYPE_HARDWARE, null)
 
+            // La première fois, l'attente s'allonge : la très rare monte plus
+            // lentement, la rare frémit une seconde fois, plus fort.
             val attente = when (rarete) {
                 Rarete.TRES_RARE -> {
-                    preluderTresRare(page, dos, halo, rarete)
-                    PRELUDE_TRES_RARE
+                    val lenteur = if (premiere) LENTEUR_PREMIERE else 1f
+                    preluderTresRare(page, dos, halo, rarete, lenteur)
+                    (PRELUDE_TRES_RARE * lenteur).toLong()
                 }
                 Rarete.RARE -> {
                     arriverDos(dos)
                     fremir(dos)
-                    1050L
+                    if (premiere) {
+                        fremir(dos, delai = 1150L, force = 1.6f)
+                        2000L
+                    } else 1050L
                 }
                 else -> {
                     arriverDos(dos)
@@ -584,6 +633,18 @@ object Booster {
                                     }
                                     feter(page, rarete, c.carte.forme)
                                     annoncer(rarete, anime = true)
+                                    if (premiere) {
+                                        expliquer(rarete, anime = true)
+                                        // Un second bouquet, d'une autre
+                                        // graine, quand le premier retombe.
+                                        page.postDelayed({
+                                            if (abandonnee()) return@postDelayed
+                                            if (rarete == Rarete.TRES_RARE) eclater(page, rarete)
+                                            feter(page, rarete, c.carte.forme + "#premiere")
+                                            vibrer(page, 0.6f)
+                                            vibrer(page, 0.15f, 220L)
+                                        }, 900L)
+                                    }
                                     if (neuve) {
                                         bandeau.visibility = View.VISIBLE
                                         bandeau.alpha = 0f
@@ -693,6 +754,26 @@ object Booster {
     /** Le prélude d'une très rare, en millisecondes : nuit, montée, éclair. */
     private const val PRELUDE_TRES_RARE = 2900L
 
+    /** Combien la première très rare du carnet étire son prélude. */
+    private const val LENTEUR_PREMIERE = 1.4f
+
+    /**
+     * Les formes qui ont droit à la version longue : dans l'ordre de la
+     * pochette, la première neuve de chaque palier distingué que le carnet ne
+     * possédait pas encore. [possedes] sont les paliers déjà au carnet hors
+     * de cette pochette. Une seule par palier : deux rares neuves dans la
+     * même partie n'en font qu'une « première ».
+     */
+    internal fun premieres(
+        ordre: List<Pair<String, Rarete>>,
+        nouvelles: Set<String>,
+        possedes: Set<Rarete>
+    ): Set<String> = Rarete.values()
+        .filter { it.distinguee && it !in possedes }
+        .mapNotNullTo(HashSet()) { palier ->
+            ordre.firstOrNull { (forme, r) -> r == palier && forme in nouvelles }?.first
+        }
+
     /** Le dos d'une commune, d'une peu commune ou d'une rare arrive (0,2 s). */
     private fun arriverDos(dos: View) {
         dos.alpha = 0f
@@ -706,12 +787,12 @@ object Booster {
      * avec une petite vibration : on devine qu'on tient quelque chose avant
      * de le voir.
      */
-    private fun fremir(dos: View) {
+    private fun fremir(dos: View, delai: Long = 0L, force: Float = 1f) {
         val d = dos.resources.displayMetrics.density
-        val amplitudes = floatArrayOf(3f, 5f, 8f)
+        val amplitudes = floatArrayOf(3f, 5f, 8f).map { it * force }
         var dernier = -1
         ValueAnimator.ofFloat(0f, 1f).apply {
-            startDelay = 250L
+            startDelay = 250L + delai
             duration = 810L
             addUpdateListener {
                 val u = it.animatedValue as Float * 3f
@@ -719,7 +800,7 @@ object Booster {
                 val v = u - k
                 if (k != dernier) {
                     dernier = k
-                    vibrer(dos, FREMISSEMENTS[k])
+                    vibrer(dos, (FREMISSEMENTS[k] * force).coerceAtMost(1f))
                 }
                 val actif = v < 0.6f
                 val a = if (actif) amplitudes[k] * sin(v / 0.6f * Math.PI.toFloat() * 4f) else 0f
@@ -747,8 +828,16 @@ object Booster {
      * retournement éclair ne montre qu'un éclat violet avant que le dos
      * revienne. Le vrai retournement suit, plus lent.
      */
-    private fun preluderTresRare(page: FrameLayout, dos: View, halo: View?, rarete: Rarete) {
+    private fun preluderTresRare(
+        page: FrameLayout,
+        dos: View,
+        halo: View?,
+        rarete: Rarete,
+        /** 1 d'ordinaire ; plus pour la première très rare, qui prend son temps. */
+        lenteur: Float = 1f
+    ) {
         val ctx = page.context
+        fun t(ms: Long) = (ms * lenteur).toLong()
         val nuit = NuitEtoilee(ctx).apply {
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
@@ -757,21 +846,21 @@ object Booster {
             alpha = 0f
         }
         page.addView(nuit, 0)
-        nuit.animate().alpha(1f).setDuration(500).start()
+        nuit.animate().alpha(1f).setDuration(t(500)).start()
 
         dos.translationY = ctx.resources.displayMetrics.heightPixels * 0.6f
         dos.scaleX = 0.7f
         dos.scaleY = 0.7f
         dos.animate().translationY(0f).scaleX(1f).scaleY(1f).rotationY(360f)
-            .setStartDelay(300).setDuration(1200)
+            .setStartDelay(t(300)).setDuration(t(1200))
             .setInterpolator(DecelerateInterpolator(1.6f))
             .start()
 
         // Le téléphone suit la montée : un coup quand le dos arrive, un quand
         // le halo bat, un plus franc à l'éclair.
-        vibrer(dos, 0.3f, 1500L)
-        vibrer(dos, 0.4f, 1800L)
-        vibrer(dos, 0.6f, 2200L)
+        vibrer(dos, 0.3f, t(1500))
+        vibrer(dos, 0.4f, t(1800))
+        vibrer(dos, 0.6f, t(2200))
 
         // Le halo bat pendant l'attente.
         halo?.let { h ->
@@ -781,7 +870,7 @@ object Booster {
                         h.animate().alpha(0.9f).setDuration(250).start()
                     }.start()
                 }.start()
-            }, 1500)
+            }, t(1500))
         }
 
         // L'éclair : le dos tourne d'un quart, une face violette passe et
@@ -816,7 +905,7 @@ object Booster {
                         }.start()
                     }.start()
                 }.start()
-        }, 2100)
+        }, t(2100))
     }
 
     /** Où la carte se trouve dans [page], sachant qu'elle vit dans le défilement [face]. */
