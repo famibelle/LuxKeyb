@@ -101,7 +101,10 @@ a{color:var(--sea);}
 .support img{flex:0 0 150px;width:150px;height:auto;border:1px solid var(--line);border-radius:8px;background:#fff;}
 .support.paysage img{flex-basis:210px;width:210px;}
 .support .body{flex:1 1 auto;min-width:0;}
-@media (max-width:520px){.support{flex-direction:column;}.support img,.support.paysage img{width:100%;max-width:280px;flex:none;}}
+/* Le Reel est vertical (9:16) : la vidéo se lit sur place, sans son, la
+   musique s'ajoute dans Instagram au moment de publier. */
+.support video{flex:0 0 150px;width:150px;height:auto;aspect-ratio:9/16;border:1px solid var(--line);border-radius:8px;background:#fff;}
+@media (max-width:520px){.support{flex-direction:column;}.support img,.support.paysage img,.support video{width:100%;max-width:280px;flex:none;}}
 </style>
 </head>
 <body>
@@ -135,7 +138,8 @@ a{color:var(--sea);}
     <b>éco encre</b> sur fond blanc pour une imprimante de bureau. Tous portent
     le QR code de la fiche Google Play : on le scanne, on installe.
     Ils existent aussi en luxembourgeois, en allemand, en anglais et en
-    portugais, les langues de l'application.
+    portugais, les langues de l'application. Pour les réseaux sociaux, une
+    courte vidéo verticale est prête à publier.
   </p>
 </header>
 
@@ -182,6 +186,22 @@ a{color:var(--sea);}
           <a class="btn" href="triptyque-eco.html">💧 Version éco encre</a>
         </div>
         <p class="langues">Aussi en <a href="triptyque-lb.html" lang="lb">🇱🇺 Lëtzebuergesch</a> <span class="a-valider">à valider</span> · <a href="triptyque-de.html" lang="de">🇩🇪 Deutsch</a> <span class="a-valider">à valider</span> · <a href="triptyque-en.html" lang="en">🇬🇧 English</a> · <a href="triptyque-pt.html" lang="pt">🇵🇹 Português</a> <span class="a-valider">à valider</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="support">
+      <video src="assets/reel-letzebuergesch-clavier-fr.mp4" poster="assets/supports-reel-1.jpg" controls playsinline preload="none" aria-label="Vidéo verticale de 25 secondes présentant le clavier"></video>
+      <div class="body">
+        <h3>🎬 Vidéo pour Instagram</h3>
+        <p class="meta">25 secondes, format vertical · Reel Instagram, story, statut WhatsApp, TikTok</p>
+        <p>Le clavier en action : les mots proposés, la dictée, le dictionnaire,
+        les jeux et le carnet, puis comment le trouver sur Google Play. La vidéo
+        est muette : ajoutez la musique de votre choix au moment de publier.</p>
+        <div class="actions">
+          <a class="btn primary" href="assets/reel-letzebuergesch-clavier-fr.mp4" download>⬇️ Télécharger la vidéo</a>
+        </div>
       </div>
     </div>
   </div>
