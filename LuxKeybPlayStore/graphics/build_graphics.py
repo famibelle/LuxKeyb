@@ -457,31 +457,31 @@ LEGENDES_TABLETTE = {
         ("Carnet", "Un album de cartes à collectionner",
          "Chaque mot gagné dans un jeu y reçoit sa carte illustrée, rangée page après page."),
         ("Carte", "Chaque carte raconte son mot",
-         "Le sens en français, une phrase d'exemple du dictionnaire officiel, la famille du mot et le jeu qui vous l'a fait gagner."),
+         "Le sens en français, une phrase d'exemple du dictionnaire officiel, sa rareté et le jeu qui vous l'a fait gagner."),
     ],
     "lb": [
         ("Carnet", "En Album mat Kaarten zum Sammelen",
          "All Wuert, dat Dir an engem Spill gewannt, kritt do seng illustréiert Kaart, Säit fir Säit."),
         ("Kaart", "All Kaart erzielt hiert Wuert",
-         "D'Bedeitung op Franséisch, e Beispillsaz aus dem offiziellen Dictionnaire, d'Wuertfamill an d'Spill, an deem Dir et gewonnen hutt."),
+         "D'Bedeitung op Franséisch, e Beispillsaz aus dem offiziellen Dictionnaire, wéi seelen datt et ass, an d'Spill, an deem Dir et gewonnen hutt."),
     ],
     "de-DE": [
         ("Sammlung", "Ein Album mit Karten zum Sammeln",
          "Jedes Wort, das Sie in einem Spiel gewinnen, bekommt dort seine illustrierte Karte, Seite für Seite."),
         ("Karte", "Jede Karte erzählt ihr Wort",
-         "Die Bedeutung auf Deutsch, ein Beispielsatz aus dem offiziellen Wörterbuch, die Wortfamilie und das Spiel, in dem Sie es gewonnen haben."),
+         "Die Bedeutung auf Deutsch, ein Beispielsatz aus dem offiziellen Wörterbuch, seine Seltenheit und das Spiel, in dem Sie es gewonnen haben."),
     ],
     "en-US": [
         ("Collection", "An album of cards to collect",
          "Every word you win in a game gets its own illustrated card, filed page by page."),
         ("Card", "Every card tells its word's story",
-         "The meaning in English, an example sentence from the official dictionary, the word family and the game that won it for you."),
+         "The meaning in English, an example sentence from the official dictionary, its rarity and the game that won it for you."),
     ],
     "pt-PT": [
         ("Coleção", "Um álbum de cartas para colecionar",
          "Cada palavra ganha num jogo recebe a sua carta ilustrada, arrumada página a página."),
         ("Carta", "Cada carta conta a sua palavra",
-         "O significado em português, uma frase de exemplo do dicionário oficial, a família da palavra e o jogo em que a ganhou."),
+         "O significado em português, uma frase de exemplo do dicionário oficial, a sua raridade e o jogo em que a ganhou."),
     ],
 }
 
