@@ -16,7 +16,8 @@ conseillées.
 | `reddit_image_1x1_<l>.jpg` | 1080 × 1080 | image |
 | `reddit_image_16x9_<l>.jpg` | 1920 × 1080 | image, ordinateur |
 | `reddit_carrousel_1…6_<l>.jpg` | 1200 × 1200 | carrousel, dans l'ordre |
-| `reddit_video_4x5_fr.mp4` | 1080 × 1350, 25 s | vidéo, à préférer sur téléphone |
+| `reddit_video_annonce_<l>.mp4` | 1080 × 1350, 23,5 s | **la vidéo faite pour Reddit**, à préférer |
+| `reddit_video_4x5_fr.mp4` | 1080 × 1350, 25 s | le Reel recadré |
 | `reddit_video_1x1_fr.mp4` | 1080 × 1080, 25 s | vidéo |
 | `reddit_video_16x9_fr.mp4` | 1920 × 1080, 25 s | vidéo, ordinateur |
 | `reddit_video_vignette_fr.jpg` | 1200 × 628 | vignette des vidéos |
@@ -33,7 +34,9 @@ le suit : 1 mots devinés, 2 accents, 3 dictée, 4 carte du carnet,
 les images seules, le clavier qui devine passe devant, la dictée est posée
 dessus.
 
-Le Reel, lui, ne suit pas encore cet ordre : il montre les jeux avant le
+`video_reddit.py` monte la vidéo propre à Reddit dans cet ordre, avec la
+phrase de dictée officielle, en français et en anglais. Le Reel, lui, ne suit
+pas encore cet ordre : il montre les jeux avant le
 carnet, et le Wierderbuch entre les deux premiers et les jeux.
 
 ## Textes
