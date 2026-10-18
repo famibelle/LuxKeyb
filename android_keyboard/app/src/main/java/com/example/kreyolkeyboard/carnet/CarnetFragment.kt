@@ -130,6 +130,9 @@ class CarnetFragment : DialogFragment() {
     /** Change à chaque remplissage de la grille : voir [poserParEtapes]. */
     private var generationGrille = 0
     private var filtre: JeuCarte? = null
+
+    /** Le palier touché dans la légende du résumé, `null` pour tous. */
+    private var filtreRarete: Rarete? = null
     private var contenus: List<ContenuCarte> = emptyList()
 
     /**
@@ -266,6 +269,9 @@ class CarnetFragment : DialogFragment() {
             textSize = 14f
             setTextColor(Color.parseColor("#424242"))
             text = getString(R.string.carnet_ouverture)
+            // La légende des paliers se touche : voir [legende].
+            movementMethod = android.text.method.LinkMovementMethod.getInstance()
+            highlightColor = Color.TRANSPARENT
         }
         // Une carte cédée qui attend d'être scannée : un bandeau sous le titre,
         // et non un bouton de plus dans l'en-tête, où il écrasait « Mäi Carnet »
@@ -669,6 +675,49 @@ class CarnetFragment : DialogFragment() {
         return colonnes to (dispo - (colonnes - 1) * gouttiere) / colonnes
     }
 
+    /**
+     * La légende des paliers, chacun avec son compte : « ✦ 5 très rares ».
+     *
+     * Les symboles seuls ne disaient rien à qui ne les connaissait pas, et
+     * « ✦ 5 » ne s'apprenait nulle part. Chaque groupe se touche : il ne
+     * montre plus que ce palier, et le toucher à nouveau rend tout. Un groupe
+     * ne se coupe jamais en fin de ligne, et chacun porte un fond léger qui dit
+     * qu'il se touche ; le palier choisi prend sa couleur.
+     */
+    private fun legende(texte: android.text.SpannableStringBuilder, parRarete: Map<Rarete, Int>) {
+        Rarete.values().reversed()
+            .filter { (parRarete[it] ?: 0) > 0 }
+            .forEachIndexed { i, palier ->
+                if (i > 0) texte.append("  ")
+                val n = parRarete[palier] ?: 0
+                val groupe = "\u00A0${palier.symbole}\u00A0" +
+                    resources.getQuantityString(palier.compte, n, n).replace(' ', '\u00A0') + "\u00A0"
+                val debut = texte.length
+                texte.append(groupe)
+                val fin = texte.length
+                val actif = palier == filtreRarete
+                val drapeaux = android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                texte.setSpan(object : android.text.style.ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        filtreRarete = if (filtreRarete == palier) null else palier
+                        remplirGrille()
+                    }
+                    override fun updateDrawState(ds: android.text.TextPaint) {
+                        ds.isUnderlineText = false
+                        ds.color = if (actif) Color.WHITE else Color.parseColor("#424242")
+                    }
+                }, debut, fin, drapeaux)
+                texte.setSpan(
+                    android.text.style.BackgroundColorSpan(
+                        if (actif) palier.couleur else avecOpaciteRarete(palier.couleur, 0x26)
+                    ), debut, fin, drapeaux
+                )
+                if (actif) texte.setSpan(android.text.style.StyleSpan(Typeface.BOLD), debut, fin, drapeaux)
+            }
+    }
+
+    private fun avecOpaciteRarete(couleur: Int, alpha: Int) = (couleur and 0x00FFFFFF) or (alpha shl 24)
+
     private fun remplirGrille() {
         val ctx = context ?: return
         val d = resources.displayMetrics.density
@@ -692,26 +741,18 @@ class CarnetFragment : DialogFragment() {
             return
         }
 
-        val visibles = filtre?.let { jeu -> contenus.filter { jeu in it.carte.jeux } }
+        val parJeu = filtre?.let { jeu -> contenus.filter { jeu in it.carte.jeux } }
             ?: contenus
+        val parRarete = parJeu.groupingBy { it.rarete }.eachCount()
+        // Un palier vidé par le filtre de jeu ne filtre plus rien.
+        if (filtreRarete != null && (parRarete[filtreRarete] ?: 0) == 0) filtreRarete = null
+        val visibles = filtreRarete?.let { r -> parJeu.filter { it.rarete == r } } ?: parJeu
 
-        val parRarete = visibles.groupingBy { it.rarete }.eachCount()
-        tvResume.text = buildString {
+        tvResume.text = android.text.SpannableStringBuilder().apply {
             val mots = resources.getQuantityString(R.plurals.mots, visibles.size, visibles.size)
             append(filtre?.let { getString(R.string.carnet_mots_dans, mots, it.libelle(ctx)) } ?: mots)
-            // Les symboles seuls ne disaient rien à qui ne les connaissait
-            // pas : « ✦ 5 » ne s'apprenait nulle part. Chaque compte porte son
-            // nom, sur une ligne à lui, et un groupe ne se coupe jamais.
             append("\n")
-            append(
-                Rarete.values().reversed()
-                    .filter { (parRarete[it] ?: 0) > 0 }
-                    .joinToString("   ") {
-                        val n = parRarete[it] ?: 0
-                        "${it.symbole}\u00A0" + resources.getQuantityString(it.compte, n, n)
-                            .replace(' ', '\u00A0')
-                    }
-            )
+            legende(this, parRarete)
         }
 
         // Largeur calculée, colonnes adaptées à ce qu'elle laisse : les
