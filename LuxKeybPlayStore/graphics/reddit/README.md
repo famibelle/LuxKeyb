@@ -1,0 +1,63 @@
+# Annonces Reddit
+
+Fait le 2026-10-18 sous la 37.4.7. `python3 reddit.py` refait tout (Chrome,
+ImageMagick, ffmpeg) à partir de `sources/` et du Reel de `../video/`.
+
+## Formats
+
+Formats Reddit Ads relevés le 2026-10-18 : image en 1:1, 4:5 ou 16:9, 3 Mo
+au plus ; carrousel de 2 à 6 cartes carrées ; vidéo en 1:1, 4:5 ou 16:9
+(le 9:16 n'existe que pour les achats gérés par Reddit), de 5 à 30 s
+conseillées.
+
+| Fichier | Format | Usage |
+|---|---|---|
+| `reddit_image_4x5_<l>.jpg` | 1080 × 1350 | image, à préférer sur téléphone |
+| `reddit_image_1x1_<l>.jpg` | 1080 × 1080 | image |
+| `reddit_image_16x9_<l>.jpg` | 1920 × 1080 | image, ordinateur |
+| `reddit_carrousel_1…6_<l>.jpg` | 1200 × 1200 | carrousel, dans l'ordre |
+| `reddit_video_4x5_fr.mp4` | 1080 × 1350, 25 s | vidéo, à préférer sur téléphone |
+| `reddit_video_1x1_fr.mp4` | 1080 × 1080, 25 s | vidéo |
+| `reddit_video_16x9_fr.mp4` | 1920 × 1080, 25 s | vidéo, ordinateur |
+| `reddit_video_vignette_fr.jpg` | 1200 × 628 | vignette des vidéos |
+
+`<l>` vaut `fr` ou `en`. Les vidéos n'existent qu'en français, parce que le
+Reel dont elles viennent est en français. Il porte encore l'ancienne phrase
+de dictée (« Op der Kiermes iessen ech ëmmer Gromperekichelcher mat
+Äppelkompott »), qui n'a pas de traduction officielle.
+
+Ordre des promesses, fixé par le propriétaire le 2026-10-18 : l'écriture,
+puis la dictée, puis la collection de cartes, et enfin les jeux. Le carrousel
+le suit : 1 mots devinés, 2 accents, 3 dictée, 4 carte du carnet,
+5 Wuertplaz (les jeux), 6 appel à installer avec le badge Google Play. Sur
+les images seules, le clavier qui devine passe devant, la dictée est posée
+dessus.
+
+Le Reel, lui, ne suit pas encore cet ordre : il montre les jeux avant le
+carnet, et le Wierderbuch entre les deux premiers et les jeux.
+
+## Textes
+
+Lien : https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard
+Bouton : « Installer » (en anglais : « Install »).
+
+Le titre peut faire jusqu'à 300 caractères, mais un téléphone le coupe vers
+80 : chaque titre proposé ci-dessous tient dans cette longueur.
+
+Français :
+
+- Écrivez le luxembourgeois comme vous le parlez. Gratuit, sans publicité.
+- Vos mots luxembourgeois soulignés en rouge ? Plus avec ce clavier.
+- ë, ä, é sous le pouce, et il devine le mot suivant. Clavier gratuit.
+
+Anglais :
+
+- Write Luxembourgish the way you speak it. Free keyboard, no ads.
+- Tired of your phone underlining every Luxembourgish word in red?
+- ë, ä, é under your thumb, and it guesses your next word. Free keyboard.
+
+## Si on pose la question en commentaire
+
+La dictée envoie la voix à LuxASR, le service de l'Université du Luxembourg,
+et il faut une connexion. Ce qu'on tape au clavier reste sur le téléphone.
+C'est ce que dit la fiche Google Play, et rien de plus.
