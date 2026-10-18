@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.4.9] - 2026-10-18
+
+### ✨ Améliorations
+
+- **Les cartes d'automne apparaissent plus vite** : le paysage d'automne d'une carte ouverte se dessine en 43 ms au lieu de 71 sur un Galaxy A21s, celui d'une vignette en 21 ms au lieu de 30 ; le printemps gagne aussi un peu. Les images ne changent pas.
+
 ## [37.4.8] - 2026-10-18
 
 ### 🐛 Corrections
