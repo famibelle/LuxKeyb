@@ -592,6 +592,20 @@ object Booster {
             val lente = rarete == Rarete.TRES_RARE
             dos.postDelayed({
                 if (abandonnee()) return@postDelayed
+                // L'éclair d'une très rare se joue sur le dos, par une chaîne
+                // d'animations. Sur un téléphone lent, ou derrière un arrêt,
+                // elle finissait après ce retournement-ci : son dernier
+                // `rotationY(360f)` l'annulait, et la carte restait face
+                // cachée pour de bon, « Fermer » affiché (vu sur l'émulateur,
+                // 2026-10-18, avec la 37.4.7). Le retournement coupe la chaîne
+                // et part d'un dos remis droit.
+                dos.retourne = true
+                dos.animate().cancel()
+                if (lente) {
+                    dos.rotationY = 360f
+                    dos.scaleX = 1f
+                    dos.scaleY = 1f
+                }
                 dos.animate().rotationY(dos.rotationY + 90f).setDuration(if (lente) 350L else 170L)
                     .setInterpolator(AccelerateInterpolator())
                     .withEndAction {
@@ -897,22 +911,34 @@ object Booster {
             cameraDistance = dos.cameraDistance
         }
         page.addView(eclair)
+        // Chaque maillon vérifie que le vrai retournement n'a pas commencé :
+        // voir [DosDeCarte.retourne].
+        fun coupee(): Boolean {
+            if ((dos as? DosDeCarte)?.retourne != true) return false
+            page.removeView(eclair)
+            return true
+        }
         dos.postDelayed({
-            if (dos.parent == null) return@postDelayed
+            if (dos.parent == null || coupee()) return@postDelayed
             eclair.layoutParams = FrameLayout.LayoutParams(dos.width, dos.height, Gravity.CENTER)
             dos.animate().rotationY(450f).setStartDelay(0).setDuration(100)
                 .setInterpolator(AccelerateInterpolator())
                 .withEndAction {
+                    if (coupee()) return@withEndAction
                     eclair.rotationY = -90f
                     eclair.visibility = View.VISIBLE
                     eclair.animate().rotationY(0f).setDuration(100).withEndAction {
+                        if (coupee()) return@withEndAction
                         eclair.animate().rotationY(-90f).setDuration(100).withEndAction {
                             page.removeView(eclair)
+                            if (coupee()) return@withEndAction
                             dos.animate().rotationY(360f).setDuration(100)
                                 .setInterpolator(DecelerateInterpolator())
                                 .withEndAction {
+                                    if (coupee()) return@withEndAction
                                     dos.animate().scaleX(1.02f).scaleY(1.02f).setDuration(200)
                                         .withEndAction {
+                                            if (coupee()) return@withEndAction
                                             dos.animate().scaleX(1f).scaleY(1f).setDuration(200).start()
                                         }.start()
                                 }.start()
@@ -1279,6 +1305,12 @@ class DosDeCarte(
     private val jeu: JeuCarte,
     private val rarete: Rarete = Rarete.COMMUN
 ) : View(context) {
+
+    /**
+     * Le vrai retournement a commencé : l'éclair du prélude, s'il n'a pas fini,
+     * ne doit plus toucher au dos. Voir [Booster.preluderTresRare].
+     */
+    var retourne = false
 
     private val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
     private val pinceauTexte = Paint(Paint.ANTI_ALIAS_FLAG).apply {
