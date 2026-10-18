@@ -49,8 +49,20 @@ class FileEnvoiReseauTest {
         .socketFactory(PetitTamponSocketFactory())
         .build()
 
+    /**
+     * Les connexions acceptées, gardées jusqu'à la fin du test.
+     *
+     * Le fil du serveur qui ne lit plus se terminait aussitôt, et rien ne
+     * retenait plus la socket : au premier passage du ramasse-miettes, la JVM
+     * la fermait. Le pair disparu, la file ne grossissait plus jamais, et le
+     * test échouait au hasard, sur une machine de CI chargée (v37.4.5). Un
+     * `System.gc()` dans la boucle d'envoi reproduit l'échec à coup sûr.
+     */
+    private val acceptees = java.util.Collections.synchronizedList(mutableListOf<Socket>())
+
     @After
     fun fermer() {
+        acceptees.forEach { runCatching { it.close() } }
         serveur.close()
         client.dispatcher.executorService.shutdown()
     }
@@ -93,6 +105,7 @@ class FileEnvoiReseauTest {
     private fun ouvrir(lit: Boolean): WebSocket {
         thread(isDaemon = true) {
             val s = serveur.accept()
+            acceptees.add(s)
             poignee(s)
             if (lit) {
                 val tampon = ByteArray(65536)
