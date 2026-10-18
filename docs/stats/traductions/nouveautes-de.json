@@ -6,6 +6,105 @@
   "Changements": "Änderungen",
   "Rapidité": "Geschwindigkeit"
  },
+ "37.4.7": {
+  "intro": "Die erste seltene und die erste sehr seltene Karte bekommen ihre Zeremonie.",
+  "sections": [
+   {
+    "titre": "Verbesserungen",
+    "points": [
+     {
+      "titre": "Die erste seltene und die erste sehr seltene Karte bekommen ihre Zeremonie",
+      "texte": "Die erste seltene Karte zittert ein zweites Mal, stärker, die erste sehr seltene steigt langsamer auf; beide bekommen ein zweites Feuerwerk und einen Satz, der sagt, woran man ihre Stufe erkennt (Abendhimmel und silberner Rahmen, Sternennacht und goldener Rahmen). Nur einmal pro Stufe."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "Gefilmt auf einem Galaxy A21s. Ein Kartenpäckchen am Spielende: Nacht senkt sich über den Bildschirm, die Kartenrückseite steigt drehend auf, ein violetter Blitz, dann dreht sich die Karte um. Es ist „Kran“, golden, in einer Sternennacht. Darüber erscheinen zwei Abzeichen: „Neue Karte“ und „Sehr seltene Karte“. Unter der Karte steht: „Ihre erste sehr seltene Karte! Sie erkennen sie am Sternenhimmel und am goldenen Rahmen.“",
+    "legende": "Die allererste sehr seltene Karte bekommt ihre Zeremonie und einen Satz, der sagt, woran man sie künftig erkennt."
+   }
+  ]
+ },
+ "37.4.6": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Verbesserungen",
+    "points": [
+     {
+      "titre": "Die Seltenheit wird ausgeschrieben",
+      "texte": "Oben in der Sammlung trägt jede Stufe ihren Namen („✦ 5 sehr selten ★ 11 selten…“) statt bloßer Symbole; im Kartenpäckchen kündigt sich eine seltene oder sehr seltene Karte an, sobald sie liegt."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.5": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Die Karten in der Leitner-Box zeigen ihre Landschaft",
+      "texte": "In den Fächern zeigten die gestapelten Karten nur den Himmel; jetzt zeigen sie ihren Ort, ihre Jahreszeit und ihr Fest, wie in der Sammlung."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.4": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Die Sommervögel fliegen im Kartenfenster",
+      "texte": "Auf der geöffneten Karte und im Kartenpäckchen schlagen sie sanft mit den Flügeln und gleiten, kaum treibend. Vorher standen sie starr in der Landschaft."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.3": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Die Tastatur trägt ihren Namen in der Tastaturauswahl",
+      "texte": "Auf Samsung-Telefonen erschien sie als „Clavier luxembourgeois Luxembourg“; jetzt heißt sie überall „🇱🇺 Lëtzebuergesch Clavier“."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.2": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Kein heller Streifen mehr am Fensterrand, wenn man die Karte neigt",
+      "texte": "Die Ebenen der Landschaft ragen jetzt über das Fenster hinaus, ihr Rand ist beim Gleiten nicht mehr zu sehen."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.1": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Gewonnene Karten lassen das Telefon je nach Seltenheit vibrieren",
+      "texte": "Ein leichtes Ticken für eine ungewöhnliche Karte, drei Zitterer und dann der Schlag des Stempels für eine seltene, und für eine sehr seltene ein Anschwellen während des Vorspiels, ein voller Schlag beim Aufblitzen und das Knistern des Feuerwerks. Diese Vibrationen gab es schon, sie blieben aber auf manchen Telefonen stumm, darunter das Galaxy A21s; jetzt laufen sie über denselben Weg wie das Relief der Sammelkarten. Sie folgen der Einstellung „Vibration beim Tippen“ in den Tastatureinstellungen."
+     }
+    ]
+   }
+  ]
+ },
  "37.3.0": {
   "intro": "Die Tastatur fängt einen nur einmal getippten Doppelbuchstaben ab.",
   "sections": [

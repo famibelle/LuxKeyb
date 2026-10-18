@@ -1,64 +1,21 @@
 {
- "genere_le": "2026-10-14",
- "derniere_version": "37.3.0",
- "derniere_date": "2026-10-14",
+ "genere_le": "2026-10-18",
+ "derniere_version": "37.4.7",
+ "derniere_date": "2026-10-17",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
   {
-   "version": "37.3.0",
-   "date": "2026-10-14",
-   "intro": "Le clavier rattrape la lettre doublée tapée une seule fois.",
+   "version": "37.4.7",
+   "date": "2026-10-17",
+   "intro": "",
    "sections": [
     {
      "emoji": "✨",
-     "titre": "Nouveautés",
+     "titre": "Améliorations",
      "points": [
       {
-       "titre": "Une lettre doublée oubliée est corrigée",
-       "texte": "« Kafi » donne « Kaffi », « ales » donne « alles », « ener » donne « ënner » plutôt qu'« Energie ». Le luxembourgeois double beaucoup de lettres, et le pouce pressé n'en tape souvent qu'une."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.2.0",
-   "date": "2026-10-13",
-   "intro": "Le clavier rattrape mieux les fautes de frappe.",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Deux mots tapés sans espace se séparent",
-       "texte": "Pour « echhunn », la barre propose « ech hunn ». Les mots soudés du luxembourgeois (« ausbruecht », « Schoulbus ») ne sont pas coupés."
-      },
-      {
-       "titre": "Le doigt tombé sur la touche d'à côté est reconnu",
-       "texte": "Pour « haud », la barre propose d'abord « Haus », parce que le s touche le d, avant « haut »."
-      },
-      {
-       "titre": "Deux lettres inversées comptent comme une seule faute",
-       "texte": "« ehc » donne « ech », « mioen » donne « Moien »."
-      },
-      {
-       "titre": "Une faute qui ressemble au début d'un autre mot est corrigée quand même",
-       "texte": "« gir » donne « fir », « vul » donne « vun »."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Quelques fautes de frappe venues des textes qui ont servi à construire le dictionnaire en ont été retirées",
-       "texte": "« hunnn », « dobai », « tescht »… Elles étaient acceptées telles quelles, et « hunnn » était même proposé sous « hunn »."
+       "titre": "La première carte rare et la première très rare ont leur cérémonie",
+       "texte": "La première rare frémit une seconde fois, plus fort, la première très rare monte plus lentement ; toutes deux ont un second bouquet et une phrase qui dit comment reconnaître leur palier (ciel du soir et bordure d'argent, nuit étoilée et bordure d'or). Une seule fois par palier."
       }
      ],
      "texte": "",
@@ -67,136 +24,103 @@
    ],
    "images": [
     {
-     "image": "Screenshots/lux_correction_frappe.gif",
-     "alt": "Le clavier dans une conversation de messages. On tape « echhunn » sans espace : la barre propose « Ech hunn », on la touche. Puis « geschter » sans accent : la barre propose « gëschter ». Puis « an der » sans faute, puis « schiul », le doigt tombé sur le i à côté du o : la barre propose « Schoul ». Enfin « gescahfft », deux lettres inversées : la barre propose « geschafft ». La phrase finale est « Ech hunn gëschter an der Schoul geschafft ». Un disque bleu montre chaque toucher.",
-     "legende": "Mots collés, accent oublié, touche d'à côté, lettres inversées : on tape vite, la barre propose le bon mot, un toucher suffit."
+     "image": "Screenshots/lux_premiere_tres_rare.gif",
+     "alt": "Filmé sur un Galaxy A21s. Une pochette de fin de partie : la nuit tombe sur l'écran, le dos de la carte monte en tournant, un éclair violet passe, puis la carte se retourne. C'est « Kran » (grue), dorée, dans une nuit étoilée. Deux pastilles apparaissent au-dessus : « Nouvelle carte » et « Carte très rare ». Sous la carte, une phrase dit : « Votre première carte très rare ! On la reconnaît à sa nuit étoilée et à sa bordure d'or. »",
+     "legende": "La toute première carte très rare a droit à sa cérémonie, et à une phrase qui dit comment la reconnaître ensuite."
     }
    ],
-   "image": "Screenshots/lux_correction_frappe.gif",
-   "image_alt": "Le clavier dans une conversation de messages. On tape « echhunn » sans espace : la barre propose « Ech hunn », on la touche. Puis « geschter » sans accent : la barre propose « gëschter ». Puis « an der » sans faute, puis « schiul », le doigt tombé sur le i à côté du o : la barre propose « Schoul ». Enfin « gescahfft », deux lettres inversées : la barre propose « geschafft ». La phrase finale est « Ech hunn gëschter an der Schoul geschafft ». Un disque bleu montre chaque toucher.",
-   "image_legende": "Mots collés, accent oublié, touche d'à côté, lettres inversées : on tape vite, la barre propose le bon mot, un toucher suffit."
+   "image": "Screenshots/lux_premiere_tres_rare.gif",
+   "image_alt": "Filmé sur un Galaxy A21s. Une pochette de fin de partie : la nuit tombe sur l'écran, le dos de la carte monte en tournant, un éclair violet passe, puis la carte se retourne. C'est « Kran » (grue), dorée, dans une nuit étoilée. Deux pastilles apparaissent au-dessus : « Nouvelle carte » et « Carte très rare ». Sous la carte, une phrase dit : « Votre première carte très rare ! On la reconnaît à sa nuit étoilée et à sa bordure d'or. »",
+   "image_legende": "La toute première carte très rare a droit à sa cérémonie, et à une phrase qui dit comment la reconnaître ensuite."
   },
   {
-   "version": "37.1.3",
-   "date": "2026-10-13",
-   "intro": "Les cartes restent à l'écran quand on tourne le téléphone.",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Une carte ouverte dans le carnet ne se ferme plus",
-       "texte": "Quand le téléphone tourne, ni un casier ouvert dans la Boîte de Leitner."
-      },
-      {
-       "titre": "En révision, la carte qu'on vient de retourner reste retournée",
-       "texte": ""
-      },
-      {
-       "titre": null,
-       "texte": "Tant qu'une carte est à l'écran, incliner le téléphone la fait bouger au lieu de faire tourner l'écran."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔄",
-     "titre": "Changements",
-     "points": [
-      {
-       "titre": "Sur téléphone, l'application s'affiche toujours en hauteur",
-       "texte": "Couché, le téléphone laissait trop peu de place : en révision, la carte se réduisait à une icône. Les tablettes gardent les deux sens."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.1.2",
-   "date": "2026-10-12",
-   "intro": "La pochette de fin de partie tient bon quand on tourne le téléphone.",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Tourner le téléphone ne fait plus disparaître la pochette",
-       "texte": "L'écran reste dans son sens tant qu'elle est ouverte, et retrouve sa rotation dès qu'on la ferme. On peut donc incliner le téléphone pour faire jouer la carte sans la perdre."
-      },
-      {
-       "titre": "En paysage, les cartes gagnées apparaissent enfin",
-       "texte": "Le dos se retourne, la carte s'affiche avec ses effets de rareté et suit l'inclinaison du téléphone."
-      },
-      {
-       "titre": "Le titre de la pochette ne passe plus sous l'heure et les icônes",
-       "texte": "Ni « Passer » sous la barre de navigation."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.1.1",
-   "date": "2026-10-12",
-   "intro": "Le carnet et la Boîte de Leitner répondent sans à-coup.",
-   "sections": [
-    {
-     "emoji": "⚡",
-     "titre": "Rapidité",
-     "points": [
-      {
-       "titre": "Changer de tri ou passer à l'Étagère ne fige plus le carnet",
-       "texte": "Les cartes déjà affichées sont reprises au lieu d'être refaites."
-      },
-      {
-       "titre": "Le carnet s'ouvre plus vite",
-       "texte": "Et sa grille se laisse faire défiler dès qu'elle paraît."
-      },
-      {
-       "titre": "La première carte ouverte se retourne aussi vite que les suivantes",
-       "texte": "D'un seul mouvement."
-      },
-      {
-       "titre": "Ouvrir un casier de la Boîte de Leitner ne bloque plus l'écran",
-       "texte": "L'éventail se déploie dès que ses cartes sont prêtes."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.1.0",
-   "date": "2026-10-12",
-   "intro": "Chaque carte rare a désormais sa propre façon d'arriver.",
+   "version": "37.4.6",
+   "date": "2026-10-16",
+   "intro": "",
    "sections": [
     {
      "emoji": "✨",
-     "titre": "Nouveautés",
+     "titre": "Améliorations",
      "points": [
       {
-       "titre": "Une carte peu commune ◆◆",
-       "texte": "Se pose avec un reflet de lumière qui la traverse."
-      },
+       "titre": "La rareté se dit en toutes lettres",
+       "texte": "En tête du carnet, chaque palier est nommé (« ✦ 5 très rares ★ 11 rares… ») au lieu de symboles seuls ; dans la pochette, une carte rare ou très rare s'annonce au moment où elle se pose."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.4.5",
+   "date": "2026-10-16",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
       {
-       "titre": "Une carte rare ★★★",
-       "texte": "Se devine avant d'apparaître : le dos frémit trois fois dans la pochette, le téléphone vibre, puis, une fois la carte retournée, son poinçon se frappe avec une onde."
-      },
+       "titre": "Les cartes de la boîte de Leitner montrent leur paysage",
+       "texte": "Dans les casiers, les cartes empilées n'affichaient que le ciel ; elles montrent désormais leur lieu, leur saison et leur fête, comme dans le carnet."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.4.4",
+   "date": "2026-10-16",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
       {
-       "titre": "Une carte très rare ✦✦✦✦",
-       "texte": "Change toute la scène : la nuit tombe, la carte monte en tournant, un premier éclair violet, puis elle se dévoile lentement sous des rayons de lumière."
-      },
+       "titre": "Les oiseaux d'été volent dans la fenêtre de la carte",
+       "texte": "Sur la carte ouverte et dans la pochette, ils battent doucement des ailes et planent en dérivant à peine. Ils étaient figés dans le paysage."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.4.3",
+   "date": "2026-10-16",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
       {
-       "titre": null,
-       "texte": "Les vibrations suivent le réglage du téléphone, et tout reste sobre quand le téléphone demande moins d'animations."
+       "titre": "Le clavier porte son nom dans le sélecteur de clavier",
+       "texte": "Sur les téléphones Samsung, il apparaissait comme « Clavier luxembourgeois Luxembourg » ; il s'appelle désormais partout « 🇱🇺 Lëtzebuergesch Clavier »."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.4.2",
+   "date": "2026-10-16",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Plus de bande claire au bord de la fenêtre quand on penche la carte",
+       "texte": "Les plans du paysage débordent désormais de la fenêtre, et leur bord n'apparaît plus en glissant."
       }
      ],
      "texte": "",

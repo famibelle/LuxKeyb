@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "37.4.7": {
+    "images": [
+      {
+        "image": "Screenshots/lux_premiere_tres_rare.gif",
+        "alt": "Filmé sur un Galaxy A21s. Une pochette de fin de partie : la nuit tombe sur l'écran, le dos de la carte monte en tournant, un éclair violet passe, puis la carte se retourne. C'est « Kran » (grue), dorée, dans une nuit étoilée. Deux pastilles apparaissent au-dessus : « Nouvelle carte » et « Carte très rare ». Sous la carte, une phrase dit : « Votre première carte très rare ! On la reconnaît à sa nuit étoilée et à sa bordure d'or. »",
+        "legende": "La toute première carte très rare a droit à sa cérémonie, et à une phrase qui dit comment la reconnaître ensuite."
+      }
+    ]
+  },
   "37.2.0": {
     "images": [
       {

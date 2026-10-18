@@ -6,6 +6,105 @@
   "Changements": "Alterações",
   "Rapidité": "Rapidez"
  },
+ "37.4.7": {
+  "intro": "A primeira carta rara e a primeira muito rara têm a sua cerimónia.",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "A primeira carta rara e a primeira muito rara têm a sua cerimónia",
+      "texte": "A primeira rara estremece uma segunda vez, com mais força, e a primeira muito rara sobe mais devagar; ambas têm um segundo fogo de artifício e uma frase que diz como reconhecer o seu nível (céu de fim de tarde e moldura de prata, noite estrelada e moldura de ouro). Uma só vez por nível."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmado num Galaxy A21s. Um pacote de cartas no fim do jogo: cai a noite no ecrã, o verso da carta sobe a rodar, passa um relâmpago violeta e a carta vira-se. É «Kran» (grua), dourada, numa noite estrelada. Aparecem dois selos por cima: «Nova carta» e «Carta muito rara». Por baixo da carta, uma frase diz: «A sua primeira carta muito rara! Reconhece-se pela noite estrelada e pela moldura de ouro.»",
+    "legende": "A primeiríssima carta muito rara tem direito à sua cerimónia e a uma frase que diz como reconhecê-la daí em diante."
+   }
+  ]
+ },
+ "37.4.6": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "A raridade diz-se por extenso",
+      "texte": "No topo da coleção, cada nível tem o seu nome («✦ 5 muito raras ★ 11 raras…») em vez de símbolos sozinhos; no pacote de cartas, uma carta rara ou muito rara anuncia-se quando pousa."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.5": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "As cartas da caixa de Leitner mostram a sua paisagem",
+      "texte": "Nos compartimentos, as cartas empilhadas só mostravam o céu; agora mostram o seu lugar, a sua estação e a sua festa, como na coleção."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.4": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Os pássaros de verão voam na janela da carta",
+      "texte": "Na carta aberta e no pacote de cartas, batem suavemente as asas e planam, quase sem derivar. Antes estavam imóveis na paisagem."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.3": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "O teclado tem o seu nome no seletor de teclados",
+      "texte": "Nos telemóveis Samsung aparecia como «Clavier luxembourgeois Luxembourg»; agora chama-se em todo o lado «🇱🇺 Lëtzebuergesch Clavier»."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.2": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Já não há faixa clara na borda da janela quando se inclina a carta",
+      "texte": "Os planos da paisagem passam agora para lá da janela, e a sua borda já não aparece ao deslizar."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.1": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "As cartas ganhas fazem vibrar o telemóvel, consoante a raridade",
+      "texte": "Um leve toque para uma carta pouco comum, três estremecimentos e depois a pancada do selo para uma rara, e para uma muito rara uma subida durante o prelúdio, uma pancada cheia no clarão e o crepitar do fogo de artifício. Estas vibrações já existiam mas ficavam mudas em alguns telemóveis, incluindo o Galaxy A21s; passam agora pelo mesmo caminho que o relevo das cartas da coleção. Seguem a opção «Vibração ao tocar nas teclas» das definições do teclado."
+     }
+    ]
+   }
+  ]
+ },
  "37.3.0": {
   "intro": "O teclado apanha a letra dobrada escrita uma só vez.",
   "sections": [

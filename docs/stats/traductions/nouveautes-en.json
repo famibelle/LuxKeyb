@@ -6,6 +6,105 @@
   "Changements": "Changes",
   "Rapidité": "Speed"
  },
+ "37.4.7": {
+  "intro": "The first rare and very rare cards get their ceremony.",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The first rare card and the first very rare card get their ceremony",
+      "texte": "The first rare card quivers a second time, harder, and the first very rare card rises more slowly; both get a second burst of fireworks and a sentence that tells how to recognise their tier (evening sky and silver frame, starry night and gold frame). Only once per tier."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmed on a Galaxy A21s. An end-of-game card pack: night falls on the screen, the back of the card rises while spinning, a purple flash passes, then the card turns over. It is “Kran” (crane), golden, in a starry night. Two badges appear above it: “New card” and “Very rare card”. Under the card, a sentence reads: “Your first very rare card! You can tell by its starry night and its gold frame.”",
+    "legende": "The very first very rare card gets its ceremony, and a sentence that tells how to recognise it from then on."
+   }
+  ]
+ },
+ "37.4.6": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "Rarity is spelled out",
+      "texte": "At the top of the collection, each tier is named (“✦ 5 very rare ★ 11 rare…”) instead of bare symbols; in the card pack, a rare or very rare card announces itself as it lands."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.5": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "The cards in the Leitner box show their landscape",
+      "texte": "In the compartments, stacked cards only showed the sky; they now show their place, season and festival, as in the collection."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.4": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Summer birds fly in the card window",
+      "texte": "On the open card and in the card pack, they gently flap their wings and glide, drifting only slightly. They used to be frozen in the landscape."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.3": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "The keyboard has its own name in the keyboard picker",
+      "texte": "On Samsung phones it appeared as “Clavier luxembourgeois Luxembourg”; it is now called “🇱🇺 Lëtzebuergesch Clavier” everywhere."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.2": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "No more light strip at the edge of the window when you tilt the card",
+      "texte": "The landscape layers now overflow the window, and their edge no longer shows as they slide."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.1": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Cards you win make the phone vibrate, by rarity",
+      "texte": "A light tick for an uncommon card, three quivers then the stamp’s knock for a rare one, and for a very rare one a build-up during the prelude, a full knock at the flash and the crackle of fireworks. These vibrations existed but stayed silent on some phones, including the Galaxy A21s; they now go through the same path as the relief of the collection cards. They follow the “Vibrate on keypress” setting in the keyboard settings."
+     }
+    ]
+   }
+  ]
+ },
  "37.3.0": {
   "intro": "The keyboard catches a double letter typed only once.",
   "sections": [
