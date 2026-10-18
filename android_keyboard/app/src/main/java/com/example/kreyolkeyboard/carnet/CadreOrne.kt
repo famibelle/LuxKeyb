@@ -421,7 +421,9 @@ object Ornement {
      * 4,4:1 sur l'or et 4,0:1 sur l'argent, contre 2,4:1 et 2,2:1 au clair.
      */
     val SERIE_G = RectF(22f, 428f, 176f, 437.5f)
-    val SERIE_D = RectF(176f, 428f, 278f, 437.5f)
+    // Large depuis 37.4.8 : elle porte le palier avant le rang (« ✦ Très rare ·
+    // 9769ᵉ »). Elle commence après le numéro et le poinçon (x = 64 à 74).
+    val SERIE_D = RectF(96f, 428f, 278f, 437.5f)
 
     /**
      * Le milieu de la bordure basse visible : entre le bas de la face

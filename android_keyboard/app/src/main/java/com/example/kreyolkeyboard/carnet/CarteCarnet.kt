@@ -343,10 +343,15 @@ object CarteCarnet {
             ligne(context, serie, taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.START),
             Ornement.serieG(c.rarete)
         )
+        // Le palier en toutes lettres avant le rang : « 9769ᵉ » seul ne disait
+        // pas ce qu'il valait, et la rareté ne se lisait qu'au code des
+        // bordures et des heures.
+        val rang = c.rang?.let { context.getString(R.string.carte_rang, it + 1) }
+            ?: context.getString(R.string.carte_hors_corpus)
         carte.posee(
             ligne(
                 context,
-                c.rang?.let { context.getString(R.string.carte_rang, it + 1) } ?: context.getString(R.string.carte_hors_corpus),
+                "${c.rarete.symbole} ${context.getString(c.rarete.libelle)} · $rang",
                 taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.END
             ),
             Ornement.serieD(c.rarete)
