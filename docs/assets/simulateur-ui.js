@@ -11,19 +11,26 @@
 (function () {
   'use strict';
 
-  // QWERTZ et non AZERTY : la disposition des claviers physiques au Luxembourg
-  // (suisse-français), celle que partagent l'allemand et le luxembourgeois écrit.
-  // Cf. KeyboardLayoutManager.createAlphabeticLayout().
+  // QWERTZ et non AZERTY : la disposition des claviers physiques au Luxembourg,
+  // celle que partagent l'allemand et le luxembourgeois écrit. C'est la
+  // disposition « Suisse allemand », celle que l'application installe par
+  // défaut depuis la v29.5.0 (DispositionClavier.SUISSE_ALLEMAND) : onze
+  // touches par rangée, « ü » à droite du « p », « ö » et « ä » à droite du
+  // « l », « é » et « ë » autour de la barre d'espace.
   const ALPHA_ROWS = [
-    ['q', 'w', 'e', 'r', 't', 'z', 'u', 'i', 'o', 'p'],
-    // « é » ferme la rangée d'accueil, là où le QWERTZ suisse-français la place :
-    // c'est la diacritique n°1 du luxembourgeois (2 596 occurrences dans le corpus).
-    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'é'],
+    ['q', 'w', 'e', 'r', 't', 'z', 'u', 'i', 'o', 'p', 'ü'],
+    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ö', 'ä'],
     ['⇧', 'y', 'x', 'c', 'v', 'b', 'n', 'm', '⌫'],
-    // « ä » et « ë » gardent leur touche dédiée (1 004 et 1 251 occurrences), et
-    // l'apostrophe la sienne : l'élision est structurelle — d'Land, s'Kanner.
-    ['123', ',', 'ä', ' ', 'ë', "'", '.', 'EMOJI', '⏎']
+    // L'apostrophe a sa touche (l'élision est structurelle : d'Land,
+    // s'Kanner), le trait d'union la sienne depuis la v37.5.0 (CSV-Fraktioun,
+    // Covid-19 : 44 193 occurrences dans le corpus).
+    ['123', ',', 'é', ' ', 'ë', "'", '-', '.', 'EMOJI', '⏎']
   ];
+
+  // Les caractères que la page des lettres donne en un seul appui
+  // (DispositionClavier.touchesDirectes) : les aperçus en coin les écartent,
+  // annoncer « ü » sous le « u » ne sert à rien quand il a sa touche.
+  const TOUCHES_DIRECTES = new Set([].concat(...ALPHA_ROWS));
 
   // InputProcessor.PONCTUATION_COLLEE : les signes devant lesquels l'espace
   // posée par une suggestion disparaît. Ni « - » ni « % ».
@@ -90,8 +97,7 @@
 
   // AccentHandler.accentMap, reconstruite pour le luxembourgeois : chaque liste
   // est classée par fréquence décroissante des diacritiques dans les corpus
-  // LuxAlign + LETZ. Les digraphes créoles GEREC (ch, dj, ng…) n'y sont plus,
-  // et le trait d'union est passé en appui long sur « . ».
+  // LuxAlign + LETZ. Les digraphes créoles GEREC (ch, dj, ng…) n'y sont plus.
   const ACCENT_MAP = {
     a: ['ä', 'à', 'â'],
     e: ['é', 'ë', 'è', 'ê'],
@@ -102,7 +108,7 @@
     // Ordres pris sur le corpus et non sur l'habitude française : « : » 122 ≫
     // « ; » 6, « ? » 133 ≫ « ! » 1.
     ',': [':', ';'],
-    '.': ['-', '?', '!', '…'],
+    '.': ['?', '!', '…'],
     // L'ASCII ' reste sur la touche — seule forme sûre en adresse, identifiant ou
     // mot de passe — et l'apostrophe typographique ’, que le corpus emploie 2,6×
     // plus, ouvre le popup ; suivent les guillemets courbes.
@@ -121,9 +127,8 @@
     '0': ['°']
   };
   // AccentHandler.cornerHintOverrides : « a » et « e » ont leurs diacritiques les
-  // plus fréquentes déjà visibles ailleurs (ä et ë en rangée 4, é en fin de
-  // rangée d'accueil), l'aperçu met donc en avant celles qui n'ont pas d'autre
-  // porte d'entrée.
+  // plus fréquentes déjà visibles ailleurs (ä, é et ë ont leur touche),
+  // l'aperçu met donc en avant celles qui n'ont pas d'autre porte d'entrée.
   const CORNER_HINTS = { a: ['à', 'â'], e: ['è', 'ê'] };
 
   // Ce qui appartient à un mot, comme InputProcessor.isWordCharacter() :
@@ -424,7 +429,8 @@
     cornerHints(key) {
       const k = key.toLowerCase();
       if (!Object.prototype.hasOwnProperty.call(ACCENT_MAP, k)) return [];
-      return CORNER_HINTS[k] || ACCENT_MAP[k];
+      const options = CORNER_HINTS[k] || ACCENT_MAP[k];
+      return this.isNumericMode ? options : options.filter((o) => !TOUCHES_DIRECTES.has(o));
     }
 
     displayText(key) {
@@ -448,19 +454,19 @@
       }
       if (key === '⏎' || key === '123' || key === 'ABC' || key === 'EMOJI') return 'kb-action';
       if (key === ' ') return 'kb-space-key';
-      if ([',', '.', "'"].includes(key)) return 'kb-punct';
+      if ([',', '.', "'", '-'].includes(key)) return 'kb-punct';
       return 'kb-normal';
     }
 
     keyWeight(key) {
-      if (key === ' ') return 4;
-      // KeyboardLayoutManager.getKeyWeight() : 1,5 et non 1,25. C'est ce qui
-      // pose la rangée 3 à exactement 10 unités (1,5 + 7 lettres + 1,5), donc à
-      // la même largeur de touche que les rangées 1 et 2. Le 1,25 datait du
-      // temps où l'apostrophe vivait en rangée 3 ; elle est en rangée 4
-      // depuis, et la réduction laissait la rangée à 9,5 unités, ses lettres
-      // 5 % plus larges que celles du dessus.
-      if (key === '⇧' || key === '⌫') return 1.5;
+      // DispositionClavier.poidsTouche() sur la page des lettres,
+      // poidsPagesSymboles() sur les pages 123 et emoji. Sur les lettres, la
+      // barre d'espace a cédé une unité au trait d'union (rangée du bas à 12
+      // unités) et « ⇧ »/« ⌫ » valent 2 : 2 + 7 lettres + 2 = 11, la largeur
+      // des rangées 1 et 2, donc des lettres de même largeur sur les trois.
+      const lettres = !this.isNumericMode && !this.isEmojiMode;
+      if (key === ' ') return lettres ? 3 : 4;
+      if (key === '⇧' || key === '⌫') return lettres ? 2 : 1.5;
       return 1;
     }
 
