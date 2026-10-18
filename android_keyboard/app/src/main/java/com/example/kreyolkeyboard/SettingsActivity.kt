@@ -729,6 +729,10 @@ class SettingsActivity : AppCompatActivity() {
         // Revenu dans l'appli, de lui-même ou ramené : plus rien à guetter.
         arreterGuetActivation()
 
+        // Une fois par installation : les shaders des cartes se compilent ici,
+        // sur un écran immobile, et non au retournement de la première carte.
+        com.example.kreyolkeyboard.carnet.ChauffeCartes.planifier(this)
+
         if (::tabBar.isInitialized && hasPendingLevelBadge() != levelBadgeDrawn) {
             Log.d("SettingsActivity", "🔄 Pastille de niveau à rafraîchir au retour au premier plan")
             updateTabBar()
