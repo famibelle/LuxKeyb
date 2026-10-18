@@ -9,6 +9,18 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.4.8] - 2026-10-18
+
+### 🐛 Corrections
+
+- **Une carte très rare ne reste plus face cachée** : sur un téléphone lent, l'éclair qui précède la très rare pouvait annuler son retournement, et la carte restait sur son dos.
+- **La première pochette ne se fige plus** : après une installation ou une mise à jour, la carte marquait un arrêt d'une demi-seconde en se retournant. Le travail graphique se fait désormais en avance, sans que rien ne se voie.
+
+### ✨ Améliorations
+
+- **La légende du carnet filtre** : toucher « ✦ 5 très rares » n'affiche plus que les très rares ; un second toucher montre tout le carnet.
+- **La carte ouverte nomme son palier** : en bas à droite, « ✦ Très rare · 9769ᵉ » au lieu du seul rang.
+
 ## [37.4.7] - 2026-10-17
 
 ### ✨ Améliorations
