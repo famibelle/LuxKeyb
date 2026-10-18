@@ -92,9 +92,15 @@ enum class DispositionClavier(val cle: String, @StringRes val libelle: Int) {
     /** Largeur de « ⇧ » et « ⌫ », qui alignent la rangée 3 sur les deux autres. */
     protected abstract val poidsShiftEtEffacement: Float
 
-    /** Largeur relative d'une touche dans sa rangée, une lettre valant 1. */
+    /**
+     * Largeur relative d'une touche dans sa rangée, une lettre valant 1.
+     *
+     * La barre d'espace vaut 3 depuis que le trait d'union a sa touche
+     * (v37.5.0) : elle cède la largeur de la nouvelle touche, et la rangée du
+     * bas garde ses 12 unités, donc ses touches de ponctuation leur largeur.
+     */
     fun poidsTouche(key: String): Float = when (key) {
-        " " -> 4.0f      // Barre d'espace plus large
+        " " -> 3.0f
         "⇧", "⌫" -> poidsShiftEtEffacement
         else -> 1.0f     // Touches normales
     }
@@ -112,6 +118,17 @@ enum class DispositionClavier(val cle: String, @StringRes val libelle: Int) {
         /** Suisse allemand depuis la v29.5.0, pour tous, mises à jour comprises. */
         val DEFAUT = SUISSE_ALLEMAND
 
+        /**
+         * Largeurs des pages 123 et emoji, qui ne changent pas avec la
+         * disposition des lettres : leur barre d'espace n'a rien cédé au
+         * trait d'union et garde 4 unités, leur « ⌫ » 1,5.
+         */
+        fun poidsPagesSymboles(key: String): Float = when (key) {
+            " " -> 4.0f
+            "⌫" -> 1.5f
+            else -> 1.0f
+        }
+
         /** Tolérante : une clé inconnue retombe sur le défaut plutôt que de jeter. */
         fun depuisCle(cle: String?): DispositionClavier =
             entries.firstOrNull { it.cle == cle } ?: DEFAUT
@@ -121,14 +138,19 @@ enum class DispositionClavier(val cle: String, @StringRes val libelle: Int) {
          * diacritiques près.
          *
          * L'apostrophe a sa touche dédiée, que réclamaient les retours
-         * utilisateurs, et le corpus le confirme : 649 occurrences (469 en ’
-         * typographique, 180 en ' ASCII), soit plus que ü et 4,5× le trait
-         * d'union (143). L'élision est structurelle en luxembourgeois — d'Land,
-         * s'Kanner, hunn's. Attention, luxemburgish_dict.json l'affiche à zéro
+         * utilisateurs : l'élision est structurelle en luxembourgeois (d'Land,
+         * s'Kanner, hunn's). Attention, luxemburgish_dict.json l'affiche à zéro
          * et ce zéro ne veut rien dire : le tokenizer de LuxembourgishComplet.py
-         * coupe les mots dessus. Le trait d'union reste donc en appui long sur
-         * « . » — 143 occurrences ici contre 21,7 % des mots en créole, où il
-         * avait une touche à lui.
+         * coupe les mots dessus.
+         *
+         * Le trait d'union a la sienne depuis la v37.5.0. Il n'était qu'en
+         * appui long sur « . », sur la foi d'un ancien corpus de 204 366
+         * caractères où il ne comptait que 143 occurrences. Recompté sur le
+         * corpus actuel (LuxAlign + LETZ, 21,5 millions de caractères), il en
+         * compte 44 193 : troisième signe hors lettres après « . » et « , »,
+         * 3,2 fois « : » et 16 fois « ? ». Les composés à sigle ou à nom propre
+         * l'appellent sans cesse : CSV-Fraktioun, Covid-19, Esch-Uelzecht.
+         * Il est aussi dans les adresses (jean-paul@…, www.esch-sur-alzette.lu).
          *
          * v29.3.1 : dans une adresse, la virgule et l'apostrophe ne servent à
          * rien et « @ », « / », « .lu » obligeaient à passer par la page 123.
@@ -136,9 +158,9 @@ enum class DispositionClavier(val cle: String, @StringRes val libelle: Int) {
          */
         private fun rangeeDuBas(champ: ChampAdresse, gauche: String, droite: String): Array<String> =
             when (champ) {
-                ChampAdresse.EMAIL -> arrayOf("123", "@", gauche, " ", droite, ".lu", ".", "EMOJI", "⏎")
-                ChampAdresse.WEB -> arrayOf("123", "/", gauche, " ", droite, ".lu", ".", "EMOJI", "⏎")
-                ChampAdresse.AUCUN -> arrayOf("123", ",", gauche, " ", droite, "'", ".", "EMOJI", "⏎")
+                ChampAdresse.EMAIL -> arrayOf("123", "@", gauche, " ", droite, ".lu", "-", ".", "EMOJI", "⏎")
+                ChampAdresse.WEB -> arrayOf("123", "/", gauche, " ", droite, ".lu", "-", ".", "EMOJI", "⏎")
+                ChampAdresse.AUCUN -> arrayOf("123", ",", gauche, " ", droite, "'", "-", ".", "EMOJI", "⏎")
             }
     }
 }

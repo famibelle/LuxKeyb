@@ -481,13 +481,14 @@ class KeyboardLayoutManager(private val context: Context) {
     /**
      * Une rangée de touches, chacune de largeur [poids] relative à la rangée.
      *
-     * Le poids par défaut est celui de la disposition luxembourgeoise : les
-     * pages 123 et emoji ne changent pas avec la disposition des lettres, et
-     * leur « ⌫ » garde sa largeur quel que soit le choix fait dans les réglages.
+     * Le poids par défaut est celui des pages 123 et emoji
+     * ([DispositionClavier.poidsPagesSymboles]) : elles ne changent pas avec la
+     * disposition des lettres, et leur « ⌫ » garde sa largeur quel que soit le
+     * choix fait dans les réglages.
      */
     private fun createKeyboardRow(
         keys: Array<String>,
-        poids: (String) -> Float = DispositionClavier.LUXEMBOURG::poidsTouche
+        poids: (String) -> Float = DispositionClavier::poidsPagesSymboles
     ): LinearLayout {
         val rowLayout = LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -854,7 +855,7 @@ class KeyboardLayoutManager(private val context: Context) {
         val p = KeyboardTheme.palette()
         return when (key) {
             "⏎", "123", "ABC", "EMOJI" -> p.accent
-            " ", ",", ".", "'", ".lu" -> p.secondaire
+            " ", ",", ".", "'", "-", ".lu" -> p.secondaire
             // Bleus seulement là où ils remplacent la virgule et l'apostrophe,
             // sur la rangée du bas d'un champ d'adresse. Sur la page 123 d'un
             // champ ordinaire, ils restent des touches comme leurs voisines.
