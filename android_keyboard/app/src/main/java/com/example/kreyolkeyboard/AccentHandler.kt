@@ -44,8 +44,9 @@ class AccentHandler(private val context: Context) {
     // qui justifierait une touche — « ch » et « sch » s'y écrivent avec des
     // lettres toutes déjà présentes au clavier.
     //
-    // Le trait d'union a quitté l'appui long sur "." en v37.5.0 pour sa propre
-    // touche, voir DispositionClavier.rangeeDuBas.
+    // Le trait d'union rejoint l'appui long sur "." : il n'apparaît que dans
+    // 2,8 % des mots luxembourgeois (fréquence cumulée 377), très loin des
+    // 21,7 % du créole qui lui valaient une touche dédiée en amont.
     private val accentMap = mapOf(
         "a" to listOf("ä", "à", "â"),
         "e" to listOf("é", "ë", "è", "ê"),
@@ -60,7 +61,7 @@ class AccentHandler(private val context: Context) {
         //   ":" 122 ≫ ";" 6   ·   "?" 133 ≫ "!" 1
         // L'apostrophe quitte cette liste : elle a sa propre touche en rangée 4.
         "," to listOf(":", ";"),
-        "." to listOf("?", "!", "…"),
+        "." to listOf("-", "?", "!", "…"),
         // Appui long sur la touche apostrophe. Le corpus écrit l'élision avec
         // l'apostrophe typographique ’ (469 occurrences) bien plus qu'avec
         // l'ASCII ' (180) — mais c'est ' qui reste sur la touche, seule forme

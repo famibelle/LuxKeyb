@@ -21,10 +21,9 @@
     ['q', 'w', 'e', 'r', 't', 'z', 'u', 'i', 'o', 'p', 'ü'],
     ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ö', 'ä'],
     ['⇧', 'y', 'x', 'c', 'v', 'b', 'n', 'm', '⌫'],
-    // L'apostrophe a sa touche (l'élision est structurelle : d'Land,
-    // s'Kanner), le trait d'union la sienne depuis la v37.5.0 (CSV-Fraktioun,
-    // Covid-19 : 44 193 occurrences dans le corpus).
-    ['123', ',', 'é', ' ', 'ë', "'", '-', '.', 'EMOJI', '⏎']
+    // L'apostrophe a sa touche : l'élision est structurelle (d'Land,
+    // s'Kanner). Le trait d'union reste en appui long sur « . ».
+    ['123', ',', 'é', ' ', 'ë', "'", '.', 'EMOJI', '⏎']
   ];
 
   // Les caractères que la page des lettres donne en un seul appui
@@ -97,7 +96,8 @@
 
   // AccentHandler.accentMap, reconstruite pour le luxembourgeois : chaque liste
   // est classée par fréquence décroissante des diacritiques dans les corpus
-  // LuxAlign + LETZ. Les digraphes créoles GEREC (ch, dj, ng…) n'y sont plus.
+  // LuxAlign + LETZ. Les digraphes créoles GEREC (ch, dj, ng…) n'y sont plus,
+  // et le trait d'union est en appui long sur « . ».
   const ACCENT_MAP = {
     a: ['ä', 'à', 'â'],
     e: ['é', 'ë', 'è', 'ê'],
@@ -108,7 +108,7 @@
     // Ordres pris sur le corpus et non sur l'habitude française : « : » 122 ≫
     // « ; » 6, « ? » 133 ≫ « ! » 1.
     ',': [':', ';'],
-    '.': ['?', '!', '…'],
+    '.': ['-', '?', '!', '…'],
     // L'ASCII ' reste sur la touche — seule forme sûre en adresse, identifiant ou
     // mot de passe — et l'apostrophe typographique ’, que le corpus emploie 2,6×
     // plus, ouvre le popup ; suivent les guillemets courbes.
@@ -454,18 +454,17 @@
       }
       if (key === '⏎' || key === '123' || key === 'ABC' || key === 'EMOJI') return 'kb-action';
       if (key === ' ') return 'kb-space-key';
-      if ([',', '.', "'", '-'].includes(key)) return 'kb-punct';
+      if ([',', '.', "'"].includes(key)) return 'kb-punct';
       return 'kb-normal';
     }
 
     keyWeight(key) {
-      // DispositionClavier.poidsTouche() sur la page des lettres,
-      // poidsPagesSymboles() sur les pages 123 et emoji. Sur les lettres, la
-      // barre d'espace a cédé une unité au trait d'union (rangée du bas à 12
-      // unités) et « ⇧ »/« ⌫ » valent 2 : 2 + 7 lettres + 2 = 11, la largeur
-      // des rangées 1 et 2, donc des lettres de même largeur sur les trois.
+      // DispositionClavier.poidsTouche() : sur la page des lettres, « ⇧ » et
+      // « ⌫ » valent 2 (2 + 7 lettres + 2 = 11, la largeur des rangées 1 et 2,
+      // donc des lettres de même largeur sur les trois) ; 1,5 sur les pages
+      // 123 et emoji, qui ne suivent pas la disposition.
       const lettres = !this.isNumericMode && !this.isEmojiMode;
-      if (key === ' ') return lettres ? 3 : 4;
+      if (key === ' ') return 4;
       if (key === '⇧' || key === '⌫') return lettres ? 2 : 1.5;
       return 1;
     }
