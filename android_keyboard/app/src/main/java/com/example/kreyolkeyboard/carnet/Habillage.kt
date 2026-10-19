@@ -178,26 +178,66 @@ internal object Habillage {
         // deux fois plus grand en porterait quatre fois plus, deux fois plus gros.
         val probaFleur = 0.009f / (u * u).coerceAtLeast(0.25f)
         val fleurs = ArrayList<Float>()
-        for (y in 0 until h) for (x in 0 until w) {
+        // L'hiver et l'été ne dépendent que de la couleur (et, l'hiver, de la
+        // végétation) : la teinte se calcule une fois par couleur et se garde
+        // dans une seconde table, comme `vegetal`. L'hiver passait les deux
+        // tiers de son habillage à refaire ce calcul pixel par pixel (Galaxy
+        // A21s, 2026-10-19). Le résultat est le même au bit près.
+        fun teinte(c: Int, veg: Boolean): Int {
+            var rr = r(c).toFloat(); var gg = g(c).toFloat(); var bb = bl(c).toFloat()
+            if (saison == Saison.WANTER) {
+                val m = (rr + gg + bb) / 3f
+                rr = m + (rr - m) * 0.65f; gg = m + (gg - m) * 0.65f; bb = m + (bb - m) * 0.65f + 10f
+                if (veg) {
+                    val t = 0.62f * nuit
+                    rr += (238f - rr) * t; gg += (243f - gg) * t; bb += (250f - bb) * t
+                }
+            } else {
+                rr += 9f; gg += 3f; bb -= 8f
+            }
+            return (canal(rr) shl 16) or (canal(gg) shl 8) or canal(bb)
+        }
+        val parCouleur = saison == Saison.WANTER || saison == Saison.SUMMER
+        val clesTeintes = IntArray(if (parCouleur) TABLE else 0)
+        val teintes = IntArray(if (parCouleur) TABLE else 0)
+        var teintesRemplies = 0
+        fun teinteGardee(c: Int, veg: Boolean): Int {
+            val cle = (c and 0xFFFFFF) or (if (veg) 0x2000000 else 0x1000000)
+            var h = (cle * -0x61C88647) ushr (32 - BITS_TABLE)
+            while (true) {
+                val k = clesTeintes[h]
+                if (k == cle) return teintes[h]
+                if (k == 0) {
+                    val v = teinte(c, veg)
+                    if (teintesRemplies < TABLE * 3 / 4) { clesTeintes[h] = cle; teintes[h] = v; teintesRemplies++ }
+                    return v
+                }
+                h = (h + 1) and (TABLE - 1)
+            }
+        }
+        if (parCouleur) {
+            // L'été ne regarde pas la végétation : inutile de la chercher.
+            val avecVeg = saison == Saison.WANTER
+            // Les aplats se suivent : le pixel précédent répond souvent sans table.
+            var avantC = 0; var avantVeg = false; var avantT = -1
+            for (i in 0 until w * h) {
+                val c = px[i]
+                val veg = avecVeg && objet(mk, i) && vegetal(c)
+                val t = if (avantT >= 0 && c == avantC && veg == avantVeg) avantT else teinteGardee(c, veg)
+                avantC = c; avantVeg = veg; avantT = t
+                px[i] = (c and 0xFF000000.toInt()) or t
+            }
+        } else for (y in 0 until h) for (x in 0 until w) {
             val i = y * w + x
             val c = px[i]
             val veg = objet(mk, i) && vegetal(c)
             if (vegetationSeule && !veg) continue
             var rr = r(c).toFloat(); var gg = g(c).toFloat(); var bb = bl(c).toFloat()
             when (saison) {
-                Saison.WANTER -> {
-                    val m = (rr + gg + bb) / 3f
-                    rr = m + (rr - m) * 0.65f; gg = m + (gg - m) * 0.65f; bb = m + (bb - m) * 0.65f + 10f
-                    if (veg) {
-                        val t = 0.62f * nuit
-                        rr += (238f - rr) * t; gg += (243f - gg) * t; bb += (250f - bb) * t
-                    }
-                }
                 Saison.FREIJOER -> if (veg) {
                     gg *= 1.07f
                     if (alea() < probaFleur) { fleurs.add(x.toFloat()); fleurs.add(y.toFloat()) }
                 }
-                Saison.SUMMER -> { rr += 9f; gg += 3f; bb -= 8f }
                 Saison.HIERSCHT -> if (veg) {
                     val n = bruitGrille(bruit17, grilleX, x / tache, y / tache) * 3f
                     val a = rouille[n.toInt().coerceIn(0, 2)]
@@ -208,6 +248,7 @@ internal object Habillage {
                     gg += (a[1] + (b[1] - a[1]) * f - gg) * t
                     bb += (a[2] + (b[2] - a[2]) * f - bb) * t
                 }
+                else -> {}
             }
             px[i] = (c and 0xFF000000.toInt()) or (canal(rr) shl 16) or (canal(gg) shl 8) or canal(bb)
         }
