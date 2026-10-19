@@ -144,7 +144,7 @@ internal object Habillage {
         val cles = IntArray(TABLE)
         val reponses = BooleanArray(TABLE)
         var remplies = 0
-        fun vegetal(c: Int): Boolean {
+        fun vegetalTable(c: Int): Boolean {
             val cle = (c and 0xFFFFFF) or 0x1000000
             var h = (cle * -0x61C88647) ushr (32 - BITS_TABLE)
             while (true) {
@@ -157,6 +157,15 @@ internal object Habillage {
                 }
                 h = (h + 1) and (TABLE - 1)
             }
+        }
+        // Les aplats se suivent : le pixel précédent répond souvent sans table.
+        var derniere = 0
+        var derniereReponse = false
+        fun vegetal(c: Int): Boolean {
+            if (c == derniere && derniere != 0) return derniereReponse
+            derniere = c
+            derniereReponse = vegetalTable(c)
+            return derniereReponse
         }
         val rouille = arrayOf(intArrayOf(214, 118, 38), intArrayOf(186, 64, 36), intArrayOf(230, 176, 58), intArrayOf(160, 92, 40))
         // Les taches de l'automne mesurent deux unités et demie de la boîte,
@@ -174,6 +183,12 @@ internal object Habillage {
         // Le printemps et l'automne ne touchent que la végétation : le reste
         // du paysage, ciel compris, se saute sans rien recalculer.
         val vegetationSeule = saison == Saison.FREIJOER || saison == Saison.HIERSCHT
+        // La position dans la grille du bruit ne dépend que de la colonne d'un
+        // côté, de la rangée de l'autre : elle se calcule une fois par colonne
+        // et une fois par rangée, plus deux fois par pixel.
+        val automne = saison == Saison.HIERSCHT
+        val colonne0 = IntArray(if (automne) w else 0) { (it / tache).toInt() }
+        val colonneF = FloatArray(if (automne) w else 0) { val gx = it / tache; lisse(gx - gx.toInt()) }
         // La densité des fleurs se règle sur la surface : sans cela, un rendu
         // deux fois plus grand en porterait quatre fois plus, deux fois plus gros.
         val probaFleur = 0.009f / (u * u).coerceAtLeast(0.25f)
@@ -227,30 +242,36 @@ internal object Habillage {
                 avantC = c; avantVeg = veg; avantT = t
                 px[i] = (c and 0xFF000000.toInt()) or t
             }
-        } else for (y in 0 until h) for (x in 0 until w) {
-            val i = y * w + x
-            val c = px[i]
-            val veg = objet(mk, i) && vegetal(c)
-            if (vegetationSeule && !veg) continue
-            var rr = r(c).toFloat(); var gg = g(c).toFloat(); var bb = bl(c).toFloat()
-            when (saison) {
-                Saison.FREIJOER -> if (veg) {
-                    gg *= 1.07f
-                    if (alea() < probaFleur) { fleurs.add(x.toFloat()); fleurs.add(y.toFloat()) }
+        } else for (y in 0 until h) {
+            val rangee0 = if (automne) (y / tache).toInt() * grilleX else 0
+            val rangeeF = if (automne) { val gy = y / tache; lisse(gy - gy.toInt()) } else 0f
+            for (x in 0 until w) {
+                val i = y * w + x
+                val c = px[i]
+                val veg = objet(mk, i) && vegetal(c)
+                if (vegetationSeule && !veg) continue
+                var rr = r(c).toFloat(); var gg = g(c).toFloat(); var bb = bl(c).toFloat()
+                when (saison) {
+                    Saison.FREIJOER -> if (veg) {
+                        gg *= 1.07f
+                        if (alea() < probaFleur) { fleurs.add(x.toFloat()); fleurs.add(y.toFloat()) }
+                    }
+                    Saison.HIERSCHT -> if (veg) {
+                        val o = rangee0 + colonne0[x]
+                        val fx = colonneF[x]
+                        val n = bruitCase(bruit17, grilleX, o, fx, rangeeF) * 3f
+                        val a = rouille[n.toInt().coerceIn(0, 2)]
+                        val b = rouille[(n.toInt() + 1).coerceIn(0, 3)]
+                        val f = n - n.toInt()
+                        val t = 0.38f + 0.2f * bruitCase(bruit71, grilleX, o, fx, rangeeF)
+                        rr += (a[0] + (b[0] - a[0]) * f - rr) * t
+                        gg += (a[1] + (b[1] - a[1]) * f - gg) * t
+                        bb += (a[2] + (b[2] - a[2]) * f - bb) * t
+                    }
+                    else -> {}
                 }
-                Saison.HIERSCHT -> if (veg) {
-                    val n = bruitGrille(bruit17, grilleX, x / tache, y / tache) * 3f
-                    val a = rouille[n.toInt().coerceIn(0, 2)]
-                    val b = rouille[(n.toInt() + 1).coerceIn(0, 3)]
-                    val f = n - n.toInt()
-                    val t = 0.38f + 0.2f * bruitGrille(bruit71, grilleX, x / tache, y / tache)
-                    rr += (a[0] + (b[0] - a[0]) * f - rr) * t
-                    gg += (a[1] + (b[1] - a[1]) * f - gg) * t
-                    bb += (a[2] + (b[2] - a[2]) * f - bb) * t
-                }
-                else -> {}
+                px[i] = (c and 0xFF000000.toInt()) or (canal(rr) shl 16) or (canal(gg) shl 8) or canal(bb)
             }
-            px[i] = (c and 0xFF000000.toInt()) or (canal(rr) shl 16) or (canal(gg) shl 8) or canal(bb)
         }
         // La neige se pose sur les crêtes et les toits : là où un objet
         // commence, sous le ciel.
@@ -510,7 +531,7 @@ internal object Habillage {
     private fun noeud(i: Int, j: Int, graine: Int) =
         (melanger((i + graine) * 73856093 xor (j + 31) * 19349663) % 1024).toFloat() / 1023f
 
-    /** Les nœuds d'une grille de [nx] × [ny], rangée par rangée, pour [bruitGrille]. */
+    /** Les nœuds d'une grille de [nx] × [ny], rangée par rangée, pour [bruitCase]. */
     private fun noeuds(nx: Int, ny: Int, graine: Int) =
         FloatArray(nx * ny) { noeud(it % nx, it / nx, graine) }
 
@@ -518,12 +539,10 @@ internal object Habillage {
      * Un bruit de valeur lissé, de 0 à 1 : un tirage par nœud d'une grille
      * entière, interpolé entre les quatre nœuds voisins. C'est ce qui fait des
      * taches de feuillage plutôt qu'une mosaïque. Les nœuds sont tirés
-     * d'avance par [noeuds].
+     * d'avance par [noeuds] ; la case [o] (son nœud en haut à gauche) et les
+     * poids lissés [fx], [fy] se calculent par colonne et par rangée.
      */
-    private fun bruitGrille(grille: FloatArray, nx: Int, x: Float, y: Float): Float {
-        val x0 = x.toInt(); val y0 = y.toInt()
-        val fx = lisse(x - x0); val fy = lisse(y - y0)
-        val o = y0 * nx + x0
+    private fun bruitCase(grille: FloatArray, nx: Int, o: Int, fx: Float, fy: Float): Float {
         val haut = grille[o] + (grille[o + 1] - grille[o]) * fx
         val bas = grille[o + nx] + (grille[o + nx + 1] - grille[o + nx]) * fx
         return haut + (bas - haut) * fy
