@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.5.0] - 2026-10-19
+
+### ✨ Nouveautés
+
+- **Les cartes ouvertes prennent la lumière** : la fenêtre du paysage est sous une vitre, avec un reflet discret qui glisse quand on penche le téléphone. Le cadre brille selon son métal, de l'étain des cartes communes à l'or des très rares, et la lumière court d'une pièce en relief à l'autre (plaque, médaillon, écus) au fil de l'inclinaison.
+
 ## [37.4.10] - 2026-10-19
 
 ### ✨ Améliorations
