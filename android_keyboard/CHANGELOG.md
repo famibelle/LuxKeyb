@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.4.10] - 2026-10-19
+
+### ✨ Améliorations
+
+- **Les cartes d'hiver et d'été apparaissent plus vite** : sur un Galaxy A21s, le paysage d'hiver d'une carte ouverte se dessine en 33 ms au lieu de 49, celui d'été en 21 ms au lieu de 35 ; l'automne passe de 47 à 43 ms. Les images ne changent pas.
+
 ## [37.4.9] - 2026-10-18
 
 ### ✨ Améliorations
