@@ -846,19 +846,8 @@ object Ornement {
         // d'une plaque large venait buter contre le bord de la carte. La règle
         // est « neuf unités du bord », pas un rapport accordé à une largeur —
         // elle survit donc à la prochaine plaque qu'on élargira.
-        val q = min(r.height() * 0.55f, min(r.left, LARGEUR - r.right) - 9f)
-        val chemin = Path()
-        if (pointes) {
-            chemin.moveTo(r.left - q, r.centerY())
-            chemin.lineTo(r.left, r.top)
-            chemin.lineTo(r.right, r.top)
-            chemin.lineTo(r.right + q, r.centerY())
-            chemin.lineTo(r.right, r.bottom)
-            chemin.lineTo(r.left, r.bottom)
-            chemin.close()
-        } else {
-            chemin.addRoundRect(r, 3f, 3f, Path.Direction.CW)
-        }
+        val q = panDePlaque(r)
+        val chemin = cheminPlaque(r, pointes)
         // L'ombre portée. La plaque mord sur l'ouverture de vingt-quatre
         // unités, et sans elle ce recouvrement se lirait comme une découpe
         // dans l'illustration plutôt que comme une plaque posée dessus.
@@ -944,6 +933,26 @@ object Ornement {
         }
     }
 
+    private fun panDePlaque(r: RectF): Float = min(r.height() * 0.55f, min(r.left, LARGEUR - r.right) - 9f)
+
+    /** Le contour de la plaque : rectangle arrondi, ou à pointes pour la très rare. */
+    private fun cheminPlaque(r: RectF, pointes: Boolean): Path {
+        val q = panDePlaque(r)
+        val chemin = Path()
+        if (pointes) {
+            chemin.moveTo(r.left - q, r.centerY())
+            chemin.lineTo(r.left, r.top)
+            chemin.lineTo(r.right, r.top)
+            chemin.lineTo(r.right + q, r.centerY())
+            chemin.lineTo(r.right, r.bottom)
+            chemin.lineTo(r.left, r.bottom)
+            chemin.close()
+        } else {
+            chemin.addRoundRect(r, 3f, 3f, Path.Direction.CW)
+        }
+        return chemin
+    }
+
     /**
      * Une pastille : la capsule des deux étiquettes de la ligne de type.
      *
@@ -1018,12 +1027,7 @@ object Ornement {
 
     /** L'écu d'une statistique : un blason à base arrondie. */
     private fun ecu(c: Canvas, p: Paint, r: RectF, m: Metal, filet: Boolean) {
-        val chemin = Path()
-        chemin.moveTo(r.left, r.top)
-        chemin.lineTo(r.right, r.top)
-        chemin.lineTo(r.right, r.top + r.height() * 0.5f)
-        chemin.quadTo(r.centerX(), r.bottom + r.height() * 0.16f, r.left, r.top + r.height() * 0.5f)
-        chemin.close()
+        val chemin = cheminEcu(r)
         p.style = Paint.Style.FILL
         // Un dégradé est multiplié par l'alpha du pinceau : sans ce retour à
         // l'opaque, l'écu héritait du filet tracé juste avant et devenait
@@ -1044,6 +1048,16 @@ object Ornement {
             p.color = 0x80FFFFFF.toInt()
             c.drawPath(chemin, p)
         }
+    }
+
+    private fun cheminEcu(r: RectF): Path {
+        val chemin = Path()
+        chemin.moveTo(r.left, r.top)
+        chemin.lineTo(r.right, r.top)
+        chemin.lineTo(r.right, r.top + r.height() * 0.5f)
+        chemin.quadTo(r.centerX(), r.bottom + r.height() * 0.16f, r.left, r.top + r.height() * 0.5f)
+        chemin.close()
+        return chemin
     }
 
     /**
@@ -2163,14 +2177,108 @@ object Ornement {
     /**
      * Le reflet spéculaire qui traverse le métal quand on incline l'appareil.
      *
-     * Réservé aux deux paliers hauts, et calé sur le **même roulis** que
-     * l'irisation de l'illustration : les deux doivent glisser ensemble,
-     * sinon la carte se lit comme deux objets superposés.
+     * Calé sur le **même roulis** que l'irisation de l'illustration : les
+     * deux doivent glisser ensemble, sinon la carte se lit comme deux objets
+     * superposés.
+     *
+     * Sa force suit la noblesse du métal (propriétaire, 2026-10-19) : l'étain
+     * brossé de la commune le boit presque, le bronze le rend un peu, l'argent
+     * et l'or le renvoient comme avant. Sur une vignette, qui ne suit pas la
+     * lumière, seuls les deux paliers hauts le gardent : un reflet figé sur
+     * trente communes se lirait comme une tache répétée.
      */
     fun dessinerReflet(c: Canvas, p: Paint, rarete: Rarete, roulis: Float, vignette: Boolean) {
-        if (!rarete.distinguee) return
+        if (vignette && !rarete.distinguee) return
         val haut = if (vignette) HAUTEUR_VIGNETTE else HAUTEUR
-        refletBalaye(c, p, roulis, haut, if (rarete == Rarete.TRES_RARE) 0x66 else 0x2E)
+        val force = when (rarete) {
+            Rarete.COMMUN -> 0x12
+            Rarete.PEU_COMMUN -> 0x20
+            Rarete.RARE -> 0x2E
+            Rarete.TRES_RARE -> 0x66
+        }
+        refletBalaye(c, p, roulis, haut, force)
+    }
+
+    /**
+     * Les pièces en volume : la pastille de nature, les deux écus, le disque
+     * du médaillon, les deux sertissures, et la plaque quand elle est de
+     * métal (argent, or ; le bois et le parchemin des deux paliers bas ne
+     * brillent pas).
+     *
+     * ## Une seule lumière qui voyage
+     *
+     * Un éclat par pièce, toutes allumées à la fois, a été essayé et jugé
+     * « trop de reflets » (propriétaire, 2026-10-19) : la carte scintillait
+     * partout. L'éclat est donc le **même balayage** que [refletBalaye], sur
+     * le même axe et au même endroit, mais plus étroit et plus vif, et il ne
+     * se peint que sur les pièces. Une pièce ne s'allume que quand la bande du
+     * cadre passe sur elle : en inclinant, on voit la lumière courir de la
+     * plaque au médaillon, puis à un écu. Une ou deux pièces brillent à la
+     * fois, jamais toutes, comme un objet sous une seule lampe.
+     *
+     * La force suit la noblesse du métal, comme le reflet du cadre. Carte
+     * ouverte seulement : sur une vignette ces pièces n'existent pas.
+     */
+    fun dessinerEclatsDesPieces(c: Canvas, p: Paint, rarete: Rarete, roulis: Float) {
+        val dx = roulis * LARGEUR * ETALEMENT
+        // L'axe du balayage, de (dx, HAUTEUR) à (LARGEUR + dx, 0) : t = 0,5
+        // est le milieu de la bande. Une pièce dont aucun coin n'approche ce
+        // milieu reste éteinte, et n'est même pas tracée.
+        val ax = LARGEUR
+        val ay = -HAUTEUR
+        val norme = ax * ax + ay * ay
+        val eclat = ECLATS[rarete.ordinal]
+        PLACE_ECLAT.setTranslate(dx, 0f)
+        eclat.setLocalMatrix(PLACE_ECLAT)
+        p.style = Paint.Style.FILL
+        p.shader = eclat
+        for (piece in PIECES[rarete.ordinal]) {
+            val b = piece.boite
+            var bas = 1f
+            var haut = 0f
+            for (x in floatArrayOf(b.left, b.right)) for (y in floatArrayOf(b.top, b.bottom)) {
+                val t = ((x - dx) * ax + (y - HAUTEUR) * ay) / norme
+                bas = min(bas, t)
+                haut = max(haut, t)
+            }
+            if (haut < 0.5f - DEMI_ECLAT || bas > 0.5f + DEMI_ECLAT) continue
+            c.drawPath(piece.contour, p)
+        }
+        p.shader = null
+    }
+
+    private class Piece(val contour: Path, val boite: RectF)
+
+    /** La demi-largeur de l'éclat le long de l'axe : un tiers de celle du reflet du cadre. */
+    private const val DEMI_ECLAT = 0.07f
+    private val PLACE_ECLAT = Matrix()
+
+    private val PIECES: Array<List<Piece>> by lazy {
+        Array(4) { palier ->
+            fun ovale(r: RectF) = Piece(Path().apply { addOval(r, Path.Direction.CW) }, r)
+            val ecus = listOf(ECU_G, ECU_D).map { Piece(cheminEcu(it), it) }
+            val rayon = NATURE.height() / 2f
+            val pastille = Piece(Path().apply { addRoundRect(NATURE, rayon, rayon, Path.Direction.CW) }, NATURE)
+            val plaque = if (palier >= 2) {
+                val q = if (palier >= 3) panDePlaque(PLAQUE) else 0f
+                listOf(Piece(cheminPlaque(PLAQUE, palier >= 3), RectF(PLAQUE.left - q, PLAQUE.top, PLAQUE.right + q, PLAQUE.bottom)))
+            } else emptyList()
+            plaque + pastille + ecus + ovale(PROVENANCE) + ovale(GEMME) + ovale(GEMME_CENTRE)
+        }
+    }
+
+    /** L'éclat de chaque métal : le balayage du cadre, resserré et plus vif. */
+    private val ECLATS: Array<LinearGradient> by lazy {
+        Array(4) { palier ->
+            val force = intArrayOf(0x34, 0x48, 0x5C, 0x84)[palier]
+            fun blanc(a: Int) = (a shl 24) or 0xFFFFFF
+            LinearGradient(
+                0f, HAUTEUR, LARGEUR, 0f,
+                intArrayOf(blanc(0), blanc(force / 3), blanc(force), blanc(force / 3), blanc(0)),
+                floatArrayOf(0.5f - DEMI_ECLAT, 0.5f - DEMI_ECLAT / 2.5f, 0.5f, 0.5f + DEMI_ECLAT / 2.5f, 0.5f + DEMI_ECLAT),
+                Shader.TileMode.CLAMP
+            )
+        }
     }
 
     /**
@@ -3617,8 +3725,8 @@ class CarteOrnee(
      * Toute carte ouverte suit la pesanteur, et plus seulement les deux
      * paliers hauts.
      *
-     * Le reflet, lui, reste un privilège de rareté ; la tranche n'en est pas
-     * un. Une commune qui resterait plate pendant qu'une rare prend de
+     * Le reflet, lui, gradue la rareté par sa force ; la tranche ne la
+     * gradue pas. Une commune qui resterait plate pendant qu'une rare prend de
      * l'épaisseur ne se lirait pas comme moins précieuse, mais comme moins
      * réelle — et c'est précisément la distinction qu'[Inclinaison] refuse de
      * faire depuis qu'elle existe.
@@ -3640,6 +3748,7 @@ class CarteOrnee(
      */
     private val fenetre = if (vignette) Ornement.FENETRE_VIGNETTE else Ornement.FENETRE
     private val decoupe = Ornement.cheminFenetre(fenetre, rarete.ordinal >= 2)
+    private val verre = if (vignette) null else Verre(fenetre, decoupe)
     private val degradeFace: android.graphics.LinearGradient
     private val degradeGemme: android.graphics.RadialGradient
     private val degradeAgrafe: android.graphics.RadialGradient
@@ -3942,8 +4051,18 @@ class CarteOrnee(
             motif.dessusDuLieu(canvas, pinceau, roulis, decoupe, avecSujet = true, avecIris = true)
             canvas.restore()
         }
+        refletDuVerre(canvas, u)
         dessus(canvas, u)
         vivant(canvas, u)
+    }
+
+    /** Le reflet de la vitre : par-dessus le paysage et sa neige, sous le métal. */
+    private fun refletDuVerre(canvas: Canvas, u: Float) {
+        val v = verre ?: return
+        canvas.save()
+        canvas.scale(u, u)
+        v.reflet(canvas, pinceau, roulis)
+        canvas.restore()
     }
 
     /** Ce qui bouge dans la fenêtre : voir [Ambiance]. Réservé au lecteur et à la pochette. */
@@ -4070,6 +4189,12 @@ class CarteOrnee(
 
     /** Le métal et ce qui s'y pose : joyaux, médaillon, sceau, plume, saison, semis. */
     private fun dessus(canvas: Canvas, u: Float) {
+        verre?.let {
+            canvas.save()
+            canvas.scale(u, u)
+            it.encastrement(canvas)
+            canvas.restore()
+        }
         Ornement.metal(context, rarete, width, vignette)?.let { canvas.drawBitmap(it, 0f, 0f, null) }
 
         canvas.save()
@@ -4114,6 +4239,7 @@ class CarteOrnee(
         else @Suppress("DEPRECATION") canvas.clipPath(decoupe, android.graphics.Region.Op.DIFFERENCE)
         Ornement.dessinerReflet(canvas, pinceau, rarete, roulis, vignette)
         canvas.restore()
+        if (!vignette) Ornement.dessinerEclatsDesPieces(canvas, pinceau, rarete, roulis)
         canvas.restore()
     }
 
@@ -4206,6 +4332,7 @@ class CarteOrnee(
             motif.dessusDuLieu(canvas, pinceau, roulis, decoupe, avecSujet = false, avecIris = true)
             canvas.restore()
         }
+        refletDuVerre(canvas, u)
         canvas.drawRenderNode(haut)
         return true
     }
@@ -4536,6 +4663,86 @@ class Motif(
         if (avecSujet) peindreSujet(c)
         if (avecIris) iris?.dessus(c, p, roulis)
         c.restore()
+    }
+}
+
+/**
+ * La vitre de la fenêtre : la carte ouverte devient une petite vitrine.
+ *
+ * Deux choses, et seulement deux, parce qu'un verre se reconnaît à elles :
+ *
+ * - **l'encastrement**, une ombre douce au bord intérieur de l'ouverture,
+ *   plus épaisse en haut, où le cadre fait de l'ombre à la lumière qui
+ *   vient d'en haut. Elle ne bouge pas : elle part dans la couche du métal ;
+ * - **le reflet**, une seule bande oblique, large et à peine visible, qui
+ *   glisse avec l'inclinaison. Un peu plus loin que le
+ *   reflet du métal ([Ornement.ETALEMENT]) : la vitre est en retrait du
+ *   cadre, et ce décalage de vitesse est ce qui la fait lire comme une
+ *   surface à part.
+ *
+ * ## Pourquoi si faible
+ *
+ * Le reflet du métal est coupé sur la fenêtre parce qu'une bande blanche sur
+ * un ciel de nuit se lit comme du brouillard. Le verre tient sous ce seuil
+ * par deux moyens : des opacités basses, et des bords nets, puisque c'est le
+ * flou qui fait la brume et l'arête qui fait le verre.
+ *
+ * ## Le même verre pour toutes
+ *
+ * Un vernis gradué par palier a été essayé (filets nets, puis doublés, puis
+ * plus francs) : le propriétaire a préféré, sur toutes les cartes, le trait
+ * qu'on devine de la commune (2026-10-19). La gradation est passée sur le
+ * cadre, où elle suit la noblesse du métal : voir [Ornement.dessinerReflet].
+ *
+ * Carte ouverte seulement : une vignette ne suit pas la lumière, et un reflet
+ * figé sur trente vignettes se lirait comme une tache répétée.
+ */
+private class Verre(private val zone: RectF, private val decoupe: Path) {
+
+    private val reflet = LinearGradient(
+        zone.left, zone.bottom, zone.right, zone.top,
+        intArrayOf(Color.TRANSPARENT, Color.argb(12, 255, 255, 255), Color.argb(15, 255, 255, 255), Color.TRANSPARENT),
+        floatArrayOf(0.50f, 0.555f, 0.60f, 0.645f),
+        Shader.TileMode.CLAMP
+    )
+    private val matrice = Matrix()
+    private val bord = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE }
+
+    /** L'ombre d'encastrement : à tracer une fois, sous le métal. */
+    fun encastrement(c: Canvas) {
+        c.save()
+        c.clipPath(decoupe)
+        // Le trait est centré sur le bord : la découpe n'en laisse que la
+        // moitié intérieure. Décalé vers le bas, il s'épaissit en haut et
+        // s'amincit en bas, comme l'ombre d'un cadre éclairé d'en haut.
+        c.translate(0f, DESCENTE)
+        for (i in EPAISSEURS.indices) {
+            bord.strokeWidth = EPAISSEURS[i]
+            bord.color = Color.argb(OMBRES[i], 0, 0, 0)
+            c.drawPath(decoupe, bord)
+        }
+        c.restore()
+    }
+
+    /** Le reflet, à chaque trame, entre le paysage et le métal. */
+    fun reflet(c: Canvas, p: Paint, roulis: Float) {
+        c.save()
+        c.clipPath(decoupe)
+        matrice.setTranslate(roulis * zone.width() * GLISSEMENT, 0f)
+        reflet.setLocalMatrix(matrice)
+        p.style = Paint.Style.FILL
+        p.shader = reflet
+        c.drawRect(zone, p)
+        p.shader = null
+        c.restore()
+    }
+
+    private companion object {
+        /** Plus que le métal (0,55) : la vitre est en retrait, elle glisse plus loin. */
+        const val GLISSEMENT = 0.75f
+        const val DESCENTE = 1.4f
+        val EPAISSEURS = floatArrayOf(9f, 5f, 2f)
+        val OMBRES = intArrayOf(16, 22, 34)
     }
 }
 
