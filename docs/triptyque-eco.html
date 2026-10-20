@@ -390,6 +390,24 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
 .dictee .bulle{margin:0;background:#EEF4F8;border-radius:2.4mm 2.4mm 2.4mm .8mm;padding:1.6mm 2.2mm;
   font-family:"Fredoka",-apple-system,"Segoe UI",Arial,sans-serif;font-weight:600;font-style:italic;font-size:var(--df);line-height:1.25;color:#2B3742;text-align:left;}
 .cover .hero-card .dictee{--dw:50mm;--dp:2.2mm;--dg:3mm;--dm:9.5mm;--df:3mm;left:-3mm;bottom:14mm;}
+
+/* Refonte 2026-10-20, volet du dos : cinq moments de la journée. */
+.back-cover .journee{font-family:"Fredoka",sans-serif;font-weight:700;font-size:25px;line-height:1.2;color:#003876;margin:8mm 0 7mm;padding-left:12px;border-left:4px solid #ED2939;}
+.back-cover .moments{list-style:none;margin:0;padding:0;}
+.back-cover .moments li{font-size:13px;line-height:1.45;color:#1C2624;padding:4.2mm 0;border-top:1px solid rgba(28,38,36,.13);}
+.back-cover .moments li:first-child{border-top:0;padding-top:0;}
+.back-cover .moments li b{display:block;font-family:"Fredoka",sans-serif;font-size:14.5px;color:#003876;margin-bottom:1mm;}
+/* Volet 5 : deux démonstrations de même poids. */
+.demo{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;margin-top:2mm;}
+.demo-titre{align-self:flex-start;}
+.demo + .demo{margin-top:6mm;}
+.demo-titre{display:flex;align-items:center;gap:2.5mm;font-family:"Fredoka",sans-serif;font-weight:700;font-size:15px !important;color:#003876 !important;margin:0 0 2mm !important;}
+.demo-titre .num{width:6mm;height:6mm;border-radius:50%;background:#ED2939;color:#fff;font-size:11px;display:grid;place-items:center;}
+.demo-shot{flex:none;margin:0;}
+.demo-shot img{width:72mm;height:auto;max-height:none;}
+.demo-legende{font-size:11.5px !important;line-height:1.4 !important;margin:2mm 0 0 !important;text-align:center;}
+.demo-dictee{flex:none;width:72mm;height:52mm;box-sizing:border-box;border:4px solid #fff;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:9px;outline:1px solid rgba(28,38,36,.13);box-shadow:0 4px 16px rgba(0,0,0,.12);}
+.demo-dictee .dictee{position:relative;--dw:62mm;--dp:2.6mm;--dg:3.4mm;--dm:14mm;--df:3.8mm;box-shadow:none;transform:rotate(-2deg);}
 </style>
 </head>
 <body>
@@ -441,39 +459,25 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
   <p class="face-label noprint">Recto, panneaux 1 · 2 · 3 (le 3 est la couverture)</p>
   <div class="page" id="face-recto">
 
-    <!-- P1 : dos -->
+    <!-- P1 : dos. Refonte 2026-10-20 : des moments de la journée, pas
+         « comment nous aider » ni la fabrication du dictionnaire. Qui prend le
+         dépliant cherche ce que le clavier change à sa vie ; l'aide au projet
+         et la confidentialité tiennent dans les mentions. -->
     <div class="panel back-cover">
       <div>
         <div class="wordmark">LËTZEBUERGESCH CLAVIER</div>
-        <div class="quote">&laquo;&nbsp;Mir wëlle bleiwe wat mir sinn.&nbsp;&raquo;</div>
-        <p class="mission">Le dictionnaire de ce clavier n'est pas une liste figée : il est reconstruit à chaque publication à partir de deux corpus publics : <b>LuxAlign</b>, 180 342 phrases de presse, et <b>LETZ</b>, les phrases d'exemple du <i>Lëtzebuerger Online Dictionnaire</i>. La langue qu'il propose est celle qui s'écrit, pas celle d'un dictionnaire arrêté une fois pour toutes.</p>
-      </div>
-      <div class="promo-row">
-        <div class="qr-box">
-          <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR code vers la fiche Google Play du Lëtzebuergesch Clavier">
-          <div class="qr-label">Flashez le code</div>
-        </div>
-        <div class="stamp">
-          <span class="big">100&nbsp;%<br>gratuit</span>
-          <span class="small">zéro pub</span>
-        </div>
-      </div>
-      <div>
-        <div class="help-title">Comment nous aider</div>
-        <ul class="help-list">
-          <li>Notez-le sur Google Play</li>
-          <li>Parlez-en autour de vous</li>
-          <li>Signalez un mot qui manque</li>
+        <h2 class="journee">Le luxembourgeois, à chaque moment de votre journée</h2>
+        <ul class="moments">
+          <li><b>Le matin, un message à la famille</b>Le mot arrive avant que vous ayez fini de le taper. Tapez «&nbsp;Schueb&nbsp;», il propose «&nbsp;Schueberfouer&nbsp;».</li>
+          <li><b>Les mains prises, en cuisine ou au volant à l'arrêt</b>Touchez le micro et parlez&nbsp;: votre phrase s'écrit en luxembourgeois.</li>
+          <li><b>Un doigt qui glisse sur la mauvaise touche</b>Il rattrape la faute&nbsp;: «&nbsp;Kafi&nbsp;» devient «&nbsp;Kaffi&nbsp;».</li>
+          <li><b>Un mot qui vous échappe</b>Le dictionnaire vous le donne, en français ou en luxembourgeois, même sans réseau.</li>
+          <li><b>Le soir, cinq minutes de jeu</b>Chaque mot trouvé devient une carte de votre collection.</li>
         </ul>
       </div>
       <div>
-        <div class="contact">
-          <div><span>Web</span> famibelle.github.io/LuxKeyb</div>
-          <div><span>Kontakt</span> Formulaire de retours sur le site</div>
-        </div>
-        <div class="promises">Gratuit · Sans publicité · Sans compte · Dictée vocale</div>
-        <div class="legal">Lëtzebuergesch Clavier est un projet citoyen publié par Médhi Famibelle. Aucune collecte de données personnelles : ce que vous tapez reste sur l'appareil. Seule la dictée vocale, quand on touche le micro, envoie la voix au service LuxASR de l'Université du Luxembourg, qui la transcrit sans la conserver.</div>
-        <div class="legal" style="margin-top:2mm;">Däi Lëtzebuergesch, op dengem Telefon. <img src="assets/drapeau-luxembourg-arrondi.svg" alt="Drapeau du Luxembourg" style="height:3.6mm;vertical-align:-0.4mm;"> · famibelle.github.io/LuxKeyb</div>
+        <div class="legal">Gratuit · Ce que vous tapez reste sur votre téléphone · famibelle.github.io/LuxKeyb</div>
+        <div class="legal" style="margin-top:2mm;">Däi Lëtzebuergesch, op dengem Telefon. <img src="assets/drapeau-luxembourg-arrondi.svg" alt="Drapeau du Luxembourg" style="height:3.6mm;vertical-align:-0.4mm;"></div>
       </div>
     </div>
 
@@ -492,7 +496,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         <img class="s1" src="Screenshots/lux_supports_clavier.png" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »">
         <img class="s2" src="Screenshots/lux_accents.png" alt="Appui long sur la touche e : le choix é, ë, è et ê s'ouvre">
       </div>
-      <div class="callout">À l'intérieur : les accents sous le doigt, la dictée, des mots qui ne sont plus soulignés en rouge, sept jeux avec leur carnet de cartes, et huit niveaux de progression. Retournez le dépliant.</div>
+      <div class="callout">À l'intérieur : l'installation pas à pas, ce qu'il fait pour vous, et comment il vous fait apprendre en jouant. Ouvrez le dépliant.</div>
     </div>
 
     <!-- P3 : couverture -->
@@ -543,19 +547,23 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <div class="shot"><img src="Screenshots/lux_onboarding.png" alt="Le parcours d'installation dans l'application : les étapes cochées et le champ d'essai du clavier"></div>
     </div>
 
-    <!-- P5 : fonctionnalités -->
+    <!-- P5 : démonstration. Refonte 2026-10-20 : deux exemples qui se voient
+         au lieu d'une liste, la suggestion et la dictée au même rang (1a et 1b
+         de la newsletter d'octobre). La suggestion en vraie capture, la dictée
+         par le motif du micro. -->
     <div class="panel light rang-3">
       <div class="kicker">Fonctionnalités</div>
       <h2>Ce qu'il fait pour vous</h2>
-      <ul class="bullets">
-        <li><span>Le <b>mot luxembourgeois</b> arrive avant que vous ayez fini de le taper</span></li>
-        <li><span><b>é, ä, ë</b> ont leur touche ; pour les autres accents, gardez le doigt appuyé</span></li>
-        <li><span>Il comprend même <b>sans les accents</b> : «&nbsp;letzebuergesch&nbsp;» propose «&nbsp;Lëtzebuergesch&nbsp;»</span></li>
-        <li><span>Vos mots luxembourgeois ne sont <b>plus soulignés en rouge</b>, dans toutes vos applications</span></li>
-        <li><span>Touchez le <b>micro</b> et parlez : il écrit en luxembourgeois (connexion Internet nécessaire)</span></li>
-      </ul>
-      <div class="shot clavier"><img src="Screenshots/lux_supports_clavier.png" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »"></div>
-      <div class="callout">Il devine aussi le mot suivant&nbsp;: après «&nbsp;op der&nbsp;», il propose déjà «&nbsp;Stad&nbsp;», «&nbsp;Police&nbsp;», «&nbsp;Rue&nbsp;». Moins de lettres à taper, moins de fautes.</div>
+      <div class="demo">
+        <p class="demo-titre"><span class="num">1</span>Tapez, il propose</p>
+        <div class="shot demo-shot"><img src="Screenshots/lux_supports_clavier.png" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »"></div>
+        <p class="demo-legende">Tapez «&nbsp;Schueb&nbsp;», il propose «&nbsp;Schueberfouer&nbsp;». Un toucher, et le mot est écrit.</p>
+      </div>
+      <div class="demo">
+        <p class="demo-titre"><span class="num">2</span>Parlez, il écrit</p>
+        <div class="demo-dictee"><div class="dictee" aria-hidden="true"><span class="micro"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2Z"/></svg></span><p class="bulle">«&nbsp;Op der Kiermes iessen ech ëmmer Gromperekichelcher&nbsp;»</p></div></div>
+        <p class="demo-legende">Touchez le micro et dites votre phrase&nbsp;: elle s'écrit en luxembourgeois.</p>
+      </div>
     </div>
 
     <!-- P6 : progression -->

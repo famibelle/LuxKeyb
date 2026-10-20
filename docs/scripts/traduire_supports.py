@@ -148,11 +148,6 @@ T = [
         "de": "Dasselbe Plakat ohne Farbflächen: Die Flagge schrumpft auf ein Band und ein paar Linien. Ein Bürodrucker druckt es ohne Schlieren, und es bleibt schwarz-weiß kopiert lesbar.",
         "en": "The same poster without solid colour: the flag shrinks to a band and a few lines. An office printer handles it cleanly, and it stays readable when photocopied in black and white.",
         "pt": "O mesmo cartaz sem manchas de cor: a bandeira reduz-se a uma faixa e a algumas linhas. Uma impressora de escritório imprime-o sem borrões, e continua legível fotocopiado a preto e branco."}),
-    ("A4 paysage recto-verso, plié en trois. À poser sur un stand, un comptoir d'association ou une table de cours du soir : le premier volet donne envie, l'intérieur explique l'installation, les fonctions et la progression, le dos dit comment aider.", {
-        "lb": "A4 quer, béid Säiten, an dräi gefalt. Fir op e Stand, e Veräinscomptoir oder en Dësch vun engem Owescours: den éischten Deel mécht Loscht, bannen ass d'Installatioun, d'Funktiounen an d'Progressioun erkläert, hannen steet, wéi ee kann hëllefen.",
-        "de": "A4 quer, beidseitig, dreifach gefalzt. Für einen Stand, eine Vereinstheke oder den Tisch eines Abendkurses: Die Vorderseite macht neugierig, innen werden Installation, Funktionen und Fortschritt erklärt, die Rückseite sagt, wie man helfen kann.",
-        "en": "A4 landscape, double-sided, folded in three. For a stand, a club counter or an evening-class table: the front panel draws people in, the inside explains installation, features and progress, the back says how to help.",
-        "pt": "A4 horizontal, frente e verso, dobrado em três. Para um stand, um balcão de associação ou uma mesa de curso noturno: o primeiro painel desperta interesse, o interior explica a instalação, as funções e a progressão, o verso diz como ajudar."}),
     ("Le même dépliant sans aplat : les six volets sont sur papier, la couleur ne tient plus que les titres, les puces et les traits. Six panneaux d'aplat coûtent une cartouche à eux seuls : c'est la version à imprimer quand le tirage se compte en dizaines.", {
         "lb": "Dat selwecht Faltblat ouni Faarfflächen: d'Faarf bleift nëmmen bei den Titelen, de Punkten an de Linnen. Dat ass d'Versioun fir ze drécken, wann et ëm Dosende vun Exemplairen geet.",
         "de": "Dasselbe Faltblatt ohne Farbflächen: Farbe tragen nur noch Titel, Aufzählungszeichen und Linien. Das ist die Version für Auflagen von mehreren Dutzend.",
@@ -356,46 +351,6 @@ T = [
         "en": "famibelle.github.io/LuxKeyb · Made in Luxembourg", "pt": "famibelle.github.io/LuxKeyb · Feito no Luxemburgo"}),
 
     # ---- Triptyque, volet 1 ----
-    ("<p class=\"mission\">Le dictionnaire de ce clavier n'est pas une liste figée : il est reconstruit à chaque publication à partir de deux corpus publics : <b>LuxAlign</b>, 180 342 phrases de presse, et <b>LETZ</b>, les phrases d'exemple du <i>Lëtzebuerger Online Dictionnaire</i>. La langue qu'il propose est celle qui s'écrit, pas celle d'un dictionnaire arrêté une fois pour toutes.</p>", {
-        "lb": "<p class=\"mission\">Den Dictionnaire vun dëser Tastatur ass keng fix Lëscht: e gëtt bei all Versioun nei opgebaut, aus zwee ëffentleche Corpussen: <b>LuxAlign</b>, 180 342 Sätz aus der Press, an <b>LETZ</b>, d'Beispillsätz vum <i>Lëtzebuerger Online Dictionnaire</i>. D'Sprooch, déi en proposéiert, ass déi, déi geschriwwe gëtt, net déi vun engem Dictionnaire, deen eemol fir ëmmer fäerdeg ass.</p>",
-        "de": "<p class=\"mission\">Das Wörterbuch dieser Tastatur ist keine feste Liste: Es wird bei jeder Version neu aufgebaut, aus zwei öffentlichen Korpora: <b>LuxAlign</b>, 180 342 Sätze aus der Presse, und <b>LETZ</b>, die Beispielsätze des <i>Lëtzebuerger Online Dictionnaire</i>. Die Sprache, die es vorschlägt, ist die, die geschrieben wird, nicht die eines ein für alle Mal abgeschlossenen Wörterbuchs.</p>",
-        "en": "<p class=\"mission\">This keyboard's dictionary is not a fixed list: it is rebuilt with every release from two public corpora: <b>LuxAlign</b>, 180,342 sentences from the press, and <b>LETZ</b>, the example sentences of the <i>Lëtzebuerger Online Dictionnaire</i>. The language it suggests is the one people write, not that of a dictionary frozen once and for all.</p>",
-        "pt": "<p class=\"mission\">O dicionário deste teclado não é uma lista fixa: é reconstruído a cada versão a partir de dois corpora públicos: <b>LuxAlign</b>, 180 342 frases de imprensa, e <b>LETZ</b>, as frases de exemplo do <i>Lëtzebuerger Online Dictionnaire</i>. A língua que propõe é a que se escreve, não a de um dicionário fechado de uma vez por todas.</p>"}),
-    ('<div class="quote">&laquo;&nbsp;Mir wëlle bleiwe wat mir sinn.&nbsp;&raquo;</div>', {
-        "lb": '<div class="quote">„Mir wëlle bleiwe wat mir sinn.“</div>',
-        "de": '<div class="quote">„Mir wëlle bleiwe wat mir sinn.“</div>',
-        "en": '<div class="quote">“Mir wëlle bleiwe wat mir sinn.”</div>',
-        "pt": '<div class="quote">«Mir wëlle bleiwe wat mir sinn.»</div>'}),
-    ('<div class="qr-label">Flashez le code</div>', {
-        "lb": '<div class="qr-label">Code scannen</div>', "de": '<div class="qr-label">Code scannen</div>',
-        "en": '<div class="qr-label">Scan the code</div>', "pt": '<div class="qr-label">Leia o código</div>'}),
-    ('<div class="help-title">Comment nous aider</div>', {
-        "lb": '<div class="help-title">Wéi Dir eis hëllefe kënnt</div>', "de": '<div class="help-title">Wie Sie uns helfen können</div>',
-        "en": '<div class="help-title">How to help us</div>', "pt": '<div class="help-title">Como nos ajudar</div>'}),
-    ("<li>Notez-le sur Google Play</li>", {
-        "lb": "<li>Bewäert en am Google Play</li>", "de": "<li>Bewerten Sie sie bei Google Play</li>",
-        "en": "<li>Rate it on Google Play</li>", "pt": "<li>Avalie-o no Google Play</li>"}),
-    ("<li>Parlez-en autour de vous</li>", {
-        "lb": "<li>Schwätzt mat Äre Leit driwwer</li>", "de": "<li>Erzählen Sie davon weiter</li>",
-        "en": "<li>Tell the people around you</li>", "pt": "<li>Fale dele a quem conhece</li>"}),
-    ("<li>Signalez un mot qui manque</li>", {
-        "lb": "<li>Mellt e Wuert, dat feelt</li>", "de": "<li>Melden Sie ein fehlendes Wort</li>",
-        "en": "<li>Report a missing word</li>", "pt": "<li>Assinale uma palavra que falte</li>"}),
-    ("<div><span>Kontakt</span> Formulaire de retours sur le site</div>", {
-        "lb": "<div><span>Kontakt</span> Feedback-Formulaire op der Websäit</div>",
-        "de": "<div><span>Kontakt</span> Feedback-Formular auf der Website</div>",
-        "en": "<div><span>Contact</span> Feedback form on the website</div>",
-        "pt": "<div><span>Contacto</span> Formulário de comentários no site</div>"}),
-    ('<div class="promises">Gratuit · Sans publicité · Sans compte · Dictée vocale</div>', {
-        "lb": '<div class="promises">Gratis · Ouni Reklamm · Ouni Kont · Diktat</div>',
-        "de": '<div class="promises">Kostenlos · Ohne Werbung · Ohne Konto · Spracheingabe</div>',
-        "en": '<div class="promises">Free · No ads · No account · Voice typing</div>',
-        "pt": '<div class="promises">Grátis · Sem publicidade · Sem conta · Ditado por voz</div>'}),
-    ("Lëtzebuergesch Clavier est un projet citoyen publié par Médhi Famibelle. Aucune collecte de données personnelles : ce que vous tapez reste sur l'appareil. Seule la dictée vocale, quand on touche le micro, envoie la voix au service LuxASR de l'Université du Luxembourg, qui la transcrit sans la conserver.", {
-        "lb": "Lëtzebuergesch Clavier ass e Bierger-Projet, publizéiert vum Médhi Famibelle. Et gi keng perséinlech Donnéeë gesammelt: wat Dir tippt, bleift um Apparat. Nëmmen d'Diktat, wann een op de Mikro dréckt, schéckt d'Stëmm un de Service LuxASR vun der Universitéit Lëtzebuerg, deen se ëmschreift, ouni se ze späicheren.",
-        "de": "Lëtzebuergesch Clavier ist ein Bürgerprojekt, veröffentlicht von Médhi Famibelle. Es werden keine personenbezogenen Daten erhoben: Was Sie tippen, bleibt auf dem Gerät. Nur die Spracheingabe schickt die Stimme, wenn man das Mikro antippt, an den Dienst LuxASR der Universität Luxemburg, der sie verschriftlicht, ohne sie zu speichern.",
-        "en": "Lëtzebuergesch Clavier is a citizen project published by Médhi Famibelle. No personal data is collected: what you type stays on the device. Only voice typing, when you tap the mic, sends your voice to the University of Luxembourg's LuxASR service, which transcribes it without keeping it.",
-        "pt": "O Lëtzebuergesch Clavier é um projeto cidadão publicado por Médhi Famibelle. Nenhum dado pessoal é recolhido: o que escreve fica no aparelho. Só o ditado por voz, quando se toca no microfone, envia a voz ao serviço LuxASR da Universidade do Luxemburgo, que a transcreve sem a guardar."}),
 
     # ---- Triptyque, volet 2 ----
     ('<div class="kicker">Pourquoi</div>', {
@@ -429,11 +384,6 @@ T = [
         "de": "<li><span><b>Diese Tastatur ist für Sie gemacht.</b></span></li>",
         "en": "<li><span><b>This keyboard is made for you.</b></span></li>",
         "pt": "<li><span><b>Este teclado foi feito para si.</b></span></li>"}),
-    ("À l'intérieur : les accents sous le doigt, la dictée, des mots qui ne sont plus soulignés en rouge, sept jeux avec leur carnet de cartes, et huit niveaux de progression. Retournez le dépliant.", {
-        "lb": "Bannen: d'Akzenter ënnert dem Fanger, d'Diktat, Wierder, déi net méi rout ënnerstrach sinn, siwe Spiller mat hirem Kaartecarnet an aacht Niveauen. Dréit d'Faltblat ëm.",
-        "de": "Innen: Akzente direkt unter dem Finger, die Spracheingabe, Wörter, die nicht mehr rot unterstrichen sind, sieben Spiele mit ihrem Kartenheft und acht Stufen. Blättern Sie um.",
-        "en": "Inside: accents at your fingertips, voice typing, words no longer underlined in red, seven games with their card deck, and eight levels. Turn the leaflet over.",
-        "pt": "No interior: os acentos à mão, o ditado, palavras que deixam de estar sublinhadas a vermelho, sete jogos com o seu caderno de cartões e oito níveis. Vire o desdobrável."}),
 
     # ---- Triptyque, couverture ----
     ('<h1 class="h">Vous le parlez.<br>Maintenant, vous l\'écrivez.</h1>', {
@@ -496,36 +446,6 @@ T = [
     ("<h2>Ce qu'il fait pour vous</h2>", {
         "lb": "<h2>Wat se fir Iech mécht</h2>", "de": "<h2>Was sie für Sie tut</h2>",
         "en": "<h2>What it does for you</h2>", "pt": "<h2>O que faz por si</h2>"}),
-    ("<li><span>Le <b>mot luxembourgeois</b> arrive avant que vous ayez fini de le taper</span></li>", {
-        "lb": "<li><span>D'<b>lëtzebuergescht Wuert</b> kënnt, ier Dir et fäerdeg getippt hutt</span></li>",
-        "de": "<li><span>Das <b>luxemburgische Wort</b> erscheint, bevor Sie es zu Ende getippt haben</span></li>",
-        "en": "<li><span>The <b>Luxembourgish word</b> appears before you finish typing it</span></li>",
-        "pt": "<li><span>A <b>palavra luxemburguesa</b> aparece antes de acabar de a escrever</span></li>"}),
-    ("<li><span><b>é, ä, ë</b> ont leur touche ; pour les autres accents, gardez le doigt appuyé</span></li>", {
-        "lb": "<li><span><b>é, ä, ë</b> hunn hir Tast; fir déi aner Akzenter, haalt de Fanger drop</span></li>",
-        "de": "<li><span><b>é, ä, ë</b> haben eigene Tasten; für weitere Akzente den Finger gedrückt halten</span></li>",
-        "en": "<li><span><b>é, ä, ë</b> have their own keys; for other accents, hold your finger down</span></li>",
-        "pt": "<li><span><b>é, ä, ë</b> têm tecla própria; para os outros acentos, mantenha o dedo premido</span></li>"}),
-    ("<li><span>Il comprend même <b>sans les accents</b> : «&nbsp;letzebuergesch&nbsp;» propose «&nbsp;Lëtzebuergesch&nbsp;»</span></li>", {
-        "lb": "<li><span>En versteet Iech och <b>ouni Akzenter</b>: „letzebuergesch“ proposéiert „Lëtzebuergesch“</span></li>",
-        "de": "<li><span>Sie versteht Sie auch <b>ohne Akzente</b>: „letzebuergesch“ ergibt „Lëtzebuergesch“</span></li>",
-        "en": "<li><span>It understands you <b>without accents</b> too: “letzebuergesch” suggests “Lëtzebuergesch”</span></li>",
-        "pt": "<li><span>Percebe-o mesmo <b>sem acentos</b>: «letzebuergesch» sugere «Lëtzebuergesch»</span></li>"}),
-    ("<li><span>Vos mots luxembourgeois ne sont <b>plus soulignés en rouge</b>, dans toutes vos applications</span></li>", {
-        "lb": "<li><span>Är lëtzebuergesch Wierder sinn <b>net méi rout ënnerstrach</b>, an all Ären Apps</span></li>",
-        "de": "<li><span>Ihre luxemburgischen Wörter werden in keiner App mehr <b>rot unterstrichen</b></span></li>",
-        "en": "<li><span>Your Luxembourgish words are <b>no longer underlined in red</b>, in any app</span></li>",
-        "pt": "<li><span>As suas palavras em luxemburguês <b>deixam de ficar sublinhadas a vermelho</b>, em todas as apps</span></li>"}),
-    ("<li><span>Touchez le <b>micro</b> et parlez : il écrit en luxembourgeois (connexion Internet nécessaire)</span></li>", {
-        "lb": "<li><span>Dréckt op de <b>Mikro</b> a schwätzt: en schreift op Lëtzebuergesch (Internet néideg)</span></li>",
-        "de": "<li><span><b>Mikro</b> antippen und sprechen: Sie schreibt auf Luxemburgisch (Internet nötig)</span></li>",
-        "en": "<li><span>Tap the <b>mic</b> and speak: it writes in Luxembourgish (internet connection needed)</span></li>",
-        "pt": "<li><span>Toque no <b>microfone</b> e fale: ele escreve em luxemburguês (é preciso ligação à internet)</span></li>"}),
-    ('<div class="callout">Il devine aussi le mot suivant&nbsp;: après «&nbsp;op der&nbsp;», il propose déjà «&nbsp;Stad&nbsp;», «&nbsp;Police&nbsp;», «&nbsp;Rue&nbsp;». Moins de lettres à taper, moins de fautes.</div>', {
-        "lb": '<div class="callout">En errode och dat nächst Wuert: no „op der“ proposéiert en schonn „Stad“, „Police“, „Rue“. Manner Buschtawen ze tippen, manner Feeler.</div>',
-        "de": '<div class="callout">Sie errät auch das nächste Wort: Nach „op der“ schlägt sie schon „Stad“, „Police“, „Rue“ vor. Weniger tippen, weniger Fehler.</div>',
-        "en": '<div class="callout">It also guesses the next word: after “op der”, it already suggests “Stad”, “Police”, “Rue”. Fewer letters to type, fewer mistakes.</div>',
-        "pt": '<div class="callout">Também adivinha a palavra seguinte: depois de «op der», já sugere «Stad», «Police», «Rue». Menos letras para escrever, menos erros.</div>'}),
 
     # ---- Triptyque, volet 6 : apprendre ----
     ('<div class="kicker">Et pour apprendre</div>', {
@@ -557,6 +477,73 @@ T = [
         "de": '<div class="txt"><b>Jetzt installieren</b>Suchen Sie „Lëtzebuergesch Clavier“',
         "en": '<div class="txt"><b>Install now</b>Search for “Lëtzebuergesch Clavier”',
         "pt": '<div class="txt"><b>Instale já</b>Procure «Lëtzebuergesch Clavier»'}),
+
+    # ---- Triptyque, refonte 2026-10-20 : dos en moments de la journée, volet 5 en démonstration ----
+    ("A4 paysage recto-verso, plié en trois. À poser sur un stand, un comptoir d'association ou une table de cours du soir : le premier volet donne envie, le dos montre ce que le clavier change au quotidien, l'intérieur explique l'installation, les fonctions et l'apprentissage.", {
+        "lb": "A4 quer, béid Säiten, an dräi gefalt. Fir op e Stand, e Veräinscomptoir oder en Dësch vun engem Owescours: den éischten Deel mécht Loscht, hannen steet, wat d'Tastatur am Alldag ännert, bannen ass d'Installatioun, d'Funktiounen an d'Léieren erkläert.",
+        "de": "A4 quer, beidseitig, dreifach gefalzt. Für einen Stand, eine Vereinstheke oder den Tisch eines Abendkurses: Die Vorderseite macht neugierig, die Rückseite zeigt, was die Tastatur im Alltag ändert, innen werden Installation, Funktionen und Lernen erklärt.",
+        "en": "A4 landscape, double-sided, folded in three. For a stand, a club counter or an evening-class table: the front panel draws people in, the back shows what the keyboard changes in everyday life, the inside explains installation, features and learning.",
+        "pt": "A4 horizontal, frente e verso, dobrado em três. Para um stand, um balcão de associação ou uma mesa de curso noturno: o primeiro painel desperta interesse, o verso mostra o que o teclado muda no dia a dia, o interior explica a instalação, as funções e a aprendizagem."}),
+    ('<h2 class="journee">Le luxembourgeois, à chaque moment de votre journée</h2>', {
+        "lb": '<h2 class="journee">Lëtzebuergesch, zu all Moment vun Ärem Dag</h2>',
+        "de": '<h2 class="journee">Luxemburgisch, in jedem Moment Ihres Tages</h2>',
+        "en": '<h2 class="journee">Luxembourgish, at every moment of your day</h2>',
+        "pt": '<h2 class="journee">O luxemburguês, em cada momento do seu dia</h2>'}),
+    ("<li><b>Le matin, un message à la famille</b>Le mot arrive avant que vous ayez fini de le taper. Tapez «&nbsp;Schueb&nbsp;», il propose «&nbsp;Schueberfouer&nbsp;».</li>", {
+        "lb": "<li><b>Moies, e Message un d'Famill</b>D'Wuert kënnt, ier Dir et fäerdeg getippt hutt. Tippt „Schueb“, en proposéiert „Schueberfouer“.</li>",
+        "de": "<li><b>Morgens, eine Nachricht an die Familie</b>Das Wort erscheint, bevor Sie es zu Ende getippt haben. Tippen Sie „Schueb“, sie schlägt „Schueberfouer“ vor.</li>",
+        "en": "<li><b>In the morning, a message to the family</b>The word appears before you finish typing it. Type “Schueb”, it suggests “Schueberfouer”.</li>",
+        "pt": "<li><b>De manhã, uma mensagem à família</b>A palavra aparece antes de acabar de a escrever. Escreva «Schueb», o teclado sugere «Schueberfouer».</li>"}),
+    ("<li><b>Les mains prises, en cuisine ou au volant à l'arrêt</b>Touchez le micro et parlez&nbsp;: votre phrase s'écrit en luxembourgeois.</li>", {
+        "lb": "<li><b>D'Hänn voll, an der Kiche oder am Auto beim Stoen</b>Dréckt op de Mikro a schwätzt: Äre Saz schreift sech op Lëtzebuergesch.</li>",
+        "de": "<li><b>Die Hände voll, in der Küche oder im stehenden Auto</b>Tippen Sie auf das Mikro und sprechen Sie: Ihr Satz schreibt sich auf Luxemburgisch.</li>",
+        "en": "<li><b>Hands full, in the kitchen or in the parked car</b>Tap the mic and speak: your sentence writes itself in Luxembourgish.</li>",
+        "pt": "<li><b>Mãos ocupadas, na cozinha ou no carro parado</b>Toque no microfone e fale: a sua frase escreve-se em luxemburguês.</li>"}),
+    ("<li><b>Un doigt qui glisse sur la mauvaise touche</b>Il rattrape la faute&nbsp;: «&nbsp;Kafi&nbsp;» devient «&nbsp;Kaffi&nbsp;».</li>", {
+        "lb": "<li><b>De Fanger rutscht op déi falsch Tast</b>En hëlt de Feeler op: „Kafi“ gëtt „Kaffi“.</li>",
+        "de": "<li><b>Der Finger rutscht auf die falsche Taste</b>Sie fängt den Fehler auf: „Kafi“ wird „Kaffi“.</li>",
+        "en": "<li><b>A finger slips onto the wrong key</b>It catches the mistake: “Kafi” becomes “Kaffi”.</li>",
+        "pt": "<li><b>Um dedo escorrega para a tecla errada</b>O teclado apanha o erro: «Kafi» passa a «Kaffi».</li>"}),
+    ("<li><b>Un mot qui vous échappe</b>Le dictionnaire vous le donne, en français ou en luxembourgeois, même sans réseau.</li>", {
+        "lb": "<li><b>E Wuert, dat Iech net afält</b>Den Dictionnaire gëtt et Iech, op Franséisch oder op Lëtzebuergesch, och ouni Netz.</li>",
+        "de": "<li><b>Ein Wort fällt Ihnen nicht ein</b>Das Wörterbuch gibt es Ihnen, auf Deutsch oder auf Luxemburgisch, auch ohne Netz.</li>",
+        "en": "<li><b>A word that escapes you</b>The dictionary gives it to you, in English or in Luxembourgish, even offline.</li>",
+        "pt": "<li><b>Uma palavra que lhe foge</b>O dicionário dá-lha, em português ou em luxemburguês, mesmo sem rede.</li>"}),
+    ("<li><b>Le soir, cinq minutes de jeu</b>Chaque mot trouvé devient une carte de votre collection.</li>", {
+        "lb": "<li><b>Owes, fënnef Minutte spillen</b>All Wuert, dat Dir fannt, gëtt eng Kaart vun Ärer Sammlung.</li>",
+        "de": "<li><b>Abends, fünf Minuten spielen</b>Jedes gefundene Wort wird eine Karte Ihrer Sammlung.</li>",
+        "en": "<li><b>In the evening, five minutes of play</b>Every word you find becomes a card in your collection.</li>",
+        "pt": "<li><b>À noite, cinco minutos de jogo</b>Cada palavra encontrada torna-se um cartão da sua coleção.</li>"}),
+    ('<div class="legal">Gratuit · Ce que vous tapez reste sur votre téléphone · famibelle.github.io/LuxKeyb</div>', {
+        "lb": '<div class="legal">Gratis · Wat Dir tippt, bleift op Ärem Telefon · famibelle.github.io/LuxKeyb</div>',
+        "de": '<div class="legal">Kostenlos · Was Sie tippen, bleibt auf Ihrem Telefon · famibelle.github.io/LuxKeyb</div>',
+        "en": '<div class="legal">Free · What you type stays on your phone · famibelle.github.io/LuxKeyb</div>',
+        "pt": '<div class="legal">Gratuito · O que escreve fica no seu telemóvel · famibelle.github.io/LuxKeyb</div>'}),
+    ("À l'intérieur : l'installation pas à pas, ce qu'il fait pour vous, et comment il vous fait apprendre en jouant. Ouvrez le dépliant.", {
+        "lb": "Bannen: d'Installatioun Schrëtt fir Schrëtt, wat en fir Iech mécht, a wéi Dir beim Spillen domat léiert. Maacht d'Faltblat op.",
+        "de": "Innen: die Installation Schritt für Schritt, was sie für Sie tut, und wie Sie spielend damit lernen. Klappen Sie das Faltblatt auf.",
+        "en": "Inside: installation step by step, what it does for you, and how it helps you learn through play. Open the leaflet.",
+        "pt": "No interior: a instalação passo a passo, o que faz por si e como o ajuda a aprender a jogar. Abra o desdobrável."}),
+    ('<p class="demo-titre"><span class="num">1</span>Tapez, il propose</p>', {
+        "lb": '<p class="demo-titre"><span class="num">1</span>Tippt, en proposéiert</p>',
+        "de": '<p class="demo-titre"><span class="num">1</span>Tippen, sie schlägt vor</p>',
+        "en": '<p class="demo-titre"><span class="num">1</span>Type, it suggests</p>',
+        "pt": '<p class="demo-titre"><span class="num">1</span>Escreva, ele sugere</p>'}),
+    ('<p class="demo-legende">Tapez «&nbsp;Schueb&nbsp;», il propose «&nbsp;Schueberfouer&nbsp;». Un toucher, et le mot est écrit.</p>', {
+        "lb": '<p class="demo-legende">Tippt „Schueb“, en proposéiert „Schueberfouer“. Een Drock, an d\'Wuert ass geschriwwen.</p>',
+        "de": '<p class="demo-legende">Tippen Sie „Schueb“, sie schlägt „Schueberfouer“ vor. Ein Antippen, und das Wort steht da.</p>',
+        "en": '<p class="demo-legende">Type “Schueb”, it suggests “Schueberfouer”. One tap, and the word is written.</p>',
+        "pt": '<p class="demo-legende">Escreva «Schueb», ele sugere «Schueberfouer». Um toque, e a palavra está escrita.</p>'}),
+    ('<p class="demo-titre"><span class="num">2</span>Parlez, il écrit</p>', {
+        "lb": '<p class="demo-titre"><span class="num">2</span>Schwätzt, en schreift</p>',
+        "de": '<p class="demo-titre"><span class="num">2</span>Sprechen, sie schreibt</p>',
+        "en": '<p class="demo-titre"><span class="num">2</span>Speak, it writes</p>',
+        "pt": '<p class="demo-titre"><span class="num">2</span>Fale, ele escreve</p>'}),
+    ("<p class=\"demo-legende\">Touchez le micro et dites votre phrase&nbsp;: elle s'écrit en luxembourgeois.</p>", {
+        "lb": '<p class="demo-legende">Dréckt op de Mikro a sot Äre Saz: e schreift sech op Lëtzebuergesch.</p>',
+        "de": '<p class="demo-legende">Tippen Sie auf das Mikro und sprechen Sie Ihren Satz: Er schreibt sich auf Luxemburgisch.</p>',
+        "en": '<p class="demo-legende">Tap the mic and say your sentence: it writes itself in Luxembourgish.</p>',
+        "pt": '<p class="demo-legende">Toque no microfone e diga a sua frase: ela escreve-se em luxemburguês.</p>'}),
 ]
 
 # Textes visibles qui restent identiques dans toutes les langues : nom de
