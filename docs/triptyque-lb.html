@@ -418,6 +418,12 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
 .eventail{display:block;width:100%;height:auto;margin:0 0 2mm;}
 .trio figure{width:36mm;}
 .trio img{width:36mm;height:40mm;}
+/* 2026-10-20 : volet 2, la dictée remplace la capture des accents. Elle
+   répond à la douleur « vous savez le dire, mais pas l'écrire », et le
+   clavier aux accents redisait ce que montre déjà la capture voisine. */
+.mini-shots.large{height:auto;display:flex;flex-direction:column;align-items:center;gap:5mm;margin:auto;}
+.mini-shots.large img.s1{position:static;transform:rotate(-2deg);width:64mm;}
+.mini-shots.large .dictee{position:relative;--dw:70mm;--dp:2.6mm;--dg:3.4mm;--dm:14mm;--df:3.9mm;transform:rotate(2deg);}
 
 /* Bandeau « À faire valider » : ajouté par docs/scripts/traduire_supports.py
    tant que la traduction n'a pas été relue par un locuteur natif. Il est
@@ -514,7 +520,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       </ul>
       <div class="mini-shots large">
         <img class="s1" src="Screenshots/lux_supports_clavier.png" alt="D'Tastatur beim Tippen: no „Ech hunn op der Schueb“ proposéiert d'Leescht „Schueberfouer“">
-        <img class="s2" src="Screenshots/lux_accents.png" alt="Laang op d'Tast e drécken: é, ë, è an ê ginn op">
+        <div class="dictee" aria-hidden="true"><span class="micro"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2Z"/></svg></span><p class="bulle">«&nbsp;Op der Kiermes iessen ech ëmmer Gromperekichelcher&nbsp;»</p></div>
       </div>
       <div class="callout">Bannen: d'Installatioun Schrëtt fir Schrëtt, wat en fir Iech mécht, a wéi Dir beim Spillen domat léiert. Maacht d'Faltblat op.</div>
     </div>
