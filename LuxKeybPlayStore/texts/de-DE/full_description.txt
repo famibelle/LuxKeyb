@@ -1,15 +1,11 @@
 Sie sprechen es. Jetzt schreiben Sie es.
 
-Lëtzebuergesch Clavier ist eine kostenlose Android-Tastatur ohne Werbung, gemacht für eine einzige Sprache: Lëtzebuergesch.
+Lëtzebuergesch Clavier ist eine kostenlose Android-Tastatur, gemacht für eine einzige Sprache: Lëtzebuergesch.
 
 🛠️ Ihr Luxemburgisch ist etwas eingerostet?
 😤 Ihr Handy unterstreicht jedes Ihrer Wörter rot?
 🤔 Sie zögern bei jeder Nachricht über die Schreibweise?
 ➡️ Diese Tastatur ist für Sie gemacht.
-
-⌨️ DIE AKZENTE UNTER DEM DAUMEN
-
-é, ä, ë, ö und ü haben jeweils eine eigene Taste, direkt auf der Tastatur. Kein Suchen mehr nach dem ë in einem versteckten Menü. Die übrigen (è, à, ô, ê) liegen unter langem Drücken.
 
 🧠 SIE SAGT IHNEN DIE WÖRTER VOR
 
@@ -21,11 +17,15 @@ Tippen Sie auf das Mikrofon und sprechen Sie: Der Text erscheint, während Sie s
 
 ✍️ SIE VERZEIHT TIPPFEHLER
 
-Ein vergessener Buchstabe, eine Nachbartaste: Das richtige Wort kommt trotzdem. Schreiben Sie „letzebuergesch“ ohne Akzente, sie schlägt „lëtzebuergesch“ vor.
+Ein vergessener Buchstabe, eine Nachbartaste, zwei vertauschte Buchstaben: Das richtige Wort kommt trotzdem. „Kafi“ wird zu „Kaffi“. Schreiben Sie „letzebuergesch“ ohne Akzente, sie schlägt „lëtzebuergesch“ vor.
 
-✅ SCHLUSS MIT DEM ROT ÜBERALL
+⌨️ DIE AKZENTE UNTER DEM DAUMEN
 
-In den Android-Einstellungen aktiviert, unterstreicht sie Ihre luxemburgischen Wörter nicht mehr rot, in WhatsApp, SMS oder E-Mails. Ihre französischen Wörter auch nicht.
+é, ä, ë, ö und ü haben jeweils eine eigene Taste, direkt auf der Tastatur. Kein Suchen mehr nach dem ë in einem versteckten Menü. Die übrigen (è, à, ô, ê) liegen unter langem Drücken.
+
+✅ IHRE WÖRTER ÜBERALL ERKANNT
+
+In den Android-Einstellungen aktiviert, erkennt sie Ihre luxemburgischen Wörter in WhatsApp, SMS oder E-Mails, und Ihre französischen Wörter auch.
 
 🇫🇷 EIN FRANZÖSISCHES WORT MITTENDRIN?
 
@@ -41,7 +41,7 @@ Jedes geschriebene Wort bringt Sie eine Stufe weiter, vom Ufänker 🌍 bis zum 
 
 🎴 EINE SAMMLUNG GEGEN DAS VERGESSEN
 
-Jedes gewonnene Wort wird zu einer Karte zum Umdrehen, mit Bedeutung und Beispiel. Die Sammlung lässt Sie die Wörter im richtigen Moment wiederholen, bis sie sitzen.
+Jedes gewonnene Wort wird zu einer Sammelkarte, von Zinn bis Gold je nach Seltenheit, mit Bedeutung und Beispiel. Die Sammlung lässt Sie die Wörter im richtigen Moment wiederholen, bis sie sitzen.
 
 🌍 IN IHRER SPRACHE
 
@@ -51,7 +51,7 @@ Die App spricht Deutsch, Französisch, Englisch, Portugiesisch oder Luxemburgisc
 
 • Was Sie tippen, verlässt nie Ihr Handy
 • Das Diktat schickt Ihre Stimme an die Universität Luxemburg, nur wenn Sie auf das Mikrofon tippen und nach Ihrer Zustimmung; sie wird verschriftet, nicht gespeichert
-• Kein Konto, keine Werbung
+• Kein Konto nötig
 • Ihre Passwörter, Namen und Nummern werden nie gespeichert
 • Offener Quellcode, für alle einsehbar
 
@@ -59,6 +59,7 @@ Die App spricht Deutsch, Französisch, Englisch, Portugiesisch oder Luxemburgisc
 
 • WhatsApp, SMS, E-Mail, soziale Netzwerke: Sie funktioniert in allen Apps
 • Android 7.0 und neuer, helles oder dunkles Design
+• Auch auf dem Tablet, mit geteilter Tastatur im Querformat
 • Geführte Einrichtung in drei Schritten, mit einer Testtastatur
 • Android zeigt beim Aktivieren eine Warnung an: Das tut es bei allen Tastaturen, das ist normal, die Anleitung in der App erklärt es
 

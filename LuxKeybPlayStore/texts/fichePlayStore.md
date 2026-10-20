@@ -308,16 +308,22 @@ reprennent le gabarit ne sont plus dans le dépôt.
 Les huit captures dépassent toutes 1080 × 1080, et il y en a plus de quatre :
 les deux conditions que la Console pose pour que l'application soit
 promouvable. Leur numéro est leur ordre d'envoi ; le premier écran est le seul
-que voit la plupart des visiteurs :
+que voit la plupart des visiteurs. Le pied de chaque capture dit « gratuit »,
+sans « sans publicité » depuis le 2026-10-20 :
 
-1. la barre de suggestions bilingue en cours de frappe (la cuvette, 12.0.0)
-2. la dictée en cours dans Messages, bandeau « 🌐 LuxASR » ; la légende dit
-   où part la voix et quand (33.0.0)
+1. la suggestion en cours de frappe : « Schueb » → « Schueberfouer », une seule
+   rangée, comme le clavier par défaut depuis la 30.3.0 (refaite le 2026-10-20 ;
+   l'ancienne montrait la rangée française, désactivée par défaut)
+2. la dictée en cours dans Messages, bandeau « 🌐 LuxASR » ; la légende dit le
+   bénéfice (« votre phrase s'écrit, avec la ponctuation »), la confidentialité
+   est dans la description (2026-10-20)
 3. une carte du carnet ouverte : plaque gravée, rareté, exemple traduit
 4. le hub Spiller : sept jeux et le carnet, sur la barre à quatre onglets
 5. la fiche Wierderbuch d'un mot : sens, exemples traduits, autres formes
 6. les accents : é ä ë ö ü en touche directe, l'appui long sur `e` pour les autres
-7. la progression et le mot du jour, avec sa traduction
+7. quatre cartes du carnet, de l'étain à l'or (Bam, Sonn, Brëll, Kran), visuel
+   composé sans cadre de téléphone (`22-cartes-quatre-metaux.png`, 2026-10-20) ;
+   il remplace la progression, qui affichait des compteurs du dictionnaire
 8. l'installation guidée au premier lancement, avec le champ pour essayer le clavier
 
 Chiffres et symboles ont quitté les huit emplacements à la 33.0.0 pour faire
@@ -336,9 +342,9 @@ pas lisible d'un coup d'œil.
 
 **Définition.** Les captures sources sont natives, prises sur l'émulateur
 `pixel9` (1080 × 2424) ; rien n'est agrandi. Les trois captures de clavier
-(suggestions, dictée, accents) sont communes aux cinq langues : le clavier
-reste luxembourgeois quelle que soit la langue de l'application. Les cinq
-écrans de l'application (carnet, jeux, Wierderbuch, progression, installation)
+(suggestions, dictée, accents) et les quatre cartes sont communes aux cinq langues : le clavier
+reste luxembourgeois quelle que soit la langue de l'application. Les quatre
+écrans de l'application (carnet, jeux, Wierderbuch, installation)
 ont été repris dans chaque langue le 2026-10-05 sous la 33.1.0, dans
 `graphics/captures-emulateur-pixel9/<langue>/`. Refaire l'ensemble après tout
 changement d'interface visible, puis `python3 build_graphics.py shots`.

@@ -123,6 +123,10 @@ import tempfile
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 SHOTS = HERE / "captures-emulateur-pixel9"
+# Les visuels composés (pas des écrans) se posent sans le cadre de téléphone :
+# les quatre cartes, de l'étain à l'or, composées le 2026-10-20 depuis les
+# cartes de la newsletter d'octobre, ont leur propre ombre et un fond transparent.
+SANS_CADRE = {"22-cartes-quatre-metaux.png"}
 LOGO = REPO / "Logos" / "luxembourg-logo-hd.png"
 OUT = HERE / "feature-graphic"
 # Ce qui part à la Console quelle que soit la langue de la fiche
@@ -148,13 +152,13 @@ ROUGE, BLEU, ENCRE, PAPIER = "#ED2939", "#00A1DE", "#1F2933", "#F5F5F3"
 # langues : la Console lit le numéro (ordre d'envoi), quiconque parcourt le
 # dossier lit le contenu.
 CAPTURES = [
-    ("Captures d'écran pour téléphone 1 (Suggestions)", "08-clavier-suggestions-lb-fr-recadre.png"),
+    ("Captures d'écran pour téléphone 1 (Suggestions)", "21-clavier-suggestions-schueb-recadre.png"),
     ("Captures d'écran pour téléphone 2 (Dictée)", "20-clavier-dictee-luxasr-recadre.png"),
     ("Captures d'écran pour téléphone 3 (Carnet)", "07-carnet-carte-artist.png"),
     ("Captures d'écran pour téléphone 4 (Jeux)", "02-jeux-onglet-spiller.png"),
     ("Captures d'écran pour téléphone 5 (Wierderbuch)", "06-wierderbuch-fiche-gromperekichelchen.png"),
     ("Captures d'écran pour téléphone 6 (Accents)", "09-clavier-diacritiques-appui-long-recadre.png"),
-    ("Captures d'écran pour téléphone 7 (Progression)", "04-progression-onglet-mai-letzebuergesch.png"),
+    ("Captures d'écran pour téléphone 7 (Cartes)", "22-cartes-quatre-metaux.png"),
     ("Captures d'écran pour téléphone 8 (Installation)", "01-installation-onglet-demarrage.png"),
 ]
 
@@ -167,94 +171,94 @@ CAPTURES = [
 LEGENDES = {
     "fr-FR": ([
         ("Suggestions", "Il vous souffle les mots",
-         "Le luxembourgeois d'abord, et en option le français pour les emprunts."),
+         "Tapez « Schueb », il propose « Schueberfouer »."),
         ("Dictée", "Parlez, il écrit en luxembourgeois",
-         "Votre voix part à LuxASR, Université du Luxembourg, seulement quand vous touchez le micro."),
+         "Touchez le micro et parlez : votre phrase s'écrit, avec la ponctuation."),
         ("Carnet", "Chaque mot appris devient une carte",
          "Sens, phrase d'exemple et traduction officielle, sur une carte à collectionner."),
         ("Jeux", "Sept jeux pour élargir son vocabulaire",
          "Tous les jeux versent leurs mots dans le même carnet, révisable à intervalle régulier."),
         ("Wierderbuch", "Un dictionnaire dans le clavier",
-         "Près de 89 000 mots, luxembourgeois et français, avec des phrases d'exemple officielles."),
+         "Un mot vous échappe ? Il le traduit dans les deux sens, même sans réseau."),
         ("Accents", "é ä ë ö ü ont leur propre touche",
          "Les autres accents (è, à, ê, ô) restent sous un appui long."),
-        ("Progression", "Chaque mot fait monter votre niveau",
-         "D'Ufänker à Sproochenmeeschter, selon la part du dictionnaire déjà employée."),
+        ("Cartes", "Collectionnez vos mots, de l'étain à l'or",
+         "Plus le mot est rare, plus sa carte est précieuse."),
         ("Installation", "Trois étapes, un clavier d'essai",
          "L'application ouvre elle-même les bons écrans de réglages Android."),
-    ], "gratuit, sans publicité"),
+    ], "gratuit"),
     "lb": ([
         ("Virschléi", "Si seet Iech d'Wierder vir",
-         "Fir d'éischt Lëtzebuergesch, an op Wonsch Franséisch fir déi geléinte Wierder."),
+         "Tippt „Schueb“, si proposéiert „Schueberfouer“."),
         ("Diktat", "Schwätzt, si schreift op Lëtzebuergesch",
-         "Är Stëmm geet un LuxASR, Universitéit Lëtzebuerg, just wann Dir op de Mikro dréckt."),
+         "Dréckt op de Mikro a schwätzt: Äre Saz schreift sech, mat der Punktuatioun."),
         ("Carnet", "All geléiert Wuert gëtt eng Kaart",
          "Bedeitung, Beispillsaz an offiziell Iwwersetzung, op enger Kaart zum Sammelen."),
         ("Spiller", "Siwe Spiller fir méi Wierder ze kennen",
          "All Spiller fëllen deeselwechte Carnet, deen Dir regelméisseg widderhuele kënnt."),
         ("Wierderbuch", "En Dictionnaire an der Tastatur",
-         "Bal 89 000 Wierder, Lëtzebuergesch a Franséisch, mat offiziellen Beispillsätz."),
+         "E Wuert fält Iech net an? Si iwwersetzt et an déi zwou Richtungen, och ouni Netz."),
         ("Akzenter", "é ä ë ö ü hunn hir eegen Tast",
          "Déi aner Akzenter (è, à, ê, ô) sinn ënner engem laangen Drock."),
-        ("Fortschrëtt", "All Wuert bréngt Iech eng Stuf méi héich",
-         "Vum Ufänker bis zum Sproochenmeeschter, jee nodeem wéi vill vum Wierderbuch Dir scho benotzt."),
+        ("Kaarten", "Sammelt Är Wierder, vum Zënn bis zum Gold",
+         "Wat méi rar d'Wuert, wat méi wäertvoll seng Kaart."),
         ("Installatioun", "Dräi Schrëtt, eng Test-Tastatur",
          "D'App mécht selwer déi richteg Android-Astellungen op."),
-    ], "gratis, ouni Reklamm"),
+    ], "gratis"),
     "de-DE": ([
         ("Vorschläge", "Sie sagt Ihnen die Wörter vor",
-         "Zuerst Luxemburgisch, auf Wunsch auch Französisch für die Lehnwörter."),
+         "Tippen Sie „Schueb“, sie schlägt „Schueberfouer“ vor."),
         ("Diktat", "Sprechen Sie, sie schreibt Luxemburgisch",
-         "Ihre Stimme geht an LuxASR, Universität Luxemburg, nur wenn Sie das Mikrofon antippen."),
+         "Mikro antippen und sprechen: Ihr Satz schreibt sich, mit Satzzeichen."),
         ("Sammlung", "Jedes gelernte Wort wird zur Karte",
          "Bedeutung, Beispielsatz und offizielle Übersetzung, auf einer Sammelkarte."),
         ("Spiele", "Sieben Spiele für mehr Wortschatz",
          "Alle Spiele füllen dieselbe Sammlung, die Sie regelmäßig wiederholen können."),
         ("Wierderbuch", "Ein Wörterbuch in der Tastatur",
-         "Fast 89 000 Wörter, Luxemburgisch und Deutsch, mit offiziellen Beispielsätzen."),
+         "Ein Wort fällt Ihnen nicht ein? Sie übersetzt es in beide Richtungen, auch ohne Netz."),
         ("Akzente", "é ä ë ö ü haben eine eigene Taste",
          "Die übrigen Akzente (è, à, ê, ô) liegen unter langem Drücken."),
-        ("Fortschritt", "Jedes Wort bringt Sie eine Stufe weiter",
-         "Vom Ufänker zum Sproochenmeeschter, je nachdem, wie viel vom Wörterbuch Sie schon benutzen."),
+        ("Karten", "Sammeln Sie Ihre Wörter, von Zinn bis Gold",
+         "Je seltener das Wort, desto wertvoller seine Karte."),
         ("Einrichtung", "Drei Schritte, eine Testtastatur",
          "Die App öffnet selbst die richtigen Android-Einstellungen."),
-    ], "kostenlos, ohne Werbung"),
+    ], "kostenlos"),
     "en-US": ([
         ("Suggestions", "It suggests the words",
-         "Luxembourgish first, and French as an option for borrowed words."),
+         "Type “Schueb”, it suggests “Schueberfouer”."),
         ("Dictation", "Speak, it writes in Luxembourgish",
-         "Your voice goes to LuxASR, University of Luxembourg, only when you tap the microphone."),
+         "Tap the mic and speak: your sentence writes itself, punctuation included."),
         ("Collection", "Every word you learn becomes a card",
          "Meaning, example sentence and official translation, on a card to collect."),
         ("Games", "Seven games to grow your vocabulary",
          "Every game adds its words to the same collection, ready for regular review."),
         ("Wierderbuch", "A dictionary inside the keyboard",
-         "Over 85,000 words, Luxembourgish and English, with official example sentences."),
+         "A word escapes you? It translates both ways, even offline."),
         ("Accents", "é ä ë ö ü have their own key",
          "The other accents (è, à, ê, ô) are a long press away."),
-        ("Progress", "Every word raises your level",
-         "From Ufänker to Sproochenmeeschter, by how much of the dictionary you already use."),
+        ("Cards", "Collect your words, from pewter to gold",
+         "The rarer the word, the more precious its card."),
         ("Setup", "Three steps, a practice keyboard",
          "The app opens the right Android settings screens for you."),
-    ], "free, no ads"),
+    ], "free"),
     "pt-PT": ([
         ("Sugestões", "Ele sopra-lhe as palavras",
-         "Primeiro o luxemburguês e, se quiser, o francês para as palavras emprestadas."),
+         "Escreva «Schueb», ele sugere «Schueberfouer»."),
         ("Ditado", "Fale, ele escreve em luxemburguês",
-         "A sua voz vai para o LuxASR, Universidade do Luxemburgo, só quando toca no microfone."),
+         "Toque no microfone e fale: a sua frase escreve-se, com a pontuação."),
         ("Coleção", "Cada palavra aprendida torna-se uma carta",
          "Significado, frase de exemplo e tradução oficial, numa carta para colecionar."),
         ("Jogos", "Sete jogos para alargar o vocabulário",
          "Todos os jogos juntam as palavras na mesma coleção, para rever regularmente."),
         ("Wierderbuch", "Um dicionário dentro do teclado",
-         "Quase 88 000 palavras, luxemburguês e português, com frases de exemplo oficiais."),
+         "Uma palavra foge-lhe? Ele traduz nos dois sentidos, mesmo sem rede."),
         ("Acentos", "é ä ë ö ü têm a sua própria tecla",
          "Os outros acentos (è, à, ê, ô) ficam a um toque longo."),
-        ("Progresso", "Cada palavra faz subir o seu nível",
-         "De Ufänker a Sproochenmeeschter, conforme a parte do dicionário que já usa."),
+        ("Cartas", "Colecione as suas palavras, do estanho ao ouro",
+         "Quanto mais rara a palavra, mais preciosa a carta."),
         ("Instalação", "Três passos, um teclado de teste",
          "A aplicação abre sozinha os ecrãs certos das definições do Android."),
-    ], "gratuito, sem publicidade"),
+    ], "gratuito"),
 }
 LANGUES = list(LEGENDES)
 
@@ -539,7 +543,7 @@ TABLETTE_TEMPLATE = """<meta charset="utf-8">
     <div class="sub">{sub}</div>
     <footer><img src="data:image/png;base64,{icon}">Lëtzebuergesch Clavier · {pied}</footer>
   </div>
-  <div class="stage"><img src="data:image/png;base64,{shot}"></div>
+  <div class="stage"><img class="{classe}" src="data:image/png;base64,{shot}"></div>
 </main>
 """
 
@@ -573,6 +577,7 @@ SHOT_TEMPLATE = """<meta charset="utf-8">
     border:12px solid {encre}; border-radius:34px;
     box-shadow:0 26px 60px rgba(31,41,51,.28);
   }}
+  .stage img.nu{{ border:0; border-radius:0; box-shadow:none; }}
 
   footer{{
     flex:0 0 auto; display:flex; align-items:center; justify-content:center; gap:18px;
@@ -586,7 +591,7 @@ SHOT_TEMPLATE = """<meta charset="utf-8">
   <h1>{title}</h1>
   <div class="sub">{sub}</div>
 </header>
-<div class="stage"><img src="data:image/png;base64,{shot}"></div>
+<div class="stage"><img class="{classe}" src="data:image/png;base64,{shot}"></div>
 <footer><img src="data:image/png;base64,{icon}">Lëtzebuergesch Clavier · {pied}</footer>
 """
 
@@ -657,6 +662,7 @@ def build_shots(specs, langue: str, out_dir: pathlib.Path) -> None:
             html.write_text(SHOT_TEMPLATE.format(
                 papier=PAPIER, encre=ENCRE, rouge=ROUGE, bleu=BLEU,
                 kicker=kicker, title=title, sub=sub, pied=pied, sub_px=sub_px,
+                classe="nu" if src in SANS_CADRE else "",
                 shot=b64(shot), icon=icon), encoding="utf-8")
 
             out = out_dir / f"{name}.png"
@@ -696,7 +702,7 @@ def build_tablette(specs=CAPTURES_TABLETTE, dossier=None) -> None:
                 html = tmp / f"{index:02d}.html"
                 html.write_text(TABLETTE_TEMPLATE.format(
                     papier=PAPIER, encre=ENCRE, rouge=ROUGE, bleu=BLEU,
-                    kicker=kicker, title=title, sub=sub, pied=pied,
+                    kicker=kicker, title=title, sub=sub, pied=pied, classe="",
                     shot=b64(shot), icon=icon), encoding="utf-8")
                 out = out_dir / f"{name}.png"
                 render(html, out, 1920, 1080)

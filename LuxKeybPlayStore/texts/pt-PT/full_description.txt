@@ -1,15 +1,11 @@
 Fala-o. Agora, escreve-o.
 
-Lëtzebuergesch Clavier é um teclado Android gratuito e sem publicidade, feito para uma só língua: o lëtzebuergesch.
+Lëtzebuergesch Clavier é um teclado Android gratuito, feito para uma só língua: o lëtzebuergesch.
 
 🛠️ O seu luxemburguês está um pouco enferrujado?
 😤 O seu telemóvel sublinha a vermelho todas as suas palavras?
 🤔 Hesita na ortografia em cada mensagem?
 ➡️ Este teclado é para si.
-
-⌨️ OS ACENTOS DEBAIXO DO POLEGAR
-
-é, ä, ë, ö e ü têm cada um a sua tecla, diretamente no teclado. Acabou a procura do ë num menu escondido. Os outros (è, à, ô, ê) ficam a um toque longo.
 
 🧠 ELE SOPRA-LHE AS PALAVRAS
 
@@ -21,11 +17,15 @@ Toque no microfone e fale: o texto escreve-se enquanto fala, com pontuação e m
 
 ✍️ PERDOA OS ERROS DE ESCRITA
 
-Uma letra esquecida, uma tecla ao lado: a palavra certa aparece na mesma. Escreva «letzebuergesch» sem acentos e ele propõe «lëtzebuergesch».
+Uma letra esquecida, uma tecla ao lado, duas letras trocadas: a palavra certa aparece na mesma. «Kafi» passa a «Kaffi». Escreva «letzebuergesch» sem acentos e ele propõe «lëtzebuergesch».
 
-✅ ACABOU O VERMELHO POR TODO O LADO
+⌨️ OS ACENTOS DEBAIXO DO POLEGAR
 
-Ativado nas definições do Android, deixa de sublinhar a vermelho as suas palavras luxemburguesas, no WhatsApp, nas SMS ou nos e-mails. As palavras francesas também não.
+é, ä, ë, ö e ü têm cada um a sua tecla, diretamente no teclado. Acabou a procura do ë num menu escondido. Os outros (è, à, ô, ê) ficam a um toque longo.
+
+✅ AS SUAS PALAVRAS RECONHECIDAS EM TODO O LADO
+
+Ativado nas definições do Android, reconhece as suas palavras luxemburguesas no WhatsApp, nas SMS ou nos e-mails, e as palavras francesas também.
 
 🇫🇷 UMA PALAVRA FRANCESA PELO MEIO?
 
@@ -41,7 +41,7 @@ Cada palavra escrita faz subir o seu nível, de Ufänker 🌍 a Sproochenmeescht
 
 🎴 UMA COLEÇÃO PARA NÃO ESQUECER
 
-Cada palavra ganha torna-se uma carta para virar, com o seu significado e um exemplo. A coleção fá-lo rever as palavras no momento certo, até ficarem.
+Cada palavra ganha torna-se uma carta para colecionar, do estanho ao ouro conforme a sua raridade, com o seu significado e um exemplo. A coleção fá-lo rever as palavras no momento certo, até ficarem.
 
 🌍 NA SUA LÍNGUA
 
@@ -51,7 +51,7 @@ A aplicação fala português, francês, alemão, inglês ou luxemburguês. Esco
 
 • O que escreve nunca sai do seu telemóvel
 • O ditado envia a sua voz para a Universidade do Luxemburgo, só quando toca no microfone e depois de dar o seu acordo; é transcrita, não guardada
-• Sem conta, sem publicidade
+• Sem conta para criar
 • As suas palavras-passe, nomes e números nunca são registados
 • Código aberto, que todos podem consultar
 
@@ -59,6 +59,7 @@ A aplicação fala português, francês, alemão, inglês ou luxemburguês. Esco
 
 • WhatsApp, SMS, e-mail, redes sociais: funciona em todas as aplicações
 • Android 7.0 ou mais recente, tema claro ou escuro
+• Também em tablet, com teclado dividido em modo horizontal
 • Instalação guiada em três passos, com um teclado de teste
 • O Android mostra um aviso ao ativá-lo: fá-lo com todos os teclados, é normal, o guia da aplicação explica porquê
 
