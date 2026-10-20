@@ -133,6 +133,32 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
   filter:drop-shadow(0 2cqw 4.5cqw rgba(0,0,0,.42));
 }
 
+
+/* --- Le motif de la dictée (validé par le propriétaire le 2026-10-20 pour
+   toutes les créations) : grand micro rouge à halos et phrase attestée en
+   bulle. Il se pose sous la capture du clavier : la suggestion se montre en
+   vraie capture, la dictée par ce motif, au même rang. --- */
+.dictee{display:flex;align-items:center;gap:2.6cqw;background:#fff;border-radius:2cqw;
+  padding:2cqw 2.4cqw 2cqw 3.6cqw;box-shadow:0 1.4cqw 3.6cqw rgba(0,0,0,.30);flex:0 0 auto;box-sizing:border-box;}
+.dictee .micro{flex:none;width:8cqw;height:8cqw;border-radius:50%;background:#ED2939;display:grid;place-items:center;
+  box-shadow:0 0 0 1cqw rgba(237,41,57,.16),0 0 0 2cqw rgba(237,41,57,.07);}
+.dictee .micro svg{width:48%;height:48%;fill:#fff;}
+.dictee .bulle{background:#EEF4F8;border-radius:1.6cqw 1.6cqw 1.6cqw .5cqw;padding:1.2cqw 1.6cqw;
+  font-weight:600;font-style:italic;font-size:2.5cqw;line-height:1.28;color:#2B3742;margin:0;}
+.L-tall .dictee{width:76cqw;margin:1.8cqh auto 0;gap:3.6cqw;padding:2.8cqw 3.6cqw 2.8cqw 5.4cqw;border-radius:3.4cqw;}
+.L-tall .dictee .micro{width:11cqw;height:11cqw;box-shadow:0 0 0 1.8cqw rgba(237,41,57,.16),0 0 0 3.6cqw rgba(237,41,57,.07);}
+.L-tall .dictee .bulle{font-size:3.6cqw;padding:2cqw 2.8cqw;border-radius:2.6cqw 2.6cqw 2.6cqw .8cqw;}
+.ad.L-tall .shot{flex:0 0 auto;height:27cqh;max-height:none;width:auto;margin:2cqh auto 0;}
+.ad.L-block .right{flex-direction:column;gap:2.6cqh;}
+.ad.L-block .shot{max-height:46cqh;}
+.ad.L-block.sq .shot{max-height:48cqh;}
+.L-block .dictee{width:44cqw;}
+.L-block.sq .dictee{width:42cqw;}
+.ad.L-wide .right{flex-direction:column;align-items:center;gap:2.4cqh;}
+.ad.L-wide .shot{max-height:50cqh;}
+.L-wide .dictee{width:100%;gap:1.8cqw;padding:1.5cqw 1.6cqw 1.5cqw 2.4cqw;border-radius:1.4cqw;}
+.L-wide .dictee .micro{width:5.4cqw;height:5.4cqw;box-shadow:0 0 0 .7cqw rgba(237,41,57,.16),0 0 0 1.4cqw rgba(237,41,57,.07);}
+.L-wide .dictee .bulle{font-size:1.75cqw;padding:.9cqw 1.1cqw;}
 /* --- Pied de visuel : action, magasin, mentions ---
    Le bouton porte l'action complète (« Essayer le clavier ») et reste
    la tache la plus claire du visuel ; le badge du magasin ne fait que dire où. */
@@ -462,6 +488,7 @@ const brand = (spec, markOnly) => `
 
 const cta   = c => `<span class="cta">${c.cta}</span>`;
 const shot = () => `<img class="shot" src="${SHOT}" alt="Le clavier luxembourgeois pendant la frappe : suggestions en luxembourgeois puis en français">`;
+const dictee = () => `<div class="dictee"><span class="micro"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2Z"/></svg></span><p class="bulle">«&nbsp;Op der Kiermes iessen ech ëmmer Gromperekichelcher&nbsp;»</p></div>`;
 const store = () => `<p class="store-txt">${SITE}</p>`;
 const carte = () => `<img class="carte" src="${CARTE}" alt="">`;
 
@@ -477,6 +504,7 @@ const LAYOUTS = {
     <h2 class="head">${c.headShort}</h2>
     <p class="sub">${c.subShort}</p>
     ${shot()}
+    ${dictee()}
     ${cta(c)}
     <p class="foot">${c.footLine}</p>`,
 
@@ -494,7 +522,7 @@ const LAYOUTS = {
         </div>
       </div>
     </div>
-    <div class="right">${shot()}</div>`,
+    <div class="right">${shot()}${dictee()}</div>`,
 
   wide: (c, spec) => `
     <div class="left">
@@ -506,7 +534,7 @@ const LAYOUTS = {
         <div class="store-row">${store()}<p class="foot">${c.foot}</p></div>
       </div>
     </div>
-    <div class="right">${shot()}</div>`,
+    <div class="right">${shot()}${dictee()}</div>`,
 
   rect: (c, spec) => `
     ${brand(spec, true)}
