@@ -14,6 +14,7 @@ et les boutons par-dessus la vidéo.
 
     python3 reel.py   ->  Letzebuergesch_Clavier_reel_fr.mp4
 """
+import math
 import pathlib, subprocess, tempfile
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
@@ -211,6 +212,107 @@ class Écran:
         return im.convert("RGB")
 
 
+class ÉcranDictée(Écran):
+    """La dictée par son motif, retenu par le propriétaire le 2026-10-20 pour
+    toutes les créations : grand micro rouge à halos qui pulse légèrement, et
+    la phrase attestée qui s'écrit mot à mot dans sa bulle. Remplace la
+    séquence reprise de la capture de l'écoute LuxASR."""
+
+    PHRASE = "«\u00a0Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott.\u00a0»"
+    LARGEUR, HAUTEUR = 960, 620
+    R = 124  # rayon du disque rouge au repos
+    MOTS_PAR_S = 5.0
+
+    def __init__(self, kicker, titre, sous, duree):
+        fantome = Image.new("RGB", (self.LARGEUR, self.HAUTEUR))
+        super().__init__(kicker, titre, sous, [(lambda: fantome, duree)], self.HAUTEUR,
+                         cadre=lambda im, h: (Image.new("RGBA", (im.width + 120, im.height + 120)), 60))
+        self.mots = self.PHRASE.split(" ")
+        self.f = ImageFont.truetype(POLICE.format("BoldItalic"), 50)
+
+    def panneau(self):
+        """Le cadre blanc et son ombre, fixes."""
+        L, Hh, m = self.LARGEUR, self.HAUTEUR, 60
+        out = Image.new("RGBA", (L + 2 * m, Hh + 2 * m))
+        ombre = Image.new("L", out.size, 0)
+        ImageDraw.Draw(ombre).rounded_rectangle((m, m + 22, m + L, m + Hh + 22), 44, fill=90)
+        out.paste(ENCRE, (0, 0, *out.size), ombre.filter(ImageFilter.GaussianBlur(26)))
+        ImageDraw.Draw(out).rounded_rectangle((m, m, m + L, m + Hh), 44, fill=(255, 255, 255))
+        return out, m
+
+    def micro(self, t):
+        """Le micro et ses deux halos ; une pulsation de 1,2 s, à peine marquée."""
+        k = 2  # suréchantillonnage
+        pul = 0.5 - 0.5 * math.cos(2 * math.pi * t / 1.2)
+        r = self.R * (1 + 0.05 * pul)
+        h1, h2 = r + 22 + 7 * pul, r + 46 + 14 * pul
+        S = int(2 * (self.R * 1.05 + 62 + 14)) * k
+        c = Image.new("RGBA", (S, S))
+        d = ImageDraw.Draw(c)
+        o = S / 2
+        for rr, a in ((h2, int(255 * .07)), (h1, int(255 * (.15 + .04 * pul)))):
+            d.ellipse((o - rr * k, o - rr * k, o + rr * k, o + rr * k), fill=(*ROUGE, a))
+        d.ellipse((o - r * k, o - r * k, o + r * k, o + r * k), fill=(*ROUGE, 255))
+        u = r * k / 96  # le pictogramme suit le disque
+        blanc = (255, 255, 255, 255)
+        d.rounded_rectangle((o - 17 * u, o - 46 * u, o + 17 * u, o + 10 * u), radius=17 * u, fill=blanc)
+        d.arc((o - 32 * u, o - 22 * u, o + 32 * u, o + 30 * u), start=0, end=180, fill=blanc, width=round(8 * u))
+        d.line((o, o + 30 * u, o, o + 44 * u), fill=blanc, width=round(8 * u))
+        return c.resize((S // k, S // k), Image.LANCZOS)
+
+    def bulle(self, n):
+        """La bulle, avec les n premiers mots ; la place des suivants est déjà prise."""
+        L = 500
+        lignes_mots, ligne = [], []
+        for mot in self.mots:
+            essai = " ".join(ligne + [mot])
+            if ligne and self.f.getlength(essai) > L - 56:
+                lignes_mots.append(ligne)
+                ligne = [mot]
+            else:
+                ligne.append(mot)
+        lignes_mots.append(ligne)
+        il = 66
+        Hh = 40 + il * len(lignes_mots)
+        b = Image.new("RGBA", (L, Hh))
+        d = ImageDraw.Draw(b)
+        d.rounded_rectangle((0, 0, L - 1, Hh - 1), 30, fill=(238, 244, 248, 255))
+        d.rectangle((0, Hh - 30, 30, Hh - 1), fill=(238, 244, 248, 255))
+        d.rounded_rectangle((0, Hh - 30, 30, Hh - 1), 8, fill=(238, 244, 248, 255))
+        vu = 0
+        y = 20
+        for lm in lignes_mots:
+            x = 28
+            for mot in lm:
+                if vu < n:
+                    d.text((x, y), mot, font=self.f, fill=(43, 55, 66))
+                vu += 1
+                x += self.f.getlength(mot + " ")
+            y += il
+        return b
+
+    def rendu(self, t):
+        ta = t if self.apparition else t + 10
+        im = fond().convert("RGBA")
+        poser(im, calque_entete(), (0, 0), 1)
+        for i, (c, y) in enumerate(self.textes):
+            a, dy = entrée(c, ta, 0.08 * i)
+            poser(im, c, (0, y + dy), a)
+        if "panneau" not in self.cache:
+            self.cache = {"panneau": self.panneau()}
+        pan, m = self.cache["panneau"]
+        calque = pan.copy()
+        mic = self.micro(t)
+        cy = m + self.HAUTEUR // 2
+        calque.alpha_composite(mic, (m + 222 - mic.width // 2, cy - mic.height // 2))
+        n = int(max(0.0, t - 0.35) * self.MOTS_PAR_S)
+        bl = self.bulle(n)
+        calque.alpha_composite(bl, (m + self.LARGEUR - 34 - bl.width, cy - bl.height // 2))
+        a, dy = entrée(calque, ta, 0.2, dy=80)
+        poser(im, calque, ((W - calque.width) // 2, self.y_tel - m + dy), a)
+        return im.convert("RGB")
+
+
 class Accroche:
     """Première image, qui sert aussi de vignette : le message, et dessous le
     clavier qui propose « Schueberfouer » après « schue ». Entière dès la première
@@ -346,9 +448,9 @@ def main():
             Écran("Suggestions", "Il vous souffle les mots",
                   "Tapez « schue », il propose « Schueberfouer ». Après un espace, il devine la suite.",
                   séquence(tmp, 110, 425, 2.2, 1.2), 1120),
-            Écran("Dictée vocale", "Parlez, il écrit pour vous",
-                  "Touchez le micro et dictez en luxembourgeois : le texte s'écrit tout seul.",
-                  séquence(tmp, 616, 743, 1.4, 1.0), 1120),
+            ÉcranDictée("Dictée vocale", "Parlez, il écrit pour vous",
+                        "Touchez le micro et dictez en luxembourgeois : le texte s'écrit tout seul.",
+                        3.6),
             Écran("Wierderbuch", "Un dictionnaire dans la poche",
                   "Le sens des mots et des exemples. Même sans connexion.",
                   [capture("05-wierderbuch-recherche-gromperekichelchen", 1.0),

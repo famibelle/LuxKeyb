@@ -43,6 +43,11 @@ publiée depuis un compte personnel, elle doit se suffire à elle-même. Le badg
 (`badge_google_play_fr.png`) est `docs/assets/google-play-badge-fr.svg` rendu
 par Chromium, le texte en Inter faute de Google Sans.
 
+Depuis le 2026-10-20, la scène de dictée du Reel n'est plus reprise de la
+vidéo de présentation : c'est le motif retenu pour toutes les créations,
+dessiné par `ÉcranDictée` dans `reel.py` (grand micro rouge à halos qui pulse
+légèrement, phrase du LOD qui s'écrit mot à mot dans sa bulle, 3,6 s).
+
 `python3 reel.py` le refait : il découpe l'écran du téléphone dans la vidéo
 de présentation ci-dessus pour les séquences animées, et prend les captures de
 `captures-emulateur-pixel9` pour les écrans entiers. Le carnet montre les
