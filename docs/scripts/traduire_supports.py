@@ -474,11 +474,11 @@ T = [
         "de": "<li><b>Morgens, eine Nachricht an die Familie</b>Das Wort erscheint, bevor Sie es zu Ende getippt haben. Tippen Sie „Schueb“, sie schlägt „Schueberfouer“ vor.</li>",
         "en": "<li><b>In the morning, a message to the family</b>The word appears before you finish typing it. Type “Schueb”, it suggests “Schueberfouer”.</li>",
         "pt": "<li><b>De manhã, uma mensagem à família</b>A palavra aparece antes de acabar de a escrever. Escreva «Schueb», o teclado sugere «Schueberfouer».</li>"}),
-    ("<li><b>Les mains prises, en cuisine ou au volant à l'arrêt</b>Touchez le micro et parlez&nbsp;: votre phrase s'écrit en luxembourgeois.</li>", {
-        "lb": "<li><b>D'Hänn voll, an der Kiche oder am Auto beim Stoen</b>Dréckt op de Mikro a schwätzt: Äre Saz schreift sech op Lëtzebuergesch.</li>",
-        "de": "<li><b>Die Hände voll, in der Küche oder im stehenden Auto</b>Tippen Sie auf das Mikro und sprechen Sie: Ihr Satz schreibt sich auf Luxemburgisch.</li>",
-        "en": "<li><b>Hands full, in the kitchen or in the parked car</b>Tap the mic and speak: your sentence writes itself in Luxembourgish.</li>",
-        "pt": "<li><b>Mãos ocupadas, na cozinha ou no carro parado</b>Toque no microfone e fale: a sua frase escreve-se em luxemburguês.</li>"}),
+    ("<li><b>Les mains occupées, au travail ou à la maison</b>Touchez le micro et parlez&nbsp;: votre phrase s'écrit en luxembourgeois.</li>", {
+        "lb": "<li><b>D'Hänn voll, op der Aarbecht oder doheem</b>Dréckt op de Mikro a schwätzt: Äre Saz schreift sech op Lëtzebuergesch.</li>",
+        "de": "<li><b>Die Hände voll, bei der Arbeit oder zu Hause</b>Tippen Sie auf das Mikro und sprechen Sie: Ihr Satz schreibt sich auf Luxemburgisch.</li>",
+        "en": "<li><b>Hands full, at work or at home</b>Tap the mic and speak: your sentence writes itself in Luxembourgish.</li>",
+        "pt": "<li><b>Mãos ocupadas, no trabalho ou em casa</b>Toque no microfone e fale: a sua frase escreve-se em luxemburguês.</li>"}),
     ("<li><b>Un doigt qui glisse sur la mauvaise touche</b>Il rattrape la faute&nbsp;: «&nbsp;Kafi&nbsp;» devient «&nbsp;Kaffi&nbsp;».</li>", {
         "lb": "<li><b>De Fanger rutscht op déi falsch Tast</b>En hëlt de Feeler op: „Kafi“ gëtt „Kaffi“.</li>",
         "de": "<li><b>Der Finger rutscht auf die falsche Taste</b>Sie fängt den Fehler auf: „Kafi“ wird „Kaffi“.</li>",
