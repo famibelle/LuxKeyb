@@ -470,7 +470,6 @@ T = [
         "en": '<div class="bloc"><b>📖 An EN ↔ LB dictionary</b> a word escapes you? It translates both ways, offline.</div>',
         "pt": '<div class="bloc"><b>📖 Um dicionário PT ↔ LB</b> falta-lhe uma palavra? Traduz nos dois sentidos, sem rede.</div>'}),
     ("<figcaption>Jeux</figcaption>", {"lb": "<figcaption>Spiller</figcaption>", "de": "<figcaption>Spiele</figcaption>", "en": "<figcaption>Games</figcaption>", "pt": "<figcaption>Jogos</figcaption>"}),
-    ("<figcaption>Carnet</figcaption>", {"lb": "<figcaption>Carnet</figcaption>", "de": "<figcaption>Kartenheft</figcaption>", "en": "<figcaption>Card deck</figcaption>", "pt": "<figcaption>Caderno</figcaption>"}),
     ("<figcaption>Dictionnaire</figcaption>", {"lb": "<figcaption>Dictionnaire</figcaption>", "de": "<figcaption>Wörterbuch</figcaption>", "en": "<figcaption>Dictionary</figcaption>", "pt": "<figcaption>Dicionário</figcaption>"}),
     ('<div class="txt"><b>Installez maintenant</b>Cherchez «&nbsp;Lëtzebuergesch Clavier&nbsp;»', {
         "lb": '<div class="txt"><b>Elo installéieren</b>Sicht „Lëtzebuergesch Clavier“',
@@ -544,6 +543,16 @@ T = [
         "de": '<p class="demo-legende">Tippen Sie auf das Mikro und sprechen Sie Ihren Satz: Er schreibt sich auf Luxemburgisch.</p>',
         "en": '<p class="demo-legende">Tap the mic and say your sentence: it writes itself in Luxembourgish.</p>',
         "pt": '<p class="demo-legende">Toque no microfone e diga a sua frase: ela escreve-se em luxemburguês.</p>'}),
+    ('alt="Carte très rare « Kran » (grue), cadre d\'or, nuit d\'hiver étoilée"', {
+        "lb": 'alt="Ganz rar Kaart „Kran“, Goldrumm, Wantersnuecht mat Stären"',
+        "de": 'alt="Sehr seltene Karte „Kran“, Goldrahmen, sternklare Winternacht"',
+        "en": 'alt="Very rare card “Kran” (crane), gold frame, starry winter night"',
+        "pt": 'alt="Cartão muito raro «Kran» (grua), moldura de ouro, noite de inverno estrelada"'}),
+    ('alt="Quatre cartes en éventail : Bam (arbre) en étain, Sonn (soleil) en bronze, Brëll (lunettes) en argent, Kran (grue) en or"', {
+        "lb": 'alt="Véier Kaarten an engem Fächer: Bam aus Zënn, Sonn aus Bronze, Brëll aus Sëlwer, Kran aus Gold"',
+        "de": 'alt="Vier Karten als Fächer: Bam (Baum) in Zinn, Sonn (Sonne) in Bronze, Brëll (Brille) in Silber, Kran (Kran) in Gold"',
+        "en": 'alt="Four cards in a fan: Bam (tree) in pewter, Sonn (sun) in bronze, Brëll (glasses) in silver, Kran (crane) in gold"',
+        "pt": 'alt="Quatro cartões em leque: Bam (árvore) em estanho, Sonn (sol) em bronze, Brëll (óculos) em prata, Kran (grua) em ouro"'}),
 ]
 
 # Textes visibles qui restent identiques dans toutes les langues : nom de

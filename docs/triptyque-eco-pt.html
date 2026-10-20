@@ -408,6 +408,13 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
 .demo-legende{font-size:11.5px !important;line-height:1.4 !important;margin:2mm 0 0 !important;text-align:center;}
 .demo-dictee{flex:none;width:72mm;height:52mm;box-sizing:border-box;border:4px solid #fff;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:9px;outline:1px solid rgba(28,38,36,.13);box-shadow:0 4px 16px rgba(0,0,0,.12);}
 .demo-dictee .dictee{position:relative;--dw:62mm;--dp:2.6mm;--dg:3.4mm;--dm:14mm;--df:3.8mm;box-shadow:none;transform:rotate(-2deg);}
+/* 2026-10-20 : les cartes actuelles, reprises de la newsletter d'octobre.
+   L'éventail montre les quatre métaux (étain, bronze, argent, or) ; il
+   remplace la vignette « Stad », une capture d'avant les paysages qui
+   affichait encore la date. */
+.eventail{display:block;width:100%;height:auto;margin:0 0 2mm;}
+.trio figure{width:36mm;}
+.trio img{width:36mm;height:40mm;}
 
 /* Bandeau « À faire valider » : ajouté par docs/scripts/traduire_supports.py
    tant que la traduction n'a pas été relue par un locuteur natif. Il est
@@ -524,7 +531,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
         </div>
       </div>
       <div class="hero-card">
-        <img class="hero-carte" src="Screenshots/lux_carte_stad_pt.png" alt="Um cartão do caderno: a palavra Stad, o seu significado e uma frase do dicionário oficial">
+        <img class="hero-carte" src="newsletter/2026-10/v_kran.webp" alt="Cartão muito raro «Kran» (grua), moldura de ouro, noite de inverno estrelada">
         <img class="hero-clavier" src="Screenshots/lux_supports_clavier.png" alt="O teclado durante a escrita: depois de «Ech hunn op der Schueb», a barra sugere «Schueberfouer»">
         <div class="dictee" aria-hidden="true"><span class="micro"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2Z"/></svg></span><p class="bulle">«&nbsp;Op der Kiermes iessen ech ëmmer Gromperekichelcher&nbsp;»</p></div>
       </div>
@@ -582,23 +589,12 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <h2>Aprender a escrever</h2>
       <div class="bloc"><b>🎮 Sete jogos</b> sopa de letras, anagramas, palavra em seis tentativas, frases com lacunas, números, palavras cruzadas, palavras encaixadas.</div>
       <div class="bloc"><b>🃏 Um caderno de cartões</b> cada palavra ganha torna-se um cartão, e as palavras que escreve fazem-no avançar.</div>
+      <img class="eventail" src="assets/cartes-eventail.png" alt="Quatro cartões em leque: Bam (árvore) em estanho, Sonn (sol) em bronze, Brëll (óculos) em prata, Kran (grua) em ouro">
       <div class="bloc"><b>📖 Um dicionário PT ↔ LB</b> falta-lhe uma palavra? Traduz nos dois sentidos, sem rede.</div>
       <div class="trio">
         <figure><img src="Screenshots/lux_wuertsich_trouves_pt.png" alt="O jogo Wuertsich: três palavras encontradas na grelha, cada uma com a sua tradução"><figcaption>Jogos</figcaption></figure>
-        <figure><img src="Screenshots/lux_carte_stad_pt.png" alt="Um cartão do caderno: a palavra Stad, o seu significado e uma frase do dicionário oficial"><figcaption>Caderno</figcaption></figure>
         <figure><img src="Screenshots/lux_wierderbuch_gromperekichelchen_pt.png" alt="A entrada Gromperekichelchen do dicionário: panqueca de batata ralada, uma frase de exemplo e as outras formas"><figcaption>Dicionário</figcaption></figure>
       </div>
-      <div class="levels">
-        <div class="level-step h1"><span>🌍</span></div>
-        <div class="level-step h2"><span>🌱</span></div>
-        <div class="level-step h3"><span>🔥</span></div>
-        <div class="level-step h4"><span>💎</span></div>
-        <div class="level-step h5"><span>🦊</span></div>
-        <div class="level-step h6"><span>🦁</span></div>
-        <div class="level-step h7"><span>👑</span></div>
-        <div class="level-step h8"><span>🧙</span></div>
-      </div>
-      <div class="levels-caption"><span>Ufänker</span><span>Sproochenmeeschter</span></div>
       <div class="panel-cta">
         <img class="gp-badge" src="assets/google-play-badge-pt.svg" alt="Disponível no Google Play">
         <div class="txt"><b>Instale já</b>Procure «Lëtzebuergesch Clavier»<span class="free">100&nbsp;% grátis</span></div>
