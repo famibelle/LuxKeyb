@@ -250,7 +250,7 @@ T = [
         "en": "<li><span>Does your phone “correct” your Luxembourgish into German or French?</span></li>",
         "pt": "<li><span>O seu telemóvel «corrige» o seu luxemburguês para alemão ou francês?</span></li>"}),
     ("<li><span>Vous cherchez le ë et le ä dans un menu, à chaque mot&nbsp;?</span></li>", {
-        "lb": "<li><span>Sicht Dir den ë an den ä an engem Menü, bei all Wuert?</span></li>",
+        "lb": "<li><span>Sicht Dir den ë an den ä an engem separate Menü?</span></li>",
         "de": "<li><span>Sie suchen ë und ä bei jedem Wort in einem Menü?</span></li>",
         "en": "<li><span>Hunting for ë and ä in a menu, word after word?</span></li>",
         "pt": "<li><span>Procura o ë e o ä num menu, palavra a palavra?</span></li>"}),
@@ -265,12 +265,12 @@ T = [
         "en": '<p class="answer">You speak it. Now you can write it.</p>',
         "pt": '<p class="answer">Já o fala. Agora também o escreve.</p>'}),
     ('<div class="fact"><span class="num">Tapez «&nbsp;Schueb&nbsp;»</span><span class="txt">il propose «&nbsp;Schueberfouer&nbsp;»</span></div>', {
-        "lb": '<div class="fact"><span class="num">Tippt „Schueb“</span><span class="txt">en proposéiert „Schueberfouer“</span></div>',
+        "lb": '<div class="fact"><span class="num">Tippt „Schueb“</span><span class="txt">se proposéiert „Schueberfouer“</span></div>',
         "de": '<div class="fact"><span class="num">Tippen Sie „Schueb“</span><span class="txt">die Tastatur schlägt „Schueberfouer“ vor</span></div>',
         "en": '<div class="fact"><span class="num">Type “Schueb”</span><span class="txt">it suggests “Schueberfouer”</span></div>',
         "pt": '<div class="fact"><span class="num">Escreva «Schueb»</span><span class="txt">o teclado sugere «Schueberfouer»</span></div>'}),
     ('<span class="txt">chacun sa touche, plus besoin de les chercher</span>', {
-        "lb": '<span class="txt">all Buschtaf huet seng Tast, Dir musst se net méi sichen</span>',
+        "lb": '<span class="txt">all Buschtaf huet seng eegen Tast, Dir musst se net méi sichen</span>',
         "de": '<span class="txt">jeder Buchstabe hat seine Taste, kein Suchen mehr</span>',
         "en": '<span class="txt">each has its own key, no more hunting</span>',
         "pt": '<span class="txt">cada um tem a sua tecla, sem procurar</span>'}),
@@ -295,7 +295,7 @@ T = [
         "en": '<p class="subtitle">You speak it.<br>Now you can write it.</p>',
         "pt": '<p class="subtitle">Já o fala.<br>Agora também o escreve.</p>'}),
     ("<li><b>Il vous souffle le mot.</b> Tapez «&nbsp;Schueb&nbsp;», il propose «&nbsp;Schueberfouer&nbsp;».</li>", {
-        "lb": "<li><b>En hëlleft Iech mam Wuert.</b> Tippt „Schueb“, en proposéiert „Schueberfouer“.</li>",
+        "lb": "<li><b>Se hëlleft Iech mam Wuert.</b> Tippt „Schueb“, se proposéiert „Schueberfouer“.</li>",
         "de": "<li><b>Sie sagt Ihnen das Wort vor.</b> Tippen Sie „Schueb“, sie schlägt „Schueberfouer“ vor.</li>",
         "en": "<li><b>It whispers the word.</b> Type “Schueb”, it suggests “Schueberfouer”.</li>",
         "pt": "<li><b>Ele sopra-lhe a palavra.</b> Escreva «Schueb», ele sugere «Schueberfouer».</li>"}),
@@ -334,12 +334,12 @@ T = [
         "en": "<li><span>Your phone “corrects” your Luxembourgish into German or French.</span></li>",
         "pt": "<li><span>O seu telemóvel «corrige» o seu luxemburguês para alemão ou francês.</span></li>"}),
     ("<li><span>Le ë et le ä se cachent dans un menu d'accents, à chaque mot.</span></li>", {
-        "lb": "<li><span>Den ë an den ä verstoppe sech an engem Menü, bei all Wuert.</span></li>",
+        "lb": "<li><span>Den ë an den ä verstoppe sech an engem separate Menü.</span></li>",
         "de": "<li><span>ë und ä verstecken sich bei jedem Wort in einem Akzentmenü.</span></li>",
         "en": "<li><span>ë and ä hide in an accent menu, word after word.</span></li>",
         "pt": "<li><span>O ë e o ä escondem-se num menu de acentos, a cada palavra.</span></li>"}),
     ("<li><span>Vous hésitez sur l'orthographe à chaque message.</span></li>", {
-        "lb": "<li><span>Dir sidd Iech bei all Message net sécher mat der Schreifweis.</span></li>",
+        "lb": "<li><span>Dir sidd Iech bei kengem Message sécher mat der Schreifweis.</span></li>",
         "de": "<li><span>Sie zögern bei jeder Nachricht bei der Rechtschreibung.</span></li>",
         "en": "<li><span>You doubt your spelling in every message.</span></li>",
         "pt": "<li><span>Hesita na ortografia a cada mensagem.</span></li>"}),
@@ -361,7 +361,7 @@ T = [
         "en": '<h1 class="h">You speak it.<br>Now you can write it.</h1>',
         "pt": '<h1 class="h">Já o fala.<br>Agora também o escreve.</h1>'}),
     ('<div class="press-card"><span class="src">Tapez «&nbsp;Schueb&nbsp;»</span><span class="txt">il propose «&nbsp;Schueberfouer&nbsp;»</span></div>', {
-        "lb": '<div class="press-card"><span class="src">Tippt „Schueb“</span><span class="txt">en proposéiert „Schueberfouer“</span></div>',
+        "lb": '<div class="press-card"><span class="src">Tippt „Schueb“</span><span class="txt">se proposéiert „Schueberfouer“</span></div>',
         "de": '<div class="press-card"><span class="src">Tippen Sie „Schueb“</span><span class="txt">die Tastatur schlägt „Schueberfouer“ vor</span></div>',
         "en": '<div class="press-card"><span class="src">Type “Schueb”</span><span class="txt">it suggests “Schueberfouer”</span></div>',
         "pt": '<div class="press-card"><span class="src">Escreva «Schueb»</span><span class="txt">o teclado sugere «Schueberfouer»</span></div>'}),
@@ -382,10 +382,10 @@ T = [
         "lb": "<h2>Installatioun a 4 Schrëtt</h2>", "de": "<h2>Installation in 4 Schritten</h2>",
         "en": "<h2>Setup in 4 steps</h2>", "pt": "<h2>Instalação em 4 passos</h2>"}),
     ("<b>Ouvrez la fiche Google Play, c'est gratuit</b>", {
-        "lb": "<b>Maacht d'Säit am Google Play op, et ass gratis</b>", "de": "<b>Öffnen Sie die Google-Play-Seite, es ist kostenlos</b>",
+        "lb": "<b>Maacht d'Säit am Google Play op, et ass gratis.</b>", "de": "<b>Öffnen Sie die Google-Play-Seite, es ist kostenlos</b>",
         "en": "<b>Open the Google Play page, it's free</b>", "pt": "<b>Abra a página do Google Play, é grátis</b>"}),
     ("<span class=\"dl-txt\"><b>Flashez ce code</b>Visez-le avec l'appareil photo : la fiche Google Play s'ouvre, il ne reste qu'à toucher Installer</span>", {
-        "lb": "<span class=\"dl-txt\"><b>Scannt dëse Code</b>Mat der Kamera drop zillen: d'Säit am Google Play geet op, Dir musst nëmmen nach op Installéieren drécken</span>",
+        "lb": "<span class=\"dl-txt\"><b>Scannt dëse Code</b>Haalt Är Kamera op de QR-Code: D'Säit am Google Play geet op, Dir musst nëmmen nach op Installéieren drécken.</span>",
         "de": "<span class=\"dl-txt\"><b>Scannen Sie diesen Code</b>Mit der Kamera darauf zielen: Die Google-Play-Seite öffnet sich, Sie müssen nur noch auf Installieren tippen</span>",
         "en": "<span class=\"dl-txt\"><b>Scan this code</b>Point your camera at it: the Google Play page opens, all that's left is to tap Install</span>",
         "pt": "<span class=\"dl-txt\"><b>Leia este código</b>Aponte a câmara: a página do Google Play abre-se, só falta tocar em Instalar</span>"}),
@@ -395,12 +395,12 @@ T = [
         "en": "<li><b>Install the app</b>From Google Play, like any other app: installation and updates are automatic.</li>",
         "pt": "<li><b>Instale a aplicação</b>Pelo Google Play, como qualquer outra aplicação: instalação e atualizações automáticas.</li>"}),
     ("<li><b>Activez le clavier dans les réglages</b>Un bouton de l'application mène droit au bon écran Android. Le système affiche alors un avertissement sur la saisie : il est générique, Android le montre pour <i>tout</i> clavier tiers, et celui-ci n'envoie rien de ce que vous tapez.</li>", {
-        "lb": "<li><b>Aktivéiert d'Tastatur an den Astellungen</b>E Knäppchen an der App féiert direkt op de richtegen Android-Écran. De System weist dann eng Warnung iwwer d'Agab: déi ass allgemeng, Android weist se fir <i>all</i> Tastatur vun aneren Hiersteller, an dës hei schéckt näischt vun deem, wat Dir tippt.</li>",
+        "lb": "<li><b>Aktivéiert d'Tastatur an den Astellungen</b>E Knäppchen an der App féiert direkt op de richtegen Android-Écran. De System weist dann eng Warnung iwwer d'Agab: déi ass allgemeng, Android weist se fir <i>all</i> Tastatur vun aneren Hiersteller. D'Tastatur schéckt net weider, wat Dir tippt.</li>",
         "de": "<li><b>Aktivieren Sie die Tastatur in den Einstellungen</b>Ein Knopf in der App führt direkt zum richtigen Android-Bildschirm. Das System zeigt dann eine Warnung zur Eingabe: Sie ist allgemein, Android zeigt sie bei <i>jeder</i> Drittanbieter-Tastatur, und diese hier sendet nichts von dem, was Sie tippen.</li>",
         "en": "<li><b>Turn the keyboard on in settings</b>A button in the app goes straight to the right Android screen. The system then shows a warning about typing: it is generic, Android shows it for <i>every</i> third-party keyboard, and this one sends nothing you type.</li>",
         "pt": "<li><b>Ative o teclado nas definições</b>Um botão da aplicação leva diretamente ao ecrã certo do Android. O sistema mostra então um aviso sobre a escrita: é genérico, o Android mostra-o para <i>qualquer</i> teclado de terceiros, e este não envia nada do que escreve.</li>"}),
     ("<li><b>Choisissez-le et écrivez</b>Le sélecteur de clavier s'ouvre : choisissez Lëtzebuergesch Clavier et tapez votre premier mot.</li>", {
-        "lb": "<li><b>Wielt se a schreift</b>D'Auswiel vun den Tastaturen geet op: wielt Lëtzebuergesch Clavier a tippt Äert éischt Wuert.</li>",
+        "lb": "<li><b>Wielt se a schreift</b>D'Auswiel vun den Tastaturen geet op: Wielt Lëtzebuergesch Clavier a tippt Äert éischt Wuert.</li>",
         "de": "<li><b>Auswählen und schreiben</b>Die Tastaturauswahl öffnet sich: Wählen Sie Lëtzebuergesch Clavier und tippen Sie Ihr erstes Wort.</li>",
         "en": "<li><b>Pick it and write</b>The keyboard picker opens: choose Lëtzebuergesch Clavier and type your first word.</li>",
         "pt": "<li><b>Escolha-o e escreva</b>O seletor de teclado abre-se: escolha Lëtzebuergesch Clavier e escreva a sua primeira palavra.</li>"}),
@@ -418,20 +418,20 @@ T = [
         "lb": '<div class="kicker">A fir ze léieren</div>', "de": '<div class="kicker">Und zum Lernen</div>',
         "en": '<div class="kicker">And for learning</div>', "pt": '<div class="kicker">E para aprender</div>'}),
     ("<h2>Apprendre en tapant</h2>", {
-        "lb": "<h2>Léieren, während Dir tippt</h2>", "de": "<h2>Lernen beim Tippen</h2>",
+        "lb": "<h2>Léieren, wärend Dir tippt</h2>", "de": "<h2>Lernen beim Tippen</h2>",
         "en": "<h2>Learn as you type</h2>", "pt": "<h2>Aprender a escrever</h2>"}),
     ('<div class="bloc"><b>🎮 Sept jeux</b> mots mêlés, anagrammes, mot en six essais, phrase à trous, nombres, mots croisés, mots casés.</div>', {
-        "lb": '<div class="bloc"><b>🎮 Siwe Spiller</b> Wierder sichen, Anagrammen, e Wuert a sechs Versich, Lückesätz, Zuelen, Kräizwuerträtselen, Wierder placéieren.</div>',
+        "lb": '<div class="bloc"><b>🎮 Siwe Spiller</b> Wierder sichen, Anagrammen, e Wuert a sechs Versich, Lückesätz, Zuelen, Kräizwuerträtsel, Wierder placéieren.</div>',
         "de": '<div class="bloc"><b>🎮 Sieben Spiele</b> Wortsuche, Anagramme, ein Wort in sechs Versuchen, Lückensätze, Zahlen, Kreuzworträtsel, Wörter einsetzen.</div>',
         "en": '<div class="bloc"><b>🎮 Seven games</b> word search, anagrams, a word in six tries, fill-in-the-blanks, numbers, crosswords, word fill-ins.</div>',
         "pt": '<div class="bloc"><b>🎮 Sete jogos</b> sopa de letras, anagramas, palavra em seis tentativas, frases com lacunas, números, palavras cruzadas, palavras encaixadas.</div>'}),
     ('<div class="bloc"><b>🃏 Un carnet de cartes</b> chaque mot gagné devient une carte, et les mots que vous tapez la font avancer.</div>', {
-        "lb": '<div class="bloc"><b>🃏 E Kaartecarnet</b> all gewonnent Wuert gëtt eng Kaart, an d\'Wierder, déi Dir tippt, bréngen se weider.</div>',
+        "lb": '<div class="bloc"><b>🃏 E Kaartecarnet</b> All gewonnent Wuert gëtt eng Kaart, an d\'Wierder, déi Dir tippt, brénge se weider.</div>',
         "de": '<div class="bloc"><b>🃏 Ein Kartenheft</b> jedes gewonnene Wort wird eine Karte, und die Wörter, die Sie tippen, bringen sie voran.</div>',
         "en": '<div class="bloc"><b>🃏 A card deck</b> every word you win becomes a card, and the words you type move it forward.</div>',
         "pt": '<div class="bloc"><b>🃏 Um caderno de cartões</b> cada palavra ganha torna-se um cartão, e as palavras que escreve fazem-no avançar.</div>'}),
     ('<div class="bloc"><b>📖 Un dictionnaire FR ↔ LB</b> un mot vous échappe&nbsp;? Il le traduit dans les deux sens, sans réseau.</div>', {
-        "lb": '<div class="bloc"><b>📖 En Dictionnaire FR ↔ LB</b> e Wuert fält Iech net an? En iwwersetzt et an déi zwou Richtungen, ouni Netz.</div>',
+        "lb": '<div class="bloc"><b>📖 En Dictionnaire FR ↔ LB</b> E Wuert fält Iech net an? Se iwwersetzt et an déi zwou Richtungen, ouni Internet.</div>',
         "de": '<div class="bloc"><b>📖 Ein Wörterbuch DE ↔ LB</b> ein Wort fällt Ihnen nicht ein? Es übersetzt in beide Richtungen, ohne Netz.</div>',
         "en": '<div class="bloc"><b>📖 An EN ↔ LB dictionary</b> a word escapes you? It translates both ways, offline.</div>',
         "pt": '<div class="bloc"><b>📖 Um dicionário PT ↔ LB</b> falta-lhe uma palavra? Traduz nos dois sentidos, sem rede.</div>'}),
@@ -455,7 +455,7 @@ T = [
         "en": '<h2 class="journee">Luxembourgish, at every moment of your day</h2>',
         "pt": '<h2 class="journee">O luxemburguês, em cada momento do seu dia</h2>'}),
     ("<li><b>Le matin, un message à la famille</b>Le mot arrive avant que vous ayez fini de le taper. Tapez «&nbsp;Schueb&nbsp;», il propose «&nbsp;Schueberfouer&nbsp;».</li>", {
-        "lb": "<li><b>Moies, e Message un d'Famill</b>D'Wuert kënnt, ier Dir et fäerdeg getippt hutt. Tippt „Schueb“, en proposéiert „Schueberfouer“.</li>",
+        "lb": "<li><b>Moies, e Message un d'Famill</b>D'Wuert kënnt, ier Dir et fäerdeg getippt hutt. Tippt „Schueb“, se proposéiert „Schueberfouer“.</li>",
         "de": "<li><b>Morgens, eine Nachricht an die Familie</b>Das Wort erscheint, bevor Sie es zu Ende getippt haben. Tippen Sie „Schueb“, sie schlägt „Schueberfouer“ vor.</li>",
         "en": "<li><b>In the morning, a message to the family</b>The word appears before you finish typing it. Type “Schueb”, it suggests “Schueberfouer”.</li>",
         "pt": "<li><b>De manhã, uma mensagem à família</b>A palavra aparece antes de acabar de a escrever. Escreva «Schueb», o teclado sugere «Schueberfouer».</li>"}),
@@ -465,12 +465,12 @@ T = [
         "en": "<li><b>Hands full, at work or at home</b>Tap the mic and speak: your sentence writes itself in Luxembourgish.</li>",
         "pt": "<li><b>Mãos ocupadas, no trabalho ou em casa</b>Toque no microfone e fale: a sua frase escreve-se em luxemburguês.</li>"}),
     ("<li><b>Un doigt qui glisse sur la mauvaise touche</b>Il rattrape la faute&nbsp;: «&nbsp;Kafi&nbsp;» devient «&nbsp;Kaffi&nbsp;».</li>", {
-        "lb": "<li><b>De Fanger rutscht op déi falsch Tast</b>En hëlt de Feeler op: „Kafi“ gëtt „Kaffi“.</li>",
+        "lb": "<li><b>De Fanger rutscht op déi falsch Tast</b>Se hëlt de Feeler op: „Kafi“ gëtt „Kaffi“.</li>",
         "de": "<li><b>Der Finger rutscht auf die falsche Taste</b>Sie fängt den Fehler auf: „Kafi“ wird „Kaffi“.</li>",
         "en": "<li><b>A finger slips onto the wrong key</b>It catches the mistake: “Kafi” becomes “Kaffi”.</li>",
         "pt": "<li><b>Um dedo escorrega para a tecla errada</b>O teclado apanha o erro: «Kafi» passa a «Kaffi».</li>"}),
     ("<li><b>Un mot qui vous échappe</b>Le dictionnaire vous le donne, en français ou en luxembourgeois, même sans réseau.</li>", {
-        "lb": "<li><b>E Wuert, dat Iech net afält</b>Den Dictionnaire gëtt et Iech, op Franséisch oder op Lëtzebuergesch, och ouni Netz.</li>",
+        "lb": "<li><b>E Wuert, dat Iech net afält</b>Den Dictionnaire gëtt et Iech, op Franséisch oder op Lëtzebuergesch, och ouni Internet.</li>",
         "de": "<li><b>Ein Wort fällt Ihnen nicht ein</b>Das Wörterbuch gibt es Ihnen, auf Deutsch oder auf Luxemburgisch, auch ohne Netz.</li>",
         "en": "<li><b>A word that escapes you</b>The dictionary gives it to you, in English or in Luxembourgish, even offline.</li>",
         "pt": "<li><b>Uma palavra que lhe foge</b>O dicionário dá-lha, em português ou em luxemburguês, mesmo sem rede.</li>"}),
@@ -485,27 +485,27 @@ T = [
         "en": '<div class="legal">Free · What you type stays on your phone · famibelle.github.io/LuxKeyb</div>',
         "pt": '<div class="legal">Gratuito · O que escreve fica no seu telemóvel · famibelle.github.io/LuxKeyb</div>'}),
     ("À l'intérieur : l'installation pas à pas, ce qu'il fait pour vous, et comment il vous fait apprendre en jouant. Ouvrez le dépliant.", {
-        "lb": "Bannen: d'Installatioun Schrëtt fir Schrëtt, wat en fir Iech mécht, a wéi Dir beim Spillen domat léiert. Maacht d'Faltblat op.",
+        "lb": "Enthalen: d'Installatioun Schrëtt fir Schrëtt, wat se fir Iech mécht, a wéi Dir beim Spillen domat léiert. Maacht d'Faltblat op.",
         "de": "Innen: die Installation Schritt für Schritt, was sie für Sie tut, und wie Sie spielend damit lernen. Klappen Sie das Faltblatt auf.",
         "en": "Inside: installation step by step, what it does for you, and how it helps you learn through play. Open the leaflet.",
         "pt": "No interior: a instalação passo a passo, o que faz por si e como o ajuda a aprender a jogar. Abra o desdobrável."}),
     ('<p class="demo-titre"><span class="num">1</span>Tapez, il propose</p>', {
-        "lb": '<p class="demo-titre"><span class="num">1</span>Tippt, en proposéiert</p>',
+        "lb": '<p class="demo-titre"><span class="num">1</span>Tippt, se proposéiert</p>',
         "de": '<p class="demo-titre"><span class="num">1</span>Tippen, sie schlägt vor</p>',
         "en": '<p class="demo-titre"><span class="num">1</span>Type, it suggests</p>',
         "pt": '<p class="demo-titre"><span class="num">1</span>Escreva, ele sugere</p>'}),
     ('<p class="demo-legende">Tapez «&nbsp;Schueb&nbsp;», il propose «&nbsp;Schueberfouer&nbsp;». Un toucher, et le mot est écrit.</p>', {
-        "lb": '<p class="demo-legende">Tippt „Schueb“, en proposéiert „Schueberfouer“. Een Drock, an d\'Wuert ass geschriwwen.</p>',
+        "lb": '<p class="demo-legende">Tippt „Schueb“, se proposéiert „Schueberfouer“. Een Drock, an d\'Wuert ass geschriwwen.</p>',
         "de": '<p class="demo-legende">Tippen Sie „Schueb“, sie schlägt „Schueberfouer“ vor. Ein Antippen, und das Wort steht da.</p>',
         "en": '<p class="demo-legende">Type “Schueb”, it suggests “Schueberfouer”. One tap, and the word is written.</p>',
         "pt": '<p class="demo-legende">Escreva «Schueb», ele sugere «Schueberfouer». Um toque, e a palavra está escrita.</p>'}),
     ('<p class="demo-titre"><span class="num">2</span>Parlez, il écrit</p>', {
-        "lb": '<p class="demo-titre"><span class="num">2</span>Schwätzt, en schreift</p>',
+        "lb": '<p class="demo-titre"><span class="num">2</span>Schwätzt, se schreift</p>',
         "de": '<p class="demo-titre"><span class="num">2</span>Sprechen, sie schreibt</p>',
         "en": '<p class="demo-titre"><span class="num">2</span>Speak, it writes</p>',
         "pt": '<p class="demo-titre"><span class="num">2</span>Fale, ele escreve</p>'}),
     ("<p class=\"demo-legende\">Touchez le micro et dites votre phrase&nbsp;: elle s'écrit en luxembourgeois.</p>", {
-        "lb": '<p class="demo-legende">Dréckt op de Mikro a sot Äre Saz: e schreift sech op Lëtzebuergesch.</p>',
+        "lb": '<p class="demo-legende">Dréckt op de Mikro a sot Äre Saz: E schreift sech op Lëtzebuergesch.</p>',
         "de": '<p class="demo-legende">Tippen Sie auf das Mikro und sprechen Sie Ihren Satz: Er schreibt sich auf Luxemburgisch.</p>',
         "en": '<p class="demo-legende">Tap the mic and say your sentence: it writes itself in Luxembourgish.</p>',
         "pt": '<p class="demo-legende">Toque no microfone e diga a sua frase: ela escreve-se em luxemburguês.</p>'}),
@@ -529,7 +529,7 @@ T = [
         "en": '<p class="promises">What you type stays on your phone</p>',
         "pt": '<p class="promises">O que escreve fica no seu telemóvel</p>'}),
     ('<li><b>Il écrit ce que vous dites.</b> Touchez le micro et parlez.</li>', {
-        "lb": '<li><b>En schreift, wat Dir sot.</b> Dréckt op de Mikro a schwätzt.</li>',
+        "lb": '<li><b>Se schreift, wat Dir sot.</b> Dréckt op de Mikro a schwätzt.</li>',
         "de": '<li><b>Sie schreibt, was Sie sagen.</b> Tippen Sie auf das Mikro und sprechen Sie.</li>',
         "en": '<li><b>It writes what you say.</b> Tap the mic and speak.</li>',
         "pt": '<li><b>Ele escreve o que diz.</b> Toque no microfone e fale.</li>'}),
