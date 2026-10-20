@@ -437,11 +437,11 @@ T = [
         "pt": '<div class="bloc"><b>📖 Um dicionário PT ↔ LB</b> falta-lhe uma palavra? Traduz nos dois sentidos, sem rede.</div>'}),
     ("<figcaption>Jeux</figcaption>", {"lb": "<figcaption>Spiller</figcaption>", "de": "<figcaption>Spiele</figcaption>", "en": "<figcaption>Games</figcaption>", "pt": "<figcaption>Jogos</figcaption>"}),
     ("<figcaption>Dictionnaire</figcaption>", {"lb": "<figcaption>Dictionnaire</figcaption>", "de": "<figcaption>Wörterbuch</figcaption>", "en": "<figcaption>Dictionary</figcaption>", "pt": "<figcaption>Dicionário</figcaption>"}),
-    ('<div class="txt"><b>Installez maintenant</b>Cherchez «&nbsp;Lëtzebuergesch Clavier&nbsp;»', {
-        "lb": '<div class="txt"><b>Elo installéieren</b>Sicht „Lëtzebuergesch Clavier“',
-        "de": '<div class="txt"><b>Jetzt installieren</b>Suchen Sie „Lëtzebuergesch Clavier“',
-        "en": '<div class="txt"><b>Install now</b>Search for “Lëtzebuergesch Clavier”',
-        "pt": '<div class="txt"><b>Instale já</b>Procure «Lëtzebuergesch Clavier»'}),
+    ('<div class="txt"><b>Installez maintenant</b><span class="recherche"><span class="recherche-label">Cherchez&nbsp;:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">Lëtzebuergesch Clavier</span></span></span>', {
+        "lb": '<div class="txt"><b>Elo installéieren</b><span class="recherche"><span class="recherche-label">Sicht:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">Lëtzebuergesch Clavier</span></span></span>',
+        "de": '<div class="txt"><b>Jetzt installieren</b><span class="recherche"><span class="recherche-label">Suchen Sie:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">Lëtzebuergesch Clavier</span></span></span>',
+        "en": '<div class="txt"><b>Install now</b><span class="recherche"><span class="recherche-label">Search for:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">Lëtzebuergesch Clavier</span></span></span>',
+        "pt": '<div class="txt"><b>Instale já</b><span class="recherche"><span class="recherche-label">Procure:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">Lëtzebuergesch Clavier</span></span></span>'}),
 
     # ---- Triptyque, refonte 2026-10-20 : dos en moments de la journée, volet 5 en démonstration ----
     ("A4 paysage recto-verso, plié en trois. À poser sur un stand, un comptoir d'association ou une table de cours du soir : le premier volet donne envie, le dos montre ce que le clavier change au quotidien, l'intérieur explique l'installation, les fonctions et l'apprentissage.", {
