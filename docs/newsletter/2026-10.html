@@ -87,6 +87,12 @@ hr{border:0; border-top:1px solid var(--filet); margin:0}
 .motif-dictee .micro-grand{flex:none; width:clamp(64px,16vw,88px); height:clamp(64px,16vw,88px); border-radius:50%; background:#ed2939; display:grid; place-items:center; box-shadow:0 0 0 10px rgba(237,41,57,.15), 0 0 0 20px rgba(237,41,57,.07)}
 .motif-dictee .micro-grand svg{width:46%; height:46%; fill:#fff}
 .motif-dictee .phrase{min-width:0; background:var(--puce); border-radius:16px 16px 16px 5px; padding:14px 18px; font:italic 600 clamp(17px,4.4vw,22px)/1.3 var(--display); color:var(--encre)}
+.motif-dictee .micro-grand{animation:pulsation 2.4s ease-in-out infinite}
+@keyframes pulsation{
+  0%,100%{transform:scale(1); box-shadow:0 0 0 10px rgba(237,41,57,.15), 0 0 0 20px rgba(237,41,57,.07)}
+  50%{transform:scale(1.05); box-shadow:0 0 0 14px rgba(237,41,57,.18), 0 0 0 28px rgba(237,41,57,.06)}
+}
+@media (prefers-reduced-motion: reduce){.motif-dictee .micro-grand{animation:none}}
 
 /* Images */
 .eventail{display:flex; justify-content:center; align-items:flex-end; padding:14px 0 6px}
