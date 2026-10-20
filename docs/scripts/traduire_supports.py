@@ -287,11 +287,6 @@ T = [
     ("<span>Flashez, installez, écrivez</span>", {
         "lb": "<span>Scannen, installéieren, schreiwen</span>", "de": "<span>Scannen, installieren, schreiben</span>",
         "en": "<span>Scan, install, write</span>", "pt": "<span>Aponte, instale, escreva</span>"}),
-    ('<p class="promises">Sans publicité · Sans compte<br>Ce que vous tapez reste chez vous</p>', {
-        "lb": '<p class="promises">Ouni Reklamm · Ouni Kont<br>Wat Dir tippt, bleift bei Iech</p>',
-        "de": '<p class="promises">Ohne Werbung · Ohne Konto<br>Was Sie tippen, bleibt bei Ihnen</p>',
-        "en": '<p class="promises">No ads · No account<br>What you type stays with you</p>',
-        "pt": '<p class="promises">Sem publicidade · Sem conta<br>O que escreve fica consigo</p>'}),
 
     # ---- Affiche ----
     ('<p class="subtitle">Vous le parlez.<br>Maintenant, vous l\'écrivez.</p>', {
@@ -314,16 +309,6 @@ T = [
         "de": "<li><b>Die Wörter, die Sie tippen, füllen Ihr Kartenheft.</b> Sieben Spiele, um weitere zu gewinnen.</li>",
         "en": "<li><b>The words you type grow your card deck.</b> Seven games to win more.</li>",
         "pt": "<li><b>As palavras que escreve fazem avançar o seu caderno.</b> Sete jogos para ganhar outras.</li>"}),
-    ("<li><b>Envie de parler&nbsp;?</b> Touchez le micro&nbsp;: il écrit ce que vous dites.</li>", {
-        "lb": "<li><b>Léiwer schwätzen?</b> Dréckt op de Mikro: en schreift, wat Dir sot.</li>",
-        "de": "<li><b>Lieber sprechen?</b> Tippen Sie aufs Mikro: Sie schreibt, was Sie sagen.</li>",
-        "en": "<li><b>Rather speak?</b> Tap the mic: it writes what you say.</li>",
-        "pt": "<li><b>Prefere falar?</b> Toque no microfone: ele escreve o que diz.</li>"}),
-    ('<p class="promises">Sans publicité<span class="sep">·</span>Sans compte<span class="sep">·</span>Ce que vous tapez reste chez vous</p>', {
-        "lb": '<p class="promises">Ouni Reklamm<span class="sep">·</span>Ouni Kont<span class="sep">·</span>Wat Dir tippt, bleift bei Iech</p>',
-        "de": '<p class="promises">Ohne Werbung<span class="sep">·</span>Ohne Konto<span class="sep">·</span>Was Sie tippen, bleibt bei Ihnen</p>',
-        "en": '<p class="promises">No ads<span class="sep">·</span>No account<span class="sep">·</span>What you type stays with you</p>',
-        "pt": '<p class="promises">Sem publicidade<span class="sep">·</span>Sem conta<span class="sep">·</span>O que escreve fica consigo</p>'}),
     ('<p class="subtitle">📲 Flashez, installez, écrivez</p>', {
         "lb": '<p class="subtitle">📲 Scannen, installéieren, schreiwen</p>', "de": '<p class="subtitle">📲 Scannen, installieren, schreiben</p>',
         "en": '<p class="subtitle">📲 Scan, install, write</p>', "pt": '<p class="subtitle">📲 Aponte, instale, escreva</p>'}),
@@ -537,6 +522,17 @@ T = [
     ('<span class="tampon-mot">gratuit</span>', {
         "lb": '<span class="tampon-mot">gratis</span>', "de": '<span class="tampon-mot">gratis</span>',
         "en": '<span class="tampon-mot">free</span>', "pt": '<span class="tampon-mot">grátis</span>'}),
+    # ---- Tract et affiche, 2026-10-20 : promesses et ordre des bénéfices ----
+    ('<p class="promises">Ce que vous tapez reste sur votre téléphone</p>', {
+        "lb": '<p class="promises">Wat Dir tippt, bleift op Ärem Telefon</p>',
+        "de": '<p class="promises">Was Sie tippen, bleibt auf Ihrem Telefon</p>',
+        "en": '<p class="promises">What you type stays on your phone</p>',
+        "pt": '<p class="promises">O que escreve fica no seu telemóvel</p>'}),
+    ('<li><b>Il écrit ce que vous dites.</b> Touchez le micro et parlez.</li>', {
+        "lb": '<li><b>En schreift, wat Dir sot.</b> Dréckt op de Mikro a schwätzt.</li>',
+        "de": '<li><b>Sie schreibt, was Sie sagen.</b> Tippen Sie auf das Mikro und sprechen Sie.</li>',
+        "en": '<li><b>It writes what you say.</b> Tap the mic and speak.</li>',
+        "pt": '<li><b>Ele escreve o que diz.</b> Toque no microfone e fale.</li>'}),
 ]
 
 # Textes visibles qui restent identiques dans toutes les langues : nom de

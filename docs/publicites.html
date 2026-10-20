@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
 <link rel="stylesheet" href="assets/fredoka-embed.css">
+<link rel="stylesheet" href="assets/tampon-gratuit.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="assets/theme.js"></script>
 <style>
@@ -360,6 +361,22 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .L-logo.bar .mark{width:74cqh;height:74cqh;}
 .L-logo.bar .name{font-size:30cqh;text-align:left;}
 .L-logo.bar .name span{font-size:16cqh;}
+/* 2026-10-20 : badge Google Play et tampon « 100 % gratuit » au pied. */
+.badge-gp{display:block;height:auto;width:30cqw;}
+.L-wide .badge-gp{width:18cqw;}
+.L-block .store-row{flex-direction:row;align-items:center;gap:4cqw;}
+.foot .tampon[class]{font-size:1.9cqw;opacity:1;}
+.L-wide .foot .tampon[class]{font-size:1.3cqw;}
+.L-tall .foot .tampon[class]{font-size:2.2cqw;margin-top:1cqh;}
+.L-sky .foot .tampon[class]{font-size:4cqw;margin-top:2cqh;}
+.L-sky.wide300 .foot .tampon[class]{font-size:2.8cqw;}
+.foot:has(.tampon){opacity:1;}
+/* Titres trop larges relevés le 2026-10-20 : « Lëtzebuergesch, » passait
+   sous la capture en 4:5, et le pied sortait du cadre en paysage et en pavé. */
+.crea-b.L-block:not(.sq) .head{font-size:5.5cqw;}
+.L-wide .head{font-size:5.4cqw;margin-top:1.5cqh !important;}
+.L-wide .sub{font-size:2.2cqw;}
+.L-rect .head{font-size:8.6cqw;}
 </style>
 </head>
 <body>
@@ -393,12 +410,12 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
     pour une publication ordinaire, sans budget : c'est même l'usage prévu aujourd'hui.
   </p>
   <div class="note">
-    <b>Aucun badge « Disponible sur Google Play » sur ces visuels — pas encore
-    remis en place.</b> La fiche est publique depuis le 28 septembre 2026
-    (validée par Google en avance sur un ticket), donc le badge n'est plus
-    faux : il reste à le rajouter et à régénérer les visuels
-    (<code>python3 docs/assets/ads/generate.py</code>). Le lien de destination
-    reste celui du site, qui laisse essayer le clavier avant d'installer.
+    <b>Le badge « Disponible sur Google Play » et le tampon « 100 % gratuit »
+    sont en place depuis le 20 octobre 2026</b> sur les formats qui ont de la
+    place pour eux (fil Meta, Google). Les formats verticaux n'en ont pas :
+    TikTok, Snapchat et les Stories posent leur propre bouton d'installation.
+    Le lien de destination reste celui du site, qui laisse essayer le clavier
+    avant d'installer.
   </div>
   <div class="note">
     Les PNG se régénèrent depuis cette page&nbsp;:
@@ -420,8 +437,8 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
     <tr><td>Titre court (Google, 30&nbsp;max)</td><td>é, ä, ë&nbsp;: chacun sa touche</td><td>26</td></tr>
     <tr><td>Titre long (Google, 90&nbsp;max)</td><td>Mir schwätze Lëtzebuergesch, elo schreiwe mir et och.</td><td>52</td></tr>
     <tr><td>Description (Google, 90&nbsp;max)</td><td>Écrivez en Lëtzebuergesch sans que votre téléphone corrige en allemand.</td><td>69</td></tr>
-    <tr><td>Description (Google, 90&nbsp;max)</td><td>123 297 formes luxembourgeoises, é ä ë en accès direct, dictée vocale.</td><td>70</td></tr>
-    <tr><td>Texte principal (Meta)</td><td>Votre téléphone «&nbsp;corrige&nbsp;» votre Lëtzebuergesch en allemand&nbsp;? Le Lëtzebuergesch Clavier vous propose les mots justes pendant que vous tapez, en luxembourgeois puis en français, dans toutes vos applications. QWERTZ, é ä ë en accès direct, gratuit, sans publicité, et il dicte même en luxembourgeois.</td><td>299</td></tr>
+    <tr><td>Description (Google, 90&nbsp;max)</td><td>Tapez, il propose le mot. Parlez, il écrit en luxembourgeois.</td><td>62</td></tr>
+    <tr><td>Texte principal (Meta)</td><td>Votre téléphone «&nbsp;corrige&nbsp;» votre Lëtzebuergesch en allemand&nbsp;? Tapez&nbsp;: il vous propose le mot luxembourgeois. Parlez&nbsp;: il écrit ce que vous dites. Gratuit sur Google Play.</td><td>157</td></tr>
     <tr><td>Titre (Meta, 40&nbsp;max)</td><td>Schreif Lëtzebuergesch.</td><td>23</td></tr>
     <tr><td>Accroche TikTok / Snapchat</td><td>Mir schwätze Lëtzebuergesch, elo schreiwe mir et och.</td><td>52</td></tr>
     <tr><td>Bouton</td><td>Essayer le clavier</td><td>18</td></tr>
@@ -443,16 +460,18 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 const CREA = {
   a: {
     theme: 't-nuit',
-    kicker: 'Avec Lëtzebuergesch Clavier,',
-    head: 'Schreif<br>Lëtzebuergesch.',
-    headShort: 'Schreif <em>Lëtzebuergesch.</em>',
+    kicker: '',
+    /* Le slogan des supports depuis le 2026-10-04 ; la bannière, trop basse
+       pour deux lignes, garde « Schreif Lëtzebuergesch. ». */
+    head: 'Vous le parlez.<br><em>Maintenant, vous l\'écrivez.</em>',
+    headShort: 'Vous le parlez. <em>Maintenant, vous l\'écrivez.</em>',
     headBar: 'Schreif <em>Lëtzebuergesch.</em>',
-    sub: 'Votre téléphone corrige votre Lëtzebuergesch en allemand ou en français. Celui-ci vous propose les mots justes.',
-    subShort: 'Votre téléphone le corrige en allemand. Pas celui-ci.',
+    sub: 'Tapez, il vous propose le mot. Parlez, il écrit pour vous.',
+    subShort: 'Tapez ou parlez&nbsp;: il écrit en luxembourgeois.',
     cta: 'Essayer le clavier',
     btn: 'Essayer',
-    foot: 'Gratuit · Sans pub<br>Dictée vocale',
-    footLine: 'Gratuit · Sans pub · Dictée vocale'
+    foot: '<span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratuit</span></span>',
+    footLine: '<span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratuit</span></span>'
   },
   b: {
     theme: 't-rouge',
@@ -462,23 +481,23 @@ const CREA = {
     head: 'Mir schwätze<br><em>Lëtzebuergesch,</em><br>elo schreiwe<br>mir et <em>och.</em>',
     headShort: 'Mir schwätze <em>Lëtzebuergesch,</em><br>elo schreiwe mir et <em>och.</em>',
     headBar: 'Mir schwätze <em>Lëtzebuergesch,</em> elo schreiwe mir et <em>och.</em>',
-    sub: 'é, ä et ë ont enfin leur touche, et 123 297 formes luxembourgeoises derrière la barre de suggestions.',
+    sub: 'Tapez «&nbsp;Schueb&nbsp;», il propose «&nbsp;Schueberfouer&nbsp;». Touchez le micro, il écrit ce que vous dites.',
     subShort: 'é, ä et ë ont enfin leur touche.',
     cta: 'Essayer le clavier',
     btn: 'Essayer',
-    foot: 'Gratuit · Sans pub<br>Dictée vocale',
-    footLine: 'Gratuit · Sans pub · Dictée vocale'
+    foot: '<span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratuit</span></span>',
+    footLine: '<span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratuit</span></span>'
   }
 };
 
 const CARTE = 'assets/drapeau-luxembourg-arrondi.svg';
 const LOGO  = 'assets/logo/luxkeyb-logo-192.png';
-// Pas de badge de magasin pour l'instant : la fiche est publique depuis le
-// 28 septembre 2026, donc un badge « Disponible sur Google Play » serait
-// maintenant vrai — il reste à le rajouter (voir la note en haut de page). Le
-// visuel renvoie au site, qui laisse essayer le clavier avant d'installer.
+// Le badge Google Play est revenu le 2026-10-20 (fiche publique depuis le
+// 28 septembre). Le visuel renvoie toujours au site, qui laisse essayer le
+// clavier avant d'installer et mène à Google Play.
 const SITE  = 'famibelle.github.io/LuxKeyb';
-const SHOT  = 'Screenshots/lux_suggestions.png';
+const SHOT  = 'Screenshots/lux_supports_clavier.png';
+const BADGE = 'assets/google-play-badge-fr.svg';
 
 /* --- Fragments réutilisables --- */
 const brand = (spec, markOnly) => `
@@ -488,9 +507,9 @@ const brand = (spec, markOnly) => `
   </div>`;
 
 const cta   = c => `<span class="cta">${c.cta}</span>`;
-const shot = () => `<img class="shot" src="${SHOT}" alt="Le clavier luxembourgeois pendant la frappe : suggestions en luxembourgeois puis en français">`;
+const shot = () => `<img class="shot" src="${SHOT}" alt="Le clavier pendant la frappe : après « Ech hunn op der Schueb », la barre propose « Schueberfouer »">`;
 const dictee = () => `<div class="dictee"><span class="micro"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2Z"/></svg></span><p class="bulle">«&nbsp;Op der Kiermes iessen ech ëmmer Gromperekichelcher&nbsp;»</p></div>`;
-const store = () => `<p class="store-txt">${SITE}</p>`;
+const store = () => `<img class="badge-gp" src="${BADGE}" alt="Disponible sur Google Play">`;
 const carte = () => `<img class="carte" src="${CARTE}" alt="">`;
 
 /* --- Layouts --- */
@@ -548,10 +567,8 @@ const LAYOUTS = {
     <h2 class="head">${c.headShort}</h2>
     <p class="sub">${c.subShort}</p>
     <div class="chipstack">
-      <div class="typed">Moi<i class="caret"></i></div>
-      <span class="chip lb" data-lang="LB">Moien</span>
-      <span class="chip lb" data-lang="LB">Moie</span>
-      <span class="chip fr" data-lang="FR">Moitié</span>
+      <div class="typed">Schueb<i class="caret"></i></div>
+      <span class="chip lb" data-lang="LB">Schueberfouer</span>
       <span class="btn">${spec.w >= 300 ? c.cta : c.btn}</span>
       <p class="foot">${c.foot}</p>
     </div>`,
