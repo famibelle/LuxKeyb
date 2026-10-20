@@ -9,6 +9,16 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.6.0] - 2026-10-20
+
+### ✨ Nouveautés
+
+- **Le Wierderbuch comprend les nombres en chiffres** : taper « 11 » affiche « 11 s'écrit « eelef » » et sa traduction, de 0 à 100. Au-delà, comme pour les années, l'appli rappelle qu'on les écrit en chiffres, comme le dictionnaire officiel.
+
+### 🐛 Corrections
+
+- **Noms des niveaux corrigés** par un professeur de luxembourgeois : Ufänger, Sproochekënner et Sproochemeeschter. Votre progression ne change pas.
+
 ## [37.5.0] - 2026-10-19
 
 ### ✨ Nouveautés
