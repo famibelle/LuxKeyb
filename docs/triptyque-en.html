@@ -379,6 +379,20 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
 .trio img{width:27mm;height:30mm;object-fit:cover;object-position:top;border-radius:6px;border:2px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.2);}
 .trio figure:last-child img{object-position:left top;}
 .trio figcaption{font-size:9px;font-weight:700;color:#003876;margin-top:1mm;text-transform:uppercase;letter-spacing:.05em;}
+
+/* Le motif de la dictée (2026-10-20), retenu par le propriétaire pour toutes
+   les créations : grand micro rouge à halos et phrase attestée en bulle. Il
+   se pose sur la capture du clavier : la suggestion en vraie capture, la
+   dictée par ce motif, au même rang. */
+.dictee{position:absolute;z-index:6;display:flex;align-items:center;gap:var(--dg);box-sizing:border-box;
+  width:var(--dw);padding:var(--dp) var(--dp) var(--dp) calc(var(--dp) * 1.6);background:#fff;border-radius:calc(var(--dp) * 1.1);
+  box-shadow:0 2mm 5mm rgba(0,0,0,.28);transform:rotate(-2.5deg);}
+.dictee .micro{flex:none;width:var(--dm);height:var(--dm);border-radius:50%;background:#ED2939;display:grid;place-items:center;
+  box-shadow:0 0 0 calc(var(--dm) * .11) rgba(237,41,57,.16),0 0 0 calc(var(--dm) * .22) rgba(237,41,57,.07);}
+.dictee .micro svg{width:48%;height:48%;fill:#fff;}
+.dictee .bulle{margin:0;background:#EEF4F8;border-radius:2.4mm 2.4mm 2.4mm .8mm;padding:1.6mm 2.2mm;
+  font-family:"Fredoka",-apple-system,"Segoe UI",Arial,sans-serif;font-weight:600;font-style:italic;font-size:var(--df);line-height:1.25;color:#2B3742;text-align:left;}
+.cover .hero-card .dictee{--dw:50mm;--dp:2.2mm;--dg:3mm;--dm:9.5mm;--df:3mm;left:-3mm;bottom:14mm;}
 </style>
 </head>
 <body>
@@ -500,6 +514,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       <div class="hero-card">
         <img class="hero-carte" src="Screenshots/lux_carte_stad_en.png" alt="A card from the deck: the word Stad, its meaning and a sentence from the official dictionary">
         <img class="hero-clavier" src="Screenshots/lux_supports_clavier.png" alt="The keyboard while typing: after “Ech hunn op der Schueb”, the bar suggests “Schueberfouer”">
+        <div class="dictee" aria-hidden="true"><span class="micro"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2Z"/></svg></span><p class="bulle">«&nbsp;Op der Kiermes iessen ech ëmmer Gromperekichelcher&nbsp;»</p></div>
       </div>
       <div class="cta">
         <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR code to the Lëtzebuergesch Clavier Google Play page">

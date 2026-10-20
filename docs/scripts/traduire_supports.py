@@ -570,6 +570,8 @@ INVARIANTS = {
     "letzebuergesch", "Lëtzebuergesch", "Changer de thème", "Kontakt",
     # Identiques en luxembourgeois, et traduits par leur entrée dans les autres langues.
     "Carnet", "Dictionnaire", "Disponible sur Google Play",
+    # La phrase dictée du motif de la dictée, attestée au LOD.
+    "« Op der Kiermes iessen ech ëmmer Gromperekichelcher »",
 }
 
 CSS_BANDEAU = """
