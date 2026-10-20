@@ -9,8 +9,9 @@ n'existe que pour les achats gérés), 5 à 30 s conseillées.
 
 Les pages sont rendues par Chrome comme le reste des visuels du dossier
 (build_graphics.render). Les captures de sources/ viennent de l'émulateur
-pixel9 ; la dictée est le composite de l'image de présentation (champ tapé +
-bandeau LuxASR), parce que l'émulateur ne peut pas entendre.
+pixel9. La dictée n'est plus montrée par une capture : depuis le 2026-10-20,
+elle prend le motif du grand micro rouge à halos et de la phrase en bulle,
+retenu par le propriétaire pour toutes les créations (fonction motif).
 
 Aucune promesse de confidentialité sur ces visuels : la dictée envoie la voix
 à LuxASR, et une annonce n'a pas la place de le dire honnêtement.
@@ -131,15 +132,36 @@ def produire(html, sortie, w, h, jpeg=False):
     print(f"{sortie.relative_to(ICI)}  ok")
 
 
+MICRO = ('<svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2Z"/></svg>')
+PHRASE = "«&nbsp;Op der Kiermes iessen ech ëmmer Gromperekichelcher&nbsp;»"
+
+
+def motif(largeur, style=""):
+    """Le motif de la dictée, validé par le propriétaire le 2026-10-20 pour
+    toutes les créations : grand micro rouge à halos et phrase attestée en
+    bulle. Toutes les mesures suivent la largeur."""
+    u = largeur / 100
+    return (f'<div style="box-sizing:border-box;width:{largeur}px;display:flex;align-items:center;'
+            f'gap:{5*u:.0f}px;padding:{4.5*u:.0f}px {4.5*u:.0f}px {4.5*u:.0f}px {7*u:.0f}px;background:#fff;'
+            f'border-radius:{4.5*u:.0f}px;box-shadow:0 {3*u:.0f}px {7*u:.0f}px rgba(31,41,51,.30);{style}">'
+            f'<span style="flex:none;width:{17*u:.0f}px;height:{17*u:.0f}px;border-radius:50%;background:#ED2939;'
+            f'display:grid;place-items:center;box-shadow:0 0 0 {2*u:.0f}px rgba(237,41,57,.16),'
+            f'0 0 0 {4*u:.0f}px rgba(237,41,57,.07)">'
+            f'<span style="display:block;width:{8.5*u:.0f}px;height:{8.5*u:.0f}px;fill:#fff">{MICRO.replace("<svg ", "<svg style=&quot;width:100%;height:100%;fill:#fff&quot; ").replace("&quot;", chr(34))}</span></span>'
+            f'<div style="background:#EEF4F8;border-radius:{3.4*u:.0f}px {3.4*u:.0f}px {3.4*u:.0f}px {1.1*u:.0f}px;'
+            f'padding:{2.4*u:.0f}px {3*u:.0f}px;font:italic 700 {4.9*u:.1f}px/1.28 Carlito,sans-serif;color:#2B3742">'
+            f'{PHRASE}</div></div>')
+
+
 def visuel(largeur):
     """Le clavier qui devine le mot suivant, et la dictée posée dessus : les
-    deux premières promesses, dans leur ordre. Hauteur : environ 1,2 fois la
-    largeur."""
+    deux premières promesses, dans leur ordre. La suggestion en vraie capture,
+    la dictée par son motif. Hauteur : environ 1,2 fois la largeur."""
     return (f'<div style="position:relative;width:{largeur}px">'
             f'<div class="ecran"><img src="{SRC/"prediction.png"}"></div>'
-            f'<div class="ecran" style="position:absolute;width:{round(largeur*.86)}px;'
-            f'right:{-round(largeur*.08)}px;bottom:{-round(largeur*.10)}px;transform:rotate(-3deg)">'
-            f'<img src="{SRC/"dictee_bandeau.png"}"></div></div>')
+            + motif(round(largeur*.86), f'position:absolute;right:{-round(largeur*.08)}px;'
+                    f'bottom:{-round(largeur*.14)}px;transform:rotate(-3deg)')
+            + '</div>')
 
 
 def images():
@@ -194,6 +216,16 @@ def carrousel():
                          f'<img src="{SRC/f"badge_{l}.svg"}" style="width:400px">'
                          f'<p class="claim" style="font-size:30px">{t["pied"]}</p></div>')
                 produire(page(1200, 1200, corps, slogan=84, claim=40, logo=110, nom=44),
+                         ICI / f"reddit_carrousel_{i}_{l}.jpg", 1200, 1200, jpeg=True)
+                continue
+            if img == "dictee.png":
+                # la dictée : le motif en grand, à la place de la capture de l'écoute
+                corps = (f'<div style="position:absolute;left:80px;right:80px;top:70px;display:flex;'
+                         f'flex-direction:column;gap:20px"><div class="slogan">{titre}</div>'
+                         f'<p class="claim">{sous}</p></div>'
+                         + motif(900, 'position:absolute;left:150px;top:470px'))
+                produire(page(1200, 1200, corps + (f'<p style="position:absolute;right:56px;top:34px;'
+                         f'font:600 26px Carlito,sans-serif;color:#8A949E">{i}/{n}</p>'), slogan=66, claim=32),
                          ICI / f"reddit_carrousel_{i}_{l}.jpg", 1200, 1200, jpeg=True)
                 continue
             haute = img.startswith(("carte", "wuertplaz"))
