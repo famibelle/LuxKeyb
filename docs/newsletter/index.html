@@ -50,17 +50,19 @@ h1 em{font-style:normal; color:var(--rouge)}
 
 .editions{list-style:none; margin:0; padding:0; display:grid; gap:20px}
 .edition{background:var(--papier); border:1px solid var(--filet); border-radius:10px; overflow:hidden}
-.edition a{display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); color:inherit; text-decoration:none}
-.edition a:focus-visible{outline:3px solid var(--bleu); outline-offset:3px; border-radius:10px}
+.edition > a{display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); color:inherit; text-decoration:none}
+.edition > a:focus-visible{outline:3px solid var(--bleu); outline-offset:3px; border-radius:10px}
 .edition img{display:block; width:100%; height:auto; align-self:center}
 .edition .texte{padding:22px 24px; display:grid; gap:8px; align-content:center; min-width:0}
 .date{font:600 12px/1 var(--display); letter-spacing:.1em; text-transform:uppercase; color:var(--bleu-encre)}
 .edition h2{font:700 24px/1.15 var(--display); margin:0; text-wrap:balance}
 .edition p{margin:0; color:var(--doux); font-size:16px}
 .lire{font:700 15px/1 var(--display); color:var(--rouge)}
-.edition a:hover h2{text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:4px}
-@media (max-width:620px){.edition a{grid-template-columns:1fr}}
+.edition > a:hover h2{text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:4px}
+@media (max-width:620px){.edition > a{grid-template-columns:1fr}}
 
+.autres{margin:0; padding:12px 24px; border-top:1px solid var(--filet); font:500 14px/1.4 var(--display); color:var(--doux)}
+.autres a{color:var(--bleu-encre)}
 footer{font-size:14px; color:var(--doux); display:grid; gap:6px}
 footer a{color:var(--bleu-encre)}
 </style>
@@ -87,6 +89,7 @@ footer a{color:var(--bleu-encre)}
           <span class="lire">Lire la lettre →</span>
         </div>
       </a>
+      <p class="autres">Aussi en <a href="2026-10-en.html" lang="en">English</a> · <a href="2026-10-de.html" lang="de">Deutsch</a> · <a href="2026-10-pt.html" lang="pt">Português</a></p>
     </li>
   </ol>
 

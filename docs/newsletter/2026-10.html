@@ -50,6 +50,10 @@ body{background:var(--fond); color:var(--encre); font:17px/1.6 var(--texte); pad
 
 header{display:grid; gap:14px}
 .tete{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font:600 12px/1 var(--display); letter-spacing:.12em; text-transform:uppercase; color:var(--doux)}
+.langues-nl{display:flex; gap:6px; flex-wrap:wrap}
+.langues-nl a{font:600 12px/1 var(--display); letter-spacing:.08em; color:var(--doux); text-decoration:none; padding:6px 9px; border:1px solid var(--filet); border-radius:99px}
+.langues-nl a[aria-current]{background:var(--encre); color:var(--papier); border-color:var(--encre)}
+.langues-nl a:hover{border-color:var(--doux)}
 h1{font:800 clamp(30px,6.4vw,44px)/1.05 var(--display); letter-spacing:-.02em; margin:0; text-wrap:balance}
 h1 em{font-style:normal; color:var(--rouge)}
 .chapo{margin:0; font-size:19px; color:var(--doux); max-width:60ch}
@@ -127,6 +131,7 @@ footer a{color:var(--bleu-encre)}
 
     <header>
       <div class="tete"><span>Lëtzebuergesch Clavier</span><span>Octobre 2026</span></div>
+      <nav class="langues-nl" aria-label="Langue"><a href="2026-10.html" lang="fr" aria-current="page">FR</a><a href="2026-10-en.html" lang="en">EN</a><a href="2026-10-de.html" lang="de">DE</a><a href="2026-10-pt.html" lang="pt">PT</a></nav>
       <h1>Écrire en luxembourgeois devient <em>encore plus simple</em></h1>
       <p class="chapo">En un mois, le clavier a appris à vous écouter, à rattraper vos fautes de frappe et à prendre toute la place d'une tablette. Voici ce qui change pour vous.</p>
     </header>
