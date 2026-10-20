@@ -81,6 +81,13 @@ hr{border:0; border-top:1px solid var(--filet); margin:0}
 .bref{background:var(--puce); border-radius:8px; padding:20px 22px; display:grid; gap:10px}
 .bref h2{font-size:19px}
 
+
+/* Motif dictée (validé le 2026-10-20) : grand micro à halos et phrase attestée en bulle */
+.motif-dictee{display:flex; align-items:center; gap:clamp(18px,5vw,30px); padding:clamp(20px,5vw,30px) clamp(18px,5vw,30px) clamp(20px,5vw,30px) clamp(26px,6vw,40px); background:var(--papier); border:1px solid var(--filet); border-radius:16px; box-shadow:0 8px 22px rgba(15,25,35,.10)}
+.motif-dictee .micro-grand{flex:none; width:clamp(64px,16vw,88px); height:clamp(64px,16vw,88px); border-radius:50%; background:#ed2939; display:grid; place-items:center; box-shadow:0 0 0 10px rgba(237,41,57,.15), 0 0 0 20px rgba(237,41,57,.07)}
+.motif-dictee .micro-grand svg{width:46%; height:46%; fill:#fff}
+.motif-dictee .phrase{min-width:0; background:var(--puce); border-radius:16px 16px 16px 5px; padding:14px 18px; font:italic 600 clamp(17px,4.4vw,22px)/1.3 var(--display); color:var(--encre)}
+
 /* Images */
 .eventail{display:flex; justify-content:center; align-items:flex-end; padding:14px 0 6px}
 .eventail img{height:auto; width:min(27%,170px); border-radius:4%/2.7%; box-shadow:0 10px 24px rgba(15,25,35,.24); position:relative}
@@ -124,8 +131,11 @@ footer a{color:var(--bleu-encre)}
       <h2>Parlez, le texte s'écrit</h2>
       <p>Touchez le micro à droite de la barre de suggestions et parlez en luxembourgeois. Le texte s'écrit pendant que vous parlez, avec la ponctuation et les majuscules, et le micro se referme seul quand vous vous taisez.</p>
       <figure>
-        <img class="ecran" src="../Screenshots/lux_dictee_clavier.gif" alt="Le clavier en train de dicter « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott »" width="420" height="380">
-        <figcaption>« Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott. » Dicté, pas tapé.</figcaption>
+        <div class="motif-dictee" role="img" aria-label="Le micro du clavier et la phrase dictée « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott »">
+          <span class="micro-grand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2Z"/></svg></span>
+          <p class="phrase">«&nbsp;Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott.&nbsp;»</p>
+        </div>
+        <figcaption>Dicté, pas tapé.</figcaption>
       </figure>
       <p>La reconnaissance est assurée par LuxASR, le service de l'Université du Luxembourg. Avant la première dictée, un écran vous explique où part votre voix ; rien n'est envoyé avant que vous acceptiez. Ce que vous tapez reste sur votre téléphone.</p>
     </section>
