@@ -26,6 +26,12 @@ from build_graphics import render  # noqa: E402
 
 ICI = pathlib.Path(__file__).resolve().parent
 SRC = ICI / "sources"
+# Le tampon « 100 % gratuit » des supports (docs/assets/tampon-gratuit.css),
+# à la place de « Gratuit · sans publicité · Android » depuis le 2026-10-20 :
+# l'argument « sans publicité » ne répond à aucune douleur.
+TAMPON_CSS = ICI.parents[2] / "docs" / "assets" / "tampon-gratuit.css"
+TAMPON = ('<span class="tampon"><span class="tampon-chiffre">100&nbsp;%%</span>'
+          '<span class="tampon-mot">%s</span></span>')
 REEL = ICI.parent / "video" / "Letzebuergesch_Clavier_reel_fr.mp4"
 FOND_REEL = "#F4F4F1"  # fond du Reel, relevé sur ses images
 
@@ -34,7 +40,7 @@ TEXTES = {
         "slogan": "Écrivez le luxembourgeois <span>comme vous le parlez.</span>",
         "tapez": "<b>Tapez</b>, il devine vos mots.",
         "parlez": "<b>Parlez</b>, il écrit ce que vous dites.",
-        "pied": "Gratuit · sans publicité · Android",
+        "pied": TAMPON % "gratuit",
         # Dans l'ordre des promesses (propriétaire, 2026-10-18) : l'écriture,
         # la dictée, la collection de cartes, les jeux. La dernière carte
         # n'a pas de capture : c'est l'appel à installer.
@@ -57,7 +63,7 @@ TEXTES = {
         "slogan": "Write Luxembourgish <span>the way you speak it.</span>",
         "tapez": "<b>Type</b>, and it guesses your words.",
         "parlez": "<b>Speak</b>, and it writes what you say.",
-        "pied": "Free · no ads · Android",
+        "pied": TAMPON % "free",
         "cartes": [
             ("Type, <span>and it guesses your words.</span>",
              "After “meng”, it offers Mamm, Schwëster, Frëndin.", "prediction.png"),
@@ -98,14 +104,16 @@ body{ background:var(--papier); color:var(--encre); position:relative;
 .pied{ display:flex; align-items:center; gap:%(g)dpx; }
 .pied img{ height:%(badge)dpx; }
 .pied p{ font-size:%(pied)dpx; font-weight:600; color:var(--gris); }
+.tampon[class]{ font-size:%(tampon)dpx; margin:10px 0 0 12px; }
 """
 
 
 def page(w, h, corps, **taille):
     t = dict(w=w, h=h, bande=12, g=18, logo=84, nom=34, slogan=72, claim=36,
-             r=28, badge=86, pied=28)
+             r=28, badge=86, pied=28, tampon=26)
     t.update(taille)
-    return (f'<!doctype html><meta charset="utf-8"><style>{CSS % t}</style>'
+    return (f'<!doctype html><meta charset="utf-8">'
+            f'<link rel="stylesheet" href="{TAMPON_CSS.as_uri()}"><style>{CSS % t}</style>'
             f'<div class="drapeau"><i></i><i></i><i></i></div>{corps}')
 
 
@@ -215,7 +223,7 @@ def carrousel():
                          f'<p class="claim">{t["tapez"]}<br>{t["parlez"]}</p>'
                          f'<img src="{SRC/f"badge_{l}.svg"}" style="width:400px">'
                          f'<p class="claim" style="font-size:30px">{t["pied"]}</p></div>')
-                produire(page(1200, 1200, corps, slogan=84, claim=40, logo=110, nom=44),
+                produire(page(1200, 1200, corps, slogan=84, claim=40, logo=110, nom=44, tampon=34),
                          ICI / f"reddit_carrousel_{i}_{l}.jpg", 1200, 1200, jpeg=True)
                 continue
             if img == "dictee.png":

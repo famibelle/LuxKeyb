@@ -22,10 +22,15 @@ conseillées.
 | `reddit_video_16x9_fr.mp4` | 1920 × 1080, 25 s | vidéo, ordinateur |
 | `reddit_video_vignette_fr.jpg` | 1200 × 628 | vignette des vidéos |
 
-`<l>` vaut `fr` ou `en`. Les vidéos n'existent qu'en français, parce que le
-Reel dont elles viennent est en français. Il porte encore l'ancienne phrase
-de dictée (« Op der Kiermes iessen ech ëmmer Gromperekichelcher mat
-Äppelkompott »), qui n'a pas de traduction officielle.
+`<l>` vaut `fr` ou `en`. Les vidéos tirées du Reel n'existent qu'en
+français, parce que le Reel est en français.
+
+Depuis le 2026-10-20, la dictée est montrée partout par le motif retenu pour
+toutes les créations : le grand micro rouge qui pulse et la phrase « Op der
+Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott » qui s'écrit
+mot à mot dans sa bulle (`reel.ÉcranDictée`), dans le Reel comme dans
+`reddit_video_annonce_<l>.mp4`. Le pied des images porte le tampon « 100 %
+gratuit » des supports (`docs/assets/tampon-gratuit.css`).
 
 Ordre des promesses, fixé par le propriétaire le 2026-10-18 : l'écriture,
 puis la dictée, puis la collection de cartes, et enfin les jeux. Le carrousel
@@ -49,15 +54,19 @@ Le titre peut faire jusqu'à 300 caractères, mais un téléphone le coupe vers
 
 Français :
 
-- Écrivez le luxembourgeois comme vous le parlez. Gratuit, sans publicité.
-- Vos mots luxembourgeois soulignés en rouge ? Plus avec ce clavier.
-- ë, ä, é sous le pouce, et il devine le mot suivant. Clavier gratuit.
+- Écrivez le luxembourgeois comme vous le parlez. Gratuit sur Google Play.
+- Tapez, il propose le mot. Parlez, il écrit en luxembourgeois.
+- Chaque mot gagné devient une carte à collectionner. Clavier gratuit.
 
 Anglais :
 
-- Write Luxembourgish the way you speak it. Free keyboard, no ads.
-- Tired of your phone underlining every Luxembourgish word in red?
-- ë, ä, é under your thumb, and it guesses your next word. Free keyboard.
+- Write Luxembourgish the way you speak it. Free on Google Play.
+- Type, it suggests the word. Speak, it writes in Luxembourgish.
+- Every word you win becomes a collectible card. Free keyboard.
+
+Titres refaits le 2026-10-20 : plus de « sans publicité », qui ne répond à
+aucune douleur, ni de promesse en négatif (« soulignés en rouge ? Plus avec
+ce clavier »).
 
 ## Si on pose la question en commentaire
 

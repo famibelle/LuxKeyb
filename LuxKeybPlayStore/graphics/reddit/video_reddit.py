@@ -10,8 +10,9 @@ Ce n'est pas le Reel recadré. Trois choses changent pour Reddit :
   de cartes, les jeux ;
 - le format est le 4:5, celui que Reddit conseille sur téléphone, et rien ne
   se cache en bas : Reddit ne pose pas de légende sur la vidéo ;
-- la dictée montre la phrase officielle de l'image de présentation (LOD,
-  traduite par le ZLS), révélée mot par mot comme dans `../video/dictee.py`.
+- la dictée prend le motif retenu pour toutes les créations le 2026-10-20 :
+  le grand micro rouge qui pulse et la phrase qui s'écrit mot à mot dans sa
+  bulle, la même scène que le Reel (`reel.ÉcranDictée`).
 
 Les briques (fond, téléphone, carte, titres qui arrivent, appel final) sont
 celles de `../video/reel.py`, réglées à la nouvelle hauteur.
@@ -48,7 +49,7 @@ TEXTES = {
                 "Avec sa traduction et une phrase d'exemple."),
         jeux=("Jouer", "Sept jeux pour les gagner",
               "Placer, deviner, retrouver les mots."),
-        appel=("Gratuit, sans publicité", "Cherchez :"),
+        appel=("100 % gratuit", "Cherchez :"),
     ),
     "en": dict(
         accroche=("Write Luxembourgish\nthe way you speak it.", "The Luxembourgish keyboard for Android"),
@@ -62,7 +63,7 @@ TEXTES = {
                 "With its translation and an example sentence."),
         jeux=("Play", "Seven games to win them",
               "Place, guess and find the words."),
-        appel=("Free, no ads", "Search for:"),
+        appel=("100% free", "Search for:"),
     ),
 }
 
@@ -182,7 +183,7 @@ def scenes(l, tmp):
         Accroche(1.6, l),
         reel.Écran(*t["ecriture"], reel.séquence(tmp, 110, 330, 2.4, 1.1), 860),
         reel.Écran(*t["accents"], reel.séquence(tmp, 462, 575, 1.6, 0.9), 860),
-        reel.Écran(*t["dictee"], dictee_mot_a_mot(), 860),
+        reel.ÉcranDictée(*t["dictee"], 3.8),
         reel.Écran(*t["cartes"], cartes, 900, cadre=reel.carte, retourne=True),
         # les jeux sans la barre d'état ni les onglets : le téléphone entier
         # serait trop étroit dans le 4:5
