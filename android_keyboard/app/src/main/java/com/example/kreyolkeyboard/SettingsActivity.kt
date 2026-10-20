@@ -252,6 +252,18 @@ class SettingsActivity : AppCompatActivity() {
         // par semaine, donc deux astuces voisines se suivent à l'écran.
     }
     
+    /**
+     * Le manifeste déclare la taille et l'orientation pour que l'activité ne
+     * soit pas recréée sous une carte ouverte (voir [FigerOrientation]). Hors
+     * de ce cas, on la recrée comme Android l'aurait fait : les écrans
+     * choisissent leur mise en page à la construction (deux colonnes sur
+     * tablette en paysage, colonne de lecture), et ne la refont pas d'eux-mêmes.
+     */
+    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (!com.example.kreyolkeyboard.carnet.FigerOrientation.differer()) recreate()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         com.example.kreyolkeyboard.carnet.FigerOrientation.portraitSurTelephone(this)
         super.onCreate(savedInstanceState)
