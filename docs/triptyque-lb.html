@@ -436,7 +436,10 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
 .recherche-champ svg{width:3.2mm;height:3.2mm;fill:none;stroke:#4A5560;stroke-width:3;stroke-linecap:round;flex:0 0 auto;}
 .recherche-texte{font-family:"Fredoka",sans-serif;font-size:10px;font-weight:700;color:#1C2624;border-right:.35mm solid #0F8FD8;padding-right:.5mm;line-height:1.1;}
 .panel-cta:has(.recherche){gap:3mm;padding:2.5mm 3mm;}
-.panel-cta:has(.recherche) .txt b{margin-bottom:1mm;}
+.panel-cta:has(.recherche) .txt{align-items:stretch;}
+.panel-cta:has(.recherche) .txt b{margin-bottom:1mm;text-align:center;padding-left:2.6mm;padding-right:2.6mm;}
+.panel-cta:has(.recherche) .recherche{align-items:stretch;}
+.panel-cta:has(.recherche) .recherche-label{text-align:center;}
 .panel-cta:has(.recherche) img.gp-badge{width:30mm;}
 
 /* Bandeau « À faire valider » : ajouté par docs/scripts/traduire_supports.py
