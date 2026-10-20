@@ -521,6 +521,7 @@ grâce à ces signalements.
 
 <p class="liens-secondaires">
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="newsletter/">📰 Newsletters</a> ·
   <a href="corpus.html">📚 D'où viennent les mots</a> ·
   <a href="dossier.html">📄 Dossier</a> ·
   <a href="comparatif.html">⚖️ Comparatif détaillé</a> ·

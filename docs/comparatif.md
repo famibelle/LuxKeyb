@@ -12,6 +12,7 @@ lang: fr
   <a href="corpus.html">📚 Les corpus</a> ·
   <a href="dossier.html">📄 Dossier</a> ·
   <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="newsletter/">📰 Newsletters</a> ·
   <a href="labs.html">🔬 Labs</a> ·
   <strong>⚖️ Comparatif</strong> ·
   <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·

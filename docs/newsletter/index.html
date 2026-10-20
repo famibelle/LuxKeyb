@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Newsletters · Lëtzebuergesch Clavier</title>
+<meta name="description" content="Toutes les éditions de la newsletter du Lëtzebuergesch Clavier : ce qui change, à chaque version, pour écrire le luxembourgeois sur son téléphone.">
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Lëtzebuergesch Clavier">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Les newsletters du Lëtzebuergesch Clavier">
+<meta property="og:description" content="Toutes les éditions : ce qui change, à chaque version, pour écrire le luxembourgeois sur son téléphone.">
+<meta property="og:url" content="https://famibelle.github.io/LuxKeyb/newsletter/">
+<meta property="og:image" content="https://famibelle.github.io/LuxKeyb/newsletter/2026-10/partage.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<style>
+/* L'archive des newsletters, dans la charte de la lettre : une colonne,
+   la plus récente en premier. Ajouter une édition = ajouter un <li> en tête
+   de la liste (la skill newsletter-substack le fait à chaque édition). */
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --fond:#f3f6f9; --papier:#ffffff; --encre:#17212b; --doux:#56636f; --filet:#dbe3ea;
+  --rouge:#ed2939; --bleu:#00a1de; --bleu-encre:#006f9a; --puce:#eef4f8;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --texte:Literata, Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --fond:#0e141a; --papier:#151d25; --encre:#e8eef3; --doux:#9aa8b4; --filet:#2a3641;
+  --rouge:#ff5a66; --bleu:#3cbcef; --bleu-encre:#7fd3f5; --puce:#1c2731; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --fond:#0e141a; --papier:#151d25; --encre:#e8eef3; --doux:#9aa8b4; --filet:#2a3641;
+  --rouge:#ff5a66; --bleu:#3cbcef; --bleu-encre:#7fd3f5; --puce:#1c2731; color-scheme:dark}
+
+body{margin:0; background:var(--fond); color:var(--encre); font:17px/1.6 var(--texte); padding:32px 16px 56px}
+img{max-width:100%}
+.cadre{max-width:760px; margin:0 auto; display:grid; gap:28px}
+.retour{font:600 14px/1 var(--display); color:var(--bleu-encre); text-decoration:none}
+.retour:hover{text-decoration:underline}
+.drapeau{display:flex; height:6px; border-radius:3px; overflow:hidden}
+.drapeau span{flex:1}
+.drapeau span:nth-child(1){background:#ed2939}.drapeau span:nth-child(2){background:#fff; box-shadow:inset 0 0 0 1px var(--filet)}.drapeau span:nth-child(3){background:#00a1de}
+header{display:grid; gap:12px}
+.tete{font:600 12px/1 var(--display); letter-spacing:.12em; text-transform:uppercase; color:var(--doux)}
+h1{font:800 clamp(32px,7vw,48px)/1.05 var(--display); letter-spacing:-.02em; margin:0}
+h1 em{font-style:normal; color:var(--rouge)}
+.chapo{margin:0; font-size:19px; color:var(--doux); max-width:60ch}
+
+.editions{list-style:none; margin:0; padding:0; display:grid; gap:20px}
+.edition{background:var(--papier); border:1px solid var(--filet); border-radius:10px; overflow:hidden}
+.edition a{display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); color:inherit; text-decoration:none}
+.edition a:focus-visible{outline:3px solid var(--bleu); outline-offset:3px; border-radius:10px}
+.edition img{display:block; width:100%; height:auto; align-self:center}
+.edition .texte{padding:22px 24px; display:grid; gap:8px; align-content:center; min-width:0}
+.date{font:600 12px/1 var(--display); letter-spacing:.1em; text-transform:uppercase; color:var(--bleu-encre)}
+.edition h2{font:700 24px/1.15 var(--display); margin:0; text-wrap:balance}
+.edition p{margin:0; color:var(--doux); font-size:16px}
+.lire{font:700 15px/1 var(--display); color:var(--rouge)}
+.edition a:hover h2{text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:4px}
+@media (max-width:620px){.edition a{grid-template-columns:1fr}}
+
+footer{font-size:14px; color:var(--doux); display:grid; gap:6px}
+footer a{color:var(--bleu-encre)}
+</style>
+</head>
+<body>
+<div class="cadre">
+  <a class="retour" href="../index.html">← Lëtzebuergesch Clavier</a>
+  <div class="drapeau" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <header>
+    <div class="tete">Lëtzebuergesch Clavier</div>
+    <h1>Les <em>newsletters</em></h1>
+    <p class="chapo">Ce qui change dans le clavier, édition après édition. La plus récente en premier.</p>
+  </header>
+
+  <ol class="editions" reversed>
+    <li class="edition">
+      <a href="2026-10.html">
+        <img src="2026-10/partage.png" alt="Tapez, il propose le mot. Parlez, il écrit. Et des cartes à collectionner pour découvrir la langue." width="1200" height="630">
+        <div class="texte">
+          <span class="date">Octobre 2026</span>
+          <h2>Écrire en luxembourgeois devient encore plus simple</h2>
+          <p>La dictée vocale, les fautes de frappe rattrapées, des cartes à collectionner pour découvrir la langue, et le clavier à la taille d'une tablette.</p>
+          <span class="lire">Lire la lettre →</span>
+        </div>
+      </a>
+    </li>
+  </ol>
+
+  <footer>
+    <p>Une idée, un mot qui manque ? <a href="../feedbacks_form.html">Écrivez-nous</a>. Le détail de chaque version est dans les <a href="../nouveautes.html">nouveautés</a>.</p>
+  </footer>
+</div>
+</body>
+</html>
