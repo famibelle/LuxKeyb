@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lëtzebuergesch Clavier, octobre 2026</title>
+<meta name="description" content="Dictée vocale, fautes de frappe rattrapées, cartes à collectionner pour découvrir le luxembourgeois : les nouveautés d'octobre du clavier luxembourgeois pour Android.">
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Lëtzebuergesch Clavier">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Écrire en luxembourgeois devient encore plus simple">
+<meta property="og:description" content="Dictée vocale, fautes de frappe rattrapées, cartes à collectionner pour découvrir le luxembourgeois : les nouveautés d'octobre du clavier luxembourgeois pour Android.">
+<meta property="og:url" content="https://famibelle.github.io/LuxKeyb/newsletter/2026-10.html">
+<meta property="og:image" content="https://famibelle.github.io/LuxKeyb/newsletter/2026-10/partage.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Quatre cartes du carnet, de l'étain à l'or, et le titre de la lettre d'octobre 2026">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Écrire en luxembourgeois devient encore plus simple">
+<meta name="twitter:description" content="Dictée vocale, fautes de frappe rattrapées, cartes à collectionner pour découvrir le luxembourgeois : les nouveautés d'octobre du clavier luxembourgeois pour Android.">
+<meta name="twitter:image" content="https://famibelle.github.io/LuxKeyb/newsletter/2026-10/partage.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+
+/* Mise en page : une lettre d'une colonne, comme un courrier ; chaque nouveauté porte un exemple qui se voit (barre de suggestions, bulle de dictée). */
+:root{
+  --fond:#f3f6f9; --papier:#ffffff; --encre:#17212b; --doux:#56636f; --filet:#dbe3ea;
+  --rouge:#ed2939; --bleu:#00a1de; --bleu-encre:#006f9a; --puce:#eef4f8;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --texte:Literata, Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --fond:#0e141a; --papier:#151d25; --encre:#e8eef3; --doux:#9aa8b4; --filet:#2a3641;
+  --rouge:#ff5a66; --bleu:#3cbcef; --bleu-encre:#7fd3f5; --puce:#1c2731; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --fond:#0e141a; --papier:#151d25; --encre:#e8eef3; --doux:#9aa8b4; --filet:#2a3641;
+  --rouge:#ff5a66; --bleu:#3cbcef; --bleu-encre:#7fd3f5; --puce:#1c2731; color-scheme:dark}
+
+body{background:var(--fond); color:var(--encre); font:17px/1.6 var(--texte); padding:32px 16px 48px}
+.lettre{max-width:660px; margin:0 auto; background:var(--papier); border:1px solid var(--filet); border-radius:6px; overflow:hidden}
+.drapeau{display:flex; height:6px}
+.drapeau span{flex:1}
+.drapeau span:nth-child(1){background:#ed2939}.drapeau span:nth-child(2){background:#fff; border-block:1px solid var(--filet)}.drapeau span:nth-child(3){background:#00a1de}
+.corps{padding:36px clamp(20px,6vw,48px) 40px; display:grid; gap:40px}
+
+header{display:grid; gap:14px}
+.tete{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font:600 12px/1 var(--display); letter-spacing:.12em; text-transform:uppercase; color:var(--doux)}
+h1{font:800 clamp(30px,6.4vw,44px)/1.05 var(--display); letter-spacing:-.02em; margin:0; text-wrap:balance}
+h1 em{font-style:normal; color:var(--rouge)}
+.chapo{margin:0; font-size:19px; color:var(--doux); max-width:60ch}
+
+section{display:grid; gap:12px}
+h2{font:700 24px/1.2 var(--display); letter-spacing:-.01em; margin:0; text-wrap:balance}
+.version{font:600 12px/1 var(--display); letter-spacing:.08em; text-transform:uppercase; color:var(--bleu-encre)}
+p{margin:0; max-width:62ch}
+ul{margin:0; padding-left:1.1em; display:grid; gap:6px}
+li::marker{color:var(--rouge)}
+hr{border:0; border-top:1px solid var(--filet); margin:0}
+
+/* La barre de suggestions du clavier, en miniature */
+.barre{background:var(--puce); border-radius:10px; padding:12px; display:grid; gap:10px; font-family:var(--display)}
+.ligne{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.tape{font:500 15px/1 ui-monospace, "SF Mono", Menlo, monospace; color:var(--doux); min-width:5.5em}
+.fleche{color:var(--doux)}
+.puce{background:#ed2939; color:#fff; font:600 15px/1 var(--display); padding:8px 12px; border-radius:8px}
+.puce.seconde{opacity:.72}
+
+.bulle{background:var(--puce); border-radius:14px 14px 14px 4px; padding:14px 16px; display:flex; gap:12px; align-items:flex-start}
+.micro{flex:none; width:34px; height:34px; border-radius:50%; background:var(--rouge); display:grid; place-items:center}
+.micro svg{width:16px; height:16px; fill:#fff}
+.bulle p{font-style:italic}
+
+.langues{display:flex; flex-wrap:wrap; gap:8px}
+.langues span{font:600 13px/1 var(--display); padding:7px 11px; border:1px solid var(--filet); border-radius:99px}
+
+.bref{background:var(--puce); border-radius:8px; padding:20px 22px; display:grid; gap:10px}
+.bref h2{font-size:19px}
+
+/* Images */
+.eventail{display:flex; justify-content:center; align-items:flex-end; padding:14px 0 6px}
+.eventail img{height:auto; width:min(27%,170px); border-radius:4%/2.7%; box-shadow:0 10px 24px rgba(15,25,35,.24); position:relative}
+.eventail img:nth-child(1){transform:rotate(-10deg) translate(24%,9%)}
+.eventail img:nth-child(2){transform:rotate(-3.5deg) translate(8%,0); z-index:1}
+.eventail img:nth-child(3){transform:rotate(3.5deg) translate(-8%,0); z-index:2}
+.eventail img:nth-child(4){transform:rotate(10deg) translate(-24%,9%); z-index:3}
+.legende-eventail{text-align:center; font:500 15px/1.5 var(--display); color:var(--doux); margin:6px auto 0; max-width:52ch}
+figure{margin:4px 0 0; display:grid; gap:8px; justify-items:center}
+figure img{height:auto; border-radius:10px; border:1px solid var(--filet); display:block}
+figcaption{font:500 13px/1.45 var(--display); color:var(--doux); text-align:center; max-width:52ch}
+.ecran{max-width:min(100%,420px)}
+.large{max-width:100%}
+.paire{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr)); gap:14px; width:100%; align-items:start}
+.paire img{width:100%; height:auto}
+.haute{max-width:min(100%,300px)}
+@media (prefers-reduced-motion: reduce){.eventail img{transform:none!important}}
+
+.appel{display:grid; gap:14px; justify-items:start}
+.bouton{display:inline-block; background:var(--rouge); color:#fff; text-decoration:none; font:700 16px/1 var(--display); padding:15px 22px; border-radius:8px}
+.bouton:focus-visible{outline:3px solid var(--bleu); outline-offset:3px}
+.slogan{font:700 20px/1.3 var(--display); margin:0}
+footer{font-size:13px; color:var(--doux); display:grid; gap:6px}
+footer a{color:var(--bleu-encre)}
+</style>
+</head>
+<body>
+<article class="lettre">
+  <div class="drapeau" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="corps">
+
+    <header>
+      <div class="tete"><span>Lëtzebuergesch Clavier</span><span>Octobre 2026</span></div>
+      <h1>Écrire en luxembourgeois devient <em>encore plus simple</em></h1>
+      <p class="chapo">En un mois, le clavier a appris à vous écouter, à rattraper vos fautes de frappe et à prendre toute la place d'une tablette. Voici ce qui change pour vous.</p>
+    </header>
+
+
+    <section>
+      <span class="version">Dictée vocale</span>
+      <h2>Parlez, le texte s'écrit</h2>
+      <p>Touchez le micro à droite de la barre de suggestions et parlez en luxembourgeois. Le texte s'écrit pendant que vous parlez, avec la ponctuation et les majuscules, et le micro se referme seul quand vous vous taisez.</p>
+      <figure>
+        <img class="ecran" src="../Screenshots/lux_dictee_clavier.gif" alt="Le clavier en train de dicter « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott »" width="420" height="380">
+        <figcaption>« Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott. » Dicté, pas tapé.</figcaption>
+      </figure>
+      <p>La reconnaissance est assurée par LuxASR, le service de l'Université du Luxembourg. Avant la première dictée, un écran vous explique où part votre voix ; rien n'est envoyé avant que vous acceptiez. Ce que vous tapez reste sur votre téléphone.</p>
+    </section>
+
+    <hr>
+
+    <section>
+      <span class="version">Fautes de frappe</span>
+      <h2>Le clavier rattrape vos doigts pressés</h2>
+      <p>Un pouce qui glisse, deux lettres inversées, un espace oublié : la barre propose maintenant le bon mot.</p>
+      <div class="barre" aria-label="Exemples de corrections">
+        <div class="ligne"><span class="tape">echhunn</span><span class="fleche" aria-hidden="true">→</span><span class="puce">ech hunn</span></div>
+        <div class="ligne"><span class="tape">mioen</span><span class="fleche" aria-hidden="true">→</span><span class="puce">Moien</span></div>
+        <div class="ligne"><span class="tape">haud</span><span class="fleche" aria-hidden="true">→</span><span class="puce">Haus</span><span class="puce seconde">haut</span></div>
+        <div class="ligne"><span class="tape">Kafi</span><span class="fleche" aria-hidden="true">→</span><span class="puce">Kaffi</span></div>
+      </div>
+      <figure>
+        <img class="ecran" src="../Screenshots/lux_correction_frappe.gif" alt="Une phrase tapée avec des fautes, corrigée mot par mot en touchant la première suggestion" width="480" height="420" loading="lazy">
+        <figcaption>Tapé « echhunn geschter an der schiul gescahfft », corrigé d'un toucher à chaque faute.</figcaption>
+      </figure>
+      <ul>
+        <li>Deux mots collés se séparent, sans couper les mots composés comme « Schoulbus ».</li>
+        <li>La touche voisine est reconnue : « haud » donne d'abord « Haus », parce que le s touche le d.</li>
+        <li>La lettre doublée tapée une seule fois est retrouvée : « ales » donne « alles ».</li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <div>
+      <div class="eventail">
+        <img src="2026-10/v_bam.webp" alt="Carte commune « Bam » (arbre), cadre d'étain, paysage de printemps" width="480" height="704">
+        <img src="2026-10/v_sonn.webp" alt="Carte peu commune « Sonn » (soleil), cadre de bronze, paysage d'été" width="480" height="704">
+        <img src="2026-10/v_brell.webp" alt="Carte rare « Brëll » (lunettes), cadre d'argent, ville au soir d'automne" width="480" height="704">
+        <img src="2026-10/v_kran.webp" alt="Carte très rare « Kran » (grue), cadre d'or, nuit d'hiver étoilée" width="480" height="704">
+      </div>
+      <p class="legende-eventail">Des cartes pour découvrir le luxembourgeois : chaque mot gagné en jouant devient une carte, avec son sens, une phrase du dictionnaire officiel et un paysage du pays. Plus le mot est rare, plus le métal est noble, de l'étain à l'or.</p>
+    </div>
+
+    <section>
+      <span class="version">Le carnet</span>
+      <h2>Des cartes à collectionner et à offrir</h2>
+      <p>Vos cartes se rangent dans un carnet, qui est devenu un vrai album.</p>
+      <ul>
+        <li><strong>Des séries à compléter</strong> : les nombres, les dessins, les jeux, les paysages. Une case vide donne un indice, jamais la réponse.</li>
+        <li><strong>Offrir une carte de la main à la main</strong> : les deux téléphones côte à côte, un code à scanner, et la carte passe d'un carnet à l'autre. Elle quitte le vôtre, comme une vraie carte qu'on tend.</li>
+        <li><strong>Partager une carte en image</strong>, avec le lien pour installer le clavier.</li>
+        <li><strong>Un sceau sur les mots appris</strong>, et une petite plume sur ceux que vous avez tapés vous-même dans un vrai message.</li>
+      </ul>
+    </section>
+
+    <hr>
+
+    <section>
+      <span class="version">Tablettes</span>
+      <h2>Le clavier à la taille d'une tablette</h2>
+      <ul>
+        <li>Des touches plus hautes, et un clavier scindé en deux en paysage, à portée des pouces.</li>
+        <li>Avec un clavier Bluetooth ou un étui-clavier, seule la barre de suggestions reste à l'écran.</li>
+        <li>Les jeux à grille et le dictionnaire s'ouvrent côte à côte : la grille d'un côté, les mots de l'autre.</li>
+        <li>Tourner l'écran ne fait plus perdre la partie.</li>
+      </ul>
+      <figure>
+        <img class="large" src="2026-10/tablette.webp" alt="Tablette en paysage, le clavier scindé en deux blocs aux bords de l'écran" width="1000" height="625" loading="lazy">
+        <figcaption>Sur tablette en paysage, le clavier se partage entre les deux pouces.</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section>
+      <span class="version">Zuelwuert</span>
+      <h2>Tous les nombres de 0 à 100</h2>
+      <p>Le jeu des nombres couvre désormais toute la centaine. En Facile, il montre le nombre seul ; ensuite, une multiplication ou une addition. Vous apprenez à écrire « sechsafofzeg » et « sechsandrësseg », et à savoir pourquoi l'un perd son n.</p>
+    </section>
+
+    <hr>
+
+    <section>
+      <span class="version">Installation</span>
+      <h2>Prêt en moins d'étapes</h2>
+      <p>Le bouton d'activation ouvre directement le bon écran d'Android, l'appli vous dit quoi répondre à son avertissement, et le premier mot que vous tapez suffit à tout valider.</p>
+    </section>
+
+    <div class="bref">
+      <h2>Et pour le plaisir des yeux</h2>
+      <p>Chaque carte ouvre une fenêtre sur un lieu du pays, de la Rout Bréck à la Musel. Elle se souvient de la saison où vous l'avez gagnée : neige en hiver, feuilles en automne, feux d'artifice à la Fête nationale. Penchez le téléphone : le paysage prend du relief et la lumière court sur le cadre, de l'étain des cartes communes à l'or des très rares.</p>
+      <figure><img class="large" src="2026-10/saisons2.webp" alt="Deux cartes : « Euro » sous les fanions de la Fête nationale, « jour » dans un paysage d'automne" width="900" height="653" loading="lazy"><figcaption>Une carte gagnée à la Fête nationale garde ses fanions, une carte d'automne ses feuilles rousses.</figcaption></figure>
+    </div>
+
+    <div class="appel">
+      <p class="slogan">Vous le parlez. Maintenant, vous l'écrivez.</p>
+      <a class="bouton" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard">Mettre à jour sur Google Play</a>
+    </div>
+
+    <hr>
+
+    <footer>
+      <p>Lëtzebuergesch Clavier, gratuit sur Android, pour les 16 ans et plus. Version 37.5.0.</p>
+      <p>Une idée, un mot qui manque ? <a href="https://famibelle.github.io/LuxKeyb/feedbacks_form.html">Écrivez-nous</a>. Essayez le clavier sans l'installer avec le <a href="https://famibelle.github.io/LuxKeyb/simulateur.html">simulateur</a>.</p>
+    </footer>
+  </div>
+</article>
+</body>
+</html>
