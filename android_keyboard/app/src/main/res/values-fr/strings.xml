@@ -534,6 +534,8 @@
     <string name="sa_traductions_et_exemples_issus_du">Traductions et exemples issus du Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch, CC0. Exemples traduits par le corpus de traduction du même Zenter, CC0.</string>
     <string name="sa_entrez_au_moins_deux_lettres">Entrez au moins deux lettres.</string>
     <string name="sa_aucun_resultat_pour_les_noms">Aucun résultat pour « %1$s ».\nLes noms propres et les noms de lieux n\'ont pas de traduction dans le dictionnaire officiel.</string>
+    <string name="wb_nombre_secrit">%1$s s\'écrit « %2$s ».</string>
+    <string name="wb_nombre_en_chiffres">Au-delà de 100, les nombres et les années s\'écrivent en chiffres, comme dans le dictionnaire officiel.</string>
     <string name="sa_en_francais">EN FRANÇAIS</string>
     <string name="sa_autres_formes">AUTRES FORMES</string>
     <string name="sa_copier_le_mot">Copier le mot</string>

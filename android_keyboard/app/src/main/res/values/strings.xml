@@ -538,6 +538,8 @@
     <string name="sa_traductions_et_exemples_issus_du">Translations and examples from the Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch, CC0. Example translations from the translation corpus of the same Zenter, CC0.</string>
     <string name="sa_entrez_au_moins_deux_lettres">Enter at least two letters.</string>
     <string name="sa_aucun_resultat_pour_les_noms">No results for “%1$s”.\nProper names and place names have no translation in the official dictionary.</string>
+    <string name="wb_nombre_secrit">%1$s is written “%2$s”.</string>
+    <string name="wb_nombre_en_chiffres">Above 100, numbers and years are written in digits, as in the official dictionary.</string>
     <string name="sa_en_francais">IN ENGLISH</string>
     <string name="sa_autres_formes">OTHER FORMS</string>
     <string name="sa_copier_le_mot">Copy the word</string>

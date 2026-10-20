@@ -534,6 +534,8 @@
     <string name="sa_traductions_et_exemples_issus_du">Iwwersetzungen a Beispiller aus dem Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch, CC0. Iwwersetzunge vun de Beispiller aus dem Iwwersetzungskorpus vum selwechten Zenter, CC0.</string>
     <string name="sa_entrez_au_moins_deux_lettres">Gitt mindestens zwee Buschtawen an.</string>
     <string name="sa_aucun_resultat_pour_les_noms">Keng Resultater fir „%1$s“.\nEegennimm an Uertschaftsnimm hunn am offiziellen Dictionnaire keng Iwwersetzung.</string>
+    <string name="wb_nombre_secrit">%1$s gëtt „%2$s“ geschriwwen.</string>
+    <string name="wb_nombre_en_chiffres">Iwwer 100 ginn d\'Zuelen an d\'Joreszuelen an Zifferen geschriwwen, wéi am offiziellen Dictionnaire.</string>
     <string name="sa_en_francais">OP FRANSÉISCH</string>
     <string name="sa_autres_formes">ANER FORMEN</string>
     <string name="sa_copier_le_mot">D\'Wuert kopéieren</string>

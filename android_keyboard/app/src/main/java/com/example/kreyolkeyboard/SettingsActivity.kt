@@ -81,6 +81,7 @@ import com.example.kreyolkeyboard.carnet.Series
 import com.example.kreyolkeyboard.zuelen.ZuelenData
 import com.example.kreyolkeyboard.zuelen.ZuelenDifficulty
 import com.example.kreyolkeyboard.zuelen.ZuelenQuestion
+import com.example.kreyolkeyboard.zuelen.ZuelenSpeller
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -10463,7 +10464,25 @@ class SettingsActivity : AppCompatActivity() {
             val activity = activity as? SettingsActivity ?: return
             conteneurResultats.removeAllViews()
 
-            val nettoyee = TranslationDictionary.nettoyerRequete(requete)
+            var nettoyee = TranslationDictionary.nettoyerRequete(requete)
+
+            // Le LOD n'a aucune entrée en chiffres : « 11 » ne trouvait rien.
+            // Jusqu'à 100, le nombre devient sa forme vérifiée du Zuelwuert et
+            // la recherche part sur elle. Au-delà, aucune source n'atteste
+            // « 1989 » en lettres, et le LOD écrit lui-même ses années en
+            // chiffres : on le dit plutôt que d'inventer une orthographe.
+            var annonce: String? = null
+            if (nettoyee.isNotEmpty() && nettoyee.all { it in '0'..'9' }) {
+                val nombre = nettoyee.trimStart('0').ifEmpty { "0" }
+                val enLettres = nombre.toIntOrNull()?.let { ZuelenSpeller.enLettres(it) } ?: ""
+                if (enLettres.isEmpty()) {
+                    tvEtat.text = getString(R.string.wb_nombre_en_chiffres)
+                    return
+                }
+                annonce = getString(R.string.wb_nombre_secrit, nombre, enLettres)
+                nettoyee = enLettres
+            }
+
             if (nettoyee.length < 2) {
                 tvEtat.text = getString(R.string.sa_entrez_au_moins_deux_lettres)
                 return
@@ -10471,11 +10490,12 @@ class SettingsActivity : AppCompatActivity() {
 
             val resultats = TranslationDictionary.rechercher(activity, nettoyee)
             if (resultats.isEmpty()) {
-                tvEtat.text = getString(R.string.sa_aucun_resultat_pour_les_noms, nettoyee)
+                tvEtat.text = annonce ?: getString(R.string.sa_aucun_resultat_pour_les_noms, nettoyee)
                 return
             }
 
-            tvEtat.text = resources.getQuantityString(R.plurals.resultats, resultats.size, resultats.size)
+            tvEtat.text = annonce
+                ?: resources.getQuantityString(R.plurals.resultats, resultats.size, resultats.size)
 
             resultats.forEachIndexed { rang, resultat ->
                 conteneurResultats.addView(ligneResultat(activity, resultat, rang))
