@@ -185,8 +185,8 @@ continuar a escrever em luxemburguês.** Cada partida traz-lhe uma palavra que
 não teria procurado, e cada palavra ganha vai para uma coleção que se revê
 sozinha.
 
-Cada palavra que usa faz subir o seu nível, de **Ufänker** a
-**Sproochenmeeschter**, conforme a parte do dicionário que já utilizou. Sete
+Cada palavra que usa faz subir o seu nível, de **Ufänger** a
+**Sproochemeeschter**, conforme a parte do dicionário que já utilizou. Sete
 jogos completam o percurso: **Wuertsich** (sopa de letras), **Wuertmix**
 (palavras baralhadas), **Wuertriet**, em que adivinha uma palavra de cinco
 letras em seis tentativas, **Wuertlück**, uma frase luxemburguesa autêntica a
@@ -197,7 +197,7 @@ que falta uma palavra, **Zuelwuert**, em que escreve por extenso os números de 
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_niveaux.png" style="width:100%;border-radius:6px;"
-         alt="Ecrã de progresso: nível Ufänker, 0,5 % do dicionário descoberto, palavra do dia e palavras a descobrir">
+         alt="Ecrã de progresso: nível Ufänger, 0,5 % do dicionário descoberto, palavra do dia e palavras a descobrir">
     <figcaption>Progresso e palavra do dia</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">

@@ -25,7 +25,7 @@ lëtzebuergesch comme une langue à part entière.
 | **Emoji** | Panneau complet, tons de peau par appui long | Panneau + recherche, GIF, autocollants, Emoji Kitchen | Panneau + recherche, autocollants |
 | **Presse-papiers, traduction, écriture manuscrite** | Non | Oui | Partiellement |
 | **Thèmes et personnalisation** | Palette aux couleurs luxembourgeoises, réglages dédiés | Très étendus | Très limités |
-| **Progression et jeux** | **8 niveaux** (Ufänker → Sproochenmeeschter) et 3 jeux de vocabulaire (Wuertsich, Wuertmix, Wuertriet) | Aucun | Aucun |
+| **Progression et jeux** | **8 niveaux** (Ufänger → Sproochemeeschter) et 3 jeux de vocabulaire (Wuertsich, Wuertmix, Wuertriet) | Aucun | Aucun |
 | **Fonctionne hors ligne** | Oui pour la frappe, aucune requête réseau ; la dictée demande le réseau | Oui pour la frappe ; certaines fonctions demandent le réseau | Oui pour la frappe |
 | **Données de frappe** | **Seuls les mots déjà présents au dictionnaire sont comptés**, en local ; les champs sensibles sont exclus ; rien ne quitte l'appareil | Traitement embarqué + apprentissage fédéré, compte Google | Traitement embarqué, confidentialité différentielle |
 | **Code source** | Public, MIT — vérifiable ligne à ligne | Fermé | Fermé |

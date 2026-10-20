@@ -187,8 +187,8 @@ weiter Luxemburgisch zu schreiben.** Jede Runde bringt Ihnen ein Wort, nach dem
 Sie nicht gesucht hätten, und jedes gewonnene Wort kommt in eine Sammlung, die
 sich von selbst wiederholt.
 
-Jedes Wort, das Sie verwenden, bringt Sie eine Stufe weiter, vom **Ufänker**
-bis zum **Sproochenmeeschter**, je nachdem, wie viel vom Wörterbuch Sie schon
+Jedes Wort, das Sie verwenden, bringt Sie eine Stufe weiter, vom **Ufänger**
+bis zum **Sproochemeeschter**, je nachdem, wie viel vom Wörterbuch Sie schon
 benutzt haben. Sieben Spiele ergänzen den Weg: **Wuertsich** (Buchstabensalat),
 **Wuertmix** (Wörter entwirren), **Wuertriet**, bei dem Sie ein Wort mit fünf
 Buchstaben in sechs Versuchen erraten, **Wuertlück**, ein echter luxemburgischer
@@ -200,7 +200,7 @@ die hineingehören.
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_niveaux.png" style="width:100%;border-radius:6px;"
-         alt="Fortschrittsanzeige: Stufe Ufänker, 0,5 % des Wörterbuchs entdeckt, Wort des Tages und Wörter zum Entdecken">
+         alt="Fortschrittsanzeige: Stufe Ufänger, 0,5 % des Wörterbuchs entdeckt, Wort des Tages und Wörter zum Entdecken">
     <figcaption>Fortschritt und Wort des Tages</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">

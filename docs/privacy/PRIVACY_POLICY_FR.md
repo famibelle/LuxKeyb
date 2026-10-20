@@ -217,7 +217,7 @@ Les données suivantes existent **uniquement sur votre appareil** et ne sont **j
 
 2. **Progression de Gamification :**
    - Nombre de mots appris (combien de mots du dictionnaire vous avez tapés)
-   - Niveau actuel (Ufänker, Klengen, Fléisseg, Geschéit, Renert, Roude Léiw, Sproochenkënner ou Sproochenmeeschter)
+   - Niveau actuel (Ufänger, Klengen, Fléisseg, Geschéit, Renert, Roude Léiw, Sproochekënner ou Sproochemeeschter)
    - Récompenses débloquées (ex: "100 premiers mots tapés")
    - Stockés localement dans la base de données de l'app
    - Non synchronisés avec le cloud ou d'autres appareils
@@ -571,7 +571,7 @@ Notre app inclut des fonctionnalités de gamification optionnelles pour rendre l
 
 ### Comment Fonctionne la Gamification :
 
-- **8 Niveaux :** Ufänker → Klengen → Fléisseg → Geschéit → Renert → Roude Léiw → Sproochenkënner → Sproochenmeeschter
+- **8 Niveaux :** Ufänger → Klengen → Fléisseg → Geschéit → Renert → Roude Léiw → Sproochekënner → Sproochemeeschter
 - **Suivi de Progression :** Compte combien de mots luxembourgeois uniques vous avez tapés
 - **Récompenses :** Débloque des badges pour des jalons (ex: "100 premiers mots")
 

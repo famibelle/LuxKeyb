@@ -176,8 +176,8 @@ stop being underlined in red in Messages, Notes or your messaging apps.
 keep writing Luxembourgish.** Each round brings you a word you would not have
 looked for, and each word you win goes into a collection that reviews itself.
 
-Every word you use raises your level, from **Ufänker** to
-**Sproochenmeeschter**, according to how much of the dictionary you have already
+Every word you use raises your level, from **Ufänger** to
+**Sproochemeeschter**, according to how much of the dictionary you have already
 used. Seven games complete the journey: **Wuertsich** (word search),
 **Wuertmix** (scrambled words), **Wuertriet**, where you guess a five-letter
 word in six tries, **Wuertlück**, a real Luxembourgish sentence with one word
@@ -188,7 +188,7 @@ result of a sum, in full, **Kräizwuert**, a crossword with clues in your langua
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_niveaux.png" style="width:100%;border-radius:6px;"
-         alt="Progress screen: Ufänker level, 0.5% of the dictionary discovered, word of the day and words to discover">
+         alt="Progress screen: Ufänger level, 0.5% of the dictionary discovered, word of the day and words to discover">
     <figcaption>Progress and word of the day</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">

@@ -418,7 +418,7 @@
     <string name="sa_dans_la_grille_du_carnet">🗂️ In the collection grid</string>
     <string name="sa_la_petite_carte_ne_garde">The small card keeps only what you need to choose which one to open:\n\nA. The word.\n\nB. The emoji of the game or games where you won it, then the start of its meaning.\n\nC. Six bars, one per Leitner box compartment: they fill up as the card progresses. Here, “Waasser” has passed one.</string>
     <string name="sa_progression">🏆 Progress</string>
-    <string name="sa_chaque_mot_que_vous_tapez">Every word you type moves your mastery of Lëtzebuergesch forward, shown in the “Mäi Lëtzebuergesch” tab. Eight levels mark the way: 🌍 Ufänker, 🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochenkënner and 🧙 Sproochenmeeschter.</string>
+    <string name="sa_chaque_mot_que_vous_tapez">Every word you type moves your mastery of Lëtzebuergesch forward, shown in the “Mäi Lëtzebuergesch” tab. Eight levels mark the way: 🌍 Ufänger, 🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochekënner and 🧙 Sproochemeeschter.</string>
     <string name="sa_questions_frequentes">❓ Frequently asked questions</string>
     <string name="sa_le_clavier_luxembourgeois_apparait_pas">The Luxembourgish keyboard doesn\'t appear when I type?\n→ Check that it is selected (not just turned on): Haut tab, “Keyboard installed”, step 2, or tap the keyboard icon in the navigation bar at the bottom of the screen while you type.\n\nHow do I switch to another keyboard for a moment?\n→ Long press the space bar of the Luxembourgish keyboard, then choose another keyboard in the list. To come back to Luxembourgish, use the keyboard icon in the navigation bar: on other keyboards, a long press on the space bar only changes their own language.\n\nIs my data sent anywhere?\n→ No: the keyboard works entirely on your device.</string>
     <string name="sa_lire_la_politique_de_confidentialite">Read the privacy policy</string>
@@ -590,7 +590,7 @@
         <item>The Enter key adapts to the field you\'re typing in: “Search”, “Send”, or simply a new line.</item>
         <item>The ranking of your most used words is in the “Mäi Lëtzebuergesch” tab.</item>
         <item>Backspace deletes a whole emoji, skin tone included: no more broken character left behind.</item>
-        <item>Seven levels mark your journey, from Ufänker to Sproochenkënner. There is an eighth: it\'s up to you to discover it.</item>
+        <item>Seven levels mark your journey, from Ufänger to Sproochekënner. There is an eighth: it\'s up to you to discover it.</item>
         <item>Suggestions are based on a corpus of contemporary Luxembourgish, described in “About”, at the bottom of the Haut tab.</item>
         <item>The first letter of each sentence is capitalised automatically, as on any standard keyboard.</item>
         <item>From “Mäi Lëtzebuergesch”, share your level card with your family and friends.</item>

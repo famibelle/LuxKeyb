@@ -27,14 +27,14 @@ object LuxLevels {
 
     /** Du plus bas (index 0) au plus haut (index 7). */
     val LEVELS = listOf(
-        Level("🌍", "Ufänker"),
+        Level("🌍", "Ufänger"),
         Level("🌱", "Klengen"),
         Level("🔥", "Fléisseg"),
         Level("💎", "Geschéit"),
         Level("🦊", "Renert"),
         Level("🦁", "Roude Léiw"),
-        Level("👑", "Sproochenkënner"),
-        Level("🧙", "Sproochenmeeschter")
+        Level("👑", "Sproochekënner"),
+        Level("🧙", "Sproochemeeschter")
     )
 
     const val MAX_INDEX = 7
@@ -42,17 +42,17 @@ object LuxLevels {
     /**
      * Part du dictionnaire à découvrir pour atteindre chaque niveau.
      * Progression volontairement resserrée en bas (1,5 % suffit pour quitter
-     * Ufänker) afin que les premiers paliers restent atteignables.
+     * Ufänger) afin que les premiers paliers restent atteignables.
      */
     private val PERCENTAGES = doubleArrayOf(
-        0.0,    // 0: Ufänker (démarrage)
+        0.0,    // 0: Ufänger (démarrage)
         0.015,  // 1: Klengen (1.5% - premiers pas encourageants)
         0.05,   // 2: Fléisseg (5% - assidu)
         0.12,   // 3: Geschéit (12% - au milieu)
         0.25,   // 4: Renert (25% - quart du chemin)
         0.45,   // 5: Roude Léiw (45% - presque la moitié)
-        0.70,   // 6: Sproochenkënner (70% - expert confirmé)
-        1.0     // 7: Sproochenmeeschter (100% - tous les mots!)
+        0.70,   // 6: Sproochekënner (70% - expert confirmé)
+        1.0     // 7: Sproochemeeschter (100% - tous les mots!)
     )
 
     /** Nombre de mots distincts requis pour chaque niveau. */
@@ -76,7 +76,7 @@ object LuxLevels {
 
     /**
      * Nom du niveau suivant et nombre de mots restants pour l'atteindre.
-     * Au niveau maximum, renvoie « Sproochenmeeschter » et 0.
+     * Au niveau maximum, renvoie « Sproochemeeschter » et 0.
      */
     fun nextLevelInfo(wordsDiscovered: Int, totalWords: Int): Pair<String, Int> {
         val currentIndex = indexFor(wordsDiscovered, totalWords)

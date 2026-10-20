@@ -414,7 +414,7 @@
     <string name="sa_dans_la_grille_du_carnet">🗂️ Im Raster der Sammlung</string>
     <string name="sa_la_petite_carte_ne_garde">Die kleine Karte zeigt nur das Nötigste, um zu entscheiden, welche Sie öffnen:\n\nA. Das Wort.\n\nB. Das Emoji des Spiels oder der Spiele, in denen Sie es gewonnen haben, dann der Anfang der Bedeutung.\n\nC. Sechs Striche, einer pro Fach der Lernkartei: Sie füllen sich, während die Karte vorankommt. Hier hat „Waasser“ eins hinter sich.</string>
     <string name="sa_progression">🏆 Fortschritt</string>
-    <string name="sa_chaque_mot_que_vous_tapez">Jedes Wort, das Sie tippen, bringt Ihre Beherrschung des Lëtzebuergeschen voran, sichtbar im Tab „Mäi Lëtzebuergesch“. Acht Stufen markieren den Weg: 🌍 Ufänker, 🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochenkënner und 🧙 Sproochenmeeschter.</string>
+    <string name="sa_chaque_mot_que_vous_tapez">Jedes Wort, das Sie tippen, bringt Ihre Beherrschung des Lëtzebuergeschen voran, sichtbar im Tab „Mäi Lëtzebuergesch“. Acht Stufen markieren den Weg: 🌍 Ufänger, 🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochekënner und 🧙 Sproochemeeschter.</string>
     <string name="sa_questions_frequentes">❓ Häufige Fragen</string>
     <string name="sa_le_clavier_luxembourgeois_apparait_pas">Die luxemburgische Tastatur erscheint nicht, wenn ich tippe?\n→ Prüfen Sie, ob sie ausgewählt ist (nicht nur aktiviert): Tab Haut, „Tastatur installiert“, Schritt 2, oder tippen Sie beim Schreiben auf das Tastatursymbol in der Navigationsleiste unten auf dem Bildschirm.\n\nWie wechsle ich kurz zu einer anderen Tastatur?\n→ Leertaste der luxemburgischen Tastatur lange drücken und dann eine andere Tastatur in der Liste wählen. Zurück zu Luxemburgisch geht es über das Tastatursymbol in der Navigationsleiste: Bei anderen Tastaturen ändert langes Drücken der Leertaste nur deren eigene Sprache.\n\nWerden meine Daten irgendwohin gesendet?\n→ Nein: Die Tastatur arbeitet vollständig lokal.</string>
     <string name="sa_lire_la_politique_de_confidentialite">Datenschutzerklärung lesen</string>
@@ -586,7 +586,7 @@
         <item>Die Eingabetaste passt sich dem Feld an, in dem Sie schreiben: „Suchen“, „Senden“ oder einfach ein Zeilenumbruch.</item>
         <item>Die Rangliste Ihrer meistverwendeten Wörter finden Sie im Tab „Mäi Lëtzebuergesch“.</item>
         <item>Die Rücktaste löscht ein ganzes Emoji, Hautfarbe inklusive: Kein kaputtes Zeichen bleibt zurück.</item>
-        <item>Sieben Stufen markieren Ihren Weg, von Ufänker bis Sproochenkënner. Es gibt eine achte: Entdecken Sie sie selbst.</item>
+        <item>Sieben Stufen markieren Ihren Weg, von Ufänger bis Sproochekënner. Es gibt eine achte: Entdecken Sie sie selbst.</item>
         <item>Die Vorschläge beruhen auf einem Korpus des heutigen Luxemburgischen, beschrieben unter „Über die App“ unten im Tab Haut.</item>
         <item>Der erste Buchstabe jedes Satzes wird automatisch großgeschrieben, wie bei einer üblichen Tastatur.</item>
         <item>Teilen Sie Ihre Stufenkarte aus „Mäi Lëtzebuergesch“ mit Familie und Freunden.</item>

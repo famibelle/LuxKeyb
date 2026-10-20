@@ -414,7 +414,7 @@
     <string name="sa_dans_la_grille_du_carnet">🗂️ Na grelha da coleção</string>
     <string name="sa_la_petite_carte_ne_garde">A carta pequena só guarda o essencial para escolher qual abrir:\n\nA. A palavra.\n\nB. O emoji do jogo ou dos jogos onde a ganhou, e depois o início do sentido.\n\nC. Seis traços, um por compartimento da Caixa de Leitner: vão-se preenchendo à medida que a carta avança. Aqui, «Waasser» já passou um.</string>
     <string name="sa_progression">🏆 Progresso</string>
-    <string name="sa_chaque_mot_que_vous_tapez">Cada palavra que escreve faz avançar o seu domínio do lëtzebuergesch, visível no separador «Mäi Lëtzebuergesch». Oito níveis marcam o percurso: 🌍 Ufänker, 🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochenkënner e 🧙 Sproochenmeeschter.</string>
+    <string name="sa_chaque_mot_que_vous_tapez">Cada palavra que escreve faz avançar o seu domínio do lëtzebuergesch, visível no separador «Mäi Lëtzebuergesch». Oito níveis marcam o percurso: 🌍 Ufänger, 🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochekënner e 🧙 Sproochemeeschter.</string>
     <string name="sa_questions_frequentes">❓ Perguntas frequentes</string>
     <string name="sa_le_clavier_luxembourgeois_apparait_pas">O teclado luxemburguês não aparece quando escrevo?\n→ Verifique se está selecionado (e não apenas ativado): separador Haut, «Teclado instalado», passo 2, ou toque no ícone de teclado da barra de navegação, em baixo no ecrã, enquanto escreve.\n\nComo mudo para outro teclado por um momento?\n→ Toque longo na barra de espaço do teclado luxemburguês e escolha outro teclado na lista. Para voltar ao luxemburguês, use o ícone de teclado da barra de navegação: nos outros teclados, o toque longo na barra de espaço só muda o idioma deles.\n\nOs meus dados são enviados para algum lado?\n→ Não: o teclado funciona inteiramente no aparelho.</string>
     <string name="sa_lire_la_politique_de_confidentialite">Ler a política de privacidade</string>
@@ -586,7 +586,7 @@
         <item>A tecla Enter adapta-se ao campo onde escreve: «Pesquisar», «Enviar», ou simplesmente uma nova linha.</item>
         <item>A classificação das suas palavras mais usadas está no separador «Mäi Lëtzebuergesch».</item>
         <item>A tecla de retrocesso apaga um emoji inteiro, cor da pele incluída: acabaram os caracteres partidos.</item>
-        <item>Sete níveis marcam o seu percurso, de Ufänker a Sproochenkënner. Existe um oitavo: cabe-lhe a si descobri-lo.</item>
+        <item>Sete níveis marcam o seu percurso, de Ufänger a Sproochekënner. Existe um oitavo: cabe-lhe a si descobri-lo.</item>
         <item>As sugestões assentam num corpus de luxemburguês contemporâneo, descrito em «Acerca de», no fundo do separador Haut.</item>
         <item>A primeira letra de cada frase fica automaticamente em maiúscula, como num teclado habitual.</item>
         <item>A partir de «Mäi Lëtzebuergesch», partilhe o seu cartão de nível com a família e os amigos.</item>

@@ -33,7 +33,7 @@ marche à suivre est détaillée pas à pas.
 
 À chaque mot que vous écrivez en Lëtzebuergesch, l'application :
 - ✅ **Compte les mots découverts** - Votre vocabulaire s'enrichit automatiquement
-- 📈 **Calcule votre niveau** - Du débutant "Ufänker 🌍" au maître "Sproochenmeeschter 🧙"
+- 📈 **Calcule votre niveau** - Du débutant "Ufänger 🌍" au maître "Sproochemeeschter 🧙"
 - 🎯 **Vous motive** - Visualisez combien de mots il vous reste pour atteindre le niveau suivant
 
 ### 🏆 8 niveaux de maîtrise du luxembourgeois
@@ -42,14 +42,14 @@ Chaque niveau correspond à une part du dictionnaire déjà employée, avec des 
 
 | Niveau | Badge | Nom | Part du dictionnaire | Signification |
 |--------|-------|-----|----------------------|---------------|
-| 1 | 🌍 | **Ufänker** | départ | Débutant absolu - Premiers pas |
+| 1 | 🌍 | **Ufänger** | départ | Débutant absolu - Premiers pas |
 | 2 | 🌱 | **Klengen** | 1,5 % | Vous commencez votre apprentissage |
 | 3 | 🔥 | **Fléisseg** | 5 % | Vous vous débrouillez bien ! |
 | 4 | 💎 | **Geschéit** | 12 % | Vous avez de bonnes connaissances |
 | 5 | 🦊 | **Renert** | 25 % | Rusé comme le renard de Rodange |
 | 6 | 🦁 | **Roude Léiw** | 45 % | Le lion des armoiries |
-| 7 | 👑 | **Sproochenkënner** | 70 % | Vous maîtrisez le luxembourgeois ! |
-| 8 | 🧙 | **Sproochenmeeschter** | 100 % | Tous les mots du dictionnaire découverts |
+| 7 | 👑 | **Sproochekënner** | 70 % | Vous maîtrisez le luxembourgeois ! |
+| 8 | 🧙 | **Sproochemeeschter** | 100 % | Tous les mots du dictionnaire découverts |
 
 ### 💡 Visualisez votre apprentissage
 

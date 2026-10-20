@@ -207,7 +207,7 @@ Au-delà du clavier lui-même, l'application tient en quatre destinations :
 
 Chaque mot que vous employez fait progresser votre maîtrise du Lëtzebuergesch,
 visible dans l'onglet **« Mäi Lëtzebuergesch »**. Huit niveaux jalonnent le
-parcours, d'**Ufänker** à **Sproochenmeeschter**, selon la part du dictionnaire
+parcours, d'**Ufänger** à **Sproochemeeschter**, selon la part du dictionnaire
 que vous avez déjà utilisée. Vous pouvez partager votre carte de niveau.
 
 Sept jeux sont réunis derrière l'onglet **« Spiller »** :

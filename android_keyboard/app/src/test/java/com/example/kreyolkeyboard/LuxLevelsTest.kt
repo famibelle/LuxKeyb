@@ -22,8 +22,8 @@ class LuxLevelsTest {
         assertEquals(8, LuxLevels.LEVELS.size)
         assertEquals(
             listOf(
-                "Ufänker", "Klengen", "Fléisseg", "Geschéit",
-                "Renert", "Roude Léiw", "Sproochenkënner", "Sproochenmeeschter"
+                "Ufänger", "Klengen", "Fléisseg", "Geschéit",
+                "Renert", "Roude Léiw", "Sproochekënner", "Sproochemeeschter"
             ),
             LuxLevels.LEVELS.map { it.name }
         )
@@ -33,21 +33,21 @@ class LuxLevelsTest {
     fun `les seuils reprennent les pourcentages d'origine`() {
         val thresholds = LuxLevels.thresholds(totalWords)
 
-        assertEquals(0, thresholds[0])                        // Ufänker : départ
+        assertEquals(0, thresholds[0])                        // Ufänger : départ
         assertEquals((totalWords * 0.015).toInt(), thresholds[1])
         assertEquals((totalWords * 0.05).toInt(), thresholds[2])
         assertEquals((totalWords * 0.12).toInt(), thresholds[3])
         assertEquals((totalWords * 0.25).toInt(), thresholds[4])
         assertEquals((totalWords * 0.45).toInt(), thresholds[5])
         assertEquals((totalWords * 0.70).toInt(), thresholds[6])
-        // Sproochenmeeschter exige le dictionnaire entier, sans arrondi à la baisse
+        // Sproochemeeschter exige le dictionnaire entier, sans arrondi à la baisse
         assertEquals(totalWords, thresholds[7])
     }
 
     @Test
-    fun `un dictionnaire vierge laisse au niveau Ufänker`() {
+    fun `un dictionnaire vierge laisse au niveau Ufänger`() {
         assertEquals(0, LuxLevels.indexFor(0, totalWords))
-        assertEquals("🌍 Ufänker", LuxLevels.labelFor(0, totalWords))
+        assertEquals("🌍 Ufänger", LuxLevels.labelFor(0, totalWords))
     }
 
     @Test
@@ -60,9 +60,9 @@ class LuxLevelsTest {
     }
 
     @Test
-    fun `le dictionnaire entier donne Sproochenmeeschter`() {
+    fun `le dictionnaire entier donne Sproochemeeschter`() {
         assertEquals(LuxLevels.MAX_INDEX, LuxLevels.indexFor(totalWords, totalWords))
-        assertTrue(LuxLevels.labelFor(totalWords, totalWords).endsWith("Sproochenmeeschter"))
+        assertTrue(LuxLevels.labelFor(totalWords, totalWords).endsWith("Sproochemeeschter"))
     }
 
     @Test
@@ -78,7 +78,7 @@ class LuxLevelsTest {
     fun `au niveau maximum il ne reste rien a decouvrir`() {
         val (nextName, remaining) = LuxLevels.nextLevelInfo(totalWords, totalWords)
 
-        assertEquals("Sproochenmeeschter", nextName)
+        assertEquals("Sproochemeeschter", nextName)
         assertEquals(0, remaining)
     }
 }

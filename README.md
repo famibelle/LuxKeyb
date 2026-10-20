@@ -93,7 +93,7 @@ serait l'interface, pas la langue.
 - Écrire le mot au clavier, dans n'importe quelle application, compte comme une révision réussie. Ce compteur reste sur l'appareil et n'est jamais sauvegardé
 
 ### 🏆 **Progression et jeux**
-- Huit niveaux, d'**Ufänker** à **Sproochenmeeschter**, selon la part du dictionnaire employée
+- Huit niveaux, d'**Ufänger** à **Sproochemeeschter**, selon la part du dictionnaire employée
 - Carte de niveau partageable
 - Sept jeux de vocabulaire : **Wuertsich** (mots mêlés), **Wuertmix** (anagrammes), **Wuertriet** (six essais), **Wuertlück** (texte à trou), **Zuelwuert** (les nombres en toutes lettres), **Kräizwuert** (mots croisés) et **Wuertplaz** (mots à placer)
 

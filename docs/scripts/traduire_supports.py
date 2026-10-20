@@ -541,7 +541,7 @@ INVARIANTS = {
     "Lëtzebuergesch Clavier", "LËTZEBUERGESCH CLAVIER", "Schreif Lëtzebuergesch.", "Schreif",
     "Lëtzebuergesch.", "ë · ä · é", "é, ä, ë", "Mir schwätze Lëtzebuergesch, elo schreiwe mir et och.",
     "Mir wëlle bleiwe wat mir sinn.", "Däi Lëtzebuergesch, op dengem Telefon.", "famibelle.github.io/LuxKeyb",
-    "· famibelle.github.io/LuxKeyb", "Web", "Ufänker", "Sproochenmeeschter", "LuxAlign", "LETZ",
+    "· famibelle.github.io/LuxKeyb", "Web", "Ufänger", "Sproochemeeschter", "LuxAlign", "LETZ",
     "Lëtzebuerger Online Dictionnaire", "Schueb", "Schueberfouer", "op der", "Stad", "Police", "Rue",
     "letzebuergesch", "Lëtzebuergesch", "Changer de thème", "Kontakt",
     # Identiques en luxembourgeois, et traduits par leur entrée dans les autres langues.

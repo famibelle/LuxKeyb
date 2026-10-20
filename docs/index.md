@@ -181,8 +181,8 @@ d'écrire encore du luxembourgeois.** Chaque partie fait rencontrer un mot qu'on
 n'aurait pas cherché, et chaque mot gagné vient grossir un carnet qui se révise
 tout seul.
 
-Chaque mot que vous employez fait avancer votre niveau, d'**Ufänker** à
-**Sproochenmeeschter**, selon la part du dictionnaire que vous avez déjà
+Chaque mot que vous employez fait avancer votre niveau, d'**Ufänger** à
+**Sproochemeeschter**, selon la part du dictionnaire que vous avez déjà
 utilisée. Sept jeux complètent le parcours : **Wuertsich** (mots mêlés),
 **Wuertmix** (mots mélangés), **Wuertriet**, où il faut deviner un mot de cinq
 lettres en six essais, **Wuertlück**, une phrase luxembourgeoise authentique à
@@ -194,7 +194,7 @@ mots à y caser.
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_niveaux.png" style="width:100%;border-radius:6px;"
-         alt="Écran de progression : niveau Ufänker, 0,5 % du dictionnaire découvert, mot du jour et mots à découvrir">
+         alt="Écran de progression : niveau Ufänger, 0,5 % du dictionnaire découvert, mot du jour et mots à découvrir">
     <figcaption>Progression et mot du jour</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">

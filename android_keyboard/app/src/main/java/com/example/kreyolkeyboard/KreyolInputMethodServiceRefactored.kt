@@ -835,7 +835,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     /**
      * Crée la zone des suggestions : deux rangées empilées (Lëtzebuergesch puis Français) pour
      * que le français reste toujours entièrement visible, sans scroll ni troncature,
-     * même quand les suggestions luxembourgeoises sont longues ("Sproochenmeeschter"). La rangée
+     * même quand les suggestions luxembourgeoises sont longues ("Sproochemeeschter"). La rangée
      * française reste toujours réservée en hauteur (INVISIBLE, jamais GONE) même
      * quand elle est vide : un GONE/VISIBLE dynamique décale toutes les rangées du
      * clavier en dessous pendant la frappe (ex. au franchissement du seuil de 3
@@ -1927,7 +1927,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     /**
      * 🎯 Affiche les suggestions bilingues sur deux rangées empilées (Lëtzebuergesch en haut,
      * Français en bas) : le français reste toujours entièrement visible, sans scroll
-     * ni troncature, même quand une suggestion luxembourgeoise est longue ("Sproochenmeeschter"). La
+     * ni troncature, même quand une suggestion luxembourgeoise est longue ("Sproochemeeschter"). La
      * rangée française se masque (hauteur nulle) quand elle est vide.
      */
     private fun displayBilingualSuggestions(suggestions: List<BilingualSuggestion>) {

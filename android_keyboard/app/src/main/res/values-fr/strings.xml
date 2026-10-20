@@ -414,7 +414,7 @@
     <string name="sa_dans_la_grille_du_carnet">🗂️ Dans la grille du carnet</string>
     <string name="sa_la_petite_carte_ne_garde">La petite carte ne garde que l\'essentiel pour choisir laquelle ouvrir :\n\nA. Le mot.\n\nB. L\'emoji du ou des jeux où vous l\'avez gagné, puis le début du sens.\n\nC. Six traits, un par casier de la Boîte de Leitner : ils se remplissent à mesure que la carte progresse. Ici, « Waasser » en a franchi un.</string>
     <string name="sa_progression">🏆 Progression</string>
-    <string name="sa_chaque_mot_que_vous_tapez">Chaque mot que vous tapez fait progresser votre maîtrise du lëtzebuergesch, visible dans l\'onglet « Mäi Lëtzebuergesch ». Huit niveaux jalonnent le parcours : 🌍 Ufänker, 🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochenkënner et 🧙 Sproochenmeeschter.</string>
+    <string name="sa_chaque_mot_que_vous_tapez">Chaque mot que vous tapez fait progresser votre maîtrise du lëtzebuergesch, visible dans l\'onglet « Mäi Lëtzebuergesch ». Huit niveaux jalonnent le parcours : 🌍 Ufänger, 🌱 Klengen, 🔥 Fléisseg, 💎 Geschéit, 🦊 Renert, 🦁 Roude Léiw, 👑 Sproochekënner et 🧙 Sproochemeeschter.</string>
     <string name="sa_questions_frequentes">❓ Questions fréquentes</string>
     <string name="sa_le_clavier_luxembourgeois_apparait_pas">Le clavier luxembourgeois n\'apparaît pas quand je tape ?\n→ Vérifiez qu\'il est bien sélectionné (pas seulement activé) : onglet Haut, « Clavier installé », étape 2, ou touchez l\'icône de clavier de la barre de navigation, en bas de l\'écran, pendant que vous écrivez.\n\nComment revenir à un autre clavier ponctuellement ?\n→ Appui long sur la barre d\'espace du clavier luxembourgeois, puis choisissez un autre clavier dans la liste. Le retour au luxembourgeois passe par l\'icône de clavier de la barre de navigation : sur les autres claviers, l\'appui long sur la barre d\'espace ne change que leur propre langue.\n\nMes données sont-elles envoyées quelque part ?\n→ Non : le clavier fonctionne entièrement en local.</string>
     <string name="sa_lire_la_politique_de_confidentialite">Lire la politique de confidentialité</string>
@@ -586,7 +586,7 @@
         <item>La touche Entrée s\'adapte au champ où vous écrivez : « Rechercher », « Envoyer », ou simplement un retour à la ligne.</item>
         <item>Le classement de vos mots les plus utilisés se trouve dans l\'onglet « Mäi Lëtzebuergesch ».</item>
         <item>Le retour arrière efface un emoji en entier, couleur de peau comprise : plus de caractère cassé à la place.</item>
-        <item>Sept niveaux jalonnent votre parcours, d\'Ufänker à Sproochenkënner. Un huitième existe : à vous de le découvrir.</item>
+        <item>Sept niveaux jalonnent votre parcours, d\'Ufänger à Sproochekënner. Un huitième existe : à vous de le découvrir.</item>
         <item>Les suggestions s\'appuient sur un corpus de luxembourgeois contemporain, détaillé dans « À propos », en bas de l\'onglet Haut.</item>
         <item>La première lettre de chaque phrase prend automatiquement la majuscule, comme sur un clavier classique.</item>
         <item>Depuis « Mäi Lëtzebuergesch », partagez votre carte de niveau avec votre famille et vos amis.</item>
