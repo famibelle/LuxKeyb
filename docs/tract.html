@@ -11,6 +11,7 @@
      de ce tract s'exporte en impression locale, parfois hors ligne, et une
      police absente au moment du rendu recomposerait toute la page. -->
 <link rel="stylesheet" href="assets/fredoka-embed.css">
+<link rel="stylesheet" href="assets/tampon-gratuit.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="assets/theme.js"></script>
 <style>
@@ -499,6 +500,11 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .dictee .bulle{margin:0;background:#EEF4F8;border-radius:2.4mm 2.4mm 2.4mm .8mm;padding:1.6mm 2.2mm;
   font-family:"Fredoka",-apple-system,"Segoe UI",Arial,sans-serif;font-weight:600;font-style:italic;font-size:var(--df);line-height:1.25;color:#2B3742;text-align:left;}
 .shots .dictee{--dw:46mm;--dp:2mm;--dg:2.6mm;--dm:8.5mm;--df:2.7mm;left:-2mm;bottom:-4mm;}
+/* 2026-10-20 : le cercle « 100 % gratuit / zéro pub » devient le tampon
+   rouge (assets/tampon-gratuit.css). « Zéro pub » part avec lui : l'argument
+   « sans publicité » ne répond à aucune douleur. */
+.stamp{width:auto;height:auto;border:0;border-radius:0;background:none;box-shadow:none;transform:none;}
+.stamp .tampon[class]{font-size:3.4mm;}
 </style>
 </head>
 <body>
@@ -584,8 +590,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
           <p class="promises">Sans publicité · Sans compte<br>Ce que vous tapez reste chez vous</p>
         </div>
         <div class="stamp">
-          <span class="big">100&nbsp;%<br>gratuit</span>
-          <span class="small">zéro pub</span>
+          <span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratuit</span></span>
         </div>
         <div class="qr-wrap">
           <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR code vers la fiche Google Play du Lëtzebuergesch Clavier">
@@ -635,8 +640,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
           <p class="promises">Sans publicité · Sans compte<br>Ce que vous tapez reste chez vous</p>
         </div>
         <div class="stamp">
-          <span class="big">100&nbsp;%<br>gratuit</span>
-          <span class="small">zéro pub</span>
+          <span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratuit</span></span>
         </div>
         <div class="qr-wrap">
           <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR code vers la fiche Google Play du Lëtzebuergesch Clavier">

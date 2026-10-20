@@ -292,12 +292,6 @@ T = [
         "de": '<p class="promises">Ohne Werbung · Ohne Konto<br>Was Sie tippen, bleibt bei Ihnen</p>',
         "en": '<p class="promises">No ads · No account<br>What you type stays with you</p>',
         "pt": '<p class="promises">Sem publicidade · Sem conta<br>O que escreve fica consigo</p>'}),
-    ('<span class="big">100&nbsp;%<br>gratuit</span>', {
-        "lb": '<span class="big">100&nbsp;%<br>gratis</span>', "de": '<span class="big">100&nbsp;%<br>gratis</span>',
-        "en": '<span class="big">100&nbsp;%<br>free</span>', "pt": '<span class="big">100&nbsp;%<br>grátis</span>'}),
-    ('<span class="small">zéro pub</span>', {
-        "lb": '<span class="small">keng Reklamm</span>', "de": '<span class="small">null Werbung</span>',
-        "en": '<span class="small">zero ads</span>', "pt": '<span class="small">zero anúncios</span>'}),
 
     # ---- Affiche ----
     ('<p class="subtitle">Vous le parlez.<br>Maintenant, vous l\'écrivez.</p>', {
@@ -394,9 +388,6 @@ T = [
     ('<div class="txt"><b>Flashez le code</b>', {
         "lb": '<div class="txt"><b>Code scannen</b>', "de": '<div class="txt"><b>Code scannen</b>',
         "en": '<div class="txt"><b>Scan the code</b>', "pt": '<div class="txt"><b>Leia o código</b>'}),
-    ('<span class="free">100&nbsp;% gratuit</span>', {
-        "lb": '<span class="free">100&nbsp;% gratis</span>', "de": '<span class="free">100&nbsp;% kostenlos</span>',
-        "en": '<span class="free">100&nbsp;% free</span>', "pt": '<span class="free">100&nbsp;% grátis</span>'}),
 
     # ---- Triptyque, volet 4 : installation ----
     ('<div class="kicker">C\'est parti</div>', {
@@ -543,6 +534,9 @@ T = [
         "de": 'alt="Vier Karten als Fächer: Bam (Baum) in Zinn, Sonn (Sonne) in Bronze, Brëll (Brille) in Silber, Kran (Kran) in Gold"',
         "en": 'alt="Four cards in a fan: Bam (tree) in pewter, Sonn (sun) in bronze, Brëll (glasses) in silver, Kran (crane) in gold"',
         "pt": 'alt="Quatro cartões em leque: Bam (árvore) em estanho, Sonn (sol) em bronze, Brëll (óculos) em prata, Kran (grua) em ouro"'}),
+    ('<span class="tampon-mot">gratuit</span>', {
+        "lb": '<span class="tampon-mot">gratis</span>', "de": '<span class="tampon-mot">gratis</span>',
+        "en": '<span class="tampon-mot">free</span>', "pt": '<span class="tampon-mot">grátis</span>'}),
 ]
 
 # Textes visibles qui restent identiques dans toutes les langues : nom de

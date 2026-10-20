@@ -8,6 +8,7 @@
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
 <link rel="stylesheet" href="assets/fredoka-embed.css">
+<link rel="stylesheet" href="assets/tampon-gratuit.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="assets/theme.js"></script>
 <style>
@@ -421,6 +422,10 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
 .mini-shots.large{height:auto;display:flex;flex-direction:column;align-items:center;gap:5mm;margin:auto;}
 .mini-shots.large img.s1{position:static;transform:rotate(-2deg);width:64mm;}
 .mini-shots.large .dictee{position:relative;--dw:70mm;--dp:2.6mm;--dg:3.4mm;--dm:14mm;--df:3.9mm;transform:rotate(2deg);}
+/* 2026-10-20 : « 100 % gratuit » en tampon rouge (assets/tampon-gratuit.css). */
+.cta .txt .tampon[class]{font-size:2.6mm;margin:2.4mm 0 0 1mm;}
+.panel-cta{position:relative;}
+.panel-cta > .tampon[class]{position:absolute;left:3mm;top:-6.5mm;font-size:2.2mm;transform:rotate(-8deg);}
 
 /* Bandeau « À faire valider » : ajouté par docs/scripts/traduire_supports.py
    tant que la traduction n'a pas été relue par un locuteur natif. Il est
@@ -543,7 +548,7 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       </div>
       <div class="cta">
         <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR-Code zur Google-Play-Seite von Lëtzebuergesch Clavier">
-        <div class="txt"><b>Code scannen</b><img class="gp-badge" src="assets/google-play-badge-de.svg" alt="Jetzt bei Google Play"><span class="free">100&nbsp;% kostenlos</span></div>
+        <div class="txt"><b>Code scannen</b><img class="gp-badge" src="assets/google-play-badge-de.svg" alt="Jetzt bei Google Play"><span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratis</span></span></div>
       </div>
     </div>
   </div>
@@ -603,7 +608,8 @@ body[data-print-mode="verso"] #face-recto{ display:none; }
       </div>
       <div class="panel-cta">
         <img class="gp-badge" src="assets/google-play-badge-de.svg" alt="Jetzt bei Google Play">
-        <div class="txt"><b>Jetzt installieren</b>Suchen Sie „Lëtzebuergesch Clavier“<span class="free">100&nbsp;% kostenlos</span></div>
+        <div class="txt"><b>Jetzt installieren</b>Suchen Sie „Lëtzebuergesch Clavier“</div>
+        <span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratis</span></span>
       </div>
     </div>
   </div>

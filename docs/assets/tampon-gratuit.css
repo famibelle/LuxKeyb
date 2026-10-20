@@ -1,0 +1,35 @@
+/* Le tampon « 100 % gratuit » des supports imprimés (2026-10-20, demande de
+   Medhi d'après un tampon encreur rouge) : double filet, lettres au pochoir,
+   penché. Recréé en CSS plutôt que repris d'une image : il se traduit avec
+   la page et reste net à toutes les tailles.
+
+   Stardos Stencil (SIL Open Font License 1.1), graisse 700, réduite aux
+   seuls caractères du tampon dans ses quatre langues (100 % GRATUIT, FREE,
+   GRATIS, GRÁTIS) et embarquée en base64 comme Fredoka, pour que
+   l'impression ne dépende pas du réseau. Un mot nouveau sur le tampon
+   demande de régénérer ce sous-ensemble.
+
+   Usage : <span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratuit</span></span>
+   Les sélecteurs sont doublés ([class]) pour passer devant les règles
+   génériques des pages, comme « .stamp span » ou « .txt b ».
+   La taille se règle par font-size sur .tampon (tout est en em). */
+@font-face{
+  font-family:'Stardos Stencil';
+  font-style:normal;
+  font-weight:700;
+  src:url(data:font/woff2;base64,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) format('woff2');
+}
+.tampon[class]{
+  display:inline-flex; flex-direction:column; align-items:center; justify-content:center;
+  box-sizing:border-box; padding:.32em .7em .36em;
+  font-family:'Stardos Stencil',"Arial Black",sans-serif; font-weight:700;
+  text-transform:uppercase; color:#ED2939; line-height:.9; white-space:nowrap;
+  background:#fff;
+  border:.17em solid #ED2939; border-radius:.42em;
+  /* Le second filet, à l'intérieur : un trait blanc puis un trait rouge. */
+  box-shadow:inset 0 0 0 .1em #fff, inset 0 0 0 .2em #ED2939, 0 .25em .7em rgba(0,0,0,.22);
+  transform:rotate(-10deg);
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+.tampon[class] .tampon-chiffre{display:block; font:inherit; font-size:2.15em; color:inherit; background:none; padding:0; margin:0; border-radius:0; text-transform:uppercase; letter-spacing:.02em; text-shadow:0 .03em 0 #A8131F;}
+.tampon[class] .tampon-mot{display:block; font:inherit; color:inherit; background:none; padding:0; text-transform:uppercase; font-size:1.5em; letter-spacing:.03em; margin-top:.12em; text-shadow:0 .03em 0 #A8131F;}
