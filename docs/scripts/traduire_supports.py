@@ -34,7 +34,7 @@ BADGE = {"lb": "fr", "de": "de", "en": "en", "pt": "pt"}
 # support (le carnet lit la langue du système, voir le compte rendu du
 # 2026-10-04) ; lux_onboarding_<langue> reprend la capture « tout est prêt »
 # du guide de l'appli (res/drawable-<langue>-nodpi/guide_screenshot_install_done.png).
-CAPTURES_TRADUITES = ["lux_carte_stad", "lux_wierderbuch_gromperekichelchen", "lux_wuertsich_trouves", "lux_onboarding"]
+CAPTURES_TRADUITES = ["lux_wierderbuch_gromperekichelchen", "lux_wuertsich_trouves", "lux_onboarding"]
 
 BANDEAU = {
     "lb": "Nach net vun engem Mammesproochler nogekuckt",
@@ -211,11 +211,6 @@ T = [
         "en": "Back, panels 4 · 5 · 6 (inside, left to right)", "pt": "Verso, painéis 4 · 5 · 6 (interior, da esquerda para a direita)"}),
 
     # ---- Textes alternatifs ----
-    ('alt="Une carte du carnet : le mot Stad, son sens et une phrase du dictionnaire officiel"', {
-        "lb": 'alt="Eng Kaart aus dem Carnet: d\'Wuert Stad, seng Bedeitung an e Saz aus dem offiziellen Dictionnaire"',
-        "de": 'alt="Eine Karte aus dem Kartenheft: das Wort Stad, seine Bedeutung und ein Satz aus dem offiziellen Wörterbuch"',
-        "en": 'alt="A card from the deck: the word Stad, its meaning and a sentence from the official dictionary"',
-        "pt": 'alt="Um cartão do caderno: a palavra Stad, o seu significado e uma frase do dicionário oficial"'}),
     ('alt="Le jeu Wuertsich : trois mots trouvés dans la grille, chacun avec sa traduction"', {
         "lb": 'alt="D\'Spill Wuertsich: dräi Wierder am Gitter fonnt, all mat senger Iwwersetzung"',
         "de": 'alt="Das Spiel Wuertsich: drei gefundene Wörter im Gitter, jedes mit seiner Übersetzung"',
