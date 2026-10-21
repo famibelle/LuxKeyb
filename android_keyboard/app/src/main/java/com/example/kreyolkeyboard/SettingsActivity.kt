@@ -497,7 +497,8 @@ class SettingsActivity : AppCompatActivity() {
             etape(R.string.visite_carnet_titre, R.string.visite_carnet_texte, aller(TAB_SPILLER)) {
                 VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_carnet"))
             },
-            etape(R.string.visite_dico_titre, R.string.visite_dico_texte, aller(TAB_WIERDERBUCH), onglet(TAB_WIERDERBUCH)),
+            VisiteGuidee.Etape(getString(R.string.visite_dico_titre), getString(R.string.visite_dico_texte),
+                aller(TAB_WIERDERBUCH), onglet(TAB_WIERDERBUCH), illustration = { AnimationDictionnaire(it) }),
             etape(R.string.visite_jeux_titre, R.string.visite_jeux_texte, aller(TAB_SPILLER), onglet(TAB_SPILLER)),
             etape(R.string.visite_accueil_titre, R.string.visite_accueil_texte, aller(0), onglet(0)),
             etape(R.string.visite_progres_titre, R.string.visite_progres_texte, aller(TAB_STATS), onglet(TAB_STATS)),
