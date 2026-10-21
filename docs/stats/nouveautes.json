@@ -1,9 +1,47 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.7",
+ "derniere_version": "37.7.8",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.8",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le clavier, montré en action",
+       "texte": "Dans la visite guidée, une petite animation montre le doigt qui touche un mot proposé, puis qui glisse sur la barre d'espace pour déplacer le curseur."
+      },
+      {
+       "titre": "La dictée, montrée en action",
+       "texte": "On voit le micro s'allumer, la phrase s'écrire pendant qu'on parle, puis le micro s'éteindre."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_visite_gestes.gif",
+     "alt": "Filmé sur un Galaxy A21s : la bulle « Le clavier en trois gestes » de la visite guidée. En haut, un clavier dessiné. Dans le champ, « Moi » ; trois suggestions rouges, Moien, Moie et Moies ; un doigt touche « Moien », qui s'écrit en entier. Le doigt tape « wéi », puis se pose sur la barre d'espace et glisse vers la gauche : le curseur recule jusqu'après « Moien ». Deux pastilles, 1 et 3, s'allument en rouge au fil des gestes, et le texte les détaille.",
+     "legende": "Les gestes du clavier, montrés : toucher un mot proposé, glisser sur la barre d'espace."
+    },
+    {
+     "image": "Screenshots/lux_visite_dictee.gif",
+     "alt": "Filmé sur un Galaxy A21s : la bulle « La dictée » de la visite guidée. Un doigt touche le micro en haut à droite d'un clavier dessiné ; le micro passe au rouge, entouré d'un anneau qui tourne et de halos, et le bandeau « LuxASR · Schwätzt… » remplace les suggestions. La phrase « Moien, wéi geet et? » s'écrit mot à mot dans le champ, puis le doigt touche de nouveau le micro, qui s'éteint.",
+     "legende": "La dictée, montrée : le micro s'allume, la phrase s'écrit, le micro s'éteint."
+    }
+   ],
+   "image": "Screenshots/lux_visite_gestes.gif",
+   "image_alt": "Filmé sur un Galaxy A21s : la bulle « Le clavier en trois gestes » de la visite guidée. En haut, un clavier dessiné. Dans le champ, « Moi » ; trois suggestions rouges, Moien, Moie et Moies ; un doigt touche « Moien », qui s'écrit en entier. Le doigt tape « wéi », puis se pose sur la barre d'espace et glisse vers la gauche : le curseur recule jusqu'après « Moien ». Deux pastilles, 1 et 3, s'allument en rouge au fil des gestes, et le texte les détaille.",
+   "image_legende": "Les gestes du clavier, montrés : toucher un mot proposé, glisser sur la barre d'espace."
+  },
   {
    "version": "37.7.7",
    "date": "2026-10-21",
@@ -140,49 +178,6 @@
       {
        "titre": "Une seule porte pour l'aide",
        "texte": "Un bouton « ? » en haut de l'écran, visible depuis tous les onglets, ouvre l'aide. On y trouve la visite guidée, sujet par sujet, et le guide complet à lire. En bas de l'accueil, la ligne « Aide » remplace « Guide d'utilisation » et « Visite guidée »."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.7.2",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "La visite guidée commence par le clavier",
-       "texte": "Les trois gestes et la dictée d'abord, puis les cartes, le dictionnaire, les jeux et le reste."
-      },
-      {
-       "titre": "On sait où la retrouver",
-       "texte": "La dernière bulle montre la ligne « Visite guidée » en bas de l'accueil, et « Passer » y mène avant de fermer."
-      },
-      {
-       "titre": "Le sommaire parle de ce qu'on veut faire",
-       "texte": "« Dicter un message », « Chercher un mot », « Partager une carte »…"
-      },
-      {
-       "titre": "La visite des cartes est plus courte",
-       "texte": "Quatre bulles au lieu de neuf, la carte se présente d'un bloc."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "La bulle reste à l'écran quand la zone montrée est grande",
-       "texte": "Sur une carte ouverte, le bouton « Suivant » sortait de l'écran sur certains téléphones."
       }
      ],
      "texte": "",

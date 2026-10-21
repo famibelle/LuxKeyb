@@ -1,5 +1,19 @@
 {
  "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+ "37.7.8": {
+  "images": [
+   {
+    "image": "Screenshots/lux_visite_gestes.gif",
+    "alt": "Filmé sur un Galaxy A21s : la bulle « Le clavier en trois gestes » de la visite guidée. En haut, un clavier dessiné. Dans le champ, « Moi » ; trois suggestions rouges, Moien, Moie et Moies ; un doigt touche « Moien », qui s'écrit en entier. Le doigt tape « wéi », puis se pose sur la barre d'espace et glisse vers la gauche : le curseur recule jusqu'après « Moien ». Deux pastilles, 1 et 3, s'allument en rouge au fil des gestes, et le texte les détaille.",
+    "legende": "Les gestes du clavier, montrés : toucher un mot proposé, glisser sur la barre d'espace."
+   },
+   {
+    "image": "Screenshots/lux_visite_dictee.gif",
+    "alt": "Filmé sur un Galaxy A21s : la bulle « La dictée » de la visite guidée. Un doigt touche le micro en haut à droite d'un clavier dessiné ; le micro passe au rouge, entouré d'un anneau qui tourne et de halos, et le bandeau « LuxASR · Schwätzt… » remplace les suggestions. La phrase « Moien, wéi geet et? » s'écrit mot à mot dans le champ, puis le doigt touche de nouveau le micro, qui s'éteint.",
+    "legende": "La dictée, montrée : le micro s'allume, la phrase s'écrit, le micro s'éteint."
+   }
+  ]
+ },
  "37.7.7": {
   "images": [
    {

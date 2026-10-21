@@ -1,9 +1,47 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.7",
+ "derniere_version": "37.7.8",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.8",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Die Tastatur in Aktion",
+       "texte": "Im Rundgang zeigt eine kleine Animation, wie der Finger ein vorgeschlagenes Wort antippt und dann über die Leertaste gleitet, um den Cursor zu verschieben."
+      },
+      {
+       "titre": "Das Diktieren in Aktion",
+       "texte": "Man sieht, wie das Mikrofon aufleuchtet, der Satz beim Sprechen geschrieben wird und das Mikrofon wieder ausgeht."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_visite_gestes.gif",
+     "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Die Tastatur in drei Gesten“ des Rundgangs. Oben eine gezeichnete Tastatur. Im Feld „Moi“; drei rote Vorschläge, Moien, Moie und Moies; ein Finger tippt „Moien“ an, das ganz geschrieben wird. Der Finger tippt „wéi“, legt sich dann auf die Leertaste und gleitet nach links: Der Cursor wandert zurück bis hinter „Moien“. Zwei Punkte, 1 und 3, leuchten nacheinander rot auf, und der Text erklärt sie. Die Bildschirme sind auf Französisch.",
+     "legende": "Die Gesten der Tastatur, gezeigt: ein vorgeschlagenes Wort antippen, über die Leertaste gleiten."
+    },
+    {
+     "image": "Screenshots/lux_visite_dictee.gif",
+     "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Das Diktieren“ des Rundgangs. Ein Finger tippt auf das Mikrofon oben rechts einer gezeichneten Tastatur; das Mikrofon wird rot, umgeben von einem kreisenden Ring und Lichthöfen, und das Band „LuxASR · Schwätzt…“ ersetzt die Vorschläge. Der Satz „Moien, wéi geet et?“ erscheint Wort für Wort im Feld, dann tippt der Finger erneut auf das Mikrofon, das ausgeht. Die Bildschirme sind auf Französisch.",
+     "legende": "Das Diktieren, gezeigt: Das Mikrofon leuchtet auf, der Satz wird geschrieben, das Mikrofon geht aus."
+    }
+   ],
+   "image": "Screenshots/lux_visite_gestes.gif",
+   "image_alt": "Gefilmt auf einem Galaxy A21s: die Blase „Die Tastatur in drei Gesten“ des Rundgangs. Oben eine gezeichnete Tastatur. Im Feld „Moi“; drei rote Vorschläge, Moien, Moie und Moies; ein Finger tippt „Moien“ an, das ganz geschrieben wird. Der Finger tippt „wéi“, legt sich dann auf die Leertaste und gleitet nach links: Der Cursor wandert zurück bis hinter „Moien“. Zwei Punkte, 1 und 3, leuchten nacheinander rot auf, und der Text erklärt sie. Die Bildschirme sind auf Französisch.",
+   "image_legende": "Die Gesten der Tastatur, gezeigt: ein vorgeschlagenes Wort antippen, über die Leertaste gleiten."
+  },
   {
    "version": "37.7.7",
    "date": "2026-10-21",
@@ -140,49 +178,6 @@
       {
        "titre": "Eine einzige Tür zur Hilfe",
        "texte": "Eine Schaltfläche „?“ oben auf dem Bildschirm, von jedem Tab aus sichtbar, öffnet die Hilfe. Dort finden Sie den Rundgang, Thema für Thema, und den ganzen Leitfaden zum Lesen. Unten auf der Startseite ersetzt die Zeile „Hilfe“ die Zeilen „Bedienungsanleitung“ und „Rundgang“."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.7.2",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Der Rundgang beginnt mit der Tastatur",
-       "texte": "Zuerst die drei Gesten und die Spracheingabe, dann die Karten, das Wörterbuch, die Spiele und der Rest."
-      },
-      {
-       "titre": "Man weiß, wo man ihn wiederfindet",
-       "texte": "Die letzte Sprechblase zeigt die Zeile „Rundgang“ unten auf der Startseite, und „Überspringen“ führt dorthin, bevor er sich schließt."
-      },
-      {
-       "titre": "Die Themen sagen, was man tun möchte",
-       "texte": "„Eine Nachricht diktieren“, „Ein Wort suchen“, „Eine Karte teilen“…"
-      },
-      {
-       "titre": "Der Rundgang durch die Karten ist kürzer",
-       "texte": "Vier Sprechblasen statt neun; die Karte stellt sich auf einmal vor."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Korrekturen",
-     "points": [
-      {
-       "titre": "Die Sprechblase bleibt auf dem Bildschirm, wenn der gezeigte Bereich groß ist",
-       "texte": "Bei einer geöffneten Karte rutschte die Schaltfläche „Weiter“ auf manchen Telefonen aus dem Bildschirm."
       }
      ],
      "texte": "",

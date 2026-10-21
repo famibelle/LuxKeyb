@@ -1,9 +1,47 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.7",
+ "derniere_version": "37.7.8",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.8",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "The keyboard, shown in action",
+       "texte": "In the guided tour, a small animation shows the finger tapping a suggested word, then sliding along the space bar to move the cursor."
+      },
+      {
+       "titre": "Dictation, shown in action",
+       "texte": "You see the microphone light up, the sentence being written as you speak, then the microphone switch off."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_visite_gestes.gif",
+     "alt": "Filmed on a Galaxy A21s: the “The keyboard in three gestures” bubble of the guided tour. At the top, a drawn keyboard. In the field, “Moi”; three red suggestions, Moien, Moie and Moies; a finger taps “Moien”, which is written in full. The finger types “wéi”, then rests on the space bar and slides left: the cursor moves back to just after “Moien”. Two dots, 1 and 3, light up in red as the gestures go by, and the text details them. The screens are in French.",
+     "legende": "The keyboard gestures, shown: tap a suggested word, slide along the space bar."
+    },
+    {
+     "image": "Screenshots/lux_visite_dictee.gif",
+     "alt": "Filmed on a Galaxy A21s: the “Dictation” bubble of the guided tour. A finger taps the microphone at the top right of a drawn keyboard; the microphone turns red, circled by a spinning ring and halos, and the “LuxASR · Schwätzt…” banner replaces the suggestions. The sentence “Moien, wéi geet et?” is written word by word in the field, then the finger taps the microphone again and it switches off. The screens are in French.",
+     "legende": "Dictation, shown: the microphone lights up, the sentence is written, the microphone switches off."
+    }
+   ],
+   "image": "Screenshots/lux_visite_gestes.gif",
+   "image_alt": "Filmed on a Galaxy A21s: the “The keyboard in three gestures” bubble of the guided tour. At the top, a drawn keyboard. In the field, “Moi”; three red suggestions, Moien, Moie and Moies; a finger taps “Moien”, which is written in full. The finger types “wéi”, then rests on the space bar and slides left: the cursor moves back to just after “Moien”. Two dots, 1 and 3, light up in red as the gestures go by, and the text details them. The screens are in French.",
+   "image_legende": "The keyboard gestures, shown: tap a suggested word, slide along the space bar."
+  },
   {
    "version": "37.7.7",
    "date": "2026-10-21",
@@ -140,49 +178,6 @@
       {
        "titre": "One door for help",
        "texte": "A “?” button at the top of the screen, visible from every tab, opens the help. It holds the guided tour, topic by topic, and the full guide to read. At the bottom of the home screen, the “Help” line replaces “User guide” and “Guided tour”."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.7.2",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "The guided tour starts with the keyboard",
-       "texte": "The three gestures and voice typing first, then the cards, the dictionary, the games and the rest."
-      },
-      {
-       "titre": "You know where to find it again",
-       "texte": "The last bubble shows the “Guided tour” line at the bottom of the home screen, and “Skip” leads there before closing."
-      },
-      {
-       "titre": "The topics say what you want to do",
-       "texte": "“Dictating a message”, “Looking up a word”, “Sharing a card”…"
-      },
-      {
-       "titre": "The tour of the cards is shorter",
-       "texte": "Four bubbles instead of nine; the card presents itself in one go."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Fixes",
-     "points": [
-      {
-       "titre": "The bubble stays on screen when the area shown is large",
-       "texte": "On an open card, the “Next” button went off the screen on some phones."
       }
      ],
      "texte": "",

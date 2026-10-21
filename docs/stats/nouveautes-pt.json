@@ -1,9 +1,47 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.7",
+ "derniere_version": "37.7.8",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.8",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "O teclado, em ação",
+       "texte": "Na visita guiada, uma pequena animação mostra o dedo a tocar numa palavra sugerida e depois a deslizar na barra de espaço para mover o cursor."
+      },
+      {
+       "titre": "O ditado, em ação",
+       "texte": "Vê-se o microfone a acender, a frase a escrever-se enquanto se fala e o microfone a apagar-se."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_visite_gestes.gif",
+     "alt": "Filmado num Galaxy A21s: a bolha «O teclado em três gestos» da visita guiada. Em cima, um teclado desenhado. No campo, «Moi»; três sugestões vermelhas, Moien, Moie e Moies; um dedo toca em «Moien», que se escreve por inteiro. O dedo escreve «wéi», depois pousa na barra de espaço e desliza para a esquerda: o cursor recua até depois de «Moien». Duas pastilhas, 1 e 3, acendem-se a vermelho ao longo dos gestos, e o texto explica-os. Os ecrãs estão em francês.",
+     "legende": "Os gestos do teclado, mostrados: tocar numa palavra sugerida, deslizar na barra de espaço."
+    },
+    {
+     "image": "Screenshots/lux_visite_dictee.gif",
+     "alt": "Filmado num Galaxy A21s: a bolha «O ditado» da visita guiada. Um dedo toca no microfone, em cima à direita de um teclado desenhado; o microfone fica vermelho, rodeado por um anel que gira e por halos, e a faixa «LuxASR · Schwätzt…» substitui as sugestões. A frase «Moien, wéi geet et?» escreve-se palavra a palavra no campo, depois o dedo toca de novo no microfone, que se apaga. Os ecrãs estão em francês.",
+     "legende": "O ditado, mostrado: o microfone acende, a frase escreve-se, o microfone apaga-se."
+    }
+   ],
+   "image": "Screenshots/lux_visite_gestes.gif",
+   "image_alt": "Filmado num Galaxy A21s: a bolha «O teclado em três gestos» da visita guiada. Em cima, um teclado desenhado. No campo, «Moi»; três sugestões vermelhas, Moien, Moie e Moies; um dedo toca em «Moien», que se escreve por inteiro. O dedo escreve «wéi», depois pousa na barra de espaço e desliza para a esquerda: o cursor recua até depois de «Moien». Duas pastilhas, 1 e 3, acendem-se a vermelho ao longo dos gestos, e o texto explica-os. Os ecrãs estão em francês.",
+   "image_legende": "Os gestos do teclado, mostrados: tocar numa palavra sugerida, deslizar na barra de espaço."
+  },
   {
    "version": "37.7.7",
    "date": "2026-10-21",
@@ -140,49 +178,6 @@
       {
        "titre": "Uma só porta para a ajuda",
        "texte": "Um botão «?» no topo do ecrã, visível em todos os separadores, abre a ajuda. Lá encontra a visita guiada, tema a tema, e o guia completo para ler. No fundo do início, a linha «Ajuda» substitui «Guia de utilização» e «Visita guiada»."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.7.2",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "A visita guiada começa pelo teclado",
-       "texte": "Primeiro os três gestos e o ditado, depois as cartas, o dicionário, os jogos e o resto."
-      },
-      {
-       "titre": "Sabe-se onde a reencontrar",
-       "texte": "O último balão mostra a linha «Visita guiada» no fundo do início, e «Saltar» leva até lá antes de fechar."
-      },
-      {
-       "titre": "Os temas dizem o que se quer fazer",
-       "texte": "«Ditar uma mensagem», «Procurar uma palavra», «Partilhar uma carta»…"
-      },
-      {
-       "titre": "A visita às cartas é mais curta",
-       "texte": "Quatro balões em vez de nove; a carta apresenta-se de uma vez."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Correções",
-     "points": [
-      {
-       "titre": "O balão fica no ecrã quando a zona mostrada é grande",
-       "texte": "Numa carta aberta, o botão «Seguinte» saía do ecrã em alguns telemóveis."
       }
      ],
      "texte": "",
