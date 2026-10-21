@@ -790,9 +790,15 @@
     <string name="visite_partager_titre">Deelen</string>
     <string name="visite_partager_texte">Schéckt e Bild vun der Kaart per Message oder op de soziale Netzwierker, mam Link fir d\'Tastatur z\'installéieren. D\'Kaart bleift an Ärem Carnet.</string>
     <string name="visite_ceder_titre">Ofginn</string>
-    <string name="visite_ceder_texte">Gitt d\'Kaart engem anere Mënsch, vun Hand zu Hand, déi zwee Telefonen niefteneen: Dir scannt de Code vun der anerer Persoun, an dann scannt si Ären. D\'Kaart geet aus Ärem Carnet an hiren.</string>
+    <string name="visite_ceder_texte">Fir dës Kaart engem anere Mënsch ze ginn, leet Är zwee Telefonen niefteneen. Si geet aus Ärem Carnet an hiren. Wat Dir domat geléiert hutt, bleift bei Iech.</string>
+    <string name="visite_echange_titre">Ofginn, Schrëtt fir Schrëtt</string>
+    <string name="visite_echange_texte">1. D\'Persoun, déi d\'Kaart kritt, tippt uewen an hirem Carnet op „Kréien“: op hirem Telefon erschéngt e Code.\n2. Dir tippt op „Ofginn“, dann op „Hire Code scannen“, a riicht op dëse Code.\n3. D\'Kaart geet aus Ärem Carnet, an op Ärem Telefon erschéngt elo e Code.\n4. Déi aner Persoun tippt op „D\'Kaart scannen“ a riicht op dëse Code: d\'Kaart kënnt bei hir un.</string>
+    <string name="echange_vous">Dir</string>
+    <string name="echange_autre">Déi aner Persoun</string>
     <string name="visite_recevoir_titre">Kréien</string>
-    <string name="visite_recevoir_texte">Fir eng Kaart ze kréien, tippt op „Kréien“: Ären Telefon weist e Code, deen d\'Persoun scannt, déi d\'Kaart ofgëtt. Scannt duerno de Code, deen si weist.</string>
+    <string name="visite_recevoir_texte">Fir eng Kaart ze kréien, tippt op „Kréien“: e Code erschéngt. Wann d\'Persoun, déi d\'Kaart ofgëtt, en gescannt huet, tippt op „D\'Kaart scannen“ a riicht op de Code, deen si weist.</string>
+    <string name="visite_camera_titre">D\'Kamera</string>
+    <string name="visite_camera_texte">Déi éischte Kéier freet den Telefon no der Kamera: sot jo, si déngt just dozou, de Code ze liesen. Et gëtt näischt fotograféiert oder geschéckt, alles geschitt tëscht deenen zwee Telefonen, ouni Internet. Wann Dir de Schierm virum Enn zoumaacht, bleift de Code uewen an Ärem Carnet.</string>
     <string name="guide_dictee_titre">🎤 Schwätzen amplaz tippen</string>
     <string name="guide_dictee_texte">Tippt op de Mikro, uewe riets op der Tastatur, a schwätzt Lëtzebuergesch: Är Wierder ginn ugeschriwwen, wärend Dir schwätzt. Tippt nach eng Kéier drop, wann Dir fäerdeg sidd.\n\nDen Diktat brauch eng Internetverbindung. Déi éischte Kéier erkläert d\'Tastatur, wouhinner Är Stëmm geet: un de Service LuxASR vun der Universitéit Lëtzebuerg, just während dem Diktat, deen se an Text ëmwandelt, ouni se ze späicheren. Duerno freet se no Accès zum Mikro.\n\nAn engem Passwuertfeld mécht den Diktat net op.</string>
     <string name="guide_echanger_titre">📤 Eng Kaart deelen, ofginn, kréien</string>

@@ -1516,9 +1516,10 @@ class CarnetFragment : DialogFragment() {
         fun etape(titre: Int, texte: String, preparer: (() -> Unit) -> Unit, cible: () -> android.graphics.RectF?) =
             VisiteGuidee.Etape(getString(titre), texte, preparer, cible)
 
-        // Quatre étapes et non neuf : la carte se présente d'un bloc, zone par
-        // zone c'était cinq bulles au moment précis où l'on voulait la voir.
-        // La visite entière dit à la fin où la retrouver.
+        // La carte se présente d'un bloc : zone par zone, c'était cinq bulles
+        // au moment précis où l'on voulait la voir. L'échange, lui, prend
+        // quatre bulles (37.7.7) : c'est le geste le moins évident de
+        // l'application. La visite entière dit à la fin où la retrouver.
         val rappel = if (sujet == null) "\n\n" + getString(R.string.visite_rappel_carnet) else ""
         val etapes = listOf(
             etape(R.string.visite_carte_titre, getString(R.string.visite_carte_texte), carteOuverte) {
@@ -1530,10 +1531,19 @@ class CarnetFragment : DialogFragment() {
             etape(R.string.visite_ceder_titre, getString(R.string.visite_ceder_texte), carteOuverte) {
                 VisiteGuidee.rectDe(lecteur?.boutonCeder)
             },
-            etape(R.string.visite_recevoir_titre, getString(R.string.visite_recevoir_texte) + rappel, { suite ->
+            // L'échange numéroté, sans découpe : il se passe sur deux
+            // téléphones, que l'animation montre côte à côte.
+            VisiteGuidee.Etape(
+                getString(R.string.visite_echange_titre), getString(R.string.visite_echange_texte), carteOuverte,
+                illustration = { AnimationEchange(it) }
+            ),
+            etape(R.string.visite_recevoir_titre, getString(R.string.visite_recevoir_texte), { suite ->
                 fermerCarte()
                 VisiteGuidee.attendre({ lecteur?.ouvert != true }, puis = { racine.postDelayed(suite, 250L) })
-            }) { VisiteGuidee.rectDe(boutonRecevoir) }
+            }) { VisiteGuidee.rectDe(boutonRecevoir) },
+            etape(R.string.visite_camera_titre, getString(R.string.visite_camera_texte) + rappel, { it() }) {
+                VisiteGuidee.rectDe(boutonRecevoir)
+            }
         )
         // Les sujets du sommaire désignent ces étapes par leur rang.
         if (com.example.kreyolkeyboard.BuildConfig.DEBUG) check(etapes.size == VisiteGuidee.ETAPES_CARNET)

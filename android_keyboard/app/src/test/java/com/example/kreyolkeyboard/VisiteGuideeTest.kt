@@ -73,6 +73,14 @@ class VisiteGuideeTest {
     }
 
     @Test
+    fun `donner ou recevoir rejoue tout l'echange, jusqu'a l'appareil photo`() {
+        // Céder, l'échange pas à pas, Recevoir, l'appareil photo (37.7.7)
+        assertEquals(VisiteGuidee.Visite.CARNET, VisiteGuidee.Sujet.DONNER_OU_RECEVOIR.visite)
+        assertEquals(2..5, VisiteGuidee.Sujet.DONNER_OU_RECEVOIR.etapes)
+        assertEquals(VisiteGuidee.ETAPES_CARNET - 1, VisiteGuidee.Sujet.DONNER_OU_RECEVOIR.etapes.last)
+    }
+
+    @Test
     fun `le clavier ouvre la visite entiere`() {
         assertEquals(0..0, VisiteGuidee.Sujet.GESTES.etapes)
         assertEquals(1..1, VisiteGuidee.Sujet.DICTEE.etapes)

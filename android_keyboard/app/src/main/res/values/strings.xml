@@ -799,9 +799,15 @@
     <string name="visite_partager_titre">Share</string>
     <string name="visite_partager_texte">Send a picture of the card by message or on social media, with the link to install the keyboard. The card stays in your collection.</string>
     <string name="visite_ceder_titre">Give</string>
-    <string name="visite_ceder_texte">Give the card to someone, hand to hand, the two phones side by side: you scan the other person\'s code, then they scan yours. The card leaves your collection for theirs.</string>
+    <string name="visite_ceder_texte">To give this card to someone, put your two phones side by side. It will leave your collection for theirs. What you learnt from it stays with you.</string>
+    <string name="visite_echange_titre">Giving, step by step</string>
+    <string name="visite_echange_texte">1. The person receiving taps “Receive” at the top of their collection: a code appears on their phone.\n2. You tap “Give”, then “Scan their code”, and aim at that code.\n3. The card leaves your collection, and a code appears on your phone in turn.\n4. The other person taps “Scan the card” and aims at that code: the card arrives in theirs.</string>
+    <string name="echange_vous">You</string>
+    <string name="echange_autre">The other person</string>
     <string name="visite_recevoir_titre">Receive</string>
-    <string name="visite_recevoir_texte">To receive a card, tap “Receive”: your phone shows a code, which the giver scans. Then scan the code they show.</string>
+    <string name="visite_recevoir_texte">To receive a card, tap “Receive”: a code appears. Once the giver has scanned it, tap “Scan the card” and aim at the code they show.</string>
+    <string name="visite_camera_titre">The camera</string>
+    <string name="visite_camera_texte">The first time, the phone asks for access to the camera: accept, it is only used to read the code. Nothing is photographed or sent, everything happens between the two phones, without the internet. If you close the screen before the end, the code stays at the top of your collection.</string>
     <string name="guide_dictee_titre">🎤 Speak instead of typing</string>
     <string name="guide_dictee_texte">Tap the microphone, at the top right of the keyboard, and speak Luxembourgish: your words are written as you speak. Tap it again when you are done.\n\nVoice typing needs an Internet connection. The first time, the keyboard explains where your voice goes: to the LuxASR service of the University of Luxembourg, during voice typing only, which turns it into text without keeping it. It then asks for access to the microphone.\n\nIn a password field, voice typing does not open.</string>
     <string name="guide_echanger_titre">📤 Share, give, receive a card</string>

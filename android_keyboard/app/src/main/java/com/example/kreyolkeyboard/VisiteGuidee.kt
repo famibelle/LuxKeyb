@@ -113,7 +113,7 @@ object VisiteGuidee {
      * carte, sans refaire tout le parcours. [etapes] sont les rangs, dans sa
      * visite, des étapes que le sujet rejoue : l'ordre de ces listes est celui
      * de [SettingsActivity.lancerVisite] (8 étapes, plus le rappel de la
-     * fin) et de `CarnetFragment.proposerVisite` (4 étapes), [VisiteGuideeTest] le vérifie.
+     * fin) et de `CarnetFragment.proposerVisite` (6 étapes), [VisiteGuideeTest] le vérifie.
      * [groupe] range le sujet sous un intertitre du sommaire.
      */
     enum class Sujet(val visite: Visite, val etapes: IntRange, val groupe: Int, val emoji: String) {
@@ -124,7 +124,7 @@ object VisiteGuidee {
         DICTEE(Visite.APPLICATION, 1..1, 0, "🎤"),
         LIRE_UNE_CARTE(Visite.CARNET, 0..0, 1, "🃏"),
         PARTAGER(Visite.CARNET, 1..1, 1, "📤"),
-        DONNER_OU_RECEVOIR(Visite.CARNET, 2..3, 1, "🤝"),
+        DONNER_OU_RECEVOIR(Visite.CARNET, 2..5, 1, "🤝"),
         DICTIONNAIRE(Visite.APPLICATION, 3..3, 2, "📚"),
         JEUX(Visite.APPLICATION, 4..4, 2, "🎮"),
         ACCUEIL(Visite.APPLICATION, 5..5, 2, "🏠"),
@@ -133,7 +133,7 @@ object VisiteGuidee {
     }
 
     const val ETAPES_APPLICATION = 8
-    const val ETAPES_CARNET = 4
+    const val ETAPES_CARNET = 6
 
     /**
      * Où poser la bulle autour d'une cible qui va de [haut] à [bas] : sous
@@ -168,6 +168,9 @@ object VisiteGuidee {
      * du coin, réunis en un seul rectangle, éclairaient aussi tout le paysage.
      * [icone] se pose devant le titre quand ce qu'on présente n'est pas dans
      * l'application : le micro de la dictée vit dans le clavier.
+     * [illustration] fabrique une vue posée entre le titre et le texte :
+     * l'échange d'une carte entre deux téléphones, mimé (37.7.7). Placée en
+     * dernier, pour la même raison qu'[essai] et [icone] avant [autres].
      */
     class Etape(
         val titre: String,
@@ -177,7 +180,8 @@ object VisiteGuidee {
         val icone: Int? = null,
         /** Ouvre de quoi essayer ce que la bulle décrit : le clavier, qui vit hors de l'application. */
         val essai: (() -> Unit)? = null,
-        val autres: () -> List<RectF> = { emptyList() }
+        val autres: () -> List<RectF> = { emptyList() },
+        val illustration: ((android.content.Context) -> View)? = null
     )
 
     /** Le rectangle d'une vue en coordonnées de fenêtre, ou `null` si elle n'est pas à l'écran. */
@@ -269,6 +273,7 @@ object VisiteGuidee {
         private val boutonPasser: TextView
         private val boutonEssayer: TextView
         private val bulle: LinearLayout
+        private val cadreIllustration: FrameLayout
 
         private val suivi = ViewTreeObserver.OnPreDrawListener {
             recalculerTrou(repositionner = false)
@@ -351,8 +356,13 @@ object VisiteGuidee {
                 visibility = View.GONE
                 setOnClickListener { etapes[deroule.index].essai?.invoke() }
             }
+            cadreIllustration = FrameLayout(context).apply {
+                setPadding(0, dp(2f), 0, dp(8f))
+                visibility = View.GONE
+            }
             bulle.addView(compteur)
             bulle.addView(titre)
+            bulle.addView(cadreIllustration)
             bulle.addView(texte)
             bulle.addView(LinearLayout(context).apply {
                 orientation = LinearLayout.HORIZONTAL
@@ -412,6 +422,10 @@ object VisiteGuidee {
                 titre.setCompoundDrawables(icone, null, null, null)
                 titre.compoundDrawablePadding = (10f * d).toInt()
                 texte.text = e.texte
+                cadreIllustration.removeAllViews()
+                val illustration = e.illustration?.invoke(context)
+                if (illustration != null) cadreIllustration.addView(illustration)
+                cadreIllustration.visibility = if (illustration != null) View.VISIBLE else View.GONE
                 boutonEssayer.visibility = if (e.essai != null) View.VISIBLE else View.GONE
                 boutonPasser.visibility =
                     if (passerVisible(etapes.size, deroule.index, rappel)) View.VISIBLE else View.INVISIBLE

@@ -790,9 +790,15 @@
     <string name="visite_partager_titre">Partilhar</string>
     <string name="visite_partager_texte">Envie uma imagem da carta por mensagem ou nas redes sociais, com a ligação para instalar o teclado. A carta fica na sua coleção.</string>
     <string name="visite_ceder_titre">Ceder</string>
-    <string name="visite_ceder_texte">Dê a carta a alguém, em mão, com os dois telemóveis lado a lado: digitaliza o código da outra pessoa e depois ela digitaliza o seu. A carta sai da sua coleção para a dela.</string>
+    <string name="visite_ceder_texte">Para dar esta carta a alguém, ponha os dois telemóveis lado a lado. Ela sai da sua coleção para a dessa pessoa. O que aprendeu com ela fica consigo.</string>
+    <string name="visite_echange_titre">Dar, passo a passo</string>
+    <string name="visite_echange_texte">1. A pessoa que recebe toca em «Receber» no topo da sua coleção: aparece um código no telemóvel dela.\n2. Toca em «Ceder», depois em «Ler o código», e aponta para esse código.\n3. A carta sai da sua coleção, e aparece por sua vez um código no seu telemóvel.\n4. A outra pessoa toca em «Ler a carta» e aponta para esse código: a carta chega à coleção dela.</string>
+    <string name="echange_vous">Você</string>
+    <string name="echange_autre">A outra pessoa</string>
     <string name="visite_recevoir_titre">Receber</string>
-    <string name="visite_recevoir_texte">Para receber uma carta, toque em «Receber»: o seu telemóvel mostra um código, que a pessoa que dá digitaliza. Depois digitalize o código que ela mostra.</string>
+    <string name="visite_recevoir_texte">Para receber uma carta, toque em «Receber»: aparece um código. Quando a pessoa que dá o tiver lido, toque em «Ler a carta» e aponte para o código que ela mostra.</string>
+    <string name="visite_camera_titre">A câmara</string>
+    <string name="visite_camera_texte">Na primeira vez, o telemóvel pede acesso à câmara: aceite, serve apenas para ler o código. Nada é fotografado nem enviado, tudo se passa entre os dois telemóveis, sem internet. Se fechar o ecrã antes do fim, o código fica no topo da sua coleção.</string>
     <string name="guide_dictee_titre">🎤 Falar em vez de escrever</string>
     <string name="guide_dictee_texte">Toque no microfone, no canto superior direito do teclado, e fale luxemburguês: as suas palavras escrevem-se enquanto fala. Toque outra vez quando terminar.\n\nO ditado precisa de ligação à Internet. Da primeira vez, o teclado explica para onde vai a sua voz: para o serviço LuxASR da Universidade do Luxemburgo, só durante o ditado, que a transforma em texto sem a guardar. Depois pede acesso ao microfone.\n\nNum campo de palavra-passe, o ditado não se abre.</string>
     <string name="guide_echanger_titre">📤 Partilhar, ceder, receber uma carta</string>
