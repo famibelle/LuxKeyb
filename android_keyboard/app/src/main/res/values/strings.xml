@@ -749,8 +749,10 @@
     <string name="visite_passer">Skip</string>
     <string name="visite_suivant">Next  ›</string>
     <string name="visite_terminer">Done</string>
-    <string name="visite_revoir">Guided tour</string>
-    <string name="visite_revoir_resume">The whole tour, or a single topic: voice typing, sharing a card…</string>
+    <string name="aide_titre">Help</string>
+    <string name="aide_resume">The guided tour, topic by topic, and the guide to read</string>
+    <string name="aide_groupe_lire">To read</string>
+    <string name="aide_guide_complet">The full guide</string>
     <string name="visite_toute">The whole tour</string>
     <string name="visite_groupe_application">The app</string>
     <string name="visite_groupe_clavier">The keyboard</string>
@@ -776,8 +778,8 @@
     <string name="visite_dictee_titre">Voice typing</string>
     <string name="visite_dictee_texte">Tap the microphone, at the top right of the keyboard, and speak Luxembourgish: your words are written as you speak. Tap it again when you are done.\n\nYou need an Internet connection. The first time, the keyboard explains where your voice goes and asks for access to the microphone.</string>
     <string name="visite_rappel_titre">To see it again</string>
-    <string name="visite_rappel_texte">The whole tour, or a single topic such as voice typing: tap “Guided tour”, at the very bottom of the home screen.</string>
-    <string name="visite_rappel_carnet">To see this tour again: “Guided tour”, at the very bottom of the home screen.</string>
+    <string name="visite_rappel_texte">The whole tour, or a single topic such as voice typing: tap the ? at the top of the screen.</string>
+    <string name="visite_rappel_carnet">To see this tour again: the ? at the top of the home screen.</string>
     <string name="visite_carte_titre">Your card</string>
     <string name="visite_carte_texte">Every word you win in a game becomes a card. The landscape is a place in Luxembourg, and its time of day tells how rare the word is. In the middle, the word and its translation, with an example sentence. At the bottom, how many times you won it, the game that gave it and how far its review has come.</string>
     <string name="visite_sujet_gestes">Typing with the keyboard</string>

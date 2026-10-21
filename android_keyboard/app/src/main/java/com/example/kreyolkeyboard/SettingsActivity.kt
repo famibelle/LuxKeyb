@@ -507,16 +507,9 @@ class SettingsActivity : AppCompatActivity() {
         if (BuildConfig.DEBUG) check(etapes.size == VisiteGuidee.ETAPES_APPLICATION)
         // La visite entière finit en disant où la retrouver, et « Passer » y
         // mène d'abord : passée sans le savoir, elle était perdue.
-        val rappel = etape(R.string.visite_rappel_titre, R.string.visite_rappel_texte, { suite ->
-            allerAOnglet(0)
-            VisiteGuidee.attendre({ currentTab == 0 && VisiteGuidee.vueDeLaPage(racine, "visite_revoir") != null }) {
-                VisiteGuidee.vueDeLaPage(racine, "visite_revoir")?.let {
-                    it.requestRectangleOnScreen(android.graphics.Rect(0, 0, it.width, it.height + enDp(40)), true)
-                }
-                VisiteGuidee.attendre({ VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_revoir")) != null },
-                    delaiMs = 1200L) { racine.postDelayed(suite, 250L) }
-            }
-        }) { VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_revoir")) }
+        val rappel = etape(R.string.visite_rappel_titre, R.string.visite_rappel_texte, aller(0)) {
+            VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_aide"))
+        }
         val montrees = sujet?.let { etapes.slice(it.etapes) } ?: (etapes + rappel)
         retourVisite.isEnabled = true
         visiteSujet = sujet
@@ -531,8 +524,8 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     /**
-     * Le sommaire de la ligne « Visite guidée » : toute la visite, ou un seul
-     * sujet. Quelqu'un qui a passé la visite au premier lancement revient
+     * L'aide, ouverte par le « ? » du bandeau ou la ligne « Aide » de
+     * l'accueil : toute la visite, un seul sujet, ou le guide à lire. Quelqu'un qui a passé la visite au premier lancement revient
      * plus tard pour la dictée ou le partage d'une carte, et refaire huit
      * étapes pour y arriver l'en dissuaderait. Les sujets des cartes ouvrent
      * le carnet, où leur visite se joue sur une vraie carte.
@@ -611,9 +604,13 @@ class SettingsActivity : AppCompatActivity() {
                     addView(ligne(sujet.emoji, getString(titres.getValue(sujet))) { ouvrirSujet(sujet) })
                 }
             }
+            addView(intertitre(R.string.aide_groupe_lire))
+            addView(ligne("📖", getString(R.string.aide_guide_complet)) {
+                SheetFragment.pour(SheetFragment.PAGE_GUIDE).show(supportFragmentManager, "sheet_${SheetFragment.PAGE_GUIDE}")
+            })
         }
         dialogue = constructeur
-            .setTitle(getString(R.string.visite_revoir))
+            .setTitle(getString(R.string.aide_titre))
             .setView(ScrollView(ctx).apply { addView(liste) })
             .setNegativeButton(android.R.string.cancel, null)
             .show()
@@ -1095,12 +1092,21 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
 
-            // Cale de la largeur de l'engrenage, à gauche : sans elle le titre,
-            // centré dans la place restante, se décale visiblement vers la gauche.
-            appHeader.addView(View(this@SettingsActivity).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    (48 * densite).toInt(), 1
-                )
+            // L'aide, à gauche, de la largeur de l'engrenage : elle tient la place
+            // de la cale qui gardait le titre centré, et se voit depuis tous les
+            // onglets. Elle était en bas de l'accueil, qu'il fallait faire défiler.
+            appHeader.addView(ImageView(this@SettingsActivity).apply {
+                tag = "visite_aide"
+                setImageResource(R.drawable.ic_aide)
+                scaleType = ImageView.ScaleType.CENTER_INSIDE
+                contentDescription = getString(R.string.aide_titre)
+                val zone = (48 * densite).toInt()
+                layoutParams = LinearLayout.LayoutParams(zone, zone)
+                val marge = (11 * densite).toInt()
+                setPadding(marge, marge, marge, marge)
+                isClickable = true
+                isFocusable = true
+                setOnClickListener { ouvrirSommaireVisite() }
             })
             appHeader.addView(appTitle)
             appHeader.addView(settingsButton)
@@ -1713,25 +1719,20 @@ class SettingsActivity : AppCompatActivity() {
             ))
             mainLayout.addView(createSpacing(8))
         }
+        // Une seule porte pour l'aide : le guide à lire et la visite guidée
+        // étaient deux lignes voisines, et le guide ne parle ni de la dictée
+        // ni des cartes. Les deux vivent dans [ouvrirSommaireVisite].
         mainLayout.addView(createReferenceLink(
-            "📖", getString(R.string.sa_guide_utilisation),
-            getString(R.string.sa_reglages_correcteur_astuces_de_saisie),
-            SheetFragment.PAGE_GUIDE
-        ))
+            "❓", getString(R.string.aide_titre),
+            getString(R.string.aide_resume),
+            page = null
+        ) { ouvrirSommaireVisite() })
         mainLayout.addView(createSpacing(8))
         mainLayout.addView(createReferenceLink(
             "ℹ️", getString(R.string.sa_propos_2),
             getString(R.string.sa_version_sources_des_donnees_licences),
             SheetFragment.PAGE_A_PROPOS
         ))
-        // La visite se relance d'ici, entière ou sujet par sujet : voir
-        // [ouvrirSommaireVisite].
-        mainLayout.addView(createSpacing(8))
-        mainLayout.addView(createReferenceLink(
-            "🧭", getString(R.string.visite_revoir),
-            getString(R.string.visite_revoir_resume),
-            page = null
-        ) { ouvrirSommaireVisite() }.apply { tag = "visite_revoir" })
         mainLayout.addView(createSpacing(16))
 
         return mainLayout

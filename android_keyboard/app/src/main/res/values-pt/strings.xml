@@ -740,8 +740,10 @@
     <string name="visite_passer">Saltar</string>
     <string name="visite_suivant">Seguinte  ›</string>
     <string name="visite_terminer">Concluir</string>
-    <string name="visite_revoir">Visita guiada</string>
-    <string name="visite_revoir_resume">A visita completa, ou um só tema: o ditado, partilhar uma carta…</string>
+    <string name="aide_titre">Ajuda</string>
+    <string name="aide_resume">A visita guiada, tema a tema, e o guia para ler</string>
+    <string name="aide_groupe_lire">Para ler</string>
+    <string name="aide_guide_complet">O guia completo</string>
     <string name="visite_toute">A visita completa</string>
     <string name="visite_groupe_application">A aplicação</string>
     <string name="visite_groupe_clavier">O teclado</string>
@@ -767,8 +769,8 @@
     <string name="visite_dictee_titre">Ditado por voz</string>
     <string name="visite_dictee_texte">Toque no microfone, no canto superior direito do teclado, e fale luxemburguês: as suas palavras escrevem-se enquanto fala. Toque outra vez quando terminar.\n\nPrecisa de ligação à Internet. Da primeira vez, o teclado explica para onde vai a sua voz e pede acesso ao microfone.</string>
     <string name="visite_rappel_titre">Para a rever</string>
-    <string name="visite_rappel_texte">A visita completa, ou um só tema como o ditado: toque em «Visita guiada», no fundo do início.</string>
-    <string name="visite_rappel_carnet">Para rever esta visita: «Visita guiada», no fundo do início.</string>
+    <string name="visite_rappel_texte">A visita completa, ou um só tema como o ditado: toque no ? no topo do ecrã.</string>
+    <string name="visite_rappel_carnet">Para rever esta visita: o ? no topo do início.</string>
     <string name="visite_carte_titre">A sua carta</string>
     <string name="visite_carte_texte">Cada palavra ganha num jogo torna-se uma carta. A paisagem é um lugar do Luxemburgo, e a hora do dia indica a raridade da palavra. Ao meio, a palavra e a sua tradução, com uma frase de exemplo. Em baixo, quantas vezes a ganhou, o jogo que a deu e em que ponto está a sua revisão.</string>
     <string name="visite_sujet_gestes">Escrever com o teclado</string>

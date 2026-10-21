@@ -740,8 +740,10 @@
     <string name="visite_passer">Überspringen</string>
     <string name="visite_suivant">Weiter  ›</string>
     <string name="visite_terminer">Fertig</string>
-    <string name="visite_revoir">Rundgang</string>
-    <string name="visite_revoir_resume">Der ganze Rundgang oder nur ein Thema: die Spracheingabe, eine Karte teilen…</string>
+    <string name="aide_titre">Hilfe</string>
+    <string name="aide_resume">Der Rundgang, Thema für Thema, und der Leitfaden zum Lesen</string>
+    <string name="aide_groupe_lire">Zum Lesen</string>
+    <string name="aide_guide_complet">Der ganze Leitfaden</string>
     <string name="visite_toute">Der ganze Rundgang</string>
     <string name="visite_groupe_application">Die App</string>
     <string name="visite_groupe_clavier">Die Tastatur</string>
@@ -767,8 +769,8 @@
     <string name="visite_dictee_titre">Spracheingabe</string>
     <string name="visite_dictee_texte">Tippen Sie auf das Mikrofon oben rechts auf der Tastatur und sprechen Sie Luxemburgisch: Ihre Worte werden geschrieben, während Sie sprechen. Tippen Sie noch einmal darauf, wenn Sie fertig sind.\n\nSie brauchen eine Internetverbindung. Beim ersten Mal erklärt die Tastatur, wohin Ihre Stimme geht, und bittet um Zugriff auf das Mikrofon.</string>
     <string name="visite_rappel_titre">Um ihn wiederzusehen</string>
-    <string name="visite_rappel_texte">Der ganze Rundgang oder nur ein Thema wie die Spracheingabe: Tippen Sie auf „Rundgang“, ganz unten auf der Startseite.</string>
-    <string name="visite_rappel_carnet">Um diesen Rundgang wiederzusehen: „Rundgang“, ganz unten auf der Startseite.</string>
+    <string name="visite_rappel_texte">Der ganze Rundgang oder nur ein Thema wie die Spracheingabe: Tippen Sie oben auf dem Bildschirm auf das ?.</string>
+    <string name="visite_rappel_carnet">Um diesen Rundgang wiederzusehen: das ? oben auf der Startseite.</string>
     <string name="visite_carte_titre">Ihre Karte</string>
     <string name="visite_carte_texte">Jedes Wort, das Sie in einem Spiel gewinnen, wird eine Karte. Die Landschaft ist ein Ort in Luxemburg, und ihre Tageszeit zeigt, wie selten das Wort ist. In der Mitte das Wort und seine Übersetzung, mit einem Beispielsatz. Unten, wie oft Sie es gewonnen haben, das Spiel, das es gegeben hat, und wie weit seine Wiederholung ist.</string>
     <string name="visite_sujet_gestes">Mit der Tastatur schreiben</string>

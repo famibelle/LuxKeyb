@@ -740,8 +740,10 @@
     <string name="visite_passer">Passer</string>
     <string name="visite_suivant">Suivant  ›</string>
     <string name="visite_terminer">Terminer</string>
-    <string name="visite_revoir">Visite guidée</string>
-    <string name="visite_revoir_resume">Toute la visite, ou un seul sujet : la dictée, le partage d\'une carte…</string>
+    <string name="aide_titre">Aide</string>
+    <string name="aide_resume">La visite guidée, sujet par sujet, et le guide à lire</string>
+    <string name="aide_groupe_lire">À lire</string>
+    <string name="aide_guide_complet">Le guide complet</string>
     <string name="visite_toute">Toute la visite</string>
     <string name="visite_groupe_application">L\'application</string>
     <string name="visite_groupe_clavier">Le clavier</string>
@@ -767,8 +769,8 @@
     <string name="visite_dictee_titre">La dictée</string>
     <string name="visite_dictee_texte">Touchez le micro, en haut à droite du clavier, et parlez luxembourgeois : vos mots s\'écrivent pendant que vous parlez. Touchez-le de nouveau quand vous avez fini.\n\nIl faut une connexion Internet. La première fois, le clavier vous explique où va votre voix et demande l\'accès au micro.</string>
     <string name="visite_rappel_titre">Pour la revoir</string>
-    <string name="visite_rappel_texte">Toute la visite, ou un seul sujet comme la dictée : touchez « Visite guidée », tout en bas de l\'accueil.</string>
-    <string name="visite_rappel_carnet">Pour revoir cette visite : « Visite guidée », tout en bas de l\'accueil.</string>
+    <string name="visite_rappel_texte">Toute la visite, ou un seul sujet comme la dictée : touchez le ? en haut de l\'écran.</string>
+    <string name="visite_rappel_carnet">Pour revoir cette visite : le ? en haut de l\'accueil.</string>
     <string name="visite_carte_titre">Votre carte</string>
     <string name="visite_carte_texte">Chaque mot gagné dans un jeu devient une carte. Le paysage est un lieu du Luxembourg, et son heure dit la rareté du mot. Au milieu, le mot et sa traduction, avec une phrase d\'exemple. En bas, combien de fois vous l\'avez gagné, le jeu qui l\'a donné et où en est sa révision.</string>
     <string name="visite_sujet_gestes">Écrire avec le clavier</string>
