@@ -1444,10 +1444,10 @@ class CarnetFragment : DialogFragment() {
     }
 
     /**
-     * La visite du carnet, une fois, dès qu'il porte une carte : la collection,
-     * puis une carte ouverte zone par zone (paysage, mot, sens, compteurs,
-     * numéro), ses deux gestes (partager, céder) et, carte refermée, la façon
-     * d'en recevoir une. Pas quand le carnet s'ouvre sur une carte reçue.
+     * La visite du carnet, une fois, dès qu'il porte une carte : une carte
+     * ouverte et ce qu'elle dit, ses deux gestes (partager, céder) et, carte
+     * refermée, la façon d'en recevoir une. Pas quand le carnet s'ouvre sur
+     * une carte reçue.
      */
     private fun proposerVisite() {
         val ctx = context ?: return
@@ -1470,46 +1470,28 @@ class CarnetFragment : DialogFragment() {
             )) return
 
         val exemple = premiereVignette?.second ?: contenus.first()
-        fun zone(vararg zones: android.graphics.RectF): () -> android.graphics.RectF? = {
-            val l = lecteur
-            val carte = l?.carteMontree
-            if (l == null || !l.posee) null
-            else VisiteGuidee.rectDe(carte)?.let { r ->
-                VisiteGuidee.zoneDeCarte(VisiteGuidee.reunion(*zones), r.left, r.top, r.width(), Ornement.LARGEUR)
-            }
-        }
         val carteOuverte: (() -> Unit) -> Unit = { suite ->
             if (lecteur?.ouvert != true) montrerCarte(exemple)
             VisiteGuidee.attendre({ lecteur?.posee == true }, delaiMs = 4000L, puis = suite)
         }
-        fun etape(titre: Int, texte: Int, preparer: (() -> Unit) -> Unit, cible: () -> android.graphics.RectF?) =
-            VisiteGuidee.Etape(getString(titre), getString(texte), preparer, cible)
+        fun etape(titre: Int, texte: String, preparer: (() -> Unit) -> Unit, cible: () -> android.graphics.RectF?) =
+            VisiteGuidee.Etape(getString(titre), texte, preparer, cible)
 
+        // Quatre étapes et non neuf : la carte se présente d'un bloc, zone par
+        // zone c'était cinq bulles au moment précis où l'on voulait la voir.
+        // La visite entière dit à la fin où la retrouver.
+        val rappel = if (sujet == null) "\n\n" + getString(R.string.visite_rappel_carnet) else ""
         val etapes = listOf(
-            etape(R.string.visite_collection_titre, R.string.visite_collection_texte, { suite ->
-                // La carte choisie peut être plus bas dans la grille.
-                premiereVignette?.first?.let { it.requestRectangleOnScreen(android.graphics.Rect(0, 0, it.width, it.height), true) }
-                racine.postDelayed(suite, 300L)
-            }) {
-                VisiteGuidee.rectDe(premiereVignette?.first)
-                    ?: VisiteGuidee.rectDe(if (zoneAlbum.visibility == View.VISIBLE) zoneAlbum else defilementGrille)
+            etape(R.string.visite_carte_titre, getString(R.string.visite_carte_texte), carteOuverte) {
+                lecteur?.takeIf { it.posee }?.let { VisiteGuidee.rectDe(it.carteMontree) }
             },
-            etape(R.string.visite_paysage_titre, R.string.visite_paysage_texte, carteOuverte, zone(Ornement.FENETRE)),
-            VisiteGuidee.Etape(getString(R.string.visite_mot_titre), getString(R.string.visite_mot_texte), carteOuverte,
-                zone(Ornement.PLAQUE)) { listOfNotNull(zone(Ornement.GEMME)()) },
-            etape(R.string.visite_sens_titre, R.string.visite_sens_texte, carteOuverte,
-                zone(Ornement.NATURE, android.graphics.RectF(Ornement.PANNEAU.left, Ornement.PANNEAU.top, Ornement.PANNEAU.right, Ornement.ECU_G.top))),
-            etape(R.string.visite_compteurs_titre, R.string.visite_compteurs_texte, carteOuverte,
-                zone(Ornement.ECU_G, Ornement.ECU_D, Ornement.PROVENANCE)),
-            etape(R.string.visite_numero_titre, R.string.visite_numero_texte, carteOuverte,
-                zone(Ornement.SERIE_G, Ornement.SERIE_D)),
-            etape(R.string.visite_partager_titre, R.string.visite_partager_texte, carteOuverte) {
+            etape(R.string.visite_partager_titre, getString(R.string.visite_partager_texte), carteOuverte) {
                 VisiteGuidee.rectDe(lecteur?.boutonPartager)
             },
-            etape(R.string.visite_ceder_titre, R.string.visite_ceder_texte, carteOuverte) {
+            etape(R.string.visite_ceder_titre, getString(R.string.visite_ceder_texte), carteOuverte) {
                 VisiteGuidee.rectDe(lecteur?.boutonCeder)
             },
-            etape(R.string.visite_recevoir_titre, R.string.visite_recevoir_texte, { suite ->
+            etape(R.string.visite_recevoir_titre, getString(R.string.visite_recevoir_texte) + rappel, { suite ->
                 fermerCarte()
                 VisiteGuidee.attendre({ lecteur?.ouvert != true }, puis = { racine.postDelayed(suite, 250L) })
             }) { VisiteGuidee.rectDe(boutonRecevoir) }

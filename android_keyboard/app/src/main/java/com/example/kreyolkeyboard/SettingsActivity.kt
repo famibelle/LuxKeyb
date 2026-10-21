@@ -484,28 +484,45 @@ class SettingsActivity : AppCompatActivity() {
         }
         fun etape(titre: Int, texte: Int, preparer: (() -> Unit) -> Unit, cible: () -> android.graphics.RectF?) =
             VisiteGuidee.Etape(getString(titre), getString(texte), preparer, cible)
+        // Le clavier d'abord : c'est pour lui qu'on installe l'application, et
+        // quelqu'un qui passe la visite à mi-chemin doit l'avoir vu. Puis les
+        // cartes, le dictionnaire, les jeux, le reste, les réglages en dernier :
+        // l'ordre du sommaire.
         val etapes = listOf(
-            etape(R.string.visite_accueil_titre, R.string.visite_accueil_texte, aller(0), onglet(0)),
-            etape(R.string.visite_reglages_titre, R.string.visite_reglages_texte, aller(0)) {
-                VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_reglages"))
-            },
-            etape(R.string.visite_jeux_titre, R.string.visite_jeux_texte, aller(TAB_SPILLER), onglet(TAB_SPILLER)),
+            etape(R.string.visite_gestes_titre, R.string.visite_gestes_texte, aller(0)) { null },
+            VisiteGuidee.Etape(getString(R.string.visite_dictee_titre), getString(R.string.visite_dictee_texte),
+                preparer = aller(0), icone = R.drawable.ic_mic),
             etape(R.string.visite_carnet_titre, R.string.visite_carnet_texte, aller(TAB_SPILLER)) {
                 VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_carnet"))
             },
             etape(R.string.visite_dico_titre, R.string.visite_dico_texte, aller(TAB_WIERDERBUCH), onglet(TAB_WIERDERBUCH)),
+            etape(R.string.visite_jeux_titre, R.string.visite_jeux_texte, aller(TAB_SPILLER), onglet(TAB_SPILLER)),
+            etape(R.string.visite_accueil_titre, R.string.visite_accueil_texte, aller(0), onglet(0)),
             etape(R.string.visite_progres_titre, R.string.visite_progres_texte, aller(TAB_STATS), onglet(TAB_STATS)),
-            etape(R.string.visite_gestes_titre, R.string.visite_gestes_texte, aller(0)) { null },
-            VisiteGuidee.Etape(getString(R.string.visite_dictee_titre), getString(R.string.visite_dictee_texte),
-                preparer = aller(0), icone = R.drawable.ic_mic)
+            etape(R.string.visite_reglages_titre, R.string.visite_reglages_texte, aller(0)) {
+                VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_reglages"))
+            }
         )
         // Les sujets du sommaire désignent ces étapes par leur rang.
         if (BuildConfig.DEBUG) check(etapes.size == VisiteGuidee.ETAPES_APPLICATION)
+        // La visite entière finit en disant où la retrouver, et « Passer » y
+        // mène d'abord : passée sans le savoir, elle était perdue.
+        val rappel = etape(R.string.visite_rappel_titre, R.string.visite_rappel_texte, { suite ->
+            allerAOnglet(0)
+            VisiteGuidee.attendre({ currentTab == 0 && VisiteGuidee.vueDeLaPage(racine, "visite_revoir") != null }) {
+                VisiteGuidee.vueDeLaPage(racine, "visite_revoir")?.let {
+                    it.requestRectangleOnScreen(android.graphics.Rect(0, 0, it.width, it.height + enDp(40)), true)
+                }
+                VisiteGuidee.attendre({ VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_revoir")) != null },
+                    delaiMs = 1200L) { racine.postDelayed(suite, 250L) }
+            }
+        }) { VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_revoir")) }
+        val montrees = sujet?.let { etapes.slice(it.etapes) } ?: (etapes + rappel)
         retourVisite.isEnabled = true
         visiteSujet = sujet
-        visite = VisiteGuidee.Voile(racine, sujet?.let { etapes.slice(it.etapes) } ?: etapes, depart) { _ ->
+        visite = VisiteGuidee.Voile(racine, montrees, depart, rappel = if (sujet == null) montrees.size - 1 else null) { _ ->
             // Passée ou finie, elle ne revient pas d'elle-même : « Visite
-            // guidée », au pied de Démarrage, la relance.
+            // guidée », au pied de l'accueil, la relance.
             onboardingPrefs().edit().putBoolean(VisiteGuidee.VISITE_APPLICATION, true).apply()
             visite = null
             visiteSujet = null
@@ -569,13 +586,13 @@ class SettingsActivity : AppCompatActivity() {
             setPadding(enDp(24), enDp(16), enDp(24), enDp(4))
         }
         val titres = mapOf(
-            VisiteGuidee.Sujet.ACCUEIL to R.string.visite_accueil_titre,
-            VisiteGuidee.Sujet.REGLAGES to R.string.visite_reglages_titre,
-            VisiteGuidee.Sujet.JEUX to R.string.visite_jeux_titre,
-            VisiteGuidee.Sujet.DICTIONNAIRE to R.string.visite_dico_titre,
-            VisiteGuidee.Sujet.PROGRES to R.string.visite_progres_titre,
-            VisiteGuidee.Sujet.GESTES to R.string.visite_gestes_titre,
-            VisiteGuidee.Sujet.DICTEE to R.string.visite_dictee_titre,
+            VisiteGuidee.Sujet.ACCUEIL to R.string.visite_sujet_accueil,
+            VisiteGuidee.Sujet.REGLAGES to R.string.visite_sujet_reglages,
+            VisiteGuidee.Sujet.JEUX to R.string.visite_sujet_jeux,
+            VisiteGuidee.Sujet.DICTIONNAIRE to R.string.visite_sujet_dico,
+            VisiteGuidee.Sujet.PROGRES to R.string.visite_sujet_progres,
+            VisiteGuidee.Sujet.GESTES to R.string.visite_sujet_gestes,
+            VisiteGuidee.Sujet.DICTEE to R.string.visite_sujet_dictee,
             VisiteGuidee.Sujet.LIRE_UNE_CARTE to R.string.visite_sujet_lire,
             VisiteGuidee.Sujet.PARTAGER to R.string.visite_sujet_partager,
             VisiteGuidee.Sujet.DONNER_OU_RECEVOIR to R.string.visite_sujet_echanger
@@ -1714,7 +1731,7 @@ class SettingsActivity : AppCompatActivity() {
             "🧭", getString(R.string.visite_revoir),
             getString(R.string.visite_revoir_resume),
             page = null
-        ) { ouvrirSommaireVisite() })
+        ) { ouvrirSommaireVisite() }.apply { tag = "visite_revoir" })
         mainLayout.addView(createSpacing(16))
 
         return mainLayout

@@ -67,8 +67,54 @@ class VisiteGuideeTest {
 
     @Test
     fun `la dictee et le partage d'une carte ont chacun leur sujet`() {
-        assertEquals(7..7, VisiteGuidee.Sujet.DICTEE.etapes)
+        assertEquals(1..1, VisiteGuidee.Sujet.DICTEE.etapes)
         assertEquals(VisiteGuidee.Visite.CARNET, VisiteGuidee.Sujet.PARTAGER.visite)
-        assertEquals(6..6, VisiteGuidee.Sujet.PARTAGER.etapes)
+        assertEquals(1..1, VisiteGuidee.Sujet.PARTAGER.etapes)
+    }
+
+    @Test
+    fun `le clavier ouvre la visite entiere`() {
+        assertEquals(0..0, VisiteGuidee.Sujet.GESTES.etapes)
+        assertEquals(1..1, VisiteGuidee.Sujet.DICTEE.etapes)
+    }
+
+    @Test
+    fun `passer mene au rappel, puis ferme`() {
+        // Visite entière de 9 bulles, rappel en dernier
+        assertEquals(8, VisiteGuidee.passerVers(index = 2, rappel = 8))
+        assertEquals(null, VisiteGuidee.passerVers(index = 8, rappel = 8))
+        // Un sujet n'a pas de rappel : « Passer » ferme
+        assertEquals(null, VisiteGuidee.passerVers(index = 0, rappel = null))
+    }
+
+    @Test
+    fun `passer disparait sur une bulle seule et sur le rappel`() {
+        assertFalse(VisiteGuidee.passerVisible(nombre = 1, index = 0, rappel = null))
+        assertFalse(VisiteGuidee.passerVisible(nombre = 9, index = 8, rappel = 8))
+        assertTrue(VisiteGuidee.passerVisible(nombre = 9, index = 3, rappel = 8))
+        assertTrue(VisiteGuidee.passerVisible(nombre = 3, index = 0, rappel = null))
+    }
+
+    @Test
+    fun `deroule saute au rang demande, borne`() {
+        val d = VisiteGuidee.Deroule(9)
+        d.allerA(8)
+        assertTrue(d.derniere)
+        d.allerA(40)
+        assertEquals(8, d.index)
+    }
+
+    @Test
+    fun `la bulle se pose sous une cible du haut, au-dessus d'une cible du bas`() {
+        // Un onglet en haut : dessous
+        assertEquals(true to 216, VisiteGuidee.placement(100f, 200f, 1600, 400, 16, 40))
+        // Un bouton en bas : dessus, retrait depuis le bas
+        assertEquals(false to 316, VisiteGuidee.placement(1300f, 1400f, 1600, 400, 16, 40))
+    }
+
+    @Test
+    fun `une cible trop grande laisse la bulle en bas de l'ecran`() {
+        // La carte entière du carnet sur le A21s : ni dessous ni dessus
+        assertEquals(false to 40, VisiteGuidee.placement(100f, 1180f, 1600, 600, 16, 40))
     }
 }

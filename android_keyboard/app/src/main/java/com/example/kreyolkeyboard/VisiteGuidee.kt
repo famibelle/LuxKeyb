@@ -87,7 +87,22 @@ object VisiteGuidee {
             index++
             return true
         }
+
+        /** Saute à l'étape [rang], bornée : « Passer » mène au rappel de la fin. */
+        fun allerA(rang: Int) {
+            index = rang.coerceIn(0, (nombre - 1).coerceAtLeast(0))
+        }
     }
+
+    /**
+     * Ce que fait « Passer » : fermer, ou d'abord sauter au [rappel] qui dit
+     * où retrouver la visite. Passée sans ce rappel, elle était perdue pour
+     * qui ne savait pas où la chercher.
+     */
+    fun passerVers(index: Int, rappel: Int?): Int? = rappel?.takeIf { index < it }
+
+    /** « Passer » n'a de sens que s'il reste quelque chose à passer. */
+    fun passerVisible(nombre: Int, index: Int, rappel: Int?): Boolean = nombre > 1 && index != rappel
 
     /** Laquelle des deux visites porte un sujet. */
     enum class Visite { APPLICATION, CARNET }
@@ -97,28 +112,50 @@ object VisiteGuidee {
      * revient plus tard sur un seul point, la dictée ou le partage d'une
      * carte, sans refaire tout le parcours. [etapes] sont les rangs, dans sa
      * visite, des étapes que le sujet rejoue : l'ordre de ces listes est celui
-     * de [SettingsActivity.lancerVisite] (8 étapes) et de
-     * `CarnetFragment.proposerVisite` (9 étapes), [VisiteGuideeTest] le vérifie.
+     * de [SettingsActivity.lancerVisite] (8 étapes, plus le rappel de la
+     * fin) et de `CarnetFragment.proposerVisite` (4 étapes), [VisiteGuideeTest] le vérifie.
      * [groupe] range le sujet sous un intertitre du sommaire.
      */
     enum class Sujet(val visite: Visite, val etapes: IntRange, val groupe: Int, val emoji: String) {
         // L'ordre du sommaire, choisi par le propriétaire (2026-10-21) : le
         // clavier, les cartes, le dictionnaire, les jeux, le reste, et les
         // réglages du clavier tout en bas.
-        GESTES(Visite.APPLICATION, 6..6, 0, "✋"),
-        DICTEE(Visite.APPLICATION, 7..7, 0, "🎤"),
-        LIRE_UNE_CARTE(Visite.CARNET, 0..5, 1, "🃏"),
-        PARTAGER(Visite.CARNET, 6..6, 1, "📤"),
-        DONNER_OU_RECEVOIR(Visite.CARNET, 7..8, 1, "🤝"),
-        DICTIONNAIRE(Visite.APPLICATION, 4..4, 2, "📚"),
-        JEUX(Visite.APPLICATION, 2..2, 2, "🎮"),
-        ACCUEIL(Visite.APPLICATION, 0..0, 2, "🏠"),
-        PROGRES(Visite.APPLICATION, 5..5, 2, "📊"),
-        REGLAGES(Visite.APPLICATION, 1..1, 2, "⚙️");
+        GESTES(Visite.APPLICATION, 0..0, 0, "✋"),
+        DICTEE(Visite.APPLICATION, 1..1, 0, "🎤"),
+        LIRE_UNE_CARTE(Visite.CARNET, 0..0, 1, "🃏"),
+        PARTAGER(Visite.CARNET, 1..1, 1, "📤"),
+        DONNER_OU_RECEVOIR(Visite.CARNET, 2..3, 1, "🤝"),
+        DICTIONNAIRE(Visite.APPLICATION, 3..3, 2, "📚"),
+        JEUX(Visite.APPLICATION, 4..4, 2, "🎮"),
+        ACCUEIL(Visite.APPLICATION, 5..5, 2, "🏠"),
+        PROGRES(Visite.APPLICATION, 6..6, 2, "📊"),
+        REGLAGES(Visite.APPLICATION, 7..7, 2, "⚙️");
     }
 
     const val ETAPES_APPLICATION = 8
-    const val ETAPES_CARNET = 9
+    const val ETAPES_CARNET = 4
+
+    /**
+     * Où poser la bulle autour d'une cible qui va de [haut] à [bas] : sous
+     * elle (`true`, retrait depuis le haut) ou au-dessus (`false`, retrait
+     * depuis le bas). Le côté le plus naturel d'abord (sous une cible du haut
+     * de l'écran), l'autre s'il est seul à la contenir ; si aucun ne la
+     * contient, en bas de l'écran par-dessus la cible. Vu sur le A21s : la
+     * carte entière éclairée ne laissait que 140 dp dessous, et le bouton
+     * « Suivant » sortait de l'écran.
+     */
+    fun placement(haut: Float, bas: Float, ecran: Int, bulle: Int, marge: Int, basEcran: Int): Pair<Boolean, Int> {
+        val tientDessous = bas + marge + bulle + basEcran <= ecran
+        val tientDessus = haut - marge - bulle >= marge
+        val dessousDabord = (haut + bas) / 2f < ecran / 2f
+        return when {
+            dessousDabord && tientDessous -> true to (bas + marge).toInt()
+            !dessousDabord && tientDessus -> false to (ecran - haut + marge).toInt()
+            tientDessous -> true to (bas + marge).toInt()
+            tientDessus -> false to (ecran - haut + marge).toInt()
+            else -> false to basEcran
+        }
+    }
 
     /** « 2 / 6 ». */
     fun compteur(rang: Int, montrees: Int): String = "${rang + 1} / $montrees"
@@ -201,6 +238,8 @@ object VisiteGuidee {
         private val hote: FrameLayout,
         private val etapes: List<Etape>,
         depart: Int = 0,
+        /** Le rang de l'étape qui dit où retrouver la visite, où « Passer » mène d'abord. */
+        private val rappel: Int? = null,
         private val surEtape: (Int) -> Unit = {},
         private val surFin: (terminee: Boolean) -> Unit
     ) : FrameLayout(hote.context) {
@@ -225,6 +264,7 @@ object VisiteGuidee {
         private val titre: TextView
         private val texte: TextView
         private val suivant: TextView
+        private val boutonPasser: TextView
         private val bulle: LinearLayout
 
         private val suivi = ViewTreeObserver.OnPreDrawListener {
@@ -267,14 +307,14 @@ object VisiteGuidee {
                 setTextColor(Color.parseColor("#333333"))
                 setLineSpacing(0f, 1.2f)
             }
-            val passer = TextView(context).apply {
+            boutonPasser = TextView(context).apply {
                 text = context.getString(R.string.visite_passer)
                 textSize = 15f
                 setTextColor(Color.parseColor("#6B6B6B"))
                 setPadding(dp(4f), dp(12f), dp(16f), dp(12f))
                 isClickable = true
                 isFocusable = true
-                setOnClickListener { finir(terminee = false) }
+                setOnClickListener { passer() }
             }
             suivant = TextView(context).apply {
                 textSize = 16f
@@ -298,7 +338,7 @@ object VisiteGuidee {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.CENTER_VERTICAL
                 setPadding(0, dp(14f), 0, 0)
-                addView(passer)
+                addView(boutonPasser)
                 addView(View(context), LinearLayout.LayoutParams(0, 1, 1f))
                 addView(suivant)
             })
@@ -315,7 +355,12 @@ object VisiteGuidee {
         }
 
         /** Le bouton Retour : la visite est passée, comme avec « Passer ». */
-        fun passer() = finir(terminee = false)
+        fun passer() {
+            if (!attenteFinie || fermee) return finir(terminee = false)
+            val vers = passerVers(deroule.index, rappel) ?: return finir(terminee = false)
+            deroule.allerA(vers)
+            montrer()
+        }
 
         val etapeCourante: Int get() = deroule.index
 
@@ -344,6 +389,8 @@ object VisiteGuidee {
                 titre.setCompoundDrawables(icone, null, null, null)
                 titre.compoundDrawablePadding = (10f * d).toInt()
                 texte.text = e.texte
+                boutonPasser.visibility =
+                    if (passerVisible(etapes.size, deroule.index, rappel)) View.VISIBLE else View.INVISIBLE
                 suivant.text = context.getString(
                     if (deroule.derniere) R.string.visite_terminer else R.string.visite_suivant
                 )
@@ -388,20 +435,22 @@ object VisiteGuidee {
             lp.width = if (width - 2 * marge > largeurMax) largeurMax else LayoutParams.MATCH_PARENT
             lp.setMargins(marge, 0, marge, 0)
             val t = trou
-            when {
-                t == null -> {
-                    lp.gravity = Gravity.CENTER
-                    lp.topMargin = 0
-                    lp.bottomMargin = 0
-                }
-                t.centerY() < height / 2f -> {
-                    lp.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
-                    lp.topMargin = (t.bottom + marge).toInt().coerceAtMost(height - (220 * d).toInt())
-                }
-                else -> {
-                    lp.gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                    lp.bottomMargin = (height - t.top + marge).toInt().coerceAtMost(height - (220 * d).toInt())
-                }
+            if (t == null) {
+                lp.gravity = Gravity.CENTER
+                lp.topMargin = 0
+                lp.bottomMargin = 0
+            } else {
+                val largeur = if (lp.width == LayoutParams.MATCH_PARENT) width - 2 * marge else lp.width
+                bulle.measure(
+                    MeasureSpec.makeMeasureSpec(largeur, MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+                )
+                val basEcran = marge + (androidx.core.view.ViewCompat.getRootWindowInsets(this)
+                    ?.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars())?.bottom ?: 0)
+                val (dessous, retrait) = placement(t.top, t.bottom, height, bulle.measuredHeight, marge, basEcran)
+                lp.gravity = (if (dessous) Gravity.TOP else Gravity.BOTTOM) or Gravity.CENTER_HORIZONTAL
+                lp.topMargin = if (dessous) retrait else 0
+                lp.bottomMargin = if (dessous) 0 else retrait
             }
             bulle.layoutParams = lp
         }
