@@ -6,6 +6,139 @@
   "Changements": "Changes",
   "Rapidité": "Speed"
  },
+ "37.7.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "New",
+    "points": [
+     {
+      "titre": "A guided tour of the app",
+      "texte": "The first time you open it, a bubble presents each tab (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), the keyboard settings, your card collection, the three keyboard gestures and voice typing. One tap moves on, you can skip it whenever you like, and the “Guided tour” line at the bottom of the home screen starts it again."
+     },
+     {
+      "titre": "A guided tour of the cards",
+      "texte": "The first time you open Mäi Carnet, a card opens and presents itself area by area (the landscape, the word, its meaning, its counters, its number), then the Share, Give and Receive buttons."
+     }
+    ]
+   },
+   {
+    "titre": "Fixes",
+    "points": [
+     {
+      "titre": "On a tablet, an open card stays open when you turn the screen",
+      "texte": ""
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "The guided tour of the app, step by step, on the emulator. A dark veil covers the screen and a white bubble presents what is lit by a yellow frame: 1. the Haut tab, the daily home; 2. the gear of the keyboard settings; 3. the Spiller tab and its games; 4. the Mäi Carnet banner; 5. the Wierderbuch tab; 6. the Mäi Lëtzebuergesch tab and the levels, from Ufänger to Sproochemeeschter; 7. the keyboard in three gestures (tap a suggested word, long press for accents, slide on the space bar to move the cursor); 8. voice typing, with the red microphone icon: tap the microphone at the top right of the keyboard, speak Luxembourgish, tap again to finish. The screens are in French.",
+    "legende": "The tour of the app, in eight steps: the four tabs, the settings, the card collection, the keyboard gestures and voice typing."
+   },
+   {
+    "alt": "The guided tour of the card collection, with the card “Waasser” (water). 1. the card is lit in the collection grid; then it opens full size and each area lights up in turn: 2. the landscape, whose time of day tells the rarity; 3. the word on its plate and the badge with the number of letters; 4. its meaning, “Neuter noun”, and a sentence from the official dictionary with its translation; 5. the SEEN and LEVEL shields and the game medallion; 6. the card number and its rank; 7. the Share button; 8. the Give button; 9. card closed, the Receive button at the top of the collection. The screens are in French.",
+    "legende": "The tour of the cards: each area of the card explained, then how to share it, give it away or receive one."
+   }
+  ]
+ },
+ "37.6.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "New",
+    "points": [
+     {
+      "titre": "The Wierderbuch understands numbers written in digits",
+      "texte": "Typing “11” shows “11 is written ‘eelef’” and its translation, from 0 to 100. Beyond that, as for years, the app reminds you that they are written in digits, like in the official dictionary."
+     }
+    ]
+   },
+   {
+    "titre": "Fixes",
+    "points": [
+     {
+      "titre": "Level names corrected",
+      "texte": "By a Luxembourgish teacher: Ufänger, Sproochekënner and Sproochemeeschter. Your progress does not change."
+     }
+    ]
+   }
+  ]
+ },
+ "37.5.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "New",
+    "points": [
+     {
+      "titre": "Open cards catch the light",
+      "texte": "The landscape window is behind glass, with a discreet reflection that glides when you tilt the phone. The frame shines according to its metal, from the pewter of common cards to the gold of very rare ones, and the light runs from one raised piece to the next (plate, medallion, shields) as you tilt."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.10": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "Winter and summer cards appear faster",
+      "texte": "On a Galaxy A21s, the winter landscape of an open card is drawn in 33 ms instead of 49, the summer one in 21 ms instead of 35; autumn goes from 47 to 43 ms. The pictures do not change."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.9": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "Autumn cards appear faster",
+      "texte": "The autumn landscape of an open card is drawn in 43 ms instead of 71 on a Galaxy A21s, that of a thumbnail in 21 ms instead of 30; spring gains a little too. The pictures do not change."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.8": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Fixes",
+    "points": [
+     {
+      "titre": "A very rare card no longer stays face down",
+      "texte": "On a slow phone, the flash before a very rare card could cancel its turn, and the card stayed on its back."
+     },
+     {
+      "titre": "The first card pack no longer freezes",
+      "texte": "After an install or an update, the card paused for half a second while turning over. The graphics work is now done in advance, without anything showing."
+     }
+    ]
+   },
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The collection legend filters",
+      "texte": "Tapping “✦ 5 very rare” now shows only the very rare cards; a second tap shows the whole collection."
+     },
+     {
+      "titre": "The open card names its tier",
+      "texte": "At the bottom right, “✦ Very rare · 9769th” instead of the rank alone."
+     }
+    ]
+   }
+  ]
+ },
  "37.4.7": {
   "intro": "The first rare and very rare cards get their ceremony.",
   "sections": [

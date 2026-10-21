@@ -1,21 +1,37 @@
 {
- "genere_le": "2026-10-18",
- "derniere_version": "37.4.7",
- "derniere_date": "2026-10-17",
+ "genere_le": "2026-10-21",
+ "derniere_version": "37.7.0",
+ "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
   {
-   "version": "37.4.7",
-   "date": "2026-10-17",
-   "intro": "A primeira carta rara e a primeira muito rara têm a sua cerimónia.",
+   "version": "37.7.0",
+   "date": "2026-10-21",
+   "intro": "",
    "sections": [
     {
      "emoji": "✨",
-     "titre": "Melhorias",
+     "titre": "Novidades",
      "points": [
       {
-       "titre": "A primeira carta rara e a primeira muito rara têm a sua cerimónia",
-       "texte": "A primeira rara estremece uma segunda vez, com mais força, e a primeira muito rara sobe mais devagar; ambas têm um segundo fogo de artifício e uma frase que diz como reconhecer o seu nível (céu de fim de tarde e moldura de prata, noite estrelada e moldura de ouro). Uma só vez por nível."
+       "titre": "Uma visita guiada à aplicação",
+       "texte": "Na primeira abertura, um balão apresenta cada separador (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), as definições do teclado, a sua coleção de cartas, os três gestos do teclado e o ditado por voz. Um toque avança, pode saltá-la quando quiser, e a linha «Visita guiada», no fundo do início, volta a lançá-la."
+      },
+      {
+       "titre": "Uma visita guiada às cartas",
+       "texte": "Na primeira abertura de Mäi Carnet, uma carta abre-se e apresenta-se zona a zona (a paisagem, a palavra, o seu sentido, os seus contadores, o seu número), e depois os botões Partilhar, Ceder e Receber."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Correções",
+     "points": [
+      {
+       "titre": "Num tablet, uma carta aberta continua aberta quando se roda o ecrã",
+       "texte": ""
       }
      ],
      "texte": "",
@@ -24,18 +40,73 @@
    ],
    "images": [
     {
-     "image": "Screenshots/lux_premiere_tres_rare.gif",
-     "alt": "Filmado num Galaxy A21s. Um pacote de cartas no fim do jogo: cai a noite no ecrã, o verso da carta sobe a rodar, passa um relâmpago violeta e a carta vira-se. É «Kran» (grua), dourada, numa noite estrelada. Aparecem dois selos por cima: «Nova carta» e «Carta muito rara». Por baixo da carta, uma frase diz: «A sua primeira carta muito rara! Reconhece-se pela noite estrelada e pela moldura de ouro.»",
-     "legende": "A primeiríssima carta muito rara tem direito à sua cerimónia e a uma frase que diz como reconhecê-la daí em diante."
+     "image": "Screenshots/lux_visite_application.gif",
+     "alt": "A visita guiada à aplicação, passo a passo, no emulador. Um véu escuro cobre o ecrã e um balão branco apresenta o que é destacado por uma moldura amarela: 1. o separador Haut, o início do dia; 2. a roda dentada das definições do teclado; 3. o separador Spiller e os seus jogos; 4. a faixa Mäi Carnet; 5. o separador Wierderbuch; 6. o separador Mäi Lëtzebuergesch e os níveis, de Ufänger a Sproochemeeschter; 7. o teclado em três gestos (tocar numa palavra proposta, premir longamente para os acentos, deslizar na barra de espaço para mover o cursor); 8. o ditado, com o ícone vermelho do microfone: tocar no microfone no canto superior direito do teclado, falar luxemburguês, tocar outra vez para terminar. Os ecrãs estão em francês.",
+     "legende": "A visita à aplicação, em oito passos: os quatro separadores, as definições, a coleção de cartas, os gestos do teclado e o ditado por voz."
+    },
+    {
+     "image": "Screenshots/lux_visite_cartes.gif",
+     "alt": "A visita guiada à coleção de cartas, com a carta «Waasser» (água). 1. a carta é destacada na grelha da coleção; depois abre-se em grande e cada zona acende-se por sua vez: 2. a paisagem, cuja hora do dia indica a raridade; 3. a palavra na sua placa e o distintivo com o número de letras; 4. o seu sentido, «Substantivo neutro», e uma frase do dicionário oficial com a sua tradução; 5. os escudos VISTA e NÍVEL e o medalhão do jogo; 6. o número da carta e a sua posição; 7. o botão Partilhar; 8. o botão Ceder; 9. carta fechada, o botão Receber no topo da coleção. Os ecrãs estão em francês.",
+     "legende": "A visita às cartas: cada zona da carta explicada, e depois como partilhá-la, cedê-la ou receber uma."
     }
    ],
-   "image": "Screenshots/lux_premiere_tres_rare.gif",
-   "image_alt": "Filmado num Galaxy A21s. Um pacote de cartas no fim do jogo: cai a noite no ecrã, o verso da carta sobe a rodar, passa um relâmpago violeta e a carta vira-se. É «Kran» (grua), dourada, numa noite estrelada. Aparecem dois selos por cima: «Nova carta» e «Carta muito rara». Por baixo da carta, uma frase diz: «A sua primeira carta muito rara! Reconhece-se pela noite estrelada e pela moldura de ouro.»",
-   "image_legende": "A primeiríssima carta muito rara tem direito à sua cerimónia e a uma frase que diz como reconhecê-la daí em diante."
+   "image": "Screenshots/lux_visite_application.gif",
+   "image_alt": "A visita guiada à aplicação, passo a passo, no emulador. Um véu escuro cobre o ecrã e um balão branco apresenta o que é destacado por uma moldura amarela: 1. o separador Haut, o início do dia; 2. a roda dentada das definições do teclado; 3. o separador Spiller e os seus jogos; 4. a faixa Mäi Carnet; 5. o separador Wierderbuch; 6. o separador Mäi Lëtzebuergesch e os níveis, de Ufänger a Sproochemeeschter; 7. o teclado em três gestos (tocar numa palavra proposta, premir longamente para os acentos, deslizar na barra de espaço para mover o cursor); 8. o ditado, com o ícone vermelho do microfone: tocar no microfone no canto superior direito do teclado, falar luxemburguês, tocar outra vez para terminar. Os ecrãs estão em francês.",
+   "image_legende": "A visita à aplicação, em oito passos: os quatro separadores, as definições, a coleção de cartas, os gestos do teclado e o ditado por voz."
   },
   {
-   "version": "37.4.6",
-   "date": "2026-10-16",
+   "version": "37.6.0",
+   "date": "2026-10-20",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Novidades",
+     "points": [
+      {
+       "titre": "O Wierderbuch entende os números escritos em algarismos",
+       "texte": "Escrever «11» mostra «11 escreve-se ‹eelef›» e a sua tradução, de 0 a 100. Acima disso, como para os anos, a aplicação lembra que se escrevem em algarismos, como no dicionário oficial."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Correções",
+     "points": [
+      {
+       "titre": "Nomes dos níveis corrigidos",
+       "texte": "Por um professor de luxemburguês: Ufänger, Sproochekënner e Sproochemeeschter. O seu progresso não muda."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.5.0",
+   "date": "2026-10-19",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Novidades",
+     "points": [
+      {
+       "titre": "As cartas abertas apanham a luz",
+       "texte": "A janela da paisagem está atrás de um vidro, com um reflexo discreto que desliza quando se inclina o telemóvel. A moldura brilha conforme o seu metal, do estanho das cartas comuns ao ouro das muito raras, e a luz corre de uma peça em relevo para a outra (placa, medalhão, escudos) à medida que se inclina."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.4.10",
+   "date": "2026-10-19",
    "intro": "",
    "sections": [
     {
@@ -43,8 +114,8 @@
      "titre": "Melhorias",
      "points": [
       {
-       "titre": "A raridade diz-se por extenso",
-       "texte": "No topo da coleção, cada nível tem o seu nome («✦ 5 muito raras ★ 11 raras…») em vez de símbolos sozinhos; no pacote de cartas, uma carta rara ou muito rara anuncia-se quando pousa."
+       "titre": "As cartas de inverno e de verão aparecem mais depressa",
+       "texte": "Num Galaxy A21s, a paisagem de inverno de uma carta aberta desenha-se em 33 ms em vez de 49, a de verão em 21 ms em vez de 35; o outono passa de 47 para 43 ms. As imagens não mudam."
       }
      ],
      "texte": "",
@@ -53,17 +124,17 @@
    ]
   },
   {
-   "version": "37.4.5",
-   "date": "2026-10-16",
+   "version": "37.4.9",
+   "date": "2026-10-18",
    "intro": "",
    "sections": [
     {
-     "emoji": "🐛",
-     "titre": "Correções",
+     "emoji": "✨",
+     "titre": "Melhorias",
      "points": [
       {
-       "titre": "As cartas da caixa de Leitner mostram a sua paisagem",
-       "texte": "Nos compartimentos, as cartas empilhadas só mostravam o céu; agora mostram o seu lugar, a sua estação e a sua festa, como na coleção."
+       "titre": "As cartas de outono aparecem mais depressa",
+       "texte": "A paisagem de outono de uma carta aberta desenha-se em 43 ms em vez de 71 num Galaxy A21s, a de uma miniatura em 21 ms em vez de 30; a primavera também ganha um pouco. As imagens não mudam."
       }
      ],
      "texte": "",
@@ -72,8 +143,8 @@
    ]
   },
   {
-   "version": "37.4.4",
-   "date": "2026-10-16",
+   "version": "37.4.8",
+   "date": "2026-10-18",
    "intro": "",
    "sections": [
     {
@@ -81,46 +152,28 @@
      "titre": "Correções",
      "points": [
       {
-       "titre": "Os pássaros de verão voam na janela da carta",
-       "texte": "Na carta aberta e no pacote de cartas, batem suavemente as asas e planam, quase sem derivar. Antes estavam imóveis na paisagem."
+       "titre": "Uma carta muito rara já não fica virada para baixo",
+       "texte": "Num telemóvel lento, o relâmpago que precede a carta muito rara podia anular a sua viragem, e a carta ficava de costas."
+      },
+      {
+       "titre": "O primeiro envelope já não bloqueia",
+       "texte": "Depois de uma instalação ou de uma atualização, a carta parava meio segundo ao virar-se. O trabalho gráfico é agora feito antecipadamente, sem que nada se veja."
       }
      ],
      "texte": "",
      "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.3",
-   "date": "2026-10-16",
-   "intro": "",
-   "sections": [
+    },
     {
-     "emoji": "🐛",
-     "titre": "Correções",
+     "emoji": "✨",
+     "titre": "Melhorias",
      "points": [
       {
-       "titre": "O teclado tem o seu nome no seletor de teclados",
-       "texte": "Nos telemóveis Samsung aparecia como «Clavier luxembourgeois Luxembourg»; agora chama-se em todo o lado «🇱🇺 Lëtzebuergesch Clavier»."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.2",
-   "date": "2026-10-16",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Correções",
-     "points": [
+       "titre": "A legenda da coleção filtra",
+       "texte": "Tocar em «✦ 5 muito raras» mostra apenas as muito raras; um segundo toque mostra toda a coleção."
+      },
       {
-       "titre": "Já não há faixa clara na borda da janela quando se inclina a carta",
-       "texte": "Os planos da paisagem passam agora para lá da janela, e a sua borda já não aparece ao deslizar."
+       "titre": "A carta aberta indica o seu nível",
+       "texte": "No canto inferior direito, «✦ Muito rara · 9769.º» em vez de apenas a posição."
       }
      ],
      "texte": "",

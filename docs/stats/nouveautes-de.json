@@ -1,21 +1,37 @@
 {
- "genere_le": "2026-10-18",
- "derniere_version": "37.4.7",
- "derniere_date": "2026-10-17",
+ "genere_le": "2026-10-21",
+ "derniere_version": "37.7.0",
+ "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
   {
-   "version": "37.4.7",
-   "date": "2026-10-17",
-   "intro": "Die erste seltene und die erste sehr seltene Karte bekommen ihre Zeremonie.",
+   "version": "37.7.0",
+   "date": "2026-10-21",
+   "intro": "",
    "sections": [
     {
      "emoji": "✨",
-     "titre": "Verbesserungen",
+     "titre": "Neu",
      "points": [
       {
-       "titre": "Die erste seltene und die erste sehr seltene Karte bekommen ihre Zeremonie",
-       "texte": "Die erste seltene Karte zittert ein zweites Mal, stärker, die erste sehr seltene steigt langsamer auf; beide bekommen ein zweites Feuerwerk und einen Satz, der sagt, woran man ihre Stufe erkennt (Abendhimmel und silberner Rahmen, Sternennacht und goldener Rahmen). Nur einmal pro Stufe."
+       "titre": "Ein Rundgang durch die App",
+       "texte": "Beim ersten Öffnen stellt eine Sprechblase jeden Tab vor (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), die Tastatureinstellungen, Ihre Kartensammlung, die drei Gesten der Tastatur und die Spracheingabe. Ein Tippen führt weiter, Sie können ihn jederzeit überspringen, und die Zeile „Rundgang“ unten auf der Startseite startet ihn erneut."
+      },
+      {
+       "titre": "Ein Rundgang durch die Karten",
+       "texte": "Beim ersten Öffnen von Mäi Carnet öffnet sich eine Karte und stellt sich Bereich für Bereich vor (die Landschaft, das Wort, seine Bedeutung, seine Zähler, seine Nummer), danach die Schaltflächen Teilen, Abgeben und Empfangen."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Korrekturen",
+     "points": [
+      {
+       "titre": "Auf dem Tablet bleibt eine geöffnete Karte offen, wenn man den Bildschirm dreht",
+       "texte": ""
       }
      ],
      "texte": "",
@@ -24,18 +40,73 @@
    ],
    "images": [
     {
-     "image": "Screenshots/lux_premiere_tres_rare.gif",
-     "alt": "Gefilmt auf einem Galaxy A21s. Ein Kartenpäckchen am Spielende: Nacht senkt sich über den Bildschirm, die Kartenrückseite steigt drehend auf, ein violetter Blitz, dann dreht sich die Karte um. Es ist „Kran“, golden, in einer Sternennacht. Darüber erscheinen zwei Abzeichen: „Neue Karte“ und „Sehr seltene Karte“. Unter der Karte steht: „Ihre erste sehr seltene Karte! Sie erkennen sie am Sternenhimmel und am goldenen Rahmen.“",
-     "legende": "Die allererste sehr seltene Karte bekommt ihre Zeremonie und einen Satz, der sagt, woran man sie künftig erkennt."
+     "image": "Screenshots/lux_visite_application.gif",
+     "alt": "Der Rundgang durch die App, Schritt für Schritt, im Emulator. Ein dunkler Schleier deckt den Bildschirm ab, und eine weiße Sprechblase stellt vor, was ein gelber Rahmen hervorhebt: 1. der Tab Haut, die Startseite des Tages; 2. das Zahnrad der Tastatureinstellungen; 3. der Tab Spiller und seine Spiele; 4. das Banner Mäi Carnet; 5. der Tab Wierderbuch; 6. der Tab Mäi Lëtzebuergesch und die Stufen, von Ufänger bis Sproochemeeschter; 7. die Tastatur in drei Gesten (ein vorgeschlagenes Wort antippen, lange drücken für Akzente, über die Leertaste gleiten, um den Cursor zu bewegen); 8. die Spracheingabe, mit dem roten Mikrofonsymbol: oben rechts auf der Tastatur das Mikrofon antippen, Luxemburgisch sprechen, zum Beenden noch einmal tippen. Die Bildschirme sind auf Französisch.",
+     "legende": "Der Rundgang durch die App in acht Schritten: die vier Tabs, die Einstellungen, die Kartensammlung, die Gesten der Tastatur und die Spracheingabe."
+    },
+    {
+     "image": "Screenshots/lux_visite_cartes.gif",
+     "alt": "Der Rundgang durch die Kartensammlung, mit der Karte „Waasser“ (Wasser). 1. die Karte wird im Raster der Sammlung hervorgehoben; dann öffnet sie sich groß, und jeder Bereich leuchtet nacheinander auf: 2. die Landschaft, deren Tageszeit die Seltenheit zeigt; 3. das Wort auf seiner Plakette und das Abzeichen mit der Anzahl der Buchstaben; 4. seine Bedeutung, „Neutrum“, und ein Satz aus dem offiziellen Wörterbuch mit seiner Übersetzung; 5. die Wappen GESEHEN und STUFE und das Medaillon des Spiels; 6. die Kartennummer und ihr Rang; 7. die Schaltfläche Teilen; 8. die Schaltfläche Abgeben; 9. Karte geschlossen, die Schaltfläche Empfangen oben in der Sammlung. Die Bildschirme sind auf Französisch.",
+     "legende": "Der Rundgang durch die Karten: jeder Bereich der Karte erklärt, dann wie man sie teilt, abgibt oder eine empfängt."
     }
    ],
-   "image": "Screenshots/lux_premiere_tres_rare.gif",
-   "image_alt": "Gefilmt auf einem Galaxy A21s. Ein Kartenpäckchen am Spielende: Nacht senkt sich über den Bildschirm, die Kartenrückseite steigt drehend auf, ein violetter Blitz, dann dreht sich die Karte um. Es ist „Kran“, golden, in einer Sternennacht. Darüber erscheinen zwei Abzeichen: „Neue Karte“ und „Sehr seltene Karte“. Unter der Karte steht: „Ihre erste sehr seltene Karte! Sie erkennen sie am Sternenhimmel und am goldenen Rahmen.“",
-   "image_legende": "Die allererste sehr seltene Karte bekommt ihre Zeremonie und einen Satz, der sagt, woran man sie künftig erkennt."
+   "image": "Screenshots/lux_visite_application.gif",
+   "image_alt": "Der Rundgang durch die App, Schritt für Schritt, im Emulator. Ein dunkler Schleier deckt den Bildschirm ab, und eine weiße Sprechblase stellt vor, was ein gelber Rahmen hervorhebt: 1. der Tab Haut, die Startseite des Tages; 2. das Zahnrad der Tastatureinstellungen; 3. der Tab Spiller und seine Spiele; 4. das Banner Mäi Carnet; 5. der Tab Wierderbuch; 6. der Tab Mäi Lëtzebuergesch und die Stufen, von Ufänger bis Sproochemeeschter; 7. die Tastatur in drei Gesten (ein vorgeschlagenes Wort antippen, lange drücken für Akzente, über die Leertaste gleiten, um den Cursor zu bewegen); 8. die Spracheingabe, mit dem roten Mikrofonsymbol: oben rechts auf der Tastatur das Mikrofon antippen, Luxemburgisch sprechen, zum Beenden noch einmal tippen. Die Bildschirme sind auf Französisch.",
+   "image_legende": "Der Rundgang durch die App in acht Schritten: die vier Tabs, die Einstellungen, die Kartensammlung, die Gesten der Tastatur und die Spracheingabe."
   },
   {
-   "version": "37.4.6",
-   "date": "2026-10-16",
+   "version": "37.6.0",
+   "date": "2026-10-20",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Neu",
+     "points": [
+      {
+       "titre": "Das Wierderbuch versteht Zahlen in Ziffern",
+       "texte": "Wer „11“ eingibt, sieht „11 wird ‚eelef‘ geschrieben“ und die Übersetzung, von 0 bis 100. Darüber erinnert die App, wie bei Jahreszahlen, daran, dass man sie in Ziffern schreibt, wie im offiziellen Wörterbuch."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Korrekturen",
+     "points": [
+      {
+       "titre": "Namen der Stufen korrigiert",
+       "texte": "Von einer Luxemburgischlehrkraft: Ufänger, Sproochekënner und Sproochemeeschter. Ihr Fortschritt ändert sich nicht."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.5.0",
+   "date": "2026-10-19",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Neu",
+     "points": [
+      {
+       "titre": "Geöffnete Karten fangen das Licht ein",
+       "texte": "Das Landschaftsfenster liegt hinter Glas, mit einem dezenten Spiegelbild, das gleitet, wenn man das Telefon neigt. Der Rahmen glänzt je nach Metall, vom Zinn der gewöhnlichen Karten bis zum Gold der sehr seltenen, und das Licht wandert beim Neigen von einem erhabenen Teil zum nächsten (Plakette, Medaillon, Wappen)."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.4.10",
+   "date": "2026-10-19",
    "intro": "",
    "sections": [
     {
@@ -43,8 +114,8 @@
      "titre": "Verbesserungen",
      "points": [
       {
-       "titre": "Die Seltenheit wird ausgeschrieben",
-       "texte": "Oben in der Sammlung trägt jede Stufe ihren Namen („✦ 5 sehr selten ★ 11 selten…“) statt bloßer Symbole; im Kartenpäckchen kündigt sich eine seltene oder sehr seltene Karte an, sobald sie liegt."
+       "titre": "Winter- und Sommerkarten erscheinen schneller",
+       "texte": "Auf einem Galaxy A21s wird die Winterlandschaft einer geöffneten Karte in 33 ms statt 49 gezeichnet, die Sommerlandschaft in 21 ms statt 35; der Herbst geht von 47 auf 43 ms. Die Bilder ändern sich nicht."
       }
      ],
      "texte": "",
@@ -53,17 +124,17 @@
    ]
   },
   {
-   "version": "37.4.5",
-   "date": "2026-10-16",
+   "version": "37.4.9",
+   "date": "2026-10-18",
    "intro": "",
    "sections": [
     {
-     "emoji": "🐛",
-     "titre": "Korrekturen",
+     "emoji": "✨",
+     "titre": "Verbesserungen",
      "points": [
       {
-       "titre": "Die Karten in der Leitner-Box zeigen ihre Landschaft",
-       "texte": "In den Fächern zeigten die gestapelten Karten nur den Himmel; jetzt zeigen sie ihren Ort, ihre Jahreszeit und ihr Fest, wie in der Sammlung."
+       "titre": "Herbstkarten erscheinen schneller",
+       "texte": "Die Herbstlandschaft einer geöffneten Karte wird auf einem Galaxy A21s in 43 ms statt 71 gezeichnet, die einer Miniatur in 21 ms statt 30; auch der Frühling wird etwas schneller. Die Bilder ändern sich nicht."
       }
      ],
      "texte": "",
@@ -72,8 +143,8 @@
    ]
   },
   {
-   "version": "37.4.4",
-   "date": "2026-10-16",
+   "version": "37.4.8",
+   "date": "2026-10-18",
    "intro": "",
    "sections": [
     {
@@ -81,46 +152,28 @@
      "titre": "Korrekturen",
      "points": [
       {
-       "titre": "Die Sommervögel fliegen im Kartenfenster",
-       "texte": "Auf der geöffneten Karte und im Kartenpäckchen schlagen sie sanft mit den Flügeln und gleiten, kaum treibend. Vorher standen sie starr in der Landschaft."
+       "titre": "Eine sehr seltene Karte bleibt nicht mehr verdeckt",
+       "texte": "Auf einem langsamen Telefon konnte der Blitz vor der sehr seltenen Karte ihr Umdrehen abbrechen, und die Karte blieb auf dem Rücken liegen."
+      },
+      {
+       "titre": "Das erste Kartenpäckchen stockt nicht mehr",
+       "texte": "Nach einer Installation oder einem Update hielt die Karte beim Umdrehen eine halbe Sekunde an. Die Grafikarbeit wird jetzt im Voraus erledigt, ohne dass man etwas sieht."
       }
      ],
      "texte": "",
      "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.3",
-   "date": "2026-10-16",
-   "intro": "",
-   "sections": [
+    },
     {
-     "emoji": "🐛",
-     "titre": "Korrekturen",
+     "emoji": "✨",
+     "titre": "Verbesserungen",
      "points": [
       {
-       "titre": "Die Tastatur trägt ihren Namen in der Tastaturauswahl",
-       "texte": "Auf Samsung-Telefonen erschien sie als „Clavier luxembourgeois Luxembourg“; jetzt heißt sie überall „🇱🇺 Lëtzebuergesch Clavier“."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.2",
-   "date": "2026-10-16",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Korrekturen",
-     "points": [
+       "titre": "Die Legende der Sammlung filtert",
+       "texte": "Ein Tippen auf „✦ 5 sehr selten“ zeigt nur noch die sehr seltenen Karten; ein zweites Tippen zeigt die ganze Sammlung."
+      },
       {
-       "titre": "Kein heller Streifen mehr am Fensterrand, wenn man die Karte neigt",
-       "texte": "Die Ebenen der Landschaft ragen jetzt über das Fenster hinaus, ihr Rand ist beim Gleiten nicht mehr zu sehen."
+       "titre": "Die geöffnete Karte nennt ihre Stufe",
+       "texte": "Unten rechts „✦ Sehr selten · 9769.“ statt nur des Rangs."
       }
      ],
      "texte": "",

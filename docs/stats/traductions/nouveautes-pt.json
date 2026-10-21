@@ -6,6 +6,139 @@
   "Changements": "Alterações",
   "Rapidité": "Rapidez"
  },
+ "37.7.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Novidades",
+    "points": [
+     {
+      "titre": "Uma visita guiada à aplicação",
+      "texte": "Na primeira abertura, um balão apresenta cada separador (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), as definições do teclado, a sua coleção de cartas, os três gestos do teclado e o ditado por voz. Um toque avança, pode saltá-la quando quiser, e a linha «Visita guiada», no fundo do início, volta a lançá-la."
+     },
+     {
+      "titre": "Uma visita guiada às cartas",
+      "texte": "Na primeira abertura de Mäi Carnet, uma carta abre-se e apresenta-se zona a zona (a paisagem, a palavra, o seu sentido, os seus contadores, o seu número), e depois os botões Partilhar, Ceder e Receber."
+     }
+    ]
+   },
+   {
+    "titre": "Correções",
+    "points": [
+     {
+      "titre": "Num tablet, uma carta aberta continua aberta quando se roda o ecrã",
+      "texte": ""
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "A visita guiada à aplicação, passo a passo, no emulador. Um véu escuro cobre o ecrã e um balão branco apresenta o que é destacado por uma moldura amarela: 1. o separador Haut, o início do dia; 2. a roda dentada das definições do teclado; 3. o separador Spiller e os seus jogos; 4. a faixa Mäi Carnet; 5. o separador Wierderbuch; 6. o separador Mäi Lëtzebuergesch e os níveis, de Ufänger a Sproochemeeschter; 7. o teclado em três gestos (tocar numa palavra proposta, premir longamente para os acentos, deslizar na barra de espaço para mover o cursor); 8. o ditado, com o ícone vermelho do microfone: tocar no microfone no canto superior direito do teclado, falar luxemburguês, tocar outra vez para terminar. Os ecrãs estão em francês.",
+    "legende": "A visita à aplicação, em oito passos: os quatro separadores, as definições, a coleção de cartas, os gestos do teclado e o ditado por voz."
+   },
+   {
+    "alt": "A visita guiada à coleção de cartas, com a carta «Waasser» (água). 1. a carta é destacada na grelha da coleção; depois abre-se em grande e cada zona acende-se por sua vez: 2. a paisagem, cuja hora do dia indica a raridade; 3. a palavra na sua placa e o distintivo com o número de letras; 4. o seu sentido, «Substantivo neutro», e uma frase do dicionário oficial com a sua tradução; 5. os escudos VISTA e NÍVEL e o medalhão do jogo; 6. o número da carta e a sua posição; 7. o botão Partilhar; 8. o botão Ceder; 9. carta fechada, o botão Receber no topo da coleção. Os ecrãs estão em francês.",
+    "legende": "A visita às cartas: cada zona da carta explicada, e depois como partilhá-la, cedê-la ou receber uma."
+   }
+  ]
+ },
+ "37.6.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Novidades",
+    "points": [
+     {
+      "titre": "O Wierderbuch entende os números escritos em algarismos",
+      "texte": "Escrever «11» mostra «11 escreve-se ‹eelef›» e a sua tradução, de 0 a 100. Acima disso, como para os anos, a aplicação lembra que se escrevem em algarismos, como no dicionário oficial."
+     }
+    ]
+   },
+   {
+    "titre": "Correções",
+    "points": [
+     {
+      "titre": "Nomes dos níveis corrigidos",
+      "texte": "Por um professor de luxemburguês: Ufänger, Sproochekënner e Sproochemeeschter. O seu progresso não muda."
+     }
+    ]
+   }
+  ]
+ },
+ "37.5.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Novidades",
+    "points": [
+     {
+      "titre": "As cartas abertas apanham a luz",
+      "texte": "A janela da paisagem está atrás de um vidro, com um reflexo discreto que desliza quando se inclina o telemóvel. A moldura brilha conforme o seu metal, do estanho das cartas comuns ao ouro das muito raras, e a luz corre de uma peça em relevo para a outra (placa, medalhão, escudos) à medida que se inclina."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.10": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "As cartas de inverno e de verão aparecem mais depressa",
+      "texte": "Num Galaxy A21s, a paisagem de inverno de uma carta aberta desenha-se em 33 ms em vez de 49, a de verão em 21 ms em vez de 35; o outono passa de 47 para 43 ms. As imagens não mudam."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.9": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "As cartas de outono aparecem mais depressa",
+      "texte": "A paisagem de outono de uma carta aberta desenha-se em 43 ms em vez de 71 num Galaxy A21s, a de uma miniatura em 21 ms em vez de 30; a primavera também ganha um pouco. As imagens não mudam."
+     }
+    ]
+   }
+  ]
+ },
+ "37.4.8": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Correções",
+    "points": [
+     {
+      "titre": "Uma carta muito rara já não fica virada para baixo",
+      "texte": "Num telemóvel lento, o relâmpago que precede a carta muito rara podia anular a sua viragem, e a carta ficava de costas."
+     },
+     {
+      "titre": "O primeiro envelope já não bloqueia",
+      "texte": "Depois de uma instalação ou de uma atualização, a carta parava meio segundo ao virar-se. O trabalho gráfico é agora feito antecipadamente, sem que nada se veja."
+     }
+    ]
+   },
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "A legenda da coleção filtra",
+      "texte": "Tocar em «✦ 5 muito raras» mostra apenas as muito raras; um segundo toque mostra toda a coleção."
+     },
+     {
+      "titre": "A carta aberta indica o seu nível",
+      "texte": "No canto inferior direito, «✦ Muito rara · 9769.º» em vez de apenas a posição."
+     }
+    ]
+   }
+  ]
+ },
  "37.4.7": {
   "intro": "A primeira carta rara e a primeira muito rara têm a sua cerimónia.",
   "sections": [

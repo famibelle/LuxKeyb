@@ -1,21 +1,37 @@
 {
- "genere_le": "2026-10-18",
- "derniere_version": "37.4.7",
- "derniere_date": "2026-10-17",
+ "genere_le": "2026-10-21",
+ "derniere_version": "37.7.0",
+ "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
   {
-   "version": "37.4.7",
-   "date": "2026-10-17",
+   "version": "37.7.0",
+   "date": "2026-10-21",
    "intro": "",
    "sections": [
     {
      "emoji": "✨",
-     "titre": "Améliorations",
+     "titre": "Nouveautés",
      "points": [
       {
-       "titre": "La première carte rare et la première très rare ont leur cérémonie",
-       "texte": "La première rare frémit une seconde fois, plus fort, la première très rare monte plus lentement ; toutes deux ont un second bouquet et une phrase qui dit comment reconnaître leur palier (ciel du soir et bordure d'argent, nuit étoilée et bordure d'or). Une seule fois par palier."
+       "titre": "Une visite guidée de l'application",
+       "texte": "À la première ouverture, une bulle présente chaque onglet (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), les réglages du clavier, votre carnet de cartes, les trois gestes du clavier et la dictée vocale. On avance d'un toucher, on la passe quand on veut, et la ligne « Visite guidée », en bas de l'accueil, la relance."
+      },
+      {
+       "titre": "Une visite guidée des cartes",
+       "texte": "À la première ouverture de Mäi Carnet, une carte s'ouvre et se présente zone par zone (le paysage, le mot, son sens, ses compteurs, son numéro), puis les boutons Partager, Céder et Recevoir."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Sur tablette, une carte ouverte reste ouverte quand on tourne l'écran",
+       "texte": ""
       }
      ],
      "texte": "",
@@ -24,18 +40,73 @@
    ],
    "images": [
     {
-     "image": "Screenshots/lux_premiere_tres_rare.gif",
-     "alt": "Filmé sur un Galaxy A21s. Une pochette de fin de partie : la nuit tombe sur l'écran, le dos de la carte monte en tournant, un éclair violet passe, puis la carte se retourne. C'est « Kran » (grue), dorée, dans une nuit étoilée. Deux pastilles apparaissent au-dessus : « Nouvelle carte » et « Carte très rare ». Sous la carte, une phrase dit : « Votre première carte très rare ! On la reconnaît à sa nuit étoilée et à sa bordure d'or. »",
-     "legende": "La toute première carte très rare a droit à sa cérémonie, et à une phrase qui dit comment la reconnaître ensuite."
+     "image": "Screenshots/lux_visite_application.gif",
+     "alt": "La visite guidée de l'application, étape par étape, sur l'émulateur. Un voile sombre couvre l'écran et une bulle blanche présente ce qui est éclairé d'un cadre jaune : 1. l'onglet Haut, l'accueil du jour ; 2. la roue dentée des réglages du clavier ; 3. l'onglet Spiller et ses jeux ; 4. le bandeau Mäi Carnet ; 5. l'onglet Wierderbuch ; 6. l'onglet Mäi Lëtzebuergesch et les niveaux, d'Ufänger à Sproochemeeschter ; 7. le clavier en trois gestes (toucher un mot proposé, appui long pour les accents, glisser sur la barre d'espace pour déplacer le curseur) ; 8. la dictée, avec l'icône rouge du micro : toucher le micro en haut à droite du clavier, parler luxembourgeois, toucher de nouveau pour finir.",
+     "legende": "La visite de l'application, en huit étapes : les quatre onglets, les réglages, le carnet, les gestes du clavier et la dictée."
+    },
+    {
+     "image": "Screenshots/lux_visite_cartes.gif",
+     "alt": "La visite guidée du carnet, avec la carte « Waasser » (eau). 1. la carte est éclairée dans la grille du carnet ; puis elle s'ouvre en grand et chaque zone s'éclaire tour à tour : 2. le paysage, dont l'heure dit la rareté ; 3. le mot sur sa plaque et la pastille du nombre de lettres ; 4. son sens, « Nom neutre », « eau, (verre d')eau, urine », et une phrase du dictionnaire officiel avec sa traduction ; 5. les écus VUES et NIVEAU et le médaillon du jeu ; 6. le numéro de la carte et son rang ; 7. le bouton Partager ; 8. le bouton Céder ; 9. carte refermée, le bouton Recevoir en haut du carnet.",
+     "legende": "La visite des cartes : chaque zone de la carte expliquée, puis comment la partager, la donner ou en recevoir une."
     }
    ],
-   "image": "Screenshots/lux_premiere_tres_rare.gif",
-   "image_alt": "Filmé sur un Galaxy A21s. Une pochette de fin de partie : la nuit tombe sur l'écran, le dos de la carte monte en tournant, un éclair violet passe, puis la carte se retourne. C'est « Kran » (grue), dorée, dans une nuit étoilée. Deux pastilles apparaissent au-dessus : « Nouvelle carte » et « Carte très rare ». Sous la carte, une phrase dit : « Votre première carte très rare ! On la reconnaît à sa nuit étoilée et à sa bordure d'or. »",
-   "image_legende": "La toute première carte très rare a droit à sa cérémonie, et à une phrase qui dit comment la reconnaître ensuite."
+   "image": "Screenshots/lux_visite_application.gif",
+   "image_alt": "La visite guidée de l'application, étape par étape, sur l'émulateur. Un voile sombre couvre l'écran et une bulle blanche présente ce qui est éclairé d'un cadre jaune : 1. l'onglet Haut, l'accueil du jour ; 2. la roue dentée des réglages du clavier ; 3. l'onglet Spiller et ses jeux ; 4. le bandeau Mäi Carnet ; 5. l'onglet Wierderbuch ; 6. l'onglet Mäi Lëtzebuergesch et les niveaux, d'Ufänger à Sproochemeeschter ; 7. le clavier en trois gestes (toucher un mot proposé, appui long pour les accents, glisser sur la barre d'espace pour déplacer le curseur) ; 8. la dictée, avec l'icône rouge du micro : toucher le micro en haut à droite du clavier, parler luxembourgeois, toucher de nouveau pour finir.",
+   "image_legende": "La visite de l'application, en huit étapes : les quatre onglets, les réglages, le carnet, les gestes du clavier et la dictée."
   },
   {
-   "version": "37.4.6",
-   "date": "2026-10-16",
+   "version": "37.6.0",
+   "date": "2026-10-20",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Le Wierderbuch comprend les nombres en chiffres",
+       "texte": "Taper « 11 » affiche « 11 s'écrit « eelef » » et sa traduction, de 0 à 100. Au-delà, comme pour les années, l'appli rappelle qu'on les écrit en chiffres, comme le dictionnaire officiel."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Noms des niveaux corrigés",
+       "texte": "Par un professeur de luxembourgeois : Ufänger, Sproochekënner et Sproochemeeschter. Votre progression ne change pas."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.5.0",
+   "date": "2026-10-19",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Les cartes ouvertes prennent la lumière",
+       "texte": "La fenêtre du paysage est sous une vitre, avec un reflet discret qui glisse quand on penche le téléphone. Le cadre brille selon son métal, de l'étain des cartes communes à l'or des très rares, et la lumière court d'une pièce en relief à l'autre (plaque, médaillon, écus) au fil de l'inclinaison."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.4.10",
+   "date": "2026-10-19",
    "intro": "",
    "sections": [
     {
@@ -43,8 +114,8 @@
      "titre": "Améliorations",
      "points": [
       {
-       "titre": "La rareté se dit en toutes lettres",
-       "texte": "En tête du carnet, chaque palier est nommé (« ✦ 5 très rares ★ 11 rares… ») au lieu de symboles seuls ; dans la pochette, une carte rare ou très rare s'annonce au moment où elle se pose."
+       "titre": "Les cartes d'hiver et d'été apparaissent plus vite",
+       "texte": "Sur un Galaxy A21s, le paysage d'hiver d'une carte ouverte se dessine en 33 ms au lieu de 49, celui d'été en 21 ms au lieu de 35 ; l'automne passe de 47 à 43 ms. Les images ne changent pas."
       }
      ],
      "texte": "",
@@ -53,17 +124,17 @@
    ]
   },
   {
-   "version": "37.4.5",
-   "date": "2026-10-16",
+   "version": "37.4.9",
+   "date": "2026-10-18",
    "intro": "",
    "sections": [
     {
-     "emoji": "🐛",
-     "titre": "Corrections",
+     "emoji": "✨",
+     "titre": "Améliorations",
      "points": [
       {
-       "titre": "Les cartes de la boîte de Leitner montrent leur paysage",
-       "texte": "Dans les casiers, les cartes empilées n'affichaient que le ciel ; elles montrent désormais leur lieu, leur saison et leur fête, comme dans le carnet."
+       "titre": "Les cartes d'automne apparaissent plus vite",
+       "texte": "Le paysage d'automne d'une carte ouverte se dessine en 43 ms au lieu de 71 sur un Galaxy A21s, celui d'une vignette en 21 ms au lieu de 30 ; le printemps gagne aussi un peu. Les images ne changent pas."
       }
      ],
      "texte": "",
@@ -72,8 +143,8 @@
    ]
   },
   {
-   "version": "37.4.4",
-   "date": "2026-10-16",
+   "version": "37.4.8",
+   "date": "2026-10-18",
    "intro": "",
    "sections": [
     {
@@ -81,46 +152,28 @@
      "titre": "Corrections",
      "points": [
       {
-       "titre": "Les oiseaux d'été volent dans la fenêtre de la carte",
-       "texte": "Sur la carte ouverte et dans la pochette, ils battent doucement des ailes et planent en dérivant à peine. Ils étaient figés dans le paysage."
+       "titre": "Une carte très rare ne reste plus face cachée",
+       "texte": "Sur un téléphone lent, l'éclair qui précède la très rare pouvait annuler son retournement, et la carte restait sur son dos."
+      },
+      {
+       "titre": "La première pochette ne se fige plus",
+       "texte": "Après une installation ou une mise à jour, la carte marquait un arrêt d'une demi-seconde en se retournant. Le travail graphique se fait désormais en avance, sans que rien ne se voie."
       }
      ],
      "texte": "",
      "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.3",
-   "date": "2026-10-16",
-   "intro": "",
-   "sections": [
+    },
     {
-     "emoji": "🐛",
-     "titre": "Corrections",
+     "emoji": "✨",
+     "titre": "Améliorations",
      "points": [
       {
-       "titre": "Le clavier porte son nom dans le sélecteur de clavier",
-       "texte": "Sur les téléphones Samsung, il apparaissait comme « Clavier luxembourgeois Luxembourg » ; il s'appelle désormais partout « 🇱🇺 Lëtzebuergesch Clavier »."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.2",
-   "date": "2026-10-16",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
+       "titre": "La légende du carnet filtre",
+       "texte": "Toucher « ✦ 5 très rares » n'affiche plus que les très rares ; un second toucher montre tout le carnet."
+      },
       {
-       "titre": "Plus de bande claire au bord de la fenêtre quand on penche la carte",
-       "texte": "Les plans du paysage débordent désormais de la fenêtre, et leur bord n'apparaît plus en glissant."
+       "titre": "La carte ouverte nomme son palier",
+       "texte": "En bas à droite, « ✦ Très rare · 9769ᵉ » au lieu du seul rang."
       }
      ],
      "texte": "",
