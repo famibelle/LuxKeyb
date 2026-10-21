@@ -9,6 +9,17 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.7.0] - 2026-10-21
+
+### ✨ Nouveautés
+
+- **Une visite guidée de l'application** : à la première ouverture, une bulle présente chaque onglet (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), les réglages du clavier, votre carnet de cartes, les trois gestes du clavier et la dictée vocale. On avance d'un toucher, on la passe quand on veut, et la ligne « Visite guidée », en bas de l'accueil, la relance.
+- **Une visite guidée des cartes** : à la première ouverture de Mäi Carnet, une carte s'ouvre et se présente zone par zone (le paysage, le mot, son sens, ses compteurs, son numéro), puis les boutons Partager, Céder et Recevoir.
+
+### 🐛 Corrections
+
+- **Sur tablette, une carte ouverte reste ouverte quand on tourne l'écran.**
+
 ## [37.6.0] - 2026-10-20
 
 ### ✨ Nouveautés
