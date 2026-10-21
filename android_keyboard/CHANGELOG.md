@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.7.3] - 2026-10-21
+
+### ✨ Améliorations
+
+- **Une seule porte pour l'aide** : un bouton « ? » en haut de l'écran, visible depuis tous les onglets, ouvre l'aide. On y trouve la visite guidée, sujet par sujet, et le guide complet à lire. En bas de l'accueil, la ligne « Aide » remplace « Guide d'utilisation » et « Visite guidée ».
+
 ## [37.7.2] - 2026-10-21
 
 ### ✨ Améliorations
