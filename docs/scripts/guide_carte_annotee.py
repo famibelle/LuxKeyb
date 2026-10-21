@@ -119,56 +119,56 @@ def planche(source, boite, cible_l, legendes, sortie):
 LEGENDES = {
     "fr": {
         "haut": [("Le mot", "tel que vous l'avez gagné"), ("Longueur", "le nombre de lettres du mot"),
-                 ("Illustration", "sa couleur dit le domaine du sens"), ("Cadre", "son métal dit la rareté")],
+                 ("Paysage", "un lieu du Luxembourg ; l'heure dit la rareté"), ("Cadre", "son métal dit la rareté")],
         "texte": [("Nature et jeu", "ce qu'est le mot, et où il a été gagné"), ("Sens", "la traduction du mot"),
                   ("Exemple", "le mot dans une phrase"), ("Traduction", "de la phrase, quand le ZLS l'a publiée")],
         "bas": [("VUES", "combien de fois vous avez gagné le mot"), ("Médaillon", "le jeu qui a donné la carte"),
-                ("NIVEAU", "le casier de révision, de 1 à 6"), ("Série", "numéro et date de la carte"),
-                ("Rang", "place du mot parmi les plus fréquents")],
+                ("NIVEAU", "le casier de révision, de 1 à 6"), ("Numéro et poinçon", "le numéro de la carte et le signe de sa saison"),
+                ("Rareté et rang", "le palier, puis la place du mot parmi les plus fréquents")],
         "vignette": [("Le mot", ""), ("Jeu et sens", "l'emoji du jeu, puis le début du sens"),
                      ("Niveau", "six traits, remplis à chaque casier gagné")],
     },
     "en": {
         "haut": [("The word", "as you won it"), ("Length", "the number of letters"),
-                 ("Illustration", "its colour shows the field of meaning"), ("Frame", "its metal shows the rarity")],
+                 ("Landscape", "a place in Luxembourg; the time of day shows the rarity"), ("Frame", "its metal shows the rarity")],
         "texte": [("Word class and game", "what the word is, and where it was won"), ("Meaning", "the translation of the word"),
                   ("Example", "the word in a sentence"), ("Translation", "of the sentence, when the ZLS published one")],
         "bas": [("SEEN", "how many times you won the word"), ("Medallion", "the game that gave the card"),
-                ("LEVEL", "the review compartment, from 1 to 6"), ("Serial", "number and date of the card"),
-                ("Rank", "the word's place among the most frequent")],
+                ("LEVEL", "the review compartment, from 1 to 6"), ("Number and hallmark", "the card number and the sign of its season"),
+                ("Rarity and rank", "the tier, then the word's place among the most frequent")],
         "vignette": [("The word", ""), ("Game and meaning", "the game's emoji, then the start of the meaning"),
                      ("Level", "six bars, filled with each compartment passed")],
     },
     "de": {
         "haut": [("Das Wort", "so wie Sie es gewonnen haben"), ("Länge", "die Anzahl der Buchstaben"),
-                 ("Illustration", "ihre Farbe zeigt das Bedeutungsfeld"), ("Rahmen", "sein Metall zeigt die Seltenheit")],
+                 ("Landschaft", "ein Ort in Luxemburg; die Tageszeit zeigt die Seltenheit"), ("Rahmen", "sein Metall zeigt die Seltenheit")],
         "texte": [("Wortart und Spiel", "was das Wort ist und wo es gewonnen wurde"), ("Bedeutung", "die Übersetzung des Wortes"),
                   ("Beispiel", "das Wort in einem Satz"), ("Übersetzung", "des Satzes, wenn der ZLS eine veröffentlicht hat")],
         "bas": [("GESEHEN", "wie oft Sie das Wort gewonnen haben"), ("Medaillon", "das Spiel, das die Karte gab"),
-                ("STUFE", "das Fach der Lernkartei, von 1 bis 6"), ("Serie", "Nummer und Datum der Karte"),
-                ("Rang", "Platz des Wortes unter den häufigsten")],
+                ("STUFE", "das Fach der Lernkartei, von 1 bis 6"), ("Nummer und Stempel", "die Kartennummer und das Zeichen ihrer Jahreszeit"),
+                ("Seltenheit und Rang", "die Stufe, dann der Platz des Wortes unter den häufigsten")],
         "vignette": [("Das Wort", ""), ("Spiel und Bedeutung", "das Emoji des Spiels, dann der Anfang der Bedeutung"),
                      ("Stufe", "sechs Striche, gefüllt mit jedem geschafften Fach")],
     },
     "pt": {
         "haut": [("A palavra", "tal como a ganhou"), ("Comprimento", "o número de letras"),
-                 ("Ilustração", "a cor indica o campo do sentido"), ("Moldura", "o metal indica a raridade")],
+                 ("Paisagem", "um lugar do Luxemburgo; a hora do dia indica a raridade"), ("Moldura", "o metal indica a raridade")],
         "texte": [("Classe e jogo", "o que a palavra é, e onde foi ganha"), ("Sentido", "a tradução da palavra"),
                   ("Exemplo", "a palavra numa frase"), ("Tradução", "da frase, quando o ZLS a publicou")],
         "bas": [("VISTA", "quantas vezes ganhou a palavra"), ("Medalhão", "o jogo que deu a carta"),
-                ("NÍVEL", "o compartimento de revisão, de 1 a 6"), ("Série", "número e data da carta"),
-                ("Posição", "o lugar da palavra entre as mais frequentes")],
+                ("NÍVEL", "o compartimento de revisão, de 1 a 6"), ("Número e punção", "o número da carta e o sinal da sua estação"),
+                ("Raridade e posição", "o nível, depois o lugar da palavra entre as mais frequentes")],
         "vignette": [("A palavra", ""), ("Jogo e sentido", "o emoji do jogo, depois o início do sentido"),
                      ("Nível", "seis traços, preenchidos a cada compartimento")],
     },
     "lb": {
         "haut": [("D'Wuert", "sou wéi Dir et gewonnen hutt"), ("Längt", "d'Zuel vun de Buschtawen"),
-                 ("Illustratioun", "hir Faarf weist d'Bedeitungsfeld"), ("Kader", "säi Metall weist d'Seelenheet")],
+                 ("Landschaft", "eng Plaz zu Lëtzebuerg; d'Dageszäit weist, wéi rar et ass"), ("Kader", "säi Metall weist d'Seelenheet")],
         "texte": [("Wuertaart a Spill", "wat d'Wuert ass, a wou et gewonnen gouf"), ("Bedeitung", "d'Iwwersetzung vum Wuert"),
                   ("Beispill", "d'Wuert an engem Saz"), ("Iwwersetzung", "vum Saz, wann den ZLS eng publizéiert huet")],
         "bas": [("GESINN", "wéi dacks Dir d'Wuert gewonnen hutt"), ("Medaillon", "d'Spill, dat d'Kaart ginn huet"),
-                ("NIVEAU", "d'Fach vun der Widderhuelung, vun 1 bis 6"), ("Serie", "Nummer an Datum vun der Kaart"),
-                ("Rang", "d'Plaz vum Wuert ënner deenen heefegsten")],
+                ("NIVEAU", "d'Fach vun der Widderhuelung, vun 1 bis 6"), ("Nummer a Stempel", "d'Nummer vun der Kaart an d'Zeeche vun hirer Joreszäit"),
+                ("Seelenheet a Rang", "d'Stuf, dann d'Plaz vum Wuert ënner deenen heefegsten")],
         "vignette": [("D'Wuert", ""), ("Spill a Bedeitung", "d'Emoji vum Spill, dann den Ufank vun der Bedeitung"),
                      ("Niveau", "sechs Stréch, gefëllt mat all gepackte Fach")],
     },
@@ -177,12 +177,13 @@ LEGENDES = {
 # Les cibles, en pixels des captures du pixel9 (1080 x 2424) : la carte
 # « Waasser » ouverte depuis Mäi Carnet trié A → Z, et la grille du même
 # carnet défilée jusqu'en bas, où la vignette « Waasser » est entière.
+# Remesurées le 2026-10-21 sur la carte à paysage (37.7.5), carnet de 11 cartes.
 CIBLES = {
-    "haut": ((55, 505, 1025, 1250), [(895, 1164), (178, 623), (847, 847), (1012, 1090)]),
-    "texte": ((55, 1270, 1025, 1700), [(708, 1331), (774, 1452), (786, 1537), (786, 1627)]),
-    "bas": ((55, 1580, 1025, 1925), [(230, 1755), (538, 1760), (847, 1755), (218, 1866), (932, 1898)]),
+    "haut": ((57, 426, 1022, 1182), [(539, 1085), (179, 548), (727, 776), (1013, 849)]),
+    "texte": ((57, 1200, 1022, 1612), [(539, 1255), (700, 1376), (700, 1461), (700, 1551)]),
+    "bas": ((57, 1588, 1022, 1839), [(230, 1685), (539, 1685), (848, 1685), (194, 1818), (857, 1821)]),
 }
-VIGNETTE = ((31, 1379, 494, 1842), [(261, 1738), (261, 1778), (261, 1811)])
+VIGNETTE = ((31, 1316, 525, 1809), [(278, 1698), (278, 1741), (278, 1773)])
 
 
 if __name__ == "__main__":
@@ -204,7 +205,7 @@ if __name__ == "__main__":
         if nom == "texte" and args.langue == "pt":
             # Le ZLS ne traduit pas en portugais : la carte n'a pas de ligne
             # de traduction (repère 8), et le sens et la phrase descendent.
-            cibles = [cibles[0], (774, 1507), (786, 1592)]
+            cibles = [cibles[0], (700, 1420), (700, 1500)]
             legendes = legendes[:3]
         debut = {"haut": 1, "texte": 5, "bas": 9}[nom]
         planche(args.carte, boite, 560, [

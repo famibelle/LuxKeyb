@@ -3725,6 +3725,13 @@ class SettingsActivity : AppCompatActivity() {
         )
         addGuideImage(mainLayout, R.drawable.guide_screenshot_suggestions, getString(R.string.sa_barre_de_suggestions_active))
 
+        // La dictée : absente du guide jusqu'à la 37.7.6, alors que c'est l'une
+        // des deux raisons d'installer le clavier.
+        addGuideSection(
+            mainLayout, "#E3F2FD", getString(R.string.guide_dictee_titre),
+            getString(R.string.guide_dictee_texte)
+        )
+
         addGuideSection(
             mainLayout, "#F0F8E8", getString(R.string.sa_correction_orthographique_partout),
             getString(R.string.sa_activez_le_correcteur_luxembourgeois_dans)
@@ -3768,6 +3775,11 @@ class SettingsActivity : AppCompatActivity() {
         addGuideSection(
             mainLayout, "#FFF3E0", getString(R.string.sa_dans_la_grille_du_carnet),
             getString(R.string.sa_la_petite_carte_ne_garde)
+        )
+
+        addGuideSection(
+            mainLayout, "#F0F8E8", getString(R.string.guide_echanger_titre),
+            getString(R.string.guide_echanger_texte)
         )
 
         addGuideSection(
