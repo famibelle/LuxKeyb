@@ -379,3 +379,64 @@ sur la [fiche technique](https://famibelle.github.io/LuxKeyb/dossier-technique.h
 - **JUnit 4**, près de 400 tests unitaires exécutés en CI
 - **Python et Hugging Face** pour le pipeline de génération des données
 - **GitHub Actions** pour l'intégration continue
+
+## 🤖 Méthode de travail : les skills de Claude Code
+
+Le projet est développé avec [Claude Code](https://claude.com/claude-code).
+Les savoir-faire répétés (publier une version, régénérer les données de langue,
+tester sur un téléphone…) sont rangés dans des *skills*, des procédures que
+Claude charge quand la tâche se présente. Elles vivent dans `.claude/skills/`
+et restent en dehors du dépôt, mais leur organisation est la suivante.
+
+```mermaid
+flowchart TB
+    subgraph langue["Données de langue"]
+        regen["regenererDictionnaire<br/><small>pipeline, grilles, resynchro du site</small>"]
+        mesure["mesurerQualite<br/><small>bancs ZLS et ParaLux, rapidité</small>"]
+    end
+
+    subgraph appareil["Vérification"]
+        tester["testerSurAppareil<br/><small>Galaxy A21s, émulateur, captures</small>"]
+    end
+
+    subgraph livraison["Livraison"]
+        publier["publierVersion<br/><small>CHANGELOG, tag, release, Nouveautés</small>"]
+        guide["guideUtilisateur<br/><small>visite guidée, aide, guide écrit</small>"]
+    end
+
+    subgraph communication["Communication"]
+        textes["textesPublics<br/><small>ton, typographie, cinq langues</small>"]
+        news["newsletter-substack"]
+        supports["supports-communication<br/><small>tract, affiche, triptyque</small>"]
+    end
+
+    regen -->|mesurer avant et après| mesure
+    mesure -.->|chiffres du site| regen
+    regen -->|puis une version| publier
+    mesure -->|règles du téléphone| tester
+
+    guide -->|vérifier à l'écran| tester
+    tester -.->|outils de capture| guide
+    guide -->|publier| publier
+    guide -->|règles d'écriture| textes
+
+    publier -->|CHANGELOG et Nouveautés| textes
+    publier -.->|ce qui est sorti| news
+
+    news -->|règles d'écriture| textes
+    supports -->|règles d'écriture| textes
+    news -->|captures| tester
+    supports -->|captures| tester
+    news <-.->|motif de la dictée| supports
+```
+
+Les flèches pleines indiquent qu'une skill s'appuie sur une autre en cours de
+route, les flèches pointillées qu'elle lui fournit une matière. **textesPublics**
+est le socle commun : tout texte que lit le public passe par ses règles.
+
+À côté des skills, les règles qui protègent le code (contrat des fichiers de
+données, moteur de suggestion, jeux, carnet) sont décrites dans des fichiers
+`CLAUDE.md`, eux aussi hors du dépôt : un à la racine pour ce qui traverse tout
+le projet, et un par dossier (`Dictionnaires/`, `carnet/`, `crossword/`,
+`chassecroise/`, `cloze/`, `zuelen/`), lu seulement quand on travaille dans ce
+dossier.
