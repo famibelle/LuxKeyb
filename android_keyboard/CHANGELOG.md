@@ -9,6 +9,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.7.8] - 2026-10-21
+
+### ✨ Améliorations
+
+- **Le clavier, montré en action** : dans la visite guidée, une petite animation montre le doigt qui touche un mot proposé, puis qui glisse sur la barre d'espace pour déplacer le curseur.
+- **La dictée, montrée en action** : on voit le micro s'allumer, la phrase s'écrire pendant qu'on parle, puis le micro s'éteindre.
+
 ## [37.7.7] - 2026-10-21
 
 ### ✨ Améliorations
