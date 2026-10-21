@@ -9,6 +9,16 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.7.1] - 2026-10-21
+
+### ✨ Améliorations
+
+- **Revoir un seul sujet de la visite guidée** : la ligne « Visite guidée », en bas de l'accueil, ouvre un sommaire. On y choisit toute la visite, ou un seul sujet : la dictée, partager une carte, les gestes du clavier, le dictionnaire…
+
+### 🐛 Corrections
+
+- **La visite guidée ne s'ouvre plus sous une autre fenêtre** : elle attend que le message de bienvenue, ou une autre demande de l'application, soit refermé.
+
 ## [37.7.0] - 2026-10-21
 
 ### ✨ Nouveautés
