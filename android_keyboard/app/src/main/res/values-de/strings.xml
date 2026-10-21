@@ -750,6 +750,7 @@
     <string name="essai_indice">Hier schreiben</string>
     <string name="essai_gestes">Tippen Sie „Moi“ und dann auf „Moien“ über den Buchstaben. Halten Sie das e gedrückt, um seine Akzente zu sehen.</string>
     <string name="essai_dictee">Tippen Sie auf das Mikrofon oben rechts auf der Tastatur und sagen Sie „Moien, wéi geet et?“. Tippen Sie zum Beenden noch einmal darauf.</string>
+    <string name="visite_cartes_toute">Der ganze Rundgang durch die Karten</string>
     <string name="visite_toute">Der ganze Rundgang</string>
     <string name="visite_groupe_application">Die App</string>
     <string name="visite_groupe_clavier">Die Tastatur</string>

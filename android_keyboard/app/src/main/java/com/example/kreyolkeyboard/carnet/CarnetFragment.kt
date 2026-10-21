@@ -250,6 +250,17 @@ class CarnetFragment : DialogFragment() {
                 setTypeface(null, Typeface.BOLD)
                 setTextColor(Color.WHITE)
             })
+            // L'aide des cartes, là où la question se pose : voir [aideCartes].
+            addView(android.widget.ImageView(ctx).apply {
+                setImageResource(R.drawable.ic_aide)
+                scaleType = android.widget.ImageView.ScaleType.CENTER_INSIDE
+                contentDescription = getString(R.string.aide_titre)
+                layoutParams = LinearLayout.LayoutParams(dp(44f), dp(44f)).apply { marginEnd = dp(6f) }
+                setPadding(dp(9f), dp(9f), dp(9f), dp(9f))
+                isClickable = true
+                isFocusable = true
+                setOnClickListener { aideCartes() }
+            })
             // Recevoir une carte qu'un autre téléphone cède : voir [Cession].
             addView(TextView(ctx).apply {
                 text = getString(R.string.carnet_recevoir)
@@ -1449,17 +1460,45 @@ class CarnetFragment : DialogFragment() {
      * refermée, la façon d'en recevoir une. Pas quand le carnet s'ouvre sur
      * une carte reçue.
      */
-    private fun proposerVisite() {
+    /**
+     * Le « ? » de l'en-tête : les sujets des cartes, là où la question se
+     * pose. Passer par l'aide de l'accueil demandait de quitter le carnet
+     * pour y revenir ouvert sur le sujet.
+     */
+    private fun aideCartes() {
+        val ctx = context ?: return
+        val sujets = listOf(VisiteGuidee.Sujet.LIRE_UNE_CARTE, VisiteGuidee.Sujet.PARTAGER, VisiteGuidee.Sujet.DONNER_OU_RECEVOIR)
+        val libelles = listOf("▶️  " + getString(R.string.visite_cartes_toute)) + sujets.map {
+            it.emoji + "  " + getString(when (it) {
+                VisiteGuidee.Sujet.LIRE_UNE_CARTE -> R.string.visite_sujet_lire
+                VisiteGuidee.Sujet.PARTAGER -> R.string.visite_sujet_partager
+                else -> R.string.visite_sujet_echanger
+            })
+        }
+        androidx.appcompat.app.AlertDialog.Builder(ctx)
+            .setTitle(getString(R.string.aide_titre))
+            .setItems(libelles.toTypedArray()) { _, i ->
+                if (i == 0) proposerVisite(toute = true) else proposerVisite(demande = sujets[i - 1])
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    /**
+     * [demande] : un sujet choisi au « ? » de l'en-tête ; [toute] : la visite
+     * entière, demandée même si elle a déjà été faite.
+     */
+    private fun proposerVisite(demande: VisiteGuidee.Sujet? = null, toute: Boolean = false) {
         val ctx = context ?: return
         if (!isAdded || visite != null) return
         val prefs = ctx.getSharedPreferences(VisiteGuidee.PREFS, Context.MODE_PRIVATE)
         val occupe = lecteur?.ouvert == true || vueCession?.ouverte == true
         // Un sujet demandé au sommaire passe une fois, puis s'efface : une
         // rotation qui recrée le carnet ne le rejoue pas.
-        val sujet = arguments?.getString(ARG_SUJET)
+        val sujet = demande ?: arguments?.getString(ARG_SUJET)
             ?.let { n -> VisiteGuidee.Sujet.entries.firstOrNull { it.name == n } }
         arguments?.remove(ARG_SUJET)
-        if (sujet != null) {
+        if (sujet != null || toute) {
             if (contenus.isEmpty()) {
                 android.widget.Toast.makeText(ctx, R.string.visite_carnet_vide, android.widget.Toast.LENGTH_LONG).show()
                 return

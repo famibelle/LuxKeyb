@@ -750,6 +750,7 @@
     <string name="essai_indice">Escreva aqui</string>
     <string name="essai_gestes">Escreva «Moi» e toque em «Moien» por cima das letras. Mantenha premido o e para ver os acentos.</string>
     <string name="essai_dictee">Toque no microfone, no canto superior direito do teclado, e diga «Moien, wéi geet et?». Toque outra vez para terminar.</string>
+    <string name="visite_cartes_toute">A visita completa às cartas</string>
     <string name="visite_toute">A visita completa</string>
     <string name="visite_groupe_application">A aplicação</string>
     <string name="visite_groupe_clavier">O teclado</string>

@@ -750,6 +750,7 @@
     <string name="essai_indice">Écrivez ici</string>
     <string name="essai_gestes">Tapez « Moi », puis touchez « Moien » au-dessus des lettres. Appuyez longtemps sur e pour voir ses accents.</string>
     <string name="essai_dictee">Touchez le micro, en haut à droite du clavier, et dites « Moien, wéi geet et ? ». Touchez-le de nouveau pour finir.</string>
+    <string name="visite_cartes_toute">Toute la visite des cartes</string>
     <string name="visite_toute">Toute la visite</string>
     <string name="visite_groupe_application">L\'application</string>
     <string name="visite_groupe_clavier">Le clavier</string>
