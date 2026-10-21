@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.8",
+ "derniere_version": "37.7.9",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.9",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "O dicionário, em ação",
+       "texte": "Na visita guiada, uma pequena animação procura «gato», abre a ficha de «Kaz» com a sua frase de exemplo e depois procura «Kaz» no sentido inverso."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_visite_dictionnaire.gif",
+     "alt": "Filmado num Galaxy A21s: a bolha «Wierderbuch, o dicionário» da visita guiada. Num campo de pesquisa desenhado, escreve-se uma palavra letra a letra; aparecem três resultados, com Kaz em primeiro. Um dedo toca em «Kaz»: a sua ficha sobe, com o significado e a frase de exemplo «d'Kaz sëtzt virun der Fënster ze miauen» e a sua tradução. A ficha desce, depois escreve-se «Kaz», que encontra o seu significado. Os ecrãs estão em francês, por isso procura-se «chat»; em português, «gato».",
+     "legende": "O dicionário, mostrado: procurar uma palavra, ler a ficha de «Kaz», procurar no sentido inverso."
+    }
+   ],
+   "image": "Screenshots/lux_visite_dictionnaire.gif",
+   "image_alt": "Filmado num Galaxy A21s: a bolha «Wierderbuch, o dicionário» da visita guiada. Num campo de pesquisa desenhado, escreve-se uma palavra letra a letra; aparecem três resultados, com Kaz em primeiro. Um dedo toca em «Kaz»: a sua ficha sobe, com o significado e a frase de exemplo «d'Kaz sëtzt virun der Fënster ze miauen» e a sua tradução. A ficha desce, depois escreve-se «Kaz», que encontra o seu significado. Os ecrãs estão em francês, por isso procura-se «chat»; em português, «gato».",
+   "image_legende": "O dicionário, mostrado: procurar uma palavra, ler a ficha de «Kaz», procurar no sentido inverso."
+  },
   {
    "version": "37.7.8",
    "date": "2026-10-21",
@@ -159,25 +188,6 @@
       {
        "titre": "Experimentar o teclado durante a visita",
        "texte": "Os balões dos gestos e do ditado têm um botão «Experimentar», que abre um pequeno campo com o teclado. Escreva «Moi» e toque em «Moien», ou toque no microfone e fale, sem sair da visita."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.7.3",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "Uma só porta para a ajuda",
-       "texte": "Um botão «?» no topo do ecrã, visível em todos os separadores, abre a ajuda. Lá encontra a visita guiada, tema a tema, e o guia completo para ler. No fundo do início, a linha «Ajuda» substitui «Guia de utilização» e «Visita guiada»."
       }
      ],
      "texte": "",

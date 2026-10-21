@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.8",
+ "derniere_version": "37.7.9",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.9",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le dictionnaire, montré en action",
+       "texte": "Dans la visite guidée, une petite animation cherche « chat », ouvre la fiche de « Kaz » avec sa phrase d'exemple, puis cherche « Kaz » dans l'autre sens."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_visite_dictionnaire.gif",
+     "alt": "Filmé sur un Galaxy A21s : la bulle « Wierderbuch, le dictionnaire » de la visite guidée. Dans un champ dessiné, « chat » se tape lettre à lettre ; trois résultats apparaissent, Kaz (chat, chatte, chat sauvage), Chat et chatt. Un doigt touche « Kaz » : sa fiche monte, avec son sens et la phrase d'exemple « d'Kaz sëtzt virun der Fënster ze miauen », traduite « le chat est assis devant la fenêtre et miaule ». La fiche redescend, « Kaz » se tape à son tour et retrouve son sens.",
+     "legende": "Le dictionnaire, montré : chercher « chat », lire la fiche de « Kaz », chercher dans l'autre sens."
+    }
+   ],
+   "image": "Screenshots/lux_visite_dictionnaire.gif",
+   "image_alt": "Filmé sur un Galaxy A21s : la bulle « Wierderbuch, le dictionnaire » de la visite guidée. Dans un champ dessiné, « chat » se tape lettre à lettre ; trois résultats apparaissent, Kaz (chat, chatte, chat sauvage), Chat et chatt. Un doigt touche « Kaz » : sa fiche monte, avec son sens et la phrase d'exemple « d'Kaz sëtzt virun der Fënster ze miauen », traduite « le chat est assis devant la fenêtre et miaule ». La fiche redescend, « Kaz » se tape à son tour et retrouve son sens.",
+   "image_legende": "Le dictionnaire, montré : chercher « chat », lire la fiche de « Kaz », chercher dans l'autre sens."
+  },
   {
    "version": "37.7.8",
    "date": "2026-10-21",
@@ -159,25 +188,6 @@
       {
        "titre": "Essayer le clavier pendant la visite",
        "texte": "Les bulles des gestes et de la dictée ont un bouton « Essayer », qui ouvre un petit champ avec le clavier. On tape « Moi » et on touche « Moien », ou on touche le micro et on parle, sans quitter la visite."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.7.3",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Une seule porte pour l'aide",
-       "texte": "Un bouton « ? » en haut de l'écran, visible depuis tous les onglets, ouvre l'aide. On y trouve la visite guidée, sujet par sujet, et le guide complet à lire. En bas de l'accueil, la ligne « Aide » remplace « Guide d'utilisation » et « Visite guidée »."
       }
      ],
      "texte": "",

@@ -1,5 +1,25 @@
 {
  "_comment": "Tradução portuguesa de nouveautes.html, por versão. Mantida à mão: generate_nouveautes.py junta-a em stats/nouveautes-pt.json. Cada versão segue a francesa do CHANGELOG: as mesmas secções, o mesmo número de pontos, pela mesma ordem; o título de uma secção pode faltar quando _sections o traduz. Uma versão que falte aqui, ou que já não tenha a forma da francesa, aparece em francês com um aviso. O texto é HTML: escapar < e &.",
+ "37.7.9": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "O dicionário, em ação",
+      "texte": "Na visita guiada, uma pequena animação procura «gato», abre a ficha de «Kaz» com a sua frase de exemplo e depois procura «Kaz» no sentido inverso."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmado num Galaxy A21s: a bolha «Wierderbuch, o dicionário» da visita guiada. Num campo de pesquisa desenhado, escreve-se uma palavra letra a letra; aparecem três resultados, com Kaz em primeiro. Um dedo toca em «Kaz»: a sua ficha sobe, com o significado e a frase de exemplo «d'Kaz sëtzt virun der Fënster ze miauen» e a sua tradução. A ficha desce, depois escreve-se «Kaz», que encontra o seu significado. Os ecrãs estão em francês, por isso procura-se «chat»; em português, «gato».",
+    "legende": "O dicionário, mostrado: procurar uma palavra, ler a ficha de «Kaz», procurar no sentido inverso."
+   }
+  ]
+ },
  "37.7.8": {
   "intro": "",
   "sections": [

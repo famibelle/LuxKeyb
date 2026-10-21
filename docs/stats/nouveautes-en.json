@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.8",
+ "derniere_version": "37.7.9",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.9",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "The dictionary, shown in action",
+       "texte": "In the guided tour, a small animation searches for “cat”, opens the entry for “Kaz” with its example sentence, then searches for “Kaz” the other way round."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_visite_dictionnaire.gif",
+     "alt": "Filmed on a Galaxy A21s: the “Wierderbuch, the dictionary” bubble of the guided tour. In a drawn search field, a word is typed letter by letter; three results appear, with Kaz first. A finger taps “Kaz”: its entry slides up, with its meaning and the example sentence “d'Kaz sëtzt virun der Fënster ze miauen” and its translation. The entry slides down, then “Kaz” is typed in turn and finds its meaning. The screens are in French, so the search is for “chat”; in English it is for “cat”.",
+     "legende": "The dictionary, shown: search for a word, read the entry for “Kaz”, search the other way round."
+    }
+   ],
+   "image": "Screenshots/lux_visite_dictionnaire.gif",
+   "image_alt": "Filmed on a Galaxy A21s: the “Wierderbuch, the dictionary” bubble of the guided tour. In a drawn search field, a word is typed letter by letter; three results appear, with Kaz first. A finger taps “Kaz”: its entry slides up, with its meaning and the example sentence “d'Kaz sëtzt virun der Fënster ze miauen” and its translation. The entry slides down, then “Kaz” is typed in turn and finds its meaning. The screens are in French, so the search is for “chat”; in English it is for “cat”.",
+   "image_legende": "The dictionary, shown: search for a word, read the entry for “Kaz”, search the other way round."
+  },
   {
    "version": "37.7.8",
    "date": "2026-10-21",
@@ -159,25 +188,6 @@
       {
        "titre": "Trying the keyboard during the tour",
        "texte": "The gestures and voice typing bubbles have a “Try it” button that opens a small field with the keyboard. Type “Moi” and tap “Moien”, or tap the microphone and speak, without leaving the tour."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.7.3",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "One door for help",
-       "texte": "A “?” button at the top of the screen, visible from every tab, opens the help. It holds the guided tour, topic by topic, and the full guide to read. At the bottom of the home screen, the “Help” line replaces “User guide” and “Guided tour”."
       }
      ],
      "texte": "",

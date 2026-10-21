@@ -1,5 +1,25 @@
 {
  "_comment": "English translation of nouveautes.html, by version. Hand-maintained: generate_nouveautes.py merges it into stats/nouveautes-en.json. Each version mirrors the French one from the CHANGELOG: same sections, same number of points, in the same order; a section's title can be left out when _sections translates it. A version that is missing here, or no longer has the French shape, is shown in French with a notice. Text is HTML: escape < and &.",
+ "37.7.9": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The dictionary, shown in action",
+      "texte": "In the guided tour, a small animation searches for “cat”, opens the entry for “Kaz” with its example sentence, then searches for “Kaz” the other way round."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmed on a Galaxy A21s: the “Wierderbuch, the dictionary” bubble of the guided tour. In a drawn search field, a word is typed letter by letter; three results appear, with Kaz first. A finger taps “Kaz”: its entry slides up, with its meaning and the example sentence “d'Kaz sëtzt virun der Fënster ze miauen” and its translation. The entry slides down, then “Kaz” is typed in turn and finds its meaning. The screens are in French, so the search is for “chat”; in English it is for “cat”.",
+    "legende": "The dictionary, shown: search for a word, read the entry for “Kaz”, search the other way round."
+   }
+  ]
+ },
  "37.7.8": {
   "intro": "",
   "sections": [

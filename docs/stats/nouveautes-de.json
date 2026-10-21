@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.8",
+ "derniere_version": "37.7.9",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.9",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Das Wörterbuch in Aktion",
+       "texte": "Im Rundgang sucht eine kleine Animation nach „Katze“, öffnet den Eintrag „Kaz“ mit seinem Beispielsatz und sucht dann „Kaz“ in der Gegenrichtung."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_visite_dictionnaire.gif",
+     "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Wierderbuch, das Wörterbuch“ des Rundgangs. In einem gezeichneten Suchfeld wird ein Wort Buchstabe für Buchstabe getippt; drei Ergebnisse erscheinen, Kaz zuerst. Ein Finger tippt auf „Kaz“: Sein Eintrag gleitet nach oben, mit seiner Bedeutung und dem Beispielsatz „d'Kaz sëtzt virun der Fënster ze miauen“ samt Übersetzung. Der Eintrag gleitet wieder hinunter, dann wird „Kaz“ getippt und findet seine Bedeutung. Die Bildschirme sind auf Französisch, gesucht wird also „chat“; auf Deutsch ist es „Katze“.",
+     "legende": "Das Wörterbuch, gezeigt: ein Wort suchen, den Eintrag „Kaz“ lesen, in der Gegenrichtung suchen."
+    }
+   ],
+   "image": "Screenshots/lux_visite_dictionnaire.gif",
+   "image_alt": "Gefilmt auf einem Galaxy A21s: die Blase „Wierderbuch, das Wörterbuch“ des Rundgangs. In einem gezeichneten Suchfeld wird ein Wort Buchstabe für Buchstabe getippt; drei Ergebnisse erscheinen, Kaz zuerst. Ein Finger tippt auf „Kaz“: Sein Eintrag gleitet nach oben, mit seiner Bedeutung und dem Beispielsatz „d'Kaz sëtzt virun der Fënster ze miauen“ samt Übersetzung. Der Eintrag gleitet wieder hinunter, dann wird „Kaz“ getippt und findet seine Bedeutung. Die Bildschirme sind auf Französisch, gesucht wird also „chat“; auf Deutsch ist es „Katze“.",
+   "image_legende": "Das Wörterbuch, gezeigt: ein Wort suchen, den Eintrag „Kaz“ lesen, in der Gegenrichtung suchen."
+  },
   {
    "version": "37.7.8",
    "date": "2026-10-21",
@@ -159,25 +188,6 @@
       {
        "titre": "Die Tastatur während des Rundgangs ausprobieren",
        "texte": "Die Sprechblasen zu den Gesten und zur Spracheingabe haben eine Schaltfläche „Ausprobieren“, die ein kleines Feld mit der Tastatur öffnet. Tippen Sie „Moi“ und dann „Moien“, oder tippen Sie auf das Mikrofon und sprechen Sie, ohne den Rundgang zu verlassen."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.7.3",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Eine einzige Tür zur Hilfe",
-       "texte": "Eine Schaltfläche „?“ oben auf dem Bildschirm, von jedem Tab aus sichtbar, öffnet die Hilfe. Dort finden Sie den Rundgang, Thema für Thema, und den ganzen Leitfaden zum Lesen. Unten auf der Startseite ersetzt die Zeile „Hilfe“ die Zeilen „Bedienungsanleitung“ und „Rundgang“."
       }
      ],
      "texte": "",

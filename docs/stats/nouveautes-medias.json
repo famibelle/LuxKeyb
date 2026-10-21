@@ -1,5 +1,14 @@
 {
  "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+ "37.7.9": {
+  "images": [
+   {
+    "image": "Screenshots/lux_visite_dictionnaire.gif",
+    "alt": "Filmé sur un Galaxy A21s : la bulle « Wierderbuch, le dictionnaire » de la visite guidée. Dans un champ dessiné, « chat » se tape lettre à lettre ; trois résultats apparaissent, Kaz (chat, chatte, chat sauvage), Chat et chatt. Un doigt touche « Kaz » : sa fiche monte, avec son sens et la phrase d'exemple « d'Kaz sëtzt virun der Fënster ze miauen », traduite « le chat est assis devant la fenêtre et miaule ». La fiche redescend, « Kaz » se tape à son tour et retrouve son sens.",
+    "legende": "Le dictionnaire, montré : chercher « chat », lire la fiche de « Kaz », chercher dans l'autre sens."
+   }
+  ]
+ },
  "37.7.8": {
   "images": [
    {

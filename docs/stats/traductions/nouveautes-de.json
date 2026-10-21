@@ -1,5 +1,25 @@
 {
  "_comment": "Deutsche Übersetzung von nouveautes.html, nach Version. Von Hand gepflegt: generate_nouveautes.py führt sie in stats/nouveautes-de.json zusammen. Jede Version folgt der französischen aus dem CHANGELOG: dieselben Abschnitte, dieselbe Anzahl Punkte, in derselben Reihenfolge; der Titel eines Abschnitts darf fehlen, wenn _sections ihn übersetzt. Eine Version, die hier fehlt oder nicht mehr die französische Form hat, erscheint auf Französisch mit einem Hinweis. Der Text ist HTML: < und & maskieren.",
+ "37.7.9": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Verbesserungen",
+    "points": [
+     {
+      "titre": "Das Wörterbuch in Aktion",
+      "texte": "Im Rundgang sucht eine kleine Animation nach „Katze“, öffnet den Eintrag „Kaz“ mit seinem Beispielsatz und sucht dann „Kaz“ in der Gegenrichtung."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Wierderbuch, das Wörterbuch“ des Rundgangs. In einem gezeichneten Suchfeld wird ein Wort Buchstabe für Buchstabe getippt; drei Ergebnisse erscheinen, Kaz zuerst. Ein Finger tippt auf „Kaz“: Sein Eintrag gleitet nach oben, mit seiner Bedeutung und dem Beispielsatz „d'Kaz sëtzt virun der Fënster ze miauen“ samt Übersetzung. Der Eintrag gleitet wieder hinunter, dann wird „Kaz“ getippt und findet seine Bedeutung. Die Bildschirme sind auf Französisch, gesucht wird also „chat“; auf Deutsch ist es „Katze“.",
+    "legende": "Das Wörterbuch, gezeigt: ein Wort suchen, den Eintrag „Kaz“ lesen, in der Gegenrichtung suchen."
+   }
+  ]
+ },
  "37.7.8": {
   "intro": "",
   "sections": [
