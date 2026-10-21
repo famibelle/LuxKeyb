@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.7.5] - 2026-10-21
+
+### ✨ Améliorations
+
+- **L'aide des cartes dans le carnet** : un « ? » en haut de Mäi Carnet ouvre la visite des cartes, entière ou sur un seul sujet (lire une carte, la partager, la donner ou en recevoir une), sans repasser par l'accueil.
+
 ## [37.7.4] - 2026-10-21
 
 ### ✨ Améliorations
