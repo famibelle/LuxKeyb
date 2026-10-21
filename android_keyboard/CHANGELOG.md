@@ -9,6 +9,19 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.7.6] - 2026-10-21
+
+### ✨ Améliorations
+
+- **Le guide parle de la dictée** : comment dicter, pourquoi il faut Internet et où va votre voix.
+- **Le guide explique comment partager, donner et recevoir une carte**, et comment déplacer le curseur en glissant sur la barre d'espace.
+
+### 🐛 Corrections
+
+- **Le guide décrit la carte telle qu'elle est** : images refaites sur la carte à paysage, avec le poinçon de saison et le palier de rareté.
+- **La réponse sur vos données est exacte** : ce que vous tapez ne quitte jamais le téléphone ; seule la dictée envoie votre voix à l'Université du Luxembourg, qui l'écrit sans la conserver.
+- **Les propositions en français** sont présentées comme une option des réglages du clavier.
+
 ## [37.7.5] - 2026-10-21
 
 ### ✨ Améliorations
