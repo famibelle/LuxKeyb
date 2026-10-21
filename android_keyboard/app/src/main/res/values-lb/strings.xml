@@ -741,7 +741,15 @@
     <string name="visite_suivant">Weider  ›</string>
     <string name="visite_terminer">Fäerdeg</string>
     <string name="visite_revoir">Rondgang</string>
-    <string name="visite_revoir_resume">D\'Tabs, d\'Kaarten, d\'Tastatur an den Diktat, Schrëtt fir Schrëtt</string>
+    <string name="visite_revoir_resume">De ganze Rondgang, oder just een Theema: den Diktat, eng Kaart deelen…</string>
+    <string name="visite_toute">De ganze Rondgang</string>
+    <string name="visite_groupe_application">D\'App</string>
+    <string name="visite_groupe_clavier">D\'Tastatur</string>
+    <string name="visite_groupe_cartes">D\'Kaarten</string>
+    <string name="visite_sujet_lire">Eng Kaart liesen</string>
+    <string name="visite_sujet_partager">Eng Kaart deelen</string>
+    <string name="visite_sujet_echanger">Eng Kaart ofginn oder kréien</string>
+    <string name="visite_carnet_vide">Gewannt fir d\'éischt eng Kaart an engem Spill: de Rondgang duerch d\'Kaarte weist eng.</string>
     <string name="visite_accueil_titre">Haut, Är Startsäit</string>
     <string name="visite_accueil_texte">All Dag fannt Dir hei d\'Kaarte fir ze widderhuelen, d\'Wuert vum Dag, Äert lescht Spill an Äre Fortschrëtt.</string>
     <string name="visite_reglages_titre">Astellunge vun der Tastatur</string>

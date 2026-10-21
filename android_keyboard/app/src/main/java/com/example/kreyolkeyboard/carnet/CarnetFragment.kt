@@ -68,6 +68,13 @@ import com.journeyapps.barcodescanner.ScanOptions
 class CarnetFragment : DialogFragment() {
 
     companion object {
+        private const val ARG_SUJET = "visite_sujet"
+
+        /** Le carnet ouvert sur un seul sujet de sa visite, choisi dans le sommaire « Visite guidée ». */
+        fun pourSujet(sujet: VisiteGuidee.Sujet) = CarnetFragment().apply {
+            arguments = android.os.Bundle().apply { putString(ARG_SUJET, sujet.name) }
+        }
+
         /**
          * Ce que le chargement attend au plus les paysages du premier écran,
          * en millisecondes : au-delà, la grille paraît quand même, et les
@@ -1447,7 +1454,18 @@ class CarnetFragment : DialogFragment() {
         if (!isAdded || visite != null) return
         val prefs = ctx.getSharedPreferences(VisiteGuidee.PREFS, Context.MODE_PRIVATE)
         val occupe = lecteur?.ouvert == true || vueCession?.ouverte == true
-        if (!VisiteGuidee.carnetDoitSeLancer(
+        // Un sujet demandé au sommaire passe une fois, puis s'efface : une
+        // rotation qui recrée le carnet ne le rejoue pas.
+        val sujet = arguments?.getString(ARG_SUJET)
+            ?.let { n -> VisiteGuidee.Sujet.entries.firstOrNull { it.name == n } }
+        arguments?.remove(ARG_SUJET)
+        if (sujet != null) {
+            if (contenus.isEmpty()) {
+                android.widget.Toast.makeText(ctx, R.string.visite_carnet_vide, android.widget.Toast.LENGTH_LONG).show()
+                return
+            }
+            if (occupe) return
+        } else if (!VisiteGuidee.carnetDoitSeLancer(
                 prefs.getBoolean(VisiteGuidee.VISITE_CARNET, false), contenus.size, occupe
             )) return
 
@@ -1496,7 +1514,9 @@ class CarnetFragment : DialogFragment() {
                 VisiteGuidee.attendre({ lecteur?.ouvert != true }, puis = { racine.postDelayed(suite, 250L) })
             }) { VisiteGuidee.rectDe(boutonRecevoir) }
         )
-        visite = VisiteGuidee.Voile(racine, etapes) { _ ->
+        // Les sujets du sommaire désignent ces étapes par leur rang.
+        if (com.example.kreyolkeyboard.BuildConfig.DEBUG) check(etapes.size == VisiteGuidee.ETAPES_CARNET)
+        visite = VisiteGuidee.Voile(racine, sujet?.let { etapes.slice(it.etapes) } ?: etapes) { _ ->
             prefs.edit().putBoolean(VisiteGuidee.VISITE_CARNET, true).apply()
             visite = null
             // Passée au milieu, la carte ouverte pour l'exemple se referme.

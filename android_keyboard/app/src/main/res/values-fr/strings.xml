@@ -741,7 +741,15 @@
     <string name="visite_suivant">Suivant  ›</string>
     <string name="visite_terminer">Terminer</string>
     <string name="visite_revoir">Visite guidée</string>
-    <string name="visite_revoir_resume">Les onglets, les cartes, le clavier et la dictée, pas à pas</string>
+    <string name="visite_revoir_resume">Toute la visite, ou un seul sujet : la dictée, le partage d\'une carte…</string>
+    <string name="visite_toute">Toute la visite</string>
+    <string name="visite_groupe_application">L\'application</string>
+    <string name="visite_groupe_clavier">Le clavier</string>
+    <string name="visite_groupe_cartes">Les cartes</string>
+    <string name="visite_sujet_lire">Lire une carte</string>
+    <string name="visite_sujet_partager">Partager une carte</string>
+    <string name="visite_sujet_echanger">Donner ou recevoir une carte</string>
+    <string name="visite_carnet_vide">Gagnez d\'abord une carte dans un jeu : la visite des cartes en montre une.</string>
     <string name="visite_accueil_titre">Haut, votre accueil</string>
     <string name="visite_accueil_texte">Chaque jour, vous y trouvez les cartes à revoir, le mot du jour, votre dernier jeu et vos progrès.</string>
     <string name="visite_reglages_titre">Les réglages du clavier</string>

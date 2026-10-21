@@ -741,7 +741,15 @@
     <string name="visite_suivant">Seguinte  ›</string>
     <string name="visite_terminer">Concluir</string>
     <string name="visite_revoir">Visita guiada</string>
-    <string name="visite_revoir_resume">Os separadores, as cartas, o teclado e o ditado, passo a passo</string>
+    <string name="visite_revoir_resume">A visita completa, ou um só tema: o ditado, partilhar uma carta…</string>
+    <string name="visite_toute">A visita completa</string>
+    <string name="visite_groupe_application">A aplicação</string>
+    <string name="visite_groupe_clavier">O teclado</string>
+    <string name="visite_groupe_cartes">As cartas</string>
+    <string name="visite_sujet_lire">Ler uma carta</string>
+    <string name="visite_sujet_partager">Partilhar uma carta</string>
+    <string name="visite_sujet_echanger">Ceder ou receber uma carta</string>
+    <string name="visite_carnet_vide">Ganhe primeiro uma carta num jogo: a visita às cartas mostra uma.</string>
     <string name="visite_accueil_titre">Haut, o seu início</string>
     <string name="visite_accueil_texte">Todos os dias encontra aqui as cartas para rever, a palavra do dia, o seu último jogo e o seu progresso.</string>
     <string name="visite_reglages_titre">Definições do teclado</string>

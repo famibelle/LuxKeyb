@@ -114,6 +114,8 @@ class SettingsActivity : AppCompatActivity() {
 
     /** La visite guidée à l'écran, s'il y en a une : voir [lancerVisite]. */
     private var visite: VisiteGuidee.Voile? = null
+    /** Le sujet que rejoue la visite à l'écran, `null` pour la visite entière. */
+    private var visiteSujet: VisiteGuidee.Sujet? = null
     private val retourVisite = object : androidx.activity.OnBackPressedCallback(false) {
         override fun handleOnBackPressed() { visite?.passer() }
     }
@@ -424,13 +426,20 @@ class SettingsActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, retourVisite)
         // Une tablette tournée pendant la visite la reprend à la même étape.
         savedInstanceState?.getInt("visiteEtape", -1)?.takeIf { it >= 0 }?.let { etape ->
-            window.decorView.post { lancerVisite(etape) }
+            val sujet = savedInstanceState.getString("visiteSujet")
+                ?.let { n -> VisiteGuidee.Sujet.entries.firstOrNull { it.name == n } }
+            window.decorView.post { lancerVisite(etape, sujet) }
         }
     }
 
     // ────────────────────────────────────────────────────────────────────
     // Visite guidée (reprise de KreyolKeyb 23.3.0, avec la dictée en plus)
     // ────────────────────────────────────────────────────────────────────
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) window.decorView.postDelayed({ proposerVisite() }, 600L)
+    }
 
     /** L'accueil « Aujourd'hui » : clavier installé, activé et choisi. */
     private fun accueilAujourdhui(): Boolean =
@@ -445,7 +454,11 @@ class SettingsActivity : AppCompatActivity() {
     private fun proposerVisite() {
         if (visite != null || isFinishing || isDestroyed) return
         val prefs = onboardingPrefs()
-        val autreChose = pochetteAccueilOuverte || currentTab != 0 || jeuOuvert != -1 ||
+        // Sans le focus, quelque chose couvre l'accueil : le partage proposé
+        // après l'installation, la demande de notifications ou d'avis. Vu sur
+        // le A21s : le partage s'ouvrait par-dessus la première bulle.
+        // [onWindowFocusChanged] repropose la visite quand il revient.
+        val autreChose = !hasWindowFocus() || pochetteAccueilOuverte || currentTab != 0 || jeuOuvert != -1 ||
             !prefs.getBoolean("activation_success_card_shown", false) ||
             supportFragmentManager.fragments.any { it is androidx.fragment.app.DialogFragment }
         if (!VisiteGuidee.doitSeLancer(
@@ -461,7 +474,7 @@ class SettingsActivity : AppCompatActivity() {
      * amène l'onglet, puis l'éclaire. La dictée vit dans le clavier, pas dans
      * l'application : son étape n'éclaire rien et montre le micro dans la bulle.
      */
-    fun lancerVisite(depart: Int = 0) {
+    fun lancerVisite(depart: Int = 0, sujet: VisiteGuidee.Sujet? = null) {
         if (visite != null) return
         val racine = findViewById<FrameLayout>(android.R.id.content) ?: return
         fun onglet(i: Int) = { VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_onglet_$i")) }
@@ -486,14 +499,116 @@ class SettingsActivity : AppCompatActivity() {
             VisiteGuidee.Etape(getString(R.string.visite_dictee_titre), getString(R.string.visite_dictee_texte),
                 preparer = aller(0), icone = R.drawable.ic_mic)
         )
+        // Les sujets du sommaire désignent ces étapes par leur rang.
+        if (BuildConfig.DEBUG) check(etapes.size == VisiteGuidee.ETAPES_APPLICATION)
         retourVisite.isEnabled = true
-        visite = VisiteGuidee.Voile(racine, etapes, depart) { _ ->
+        visiteSujet = sujet
+        visite = VisiteGuidee.Voile(racine, sujet?.let { etapes.slice(it.etapes) } ?: etapes, depart) { _ ->
             // Passée ou finie, elle ne revient pas d'elle-même : « Visite
             // guidée », au pied de Démarrage, la relance.
             onboardingPrefs().edit().putBoolean(VisiteGuidee.VISITE_APPLICATION, true).apply()
             visite = null
+            visiteSujet = null
             retourVisite.isEnabled = false
         }.also { it.ouvrir() }
+    }
+
+    /**
+     * Le sommaire de la ligne « Visite guidée » : toute la visite, ou un seul
+     * sujet. Quelqu'un qui a passé la visite au premier lancement revient
+     * plus tard pour la dictée ou le partage d'une carte, et refaire huit
+     * étapes pour y arriver l'en dissuaderait. Les sujets des cartes ouvrent
+     * le carnet, où leur visite se joue sur une vraie carte.
+     */
+    private fun ouvrirSommaireVisite() {
+        // Les vues prennent le contexte du dialogue, et ses couleurs de texte :
+        // le dialogue suit le thème sombre du téléphone, une encre fixe y
+        // disparaissait.
+        val constructeur = AlertDialog.Builder(this)
+        val ctx = constructeur.context
+        fun couleur(attr: Int) = android.util.TypedValue().let { v ->
+            ctx.theme.resolveAttribute(attr, v, true)
+            if (v.resourceId != 0) androidx.core.content.ContextCompat.getColor(ctx, v.resourceId) else v.data
+        }
+        val encre = couleur(android.R.attr.textColorPrimary)
+        val gris = couleur(android.R.attr.textColorSecondary)
+        var dialogue: AlertDialog? = null
+        fun ligne(emoji: String, titre: String, gras: Boolean = false, action: () -> Unit) =
+            LinearLayout(ctx).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                minimumHeight = enDp(48)
+                setPadding(enDp(24), enDp(6), enDp(24), enDp(6))
+                isClickable = true
+                isFocusable = true
+                background = android.util.TypedValue().let { v ->
+                    ctx.theme.resolveAttribute(android.R.attr.selectableItemBackground, v, true)
+                    androidx.core.content.ContextCompat.getDrawable(ctx, v.resourceId)
+                }
+                addView(TextView(ctx).apply {
+                    text = emoji
+                    textSize = 20f
+                    setPadding(0, 0, enDp(16), 0)
+                })
+                addView(TextView(ctx).apply {
+                    text = titre
+                    textSize = 16f
+                    setTextColor(encre)
+                    if (gras) setTypeface(null, Typeface.BOLD)
+                })
+                setOnClickListener {
+                    dialogue?.dismiss()
+                    action()
+                }
+            }
+        fun intertitre(texte: Int) = TextView(ctx).apply {
+            text = getString(texte)
+            textSize = 13f
+            setTextColor(gris)
+            setTypeface(null, Typeface.BOLD)
+            setPadding(enDp(24), enDp(16), enDp(24), enDp(4))
+        }
+        val titres = mapOf(
+            VisiteGuidee.Sujet.ACCUEIL to R.string.visite_accueil_titre,
+            VisiteGuidee.Sujet.REGLAGES to R.string.visite_reglages_titre,
+            VisiteGuidee.Sujet.JEUX to R.string.visite_jeux_titre,
+            VisiteGuidee.Sujet.DICTIONNAIRE to R.string.visite_dico_titre,
+            VisiteGuidee.Sujet.PROGRES to R.string.visite_progres_titre,
+            VisiteGuidee.Sujet.GESTES to R.string.visite_gestes_titre,
+            VisiteGuidee.Sujet.DICTEE to R.string.visite_dictee_titre,
+            VisiteGuidee.Sujet.LIRE_UNE_CARTE to R.string.visite_sujet_lire,
+            VisiteGuidee.Sujet.PARTAGER to R.string.visite_sujet_partager,
+            VisiteGuidee.Sujet.DONNER_OU_RECEVOIR to R.string.visite_sujet_echanger
+        )
+        val groupes = listOf(R.string.visite_groupe_clavier, R.string.visite_groupe_cartes, R.string.visite_groupe_application)
+        val liste = LinearLayout(ctx).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(0, enDp(8), 0, enDp(8))
+            addView(ligne("▶️", getString(R.string.visite_toute), gras = true) {
+                onboardingPrefs().edit().putBoolean(VisiteGuidee.VISITE_CARNET, false).apply()
+                lancerVisite()
+            })
+            VisiteGuidee.Sujet.entries.groupBy { it.groupe }.forEach { (groupe, sujets) ->
+                addView(intertitre(groupes[groupe]))
+                sujets.forEach { sujet ->
+                    addView(ligne(sujet.emoji, getString(titres.getValue(sujet))) { ouvrirSujet(sujet) })
+                }
+            }
+        }
+        dialogue = constructeur
+            .setTitle(getString(R.string.visite_revoir))
+            .setView(ScrollView(ctx).apply { addView(liste) })
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    /** Un sujet du sommaire : sur l'onglet qu'il présente, ou dans le carnet pour les cartes. */
+    private fun ouvrirSujet(sujet: VisiteGuidee.Sujet) {
+        when (sujet.visite) {
+            VisiteGuidee.Visite.APPLICATION -> lancerVisite(sujet = sujet)
+            VisiteGuidee.Visite.CARNET ->
+                com.example.kreyolkeyboard.carnet.CarnetFragment.pourSujet(sujet).show(supportFragmentManager, "carnet")
+        }
     }
 
     /**
@@ -841,7 +956,10 @@ class SettingsActivity : AppCompatActivity() {
         // Sauvegarder l'onglet actif avant que l'activité soit recréée
         outState.putInt("currentTab", currentTab)
         outState.putInt("jeuOuvert", jeuOuvert)
-        visite?.let { outState.putInt("visiteEtape", it.etapeCourante) }
+        visite?.let {
+            outState.putInt("visiteEtape", it.etapeCourante)
+            outState.putString("visiteSujet", visiteSujet?.name)
+        }
         Log.d("SettingsActivity", "💾 Sauvegarde de l'onglet actif: $currentTab")
     }
     
@@ -1589,17 +1707,14 @@ class SettingsActivity : AppCompatActivity() {
             getString(R.string.sa_version_sources_des_donnees_licences),
             SheetFragment.PAGE_A_PROPOS
         ))
-        // La visite se relance d'ici, et celle du carnet avec elle : elle se
-        // représentera à la prochaine ouverture de Mäi Carnet.
+        // La visite se relance d'ici, entière ou sujet par sujet : voir
+        // [ouvrirSommaireVisite].
         mainLayout.addView(createSpacing(8))
         mainLayout.addView(createReferenceLink(
             "🧭", getString(R.string.visite_revoir),
             getString(R.string.visite_revoir_resume),
             page = null
-        ) {
-            onboardingPrefs().edit().putBoolean(VisiteGuidee.VISITE_CARNET, false).apply()
-            lancerVisite()
-        })
+        ) { ouvrirSommaireVisite() })
         mainLayout.addView(createSpacing(16))
 
         return mainLayout

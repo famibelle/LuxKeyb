@@ -750,7 +750,15 @@
     <string name="visite_suivant">Next  ›</string>
     <string name="visite_terminer">Done</string>
     <string name="visite_revoir">Guided tour</string>
-    <string name="visite_revoir_resume">The tabs, the cards, the keyboard and voice typing, step by step</string>
+    <string name="visite_revoir_resume">The whole tour, or a single topic: voice typing, sharing a card…</string>
+    <string name="visite_toute">The whole tour</string>
+    <string name="visite_groupe_application">The app</string>
+    <string name="visite_groupe_clavier">The keyboard</string>
+    <string name="visite_groupe_cartes">The cards</string>
+    <string name="visite_sujet_lire">Reading a card</string>
+    <string name="visite_sujet_partager">Sharing a card</string>
+    <string name="visite_sujet_echanger">Giving or receiving a card</string>
+    <string name="visite_carnet_vide">First win a card in a game: the tour of the cards shows one.</string>
     <string name="visite_accueil_titre">Haut, your home</string>
     <string name="visite_accueil_texte">Every day you will find your cards to review, the word of the day, your last game and your progress.</string>
     <string name="visite_reglages_titre">Keyboard settings</string>

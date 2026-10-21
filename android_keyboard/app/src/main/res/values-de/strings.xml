@@ -741,7 +741,15 @@
     <string name="visite_suivant">Weiter  ›</string>
     <string name="visite_terminer">Fertig</string>
     <string name="visite_revoir">Rundgang</string>
-    <string name="visite_revoir_resume">Die Tabs, die Karten, die Tastatur und die Spracheingabe, Schritt für Schritt</string>
+    <string name="visite_revoir_resume">Der ganze Rundgang oder nur ein Thema: die Spracheingabe, eine Karte teilen…</string>
+    <string name="visite_toute">Der ganze Rundgang</string>
+    <string name="visite_groupe_application">Die App</string>
+    <string name="visite_groupe_clavier">Die Tastatur</string>
+    <string name="visite_groupe_cartes">Die Karten</string>
+    <string name="visite_sujet_lire">Eine Karte lesen</string>
+    <string name="visite_sujet_partager">Eine Karte teilen</string>
+    <string name="visite_sujet_echanger">Eine Karte abgeben oder empfangen</string>
+    <string name="visite_carnet_vide">Gewinnen Sie zuerst eine Karte in einem Spiel: Der Rundgang durch die Karten zeigt eine.</string>
     <string name="visite_accueil_titre">Haut, Ihre Startseite</string>
     <string name="visite_accueil_texte">Jeden Tag finden Sie hier die Karten zum Wiederholen, das Wort des Tages, Ihr letztes Spiel und Ihren Fortschritt.</string>
     <string name="visite_reglages_titre">Tastatureinstellungen</string>

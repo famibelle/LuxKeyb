@@ -89,6 +89,37 @@ object VisiteGuidee {
         }
     }
 
+    /** Laquelle des deux visites porte un sujet. */
+    enum class Visite { APPLICATION, CARNET }
+
+    /**
+     * Un sujet du sommaire « Visite guidée » : quelqu'un qui a passé la visite
+     * revient plus tard sur un seul point, la dictée ou le partage d'une
+     * carte, sans refaire tout le parcours. [etapes] sont les rangs, dans sa
+     * visite, des étapes que le sujet rejoue : l'ordre de ces listes est celui
+     * de [SettingsActivity.lancerVisite] (8 étapes) et de
+     * `CarnetFragment.proposerVisite` (9 étapes), [VisiteGuideeTest] le vérifie.
+     * [groupe] range le sujet sous un intertitre du sommaire.
+     */
+    enum class Sujet(val visite: Visite, val etapes: IntRange, val groupe: Int, val emoji: String) {
+        // L'ordre du sommaire, choisi par le propriétaire (2026-10-21) : le
+        // clavier, les cartes, le dictionnaire, les jeux, le reste, et les
+        // réglages du clavier tout en bas.
+        GESTES(Visite.APPLICATION, 6..6, 0, "✋"),
+        DICTEE(Visite.APPLICATION, 7..7, 0, "🎤"),
+        LIRE_UNE_CARTE(Visite.CARNET, 0..5, 1, "🃏"),
+        PARTAGER(Visite.CARNET, 6..6, 1, "📤"),
+        DONNER_OU_RECEVOIR(Visite.CARNET, 7..8, 1, "🤝"),
+        DICTIONNAIRE(Visite.APPLICATION, 4..4, 2, "📚"),
+        JEUX(Visite.APPLICATION, 2..2, 2, "🎮"),
+        ACCUEIL(Visite.APPLICATION, 0..0, 2, "🏠"),
+        PROGRES(Visite.APPLICATION, 5..5, 2, "📊"),
+        REGLAGES(Visite.APPLICATION, 1..1, 2, "⚙️");
+    }
+
+    const val ETAPES_APPLICATION = 8
+    const val ETAPES_CARNET = 9
+
     /** « 2 / 6 ». */
     fun compteur(rang: Int, montrees: Int): String = "${rang + 1} / $montrees"
 
@@ -301,7 +332,9 @@ object VisiteGuidee {
             e.preparer {
                 if (fermee) return@preparer
                 attenteFinie = true
+                // Un sujet d'une seule étape n'a rien à compter : « 1 / 1 » lirait comme une erreur.
                 compteur.text = compteur(deroule.index, etapes.size)
+                compteur.visibility = if (etapes.size > 1) View.VISIBLE else View.GONE
                 titre.text = e.titre
                 val icone = e.icone?.let { androidx.core.content.ContextCompat.getDrawable(context, it) }?.mutate()?.apply {
                     val cote = (28f * d).toInt()

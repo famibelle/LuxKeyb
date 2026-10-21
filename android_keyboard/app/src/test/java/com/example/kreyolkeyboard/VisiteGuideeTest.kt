@@ -55,4 +55,20 @@ class VisiteGuideeTest {
         assertEquals("1 / 7", VisiteGuidee.compteur(0, 7))
         assertEquals("7 / 7", VisiteGuidee.compteur(6, 7))
     }
+
+    @Test
+    fun `chaque sujet du sommaire tient dans sa visite`() {
+        VisiteGuidee.Sujet.entries.forEach { sujet ->
+            val total = if (sujet.visite == VisiteGuidee.Visite.APPLICATION) VisiteGuidee.ETAPES_APPLICATION
+            else VisiteGuidee.ETAPES_CARNET
+            assertTrue("$sujet", sujet.etapes.first >= 0 && sujet.etapes.last < total && !sujet.etapes.isEmpty())
+        }
+    }
+
+    @Test
+    fun `la dictee et le partage d'une carte ont chacun leur sujet`() {
+        assertEquals(7..7, VisiteGuidee.Sujet.DICTEE.etapes)
+        assertEquals(VisiteGuidee.Visite.CARNET, VisiteGuidee.Sujet.PARTAGER.visite)
+        assertEquals(6..6, VisiteGuidee.Sujet.PARTAGER.etapes)
+    }
 }
