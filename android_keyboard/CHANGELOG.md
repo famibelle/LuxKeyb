@@ -9,6 +9,19 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.7.2] - 2026-10-21
+
+### ✨ Améliorations
+
+- **La visite guidée commence par le clavier** : les trois gestes et la dictée d'abord, puis les cartes, le dictionnaire, les jeux et le reste.
+- **On sait où la retrouver** : la dernière bulle montre la ligne « Visite guidée » en bas de l'accueil, et « Passer » y mène avant de fermer.
+- **Le sommaire parle de ce qu'on veut faire** : « Dicter un message », « Chercher un mot », « Partager une carte »…
+- **La visite des cartes est plus courte** : quatre bulles au lieu de neuf, la carte se présente d'un bloc.
+
+### 🐛 Corrections
+
+- **La bulle reste à l'écran quand la zone montrée est grande** : sur une carte ouverte, le bouton « Suivant » sortait de l'écran sur certains téléphones.
+
 ## [37.7.1] - 2026-10-21
 
 ### ✨ Améliorations
