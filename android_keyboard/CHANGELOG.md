@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.7.4] - 2026-10-21
+
+### ✨ Améliorations
+
+- **Essayer le clavier pendant la visite** : les bulles des gestes et de la dictée ont un bouton « Essayer », qui ouvre un petit champ avec le clavier. On tape « Moi » et on touche « Moien », ou on touche le micro et on parle, sans quitter la visite.
+
 ## [37.7.3] - 2026-10-21
 
 ### ✨ Améliorations
