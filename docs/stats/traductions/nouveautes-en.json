@@ -6,6 +6,112 @@
   "Changements": "Changes",
   "Rapidité": "Speed"
  },
+ "37.7.5": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The card help inside the collection",
+      "texte": "A “?” at the top of Mäi Carnet opens the tour of the cards, whole or on a single topic (reading a card, sharing it, giving one away or receiving one), without going back to the home screen."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmed on a Galaxy A21s, in five screens. 1. The last bubble of the tour, “To see it again”, lights the “?” button at the top left. 2. The “?” opens the help: the whole tour, then The keyboard (Typing with the keyboard, Dictating a message), The cards (Reading a card, Sharing a card, Giving or receiving a card), The app (Looking up a word, Playing to learn words, Understanding the home screen, Following your progress, Setting up the keyboard) and the guide to read. 3. “Try it” opens a field with the keyboard: “Moi” has been typed and the bar offers “Moien”. 4. In Mäi Carnet, a “?” at the top opens the card help. 5. “Sharing a card” opens the card “Moien” and lights the Share button. The screens are in French.",
+    "legende": "An always-visible “?” opens the help: the whole tour or a single topic, a try of the keyboard without leaving the tour, and the card help inside the collection."
+   }
+  ]
+ },
+ "37.7.4": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "Trying the keyboard during the tour",
+      "texte": "The gestures and voice typing bubbles have a “Try it” button that opens a small field with the keyboard. Type “Moi” and tap “Moien”, or tap the microphone and speak, without leaving the tour."
+     }
+    ]
+   }
+  ]
+ },
+ "37.7.3": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "One door for help",
+      "texte": "A “?” button at the top of the screen, visible from every tab, opens the help. It holds the guided tour, topic by topic, and the full guide to read. At the bottom of the home screen, the “Help” line replaces “User guide” and “Guided tour”."
+     }
+    ]
+   }
+  ]
+ },
+ "37.7.2": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The guided tour starts with the keyboard",
+      "texte": "The three gestures and voice typing first, then the cards, the dictionary, the games and the rest."
+     },
+     {
+      "titre": "You know where to find it again",
+      "texte": "The last bubble shows the “Guided tour” line at the bottom of the home screen, and “Skip” leads there before closing."
+     },
+     {
+      "titre": "The topics say what you want to do",
+      "texte": "“Dictating a message”, “Looking up a word”, “Sharing a card”…"
+     },
+     {
+      "titre": "The tour of the cards is shorter",
+      "texte": "Four bubbles instead of nine; the card presents itself in one go."
+     }
+    ]
+   },
+   {
+    "titre": "Fixes",
+    "points": [
+     {
+      "titre": "The bubble stays on screen when the area shown is large",
+      "texte": "On an open card, the “Next” button went off the screen on some phones."
+     }
+    ]
+   }
+  ]
+ },
+ "37.7.1": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "Seeing a single topic of the guided tour again",
+      "texte": "The “Guided tour” line, at the bottom of the home screen, opens a list of topics. You choose the whole tour, or a single topic: voice typing, sharing a card, the keyboard gestures, the dictionary…"
+     }
+    ]
+   },
+   {
+    "titre": "Fixes",
+    "points": [
+     {
+      "titre": "The guided tour no longer opens under another window",
+      "texte": "It waits until the welcome message, or another request from the app, has been closed."
+     }
+    ]
+   }
+  ]
+ },
  "37.7.0": {
   "intro": "",
   "sections": [

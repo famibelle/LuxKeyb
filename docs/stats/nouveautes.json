@@ -1,9 +1,150 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.0",
+ "derniere_version": "37.7.5",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.5",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "L'aide des cartes dans le carnet",
+       "texte": "Un « ? » en haut de Mäi Carnet ouvre la visite des cartes, entière ou sur un seul sujet (lire une carte, la partager, la donner ou en recevoir une), sans repasser par l'accueil."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_aide_visite.gif",
+     "alt": "Filmé sur un Galaxy A21s, en cinq écrans. 1. La dernière bulle de la visite, « Pour la revoir », éclaire le bouton « ? » en haut à gauche et dit : « Toute la visite, ou un seul sujet comme la dictée : touchez le ? en haut de l'écran. » 2. Le « ? » ouvre l'aide : « Toute la visite », puis Le clavier (Écrire avec le clavier, Dicter un message), Les cartes (Lire une carte, Partager une carte, Donner ou recevoir une carte), L'application (Chercher un mot, Jouer pour apprendre des mots, Comprendre l'accueil, Suivre vos progrès, Régler le clavier) et le guide à lire. 3. « Essayer » ouvre un champ avec le clavier : on a tapé « Moi », la barre propose « Moien ». 4. Dans Mäi Carnet, un « ? » en haut ouvre l'aide des cartes. 5. « Partager une carte » ouvre la carte « Moien » et éclaire le bouton Partager.",
+     "legende": "Un « ? » toujours visible ouvre l'aide : la visite entière ou un seul sujet, un essai du clavier sans quitter la visite, et l'aide des cartes dans le carnet."
+    }
+   ],
+   "image": "Screenshots/lux_aide_visite.gif",
+   "image_alt": "Filmé sur un Galaxy A21s, en cinq écrans. 1. La dernière bulle de la visite, « Pour la revoir », éclaire le bouton « ? » en haut à gauche et dit : « Toute la visite, ou un seul sujet comme la dictée : touchez le ? en haut de l'écran. » 2. Le « ? » ouvre l'aide : « Toute la visite », puis Le clavier (Écrire avec le clavier, Dicter un message), Les cartes (Lire une carte, Partager une carte, Donner ou recevoir une carte), L'application (Chercher un mot, Jouer pour apprendre des mots, Comprendre l'accueil, Suivre vos progrès, Régler le clavier) et le guide à lire. 3. « Essayer » ouvre un champ avec le clavier : on a tapé « Moi », la barre propose « Moien ». 4. Dans Mäi Carnet, un « ? » en haut ouvre l'aide des cartes. 5. « Partager une carte » ouvre la carte « Moien » et éclaire le bouton Partager.",
+   "image_legende": "Un « ? » toujours visible ouvre l'aide : la visite entière ou un seul sujet, un essai du clavier sans quitter la visite, et l'aide des cartes dans le carnet."
+  },
+  {
+   "version": "37.7.4",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Essayer le clavier pendant la visite",
+       "texte": "Les bulles des gestes et de la dictée ont un bouton « Essayer », qui ouvre un petit champ avec le clavier. On tape « Moi » et on touche « Moien », ou on touche le micro et on parle, sans quitter la visite."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.7.3",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Une seule porte pour l'aide",
+       "texte": "Un bouton « ? » en haut de l'écran, visible depuis tous les onglets, ouvre l'aide. On y trouve la visite guidée, sujet par sujet, et le guide complet à lire. En bas de l'accueil, la ligne « Aide » remplace « Guide d'utilisation » et « Visite guidée »."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.7.2",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "La visite guidée commence par le clavier",
+       "texte": "Les trois gestes et la dictée d'abord, puis les cartes, le dictionnaire, les jeux et le reste."
+      },
+      {
+       "titre": "On sait où la retrouver",
+       "texte": "La dernière bulle montre la ligne « Visite guidée » en bas de l'accueil, et « Passer » y mène avant de fermer."
+      },
+      {
+       "titre": "Le sommaire parle de ce qu'on veut faire",
+       "texte": "« Dicter un message », « Chercher un mot », « Partager une carte »…"
+      },
+      {
+       "titre": "La visite des cartes est plus courte",
+       "texte": "Quatre bulles au lieu de neuf, la carte se présente d'un bloc."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "La bulle reste à l'écran quand la zone montrée est grande",
+       "texte": "Sur une carte ouverte, le bouton « Suivant » sortait de l'écran sur certains téléphones."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.7.1",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Revoir un seul sujet de la visite guidée",
+       "texte": "La ligne « Visite guidée », en bas de l'accueil, ouvre un sommaire. On y choisit toute la visite, ou un seul sujet : la dictée, partager une carte, les gestes du clavier, le dictionnaire…"
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "La visite guidée ne s'ouvre plus sous une autre fenêtre",
+       "texte": "Elle attend que le message de bienvenue, ou une autre demande de l'application, soit refermé."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "37.7.0",
    "date": "2026-10-21",
@@ -53,133 +194,6 @@
    "image": "Screenshots/lux_visite_application.gif",
    "image_alt": "La visite guidée de l'application, étape par étape, sur l'émulateur. Un voile sombre couvre l'écran et une bulle blanche présente ce qui est éclairé d'un cadre jaune : 1. l'onglet Haut, l'accueil du jour ; 2. la roue dentée des réglages du clavier ; 3. l'onglet Spiller et ses jeux ; 4. le bandeau Mäi Carnet ; 5. l'onglet Wierderbuch ; 6. l'onglet Mäi Lëtzebuergesch et les niveaux, d'Ufänger à Sproochemeeschter ; 7. le clavier en trois gestes (toucher un mot proposé, appui long pour les accents, glisser sur la barre d'espace pour déplacer le curseur) ; 8. la dictée, avec l'icône rouge du micro : toucher le micro en haut à droite du clavier, parler luxembourgeois, toucher de nouveau pour finir.",
    "image_legende": "La visite de l'application, en huit étapes : les quatre onglets, les réglages, le carnet, les gestes du clavier et la dictée."
-  },
-  {
-   "version": "37.6.0",
-   "date": "2026-10-20",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Le Wierderbuch comprend les nombres en chiffres",
-       "texte": "Taper « 11 » affiche « 11 s'écrit « eelef » » et sa traduction, de 0 à 100. Au-delà, comme pour les années, l'appli rappelle qu'on les écrit en chiffres, comme le dictionnaire officiel."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Noms des niveaux corrigés",
-       "texte": "Par un professeur de luxembourgeois : Ufänger, Sproochekënner et Sproochemeeschter. Votre progression ne change pas."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.5.0",
-   "date": "2026-10-19",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Les cartes ouvertes prennent la lumière",
-       "texte": "La fenêtre du paysage est sous une vitre, avec un reflet discret qui glisse quand on penche le téléphone. Le cadre brille selon son métal, de l'étain des cartes communes à l'or des très rares, et la lumière court d'une pièce en relief à l'autre (plaque, médaillon, écus) au fil de l'inclinaison."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.10",
-   "date": "2026-10-19",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Les cartes d'hiver et d'été apparaissent plus vite",
-       "texte": "Sur un Galaxy A21s, le paysage d'hiver d'une carte ouverte se dessine en 33 ms au lieu de 49, celui d'été en 21 ms au lieu de 35 ; l'automne passe de 47 à 43 ms. Les images ne changent pas."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.9",
-   "date": "2026-10-18",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Les cartes d'automne apparaissent plus vite",
-       "texte": "Le paysage d'automne d'une carte ouverte se dessine en 43 ms au lieu de 71 sur un Galaxy A21s, celui d'une vignette en 21 ms au lieu de 30 ; le printemps gagne aussi un peu. Les images ne changent pas."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.8",
-   "date": "2026-10-18",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Une carte très rare ne reste plus face cachée",
-       "texte": "Sur un téléphone lent, l'éclair qui précède la très rare pouvait annuler son retournement, et la carte restait sur son dos."
-      },
-      {
-       "titre": "La première pochette ne se fige plus",
-       "texte": "Après une installation ou une mise à jour, la carte marquait un arrêt d'une demi-seconde en se retournant. Le travail graphique se fait désormais en avance, sans que rien ne se voie."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "La légende du carnet filtre",
-       "texte": "Toucher « ✦ 5 très rares » n'affiche plus que les très rares ; un second toucher montre tout le carnet."
-      },
-      {
-       "titre": "La carte ouverte nomme son palier",
-       "texte": "En bas à droite, « ✦ Très rare · 9769ᵉ » au lieu du seul rang."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

@@ -1,9 +1,150 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.0",
+ "derniere_version": "37.7.5",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.5",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "The card help inside the collection",
+       "texte": "A “?” at the top of Mäi Carnet opens the tour of the cards, whole or on a single topic (reading a card, sharing it, giving one away or receiving one), without going back to the home screen."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_aide_visite.gif",
+     "alt": "Filmed on a Galaxy A21s, in five screens. 1. The last bubble of the tour, “To see it again”, lights the “?” button at the top left. 2. The “?” opens the help: the whole tour, then The keyboard (Typing with the keyboard, Dictating a message), The cards (Reading a card, Sharing a card, Giving or receiving a card), The app (Looking up a word, Playing to learn words, Understanding the home screen, Following your progress, Setting up the keyboard) and the guide to read. 3. “Try it” opens a field with the keyboard: “Moi” has been typed and the bar offers “Moien”. 4. In Mäi Carnet, a “?” at the top opens the card help. 5. “Sharing a card” opens the card “Moien” and lights the Share button. The screens are in French.",
+     "legende": "An always-visible “?” opens the help: the whole tour or a single topic, a try of the keyboard without leaving the tour, and the card help inside the collection."
+    }
+   ],
+   "image": "Screenshots/lux_aide_visite.gif",
+   "image_alt": "Filmed on a Galaxy A21s, in five screens. 1. The last bubble of the tour, “To see it again”, lights the “?” button at the top left. 2. The “?” opens the help: the whole tour, then The keyboard (Typing with the keyboard, Dictating a message), The cards (Reading a card, Sharing a card, Giving or receiving a card), The app (Looking up a word, Playing to learn words, Understanding the home screen, Following your progress, Setting up the keyboard) and the guide to read. 3. “Try it” opens a field with the keyboard: “Moi” has been typed and the bar offers “Moien”. 4. In Mäi Carnet, a “?” at the top opens the card help. 5. “Sharing a card” opens the card “Moien” and lights the Share button. The screens are in French.",
+   "image_legende": "An always-visible “?” opens the help: the whole tour or a single topic, a try of the keyboard without leaving the tour, and the card help inside the collection."
+  },
+  {
+   "version": "37.7.4",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "Trying the keyboard during the tour",
+       "texte": "The gestures and voice typing bubbles have a “Try it” button that opens a small field with the keyboard. Type “Moi” and tap “Moien”, or tap the microphone and speak, without leaving the tour."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.7.3",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "One door for help",
+       "texte": "A “?” button at the top of the screen, visible from every tab, opens the help. It holds the guided tour, topic by topic, and the full guide to read. At the bottom of the home screen, the “Help” line replaces “User guide” and “Guided tour”."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.7.2",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "The guided tour starts with the keyboard",
+       "texte": "The three gestures and voice typing first, then the cards, the dictionary, the games and the rest."
+      },
+      {
+       "titre": "You know where to find it again",
+       "texte": "The last bubble shows the “Guided tour” line at the bottom of the home screen, and “Skip” leads there before closing."
+      },
+      {
+       "titre": "The topics say what you want to do",
+       "texte": "“Dictating a message”, “Looking up a word”, “Sharing a card”…"
+      },
+      {
+       "titre": "The tour of the cards is shorter",
+       "texte": "Four bubbles instead of nine; the card presents itself in one go."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Fixes",
+     "points": [
+      {
+       "titre": "The bubble stays on screen when the area shown is large",
+       "texte": "On an open card, the “Next” button went off the screen on some phones."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.7.1",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "Seeing a single topic of the guided tour again",
+       "texte": "The “Guided tour” line, at the bottom of the home screen, opens a list of topics. You choose the whole tour, or a single topic: voice typing, sharing a card, the keyboard gestures, the dictionary…"
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Fixes",
+     "points": [
+      {
+       "titre": "The guided tour no longer opens under another window",
+       "texte": "It waits until the welcome message, or another request from the app, has been closed."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "37.7.0",
    "date": "2026-10-21",
@@ -53,133 +194,6 @@
    "image": "Screenshots/lux_visite_application.gif",
    "image_alt": "The guided tour of the app, step by step, on the emulator. A dark veil covers the screen and a white bubble presents what is lit by a yellow frame: 1. the Haut tab, the daily home; 2. the gear of the keyboard settings; 3. the Spiller tab and its games; 4. the Mäi Carnet banner; 5. the Wierderbuch tab; 6. the Mäi Lëtzebuergesch tab and the levels, from Ufänger to Sproochemeeschter; 7. the keyboard in three gestures (tap a suggested word, long press for accents, slide on the space bar to move the cursor); 8. voice typing, with the red microphone icon: tap the microphone at the top right of the keyboard, speak Luxembourgish, tap again to finish. The screens are in French.",
    "image_legende": "The tour of the app, in eight steps: the four tabs, the settings, the card collection, the keyboard gestures and voice typing."
-  },
-  {
-   "version": "37.6.0",
-   "date": "2026-10-20",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "New",
-     "points": [
-      {
-       "titre": "The Wierderbuch understands numbers written in digits",
-       "texte": "Typing “11” shows “11 is written ‘eelef’” and its translation, from 0 to 100. Beyond that, as for years, the app reminds you that they are written in digits, like in the official dictionary."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Fixes",
-     "points": [
-      {
-       "titre": "Level names corrected",
-       "texte": "By a Luxembourgish teacher: Ufänger, Sproochekënner and Sproochemeeschter. Your progress does not change."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.5.0",
-   "date": "2026-10-19",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "New",
-     "points": [
-      {
-       "titre": "Open cards catch the light",
-       "texte": "The landscape window is behind glass, with a discreet reflection that glides when you tilt the phone. The frame shines according to its metal, from the pewter of common cards to the gold of very rare ones, and the light runs from one raised piece to the next (plate, medallion, shields) as you tilt."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.10",
-   "date": "2026-10-19",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "Winter and summer cards appear faster",
-       "texte": "On a Galaxy A21s, the winter landscape of an open card is drawn in 33 ms instead of 49, the summer one in 21 ms instead of 35; autumn goes from 47 to 43 ms. The pictures do not change."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.9",
-   "date": "2026-10-18",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "Autumn cards appear faster",
-       "texte": "The autumn landscape of an open card is drawn in 43 ms instead of 71 on a Galaxy A21s, that of a thumbnail in 21 ms instead of 30; spring gains a little too. The pictures do not change."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.8",
-   "date": "2026-10-18",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Fixes",
-     "points": [
-      {
-       "titre": "A very rare card no longer stays face down",
-       "texte": "On a slow phone, the flash before a very rare card could cancel its turn, and the card stayed on its back."
-      },
-      {
-       "titre": "The first card pack no longer freezes",
-       "texte": "After an install or an update, the card paused for half a second while turning over. The graphics work is now done in advance, without anything showing."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "The collection legend filters",
-       "texte": "Tapping “✦ 5 very rare” now shows only the very rare cards; a second tap shows the whole collection."
-      },
-      {
-       "titre": "The open card names its tier",
-       "texte": "At the bottom right, “✦ Very rare · 9769th” instead of the rank alone."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

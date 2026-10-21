@@ -1,9 +1,150 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.0",
+ "derniere_version": "37.7.5",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.5",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Die Kartenhilfe in der Sammlung",
+       "texte": "Ein „?“ oben in Mäi Carnet öffnet den Rundgang durch die Karten, ganz oder zu einem einzigen Thema (eine Karte lesen, teilen, abgeben oder empfangen), ohne Umweg über die Startseite."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_aide_visite.gif",
+     "alt": "Gefilmt auf einem Galaxy A21s, in fünf Bildschirmen. 1. Die letzte Sprechblase des Rundgangs, „Um ihn wiederzusehen“, hebt die Schaltfläche „?“ oben links hervor. 2. Das „?“ öffnet die Hilfe: der ganze Rundgang, dann Die Tastatur (Mit der Tastatur schreiben, Eine Nachricht diktieren), Die Karten (Eine Karte lesen, Eine Karte teilen, Eine Karte abgeben oder empfangen), Die App (Ein Wort suchen, Spielend Wörter lernen, Die Startseite verstehen, Ihren Fortschritt verfolgen, Die Tastatur einstellen) und der Leitfaden zum Lesen. 3. „Ausprobieren“ öffnet ein Feld mit der Tastatur: „Moi“ ist getippt, die Leiste schlägt „Moien“ vor. 4. In Mäi Carnet öffnet ein „?“ oben die Kartenhilfe. 5. „Eine Karte teilen“ öffnet die Karte „Moien“ und hebt die Schaltfläche Teilen hervor. Die Bildschirme sind auf Französisch.",
+     "legende": "Ein stets sichtbares „?“ öffnet die Hilfe: der ganze Rundgang oder ein einziges Thema, die Tastatur ausprobieren, ohne den Rundgang zu verlassen, und die Kartenhilfe in der Sammlung."
+    }
+   ],
+   "image": "Screenshots/lux_aide_visite.gif",
+   "image_alt": "Gefilmt auf einem Galaxy A21s, in fünf Bildschirmen. 1. Die letzte Sprechblase des Rundgangs, „Um ihn wiederzusehen“, hebt die Schaltfläche „?“ oben links hervor. 2. Das „?“ öffnet die Hilfe: der ganze Rundgang, dann Die Tastatur (Mit der Tastatur schreiben, Eine Nachricht diktieren), Die Karten (Eine Karte lesen, Eine Karte teilen, Eine Karte abgeben oder empfangen), Die App (Ein Wort suchen, Spielend Wörter lernen, Die Startseite verstehen, Ihren Fortschritt verfolgen, Die Tastatur einstellen) und der Leitfaden zum Lesen. 3. „Ausprobieren“ öffnet ein Feld mit der Tastatur: „Moi“ ist getippt, die Leiste schlägt „Moien“ vor. 4. In Mäi Carnet öffnet ein „?“ oben die Kartenhilfe. 5. „Eine Karte teilen“ öffnet die Karte „Moien“ und hebt die Schaltfläche Teilen hervor. Die Bildschirme sind auf Französisch.",
+   "image_legende": "Ein stets sichtbares „?“ öffnet die Hilfe: der ganze Rundgang oder ein einziges Thema, die Tastatur ausprobieren, ohne den Rundgang zu verlassen, und die Kartenhilfe in der Sammlung."
+  },
+  {
+   "version": "37.7.4",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Die Tastatur während des Rundgangs ausprobieren",
+       "texte": "Die Sprechblasen zu den Gesten und zur Spracheingabe haben eine Schaltfläche „Ausprobieren“, die ein kleines Feld mit der Tastatur öffnet. Tippen Sie „Moi“ und dann „Moien“, oder tippen Sie auf das Mikrofon und sprechen Sie, ohne den Rundgang zu verlassen."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.7.3",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Eine einzige Tür zur Hilfe",
+       "texte": "Eine Schaltfläche „?“ oben auf dem Bildschirm, von jedem Tab aus sichtbar, öffnet die Hilfe. Dort finden Sie den Rundgang, Thema für Thema, und den ganzen Leitfaden zum Lesen. Unten auf der Startseite ersetzt die Zeile „Hilfe“ die Zeilen „Bedienungsanleitung“ und „Rundgang“."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.7.2",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Der Rundgang beginnt mit der Tastatur",
+       "texte": "Zuerst die drei Gesten und die Spracheingabe, dann die Karten, das Wörterbuch, die Spiele und der Rest."
+      },
+      {
+       "titre": "Man weiß, wo man ihn wiederfindet",
+       "texte": "Die letzte Sprechblase zeigt die Zeile „Rundgang“ unten auf der Startseite, und „Überspringen“ führt dorthin, bevor er sich schließt."
+      },
+      {
+       "titre": "Die Themen sagen, was man tun möchte",
+       "texte": "„Eine Nachricht diktieren“, „Ein Wort suchen“, „Eine Karte teilen“…"
+      },
+      {
+       "titre": "Der Rundgang durch die Karten ist kürzer",
+       "texte": "Vier Sprechblasen statt neun; die Karte stellt sich auf einmal vor."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Korrekturen",
+     "points": [
+      {
+       "titre": "Die Sprechblase bleibt auf dem Bildschirm, wenn der gezeigte Bereich groß ist",
+       "texte": "Bei einer geöffneten Karte rutschte die Schaltfläche „Weiter“ auf manchen Telefonen aus dem Bildschirm."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "37.7.1",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Ein einzelnes Thema des Rundgangs wiedersehen",
+       "texte": "Die Zeile „Rundgang“ unten auf der Startseite öffnet eine Themenliste. Man wählt den ganzen Rundgang oder ein einziges Thema: die Spracheingabe, eine Karte teilen, die Gesten der Tastatur, das Wörterbuch…"
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Korrekturen",
+     "points": [
+      {
+       "titre": "Der Rundgang öffnet sich nicht mehr unter einem anderen Fenster",
+       "texte": "Er wartet, bis die Willkommensnachricht oder eine andere Anfrage der App geschlossen ist."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "37.7.0",
    "date": "2026-10-21",
@@ -53,133 +194,6 @@
    "image": "Screenshots/lux_visite_application.gif",
    "image_alt": "Der Rundgang durch die App, Schritt für Schritt, im Emulator. Ein dunkler Schleier deckt den Bildschirm ab, und eine weiße Sprechblase stellt vor, was ein gelber Rahmen hervorhebt: 1. der Tab Haut, die Startseite des Tages; 2. das Zahnrad der Tastatureinstellungen; 3. der Tab Spiller und seine Spiele; 4. das Banner Mäi Carnet; 5. der Tab Wierderbuch; 6. der Tab Mäi Lëtzebuergesch und die Stufen, von Ufänger bis Sproochemeeschter; 7. die Tastatur in drei Gesten (ein vorgeschlagenes Wort antippen, lange drücken für Akzente, über die Leertaste gleiten, um den Cursor zu bewegen); 8. die Spracheingabe, mit dem roten Mikrofonsymbol: oben rechts auf der Tastatur das Mikrofon antippen, Luxemburgisch sprechen, zum Beenden noch einmal tippen. Die Bildschirme sind auf Französisch.",
    "image_legende": "Der Rundgang durch die App in acht Schritten: die vier Tabs, die Einstellungen, die Kartensammlung, die Gesten der Tastatur und die Spracheingabe."
-  },
-  {
-   "version": "37.6.0",
-   "date": "2026-10-20",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Neu",
-     "points": [
-      {
-       "titre": "Das Wierderbuch versteht Zahlen in Ziffern",
-       "texte": "Wer „11“ eingibt, sieht „11 wird ‚eelef‘ geschrieben“ und die Übersetzung, von 0 bis 100. Darüber erinnert die App, wie bei Jahreszahlen, daran, dass man sie in Ziffern schreibt, wie im offiziellen Wörterbuch."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Korrekturen",
-     "points": [
-      {
-       "titre": "Namen der Stufen korrigiert",
-       "texte": "Von einer Luxemburgischlehrkraft: Ufänger, Sproochekënner und Sproochemeeschter. Ihr Fortschritt ändert sich nicht."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.5.0",
-   "date": "2026-10-19",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Neu",
-     "points": [
-      {
-       "titre": "Geöffnete Karten fangen das Licht ein",
-       "texte": "Das Landschaftsfenster liegt hinter Glas, mit einem dezenten Spiegelbild, das gleitet, wenn man das Telefon neigt. Der Rahmen glänzt je nach Metall, vom Zinn der gewöhnlichen Karten bis zum Gold der sehr seltenen, und das Licht wandert beim Neigen von einem erhabenen Teil zum nächsten (Plakette, Medaillon, Wappen)."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.10",
-   "date": "2026-10-19",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Winter- und Sommerkarten erscheinen schneller",
-       "texte": "Auf einem Galaxy A21s wird die Winterlandschaft einer geöffneten Karte in 33 ms statt 49 gezeichnet, die Sommerlandschaft in 21 ms statt 35; der Herbst geht von 47 auf 43 ms. Die Bilder ändern sich nicht."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.9",
-   "date": "2026-10-18",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Herbstkarten erscheinen schneller",
-       "texte": "Die Herbstlandschaft einer geöffneten Karte wird auf einem Galaxy A21s in 43 ms statt 71 gezeichnet, die einer Miniatur in 21 ms statt 30; auch der Frühling wird etwas schneller. Die Bilder ändern sich nicht."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.4.8",
-   "date": "2026-10-18",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "🐛",
-     "titre": "Korrekturen",
-     "points": [
-      {
-       "titre": "Eine sehr seltene Karte bleibt nicht mehr verdeckt",
-       "texte": "Auf einem langsamen Telefon konnte der Blitz vor der sehr seltenen Karte ihr Umdrehen abbrechen, und die Karte blieb auf dem Rücken liegen."
-      },
-      {
-       "titre": "Das erste Kartenpäckchen stockt nicht mehr",
-       "texte": "Nach einer Installation oder einem Update hielt die Karte beim Umdrehen eine halbe Sekunde an. Die Grafikarbeit wird jetzt im Voraus erledigt, ohne dass man etwas sieht."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Die Legende der Sammlung filtert",
-       "texte": "Ein Tippen auf „✦ 5 sehr selten“ zeigt nur noch die sehr seltenen Karten; ein zweites Tippen zeigt die ganze Sammlung."
-      },
-      {
-       "titre": "Die geöffnete Karte nennt ihre Stufe",
-       "texte": "Unten rechts „✦ Sehr selten · 9769.“ statt nur des Rangs."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

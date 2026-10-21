@@ -1,5 +1,14 @@
 {
  "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+ "37.7.5": {
+  "images": [
+   {
+    "image": "Screenshots/lux_aide_visite.gif",
+    "alt": "Filmé sur un Galaxy A21s, en cinq écrans. 1. La dernière bulle de la visite, « Pour la revoir », éclaire le bouton « ? » en haut à gauche et dit : « Toute la visite, ou un seul sujet comme la dictée : touchez le ? en haut de l'écran. » 2. Le « ? » ouvre l'aide : « Toute la visite », puis Le clavier (Écrire avec le clavier, Dicter un message), Les cartes (Lire une carte, Partager une carte, Donner ou recevoir une carte), L'application (Chercher un mot, Jouer pour apprendre des mots, Comprendre l'accueil, Suivre vos progrès, Régler le clavier) et le guide à lire. 3. « Essayer » ouvre un champ avec le clavier : on a tapé « Moi », la barre propose « Moien ». 4. Dans Mäi Carnet, un « ? » en haut ouvre l'aide des cartes. 5. « Partager une carte » ouvre la carte « Moien » et éclaire le bouton Partager.",
+    "legende": "Un « ? » toujours visible ouvre l'aide : la visite entière ou un seul sujet, un essai du clavier sans quitter la visite, et l'aide des cartes dans le carnet."
+   }
+  ]
+ },
  "37.7.0": {
   "images": [
    {

@@ -6,6 +6,112 @@
   "Changements": "Alterações",
   "Rapidité": "Rapidez"
  },
+ "37.7.5": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "A ajuda das cartas na coleção",
+      "texte": "Um «?» no topo de Mäi Carnet abre a visita às cartas, completa ou sobre um só tema (ler uma carta, partilhá-la, cedê-la ou receber uma), sem voltar ao início."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmado num Galaxy A21s, em cinco ecrãs. 1. O último balão da visita, «Para a rever», destaca o botão «?» no canto superior esquerdo. 2. O «?» abre a ajuda: a visita completa, depois O teclado (Escrever com o teclado, Ditar uma mensagem), As cartas (Ler uma carta, Partilhar uma carta, Ceder ou receber uma carta), A aplicação (Procurar uma palavra, Jogar para aprender palavras, Compreender o início, Acompanhar o seu progresso, Configurar o teclado) e o guia para ler. 3. «Experimentar» abre um campo com o teclado: escreveu-se «Moi» e a barra propõe «Moien». 4. Em Mäi Carnet, um «?» no topo abre a ajuda das cartas. 5. «Partilhar uma carta» abre a carta «Moien» e destaca o botão Partilhar. Os ecrãs estão em francês.",
+    "legende": "Um «?» sempre visível abre a ajuda: a visita completa ou um só tema, experimentar o teclado sem sair da visita, e a ajuda das cartas na coleção."
+   }
+  ]
+ },
+ "37.7.4": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "Experimentar o teclado durante a visita",
+      "texte": "Os balões dos gestos e do ditado têm um botão «Experimentar», que abre um pequeno campo com o teclado. Escreva «Moi» e toque em «Moien», ou toque no microfone e fale, sem sair da visita."
+     }
+    ]
+   }
+  ]
+ },
+ "37.7.3": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "Uma só porta para a ajuda",
+      "texte": "Um botão «?» no topo do ecrã, visível em todos os separadores, abre a ajuda. Lá encontra a visita guiada, tema a tema, e o guia completo para ler. No fundo do início, a linha «Ajuda» substitui «Guia de utilização» e «Visita guiada»."
+     }
+    ]
+   }
+  ]
+ },
+ "37.7.2": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "A visita guiada começa pelo teclado",
+      "texte": "Primeiro os três gestos e o ditado, depois as cartas, o dicionário, os jogos e o resto."
+     },
+     {
+      "titre": "Sabe-se onde a reencontrar",
+      "texte": "O último balão mostra a linha «Visita guiada» no fundo do início, e «Saltar» leva até lá antes de fechar."
+     },
+     {
+      "titre": "Os temas dizem o que se quer fazer",
+      "texte": "«Ditar uma mensagem», «Procurar uma palavra», «Partilhar uma carta»…"
+     },
+     {
+      "titre": "A visita às cartas é mais curta",
+      "texte": "Quatro balões em vez de nove; a carta apresenta-se de uma vez."
+     }
+    ]
+   },
+   {
+    "titre": "Correções",
+    "points": [
+     {
+      "titre": "O balão fica no ecrã quando a zona mostrada é grande",
+      "texte": "Numa carta aberta, o botão «Seguinte» saía do ecrã em alguns telemóveis."
+     }
+    ]
+   }
+  ]
+ },
+ "37.7.1": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "Rever um só tema da visita guiada",
+      "texte": "A linha «Visita guiada», no fundo do início, abre uma lista de temas. Escolhe-se a visita completa, ou um só tema: o ditado, partilhar uma carta, os gestos do teclado, o dicionário…"
+     }
+    ]
+   },
+   {
+    "titre": "Correções",
+    "points": [
+     {
+      "titre": "A visita guiada já não se abre por baixo de outra janela",
+      "texte": "Espera que a mensagem de boas-vindas, ou outro pedido da aplicação, seja fechada."
+     }
+    ]
+   }
+  ]
+ },
  "37.7.0": {
   "intro": "",
   "sections": [
