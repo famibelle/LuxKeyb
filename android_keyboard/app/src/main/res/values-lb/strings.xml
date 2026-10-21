@@ -736,4 +736,44 @@
     <string name="act_source">Quell: Institut national des langues Luxembourg, inll.lu. D\'Neiegkeete ginn um Site gelueden, wann Dir dës Säit opmaacht.</string>
     <!-- Wierderbuch sur tablette : le panneau de la fiche, vide -->
     <string name="wb_choisir_un_mot">Tippt op e Wuert an der Lëscht, fir seng Fiche hei opzemaachen.</string>
+    <!-- Visite guidée (reprise de KreyolKeyb 23.3.0, dictée en plus) : voir VisiteGuidee.kt -->
+    <string name="visite_passer">Iwwersprangen</string>
+    <string name="visite_suivant">Weider  ›</string>
+    <string name="visite_terminer">Fäerdeg</string>
+    <string name="visite_revoir">Rondgang</string>
+    <string name="visite_revoir_resume">D\'Tabs, d\'Kaarten, d\'Tastatur an den Diktat, Schrëtt fir Schrëtt</string>
+    <string name="visite_accueil_titre">Haut, Är Startsäit</string>
+    <string name="visite_accueil_texte">All Dag fannt Dir hei d\'Kaarte fir ze widderhuelen, d\'Wuert vum Dag, Äert lescht Spill an Äre Fortschrëtt.</string>
+    <string name="visite_reglages_titre">Astellunge vun der Tastatur</string>
+    <string name="visite_reglages_texte">Tippt op d\'Zännrad: Toun a Vibratioun vun den Tasten, Design, Disposition vun de Buschtawen, Virschléi. Alles gëtt hei agestallt, net an den Astellunge vum Telefon.</string>
+    <string name="visite_jeux_titre">Spiller</string>
+    <string name="visite_jeux_texte">Siwe kleng Spiller, fir lëtzebuergesch Wierder ze léieren: Wierder sichen, Kräizwierder, Sätz mat Lücken, Zuelen… Tippt op e Spill, fir ze spillen.</string>
+    <string name="visite_carnet_titre">Mäi Carnet, Är Kaarten</string>
+    <string name="visite_carnet_texte">All Wuert, dat Dir an engem Spill fannt, gëtt eng Kaart, déi hei gesammelt gëtt. Tippt op „Opmaachen“: do waart e Rondgang duerch d\'Kaarten op Iech.</string>
+    <string name="visite_dico_titre">Wierderbuch</string>
+    <string name="visite_dico_texte">Sicht e Wuert, op Lëtzebuergesch oder op Franséisch, a liest, wat et heescht, mat engem Beispill.</string>
+    <string name="visite_progres_titre">Mäi Lëtzebuergesch, Äre Fortschrëtt</string>
+    <string name="visite_progres_texte">All lëtzebuergescht Wuert, dat Dir mat der Tastatur tippt, zielt. Dir klemmt vun Ufänger bis Sproochemeeschter.</string>
+    <string name="visite_gestes_titre">Dräi Gesten op der Tastatur</string>
+    <string name="visite_gestes_texte">1. Tippt op e proposéiert Wuert iwwer de Buschtawen: et gëtt ganz geschriwwen.\n2. Dréckt laang op e Buschtaf fir seng Accenten: è, ê, ç…\n3. Fuert mam Fanger iwwer d\'Espacetast, fir de Cursor ze réckelen.</string>
+    <string name="visite_dictee_titre">Diktat</string>
+    <string name="visite_dictee_texte">Tippt op de Mikro, uewe riets op der Tastatur, a schwätzt Lëtzebuergesch: Är Wierder ginn ugeschriwwen, wärend Dir schwätzt. Tippt nach eng Kéier drop, wann Dir fäerdeg sidd.\n\nDir braucht eng Internetverbindung. Déi éischte Kéier erkläert d\'Tastatur Iech, wouhinner Är Stëmm geet, a freet no Accès zum Mikro.</string>
+    <string name="visite_collection_titre">Är Sammlung</string>
+    <string name="visite_collection_texte">All Wuert, dat Dir an engem Spill gewannt, gëtt eng Kaart. Tippt op eng Kaart, fir se grouss opzemaachen: mir maachen dës hei op.</string>
+    <string name="visite_paysage_titre">D\'Landschaft</string>
+    <string name="visite_paysage_texte">Eng Plaz zu Lëtzebuerg, no der Bedeitung vum Wuert gewielt. D\'Zäit vum Dag weist, wéi rar et ass: de Moie fir e geleefegt Wuert, d\'Stärennuecht fir e ganz rart. D\'Bild hält d\'Joreszäit fest, wou Dir et gewonnen hutt.</string>
+    <string name="visite_mot_titre">D\'Wuert</string>
+    <string name="visite_mot_texte">Op seng Plack graveiert, mat engem grousse Buschtaf, wann et en Nomen ass. D\'Zuel uewe lénks seet, wéi vill Buschtawen et huet.</string>
+    <string name="visite_sens_titre">Seng Bedeitung</string>
+    <string name="visite_sens_texte">Wat d\'Wuert ass (Nomen, Verb…) a seng Iwwersetzung, no dem offiziellen Dictionnaire. Drënner e Saz mat deem Wuert, a seng Iwwersetzung, wann et eng gëtt.</string>
+    <string name="visite_compteurs_titre">Seng Zieler</string>
+    <string name="visite_compteurs_texte">GESINN: wéi oft Dir dëst Wuert gewonnen hutt. An der Mëtt d\'Spill, dat et Iech ginn huet. NIVEAU: wéi wäit seng Widderhuelung ass, an e ✓, wann Dir et kënnt.</string>
+    <string name="visite_numero_titre">Seng Nummer</string>
+    <string name="visite_numero_texte">D\'Nummer vun der Kaart an Ärem Carnet, wéi rar se ass, a hir Plaz ënnert de geleefegste lëtzebuergesche Wierder.</string>
+    <string name="visite_partager_titre">Deelen</string>
+    <string name="visite_partager_texte">Schéckt e Bild vun der Kaart per Message oder op de soziale Netzwierker, mam Link fir d\'Tastatur z\'installéieren. D\'Kaart bleift an Ärem Carnet.</string>
+    <string name="visite_ceder_titre">Ofginn</string>
+    <string name="visite_ceder_texte">Gitt d\'Kaart engem anere Mënsch, vun Hand zu Hand, déi zwee Telefonen niefteneen: Dir scannt de Code vun der anerer Persoun, an dann scannt si Ären. D\'Kaart geet aus Ärem Carnet an hiren.</string>
+    <string name="visite_recevoir_titre">Kréien</string>
+    <string name="visite_recevoir_texte">Fir eng Kaart ze kréien, tippt op „Kréien“: Ären Telefon weist e Code, deen d\'Persoun scannt, déi d\'Kaart ofgëtt. Scannt duerno de Code, deen si weist.</string>
 </resources>

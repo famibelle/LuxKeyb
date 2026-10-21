@@ -736,4 +736,44 @@
     <string name="act_source">Source : Institut national des langues Luxembourg, inll.lu. Les actualités sont chargées depuis son site quand vous ouvrez cette page.</string>
     <!-- Wierderbuch sur tablette : le panneau de la fiche, vide -->
     <string name="wb_choisir_un_mot">Touchez un mot de la liste pour ouvrir sa fiche ici.</string>
+    <!-- Visite guidée (reprise de KreyolKeyb 23.3.0, dictée en plus) : voir VisiteGuidee.kt -->
+    <string name="visite_passer">Passer</string>
+    <string name="visite_suivant">Suivant  ›</string>
+    <string name="visite_terminer">Terminer</string>
+    <string name="visite_revoir">Visite guidée</string>
+    <string name="visite_revoir_resume">Les onglets, les cartes, le clavier et la dictée, pas à pas</string>
+    <string name="visite_accueil_titre">Haut, votre accueil</string>
+    <string name="visite_accueil_texte">Chaque jour, vous y trouvez les cartes à revoir, le mot du jour, votre dernier jeu et vos progrès.</string>
+    <string name="visite_reglages_titre">Les réglages du clavier</string>
+    <string name="visite_reglages_texte">Touchez la roue dentée : le son et la vibration des touches, le thème, la disposition des lettres, les suggestions. Tout se règle ici, et non dans les réglages du téléphone.</string>
+    <string name="visite_jeux_titre">Spiller, les jeux</string>
+    <string name="visite_jeux_texte">Sept petits jeux pour apprendre des mots luxembourgeois : mots mêlés, mots croisés, phrases à trous, nombres… Touchez un jeu pour y jouer.</string>
+    <string name="visite_carnet_titre">Mäi Carnet, vos cartes</string>
+    <string name="visite_carnet_texte">Chaque mot trouvé dans un jeu devient une carte, rangée ici. Touchez « Ouvrir » : une visite des cartes vous y attend.</string>
+    <string name="visite_dico_titre">Wierderbuch, le dictionnaire</string>
+    <string name="visite_dico_texte">Cherchez un mot, en luxembourgeois ou en français, et lisez ce qu\'il veut dire, avec un exemple.</string>
+    <string name="visite_progres_titre">Mäi Lëtzebuergesch, vos progrès</string>
+    <string name="visite_progres_texte">Chaque mot luxembourgeois que vous tapez avec le clavier compte. Vous montez de niveau, d\'Ufänger à Sproochemeeschter.</string>
+    <string name="visite_gestes_titre">Le clavier en trois gestes</string>
+    <string name="visite_gestes_texte">1. Touchez un mot proposé au-dessus des lettres : il s\'écrit en entier.\n2. Appuyez longtemps sur une lettre pour ses accents : è, ê, ç…\n3. Glissez le doigt sur la barre d\'espace pour déplacer le curseur.</string>
+    <string name="visite_dictee_titre">La dictée</string>
+    <string name="visite_dictee_texte">Touchez le micro, en haut à droite du clavier, et parlez luxembourgeois : vos mots s\'écrivent pendant que vous parlez. Touchez-le de nouveau quand vous avez fini.\n\nIl faut une connexion Internet. La première fois, le clavier vous explique où va votre voix et demande l\'accès au micro.</string>
+    <string name="visite_collection_titre">Votre collection</string>
+    <string name="visite_collection_texte">Chaque mot gagné dans un jeu devient une carte. Touchez une carte pour l\'ouvrir en grand : ouvrons celle-ci.</string>
+    <string name="visite_paysage_titre">Le paysage</string>
+    <string name="visite_paysage_texte">Un lieu du Luxembourg, choisi d\'après le sens du mot. L\'heure dit sa rareté : le matin pour un mot courant, la nuit étoilée pour un mot très rare. Le décor garde la saison où vous l\'avez gagné.</string>
+    <string name="visite_mot_titre">Le mot</string>
+    <string name="visite_mot_texte">Gravé sur sa plaque, avec sa majuscule si c\'est un nom. Le chiffre en haut à gauche donne son nombre de lettres.</string>
+    <string name="visite_sens_titre">Son sens</string>
+    <string name="visite_sens_texte">Ce qu\'est le mot (nom, verbe…) et sa traduction, d\'après le dictionnaire officiel. Dessous, une phrase où le mot apparaît, et sa traduction quand elle existe.</string>
+    <string name="visite_compteurs_titre">Ses compteurs</string>
+    <string name="visite_compteurs_texte">VUES : combien de fois vous avez gagné ce mot. Au milieu, le jeu qui vous l\'a donné. NIVEAU : où en est sa révision, et un ✓ quand il est appris.</string>
+    <string name="visite_numero_titre">Son numéro</string>
+    <string name="visite_numero_texte">Le numéro de la carte dans votre carnet, sa rareté, et son rang parmi les mots luxembourgeois les plus courants.</string>
+    <string name="visite_partager_titre">Partager</string>
+    <string name="visite_partager_texte">Envoyez une image de la carte par message ou sur les réseaux, avec le lien pour installer le clavier. La carte reste dans votre carnet.</string>
+    <string name="visite_ceder_titre">Céder</string>
+    <string name="visite_ceder_texte">Donnez la carte à quelqu\'un, de la main à la main, les deux téléphones côte à côte : vous scannez le code de l\'autre personne, puis elle scanne le vôtre. La carte quitte votre carnet pour le sien.</string>
+    <string name="visite_recevoir_titre">Recevoir</string>
+    <string name="visite_recevoir_texte">Pour recevoir une carte, touchez « Recevoir » : votre téléphone affiche un code, que la personne qui donne scanne. Scannez ensuite le code qu\'elle affiche.</string>
 </resources>

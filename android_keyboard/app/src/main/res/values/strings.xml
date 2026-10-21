@@ -745,4 +745,44 @@
     <string name="act_source">Source: Institut national des langues Luxembourg, inll.lu. The news is loaded from its website when you open this page.</string>
     <!-- Wierderbuch sur tablette : le panneau de la fiche, vide -->
     <string name="wb_choisir_un_mot">Tap a word in the list to open its entry here.</string>
+    <!-- Visite guidée (reprise de KreyolKeyb 23.3.0, dictée en plus) : voir VisiteGuidee.kt -->
+    <string name="visite_passer">Skip</string>
+    <string name="visite_suivant">Next  ›</string>
+    <string name="visite_terminer">Done</string>
+    <string name="visite_revoir">Guided tour</string>
+    <string name="visite_revoir_resume">The tabs, the cards, the keyboard and voice typing, step by step</string>
+    <string name="visite_accueil_titre">Haut, your home</string>
+    <string name="visite_accueil_texte">Every day you will find your cards to review, the word of the day, your last game and your progress.</string>
+    <string name="visite_reglages_titre">Keyboard settings</string>
+    <string name="visite_reglages_texte">Tap the gear: key sound and vibration, theme, letter layout, suggestions. Everything is set here, not in the phone settings.</string>
+    <string name="visite_jeux_titre">Spiller, the games</string>
+    <string name="visite_jeux_texte">Seven little games to learn Luxembourgish words: word search, crosswords, fill-in-the-blank sentences, numbers… Tap a game to play it.</string>
+    <string name="visite_carnet_titre">Mäi Carnet, your cards</string>
+    <string name="visite_carnet_texte">Every word you find in a game becomes a card, kept here. Tap “Open”: a tour of the cards is waiting for you there.</string>
+    <string name="visite_dico_titre">Wierderbuch, the dictionary</string>
+    <string name="visite_dico_texte">Look up a word, in Luxembourgish or in English, and read what it means, with an example.</string>
+    <string name="visite_progres_titre">Mäi Lëtzebuergesch, your progress</string>
+    <string name="visite_progres_texte">Every Luxembourgish word you type with the keyboard counts. You move up the levels, from Ufänger to Sproochemeeschter.</string>
+    <string name="visite_gestes_titre">The keyboard in three gestures</string>
+    <string name="visite_gestes_texte">1. Tap a suggested word above the letters: it is written in full.\n2. Press and hold a letter for its accents: è, ê, ç…\n3. Slide your finger along the space bar to move the cursor.</string>
+    <string name="visite_dictee_titre">Voice typing</string>
+    <string name="visite_dictee_texte">Tap the microphone, at the top right of the keyboard, and speak Luxembourgish: your words are written as you speak. Tap it again when you are done.\n\nYou need an Internet connection. The first time, the keyboard explains where your voice goes and asks for access to the microphone.</string>
+    <string name="visite_collection_titre">Your collection</string>
+    <string name="visite_collection_texte">Every word you win in a game becomes a card. Tap a card to open it full size: let us open this one.</string>
+    <string name="visite_paysage_titre">The landscape</string>
+    <string name="visite_paysage_texte">A place in Luxembourg, chosen from the meaning of the word. The time of day tells its rarity: morning for a common word, starry night for a very rare one. The scenery keeps the season when you won it.</string>
+    <string name="visite_mot_titre">The word</string>
+    <string name="visite_mot_texte">Engraved on its plate, with its capital letter if it is a noun. The number at the top left gives its number of letters.</string>
+    <string name="visite_sens_titre">Its meaning</string>
+    <string name="visite_sens_texte">What the word is (noun, verb…) and its translation, from the official dictionary. Below, a sentence using the word, and its translation when there is one.</string>
+    <string name="visite_compteurs_titre">Its counters</string>
+    <string name="visite_compteurs_texte">SEEN: how many times you have won this word. In the middle, the game that gave it to you. LEVEL: how far its review has come, and a ✓ once it is learned.</string>
+    <string name="visite_numero_titre">Its number</string>
+    <string name="visite_numero_texte">The number of the card in your collection, its rarity, and its rank among the most common Luxembourgish words.</string>
+    <string name="visite_partager_titre">Share</string>
+    <string name="visite_partager_texte">Send a picture of the card by message or on social media, with the link to install the keyboard. The card stays in your collection.</string>
+    <string name="visite_ceder_titre">Give</string>
+    <string name="visite_ceder_texte">Give the card to someone, hand to hand, the two phones side by side: you scan the other person\'s code, then they scan yours. The card leaves your collection for theirs.</string>
+    <string name="visite_recevoir_titre">Receive</string>
+    <string name="visite_recevoir_texte">To receive a card, tap “Receive”: your phone shows a code, which the giver scans. Then scan the code they show.</string>
 </resources>

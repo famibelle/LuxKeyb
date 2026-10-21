@@ -112,6 +112,12 @@ class SettingsActivity : AppCompatActivity() {
      */
     internal var jeuOuvert = -1
 
+    /** La visite guidée à l'écran, s'il y en a une : voir [lancerVisite]. */
+    private var visite: VisiteGuidee.Voile? = null
+    private val retourVisite = object : androidx.activity.OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() { visite?.passer() }
+    }
+
     /**
      * Demandes faites depuis l'accueil « Aujourd'hui » à un autre onglet : le
      * jeu à ouvrir dans Spiller (par son nom), le mot à chercher dans le
@@ -414,6 +420,80 @@ class SettingsActivity : AppCompatActivity() {
             maybeAskForReview()
             maybeAskForNotificationPermission()
         }
+
+        onBackPressedDispatcher.addCallback(this, retourVisite)
+        // Une tablette tournée pendant la visite la reprend à la même étape.
+        savedInstanceState?.getInt("visiteEtape", -1)?.takeIf { it >= 0 }?.let { etape ->
+            window.decorView.post { lancerVisite(etape) }
+        }
+    }
+
+    // ────────────────────────────────────────────────────────────────────
+    // Visite guidée (reprise de KreyolKeyb 23.3.0, avec la dictée en plus)
+    // ────────────────────────────────────────────────────────────────────
+
+    /** L'accueil « Aujourd'hui » : clavier installé, activé et choisi. */
+    private fun accueilAujourdhui(): Boolean =
+        onboardingPrefs().getBoolean("onboarding_completed", false) && isKeyboardEnabled() && isKeyboardSelected()
+
+    /**
+     * Propose la visite de l'application, une seule fois, quand l'accueil
+     * « Aujourd'hui » est à l'écran et que rien ne le couvre : ni la pochette
+     * « Moien », ni un jeu, ni un écran ouvert par-dessus. La pochette passe
+     * d'abord ; elle rappelle ceci en se fermant.
+     */
+    private fun proposerVisite() {
+        if (visite != null || isFinishing || isDestroyed) return
+        val prefs = onboardingPrefs()
+        val autreChose = pochetteAccueilOuverte || currentTab != 0 || jeuOuvert != -1 ||
+            !prefs.getBoolean("activation_success_card_shown", false) ||
+            supportFragmentManager.fragments.any { it is androidx.fragment.app.DialogFragment }
+        if (!VisiteGuidee.doitSeLancer(
+                prefs.getBoolean(VisiteGuidee.VISITE_APPLICATION, false), accueilAujourdhui(), autreChose
+            )) return
+        lancerVisite()
+    }
+
+    /**
+     * La visite de l'application : les quatre onglets, l'engrenage des
+     * réglages, le bandeau du carnet, les trois gestes du clavier et la
+     * dictée. Rien n'est ouvert à la place de l'utilisateur : chaque étape
+     * amène l'onglet, puis l'éclaire. La dictée vit dans le clavier, pas dans
+     * l'application : son étape n'éclaire rien et montre le micro dans la bulle.
+     */
+    fun lancerVisite(depart: Int = 0) {
+        if (visite != null) return
+        val racine = findViewById<FrameLayout>(android.R.id.content) ?: return
+        fun onglet(i: Int) = { VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_onglet_$i")) }
+        fun aller(i: Int): (() -> Unit) -> Unit = { suite ->
+            allerAOnglet(i)
+            VisiteGuidee.attendre({ currentTab == i && onglet(i)() != null }, puis = suite)
+        }
+        fun etape(titre: Int, texte: Int, preparer: (() -> Unit) -> Unit, cible: () -> android.graphics.RectF?) =
+            VisiteGuidee.Etape(getString(titre), getString(texte), preparer, cible)
+        val etapes = listOf(
+            etape(R.string.visite_accueil_titre, R.string.visite_accueil_texte, aller(0), onglet(0)),
+            etape(R.string.visite_reglages_titre, R.string.visite_reglages_texte, aller(0)) {
+                VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_reglages"))
+            },
+            etape(R.string.visite_jeux_titre, R.string.visite_jeux_texte, aller(TAB_SPILLER), onglet(TAB_SPILLER)),
+            etape(R.string.visite_carnet_titre, R.string.visite_carnet_texte, aller(TAB_SPILLER)) {
+                VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_carnet"))
+            },
+            etape(R.string.visite_dico_titre, R.string.visite_dico_texte, aller(TAB_WIERDERBUCH), onglet(TAB_WIERDERBUCH)),
+            etape(R.string.visite_progres_titre, R.string.visite_progres_texte, aller(TAB_STATS), onglet(TAB_STATS)),
+            etape(R.string.visite_gestes_titre, R.string.visite_gestes_texte, aller(0)) { null },
+            VisiteGuidee.Etape(getString(R.string.visite_dictee_titre), getString(R.string.visite_dictee_texte),
+                preparer = aller(0), icone = R.drawable.ic_mic)
+        )
+        retourVisite.isEnabled = true
+        visite = VisiteGuidee.Voile(racine, etapes, depart) { _ ->
+            // Passée ou finie, elle ne revient pas d'elle-même : « Visite
+            // guidée », au pied de Démarrage, la relance.
+            onboardingPrefs().edit().putBoolean(VisiteGuidee.VISITE_APPLICATION, true).apply()
+            visite = null
+            retourVisite.isEnabled = false
+        }.also { it.ouvrir() }
     }
 
     /**
@@ -640,6 +720,7 @@ class SettingsActivity : AppCompatActivity() {
                     surFin = {
                         pochetteAccueilOuverte = false
                         reporterPartage()
+                        window.decorView.postDelayed({ proposerVisite() }, 600L)
                     }
                 )
             }
@@ -746,6 +827,9 @@ class SettingsActivity : AppCompatActivity() {
         // sur un écran immobile, et non au retournement de la première carte.
         com.example.kreyolkeyboard.carnet.ChauffeCartes.planifier(this)
 
+        // Laisse l'accueil se poser avant de proposer la visite.
+        window.decorView.postDelayed({ proposerVisite() }, 900L)
+
         if (::tabBar.isInitialized && hasPendingLevelBadge() != levelBadgeDrawn) {
             Log.d("SettingsActivity", "🔄 Pastille de niveau à rafraîchir au retour au premier plan")
             updateTabBar()
@@ -757,6 +841,7 @@ class SettingsActivity : AppCompatActivity() {
         // Sauvegarder l'onglet actif avant que l'activité soit recréée
         outState.putInt("currentTab", currentTab)
         outState.putInt("jeuOuvert", jeuOuvert)
+        visite?.let { outState.putInt("visiteEtape", it.etapeCourante) }
         Log.d("SettingsActivity", "💾 Sauvegarde de l'onglet actif: $currentTab")
     }
     
@@ -857,6 +942,7 @@ class SettingsActivity : AppCompatActivity() {
             // ressort de la même façon sur tous les appareils.
             val densite = resources.displayMetrics.density
             val settingsButton = ImageView(this@SettingsActivity).apply {
+                tag = "visite_reglages"
                 setImageResource(R.drawable.ic_settings_gear)
                 scaleType = ImageView.ScaleType.CENTER_INSIDE
                 contentDescription = getString(R.string.ks_titre)
@@ -983,6 +1069,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun createTab(tabIndex: Int, emoji: String, label: String): LinearLayout {
         Log.d("SettingsActivity", "Création onglet $tabIndex: $emoji $label")
         return LinearLayout(this).apply {
+            tag = "visite_onglet_$tabIndex"
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
             setPadding(8, 10, 8, 8)
@@ -1502,6 +1589,17 @@ class SettingsActivity : AppCompatActivity() {
             getString(R.string.sa_version_sources_des_donnees_licences),
             SheetFragment.PAGE_A_PROPOS
         ))
+        // La visite se relance d'ici, et celle du carnet avec elle : elle se
+        // représentera à la prochaine ouverture de Mäi Carnet.
+        mainLayout.addView(createSpacing(8))
+        mainLayout.addView(createReferenceLink(
+            "🧭", getString(R.string.visite_revoir),
+            getString(R.string.visite_revoir_resume),
+            page = null
+        ) {
+            onboardingPrefs().edit().putBoolean(VisiteGuidee.VISITE_CARNET, false).apply()
+            lancerVisite()
+        })
         mainLayout.addView(createSpacing(16))
 
         return mainLayout
@@ -1834,7 +1932,8 @@ class SettingsActivity : AppCompatActivity() {
         emoji: String,
         titre: String,
         resume: String,
-        page: String
+        page: String?,
+        action: (() -> Unit)? = null
     ): LinearLayout = LinearLayout(this).apply {
         orientation = LinearLayout.HORIZONTAL
         gravity = Gravity.CENTER_VERTICAL
@@ -1875,7 +1974,8 @@ class SettingsActivity : AppCompatActivity() {
         })
 
         setOnClickListener {
-            SheetFragment.pour(page).show(supportFragmentManager, "sheet_$page")
+            if (page != null) SheetFragment.pour(page).show(supportFragmentManager, "sheet_$page")
+            else action?.invoke()
         }
     }
     
@@ -11124,6 +11224,7 @@ class SettingsActivity : AppCompatActivity() {
             val accent = Carnet.COULEUR
 
             return LinearLayout(activity).apply {
+                tag = "visite_carnet"
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.CENTER_VERTICAL
                 setPadding(dp(16f), dp(16f), dp(16f), dp(16f))
