@@ -175,6 +175,8 @@ object VisiteGuidee {
         val preparer: (suite: () -> Unit) -> Unit = { it() },
         val cible: () -> RectF? = { null },
         val icone: Int? = null,
+        /** Ouvre de quoi essayer ce que la bulle décrit : le clavier, qui vit hors de l'application. */
+        val essai: (() -> Unit)? = null,
         val autres: () -> List<RectF> = { emptyList() }
     )
 
@@ -265,6 +267,7 @@ object VisiteGuidee {
         private val texte: TextView
         private val suivant: TextView
         private val boutonPasser: TextView
+        private val boutonEssayer: TextView
         private val bulle: LinearLayout
 
         private val suivi = ViewTreeObserver.OnPreDrawListener {
@@ -331,6 +334,23 @@ object VisiteGuidee {
                 isFocusable = true
                 setOnClickListener { avancer() }
             }
+            boutonEssayer = TextView(context).apply {
+                text = context.getString(R.string.visite_essayer)
+                textSize = 16f
+                setTypeface(null, Typeface.BOLD)
+                setTextColor(Color.parseColor("#0080FF"))
+                gravity = Gravity.CENTER
+                setPadding(dp(18f), dp(10f), dp(18f), dp(10f))
+                minimumHeight = dp(48f)
+                background = GradientDrawable().apply {
+                    cornerRadius = 24f * d
+                    setStroke((2 * d).toInt(), Color.parseColor("#0080FF"))
+                }
+                isClickable = true
+                isFocusable = true
+                visibility = View.GONE
+                setOnClickListener { etapes[deroule.index].essai?.invoke() }
+            }
             bulle.addView(compteur)
             bulle.addView(titre)
             bulle.addView(texte)
@@ -340,6 +360,9 @@ object VisiteGuidee {
                 setPadding(0, dp(14f), 0, 0)
                 addView(boutonPasser)
                 addView(View(context), LinearLayout.LayoutParams(0, 1, 1f))
+                addView(boutonEssayer, LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { marginEnd = dp(10f) })
                 addView(suivant)
             })
             addView(bulle)
@@ -389,6 +412,7 @@ object VisiteGuidee {
                 titre.setCompoundDrawables(icone, null, null, null)
                 titre.compoundDrawablePadding = (10f * d).toInt()
                 texte.text = e.texte
+                boutonEssayer.visibility = if (e.essai != null) View.VISIBLE else View.GONE
                 boutonPasser.visibility =
                     if (passerVisible(etapes.size, deroule.index, rappel)) View.VISIBLE else View.INVISIBLE
                 suivant.text = context.getString(

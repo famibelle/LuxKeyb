@@ -753,6 +753,12 @@
     <string name="aide_resume">The guided tour, topic by topic, and the guide to read</string>
     <string name="aide_groupe_lire">To read</string>
     <string name="aide_guide_complet">The full guide</string>
+    <string name="visite_essayer">Try it</string>
+    <string name="essai_titre">Try it here</string>
+    <string name="essai_fermer">Close</string>
+    <string name="essai_indice">Write here</string>
+    <string name="essai_gestes">Type “Moi”, then tap “Moien” above the letters. Press and hold e to see its accents.</string>
+    <string name="essai_dictee">Tap the microphone, at the top right of the keyboard, and say “Moien, wéi geet et?”. Tap it again to finish.</string>
     <string name="visite_toute">The whole tour</string>
     <string name="visite_groupe_application">The app</string>
     <string name="visite_groupe_clavier">The keyboard</string>

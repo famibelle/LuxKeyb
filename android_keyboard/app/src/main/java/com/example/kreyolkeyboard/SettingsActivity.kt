@@ -489,9 +489,10 @@ class SettingsActivity : AppCompatActivity() {
         // cartes, le dictionnaire, les jeux, le reste, les réglages en dernier :
         // l'ordre du sommaire.
         val etapes = listOf(
-            etape(R.string.visite_gestes_titre, R.string.visite_gestes_texte, aller(0)) { null },
+            VisiteGuidee.Etape(getString(R.string.visite_gestes_titre), getString(R.string.visite_gestes_texte),
+                preparer = aller(0), essai = { ouvrirEssai(R.string.essai_gestes) }),
             VisiteGuidee.Etape(getString(R.string.visite_dictee_titre), getString(R.string.visite_dictee_texte),
-                preparer = aller(0), icone = R.drawable.ic_mic),
+                preparer = aller(0), icone = R.drawable.ic_mic, essai = { ouvrirEssai(R.string.essai_dictee) }),
             etape(R.string.visite_carnet_titre, R.string.visite_carnet_texte, aller(TAB_SPILLER)) {
                 VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_carnet"))
             },
@@ -614,6 +615,45 @@ class SettingsActivity : AppCompatActivity() {
             .setView(ScrollView(ctx).apply { addView(liste) })
             .setNegativeButton(android.R.string.cancel, null)
             .show()
+    }
+
+    /**
+     * Le champ d'essai des bulles du clavier : les gestes et la dictée se
+     * lisent mal, ils s'apprennent en les faisant. Le clavier vit hors de
+     * l'application, et sans ce champ il fallait quitter la visite et
+     * trouver soi-même où écrire. Le dialogue se pose par-dessus la bulle ;
+     * le refermer y ramène, à la même étape.
+     */
+    private fun ouvrirEssai(consigne: Int) {
+        val champ = EditText(this).apply {
+            hint = getString(R.string.essai_indice)
+            minLines = 2
+            gravity = Gravity.TOP or Gravity.START
+            inputType = android.text.InputType.TYPE_CLASS_TEXT or
+                android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE or
+                android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+        }
+        val dialogue = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.essai_titre))
+            .setMessage(getString(consigne))
+            .setView(FrameLayout(this).apply {
+                setPadding(enDp(20), enDp(4), enDp(20), 0)
+                addView(champ)
+            })
+            .setPositiveButton(getString(R.string.essai_fermer), null)
+            .create()
+        dialogue.window?.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+        dialogue.setOnShowListener { champ.requestFocus() }
+        // Sinon le clavier restait levé sous la bulle une fois l'essai refermé :
+        // il se redemande quand l'écran reprend le focus, d'où le délai.
+        dialogue.setOnDismissListener {
+            window.decorView.postDelayed({
+                currentFocus?.clearFocus()
+                (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                    .hideSoftInputFromWindow(window.decorView.windowToken, 0)
+            }, 200L)
+        }
+        dialogue.show()
     }
 
     /** Un sujet du sommaire : sur l'onglet qu'il présente, ou dans le carnet pour les cartes. */
