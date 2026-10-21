@@ -490,9 +490,10 @@ class SettingsActivity : AppCompatActivity() {
         // l'ordre du sommaire.
         val etapes = listOf(
             VisiteGuidee.Etape(getString(R.string.visite_gestes_titre), getString(R.string.visite_gestes_texte),
-                preparer = aller(0), essai = { ouvrirEssai(R.string.essai_gestes) }),
+                preparer = aller(0), essai = { ouvrirEssai(R.string.essai_gestes) }, illustration = { AnimationGestes(it) }),
             VisiteGuidee.Etape(getString(R.string.visite_dictee_titre), getString(R.string.visite_dictee_texte),
-                preparer = aller(0), icone = R.drawable.ic_mic, essai = { ouvrirEssai(R.string.essai_dictee) }),
+                preparer = aller(0), icone = R.drawable.ic_mic, essai = { ouvrirEssai(R.string.essai_dictee) },
+                illustration = { AnimationDictee(it) }),
             etape(R.string.visite_carnet_titre, R.string.visite_carnet_texte, aller(TAB_SPILLER)) {
                 VisiteGuidee.rectDe(VisiteGuidee.vueVisible(racine, "visite_carnet"))
             },
