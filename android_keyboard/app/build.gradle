@@ -72,8 +72,8 @@ android {
         // l'exige, et les Android 5 et 6 ne pèsent plus qu'environ 1 % du parc.
         minSdk = 24
         targetSdk = 36
-        versionCode = 370708
-        versionName "37.7.8"
+        versionCode = 370709
+        versionName "37.7.9"
         
         // Améliorer la compatibilité Samsung ULTRA
         multiDexEnabled true

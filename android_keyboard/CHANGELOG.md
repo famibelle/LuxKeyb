@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.7.9] - 2026-10-21
+
+### ✨ Améliorations
+
+- **Le dictionnaire, montré en action** : dans la visite guidée, une petite animation cherche « chat », ouvre la fiche de « Kaz » avec sa phrase d'exemple, puis cherche « Kaz » dans l'autre sens.
+
 ## [37.7.8] - 2026-10-21
 
 ### ✨ Améliorations
