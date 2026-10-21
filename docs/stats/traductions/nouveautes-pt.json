@@ -6,6 +6,65 @@
   "Changements": "Alterações",
   "Rapidité": "Rapidez"
  },
+ "37.7.7": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "Dar uma carta, passo a passo",
+      "texte": "A visita das cartas explica agora a troca entre dois telemóveis em quatro passos numerados, com uma pequena animação dos dois ecrãs lado a lado."
+     },
+     {
+      "titre": "Receber uma carta e a câmara, explicados",
+      "texte": "Que botão tocar, e porque a câmara serve apenas para ler o código, sem internet."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmado num Galaxy A21s: a bolha «Dar, passo a passo» da visita das cartas. Em cima, dois telemóveis desenhados, «Você» e «A outra pessoa». O segundo mostra um código, o primeiro aponta-lhe um feixe azul e aparece um visto verde; a carta desaparece do primeiro, que mostra por sua vez um código; o segundo aponta para ele e a carta passa de um ecrã para o outro. Em baixo, quatro pastilhas numeradas acendem-se a vermelho, e o texto explica-as. Os ecrãs estão em francês.",
+    "legende": "Dar uma carta, em quatro passos: a visita das cartas mostra-o com dois telemóveis lado a lado."
+   }
+  ]
+ },
+ "37.7.6": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "O guia fala do ditado",
+      "texte": "Como ditar, porque é preciso internet e para onde vai a sua voz."
+     },
+     {
+      "titre": "O guia explica como partilhar, dar e receber uma carta",
+      "texte": "E como mover o cursor deslizando na barra de espaço."
+     }
+    ]
+   },
+   {
+    "titre": "Correções",
+    "points": [
+     {
+      "titre": "O guia descreve a carta tal como é",
+      "texte": "Imagens refeitas com a carta de paisagem, com o punção da estação e o nível de raridade."
+     },
+     {
+      "titre": "A resposta sobre os seus dados está correta",
+      "texte": "O que escreve nunca sai do telemóvel; só o ditado envia a sua voz para a Universidade do Luxemburgo, que a escreve sem a guardar."
+     },
+     {
+      "titre": "As sugestões em francês",
+      "texte": "são apresentadas como uma opção das definições do teclado."
+     }
+    ]
+   }
+  ]
+ },
  "37.7.5": {
   "intro": "",
   "sections": [

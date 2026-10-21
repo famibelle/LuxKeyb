@@ -6,6 +6,65 @@
   "Changements": "Änderungen",
   "Rapidité": "Geschwindigkeit"
  },
+ "37.7.7": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Verbesserungen",
+    "points": [
+     {
+      "titre": "Eine Karte abgeben, Schritt für Schritt",
+      "texte": "Der Rundgang durch die Karten erklärt jetzt den Austausch zwischen zwei Telefonen in vier nummerierten Schritten, mit einer kleinen Animation der beiden Bildschirme nebeneinander."
+     },
+     {
+      "titre": "Eine Karte empfangen und die Kamera, erklärt",
+      "texte": "Welche Schaltfläche zu tippen ist, und warum die Kamera nur den Code liest, ohne Internet."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Abgeben, Schritt für Schritt“ des Kartenrundgangs. Oben zwei gezeichnete Telefone, „Sie“ und „Die andere Person“. Das zweite zeigt einen Code, das erste richtet einen blauen Strahl darauf, und ein grünes Häkchen erscheint; die Karte verschwindet vom ersten, das nun selbst einen Code zeigt; das zweite richtet sich darauf, dann wandert die Karte von einem Bildschirm zum anderen. Darunter leuchten vier nummerierte Punkte nacheinander rot auf, und der Text erklärt sie. Die Bildschirme sind auf Französisch.",
+    "legende": "Eine Karte abgeben, in vier Schritten: Der Kartenrundgang zeigt es mit zwei Telefonen nebeneinander."
+   }
+  ]
+ },
+ "37.7.6": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Verbesserungen",
+    "points": [
+     {
+      "titre": "Die Anleitung spricht über das Diktieren",
+      "texte": "Wie man diktiert, warum es Internet braucht und wohin Ihre Stimme geht."
+     },
+     {
+      "titre": "Die Anleitung erklärt, wie man eine Karte teilt, abgibt und empfängt",
+      "texte": "Und wie man den Cursor bewegt, indem man über die Leertaste gleitet."
+     }
+    ]
+   },
+   {
+    "titre": "Korrekturen",
+    "points": [
+     {
+      "titre": "Die Anleitung beschreibt die Karte, wie sie ist",
+      "texte": "Bilder neu gemacht mit der Landschaftskarte, mit dem Jahreszeitenstempel und der Seltenheitsstufe."
+     },
+     {
+      "titre": "Die Antwort zu Ihren Daten stimmt",
+      "texte": "Was Sie tippen, verlässt nie das Telefon; nur das Diktieren schickt Ihre Stimme an die Universität Luxemburg, die sie aufschreibt, ohne sie zu speichern."
+     },
+     {
+      "titre": "Die französischen Vorschläge",
+      "texte": "werden als Option in den Tastatureinstellungen vorgestellt."
+     }
+    ]
+   }
+  ]
+ },
  "37.7.5": {
   "intro": "",
   "sections": [

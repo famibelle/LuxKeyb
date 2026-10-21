@@ -1,9 +1,85 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.5",
+ "derniere_version": "37.7.7",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.7",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Eine Karte abgeben, Schritt für Schritt",
+       "texte": "Der Rundgang durch die Karten erklärt jetzt den Austausch zwischen zwei Telefonen in vier nummerierten Schritten, mit einer kleinen Animation der beiden Bildschirme nebeneinander."
+      },
+      {
+       "titre": "Eine Karte empfangen und die Kamera, erklärt",
+       "texte": "Welche Schaltfläche zu tippen ist, und warum die Kamera nur den Code liest, ohne Internet."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_visite_echange.gif",
+     "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Abgeben, Schritt für Schritt“ des Kartenrundgangs. Oben zwei gezeichnete Telefone, „Sie“ und „Die andere Person“. Das zweite zeigt einen Code, das erste richtet einen blauen Strahl darauf, und ein grünes Häkchen erscheint; die Karte verschwindet vom ersten, das nun selbst einen Code zeigt; das zweite richtet sich darauf, dann wandert die Karte von einem Bildschirm zum anderen. Darunter leuchten vier nummerierte Punkte nacheinander rot auf, und der Text erklärt sie. Die Bildschirme sind auf Französisch.",
+     "legende": "Eine Karte abgeben, in vier Schritten: Der Kartenrundgang zeigt es mit zwei Telefonen nebeneinander."
+    }
+   ],
+   "image": "Screenshots/lux_visite_echange.gif",
+   "image_alt": "Gefilmt auf einem Galaxy A21s: die Blase „Abgeben, Schritt für Schritt“ des Kartenrundgangs. Oben zwei gezeichnete Telefone, „Sie“ und „Die andere Person“. Das zweite zeigt einen Code, das erste richtet einen blauen Strahl darauf, und ein grünes Häkchen erscheint; die Karte verschwindet vom ersten, das nun selbst einen Code zeigt; das zweite richtet sich darauf, dann wandert die Karte von einem Bildschirm zum anderen. Darunter leuchten vier nummerierte Punkte nacheinander rot auf, und der Text erklärt sie. Die Bildschirme sind auf Französisch.",
+   "image_legende": "Eine Karte abgeben, in vier Schritten: Der Kartenrundgang zeigt es mit zwei Telefonen nebeneinander."
+  },
+  {
+   "version": "37.7.6",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Die Anleitung spricht über das Diktieren",
+       "texte": "Wie man diktiert, warum es Internet braucht und wohin Ihre Stimme geht."
+      },
+      {
+       "titre": "Die Anleitung erklärt, wie man eine Karte teilt, abgibt und empfängt",
+       "texte": "Und wie man den Cursor bewegt, indem man über die Leertaste gleitet."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Korrekturen",
+     "points": [
+      {
+       "titre": "Die Anleitung beschreibt die Karte, wie sie ist",
+       "texte": "Bilder neu gemacht mit der Landschaftskarte, mit dem Jahreszeitenstempel und der Seltenheitsstufe."
+      },
+      {
+       "titre": "Die Antwort zu Ihren Daten stimmt",
+       "texte": "Was Sie tippen, verlässt nie das Telefon; nur das Diktieren schickt Ihre Stimme an die Universität Luxemburg, die sie aufschreibt, ohne sie zu speichern."
+      },
+      {
+       "titre": "Die französischen Vorschläge",
+       "texte": "werden als Option in den Tastatureinstellungen vorgestellt."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "37.7.5",
    "date": "2026-10-21",
@@ -113,87 +189,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "37.7.1",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Ein einzelnes Thema des Rundgangs wiedersehen",
-       "texte": "Die Zeile „Rundgang“ unten auf der Startseite öffnet eine Themenliste. Man wählt den ganzen Rundgang oder ein einziges Thema: die Spracheingabe, eine Karte teilen, die Gesten der Tastatur, das Wörterbuch…"
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Korrekturen",
-     "points": [
-      {
-       "titre": "Der Rundgang öffnet sich nicht mehr unter einem anderen Fenster",
-       "texte": "Er wartet, bis die Willkommensnachricht oder eine andere Anfrage der App geschlossen ist."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.7.0",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Neu",
-     "points": [
-      {
-       "titre": "Ein Rundgang durch die App",
-       "texte": "Beim ersten Öffnen stellt eine Sprechblase jeden Tab vor (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), die Tastatureinstellungen, Ihre Kartensammlung, die drei Gesten der Tastatur und die Spracheingabe. Ein Tippen führt weiter, Sie können ihn jederzeit überspringen, und die Zeile „Rundgang“ unten auf der Startseite startet ihn erneut."
-      },
-      {
-       "titre": "Ein Rundgang durch die Karten",
-       "texte": "Beim ersten Öffnen von Mäi Carnet öffnet sich eine Karte und stellt sich Bereich für Bereich vor (die Landschaft, das Wort, seine Bedeutung, seine Zähler, seine Nummer), danach die Schaltflächen Teilen, Abgeben und Empfangen."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Korrekturen",
-     "points": [
-      {
-       "titre": "Auf dem Tablet bleibt eine geöffnete Karte offen, wenn man den Bildschirm dreht",
-       "texte": ""
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_application.gif",
-     "alt": "Der Rundgang durch die App, Schritt für Schritt, im Emulator. Ein dunkler Schleier deckt den Bildschirm ab, und eine weiße Sprechblase stellt vor, was ein gelber Rahmen hervorhebt: 1. der Tab Haut, die Startseite des Tages; 2. das Zahnrad der Tastatureinstellungen; 3. der Tab Spiller und seine Spiele; 4. das Banner Mäi Carnet; 5. der Tab Wierderbuch; 6. der Tab Mäi Lëtzebuergesch und die Stufen, von Ufänger bis Sproochemeeschter; 7. die Tastatur in drei Gesten (ein vorgeschlagenes Wort antippen, lange drücken für Akzente, über die Leertaste gleiten, um den Cursor zu bewegen); 8. die Spracheingabe, mit dem roten Mikrofonsymbol: oben rechts auf der Tastatur das Mikrofon antippen, Luxemburgisch sprechen, zum Beenden noch einmal tippen. Die Bildschirme sind auf Französisch.",
-     "legende": "Der Rundgang durch die App in acht Schritten: die vier Tabs, die Einstellungen, die Kartensammlung, die Gesten der Tastatur und die Spracheingabe."
-    },
-    {
-     "image": "Screenshots/lux_visite_cartes.gif",
-     "alt": "Der Rundgang durch die Kartensammlung, mit der Karte „Waasser“ (Wasser). 1. die Karte wird im Raster der Sammlung hervorgehoben; dann öffnet sie sich groß, und jeder Bereich leuchtet nacheinander auf: 2. die Landschaft, deren Tageszeit die Seltenheit zeigt; 3. das Wort auf seiner Plakette und das Abzeichen mit der Anzahl der Buchstaben; 4. seine Bedeutung, „Neutrum“, und ein Satz aus dem offiziellen Wörterbuch mit seiner Übersetzung; 5. die Wappen GESEHEN und STUFE und das Medaillon des Spiels; 6. die Kartennummer und ihr Rang; 7. die Schaltfläche Teilen; 8. die Schaltfläche Abgeben; 9. Karte geschlossen, die Schaltfläche Empfangen oben in der Sammlung. Die Bildschirme sind auf Französisch.",
-     "legende": "Der Rundgang durch die Karten: jeder Bereich der Karte erklärt, dann wie man sie teilt, abgibt oder eine empfängt."
-    }
-   ],
-   "image": "Screenshots/lux_visite_application.gif",
-   "image_alt": "Der Rundgang durch die App, Schritt für Schritt, im Emulator. Ein dunkler Schleier deckt den Bildschirm ab, und eine weiße Sprechblase stellt vor, was ein gelber Rahmen hervorhebt: 1. der Tab Haut, die Startseite des Tages; 2. das Zahnrad der Tastatureinstellungen; 3. der Tab Spiller und seine Spiele; 4. das Banner Mäi Carnet; 5. der Tab Wierderbuch; 6. der Tab Mäi Lëtzebuergesch und die Stufen, von Ufänger bis Sproochemeeschter; 7. die Tastatur in drei Gesten (ein vorgeschlagenes Wort antippen, lange drücken für Akzente, über die Leertaste gleiten, um den Cursor zu bewegen); 8. die Spracheingabe, mit dem roten Mikrofonsymbol: oben rechts auf der Tastatur das Mikrofon antippen, Luxemburgisch sprechen, zum Beenden noch einmal tippen. Die Bildschirme sind auf Französisch.",
-   "image_legende": "Der Rundgang durch die App in acht Schritten: die vier Tabs, die Einstellungen, die Kartensammlung, die Gesten der Tastatur und die Spracheingabe."
   }
  ]
 }

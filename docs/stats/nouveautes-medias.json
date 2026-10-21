@@ -1,5 +1,14 @@
 {
  "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+ "37.7.7": {
+  "images": [
+   {
+    "image": "Screenshots/lux_visite_echange.gif",
+    "alt": "Filmé sur un Galaxy A21s : la bulle « Donner, étape par étape » de la visite des cartes. En haut, deux téléphones dessinés, « Vous » et « L'autre personne ». Le second affiche un code, le premier le vise d'un faisceau bleu et une coche verte apparaît ; la carte s'efface du premier, qui affiche à son tour un code ; le second le vise, puis la carte passe d'un écran à l'autre. Dessous, quatre pastilles numérotées s'allument en rouge au fil des temps, et le texte les détaille : 1. La personne qui reçoit touche « Recevoir » en haut de son carnet. 2. Vous touchez « Céder », puis « Scanner son code ». 3. La carte quitte votre carnet, et un code s'affiche sur votre téléphone. 4. L'autre personne touche « Scanner la carte » et vise ce code.",
+    "legende": "Donner une carte, en quatre temps : la visite des cartes le montre avec deux téléphones côte à côte."
+   }
+  ]
+ },
  "37.7.5": {
   "images": [
    {

@@ -6,6 +6,65 @@
   "Changements": "Changes",
   "Rapidité": "Speed"
  },
+ "37.7.7": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "Giving a card, step by step",
+      "texte": "The tour of the cards now details the exchange between two phones in four numbered steps, with a small animation of the two screens side by side."
+     },
+     {
+      "titre": "Receiving a card and the camera, explained",
+      "texte": "Which button to tap, and why the camera is only used to read the code, without the internet."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmed on a Galaxy A21s: the “Giving, step by step” bubble of the card tour. At the top, two drawn phones, “You” and “The other person”. The second shows a code, the first aims a blue beam at it and a green tick appears; the card fades from the first phone, which shows a code in turn; the second aims at it, then the card moves from one screen to the other. Below, four numbered dots light up in red as the steps go by, and the text details them. The screens are in French.",
+    "legende": "Giving a card, in four steps: the card tour shows it with two phones side by side."
+   }
+  ]
+ },
+ "37.7.6": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The guide talks about dictation",
+      "texte": "How to dictate, why it needs the internet and where your voice goes."
+     },
+     {
+      "titre": "The guide explains how to share, give and receive a card",
+      "texte": "And how to move the cursor by sliding along the space bar."
+     }
+    ]
+   },
+   {
+    "titre": "Fixes",
+    "points": [
+     {
+      "titre": "The guide describes the card as it is",
+      "texte": "Pictures redone on the card with its landscape, with the season hallmark and the rarity tier."
+     },
+     {
+      "titre": "The answer about your data is accurate",
+      "texte": "What you type never leaves the phone; only dictation sends your voice to the University of Luxembourg, which writes it down without keeping it."
+     },
+     {
+      "titre": "The French suggestions",
+      "texte": "are presented as an option in the keyboard settings."
+     }
+    ]
+   }
+  ]
+ },
  "37.7.5": {
   "intro": "",
   "sections": [

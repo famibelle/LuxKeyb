@@ -1,9 +1,85 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.5",
+ "derniere_version": "37.7.7",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.7",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Donner une carte, étape par étape",
+       "texte": "La visite des cartes détaille l'échange entre deux téléphones en quatre temps numérotés, avec une petite animation des deux écrans côte à côte."
+      },
+      {
+       "titre": "Recevoir une carte et l'appareil photo, expliqués",
+       "texte": "Quel bouton toucher, et pourquoi l'appareil photo sert seulement à lire le code, sans internet."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_visite_echange.gif",
+     "alt": "Filmé sur un Galaxy A21s : la bulle « Donner, étape par étape » de la visite des cartes. En haut, deux téléphones dessinés, « Vous » et « L'autre personne ». Le second affiche un code, le premier le vise d'un faisceau bleu et une coche verte apparaît ; la carte s'efface du premier, qui affiche à son tour un code ; le second le vise, puis la carte passe d'un écran à l'autre. Dessous, quatre pastilles numérotées s'allument en rouge au fil des temps, et le texte les détaille : 1. La personne qui reçoit touche « Recevoir » en haut de son carnet. 2. Vous touchez « Céder », puis « Scanner son code ». 3. La carte quitte votre carnet, et un code s'affiche sur votre téléphone. 4. L'autre personne touche « Scanner la carte » et vise ce code.",
+     "legende": "Donner une carte, en quatre temps : la visite des cartes le montre avec deux téléphones côte à côte."
+    }
+   ],
+   "image": "Screenshots/lux_visite_echange.gif",
+   "image_alt": "Filmé sur un Galaxy A21s : la bulle « Donner, étape par étape » de la visite des cartes. En haut, deux téléphones dessinés, « Vous » et « L'autre personne ». Le second affiche un code, le premier le vise d'un faisceau bleu et une coche verte apparaît ; la carte s'efface du premier, qui affiche à son tour un code ; le second le vise, puis la carte passe d'un écran à l'autre. Dessous, quatre pastilles numérotées s'allument en rouge au fil des temps, et le texte les détaille : 1. La personne qui reçoit touche « Recevoir » en haut de son carnet. 2. Vous touchez « Céder », puis « Scanner son code ». 3. La carte quitte votre carnet, et un code s'affiche sur votre téléphone. 4. L'autre personne touche « Scanner la carte » et vise ce code.",
+   "image_legende": "Donner une carte, en quatre temps : la visite des cartes le montre avec deux téléphones côte à côte."
+  },
+  {
+   "version": "37.7.6",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le guide parle de la dictée",
+       "texte": "Comment dicter, pourquoi il faut Internet et où va votre voix."
+      },
+      {
+       "titre": "Le guide explique comment partager, donner et recevoir une carte",
+       "texte": "Et comment déplacer le curseur en glissant sur la barre d'espace."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Le guide décrit la carte telle qu'elle est",
+       "texte": "Images refaites sur la carte à paysage, avec le poinçon de saison et le palier de rareté."
+      },
+      {
+       "titre": "La réponse sur vos données est exacte",
+       "texte": "Ce que vous tapez ne quitte jamais le téléphone ; seule la dictée envoie votre voix à l'Université du Luxembourg, qui l'écrit sans la conserver."
+      },
+      {
+       "titre": "Les propositions en français",
+       "texte": "Sont présentées comme une option des réglages du clavier."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "37.7.5",
    "date": "2026-10-21",
@@ -113,87 +189,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "37.7.1",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Revoir un seul sujet de la visite guidée",
-       "texte": "La ligne « Visite guidée », en bas de l'accueil, ouvre un sommaire. On y choisit toute la visite, ou un seul sujet : la dictée, partager une carte, les gestes du clavier, le dictionnaire…"
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "La visite guidée ne s'ouvre plus sous une autre fenêtre",
-       "texte": "Elle attend que le message de bienvenue, ou une autre demande de l'application, soit refermé."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.7.0",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Une visite guidée de l'application",
-       "texte": "À la première ouverture, une bulle présente chaque onglet (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), les réglages du clavier, votre carnet de cartes, les trois gestes du clavier et la dictée vocale. On avance d'un toucher, on la passe quand on veut, et la ligne « Visite guidée », en bas de l'accueil, la relance."
-      },
-      {
-       "titre": "Une visite guidée des cartes",
-       "texte": "À la première ouverture de Mäi Carnet, une carte s'ouvre et se présente zone par zone (le paysage, le mot, son sens, ses compteurs, son numéro), puis les boutons Partager, Céder et Recevoir."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Sur tablette, une carte ouverte reste ouverte quand on tourne l'écran",
-       "texte": ""
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_application.gif",
-     "alt": "La visite guidée de l'application, étape par étape, sur l'émulateur. Un voile sombre couvre l'écran et une bulle blanche présente ce qui est éclairé d'un cadre jaune : 1. l'onglet Haut, l'accueil du jour ; 2. la roue dentée des réglages du clavier ; 3. l'onglet Spiller et ses jeux ; 4. le bandeau Mäi Carnet ; 5. l'onglet Wierderbuch ; 6. l'onglet Mäi Lëtzebuergesch et les niveaux, d'Ufänger à Sproochemeeschter ; 7. le clavier en trois gestes (toucher un mot proposé, appui long pour les accents, glisser sur la barre d'espace pour déplacer le curseur) ; 8. la dictée, avec l'icône rouge du micro : toucher le micro en haut à droite du clavier, parler luxembourgeois, toucher de nouveau pour finir.",
-     "legende": "La visite de l'application, en huit étapes : les quatre onglets, les réglages, le carnet, les gestes du clavier et la dictée."
-    },
-    {
-     "image": "Screenshots/lux_visite_cartes.gif",
-     "alt": "La visite guidée du carnet, avec la carte « Waasser » (eau). 1. la carte est éclairée dans la grille du carnet ; puis elle s'ouvre en grand et chaque zone s'éclaire tour à tour : 2. le paysage, dont l'heure dit la rareté ; 3. le mot sur sa plaque et la pastille du nombre de lettres ; 4. son sens, « Nom neutre », « eau, (verre d')eau, urine », et une phrase du dictionnaire officiel avec sa traduction ; 5. les écus VUES et NIVEAU et le médaillon du jeu ; 6. le numéro de la carte et son rang ; 7. le bouton Partager ; 8. le bouton Céder ; 9. carte refermée, le bouton Recevoir en haut du carnet.",
-     "legende": "La visite des cartes : chaque zone de la carte expliquée, puis comment la partager, la donner ou en recevoir une."
-    }
-   ],
-   "image": "Screenshots/lux_visite_application.gif",
-   "image_alt": "La visite guidée de l'application, étape par étape, sur l'émulateur. Un voile sombre couvre l'écran et une bulle blanche présente ce qui est éclairé d'un cadre jaune : 1. l'onglet Haut, l'accueil du jour ; 2. la roue dentée des réglages du clavier ; 3. l'onglet Spiller et ses jeux ; 4. le bandeau Mäi Carnet ; 5. l'onglet Wierderbuch ; 6. l'onglet Mäi Lëtzebuergesch et les niveaux, d'Ufänger à Sproochemeeschter ; 7. le clavier en trois gestes (toucher un mot proposé, appui long pour les accents, glisser sur la barre d'espace pour déplacer le curseur) ; 8. la dictée, avec l'icône rouge du micro : toucher le micro en haut à droite du clavier, parler luxembourgeois, toucher de nouveau pour finir.",
-   "image_legende": "La visite de l'application, en huit étapes : les quatre onglets, les réglages, le carnet, les gestes du clavier et la dictée."
   }
  ]
 }

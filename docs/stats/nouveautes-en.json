@@ -1,9 +1,85 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.5",
+ "derniere_version": "37.7.7",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.7",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "Giving a card, step by step",
+       "texte": "The tour of the cards now details the exchange between two phones in four numbered steps, with a small animation of the two screens side by side."
+      },
+      {
+       "titre": "Receiving a card and the camera, explained",
+       "texte": "Which button to tap, and why the camera is only used to read the code, without the internet."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_visite_echange.gif",
+     "alt": "Filmed on a Galaxy A21s: the “Giving, step by step” bubble of the card tour. At the top, two drawn phones, “You” and “The other person”. The second shows a code, the first aims a blue beam at it and a green tick appears; the card fades from the first phone, which shows a code in turn; the second aims at it, then the card moves from one screen to the other. Below, four numbered dots light up in red as the steps go by, and the text details them. The screens are in French.",
+     "legende": "Giving a card, in four steps: the card tour shows it with two phones side by side."
+    }
+   ],
+   "image": "Screenshots/lux_visite_echange.gif",
+   "image_alt": "Filmed on a Galaxy A21s: the “Giving, step by step” bubble of the card tour. At the top, two drawn phones, “You” and “The other person”. The second shows a code, the first aims a blue beam at it and a green tick appears; the card fades from the first phone, which shows a code in turn; the second aims at it, then the card moves from one screen to the other. Below, four numbered dots light up in red as the steps go by, and the text details them. The screens are in French.",
+   "image_legende": "Giving a card, in four steps: the card tour shows it with two phones side by side."
+  },
+  {
+   "version": "37.7.6",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "The guide talks about dictation",
+       "texte": "How to dictate, why it needs the internet and where your voice goes."
+      },
+      {
+       "titre": "The guide explains how to share, give and receive a card",
+       "texte": "And how to move the cursor by sliding along the space bar."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Fixes",
+     "points": [
+      {
+       "titre": "The guide describes the card as it is",
+       "texte": "Pictures redone on the card with its landscape, with the season hallmark and the rarity tier."
+      },
+      {
+       "titre": "The answer about your data is accurate",
+       "texte": "What you type never leaves the phone; only dictation sends your voice to the University of Luxembourg, which writes it down without keeping it."
+      },
+      {
+       "titre": "The French suggestions",
+       "texte": "are presented as an option in the keyboard settings."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "37.7.5",
    "date": "2026-10-21",
@@ -113,87 +189,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "37.7.1",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "Seeing a single topic of the guided tour again",
-       "texte": "The “Guided tour” line, at the bottom of the home screen, opens a list of topics. You choose the whole tour, or a single topic: voice typing, sharing a card, the keyboard gestures, the dictionary…"
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Fixes",
-     "points": [
-      {
-       "titre": "The guided tour no longer opens under another window",
-       "texte": "It waits until the welcome message, or another request from the app, has been closed."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.7.0",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "New",
-     "points": [
-      {
-       "titre": "A guided tour of the app",
-       "texte": "The first time you open it, a bubble presents each tab (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), the keyboard settings, your card collection, the three keyboard gestures and voice typing. One tap moves on, you can skip it whenever you like, and the “Guided tour” line at the bottom of the home screen starts it again."
-      },
-      {
-       "titre": "A guided tour of the cards",
-       "texte": "The first time you open Mäi Carnet, a card opens and presents itself area by area (the landscape, the word, its meaning, its counters, its number), then the Share, Give and Receive buttons."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Fixes",
-     "points": [
-      {
-       "titre": "On a tablet, an open card stays open when you turn the screen",
-       "texte": ""
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_application.gif",
-     "alt": "The guided tour of the app, step by step, on the emulator. A dark veil covers the screen and a white bubble presents what is lit by a yellow frame: 1. the Haut tab, the daily home; 2. the gear of the keyboard settings; 3. the Spiller tab and its games; 4. the Mäi Carnet banner; 5. the Wierderbuch tab; 6. the Mäi Lëtzebuergesch tab and the levels, from Ufänger to Sproochemeeschter; 7. the keyboard in three gestures (tap a suggested word, long press for accents, slide on the space bar to move the cursor); 8. voice typing, with the red microphone icon: tap the microphone at the top right of the keyboard, speak Luxembourgish, tap again to finish. The screens are in French.",
-     "legende": "The tour of the app, in eight steps: the four tabs, the settings, the card collection, the keyboard gestures and voice typing."
-    },
-    {
-     "image": "Screenshots/lux_visite_cartes.gif",
-     "alt": "The guided tour of the card collection, with the card “Waasser” (water). 1. the card is lit in the collection grid; then it opens full size and each area lights up in turn: 2. the landscape, whose time of day tells the rarity; 3. the word on its plate and the badge with the number of letters; 4. its meaning, “Neuter noun”, and a sentence from the official dictionary with its translation; 5. the SEEN and LEVEL shields and the game medallion; 6. the card number and its rank; 7. the Share button; 8. the Give button; 9. card closed, the Receive button at the top of the collection. The screens are in French.",
-     "legende": "The tour of the cards: each area of the card explained, then how to share it, give it away or receive one."
-    }
-   ],
-   "image": "Screenshots/lux_visite_application.gif",
-   "image_alt": "The guided tour of the app, step by step, on the emulator. A dark veil covers the screen and a white bubble presents what is lit by a yellow frame: 1. the Haut tab, the daily home; 2. the gear of the keyboard settings; 3. the Spiller tab and its games; 4. the Mäi Carnet banner; 5. the Wierderbuch tab; 6. the Mäi Lëtzebuergesch tab and the levels, from Ufänger to Sproochemeeschter; 7. the keyboard in three gestures (tap a suggested word, long press for accents, slide on the space bar to move the cursor); 8. voice typing, with the red microphone icon: tap the microphone at the top right of the keyboard, speak Luxembourgish, tap again to finish. The screens are in French.",
-   "image_legende": "The tour of the app, in eight steps: the four tabs, the settings, the card collection, the keyboard gestures and voice typing."
   }
  ]
 }

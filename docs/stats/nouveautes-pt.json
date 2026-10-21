@@ -1,9 +1,85 @@
 {
  "genere_le": "2026-10-21",
- "derniere_version": "37.7.5",
+ "derniere_version": "37.7.7",
  "derniere_date": "2026-10-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.7.7",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "Dar uma carta, passo a passo",
+       "texte": "A visita das cartas explica agora a troca entre dois telemóveis em quatro passos numerados, com uma pequena animação dos dois ecrãs lado a lado."
+      },
+      {
+       "titre": "Receber uma carta e a câmara, explicados",
+       "texte": "Que botão tocar, e porque a câmara serve apenas para ler o código, sem internet."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_visite_echange.gif",
+     "alt": "Filmado num Galaxy A21s: a bolha «Dar, passo a passo» da visita das cartas. Em cima, dois telemóveis desenhados, «Você» e «A outra pessoa». O segundo mostra um código, o primeiro aponta-lhe um feixe azul e aparece um visto verde; a carta desaparece do primeiro, que mostra por sua vez um código; o segundo aponta para ele e a carta passa de um ecrã para o outro. Em baixo, quatro pastilhas numeradas acendem-se a vermelho, e o texto explica-as. Os ecrãs estão em francês.",
+     "legende": "Dar uma carta, em quatro passos: a visita das cartas mostra-o com dois telemóveis lado a lado."
+    }
+   ],
+   "image": "Screenshots/lux_visite_echange.gif",
+   "image_alt": "Filmado num Galaxy A21s: a bolha «Dar, passo a passo» da visita das cartas. Em cima, dois telemóveis desenhados, «Você» e «A outra pessoa». O segundo mostra um código, o primeiro aponta-lhe um feixe azul e aparece um visto verde; a carta desaparece do primeiro, que mostra por sua vez um código; o segundo aponta para ele e a carta passa de um ecrã para o outro. Em baixo, quatro pastilhas numeradas acendem-se a vermelho, e o texto explica-as. Os ecrãs estão em francês.",
+   "image_legende": "Dar uma carta, em quatro passos: a visita das cartas mostra-o com dois telemóveis lado a lado."
+  },
+  {
+   "version": "37.7.6",
+   "date": "2026-10-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "O guia fala do ditado",
+       "texte": "Como ditar, porque é preciso internet e para onde vai a sua voz."
+      },
+      {
+       "titre": "O guia explica como partilhar, dar e receber uma carta",
+       "texte": "E como mover o cursor deslizando na barra de espaço."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Correções",
+     "points": [
+      {
+       "titre": "O guia descreve a carta tal como é",
+       "texte": "Imagens refeitas com a carta de paisagem, com o punção da estação e o nível de raridade."
+      },
+      {
+       "titre": "A resposta sobre os seus dados está correta",
+       "texte": "O que escreve nunca sai do telemóvel; só o ditado envia a sua voz para a Universidade do Luxemburgo, que a escreve sem a guardar."
+      },
+      {
+       "titre": "As sugestões em francês",
+       "texte": "são apresentadas como uma opção das definições do teclado."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "37.7.5",
    "date": "2026-10-21",
@@ -113,87 +189,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "37.7.1",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "Rever um só tema da visita guiada",
-       "texte": "A linha «Visita guiada», no fundo do início, abre uma lista de temas. Escolhe-se a visita completa, ou um só tema: o ditado, partilhar uma carta, os gestos do teclado, o dicionário…"
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Correções",
-     "points": [
-      {
-       "titre": "A visita guiada já não se abre por baixo de outra janela",
-       "texte": "Espera que a mensagem de boas-vindas, ou outro pedido da aplicação, seja fechada."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "37.7.0",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Novidades",
-     "points": [
-      {
-       "titre": "Uma visita guiada à aplicação",
-       "texte": "Na primeira abertura, um balão apresenta cada separador (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), as definições do teclado, a sua coleção de cartas, os três gestos do teclado e o ditado por voz. Um toque avança, pode saltá-la quando quiser, e a linha «Visita guiada», no fundo do início, volta a lançá-la."
-      },
-      {
-       "titre": "Uma visita guiada às cartas",
-       "texte": "Na primeira abertura de Mäi Carnet, uma carta abre-se e apresenta-se zona a zona (a paisagem, a palavra, o seu sentido, os seus contadores, o seu número), e depois os botões Partilhar, Ceder e Receber."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Correções",
-     "points": [
-      {
-       "titre": "Num tablet, uma carta aberta continua aberta quando se roda o ecrã",
-       "texte": ""
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_application.gif",
-     "alt": "A visita guiada à aplicação, passo a passo, no emulador. Um véu escuro cobre o ecrã e um balão branco apresenta o que é destacado por uma moldura amarela: 1. o separador Haut, o início do dia; 2. a roda dentada das definições do teclado; 3. o separador Spiller e os seus jogos; 4. a faixa Mäi Carnet; 5. o separador Wierderbuch; 6. o separador Mäi Lëtzebuergesch e os níveis, de Ufänger a Sproochemeeschter; 7. o teclado em três gestos (tocar numa palavra proposta, premir longamente para os acentos, deslizar na barra de espaço para mover o cursor); 8. o ditado, com o ícone vermelho do microfone: tocar no microfone no canto superior direito do teclado, falar luxemburguês, tocar outra vez para terminar. Os ecrãs estão em francês.",
-     "legende": "A visita à aplicação, em oito passos: os quatro separadores, as definições, a coleção de cartas, os gestos do teclado e o ditado por voz."
-    },
-    {
-     "image": "Screenshots/lux_visite_cartes.gif",
-     "alt": "A visita guiada à coleção de cartas, com a carta «Waasser» (água). 1. a carta é destacada na grelha da coleção; depois abre-se em grande e cada zona acende-se por sua vez: 2. a paisagem, cuja hora do dia indica a raridade; 3. a palavra na sua placa e o distintivo com o número de letras; 4. o seu sentido, «Substantivo neutro», e uma frase do dicionário oficial com a sua tradução; 5. os escudos VISTA e NÍVEL e o medalhão do jogo; 6. o número da carta e a sua posição; 7. o botão Partilhar; 8. o botão Ceder; 9. carta fechada, o botão Receber no topo da coleção. Os ecrãs estão em francês.",
-     "legende": "A visita às cartas: cada zona da carta explicada, e depois como partilhá-la, cedê-la ou receber uma."
-    }
-   ],
-   "image": "Screenshots/lux_visite_application.gif",
-   "image_alt": "A visita guiada à aplicação, passo a passo, no emulador. Um véu escuro cobre o ecrã e um balão branco apresenta o que é destacado por uma moldura amarela: 1. o separador Haut, o início do dia; 2. a roda dentada das definições do teclado; 3. o separador Spiller e os seus jogos; 4. a faixa Mäi Carnet; 5. o separador Wierderbuch; 6. o separador Mäi Lëtzebuergesch e os níveis, de Ufänger a Sproochemeeschter; 7. o teclado em três gestos (tocar numa palavra proposta, premir longamente para os acentos, deslizar na barra de espaço para mover o cursor); 8. o ditado, com o ícone vermelho do microfone: tocar no microfone no canto superior direito do teclado, falar luxemburguês, tocar outra vez para terminar. Os ecrãs estão em francês.",
-   "image_legende": "A visita à aplicação, em oito passos: os quatro separadores, as definições, a coleção de cartas, os gestos do teclado e o ditado por voz."
   }
  ]
 }
