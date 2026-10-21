@@ -9,6 +9,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.7.7] - 2026-10-21
+
+### ✨ Améliorations
+
+- **Donner une carte, étape par étape** : la visite des cartes détaille l'échange entre deux téléphones en quatre temps numérotés, avec une petite animation des deux écrans côte à côte.
+- **Recevoir une carte et l'appareil photo, expliqués** : quel bouton toucher, et pourquoi l'appareil photo sert seulement à lire le code, sans internet.
+
 ## [37.7.6] - 2026-10-21
 
 ### ✨ Améliorations
