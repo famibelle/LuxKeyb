@@ -13,10 +13,15 @@
      native speaker. -->
 </head>
 <body style="margin:0; padding:0; background:#f3f6f9;">
+<!-- Hors de la lettre : ce bouton n'est jamais copié avec elle. -->
+<div style="max-width:600px; margin:16px auto 0; padding:0 12px; font-family:Arial, Helvetica, sans-serif; text-align:center;">
+  <button id="copier" type="button" style="background:#ed2939; color:#ffffff; border:0; border-radius:8px; padding:12px 18px; font:bold 15px Arial, Helvetica, sans-serif; cursor:pointer;">Copy the newsletter for email</button>
+  <div id="retour" role="status" style="padding-top:8px; font:13px Arial, Helvetica, sans-serif; color:#56636f;"></div>
+</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f3f6f9;">
 <tr><td align="center" style="padding:24px 12px;">
 
-<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%; max-width:600px; background:#ffffff; border:1px solid #dbe3ea; border-collapse:separate;">
+<table id="lettre" role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%; max-width:600px; background:#ffffff; border:1px solid #dbe3ea; border-collapse:separate;">
 
 <!-- flag -->
 <tr><td style="padding:0; font-size:0; line-height:0;">
@@ -183,5 +188,39 @@
 </table>
 </td></tr>
 </table>
+<script>
+// Copie la lettre en HTML : Gmail la colle avec sa mise en page et ses images.
+// Le presse-papiers exige que la copie parte directement du clic, d'où la
+// promesse passée à ClipboardItem. Si le navigateur refuse (Safari sur iPhone
+// notamment), la lettre est sélectionnée pour un Ctrl+C ou un appui long.
+(function () {
+  var bouton = document.getElementById('copier');
+  var retour = document.getElementById('retour');
+  var lettre = document.getElementById('lettre');
+  function selectionner() {
+    var zone = document.createRange();
+    zone.selectNodeContents(lettre);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(zone);
+  }
+  bouton.addEventListener('click', function () {
+    var html = '<meta charset="utf-8">' + lettre.outerHTML;
+    var texte = lettre.innerText;
+    try {
+      navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([texte], { type: 'text/plain' })
+      })]).then(function () {
+        retour.textContent = 'Copied. Paste it into a new Gmail message.';
+      }, echec);
+    } catch (e) { echec(); }
+    function echec() {
+      selectionner();
+      retour.textContent = 'Your browser does not allow copying directly: the letter is selected, press Ctrl+C (or copy it from the menu on a phone).';
+    }
+  });
+})();
+</script>
 </body>
 </html>
