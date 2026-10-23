@@ -83,8 +83,8 @@ et le mélange.
      puis la carte est défaussée.
    - Un **adjectif** se glisse sous l'un de tes noms : +2 de Force pour toujours.
      *grouss* sous *Hond*, et voilà un grand chien.
-   - Un **nombre** se dit en luxembourgeois, et te donne 1 symbole de plus pour
-     ce tour. Puis il est défaussé.
+   - Un **nombre** ne coûte rien : dis-le en luxembourgeois, et il te donne
+     1 symbole de plus pour ce tour. Puis il est défaussé.
 4. **Attaque** avec chacun des noms que tu avais déjà posés au tour d'avant.
    - L'adversaire peut **bloquer** avec l'un des siens : la plus grande Force
      gagne, l'autre carte est défaussée. En cas d'égalité, les deux le sont.
