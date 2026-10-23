@@ -95,9 +95,12 @@ lisibles par tous. On ne peut pas empêcher la copie, seulement la rendre
 illégale à la vente, sans valeur, et reconnaissable.
 
 1. **Juridique (le plus efficace)**
-   - Licence séparée pour les visuels (`LICENSE-VISUELS`) : code libre,
-     illustrations/cadres/dos « tous droits réservés » ou CC BY-NC-ND.
-     Les données LOD gardent leur licence d'origine.
+   - Licence des visuels : `LICENSE-VISUELS.md` (en place). Code MIT,
+     cartes et visuels tous droits réservés **sauf usage scolaire et
+     éducatif gratuit**. Toute vente ou édition demande un accord écrit.
+     Les dictionnaires gardent leurs licences (`NOTICE.md`).
+   - Sur chaque carte imprimée et sur la boîte : « © Lëtzebuergesch Clavier
+     — usage scolaire autorisé, vente interdite ».
    - Marque « Lëtzebuergesch Clavier » + logo déposés au BOIP (Benelux),
      ~250–300 € pour 10 ans : c'est ce qui permet d'agir contre un jeu vendu.
 2. **Ne rien publier d'imprimable**
@@ -110,9 +113,8 @@ illégale à la vente, sans valeur, et reconnaissable.
      L'application vérifie la signature au scan ; une carte authentique
      peut débloquer quelque chose dans le carnet, une copie non.
    - Finitions difficiles à reproduire : dorure, vernis sélectif, âme bleue.
-4. **Politique** : décider si la copie à usage personnel ou scolaire est
-   tolérée (souvent souhaitable pour promouvoir la langue) et ne protéger
-   que l'usage commercial. L'écrire dans la licence des visuels.
+4. **Politique décidée** : copie scolaire et éducative tolérée, usage
+   commercial interdit. Ne pas proposer de mesure qui gênerait les classes.
 
 ## 7. Comment répondre
 

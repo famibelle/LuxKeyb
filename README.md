@@ -47,7 +47,9 @@ serait l'interface, pas la langue.
 > Le **code** est sous licence MIT ([`LICENSE`](LICENSE)). Les **dictionnaires**
 > livrés avec l'application ne le sont pas : ce sont des œuvres dérivées de
 > corpus tiers, en CC BY-NC, CC BY-SA et CC0 selon la source. Voir
-> [`NOTICE.md`](NOTICE.md).
+> [`NOTICE.md`](NOTICE.md). Les **visuels et les cartes** ont leur propre
+> licence ([`LICENSE-VISUELS.md`](LICENSE-VISUELS.md)) : usage scolaire
+> autorisé, usage commercial interdit.
 
 ## 📱 Aperçu
 
