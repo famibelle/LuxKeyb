@@ -268,3 +268,6 @@ banc-emulateur/__pycache__/
 banc-emulateur/emu_*/
 banc-emulateur/tel_*/
 banc-emulateur/*.mp4
+
+# Fichiers d impression des cartes (jamais publics)
+impression/
