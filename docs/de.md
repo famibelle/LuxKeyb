@@ -83,10 +83,10 @@ Der Text erscheint, während Sie sprechen, mit Satzzeichen und Großschreibung.
 Das Mikrofon schließt sich von selbst, wenn Sie aufhören.
 
 <div style="display:flex;justify-content:center;margin:24px 0;">
-  <figure style="margin:0;max-width:420px;text-align:center;">
-    <img src="Screenshots/lux_dictee_clavier.gif" style="width:100%;height:auto;border-radius:8px;"
-         width="420" height="380" loading="lazy"
-         alt="Diktat in einer SMS: Unter dem LuxASR-Banner erscheint der Satz „Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott.“ in drei Schritten im Eingabefeld, dann schließt sich das Mikrofon">
+  <figure style="margin:0;max-width:540px;text-align:center;">
+    <img src="newsletter/2026-10/mail/micro.gif" style="width:100%;height:auto;border-radius:8px;"
+         width="540" height="228" loading="lazy"
+         alt="Ein rotes Mikrofon pulsiert, und der Satz „Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott.“ erscheint in einer Sprechblase">
     <figcaption>
       „Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott“
       (Auf der Kirmes esse ich immer Kartoffelpuffer mit Apfelmus): Der Text

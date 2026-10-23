@@ -84,10 +84,10 @@ enquanto fala, com pontuação e maiúsculas. O microfone fecha-se sozinho quand
 para de falar.
 
 <div style="display:flex;justify-content:center;margin:24px 0;">
-  <figure style="margin:0;max-width:420px;text-align:center;">
-    <img src="Screenshots/lux_dictee_clavier.gif" style="width:100%;height:auto;border-radius:8px;"
-         width="420" height="380" loading="lazy"
-         alt="Ditado numa SMS: por baixo da faixa LuxASR, a frase «Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott.» aparece em três tempos no campo de texto, depois o microfone fecha-se">
+  <figure style="margin:0;max-width:540px;text-align:center;">
+    <img src="newsletter/2026-10/mail/micro.gif" style="width:100%;height:auto;border-radius:8px;"
+         width="540" height="228" loading="lazy"
+         alt="Um microfone vermelho pulsa, e a frase «Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott.» aparece num balão de fala">
     <figcaption>
       «Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott»
       (na quermesse como sempre panquecas de batata com puré de maçã): o texto
