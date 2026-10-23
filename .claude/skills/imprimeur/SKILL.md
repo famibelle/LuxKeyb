@@ -145,7 +145,7 @@ rien d'autre que les cartes). Le produit principal est donc ce qui permet de
 jouer tout de suite, et les paquets de 6 deviennent le complément.
 
 **Combien de cartes pour une partie** (simulation de 4 000 parties,
-`wuertduell.py` en scratchpad, vrais mots du dictionnaire, joueurs automatiques
+`scripts/simulation_wuertduell.py`, vrais mots du dictionnaire, joueurs automatiques
 gloutons) :
 
 | Paquet par joueur | Tours (médiane, 90 %) | Cartes utilisées par joueur | Pioche épuisée |
