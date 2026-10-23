@@ -187,7 +187,32 @@ adresse, avertissement « ne convient pas aux moins de 3 ans », © et licence
 **Calendrier Fierkelsmaart (avril 2027)** : marque et statut en novembre,
 fichiers et prototypes décembre–janvier, BAT et série en février.
 
-## 8. Comment répondre
+## 8. Contexte : porteur du projet basé au Luxembourg
+
+- **Choisir un imprimeur dans l'UE** (Cartamundi à Turnhout en Belgique,
+  Ludo Fact et Altenburg en Allemagne, Delano en Pologne) : pas de douane.
+  MakePlayingCards/Printerstudio expédient de Hong Kong → TVA d'import 17 %
+  + frais de dédouanement du transporteur à la livraison ; acceptable pour
+  un prototype, à éviter pour la série. Cartamundi : ~3 h de route,
+  visite/BAT sur place possible.
+- **TVA** : 17 % au Luxembourg. Régime de franchise des petites entreprises
+  (seuil de l'ordre de 50 000 €/an, à vérifier sur guichet.lu) → pas de TVA
+  facturée, mais pas de récupération non plus.
+- **Statut** : une activité commerciale demande en principe une
+  autorisation d'établissement (guichet.lu, Ministère de l'Économie). Une
+  asbl peut vendre si c'est accessoire à son objet (promotion de la langue).
+  Conseil gratuit : House of Entrepreneurship (Chambre de commerce).
+- **Marque** : le BOIP couvre le Benelux, donc le Luxembourg.
+- **Stand** : se renseigner auprès de l'organisateur ou de la commune pour
+  l'emplacement et les éventuelles autorisations de vente.
+- **Débouchés locaux** : librairies (Ernster, Librairie Alinéa…), écoles via
+  enseignants de luxembourgeois, Institut national des langues (INLL),
+  boutiques souvenirs.
+- Ces informations administratives sont générales : faire confirmer par
+  guichet.lu ou la Chambre de commerce, ne jamais les présenter comme
+  certaines.
+
+## 9. Comment répondre
 
 - Toujours demander ou supposer explicitement : quel ensemble de cartes,
   combien d'exemplaires, boîte ou non.
