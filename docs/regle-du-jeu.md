@@ -61,7 +61,7 @@ manches : celui qui a le plus de cartes a gagné.
 
 ### Pour commencer
 
-Chaque joueur prend un paquet de **30 cartes**, dont au moins la moitié de noms,
+Chaque joueur prend un paquet de **25 cartes**, dont au moins la moitié de noms,
 et le mélange.
 
 - Il pose les **5 premières cartes faces cachées** devant lui, sans les

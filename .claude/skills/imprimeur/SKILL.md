@@ -137,6 +137,65 @@ illégale à la vente, sans valeur, et reconnaissable.
 
 À revoir avec les vrais devis ; refaire les calculs plutôt que recopier.
 
+### La gamme (révisée le 2026-10-23, après la règle du jeu)
+
+Les cartes sont d'abord un **jeu** : la règle est publiée sur
+`docs/regle-du-jeu.md` (Bataille des mots dès 6 ans, Wuertduell dès 8 ans,
+rien d'autre que les cartes). Le produit principal est donc ce qui permet de
+jouer tout de suite, et les paquets de 6 deviennent le complément.
+
+**Combien de cartes pour une partie** (simulation de 4 000 parties,
+`wuertduell.py` en scratchpad, vrais mots du dictionnaire, joueurs automatiques
+gloutons) :
+
+| Paquet par joueur | Tours (médiane, 90 %) | Cartes utilisées par joueur | Pioche épuisée |
+|---|---|---|---|
+| 20 | 7, 9 | 17 | 4 % |
+| 25 | 7, 9 | 17 | 0 % |
+| 30 | 7, 9 | 17 | 0 % |
+
+Une partie consomme ~17 cartes par joueur (5 trésor + 5 main + ~7 pioches),
+soit ~34 à deux. La règle fixe **25 cartes par joueur** : jamais de pioche
+vide, et de la marge pour des enfants qui jouent plus lentement que des
+automates. Composition d'un paquet de 25 (celle de la simulation) : ~14 noms,
+5 verbes, 2 à 3 adjectifs, 3 à 4 nombres.
+
+| Produit | Contenu | Rôle | Prix public indicatif |
+|---|---|---|---|
+| **Boîte de départ** (produit principal) | 54 cartes : 2 paquets de 25 prêts à jouer + 4 cartes de règle | Jouer à deux dès l'ouverture ; sert aussi à la Bataille des mots | 12–15 € |
+| Paquet de 6 (complément) | 3 C / 2 PC / 1 R ou mieux, voir plus bas | Faire évoluer son paquet, collectionner, échanger | 4 € |
+| Coffret complet | toutes les cartes | Écoles, collectionneurs | 35–45 € |
+
+**Pourquoi 54** : c'est le format d'un jeu de cartes standard. Étui, découpe
+et tarifs existent chez tous les imprimeurs (voir la ligne « Jeu de 54 » de la
+section 4) : c'est le format le moins cher à produire en qualité.
+
+**Économie indicative de la boîte** (à refaire avec les devis) :
+
+- Coût en offset européen, 500 boîtes, qualité exigée (section 2) :
+  ~3–4,5 € la boîte avec étui (fourchette 1,5–5 € de la section 4, +20–40 %
+  pour la qualité). En impression à la demande (~100) : 6–10 €, trop cher pour
+  vendre à 12 € → réservé aux prototypes.
+- Mise de départ : ~1 500–2 250 € de tirage + ~385 € de frais fixes
+  (marque, prototypes, maquette).
+- À 12 € : seuil de rentabilité ~160–220 boîtes ; 400 vendues → bénéfice
+  ~+2 000–2 700 €. En librairie (commission 30–40 %), la boîte rapporte
+  ~7–8,5 € : garder le prix public, ne pas le baisser.
+
+**Conséquences pour les cartes :**
+
+- La boîte demande des **verbes et des adjectifs**, que les 248 cartes de
+  l'appli n'ont presque pas (enluminures = noms). Les choisir dans le
+  dictionnaire, sens tirés du LOD (CC0), jamais de phrase RTL.
+- Pour l'équilibre du jeu, le **coût (symboles de rareté) suit la longueur du
+  mot** : 1–4 lettres ●, 5–7 ◆◆, 8–10 ★★★, 11 et plus ✦✦✦✦. Le tableau des
+  raretés ci-dessous est à refaire selon cette règle avant tout fichier.
+- Les deux paquets de la boîte ont une **composition fixe** (pas de hasard) ;
+  le hasard et les très rares restent dans les paquets de 6.
+- Gabarit papier : écu gauche = coût en gros, écu droit = icône du type
+  (nom, verbe, adjectif, nombre) à la place de VUES et NIVEAU, qui n'ont pas
+  de sens hors de l'appli.
+
 **Raretés imprimées** : fixées à la main pour le papier (pas dérivées de
 `luxemburgish_dict.json`, qui est en partie CC BY-NC → interdit à la vente).
 Rare = beau (paysage de nuit, enluminure), pas « mot peu fréquent ».
@@ -162,7 +221,7 @@ avant de vendre une carte qui porte le nom de l'événement, demander l'accord
 Ne jamais imprimer de phrases d'exemple (corpus RTL, CC BY-NC).
 Crédit sur l'emballage : « Mots : LOD / ZLS (CC0) ».
 
-**Paquet** : 6 cartes = 3 communes, 2 peu communes, 1 rare ou mieux
+**Paquet de 6 (complément de la boîte)** : 6 cartes = 3 communes, 2 peu communes, 1 rare ou mieux
 (très rare ~1 paquet sur 6). La première idée (4/1/1) était trop dure.
 
 **Compléter la collection (simulation, sans échange)** :
