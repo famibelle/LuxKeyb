@@ -85,9 +85,9 @@ para de falar.
 
 <div style="display:flex;justify-content:center;margin:24px 0;">
   <figure style="margin:0;max-width:540px;text-align:center;">
-    <img src="newsletter/2026-10/mail/micro.gif" style="width:100%;height:auto;border-radius:8px;"
+    <img src="newsletter/2026-10/mail/micro-mots.gif" style="width:100%;height:auto;border-radius:8px;"
          width="540" height="228" loading="lazy"
-         alt="Um microfone vermelho pulsa, e a frase «Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott.» aparece num balão de fala">
+         alt="Um microfone vermelho pulsa durante o ditado, e as palavras da frase «Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott.» aparecem uma a uma no balão de fala">
     <figcaption>
       «Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott»
       (na quermesse como sempre panquecas de batata com puré de maçã): o texto

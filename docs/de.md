@@ -84,9 +84,9 @@ Das Mikrofon schließt sich von selbst, wenn Sie aufhören.
 
 <div style="display:flex;justify-content:center;margin:24px 0;">
   <figure style="margin:0;max-width:540px;text-align:center;">
-    <img src="newsletter/2026-10/mail/micro.gif" style="width:100%;height:auto;border-radius:8px;"
+    <img src="newsletter/2026-10/mail/micro-mots.gif" style="width:100%;height:auto;border-radius:8px;"
          width="540" height="228" loading="lazy"
-         alt="Ein rotes Mikrofon pulsiert, und der Satz „Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott.“ erscheint in einer Sprechblase">
+         alt="Ein rotes Mikrofon pulsiert beim Diktieren, und die Wörter des Satzes „Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott.“ erscheinen einzeln in der Sprechblase">
     <figcaption>
       „Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott“
       (Auf der Kirmes esse ich immer Kartoffelpuffer mit Apfelmus): Der Text

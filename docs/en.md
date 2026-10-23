@@ -80,9 +80,9 @@ by itself when you stop.
 
 <div style="display:flex;justify-content:center;margin:24px 0;">
   <figure style="margin:0;max-width:540px;text-align:center;">
-    <img src="newsletter/2026-10/mail/micro.gif" style="width:100%;height:auto;border-radius:8px;"
+    <img src="newsletter/2026-10/mail/micro-mots.gif" style="width:100%;height:auto;border-radius:8px;"
          width="540" height="228" loading="lazy"
-         alt="A red microphone pulses, and the sentence “Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott.” appears in a speech bubble">
+         alt="A red microphone pulses while dictating, and the words of the sentence “Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott.” appear one by one in the speech bubble">
     <figcaption>
       “Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott”
       (at the fair I always eat potato fritters with apple sauce): the text is
