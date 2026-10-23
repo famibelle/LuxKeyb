@@ -9,7 +9,7 @@ lang: fr
   <strong>🏠 Accueil</strong> ·
   <a href="#installer">📲 Installer</a> ·
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
-  <a href="#regle-du-jeu">🃏 Règle du jeu</a> ·
+  <a href="regle-du-jeu.html">🃏 Règle du jeu</a> ·
   <a href="guide.html">📘 Guide</a> ·
   <a href="faq.html">❓ Aide</a> ·
   <strong>FR</strong> ·
@@ -238,6 +238,9 @@ image, ou s'**offre** de la main à la main : deux téléphones côte à côte, 
 codes QR, et la carte quitte votre carnet pour entrer dans l'autre, sans passer
 par Internet et sans jamais exister en double.
 
+Les cartes se jouent aussi **sur la table**, à deux, avec rien d'autre que les
+cartes : voir la [règle du jeu](regle-du-jeu.html).
+
 <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
     <img src="Screenshots/lux_carnet_paysages.png" style="width:100%;border-radius:8px;"
@@ -295,68 +298,6 @@ Seuls les mots déjà présents dans le dictionnaire sont comptés pour la
 progression : un mot de passe, un nom propre ou un numéro n'y figurent pas et ne
 sont donc jamais enregistrés. Le clavier se désactive de lui-même dans les
 champs de mot de passe. Voir la [politique de confidentialité](privacy/privacy-policy.html).
-
-## Règle du jeu {#regle-du-jeu}
-
-Les cartes du carnet deviennent un **jeu de cartes à jouer**, à la façon des
-jeux de cartes à collectionner, mais avec des règles qu'un enfant comprend en
-deux minutes. Le jeu imprimé est en préparation : voici la règle, pour
-l'essayer et nous dire ce qu'elle vaut.
-
-**Tout se lit sur la carte, rien à apprendre par cœur :**
-
-| Sur la carte | Dans le jeu |
-|---|---|
-| Le chiffre de la pastille, en haut à gauche (le nombre de lettres du mot) | La **Force** : *Kaz* 3, *Fierkel* 7, *Päiperlek* 9 |
-| Les symboles de rareté ● ◆ ★ ✦ | Le **coût** : on les compte, de 1 à 4 |
-| La nature du mot : nom, verbe, adjectif, nombre | Ce que fait la carte |
-| Le paysage | La **famille** de la carte |
-| Le sens en français | La réponse, que l'adversaire peut vérifier |
-
-**Une règle d'or : pour jouer une carte, on lit son mot à voix haute.**
-
-### Niveau 1 : la Bataille des mots (dès 6 ans, 5 minutes)
-
-Chaque joueur retourne la première carte de son paquet et lit le mot à voix
-haute. Le mot le plus long gagne les deux cartes. En cas d'égalité, le premier
-qui dit le sens du mot en français les emporte. Celui qui a toutes les cartes a
-gagné.
-
-### Niveau 2 : le Wuertduell (dès 8 ans, 15 minutes)
-
-**Pour commencer.** Chaque joueur a un paquet de 20 cartes, en pioche 5, et pose
-devant lui 5 jetons porcelet 🐷.
-
-**À ton tour :**
-
-1. **Pioche** une carte.
-2. **Pose des cartes.** Au premier tour, tu as droit à 1 symbole, au deuxième à
-   2, au troisième à 3, puis à 4 à chaque tour. Une carte ● coûte 1, une carte
-   ◆◆ coûte 2, et ainsi de suite.
-   - Un **nom** est un personnage : il se pose devant toi. Trois au plus.
-   - Un **verbe** est une action : +3 de Force à l'un de tes noms pour ce tour,
-     puis la carte est défaussée.
-   - Un **adjectif** se glisse sous l'un de tes noms : +2 de Force pour toujours.
-     *grouss* sous *Hond*, et voilà un grand chien.
-   - Un **nombre** se dit en luxembourgeois, et te donne 1 symbole de plus pour
-     ce tour.
-3. **Attaque** avec chacun des noms que tu avais déjà posés au tour d'avant.
-   L'adversaire peut bloquer avec l'un des siens : la plus grande Force gagne,
-   l'autre carte est défaussée, et en cas d'égalité les deux le sont. Si
-   personne ne bloque, tu prends un porcelet à ton adversaire.
-
-**Les bonus :**
-
-- Deux de tes noms ont le même paysage : chacun gagne +1.
-- Tu dis en français le sens du nom qui attaque : il gagne +1. Ton adversaire
-  vérifie sur la carte.
-
-**Les cartes spéciales.** Les cartes des sept jeux ont chacune un pouvoir écrit
-dessus. La carte ultra rare de la **Fierkelsmaart** vole un porcelet, une fois
-par partie.
-
-**Pour gagner :** prends ses 5 porcelets 🐷 à ton adversaire. Celui qui n'en a
-plus a perdu.
 
 ## Vérifiez tout de suite, sans rien installer
 
