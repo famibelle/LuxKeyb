@@ -361,6 +361,7 @@ object Carnet {
     @Synchronized
     fun rarete(context: Context, carte: CarteMot): Rarete {
         carte.nombre?.let { return Rarete.pourNombre(it) }
+        if (CarteFierkelsmaart.est(carte.forme)) return Rarete.TRES_RARE
         assurerRangs(context)
         return Rarete.pourRang(rangs[carte.forme])
     }

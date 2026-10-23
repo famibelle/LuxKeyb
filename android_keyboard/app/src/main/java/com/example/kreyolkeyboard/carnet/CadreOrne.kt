@@ -15,6 +15,7 @@ import android.graphics.Path
 import android.graphics.RadialGradient
 import android.graphics.RectF
 import android.graphics.Shader
+import android.graphics.Typeface
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -4546,7 +4547,8 @@ class Motif(
      * son rythme.
      */
     private val sujet: Sujet =
-        blason.meuble?.let { Enluminure.pour(it, heure) } ?: Trace.pour(mot, heure)
+        if (CarteFierkelsmaart.est(mot)) Porcelet(heure)
+        else blason.meuble?.let { Enluminure.pour(it, heure) } ?: Trace.pour(mot, heure)
 
     /**
      * Peint le motif dans son ouverture. [echelle] est le nombre de pixels par
@@ -4957,6 +4959,235 @@ private class Enluminure private constructor(
             trace.fillType = Path.FillType.EVEN_ODD
             return Enluminure(trace, nom, heure)
         }
+    }
+}
+
+/**
+ * Le porcelet de la Fierkelsmaart : le seul sujet **en couleurs** du carnet,
+ * et ce qui fait d'abord l'ultra rare ([CarteFierkelsmaart]).
+ *
+ * Toutes les autres cartes posent devant le paysage une nacre de l'heure ; le
+ * porcelet garde son rose, son médaillon vert et son ruban d'or à toute heure.
+ * C'est voulu : à côté de cent cartes nacrées, la couleur suffit à le
+ * reconnaître dans une grille, sans lire un mot.
+ *
+ * Le dessin a été mis au point en SVG dans la boîte 100 × 66 du paysage
+ * (maquette du 2026-10-23), et ses contours sont recopiés tels quels par
+ * [Paysages.chemin]. Il s'inspire du logo de la Fierkelsmaart sans le
+ * recopier.
+ */
+private class Porcelet(heure: Heure) : Sujet(heure, RectF(30f, 6f, 70f, 58f)) {
+
+    private val disque = RadialGradient(
+        48f, 28f, 29f, intArrayOf(0xFF3E9A63.toInt(), 0xFF1F5E3A.toInt()), null, Shader.TileMode.CLAMP
+    )
+    private val peau = RadialGradient(
+        46f, 14f, 20f, intArrayOf(0xFFFBC3D2.toInt(), 0xFFEE8DA8.toInt()), null, Shader.TileMode.CLAMP
+    )
+    private val dorure = LinearGradient(
+        0f, 44f, 0f, 53f, intArrayOf(0xFFFBD872.toInt(), 0xFFE3A93C.toInt()), null, Shader.TileMode.CLAMP
+    )
+    private val texte = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        textAlign = Paint.Align.CENTER
+        textSize = 5.2f
+        typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+        strokeJoin = Paint.Join.ROUND
+    }
+
+    override fun tracer(c: Canvas) {
+        plume.strokeCap = Paint.Cap.ROUND
+        plume.strokeJoin = Paint.Join.ROUND
+        medaillon(c)
+        c.save()
+        c.translate(0f, -1f)
+        porcelet(c)
+        c.restore()
+        c.save()
+        c.translate(0f, 1.4f)
+        ruban(c)
+        c.restore()
+    }
+
+    private fun medaillon(c: Canvas) {
+        plein(null, disque)
+        c.drawCircle(50f, 35f, 19.5f, plume)
+        trait(VERT_CLAIR, 1.3f)
+        c.drawCircle(50f, 35f, 19.5f, plume)
+        trait(VERT_SOMBRE, 0.5f)
+        c.drawCircle(50f, 35f, 17.6f, plume)
+        // La couronne de laurier : une tige et sept paires de feuilles de
+        // chaque côté, tangentes au cercle.
+        trait(TIGE, 0.35f)
+        c.drawPath(TIGES, plume)
+        trait(FEUILLE, 0.4f)
+        for (cote in intArrayOf(-1, 1)) {
+            for (k in 0 until 7) {
+                val a = A0 + (A1 - A0) * (k + 0.5f) / 7f
+                val x = 50f + cote * RAYON_LAURIER * cos(a)
+                val y = 35f + RAYON_LAURIER * sin(a)
+                val base = Math.toDegrees(a.toDouble()).toFloat() * cote + if (cote > 0) 0f else 180f
+                for ((i, sens) in intArrayOf(-1, 1).withIndex()) {
+                    c.save()
+                    c.translate(x, y)
+                    c.rotate(base + sens * 35f)
+                    c.drawPath(FEUILLES[i], plume)
+                    c.restore()
+                }
+            }
+        }
+    }
+
+    private fun porcelet(c: Canvas) {
+        plein(OMBRE_SOL)
+        c.drawOval(39.5f, 44.1f, 60.5f, 47.1f, plume)
+        trait(CONTOUR, 0.55f)
+        c.drawPath(QUEUE, plume)
+        for (patte in PATTES_ARRIERE) cerne(c, patte, ROSE_SOMBRE, 0.5f)
+        plein(null, peau)
+        c.drawOval(39.8f, 23.7f, 60.2f, 41.3f, plume)
+        trait(CONTOUR, 0.55f)
+        c.drawOval(39.8f, 23.7f, 60.2f, 41.3f, plume)
+        for (patte in PATTES_AVANT) cerne(c, patte, ROSE, 0.5f)
+        plein(SABOT)
+        for (sabot in SABOTS) c.drawPath(sabot, plume)
+        cerne(c, OREILLE_G, ROSE, 0.55f)
+        cerne(c, OREILLE_D, ROSE, 0.55f)
+        plein(ROSE_SOMBRE)
+        c.drawPath(CONQUE_G, plume)
+        c.drawPath(CONQUE_D, plume)
+
+        // La tête, son reflet et ses joues.
+        plein(null, peau)
+        c.drawOval(38.8f, 10.2f, 61.2f, 29f, plume)
+        trait(CONTOUR, 0.6f)
+        c.drawOval(38.8f, 10.2f, 61.2f, 29f, plume)
+        plein(0x73FFFFFF)
+        c.drawOval(42.4f, 12.4f, 48.8f, 15.2f, plume)
+        plein(JOUE)
+        c.drawCircle(42.6f, 21.8f, 2f, plume)
+        c.drawCircle(57.4f, 21.8f, 2f, plume)
+
+        for (x in floatArrayOf(45.3f, 54.7f)) {
+            plein(OEIL)
+            c.drawOval(x - 1.05f, 15.95f, x + 1.05f, 18.85f, plume)
+            plein(Color.WHITE)
+            c.drawCircle(x + 0.3f, 16.9f, 0.4f, plume)
+        }
+
+        plein(GROIN)
+        c.drawOval(45.3f, 18.6f, 54.7f, 25.2f, plume)
+        trait(CONTOUR, 0.55f)
+        c.drawOval(45.3f, 18.6f, 54.7f, 25.2f, plume)
+        plein(NARINE)
+        c.drawOval(47.45f, 20.65f, 49.15f, 23.35f, plume)
+        c.drawOval(50.85f, 20.65f, 52.55f, 23.35f, plume)
+
+        trait(CONTOUR, 0.5f)
+        c.drawPath(SOURIRE, plume)
+        plein(LANGUE)
+        c.drawPath(LANGUE_TRACE, plume)
+    }
+
+    private fun ruban(c: Canvas) {
+        cerne(c, PAN_G, OR_SOMBRE, 0.45f, BRUN)
+        cerne(c, PAN_D, OR_SOMBRE, 0.45f, BRUN)
+        plein(null, dorure)
+        c.drawPath(BANDE, plume)
+        trait(BRUN, 0.5f)
+        c.drawPath(BANDE, plume)
+
+        texte.style = Paint.Style.STROKE
+        texte.strokeWidth = 0.9f
+        texte.color = BRUN
+        c.drawText(CarteFierkelsmaart.EDITION, 50f, 50.2f, texte)
+        texte.style = Paint.Style.FILL
+        texte.color = Color.WHITE
+        c.drawText(CarteFierkelsmaart.EDITION, 50f, 50.2f, texte)
+    }
+
+    private fun plein(couleur: Int?, shader: Shader? = null) {
+        plume.style = Paint.Style.FILL
+        plume.shader = shader
+        plume.color = couleur ?: Color.BLACK
+    }
+
+    private fun trait(couleur: Int, epaisseur: Float) {
+        plume.style = Paint.Style.STROKE
+        plume.shader = null
+        plume.color = couleur
+        plume.strokeWidth = epaisseur
+    }
+
+    /** Un aplat cerné de son contour, comme un dessin animé. */
+    private fun cerne(c: Canvas, chemin: Path, fond: Int, epaisseur: Float, contour: Int = CONTOUR) {
+        plein(fond)
+        c.drawPath(chemin, plume)
+        trait(contour, epaisseur)
+        c.drawPath(chemin, plume)
+    }
+
+    private companion object {
+        val CONTOUR = 0xFF5A2A35.toInt()
+        val ROSE = 0xFFF4A3BA.toInt()
+        val ROSE_SOMBRE = 0xFFE07D99.toInt()
+        val GROIN = 0xFFF28FA8.toInt()
+        val NARINE = 0xFF7A2E3E.toInt()
+        val OEIL = 0xFF3B1F1F.toInt()
+        val JOUE = 0x8CF07A9A.toInt()
+        val LANGUE = 0xFFE2566F.toInt()
+        val SABOT = 0xFF6B3A3F.toInt()
+        val OMBRE_SOL = 0xB3123E25.toInt()
+        val VERT_CLAIR = 0xFF7CC576.toInt()
+        val VERT_SOMBRE = 0xFF2A6E45.toInt()
+        val TIGE = 0xFFC9D85A.toInt()
+        val FEUILLE = 0xFFD9E36A.toInt()
+        val OR_SOMBRE = 0xFFC98A2C.toInt()
+        val BRUN = 0xFF7A4E12.toInt()
+
+        const val RAYON_LAURIER = 15.4f
+        val A0 = Math.toRadians(-62.0).toFloat()
+        val A1 = Math.toRadians(70.0).toFloat()
+
+        /** Une feuille pointue, sa base à l'origine ; vers le haut, puis vers le bas. */
+        val FEUILLES = arrayOf(
+            Paysages.chemin("M0 0 Q0.9 1.1 0 2.3 Q-0.9 1.1 0 0 Z"),
+            Paysages.chemin("M0 0 Q0.9 -1.1 0 -2.3 Q-0.9 -1.1 0 0 Z")
+        )
+
+        /** Les deux tiges de la couronne, en arcs de vingt segments. */
+        val TIGES = Path().apply {
+            for (cote in intArrayOf(-1, 1)) {
+                for (t in 0..20) {
+                    val a = A0 + (A1 - A0) * t / 20f
+                    val x = 50f + cote * RAYON_LAURIER * cos(a)
+                    val y = 35f + RAYON_LAURIER * sin(a)
+                    if (t == 0) moveTo(x, y) else lineTo(x, y)
+                }
+            }
+        }
+
+        val QUEUE = Paysages.chemin("M58.6 31.5 C61.6 31.2 62.6 28.6 60.9 27.6 C59.3 26.7 58.4 28.9 60.2 29.3 C61.6 29.6 62.8 28.4 63.2 27.2")
+        val PATTES_ARRIERE = arrayOf(
+            Paysages.chemin("M41.2 36 L44.2 36 L44 44.4 L41.4 44.4 Z"),
+            Paysages.chemin("M55.8 36 L58.8 36 L58.6 44.4 L56 44.4 Z")
+        )
+        val PATTES_AVANT = arrayOf(
+            Paysages.chemin("M44.2 36.4 Q46.4 35.4 48.6 36.4 L48.2 45.6 L44.6 45.6 Z"),
+            Paysages.chemin("M51.4 36.4 Q53.6 35.4 55.8 36.4 L55.4 45.6 L51.8 45.6 Z")
+        )
+        val SABOTS = arrayOf(
+            Paysages.chemin("M44.5 44.3 L48.3 44.3 L48.2 45.6 L44.6 45.6 Z"),
+            Paysages.chemin("M51.7 44.3 L55.5 44.3 L55.4 45.6 L51.8 45.6 Z")
+        )
+        val OREILLE_G = Paysages.chemin("M40.6 15.2 Q38.2 9.6 39.2 6.4 Q43.6 7.6 46.4 11.2 Z")
+        val CONQUE_G = Paysages.chemin("M41.4 13.6 Q40.2 10.4 40.6 8.4 Q43 9.4 44.6 11.4 Z")
+        val OREILLE_D = Paysages.chemin("M59.4 15.2 Q61.8 9.6 60.8 6.4 Q56.4 7.6 53.6 11.2 Z")
+        val CONQUE_D = Paysages.chemin("M58.6 13.6 Q59.8 10.4 59.4 8.4 Q57 9.4 55.4 11.4 Z")
+        val SOURIRE = Paysages.chemin("M47.4 26.2 Q50 28.4 52.6 26.2")
+        val LANGUE_TRACE = Paysages.chemin("M49 27.1 Q50 28.6 51 27.1 Z")
+        val PAN_G = Paysages.chemin("M28 47.6 L17.6 48.6 L20.6 52.6 L16.8 57.4 L29.2 55.4 Z")
+        val PAN_D = Paysages.chemin("M72 47.6 L82.4 48.6 L79.4 52.6 L83.2 57.4 L70.8 55.4 Z")
+        val BANDE = Paysages.chemin("M25.6 45.2 Q50 41.8 74.4 45.2 L74.4 53.2 Q50 49.8 25.6 53.2 Z")
     }
 }
 

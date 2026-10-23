@@ -127,7 +127,7 @@ object CarteCarnet {
         }
         val fiche = TranslationDictionary.fiche(context, carte.forme)
         val exemple = TranslationDictionary.exemplesTraduits(context, fiche).firstOrNull()
-        return CarteAccueil.corriger(context, ContenuCarte(
+        return CarteFierkelsmaart.corriger(context, CarteAccueil.corriger(context, ContenuCarte(
             carte = carte,
             rarete = Carnet.rarete(context, carte),
             rang = Carnet.rang(context, carte.forme),
@@ -143,7 +143,7 @@ object CarteCarnet {
             traductionExemple = exemple?.traduction,
             categorie = TranslationDictionary.categorie(context, fiche.mot),
             plume = PreuveDeFrappe.aLaPlume(context, carte.forme)
-        ))
+        )))
     }
 
     /**
@@ -346,12 +346,17 @@ object CarteCarnet {
         // Le palier en toutes lettres avant le rang : « 9769ᵉ » seul ne disait
         // pas ce qu'il valait, et la rareté ne se lisait qu'au code des
         // bordures et des heures.
-        val rang = c.rang?.let { context.getString(R.string.carte_rang, it + 1) }
+        // L'ultra rare n'a pas de rang qui vaille : le mot a été ajouté à la
+        // main au dictionnaire. Elle montre son édition à la place.
+        val rang = if (CarteFierkelsmaart.est(c.carte.forme)) CarteFierkelsmaart.EDITION
+            else c.rang?.let { context.getString(R.string.carte_rang, it + 1) }
             ?: context.getString(R.string.carte_hors_corpus)
+        val palier = if (CarteFierkelsmaart.est(c.carte.forme)) context.getString(R.string.rarete_ultra_rare)
+            else context.getString(c.rarete.libelle)
         carte.posee(
             ligne(
                 context,
-                "${c.rarete.symbole} ${context.getString(c.rarete.libelle)} · $rang",
+                "${c.rarete.symbole} $palier · $rang",
                 taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.END
             ),
             Ornement.serieD(c.rarete)

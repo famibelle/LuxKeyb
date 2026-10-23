@@ -146,7 +146,18 @@ Rare = beau (paysage de nuit, enluminure), pas « mot peu fréquent ».
 | Commune | 140 |
 | Peu commune | 70 |
 | Rare | 30 |
-| Très rare | 8 (les 7 cartes Jeux + 1 carte Fierkelsmaart) |
+| Très rare | 7 (les 7 cartes Jeux) |
+| Ultra rare | 1 (la carte Fierkelsmaart) |
+
+**La carte Fierkelsmaart** existe dans l'appli depuis le 2026-10-23
+(`carnet/CarteFierkelsmaart.kt`, dessin `Porcelet` dans `CadreOrne.kt`) : un
+porcelet devant un médaillon vert couronné de laurier, ruban doré « 2027 ».
+Le mot a été ajouté au dictionnaire à la main (`MOTS_HORS_CORPUS`). Sa phrase
+(« Fierkelsmaart 2027: mir sinn dobäi! ») est écrite pour la carte : elle peut
+s'imprimer. Le dessin **s'inspire** du logo de l'organisateur sans le copier ;
+avant de vendre une carte qui porte le nom de l'événement, demander l'accord
+écrit de l'organisateur. Sur papier : à décider entre un tirage très rare
+(ex. 1 paquet sur 50 à 100) et une carte offerte au stand, ou les deux.
 
 Ne jamais imprimer de phrases d'exemple (corpus RTL, CC BY-NC).
 Crédit sur l'emballage : « Mots : LOD / ZLS (CC0) ».

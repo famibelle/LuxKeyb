@@ -136,6 +136,7 @@
     <string name="rarete_peu_commun">Ungewöhnlich</string>
     <string name="rarete_rare">Selten</string>
     <string name="rarete_tres_rare">Sehr selten</string>
+    <string name="rarete_ultra_rare">Ultraselten</string>
     <plurals name="rarete_compte_tres_rare">
         <item quantity="one">%d sehr selten</item>
         <item quantity="other">%d sehr selten</item>
@@ -671,6 +672,8 @@
     <string name="langue_traductions">de</string>
     <string name="accueil_glose">hallo</string>
     <string name="accueil_traduction">Hallo, wie geht\'s?</string>
+    <string name="fierkelsmaart_glose">Ferkelmarkt</string>
+    <string name="fierkelsmaart_traduction">Fierkelsmaart 2027: Wir sind dabei!</string>
     <string name="carte_serie">Nr. %1$s</string>
     <string name="carte_saison">Jahreszeit: %1$s</string>
     <string name="carte_partager">📤 Teilen</string>

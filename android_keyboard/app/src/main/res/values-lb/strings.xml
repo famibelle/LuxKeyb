@@ -136,6 +136,7 @@
     <string name="rarete_peu_commun">Net sou heefeg</string>
     <string name="rarete_rare">Seelen</string>
     <string name="rarete_tres_rare">Ganz seelen</string>
+    <string name="rarete_ultra_rare">Ultra seelen</string>
     <plurals name="rarete_compte_tres_rare">
         <item quantity="one">%d ganz seelen</item>
         <item quantity="other">%d ganz seelen</item>
@@ -671,6 +672,8 @@
     <string name="langue_traductions">fr</string>
     <string name="accueil_glose">bonjour</string>
     <string name="accueil_traduction">Bonjour, comment ça va ?</string>
+    <string name="fierkelsmaart_glose">marché aux porcelets</string>
+    <string name="fierkelsmaart_traduction">Fierkelsmaart 2027 : nous y serons !</string>
     <string name="carte_serie">Nr. %1$s</string>
     <string name="carte_saison">Joreszäit: %1$s</string>
     <string name="carte_partager">📤 Deelen</string>
