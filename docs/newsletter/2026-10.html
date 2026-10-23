@@ -97,6 +97,8 @@ hr{border:0; border-top:1px solid var(--filet); margin:0}
   50%{transform:scale(1.05); box-shadow:0 0 0 14px rgba(237,41,57,.18), 0 0 0 28px rgba(237,41,57,.06)}
 }
 @media (prefers-reduced-motion: reduce){.motif-dictee .micro-grand{animation:none}}
+.motif-dictee .phrase .mot{transition:opacity .25s}
+.motif-dictee .phrase .mot.cache{opacity:0}
 
 /* Images */
 .eventail{display:flex; justify-content:center; align-items:flex-end; padding:14px 0 6px}
@@ -260,5 +262,20 @@ footer a{color:var(--bleu-encre)}
     </footer>
   </div>
 </article>
+<script>
+/* Dictée : les mots s'écrivent un à un, comme pendant une vraie dictée */
+(function(){
+  var p=document.querySelector('.motif-dictee .phrase');
+  if(!p||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var mots=p.textContent.split(' ');
+  p.textContent='';
+  var spans=mots.map(function(m,i){var s=document.createElement('span');s.className='mot cache';s.textContent=m;p.appendChild(s);if(i<mots.length-1)p.appendChild(document.createTextNode(' '));return s});
+  var i=0;
+  (function suivant(){
+    if(i<spans.length){spans[i++].classList.remove('cache');setTimeout(suivant,420)}
+    else setTimeout(function(){spans.forEach(function(s){s.classList.add('cache')});i=0;setTimeout(suivant,700)},2600);
+  })();
+})();
+</script>
 </body>
 </html>
