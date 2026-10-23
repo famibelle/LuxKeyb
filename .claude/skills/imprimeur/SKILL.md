@@ -182,6 +182,15 @@ section 4) : c'est le format le moins cher à produire en qualité.
   ~+2 000–2 700 €. En librairie (commission 30–40 %), la boîte rapporte
   ~7–8,5 € : garder le prix public, ne pas le baisser.
 
+**Les mots viennent du LOD** (2026-10-23) : `scripts/candidats_cartes.py`
+compose la boîte (Déieren contre Iessen, noms jumelés par longueur : 50 % de
+victoires de chaque côté en simulation) et deux extensions (Schoul, Natur),
+dans `Dictionnaires/cartes/` : `selection.md` à relire, `selection.csv` pour
+les fichiers, `candidats.csv` pour remplacer un mot. Verbes et adjectifs
+choisis à la main (listes du script), sens et phrases pris au LOD. La famille
+du jeu est le **genre** du nom (pastille), pas le paysage : la plupart de ces
+mots n'ont pas de champ au carnet et tomberaient tous dans « Stad ».
+
 **Conséquences pour les cartes :**
 
 - La boîte demande des **verbes et des adjectifs**, que les 248 cartes de

@@ -1,0 +1,99 @@
+ensemble,mot,nature,genre,force,cout,sens,sens_de,sens_en,sens_pt,lieu,dessin,exemple,traduction
+Déieren,Kaz,nom,f.,3,1,chat,"Katze, Wildkatze","cat, molly, wildcat","gato, gata, gato-bravo",Mëllerdall,chat,d'Kaz sëtzt virun der Fënster ze miauen,le chat est assis devant la fenêtre et miaule
+Déieren,Hond,nom,m.,4,1,chien,Hund,dog,"cão, canalha",Mëllerdall,chien,d'Hënn hunn déi ganz Nuecht gebillt,
+Déieren,Léiw,nom,m.,4,1,lion,Löwe,"lion, Leo","leão, Leão",Mëllerdall,lion,op eiser Safari hu mir vill Léiwe gesinn,
+Déieren,Beie,nom,f.,4,1,abeille,Biene,bee,abelha,Stad,,ech si vun enger Bei gepickt ginn,j’ai été piqué par une abeille
+Déieren,Fësch,nom,m.,5,2,poisson,Fisch,"fish, Pisces","peixe, Peixes",Stad,poisson,beim Tauchen hu mer riseg Schwäerm Fësch gesinn,"pendant notre plongée, nous avons vu de gigantesques bancs de poissons"
+Déieren,Päerd,nom,n.,5,2,cheval,"Pferd, Springer, Pferdestärke","horse, horsemeat, knight","cavalo, carne de cavalo",Mëllerdall,cheval,d'Päerd sinn iwwer d'Weed galoppéiert,
+Déieren,Ameis,nom,f.,5,2,fourmi,Ameise,ant,formiga,Stad,,ënner dem Fënsterbriet haust eng Kolonie Ameisen,une colonie de fourmis s'est installée sous le rebord de la fenêtre
+Déieren,Delfin,nom,m.,6,2,dauphin,Delfin,dolphin,golfinho,Stad,,op eiser Croisière krute mer Walen an Delfinen ze gesinn,nous avons vu des baleines et des dauphins lors de notre croisière
+Déieren,Kallef,nom,n.,6,2,veau,"Kalb, Rindvieh","calf, pillock","vitelo, cretino",Stad,,d'Bauerefra huet d'Kaalwer mam Eemer gedränkt,l’agricultrice a abreuvé les veaux au seau
+Déieren,Elefant,nom,m.,7,2,éléphant,Elefant,elephant,elefante,Stad,,d'Kanner ware mat hirer Joffer d'Elefanten an den Zoo kucken,les enfants ont été voir des éléphants au zoo avec leur institutrice
+Déieren,Harespel,nom,f.,8,3,guêpe,Wespe,wasp,vespa,Stad,,ech sinn dëse Summer schonn zweemol vun enger Harespel gepickt ginn,
+Déieren,Krokodil,nom,,8,3,crocodile,Krokodil,crocodile,crocodilo,Stad,,den Zoo huet e puer Krokodille bäikritt,
+Déieren,Schmuewel,nom,f.,9,3,hirondelle,"Schwalbe, Rötelschwalbe","swallow, red-rumped swallow","andorinha, andorinha-dáurica",Stad,,"wann d'Schmuewelen déif fléien, da gëtt et gewéinlech Reen",les hirondelles volent bas lorsqu’il va pleuvoir
+Déieren,Kanéngchen,nom,f.,10,3,lapin,"Kaninchen, Wildkaninchen",rabbit,"coelho, coelho-bravo",Stad,,d'Kanner wënsche sech eng Kanéngchen als Hausdéier,
+Déieren,iessen,verbe,,6,2,manger,"essen, leer essen","to eat, to finish","comer, acabar (de comer)",Mëllerdall,,mir iessen de Mëtteg Nuddelen,
+Déieren,lafen,verbe,,5,2,courir,laufen,"to run, to be running","correr, trabalhar, estar em exibição",Rout Bréck,,du kanns méi séier lafen ewéi ech,
+Déieren,spillen,verbe,,7,2,jouer à,spielen,to play,"jogar (a), jogar, desempenhar",Schueberfouer,,am Zuch hunn e puer Leit Kaart gespillt,
+Déieren,danzen,verbe,,6,2,danser,tanzen,to dance,dançar,Stad,,meng Cheffin huet um Bal bis mueres fréi mat hirer Frëndin gedanzt,ma patronne a dansé avec sa copine au bal jusqu’aux petites heures du matin
+Déieren,sprangen,verbe,,8,3,sauter,"springen, bespringen","to jump, to crack, to mount","saltar, rachar, padrear",Stad,,ech ka méi héich sprangen ewéi mäi Brudder,
+Déieren,léif,adjectif,,4,1,gentil,"lieb, süß","nice, cute, kind","gentil, lindo, caro",Schueberfouer,,seng nei Frëndin ass emol eng léif Fra!,
+Déieren,kleng,adjectif,,5,2,petit,"klein, klein schneiden","small, short, little","pequeno, mais novo",Veianen,,de klenge Wee féiert laanscht d'Baach bei d'Millen,
+Déieren,séier,adjectif,,5,2,rapide,"schnell, sehr","fast, quick, very","rápido, muito",Stad,,ech hat nach ëmmer e Faibel fir séier Autoen,
+Déieren,eent,nombre,,0,0,1,1,1,1,,,,
+Déieren,zwee,nombre,,0,0,2,2,2,2,,,,
+Déieren,dräi,nombre,,0,0,3,3,3,3,,,,
+Iessen,Ënn,nom,f.,3,1,oignon,Zwiebel,onion,cebola,Stad,,"den Hobbygäertner huet zwou Reie schéin, déck Ënnen a sengem Gaart",le jardinier amateur a deux rangées de beaux oignons épais dans son jardin
+Iessen,Kuch,nom,m.,4,1,gâteau,Torte,cake,bolo,Mëllerdall,gateau,ech freeë mech elo op e gutt Stéck Kuch mat enger Taass Kaffi!,"là, je me réjouis à l'avance de prendre un morceau de gâteau et une tasse de café !"
+Iessen,Café,nom,m.,4,1,café,"Gastwirtschaft, Eschweiler-Halte","pub, Eschweiler-Halte","café, Eschweiler-Halte",Mëllerdall,cafe,am Duerf sinn zënter Kuerzem zwee Caféen,"depuis peu, il y a deux cafés dans le village"
+Iessen,Kéis,nom,m.,4,1,fromage,Käse,"cheese, rubbish","queijo, asneiras",Stad,fromage,fir den Owend hunn ech Kéis matbruecht,"pour ce soir, j'ai amené du fromage"
+Iessen,Brout,nom,n.,5,2,pain,Brot,"bread, loaf",pão,Stad,pain,ech hunn dat schwaarzt Brout am léifsten,je préfère le pain noir
+Iessen,Promm,nom,f.,5,2,prune,Pflaume,plum,ameixa,Stad,,d'Tatta huet Gebeess mat Prommen aus hirem Bongert gekacht,la tante a fait de la confiture avec des prunes de son verger
+Iessen,Tomat,nom,f.,5,2,tomate,Tomate,tomato,tomate,Stad,,"ass et net nach ze kal, fir Tomaten ze setzen?",ne fait-il pas encore trop froid pour planter des tomates ?
+Iessen,Banann,nom,f.,6,2,banane,Banane,banana,banana,Stad,,Bananne si bei Sportler e beléifte Snack,les bananes sont un en-cas apprécié des sportifs
+Iessen,Botter,nom,m.,6,2,beurre,Butter,butter,manteiga,Stad,,mäi Papp ësst keng Schmier ouni Botter,mon père ne mange pas de tartine sans beurre
+Iessen,Mëllech,nom,f.,7,2,lait,Milch,milk,leite,Stad,lait,d'Mamm wiermt d'Mëllech fir de Bëbee,
+Iessen,Paangech,nom,m.,8,3,crêpe,Pfannkuchen,pancake,crepe,Stad,,ech hätt emol erëm Loscht op eng Geméiszopp mat Paangecher!,
+Iessen,Hammbier,nom,,8,3,framboise,"Himbeere, Himbeeren","raspberry, raspberries","framboesa, framboesas",Stad,,mir hunn e ganzen Eemer Hammbiere gepléckt,
+Iessen,Bréitchen,nom,n.,9,3,petit pain,Brötchen,bun,pão pequeno,Stad,,mäi Mann ësst mueres am léifsten e Bréitchen,"le matin, mon mari mange un petit pain de préférence"
+Iessen,Hieselnoss,nom,f.,10,3,noisette,Haselnuss,hazelnut,avelã,Stad,,et gouf dëst Joer net vill Hieselnëss,il y a eu peu de noisettes cette année
+Iessen,drénken,verbe,,7,2,boire,"trinken, leer trinken","to drink, to empty","beber, acabar (de beber)",Mëllerdall,,ech drénke just e Glas Waasser,
+Iessen,fléien,verbe,,6,2,voler,fliegen,"to fly, to get thrown out, to be deleted","voar, ir (de avião), ser expulso",Rout Bréck,,ech sinn nach ni (mam) Helikopter geflunn,
+Iessen,sangen,verbe,,6,2,chanter,singen,to sing,cantar,Stad,,fir Chrëschtdag huet de Chouer all déi bekannt Lidder gesongen,"pour Noël, le chœur a chanté tous les chants connus"
+Iessen,schlofen,verbe,,8,3,dormir,"schlafen, übernachten",to sleep,dormir,Stad,,schlof gutt an dreem schéin!,
+Iessen,schwammen,verbe,,9,3,nager,schwimmen,"to swim, to flounder","nadar, atrapalhar-se",Rout Bréck,,déi iewescht Klasse ginn de Mëtteg schwammen,les classes supérieures ont natation cet après-midi
+Iessen,grouss,adjectif,,6,2,grand,groß,"big, basic","grande, mais velho",Veianen,,meng Elteren hunn eng grouss Zomm an Immobilien investéiert,mes parents ont investi une somme importante dans des biens immobiliers
+Iessen,staark,adjectif,,6,2,fort,"stark, (grammatisch) stark","strong, heavy, outrageous","forte, potente",Stad,,"iess deng Zopp, da gëss de grouss a staark!",
+Iessen,schéin,adjectif,,6,2,beau,"schön, sehr","beautiful, nice, handsome","belo, bom, bonito",Stad,,fir hire groussen Dag huet d'Braut sech extra schéin noeneegemaach,"pour son grand jour, la mariée s’est faite toute belle"
+Iessen,véier,nombre,,0,0,4,4,4,4,,,,
+Iessen,fënnef,nombre,,0,0,5,5,5,5,,,,
+Iessen,sechs,nombre,,0,0,6,6,6,6,,,,
+Schoul,Buch,nom,n.,4,1,livre,Buch,"book, account book","livro, livro de contas",Neimënster,livre,"et ass sécher net einfach, e gutt Buch ze schreiwen",écrire un bon livre n’est certainement pas facile
+Schoul,Heft,nom,n.,4,1,cahier,Heft,notebook,caderno,Stad,,haut de Moien huet de Schoulmeeschter d'Hefter kontrolléiert,
+Schoul,Koll,nom,m.,4,1,colle,Klebstoff,glue,cola,Stad,,ech hunn d'Poppenhaus mat engem extrae Koll gepecht,
+Schoul,Lidd,nom,n.,4,1,chanson,Lied,song,canção,Neimënster,,d'Scouten hu beim Lagerfeier flott Lidder gesongen,
+Schoul,Bréif,nom,m.,5,2,lettre,Brief,letter,carta,Neimënster,lettre,"ech hu vergiess, en Timber op de Bréif ze pechen",j’ai oublié de coller un timbre sur la lettre
+Schoul,Dësch,nom,m.,5,2,table,Tisch,table,mesa,Esch-Sauer,table,iwwer Dësch gëtt net geschwat!,
+Schoul,Schoul,nom,f.,6,2,école,Schule,school,escola,Esch-Sauer,ecole,mir sinn zesummen an d'Schoul gaangen,
+Schoul,Musek,nom,f.,5,2,musique,"Musik, Musikkapelle","music, brass band","música, banda municipal",Stad,note,am Hannergrond leeft eng agreabel Musek,
+Schoul,Calcul,nom,m.,6,2,calcul,Kalkül,calculation,calculismo,Stad,,"hien handelt net aus Guttmiddegkeet, mee aus puerem Calcul","il n’agit pas par bonté, mais par pur calcul"
+Schoul,Crayong,nom,m.,7,2,crayon,Bleistift,pencil,lápis,Stad,,et soll een ni mam Crayong ënnerschreiwen,il ne faut jamais signer au crayon
+Schoul,Examen,nom,m.,6,2,examen,Examen,exam,exame,Neimënster,,d'Studentin huet sech gutt op hiren Exame virbereet,l’étudiante a bien préparé son examen
+Schoul,Trousse,nom,f.,7,2,trousse,Tasche,case,estojo,Stad,,hues de keng kleng Schéier an denger Trousse?,tu n'as pas de petits ciseaux dans ta trousse ?
+Schoul,Computer,nom,m.,8,3,ordinateur,Computer,computer,computador,Neimënster,ordinateur,d'Computere ginn ëmmer méi bëlleg,
+Schoul,Alphabet,nom,n.,8,3,alphabet,Alphabet,alphabet,alfabeto,Stad,,den S kënnt am Alphabet virum T,la lettre S vient avant la lettre T dans l’alphabet
+Schoul,Schoulsak,nom,m.,9,3,cartable,Schulranzen,school bag,mala de escola,Stad,,e schwéiere Schoulsak ass eng Belaaschtung fir de Kanner hire Réck,
+Schoul,Standauer,nom,f.,9,3,horloge,Standuhr,grandfather clock,relógio de caixa alta,Stad,,de Pendel vun der Standauer ass stoe bliwwen,
+Schoul,Lektioun,nom,f.,8,3,leçon,Lektion,lesson,"lição, lição (de vida)",Stad,,hie wousst seng Lektioun auswenneg,
+Schoul,Bibliothéik,nom,f.,11,4,bibliothèque,"Bibliothek, Bücherschrank","library, bookcase",biblioteca,Neimënster,,ech hu mir an der Bibliothéik e flott Buch geléint,j'ai emprunté un chouette livre à la bibliothèque
+Schoul,Schouljoffer,nom,f.,12,4,institutrice,Grundschullehrerin,primary school teacher,professora (primária),Stad,,déi nei Schouljoffer huet ganz innovativ Unterrechtsmethoden,
+Schoul,Rechemaschinn,nom,f.,13,4,calculatrice,"Rechenmaschine, Taschenrechner","calculator, pocket calculator","calculadora, calculadora de bolso",Stad,,den Ticket aus der Rechemaschinn geet mer duer als Quittung,
+Schoul,liesen,verbe,,6,2,lire,lesen,"to read, to read out, to pick","ler, vindimar",Neimënster,,hien huet vu Klengem un e Brëll gebraucht fir ze liesen,"depuis qu'il est petit, il a besoin de lunettes pour lire"
+Schoul,schreiwen,verbe,,9,3,écrire,"schreiben, sich schreiben","to write, to spell, to be called","escrever, escrever a, chamar-se",Neimënster,,"den Expediteur hat vergiess, seng Adress op de Pak ze schreiwen",l’expéditeur avait oublié d’écrire son adresse sur le colis
+Schoul,molen,verbe,,5,2,dessiner,malen,to paint,desenhar,Stad,,"komm, ech probéieren emol, dech ze molen!",
+Schoul,laachen,verbe,,7,2,rire,"lachen, spotten, lächeln","to laugh, to smirk, to smile (at)","rir(-se), gargalhar, sorrir (para)",Stad,,de ganze Sall huet iwwer de Witz gelaacht,
+Natur,Bam,nom,m.,3,1,arbre,Baum,tree,árvore,Mëllerdall,arbre,dëse Bam ass méi ewéi honnert Joer al,cet arbre a plus de cent ans
+Natur,Reen,nom,m.,4,1,pluie,Regen,rain,chuva,Esch-Sauer,pluie,"huel e Prabbeli mat, et gëtt Reen!",
+Natur,Sonn,nom,f.,4,1,soleil,Sonne,sun,"Sol, sol",Esch-Sauer,soleil,wéi vill Sonne gëtt et an eisem Universum?,
+Natur,Bich,nom,f.,4,1,hêtre,Buche,beech,faia,Stad,,hanner der Kierch stinn dräi grouss Bichen,trois grands hêtres se trouvent derrière l’église
+Natur,Wanter,nom,m.,6,2,hiver,Winter,winter,inverno,Veianen,flocon,mat engem Tank Mazout komme mer gutt iwwer de Wanter,un plein de fioul nous permet de passer l’hiver
+Natur,Bësch,nom,m.,5,2,forêt,Wald,forest,floresta,Esch-Sauer,foret,mir ginn all Sonndeg an de Bësch spadséieren,
+Natur,Insel,nom,f.,5,2,île,Insel,island,ilha,Esch-Sauer,ile,an der Vakanz si mir vun Insel zu Insel geseegelt,
+Natur,Mound,nom,m.,5,2,lune,Mond,moon,lua,Esch-Sauer,lune,um Mound ass nach kee Liewe fonnt ginn,
+Natur,Bierk,nom,f.,5,2,bouleau,Birke,birch,bétula,Stad,,d'Gemengegäertner hu Bierke laanscht de Wee geplanzt,les jardiniers communaux ont planté des bouleaux le long du chemin
+Natur,Donner,nom,m.,6,2,tonnerre,Donner,thunder,trovão,Stad,,ech hat als Kand Angscht virum Blëtz a virum Donner,"enfant, j'avais peur de la foudre et du tonnerre"
+Natur,Eclair,nom,f.,6,2,éclair,Eclair,eclair,éclair,Stad,,de Pâtissier an eiser Strooss mécht déi bescht Eclaire wäit a breet,le pâtissier dans notre rue fait les meilleurs éclairs à des kilomètres à la ronde
+Natur,Hiwwel,nom,m.,6,2,colline,Hügel,hill,colina,Stad,,uewen um Hiwwel steet eng ural Eech,un chêne très ancien se trouve en haut de la colline
+Natur,Hierscht,nom,m.,8,3,automne,Herbst,autumn,outono,Veianen,,am Hierscht falen d'Blieder vun de Beem,"en automne, les feuilles tombent des arbres"
+Natur,Fréijoer,nom,n.,8,3,printemps,Frühling,spring,primavera,Veianen,,dëst Fréijoer stinn d'Beem fréi an der Bléi,
+Natur,Donnerwieder,nom,n.,12,4,orage,Gewitter,thunderstorm,trovoada,Stad,,,
+Natur,Pilz,nom,m.,4,1,champignon,Pilz,"mushroom, mould","cogumelo, fungo",Stad,,"well d'Haus fiicht ass, ass Pilz op de Maueren","comme la maison est humide, il y a de la moisissure sur les murs"
+Natur,Sand,nom,m.,4,1,sable,Sand,sand,areia,Esch-Sauer,,"Speis mécht een, andeem ee Sand, Zement a Waasser mëscht","on fait du mortier en mélangeant du sable, du ciment et de l’eau"
+Natur,Summer,nom,m.,6,2,été,Sommer,summer,verão,Veianen,,dëst Joer hate mer en dréchene Summer,"cette année, l'été a été très sec"
+Natur,Séi,nom,m.,3,1,lac,See,lake,lago,Esch-Sauer,,no där äiseger Wanternuecht war de Séi zougefruer,"après cette nuit d'hiver glaciale, le lac était gelé"
+Natur,Tulp,nom,f.,4,1,tulipe,Tulpe,tulip,túlipa,Stad,,d'Pianistin krut nom Concert e Bouquet Tulpen iwwerreecht,la pianiste a reçu un bouquet de tulipes après le concert
+Natur,witzeg,adjectif,,6,2,drôle,witzig,funny,engraçado,Stad,,ech muss der eng witzeg Geschicht verzielen,
+Natur,daper,adjectif,,5,2,courageux,tapfer,brave,corajoso,Stad,,eis Ekipp huet sech daper geschloen,
+Natur,rout,adjectif,,4,1,rouge,"rot, ruhen","red, to have a rest","vermelho, repousar",Stad,,firwat gëss de esou rout (am Gesiicht)?,pourquoi rougis-tu autant ?
+Natur,blo,adjectif,,3,1,bleu,blau,blue,azul,Stad,,de Bouf huet e schéine bloe Vëlo geschenkt kritt,le garçon a reçu un beau vélo bleu en cadeau

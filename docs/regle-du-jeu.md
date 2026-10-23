@@ -20,6 +20,11 @@ lang: fr
 cartes à collectionner, mais avec des règles qu'un enfant comprend en deux
 minutes.*
 
+Tous les mots, leurs sens, leurs genres et leurs phrases d'exemple viennent du
+[Lëtzebuerger Online Dictionnaire](https://lod.lu), le dictionnaire officiel du
+Zenter fir d'Lëtzebuerger Sprooch : des milliers de mots à jouer, de *Kaz* à
+*Krokodil*.
+
 Le jeu imprimé est en préparation : voici la règle, pour l'essayer et nous dire
 ce qu'elle vaut.
 
@@ -35,8 +40,9 @@ ce qu'elle vaut.
 | Le chiffre de la pastille, en haut à gauche (le nombre de lettres du mot) | La **Force** : *Kaz* 3, *Fierkel* 7, *Päiperlek* 9 |
 | Les symboles de rareté ● ◆ ★ ✦ | Le **coût** : on les compte, de 1 à 4 |
 | La nature du mot : nom, verbe, adjectif, nombre | Ce que fait la carte |
-| Le paysage | La **famille** de la carte |
-| Le sens en français | La réponse, que l'adversaire peut vérifier |
+| Le genre du nom, sur la pastille : masculin, féminin ou neutre | La **famille** de la carte |
+| Le sens du mot, en français (ou dans la langue de ton édition) | La réponse, que l'adversaire peut vérifier |
+| La phrase d'exemple | Un bonus pour les grands lecteurs |
 
 **Une règle d'or : pour jouer une carte, on lit son mot à voix haute.**
 
@@ -49,7 +55,7 @@ ce qu'elle vaut.
    haute.
 3. Le mot le plus long gagne : son joueur prend les deux cartes et les met
    sous son paquet.
-4. En cas d'égalité, le premier qui dit le sens du mot en français emporte les
+4. En cas d'égalité, le premier qui dit le sens du mot emporte les
    deux cartes.
 
 Celui qui a toutes les cartes a gagné. On peut aussi s'arrêter au bout de dix
@@ -61,8 +67,8 @@ manches : celui qui a le plus de cartes a gagné.
 
 ### Pour commencer
 
-Chaque joueur prend un paquet de **25 cartes**, dont au moins la moitié de noms,
-et le mélange.
+Chaque joueur prend un paquet de **25 cartes** et le mélange : l'un des deux
+paquets de la boîte, ou celui qu'il a composé (voir [Les paquets](#les-paquets)).
 
 - Il pose les **5 premières cartes faces cachées** devant lui, sans les
   regarder : c'est son **trésor**.
@@ -93,9 +99,13 @@ et le mélange.
 
 ### Les bonus
 
-- Deux de tes noms ont le même paysage : chacun gagne +1.
-- Tu dis en français le sens du nom qui attaque : il gagne +1. Ton adversaire
+- **La famille.** Deux de tes noms ont le même genre, écrit sur leur pastille :
+  chacun gagne +1. *d'Kaz* et *d'Ameis* sont toutes les deux féminines, *den
+  Hond* et *de Léiw* tous les deux masculins.
+- **Le sens.** Tu dis le sens du nom qui attaque : il gagne +1. Ton adversaire
   vérifie sur la carte.
+- **Pour les grands lecteurs.** Tu lis à voix haute la phrase d'exemple du nom
+  qui attaque : il gagne encore +1.
 
 ### Les cartes spéciales
 
@@ -107,3 +117,33 @@ fois par partie.
 
 **Prends les 5 cartes du trésor de ton adversaire.** Celui qui n'a plus de
 trésor a perdu. Si ta pioche est vide, tu continues sans piocher.
+
+## Les paquets {#les-paquets}
+
+### La boîte
+
+La boîte contient **deux paquets de 25 cartes**, prêts à jouer, et les cartes de
+la règle :
+
+- **Déieren**, les animaux : *Kaz*, *Hond*, *Päerd*, *Fësch*, *Elefant*,
+  *Krokodil*…
+- **Iessen**, ce qu'on mange : *Brout*, *Kéis*, *Mëllech*, *Banann*, *Tomat*,
+  *Hieselnoss*…
+
+Chacun a 14 noms, 5 verbes (*iessen*, *lafen*, *sangen*, *schwammen*…),
+3 adjectifs (*grouss*, *kleng*, *staark*…) et 3 nombres. Chaque nom d'un paquet
+a son jumeau de même Force dans l'autre : aucun des deux n'est avantagé.
+
+### Les extensions
+
+Des paquets à thème s'ajoutent à la boîte : **Schoul** (l'école : *Buch*,
+*Heft*, *Schoulsak*…) et **Natur** (*Bam*, *Sonn*, *Mound*, *Reen*…), puis
+d'autres, puisque le dictionnaire ne manque pas de mots.
+
+### Composer son paquet
+
+Avec les extensions, chacun peut composer le sien :
+
+- **25 cartes** exactement ;
+- **au moins la moitié de noms** ;
+- **un seul exemplaire** de chaque mot.

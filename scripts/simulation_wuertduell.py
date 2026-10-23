@@ -6,7 +6,8 @@ Joueurs automatiques gloutons, vrais mots du dictionnaire (nature lue au LOD).
 À lancer depuis la racine du dépôt : python3 scripts/simulation_wuertduell.py
 """
 import json, random, statistics as st, sys
-A='android_keyboard/app/src/main/assets/'
+import os
+A=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','android_keyboard/app/src/main/assets/')
 dico=json.load(open(A+'luxemburgish_dict.json'))
 cat=json.load(open(A+'luxemburgish_categories.json'))['categories']
 # vivier : les 3 000 mots les plus fréquents, par nature LOD
@@ -61,15 +62,30 @@ def tour(j,adv):
         elif adv.tresor: adv.tresor.pop()
         if not adv.tresor: return True
     return False
-def partie(n):
-    a,b=J(n),J(n); t=0
+def partie(n, paquet_a=None, paquet_b=None):
+    """Une partie ; [paquet_a] et [paquet_b] : listes de cartes (type, force,
+    coût, lieu) imposées au lieu de paquets tirés au hasard."""
+    a,b=J(n),J(n)
+    for j,p in ((a,paquet_a),(b,paquet_b)):
+        if p is not None:
+            j.pioche=list(p); random.shuffle(j.pioche)
+            j.tresor=[j.pioche.pop() for _ in range(5)]
+            j.main=[j.pioche.pop() for _ in range(5)]
+    t=0
     while t<200:
         t+=1
         if tour(a,b): return t,a,b
         if tour(b,a): return t,a,b
     return t,a,b
-random.seed(1)
-for n in (20,25,30,40):
+def gagnant(t,a,b):
+    """'a', 'b' ou None (partie interrompue)."""
+    if not b.tresor: return 'a'
+    if not a.tresor: return 'b'
+    return None
+
+if __name__ == '__main__':
+  random.seed(1)
+  for n in (20,25,30,40):
     R=[partie(n) for _ in range(4000)]
     tours=[r[0] for r in R]; pi=[max(r[1].pioches,r[2].pioches) for r in R]
     vide=sum(r[1].vide or r[2].vide for r in R)/len(R)
