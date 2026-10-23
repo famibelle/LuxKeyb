@@ -218,7 +218,11 @@ avant de vendre une carte qui porte le nom de l'événement, demander l'accord
 écrit de l'organisateur. Sur papier : à décider entre un tirage très rare
 (ex. 1 paquet sur 50 à 100) et une carte offerte au stand, ou les deux.
 
-Ne jamais imprimer de phrases d'exemple (corpus RTL, CC BY-NC).
+Les phrases d'exemple **du LOD** s'impriment (`luxemburgish_exemples.json`,
+CC0, avec leur traduction officielle du ZLS) : ce sont celles des cartes de
+l'appli. Ne jamais imprimer celles de `luxemburgish_cloze.json` (Wuertlück,
+corpus RTL, CC BY-NC), ni choisir les mots par le rang de fréquence de
+`luxemburgish_dict.json` (dérivé du même corpus).
 Crédit sur l'emballage : « Mots : LOD / ZLS (CC0) ».
 
 **Paquet de 6 (complément de la boîte)** : 6 cartes = 3 communes, 2 peu communes, 1 rare ou mieux
