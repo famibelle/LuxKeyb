@@ -133,6 +133,18 @@ FAUTES_DU_CORPUS = frozenset({
     "présentéiert",
 })
 
+# Mots ajoutés à la main, absents du corpus.
+#
+# Le dictionnaire est régénéré à chaque passage et **remplacé** : un mot ajouté
+# directement dans l'actif disparaîtrait au passage suivant. Ceux-ci sont donc
+# réinjectés ici, au seuil de fréquence, c'est-à-dire au rang le plus bas : le
+# clavier les connaît et ne les corrige plus, sans les proposer avant les mots
+# courants. Un mot que le corpus finit par contenir garde sa fréquence réelle.
+#
+# « Fierkelsmaart » (le marché aux porcelets) : demandé par le propriétaire le
+# 2026-10-23 pour la carte du stand d'avril 2027. Le LOD ne l'a pas.
+MOTS_HORS_CORPUS = ("Fierkelsmaart",)
+
 # Seuil d'occurrences d'un contexte pour qu'il produise une prédiction.
 #
 # Mesuré sur 5 000 phrases tenues à l'écart de l'entraînement : passer de 20 à
@@ -614,6 +626,11 @@ class LuxembourgishPipelineUnique:
                 self.casse_canonique[lemme] = (
                     forme_majuscule if taux >= 0.5 else lemme
                 )
+
+        for mot in MOTS_HORS_CORPUS:
+            if mot.lower() not in self.casse_canonique:
+                entrees[mot] = SEUIL_FREQUENCE_DICO
+                self.casse_canonique[mot.lower()] = mot
 
         # Tri par fréquence décroissante, puis alphabétique insensible à la
         # casse : sans quoi les 24 000 formes capitalisées se regrouperaient
