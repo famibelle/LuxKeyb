@@ -4997,6 +4997,11 @@ private class Porcelet(heure: Heure) : Sujet(heure, RectF(30f, 6f, 70f, 58f)) {
     override fun tracer(c: Canvas) {
         plume.strokeCap = Paint.Cap.ROUND
         plume.strokeJoin = Paint.Join.ROUND
+        // Réduit vers le sol : à pleine taille, les oreilles montaient sous le
+        // joyau de la clef ([Ornement.GEMME_CENTRE]), qui mord sur le haut de
+        // la fenêtre (maquette du 2026-10-23).
+        c.save()
+        c.scale(REDUCTION, REDUCTION, 50f, 59f)
         medaillon(c)
         c.save()
         c.translate(0f, -1f)
@@ -5005,6 +5010,7 @@ private class Porcelet(heure: Heure) : Sujet(heure, RectF(30f, 6f, 70f, 58f)) {
         c.save()
         c.translate(0f, 1.4f)
         ruban(c)
+        c.restore()
         c.restore()
     }
 
@@ -5144,6 +5150,7 @@ private class Porcelet(heure: Heure) : Sujet(heure, RectF(30f, 6f, 70f, 58f)) {
         val OR_SOMBRE = 0xFFC98A2C.toInt()
         val BRUN = 0xFF7A4E12.toInt()
 
+        const val REDUCTION = 0.9f
         const val RAYON_LAURIER = 15.4f
         val A0 = Math.toRadians(-62.0).toFloat()
         val A1 = Math.toRadians(70.0).toFloat()
