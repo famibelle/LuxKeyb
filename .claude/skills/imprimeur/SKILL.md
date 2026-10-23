@@ -49,6 +49,23 @@ le papier (cadre, couleur) pour rester fidèle à l'application.
   l'épreuve imprimée.
 - Dos commun à toutes les cartes (identique pour le jeu), recto propre à chaque carte.
 
+**Exigence : qualité professionnelle, non négociable.** Ne jamais proposer
+l'option la moins chère d'un imprimeur.
+
+- Carton carte à jouer ~310 g/m² à âme noire ou bleue (pas un simple papier
+  350 g) : MakePlayingCards « M31 » ou « S33 », jamais le carton standard.
+- Pelliculage toilé (linen) obligatoire.
+- Découpe à l'emporte-pièce, bords nets et réguliers, coins arrondis 3 mm.
+- Quadrichromie offset ou numérique haut de gamme, noirs profonds.
+- Fichiers convertis en CMJN avec le profil ICC de l'imprimeur ; export
+  vectoriel quand c'est possible (le code dessine les cartes), sinon ≥ 300 dpi.
+- BAT physique obligatoire avant toute série.
+- Option premium : dorure à chaud ou vernis sélectif sur rares et très rares
+  (beau et difficile à contrefaire).
+- Sélection de l'imprimeur **sur pièce** : 2–3 prototypes chez deux
+  imprimeurs différents, comparés en main (rigidité, glisse, couleurs, coupe).
+- Coût de cette qualité : +20 à 40 % par rapport à l'entrée de gamme.
+
 ## 3. Produire les fichiers
 
 Les cartes ne sont pas des images dans le dépôt : elles sont dessinées par le
@@ -116,11 +133,67 @@ illégale à la vente, sans valeur, et reconnaissable.
 4. **Politique décidée** : copie scolaire et éducative tolérée, usage
    commercial interdit. Ne pas proposer de mesure qui gênerait les classes.
 
-## 7. Comment répondre
+## 7. Vente en paquets (décisions d'octobre 2026)
+
+À revoir avec les vrais devis ; refaire les calculs plutôt que recopier.
+
+**Raretés imprimées** : fixées à la main pour le papier (pas dérivées de
+`luxemburgish_dict.json`, qui est en partie CC BY-NC → interdit à la vente).
+Rare = beau (paysage de nuit, enluminure), pas « mot peu fréquent ».
+
+| Rareté | Cartes |
+|---|---|
+| Commune | 140 |
+| Peu commune | 70 |
+| Rare | 30 |
+| Très rare | 8 (les 7 cartes Jeux + 1 carte Fierkelsmaart) |
+
+Ne jamais imprimer de phrases d'exemple (corpus RTL, CC BY-NC).
+Crédit sur l'emballage : « Mots : LOD / ZLS (CC0) ».
+
+**Paquet** : 6 cartes = 3 communes, 2 peu communes, 1 rare ou mieux
+(très rare ~1 paquet sur 6). La première idée (4/1/1) était trop dure.
+
+**Compléter la collection (simulation, sans échange)** :
+
+| Composition | Paquets (médiane) | 90 % des joueurs |
+|---|---|---|
+| 4 C / 1 PC / 1 R | ~330 | ~455 |
+| 3 C / 2 PC / 1 R (retenu) | ~250 | ~345 |
+| 6 C / 3 PC / 1 R (10 cartes) | ~165 | ~235 |
+
+Le goulot est les peu communes puis rares/très rares. Compenser par :
+l'échange (QR de l'application, coin « Je cherche / Je donne » au stand) et
+un **coffret complet** de 248 cartes à 35–45 € (écoles, impatients).
+
+**Prix et volume** :
+
+- 4 € le paquet, 3 pour 10 € ; lot école 20 paquets pour 60 €.
+- Tirage 1 : 500 paquets (3 000 cartes, ~12 coffrets), en impression à la
+  demande qualité, mis en paquets à la main.
+- Coût par paquet qualité ~1,25–1,40 € (1,50–1,70 € avec dorure).
+- Frais fixes ~385 € (marque BOIP ~275, prototype ~60, maquette pochette ~50),
+  hors emplacement de stand.
+- Seuil de rentabilité ~150 paquets ; ~400 vendus (80 %) → bénéfice ~+600 €.
+- Librairies : 30–40 % de commission → rester à 4 €, pas en dessous.
+- Édition suivante en offset (≥ 1 000) → ~0,60–0,80 € le paquet.
+- TVA : franchise probable sous ~50 000 €/an au Luxembourg — à vérifier.
+  Statut (indépendant, asbl) à valider par la Chambre de commerce ou un comptable.
+
+**Emballage** : pochette scellée ou kraft étiquetée ; mentions fabricant et
+adresse, avertissement « ne convient pas aux moins de 3 ans », © et licence
+(voir section 6), crédit LOD/ZLS.
+
+**Calendrier Fierkelsmaart (avril 2027)** : marque et statut en novembre,
+fichiers et prototypes décembre–janvier, BAT et série en février.
+
+## 8. Comment répondre
 
 - Toujours demander ou supposer explicitement : quel ensemble de cartes,
   combien d'exemplaires, boîte ou non.
 - Donner les prix comme fourchettes, jamais comme devis.
 - Proposer d'abord un prototype avant toute série.
 - Rappeler la section 6 dès qu'on produit des fichiers d'impression.
+- Rappeler l'exigence de qualité (section 2) et les décisions de vente
+  (section 7) ; les présenter comme des estimations, pas des devis.
 - Répondre en français par défaut.
