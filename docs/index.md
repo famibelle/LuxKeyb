@@ -79,10 +79,10 @@ s'écrit pendant que vous parlez, ponctué et avec les majuscules. Le micro se
 referme de lui-même quand vous vous arrêtez.
 
 <div style="display:flex;justify-content:center;margin:24px 0;">
-  <figure style="margin:0;max-width:420px;text-align:center;">
-    <img src="Screenshots/lux_dictee_clavier.gif" style="width:100%;height:auto;border-radius:8px;"
-         width="420" height="380" loading="lazy"
-         alt="Dictée dans un SMS : sous le bandeau LuxASR, la phrase « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott. » apparaît en trois temps dans le champ de saisie, puis le micro se referme">
+  <figure style="margin:0;max-width:540px;text-align:center;">
+    <img src="newsletter/2026-10/mail/micro.gif" style="width:100%;height:auto;border-radius:8px;"
+         width="540" height="228" loading="lazy"
+         alt="Un micro rouge pulse, et la phrase « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott. » s'écrit dans une bulle">
     <figcaption>
       « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott »
       (à la kermesse, je mange toujours des galettes de pommes de terre avec de
