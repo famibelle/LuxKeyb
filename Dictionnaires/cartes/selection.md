@@ -5,9 +5,9 @@ Proposition produite par `scripts/candidats_cartes.py` à partir du LOD (CC0).
 pas si un mot convient à un enfant, et le thème est lu sur le premier sens.
 Pour remplacer une carte, prendre un mot de même coût dans `candidats.csv`.
 
-Vivier : 341 mots à thème, verbes et adjectifs d'enfant, dont 25 déjà dessinés dans l'application.
+Vivier : 341 mots à thème, verbes et adjectifs d'enfant, dont 43 déjà dessinés dans l'application.
 
-**Équilibre de la boîte** (simulation, `scripts/simulation_wuertduell.py`) : Déieren gagne 50% des parties contre Iessen ; 6 tours en médiane, 9 pour 90 % des parties.
+**Équilibre de la boîte** (simulation, `scripts/simulation_wuertduell.py`) : Déieren gagne 49% des parties contre Iessen ; 6 tours en médiane, 9 pour 90 % des parties.
 
 # La boîte de départ : 2 paquets de 26 (52 cartes) + 2 cartes de règle
 
@@ -16,22 +16,22 @@ Vivier : 341 mots à thème, verbes et adjectifs d'enfant, dont 25 déjà dessin
 | Mot | Nature | Coût | Force | Sens | Paysage | Dessin | Phrase d'exemple |
 |---|---|---|---|---|---|---|---|
 | **Kaz** | nom f. | ● | 3 | chat | Mëllerdall | chat | *d'Kaz sëtzt virun der Fënster ze miauen* — le chat est assis devant la fenêtre et miaule |
+| **Beie** | nom f. | ● | 4 | abeille | Stad | abeille | *ech si vun enger Bei gepickt ginn* — j’ai été piqué par une abeille |
 | **Hond** | nom m. | ● | 4 | chien | Mëllerdall | chien | *d'Hënn hunn déi ganz Nuecht gebillt* |
 | **Léiw** | nom m. | ● | 4 | lion | Mëllerdall | lion | *op eiser Safari hu mir vill Léiwe gesinn* |
-| **Beie** | nom f. | ● | 4 | abeille | Stad | — | *ech si vun enger Bei gepickt ginn* — j’ai été piqué par une abeille |
+| **Ameis** | nom f. | ◆◆ | 5 | fourmi | Stad | fourmi | *ënner dem Fënsterbriet haust eng Kolonie Ameisen* — une colonie de fourmis s'est installée sous le rebord de la fenêtre |
 | **Fësch** | nom m. | ◆◆ | 5 | poisson | Stad | poisson | *beim Tauchen hu mer riseg Schwäerm Fësch gesinn* — pendant notre plongée, nous avons vu de gigantesques bancs de poissons |
 | **Päerd** | nom n. | ◆◆ | 5 | cheval | Mëllerdall | cheval | *d'Päerd sinn iwwer d'Weed galoppéiert* |
-| **Ameis** | nom f. | ◆◆ | 5 | fourmi | Stad | — | *ënner dem Fënsterbriet haust eng Kolonie Ameisen* — une colonie de fourmis s'est installée sous le rebord de la fenêtre |
-| **Delfin** | nom m. | ◆◆ | 6 | dauphin | Stad | — | *op eiser Croisière krute mer Walen an Delfinen ze gesinn* — nous avons vu des baleines et des dauphins lors de notre croisière |
-| **Kallef** | nom n. | ◆◆ | 6 | veau | Stad | — | *d'Bauerefra huet d'Kaalwer mam Eemer gedränkt* — l’agricultrice a abreuvé les veaux au seau |
-| **Elefant** | nom m. | ◆◆ | 7 | éléphant | Stad | — | *d'Kanner ware mat hirer Joffer d'Elefanten an den Zoo kucken* — les enfants ont été voir des éléphants au zoo avec leur institutrice |
-| **Harespel** | nom f. | ★★★ | 8 | guêpe | Stad | — | *ech sinn dëse Summer schonn zweemol vun enger Harespel gepickt ginn* |
-| **Krokodil** | nom | ★★★ | 8 | crocodile | Stad | — | *den Zoo huet e puer Krokodille bäikritt* |
-| **Schmuewel** | nom f. | ★★★ | 9 | hirondelle | Stad | — | *wann d'Schmuewelen déif fléien, da gëtt et gewéinlech Reen* — les hirondelles volent bas lorsqu’il va pleuvoir |
-| **Kanéngchen** | nom f. | ★★★ | 10 | lapin | Stad | — | *d'Kanner wënsche sech eng Kanéngchen als Hausdéier* |
+| **Delfin** | nom m. | ◆◆ | 6 | dauphin | Stad | dauphin | *op eiser Croisière krute mer Walen an Delfinen ze gesinn* — nous avons vu des baleines et des dauphins lors de notre croisière |
+| **Kallef** | nom n. | ◆◆ | 6 | veau | Stad | veau | *d'Bauerefra huet d'Kaalwer mam Eemer gedränkt* — l’agricultrice a abreuvé les veaux au seau |
+| **Elefant** | nom m. | ◆◆ | 7 | éléphant | Stad | elephant | *d'Kanner ware mat hirer Joffer d'Elefanten an den Zoo kucken* — les enfants ont été voir des éléphants au zoo avec leur institutrice |
+| **Harespel** | nom f. | ★★★ | 8 | guêpe | Stad | guepe | *ech sinn dëse Summer schonn zweemol vun enger Harespel gepickt ginn* |
+| **Krokodil** | nom m./n. | ★★★ | 8 | crocodile | Stad | crocodile | *den Zoo huet e puer Krokodille bäikritt* |
+| **Schmuewel** | nom f. | ★★★ | 9 | hirondelle | Stad | hirondelle | *wann d'Schmuewelen déif fléien, da gëtt et gewéinlech Reen* — les hirondelles volent bas lorsqu’il va pleuvoir |
+| **Kanéngchen** | nom f. | ★★★ | 10 | lapin | Stad | lapin | *d'Kanner wënsche sech eng Kanéngchen als Hausdéier* |
 | **iessen** | verbe | ◆◆ | 6 | manger | Mëllerdall | — | *mir iessen de Mëtteg Nuddelen* |
 | **lafen** | verbe | ◆◆ | 5 | courir | Rout Bréck | — | *du kanns méi séier lafen ewéi ech* |
-| **spillen** | verbe | ◆◆ | 7 | jouer à | Schueberfouer | — | *am Zuch hunn e puer Leit Kaart gespillt* |
+| **spillen** | verbe | ◆◆ | 7 | jouer | Schueberfouer | — | *am Zuch hunn e puer Leit Kaart gespillt* |
 | **danzen** | verbe | ◆◆ | 6 | danser | Stad | — | *meng Cheffin huet um Bal bis mueres fréi mat hirer Frëndin gedanzt* — ma patronne a dansé avec sa copine au bal jusqu’aux petites heures du matin |
 | **sprangen** | verbe | ★★★ | 8 | sauter | Stad | — | *ech ka méi héich sprangen ewéi mäi Brudder* |
 | **léif** | adjectif | ● | 4 | gentil | Schueberfouer | — | *seng nei Frëndin ass emol eng léif Fra!* |
@@ -46,20 +46,20 @@ Vivier : 341 mots à thème, verbes et adjectifs d'enfant, dont 25 déjà dessin
 
 | Mot | Nature | Coût | Force | Sens | Paysage | Dessin | Phrase d'exemple |
 |---|---|---|---|---|---|---|---|
-| **Ënn** | nom f. | ● | 3 | oignon | Stad | — | *den Hobbygäertner huet zwou Reie schéin, déck Ënnen a sengem Gaart* — le jardinier amateur a deux rangées de beaux oignons épais dans son jardin |
+| **Ënn** | nom f. | ● | 3 | oignon | Stad | oignon | *den Hobbygäertner huet zwou Reie schéin, déck Ënnen a sengem Gaart* — le jardinier amateur a deux rangées de beaux oignons épais dans son jardin |
 | **Kuch** | nom m. | ● | 4 | gâteau | Mëllerdall | gateau | *ech freeë mech elo op e gutt Stéck Kuch mat enger Taass Kaffi!* — là, je me réjouis à l'avance de prendre un morceau de gâteau et une tasse de café ! |
 | **Café** | nom m. | ● | 4 | café | Mëllerdall | cafe | *am Duerf sinn zënter Kuerzem zwee Caféen* — depuis peu, il y a deux cafés dans le village |
 | **Kéis** | nom m. | ● | 4 | fromage | Stad | fromage | *fir den Owend hunn ech Kéis matbruecht* — pour ce soir, j'ai amené du fromage |
 | **Brout** | nom n. | ◆◆ | 5 | pain | Stad | pain | *ech hunn dat schwaarzt Brout am léifsten* — je préfère le pain noir |
-| **Promm** | nom f. | ◆◆ | 5 | prune | Stad | — | *d'Tatta huet Gebeess mat Prommen aus hirem Bongert gekacht* — la tante a fait de la confiture avec des prunes de son verger |
-| **Tomat** | nom f. | ◆◆ | 5 | tomate | Stad | — | *ass et net nach ze kal, fir Tomaten ze setzen?* — ne fait-il pas encore trop froid pour planter des tomates ? |
-| **Banann** | nom f. | ◆◆ | 6 | banane | Stad | — | *Bananne si bei Sportler e beléifte Snack* — les bananes sont un en-cas apprécié des sportifs |
-| **Botter** | nom m. | ◆◆ | 6 | beurre | Stad | — | *mäi Papp ësst keng Schmier ouni Botter* — mon père ne mange pas de tartine sans beurre |
+| **Promm** | nom f. | ◆◆ | 5 | prune | Stad | prune | *d'Tatta huet Gebeess mat Prommen aus hirem Bongert gekacht* — la tante a fait de la confiture avec des prunes de son verger |
+| **Tomat** | nom f. | ◆◆ | 5 | tomate | Stad | tomate | *ass et net nach ze kal, fir Tomaten ze setzen?* — ne fait-il pas encore trop froid pour planter des tomates ? |
+| **Banann** | nom f. | ◆◆ | 6 | banane | Stad | banane | *Bananne si bei Sportler e beléifte Snack* — les bananes sont un en-cas apprécié des sportifs |
+| **Botter** | nom m. | ◆◆ | 6 | beurre | Stad | beurre | *mäi Papp ësst keng Schmier ouni Botter* — mon père ne mange pas de tartine sans beurre |
 | **Mëllech** | nom f. | ◆◆ | 7 | lait | Stad | lait | *d'Mamm wiermt d'Mëllech fir de Bëbee* |
-| **Paangech** | nom m. | ★★★ | 8 | crêpe | Stad | — | *ech hätt emol erëm Loscht op eng Geméiszopp mat Paangecher!* |
-| **Hammbier** | nom | ★★★ | 8 | framboise | Stad | — | *mir hunn e ganzen Eemer Hammbiere gepléckt* |
-| **Bréitchen** | nom n. | ★★★ | 9 | petit pain | Stad | — | *mäi Mann ësst mueres am léifsten e Bréitchen* — le matin, mon mari mange un petit pain de préférence |
-| **Hieselnoss** | nom f. | ★★★ | 10 | noisette | Stad | — | *et gouf dëst Joer net vill Hieselnëss* — il y a eu peu de noisettes cette année |
+| **Paangech** | nom m. | ★★★ | 8 | crêpe | Stad | crepe | *ech hätt emol erëm Loscht op eng Geméiszopp mat Paangecher!* |
+| **Hammbier** | nom f./n. | ★★★ | 8 | framboise | Stad | framboise | *mir hunn e ganzen Eemer Hammbiere gepléckt* |
+| **Bréitchen** | nom n. | ★★★ | 9 | petit pain | Stad | petit_pain | *mäi Mann ësst mueres am léifsten e Bréitchen* — le matin, mon mari mange un petit pain de préférence |
+| **Hieselnoss** | nom f. | ★★★ | 10 | noisette | Stad | noisette | *et gouf dëst Joer net vill Hieselnëss* — il y a eu peu de noisettes cette année |
 | **drénken** | verbe | ◆◆ | 7 | boire | Mëllerdall | — | *ech drénke just e Glas Waasser* |
 | **fléien** | verbe | ◆◆ | 6 | voler | Rout Bréck | — | *ech sinn nach ni (mam) Helikopter geflunn* |
 | **sangen** | verbe | ◆◆ | 6 | chanter | Stad | — | *fir Chrëschtdag huet de Chouer all déi bekannt Lidder gesongen* — pour Noël, le chœur a chanté tous les chants connus |

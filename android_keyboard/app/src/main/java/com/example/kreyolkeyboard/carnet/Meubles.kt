@@ -1292,5 +1292,306 @@ internal object Meubles {
             p.pol(-32f, 14f, -19.36f, 14f, -22.67f, 20f, -32f, 20f)
             p.pol(19.36f, 14f, 32f, 14f, 32f, 20f, 22.67f, 20f)
         },
+
+        // ---- la boîte de départ du Wuertduell (scripts/silhouettes_boite.py) ----
+        // Une autre règle que les quatre cartes sur cent : sur le jeu imprimé,
+        // chacun des 28 noms de la boîte porte un dessin, parce qu'un enfant
+        // regarde l'image avant le mot (propriétaire, 2026-10-26). Ces dix-huit
+        // silhouettes complètent les dix que la bibliothèque avait déjà.
+        "abeille" to { p ->                                   // Beie
+            p.pol(-22f, 10f, -19.8f, 4.2f, -17.6f, 1.9f, -15.4f, 0.4f, -13.2f, -0.9f, -11.1f, -1.9f, -8.9f, -2.7f, -6.7f, -3.4f, -4.5f, -3.9f, -4.5f, 23.9f, -6.7f, 23.4f, -8.9f, 22.7f, -11.1f, 21.9f, -13.2f, 20.9f, -15.4f, 19.6f, -17.6f, 18.1f, -19.8f, 15.8f, -22f, 10f)
+            p.pol(0.5f, -4.7f, 1.9f, -4.8f, 3.2f, -4.9f, 4.6f, -5f, 6f, -5f, 7.4f, -5f, 8.8f, -4.9f, 10.1f, -4.8f, 11.5f, -4.7f, 11.5f, 24.7f, 10.1f, 24.8f, 8.8f, 24.9f, 7.4f, 25f, 6f, 25f, 4.6f, 25f, 3.2f, 24.9f, 1.9f, 24.8f, 0.5f, 24.7f)
+            p.pol(16.5f, -3.9f, 18.7f, -3.4f, 20.9f, -2.7f, 23.1f, -1.9f, 25.2f, -0.9f, 27.4f, 0.4f, 29.6f, 1.9f, 31.8f, 4.2f, 34f, 10f, 34f, 10f, 31.8f, 15.8f, 29.6f, 18.1f, 27.4f, 19.6f, 25.2f, 20.9f, 23.1f, 21.9f, 20.9f, 22.7f, 18.7f, 23.4f, 16.5f, 23.9f) // le corps et ses rayures
+            p.disque(-33f, 9f, 9f)                                     // la tête
+            p.disque(-36f, 6f, 2.6f)                                   // l'œil
+            p.ovale(-18f, -38f, 2f, -10f)                              // les ailes
+            p.ovale(6f, -40f, 30f, -10f)
+            p.pol(35f, 7f, 47f, 10f, 35f, 13f)                         // le dard
+            p.pol(-38f, -2f, -46f, -18f, -43f, -19f, -35f, -3f)        // les antennes
+            p.pol(-31f, -3f, -32f, -20f, -29f, -20f, -28f, -3f)
+        },
+        "fourmi" to { p ->                                   // Ameis
+            p.disque(-34f, -6f, 8f)                                    // la tête
+            p.ovale(-24f, -12f, -6f, 2f)                               // le thorax
+            p.ovale(-3f, -18f, 40f, 14f)                               // l'abdomen
+            p.pol(-22.5f, 4f, -19.5f, 4f, -28.5f, 22f, -39f, 33f, -42f, 33f, -31.5f, 23f)
+            p.pol(-16.5f, 4f, -13.5f, 4f, -14.5f, 22f, -19f, 33f, -22f, 33f, -17.5f, 23f)
+            p.pol(-10.5f, 4f, -7.5f, 4f, 3.5f, 22f, 11f, 33f, 8f, 33f, 0.5f, 23f) // les pattes
+            p.pol(-37f, -15f, -41f, -28f, -50f, -32f, -50f, -29f, -43f, -26f, -40f, -15f) // les antennes
+            p.pol(-32f, -15f, -30f, -30f, -38f, -40f, -36f, -41f, -28f, -31f, -30f, -15f)
+        },
+        "guepe" to { p ->                                   // Harespel
+            p.disque(-38f, 0f, 7f)                                     // la tête
+            p.disque(-41f, -2f, 1.8f)                                  // l'œil
+            p.ovale(-29f, -8f, -9f, 8f)                                // le thorax
+            p.moveTo(-6f, 0f)
+            p.cubicTo(-4f, -12f, 18f, -14f, 30f, -8f)
+            p.cubicTo(38f, -4f, 44f, 0f, 48f, 4f)
+            p.cubicTo(40f, 8f, 34f, 14f, 26f, 15f)
+            p.cubicTo(12f, 18f, -4f, 12f, -6f, 0f)
+            p.close()                                                  // l'abdomen
+            p.pol(5f, -9f, 9f, -9f, 9f, 11f, 5f, 11f)
+            p.pol(15f, -8f, 19f, -8f, 19f, 10f, 15f, 10f)
+            p.pol(25f, -6f, 29f, -6f, 29f, 8f, 25f, 8f)                // ses rayures
+            p.ovale(-24f, -32f, 16f, -14f)                             // l'aile
+            p.pol(-42f, -8f, -48f, -22f, -45f, -23f, -39f, -9f)        // l'antenne
+            p.pol(-24f, 10f, -22f, 10f, -26f, 24f, -28f, 24f)
+            p.pol(-18f, 10f, -16f, 10f, -20f, 24f, -22f, 24f)
+            p.pol(-12f, 10f, -10f, 10f, -14f, 24f, -16f, 24f)          // les pattes
+        },
+        "dauphin" to { p ->                                   // Delfin
+            p.moveTo(-48f, 14f)
+            p.cubicTo(-44f, 10f, -38f, 8f, -33f, 7f)                   // le bec
+            p.cubicTo(-32f, -2f, -26f, -8f, -18f, -10f)                // le melon
+            p.cubicTo(-8f, -14f, 0f, -15f, 6f, -14f)
+            p.cubicTo(8f, -24f, 14f, -32f, 22f, -34f)
+            p.cubicTo(18f, -26f, 18f, -18f, 21f, -11f)                 // l'aileron, recourbé
+            p.cubicTo(30f, -6f, 36f, 2f, 39f, 10f)
+            p.cubicTo(42f, 4f, 46f, 0f, 49f, -2f)
+            p.cubicTo(48f, 8f, 47f, 16f, 49f, 26f)
+            p.cubicTo(44f, 22f, 40f, 20f, 36f, 19f)                    // la queue
+            p.cubicTo(28f, 16f, 14f, 14f, 2f, 14f)
+            p.cubicTo(-2f, 20f, -8f, 26f, -14f, 28f)
+            p.cubicTo(-13f, 22f, -12f, 18f, -12f, 14f)                 // la nageoire
+            p.cubicTo(-26f, 15f, -38f, 17f, -48f, 16f)
+            p.close()
+            p.disque(-25f, 3f, 2.6f)                                   // l'œil
+            p.moveTo(-46f, 14.5f)
+            p.cubicTo(-40f, 12f, -34f, 12f, -30f, 13f)
+            p.cubicTo(-34f, 13.6f, -40f, 14f, -46f, 15.5f)
+            p.close()                                                  // la bouche
+        },
+        "veau" to { p ->                                   // Kallef
+            p.moveTo(0f, -34f)
+            p.cubicTo(18f, -34f, 26f, -22f, 26f, -6f)
+            p.cubicTo(26f, 12f, 20f, 22f, 19f, 30f)
+            p.cubicTo(16f, 44f, -16f, 44f, -19f, 30f)
+            p.cubicTo(-20f, 22f, -26f, 12f, -26f, -6f)
+            p.cubicTo(-26f, -22f, -18f, -34f, 0f, -34f)
+            p.close()                                                  // la tête
+            p.pol(-28f, -16f, -48f, -24f, -46f, -12f, -28f, -6f)
+            p.pol(28f, -16f, 48f, -24f, 46f, -12f, 28f, -6f)           // les oreilles
+            p.disque(-10f, -8f, 4f)                                    // les yeux
+            p.disque(10f, -8f, 4f)
+            p.disque(-7f, 31f, 3f)                                     // les naseaux
+            p.disque(7f, 31f, 3f)
+            p.pol(-7f, -35f, 0f, -44f, 7f, -35f)                       // le toupet
+        },
+        "elephant" to { p ->                                   // Elefant
+            p.moveTo(40f, -4f)
+            p.cubicTo(40f, -22f, 26f, -28f, 8f, -28f)                  // le dos
+            p.cubicTo(-4f, -28f, -12f, -27f, -18f, -25f)
+            p.cubicTo(-30f, -32f, -46f, -24f, -44f, -6f)               // le front
+            p.lineTo(-46f, 28f)
+            p.cubicTo(-46f, 34f, -38f, 36f, -37f, 30f)
+            p.lineTo(-38f, 24f)                                        // la trompe
+            p.cubicTo(-37f, 12f, -33f, 6f, -26f, 6f)
+            p.lineTo(-23f, 18f)
+            p.lineTo(-23f, 42f)
+            p.lineTo(-11f, 42f)
+            p.lineTo(-11f, 22f)                                        // les pattes
+            p.cubicTo(0f, 24f, 12f, 24f, 20f, 22f)
+            p.lineTo(20f, 42f)
+            p.lineTo(32f, 42f)
+            p.lineTo(32f, 22f)
+            p.cubicTo(38f, 18f, 40f, 10f, 40f, -4f)
+            p.close()
+            p.moveTo(-22f, -18f)
+            p.cubicTo(-10f, -22f, -4f, -10f, -6f, 2f)
+            p.cubicTo(-8f, 8f, -14f, 10f, -20f, 6f)
+            p.cubicTo(-24f, -2f, -26f, -12f, -22f, -18f)
+            p.close()                                                  // l'oreille, en réserve
+            p.disque(-33f, -12f, 2.6f)                                 // l'œil
+            p.pol(42f, -2f, 48f, 12f, 45f, 13f, 41f, 3f)               // la queue
+        },
+        "crocodile" to { p ->                                   // Krokodil
+            p.moveTo(-49f, 3f)
+            p.lineTo(-30f, -2f)                                        // la mâchoire
+            p.cubicTo(-26f, -8f, -19f, -9f, -14f, -6f)                 // l'œil, en bosse
+            p.lineTo(-8f, -7f)
+            p.lineTo(-5f, -12f)
+            p.lineTo(-2f, -7f)
+            p.lineTo(3f, -12f)
+            p.lineTo(6f, -7f)
+            p.lineTo(11f, -12f)
+            p.lineTo(14f, -7f)
+            p.lineTo(19f, -12f)
+            p.lineTo(22f, -7f)
+            p.lineTo(27f, -11f)
+            p.lineTo(30f, -6f)                                         // les écailles
+            p.cubicTo(38f, -6f, 44f, -4f, 49f, -1f)                    // la queue
+            p.cubicTo(42f, 4f, 32f, 6f, 24f, 6f)
+            p.lineTo(24f, 15f)
+            p.lineTo(15f, 15f)
+            p.lineTo(15f, 8f)                                          // les pattes
+            p.lineTo(-8f, 8f)
+            p.lineTo(-8f, 15f)
+            p.lineTo(-17f, 15f)
+            p.lineTo(-17f, 7f)
+            p.cubicTo(-27f, 9f, -39f, 10f, -49f, 8f)
+            p.close()
+            p.disque(-19f, -5f, 2.2f)                                  // l'œil
+            p.pol(-46f, 5f, -26f, 4f, -26f, 5.6f, -46f, 6.4f)          // la gueule
+        },
+        "hirondelle" to { p ->                                   // Schmuewel
+            p.moveTo(0f, -34f)
+            p.cubicTo(6f, -34f, 8f, -28f, 8f, -21f)
+            p.cubicTo(22f, -19f, 38f, -9f, 49f, 8f)
+            p.cubicTo(34f, 2f, 20f, 2f, 8f, 6f)                        // l'aile
+            p.lineTo(8f, 14f)
+            p.lineTo(19f, 46f)
+            p.lineTo(0f, 25f)
+            p.lineTo(-19f, 46f)
+            p.lineTo(-8f, 14f)                                         // la queue fourchue
+            p.lineTo(-8f, 6f)
+            p.cubicTo(-20f, 2f, -34f, 2f, -49f, 8f)
+            p.cubicTo(-38f, -9f, -22f, -19f, -8f, -21f)
+            p.cubicTo(-8f, -28f, -6f, -34f, 0f, -34f)
+            p.close()
+        },
+        "lapin" to { p ->                                   // Kanéngchen
+            p.ovale(-21f, -50f, -7f, -12f)                             // les oreilles
+            p.ovale(7f, -50f, 21f, -12f)
+            p.ovale(-17f, -44f, -11f, -18f)                            // leur creux
+            p.ovale(11f, -44f, 17f, -18f)
+            p.moveTo(0f, -10f)
+            p.cubicTo(18f, -10f, 28f, 4f, 28f, 16f)
+            p.cubicTo(28f, 32f, 16f, 42f, 0f, 42f)
+            p.cubicTo(-16f, 42f, -28f, 32f, -28f, 16f)
+            p.cubicTo(-28f, 4f, -18f, -10f, 0f, -10f)
+            p.close()                                                  // la tête
+            p.disque(-11f, 10f, 4f)                                    // les yeux
+            p.disque(11f, 10f, 4f)
+            p.pol(-4f, 22f, 4f, 22f, 0f, 27f)                          // le nez
+        },
+        "oignon" to { p ->                                   // Ënn
+            p.moveTo(0f, -42f)
+            p.cubicTo(4f, -32f, 8f, -26f, 14f, -22f)
+            p.cubicTo(30f, -12f, 38f, 2f, 36f, 16f)
+            p.cubicTo(34f, 32f, 18f, 40f, 0f, 40f)
+            p.cubicTo(-18f, 40f, -34f, 32f, -36f, 16f)
+            p.cubicTo(-38f, 2f, -30f, -12f, -14f, -22f)
+            p.cubicTo(-8f, -26f, -4f, -32f, 0f, -42f)
+            p.close()                                                  // le bulbe
+            p.moveTo(-3f, -16f)
+            p.cubicTo(-15f, -6f, -19f, 12f, -12f, 32f)
+            p.lineTo(-9f, 32f)
+            p.cubicTo(-14f, 12f, -11f, -6f, -1f, -16f)
+            p.close()                                                  // ses pelures
+            p.moveTo(3f, -16f)
+            p.cubicTo(15f, -6f, 19f, 12f, 12f, 32f)
+            p.lineTo(9f, 32f)
+            p.cubicTo(14f, 12f, 11f, -6f, 1f, -16f)
+            p.close()
+            p.pol(-9f, 42f, -7f, 42f, -8.5f, 49f, -10.5f, 49f)
+            p.pol(-1f, 42f, 1f, 42f, 1f, 49f, -1f, 49f)
+            p.pol(7f, 42f, 9f, 42f, 10.5f, 49f, 8.5f, 49f)             // les racines
+        },
+        "tomate" to { p ->                                   // Tomat
+            p.ovale(-42f, -24f, 42f, 40f)                              // le fruit
+            p.pol(0f, -21.2f, 3.5f, -13.9f, 16.2f, -14.2f, 5.7f, -9.9f, 10f, -2.7f, 0f, -7.4f, -10f, -2.7f, -5.7f, -9.9f, -16.2f, -14.2f, -3.5f, -13.9f) // le calice, en réserve
+            p.pol(-2f, -27f, 2f, -27f, 4f, -40f, 0f, -40f)             // la queue
+        },
+        "prune" to { p ->                                   // Promm
+            p.moveTo(0f, -26f)
+            p.cubicTo(22f, -26f, 32f, -6f, 30f, 12f)
+            p.cubicTo(28f, 32f, 16f, 44f, 0f, 44f)
+            p.cubicTo(-16f, 44f, -30f, 32f, -30f, 12f)
+            p.cubicTo(-30f, -8f, -20f, -26f, 0f, -26f)
+            p.close()                                                  // le fruit
+            p.moveTo(3f, -20f)
+            p.cubicTo(15f, -4f, 15f, 22f, 5f, 38f)
+            p.lineTo(3f, 38f)
+            p.cubicTo(12f, 22f, 12f, -4f, 1f, -20f)
+            p.close()                                                  // son sillon
+            p.pol(-1f, -29f, 2f, -29f, 6f, -44f, 3f, -45f)             // la queue
+            p.moveTo(8f, -36f)
+            p.cubicTo(16f, -48f, 32f, -46f, 38f, -40f)
+            p.cubicTo(30f, -32f, 16f, -30f, 8f, -36f)
+            p.close()                                                  // la feuille
+        },
+        "banane" to { p ->                                   // Banann
+            p.moveTo(-40f, -32f)
+            p.lineTo(-33f, -36f)                                       // la queue
+            p.cubicTo(-28f, -10f, -8f, 12f, 20f, 16f)
+            p.cubicTo(32f, 18f, 42f, 14f, 47f, 8f)
+            p.cubicTo(42f, 26f, 24f, 34f, 6f, 32f)
+            p.cubicTo(-20f, 30f, -38f, 6f, -43f, -28f)
+            p.close()
+            p.moveTo(-34f, -18f)
+            p.cubicTo(-26f, 4f, -8f, 20f, 18f, 23f)
+            p.cubicTo(-6f, 23f, -26f, 8f, -34f, -18f)
+            p.close()                                                  // l'arête
+        },
+        "beurre" to { p ->                                   // Botter
+            p.pol(-36f, -7f, -12f, -22f, 38f, -22f, 14f, -7f)          // le dessus
+            p.pol(-36f, -4f, 13f, -4f, 13f, 22f, -36f, 22f)            // la face
+            p.pol(16f, -5f, 38f, -19f, 38f, 7f, 16f, 21f)              // le côté
+            p.ovale(-46f, 25f, 46f, 37f)                               // l'assiette
+        },
+        "crepe" to { p ->                                   // Paangech
+            p.arrondi(-8f, -18f, 8f, -11f, 2f)                         // la noix de beurre
+            p.arrondi(-36f, -8f, 36f, 3f, 5.5f)                        // la pile
+            p.arrondi(-40f, 6f, 40f, 17f, 5.5f)
+            p.arrondi(-38f, 20f, 38f, 31f, 5.5f)
+            p.ovale(-48f, 34f, 48f, 44f)                               // l'assiette
+        },
+        "framboise" to { p ->                                   // Hammbier
+            p.disque(-21.3f, -16f, 6.6f)
+            p.disque(-7.1f, -16f, 6.6f)
+            p.disque(7.1f, -16f, 6.6f)
+            p.disque(21.3f, -16f, 6.6f)
+            p.disque(-28.4f, -3.6f, 6.6f)
+            p.disque(-14.2f, -3.6f, 6.6f)
+            p.disque(0f, -3.6f, 6.6f)
+            p.disque(14.2f, -3.6f, 6.6f)
+            p.disque(28.4f, -3.6f, 6.6f)
+            p.disque(-21.3f, 8.8f, 6.6f)
+            p.disque(-7.1f, 8.8f, 6.6f)
+            p.disque(7.1f, 8.8f, 6.6f)
+            p.disque(21.3f, 8.8f, 6.6f)
+            p.disque(-14.2f, 21.2f, 6.6f)
+            p.disque(0f, 21.2f, 6.6f)
+            p.disque(14.2f, 21.2f, 6.6f)
+            p.disque(-7.1f, 33.6f, 6.6f)
+            p.disque(7.1f, 33.6f, 6.6f)                                // les grains
+            p.pol(0f, -40.2f, 2.9f, -34.2f, 14.3f, -34.5f, 4.8f, -31.2f, 8.8f, -25.3f, 0f, -29.2f, -8.8f, -25.3f, -4.8f, -31.2f, -14.3f, -34.5f, -2.9f, -34.2f) // le calice
+            p.pol(-1.5f, -38f, 1.5f, -38f, 3f, -48f, 0f, -48f)         // la queue
+        },
+        "petit_pain" to { p ->                                   // Bréitchen
+            p.moveTo(-40f, 20f)
+            p.cubicTo(-42f, -8f, -22f, -24f, 0f, -24f)
+            p.cubicTo(22f, -24f, 42f, -8f, 40f, 20f)
+            p.cubicTo(40f, 28f, 34f, 30f, 26f, 30f)
+            p.lineTo(-26f, 30f)
+            p.cubicTo(-34f, 30f, -40f, 28f, -40f, 20f)
+            p.close()                                                  // le pain
+            p.moveTo(-26f, 2f)
+            p.cubicTo(-12f, -12f, 12f, -12f, 26f, 2f)
+            p.cubicTo(12f, -5f, -12f, -5f, -26f, 2f)
+            p.close()                                                  // la grigne
+        },
+        "noisette" to { p ->                                   // Hieselnoss
+            p.moveTo(0f, -13f)
+            p.cubicTo(22f, -13f, 32f, 3f, 30f, 19f)
+            p.cubicTo(28f, 37f, 14f, 45f, 0f, 47f)
+            p.cubicTo(-14f, 45f, -28f, 37f, -30f, 19f)
+            p.cubicTo(-32f, 3f, -22f, -13f, 0f, -13f)
+            p.close()                                                  // la noix
+            p.moveTo(-28f, -14f)
+            p.cubicTo(-38f, -18f, -40f, -28f, -34f, -34f)
+            p.cubicTo(-30f, -30f, -26f, -30f, -24f, -34f)
+            p.cubicTo(-20f, -42f, -12f, -42f, -8f, -36f)
+            p.cubicTo(-4f, -44f, 4f, -44f, 8f, -36f)
+            p.cubicTo(12f, -42f, 20f, -42f, 24f, -34f)
+            p.cubicTo(26f, -30f, 30f, -30f, 34f, -34f)
+            p.cubicTo(40f, -28f, 38f, -18f, 28f, -14f)
+            p.cubicTo(16f, -19f, -16f, -19f, -28f, -14f)
+            p.close()                                                  // la cupule
+            p.moveTo(-14f, 4f)
+            p.cubicTo(-10f, -2f, -4f, -4f, 2f, -3f)
+            p.cubicTo(-4f, 0f, -9f, 3f, -12f, 8f)
+            p.close()                                                  // le reflet
+        },
     )
 }

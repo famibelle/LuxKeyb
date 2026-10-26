@@ -25,7 +25,8 @@ PAQUETS = {'Déieren': 'les animaux', 'Iessen': 'ce qu’on mange'}
 # Le verso commun, publié dans cartes-imprimables/ ; sinon le dos
 # schématique de la règle.
 VERSO = os.path.join(RACINE, 'cartes-imprimables/verso/verso_300dpi.png')
-GENRES = {'m.': 'Nom masculin', 'f.': 'Nom féminin', 'n.': 'Nom neutre'}
+GENRES = {'m.': 'Nom masculin', 'f.': 'Nom féminin', 'n.': 'Nom neutre',
+          'm./n.': 'Masc. ou neutre', 'f./n.': 'Fém. ou neutre', 'm./f.': 'Masc. ou fém.'}
 
 ECHELLE = .72
 L_CARTE, H_CARTE = 150 * ECHELLE, 215 * ECHELLE

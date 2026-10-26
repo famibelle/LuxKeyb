@@ -136,6 +136,16 @@ def exemple(mot):
     return paires[0]
 
 
+# Le genre écrit sur la pastille. Le LOD en donne parfois deux : « Krokodil »
+# est masculin ou neutre, « Hammbier » féminin ou neutre. La carte les écrit
+# tous les deux, et le nom compte dans les deux familles (règle du jeu).
+GENRES = {'M': 'm.', 'F': 'f.', 'N': 'n.', 'MN': 'm./n.', 'FN': 'f./n.', 'MF': 'm./f.'}
+
+# Le sens imprimé, quand le premier sens du LOD ne se lit pas seul : « jouer
+# à » attend un complément que la carte n'a pas.
+SENS_IMPRIME = {'spillen': 'jouer'}
+
+
 def fiche(mot):
     c = CAT.get(mot, '')
     gloss = SENS['fr'].get(mot, '')
@@ -159,8 +169,8 @@ def fiche(mot):
     b = BLASONS.get(mot, {})
     ph, tr = exemple(mot)
     return {
-        'mot': mot, 'nature': nature, 'theme': theme, 'sens': sens1.replace('-', ' '),
-        'genre': {'M': 'm.', 'F': 'f.', 'N': 'n.'}.get(c.split(' ')[1] if ' ' in c else '', ''),
+        'mot': mot, 'nature': nature, 'theme': theme, 'sens': SENS_IMPRIME.get(mot, sens1.replace('-', ' ')),
+        'genre': GENRES.get(c.split(' ')[1] if ' ' in c else '', ''),
         'force': len(mot), 'cout': cout(mot), 'lieu': LIEUX[b.get('c')],
         'dessin': b.get('m', ''), 'sens_de': SENS['de'].get(mot, ''), 'sens_en': SENS['en'].get(mot, ''),
         'sens_pt': SENS['pt'].get(mot, ''), 'exemple': ph, 'traduction': tr,
@@ -314,9 +324,12 @@ def simuler(paquets, parties=4000):
     def cartes(p):
         t = {'nom': 'N', 'verbe': 'V', 'adjectif': 'A', 'nombre': 'Z'}
         # Le bonus de famille est celui du genre (règle du jeu) : deux noms du
-        # même genre. Un nom sans genre au LOD n'en a pas.
-        genres = {'m.': 1, 'f.': 2, 'n.': 3}
-        return [(t[c['nature']], c['force'], c['cout'], genres.get(c['genre'], 100 + i))
+        # même genre. Un nom à deux genres est des deux familles ; un nom sans
+        # genre au LOD n'en a pas.
+        ids = {'m.': 1, 'f.': 2, 'n.': 3}
+        def famille(i, genre):
+            return frozenset(ids[g] for g in genre.split('/') if g in ids) or frozenset([100 + i])
+        return [(t[c['nature']], c['force'], c['cout'], famille(i, c['genre']))
                 for i, c in enumerate(p)]
     a, b = cartes(paquets['Déieren']), cartes(paquets['Iessen'])
     victoires, tours = 0, []

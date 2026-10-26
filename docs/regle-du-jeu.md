@@ -122,7 +122,8 @@ paquets de la boîte, ou celui qu'il a composé (voir [Les paquets](#les-paquets
 
 - **La famille.** Deux de tes noms ont le même genre, écrit sur leur pastille :
   chacun gagne +1. *d'Kaz* et *d'Ameis* sont toutes les deux féminines, *den
-  Hond* et *de Léiw* tous les deux masculins.
+  Hond* et *de Léiw* tous les deux masculins. Un nom qui a deux genres, comme
+  *Krokodil* (masculin ou neutre), est des deux familles.
 - **Le sens.** Tu dis le sens du nom qui attaque : il gagne +1. Ton adversaire
   vérifie sur la carte.
 - **Pour les grands lecteurs.** Tu lis à voix haute la phrase d'exemple du nom

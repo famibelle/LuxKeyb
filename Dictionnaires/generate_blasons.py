@@ -691,6 +691,26 @@ MEUBLES = {
     'Wanter':         'flocon',           # hiver
     'Coronavirus':    'virus',            # coronavirus
     'Café':           'cafe',             # café
+    # la boîte de départ du Wuertduell : chacun de ses noms porte un dessin
+    # (scripts/silhouettes_boite.py)
+    'Beie':           'abeille',         # abeille
+    'Ameis':          'fourmi',          # fourmi
+    'Harespel':       'guepe',           # guêpe
+    'Delfin':         'dauphin',         # dauphin
+    'Kallef':         'veau',            # veau, abruti
+    'Elefant':        'elephant',        # éléphant
+    'Krokodil':       'crocodile',       # crocodile
+    'Schmuewel':      'hirondelle',      # hirondelle, hirondelle rousseline
+    'Kanéngchen':     'lapin',           # lapin, lapin de garenne
+    'Ënn':            'oignon',          # oignon
+    'Tomat':          'tomate',          # tomate
+    'Promm':          'prune',           # prune
+    'Banann':         'banane',          # banane
+    'Botter':         'beurre',          # beurre
+    'Paangech':       'crepe',           # crêpe
+    'Hammbier':       'framboise',       # framboise, framboises
+    'Bréitchen':      'petit_pain',      # petit pain
+    'Hieselnoss':     'noisette',        # noisette
 }
 
 

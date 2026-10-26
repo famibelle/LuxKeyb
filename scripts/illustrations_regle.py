@@ -15,6 +15,7 @@ imprimée reste à dessiner (voir la skill imprimeur).
 """
 import math
 import os
+import sys
 
 SORTIE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'docs/assets/regle')
 POLICE = "font-family=\"'Helvetica Neue', Arial, sans-serif\""
@@ -66,6 +67,13 @@ MEUBLES = {
     'fromage': ' '.join([pol(-44, 30, -44, -8, 44, -30, 44, 30), disque(-20, 12, 7),
                          disque(4, -2, 5), disque(24, 14, 6)]),
 }
+
+# Les meubles de la boîte de départ : scripts/silhouettes_boite.py, qui écrit
+# aussi leur code pour Meubles.kt.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import silhouettes_boite  # noqa: E402
+MEUBLES.update(silhouettes_boite.chemins())
+MEUBLES.update(silhouettes_boite.recopies())
 
 # ------------------------------------------------------------- les paliers
 

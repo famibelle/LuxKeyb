@@ -29,9 +29,12 @@ class J:
     def __init__(s,n):
         s.pioche=paquet(n); s.tresor=[s.pioche.pop() for _ in range(5)]
         s.main=[s.pioche.pop() for _ in range(5)]; s.reserve=0; s.terrain=[]; s.vide=False; s.pioches=0
+def meme_famille(a,b):
+    # Une famille est un genre, ou l'ensemble des genres d'un nom qui en a deux.
+    return bool(a & b) if isinstance(a, frozenset) else a==b
 def force(j,x):  # x = [carte, bonus_adj, pret]
     f=x[0][1]+x[1]
-    if sum(1 for y in j.terrain if y[0][3]==x[0][3])>=2: f+=1
+    if sum(1 for y in j.terrain if meme_famille(y[0][3],x[0][3]))>=2: f+=1
     return f
 def tour(j,adv):
     if j.pioche: j.main.append(j.pioche.pop()); j.pioches+=1

@@ -144,14 +144,27 @@ class BlasonsAssetTest {
         }
     }
 
+    /**
+     * Les mots du jeu imprimé (`cartes_imprimees.json`) : une carte code les
+     * verse au carnet (`CartesPapier`), même ceux qu'aucun jeu ne donne, comme
+     * « Beie » ou « Hieselnoss ».
+     */
+    private fun motsImprimes(): Set<String> {
+        val ensembles = actif("cartes_imprimees.json").getJSONObject("ensembles")
+        return ensembles.keys().asSequence().flatMap { id ->
+            val cartes = ensembles.getJSONObject(id).getJSONArray("cartes")
+            (0 until cartes.length()).map { cartes.getString(it).substringBefore("#") }
+        }.toSet()
+    }
+
     @Test
     fun `tout meuble attribué peut réellement sortir d'un jeu`() {
         val blasons = blasons()
-        val jouables = lemmesJouables(avecTirages = true)
+        val jouables = lemmesJouables(avecTirages = true) + motsImprimes()
         for (lemme in blasons.keys()) {
             if (blasons.getJSONObject(lemme).optString("m").isEmpty()) continue
             assertTrue(
-                "« $lemme » est enluminé mais aucun jeu ne le donne : " +
+                "« $lemme » est enluminé mais aucun jeu ni aucune carte en papier ne le donne : " +
                     "aucune carte ne pourra le porter",
                 lemme in jouables
             )

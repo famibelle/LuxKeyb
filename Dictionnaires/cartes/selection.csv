@@ -1,21 +1,21 @@
 ensemble,mot,nature,genre,force,cout,sens,sens_de,sens_en,sens_pt,lieu,dessin,exemple,traduction
 Déieren,Kaz,nom,f.,3,1,chat,"Katze, Wildkatze","cat, molly, wildcat","gato, gata, gato-bravo",Mëllerdall,chat,d'Kaz sëtzt virun der Fënster ze miauen,le chat est assis devant la fenêtre et miaule
+Déieren,Beie,nom,f.,4,1,abeille,Biene,bee,abelha,Stad,abeille,ech si vun enger Bei gepickt ginn,j’ai été piqué par une abeille
 Déieren,Hond,nom,m.,4,1,chien,Hund,dog,"cão, canalha",Mëllerdall,chien,d'Hënn hunn déi ganz Nuecht gebillt,
 Déieren,Léiw,nom,m.,4,1,lion,Löwe,"lion, Leo","leão, Leão",Mëllerdall,lion,op eiser Safari hu mir vill Léiwe gesinn,
-Déieren,Beie,nom,f.,4,1,abeille,Biene,bee,abelha,Stad,,ech si vun enger Bei gepickt ginn,j’ai été piqué par une abeille
+Déieren,Ameis,nom,f.,5,2,fourmi,Ameise,ant,formiga,Stad,fourmi,ënner dem Fënsterbriet haust eng Kolonie Ameisen,une colonie de fourmis s'est installée sous le rebord de la fenêtre
 Déieren,Fësch,nom,m.,5,2,poisson,Fisch,"fish, Pisces","peixe, Peixes",Stad,poisson,beim Tauchen hu mer riseg Schwäerm Fësch gesinn,"pendant notre plongée, nous avons vu de gigantesques bancs de poissons"
 Déieren,Päerd,nom,n.,5,2,cheval,"Pferd, Springer, Pferdestärke","horse, horsemeat, knight","cavalo, carne de cavalo",Mëllerdall,cheval,d'Päerd sinn iwwer d'Weed galoppéiert,
-Déieren,Ameis,nom,f.,5,2,fourmi,Ameise,ant,formiga,Stad,,ënner dem Fënsterbriet haust eng Kolonie Ameisen,une colonie de fourmis s'est installée sous le rebord de la fenêtre
-Déieren,Delfin,nom,m.,6,2,dauphin,Delfin,dolphin,golfinho,Stad,,op eiser Croisière krute mer Walen an Delfinen ze gesinn,nous avons vu des baleines et des dauphins lors de notre croisière
-Déieren,Kallef,nom,n.,6,2,veau,"Kalb, Rindvieh","calf, pillock","vitelo, cretino",Stad,,d'Bauerefra huet d'Kaalwer mam Eemer gedränkt,l’agricultrice a abreuvé les veaux au seau
-Déieren,Elefant,nom,m.,7,2,éléphant,Elefant,elephant,elefante,Stad,,d'Kanner ware mat hirer Joffer d'Elefanten an den Zoo kucken,les enfants ont été voir des éléphants au zoo avec leur institutrice
-Déieren,Harespel,nom,f.,8,3,guêpe,Wespe,wasp,vespa,Stad,,ech sinn dëse Summer schonn zweemol vun enger Harespel gepickt ginn,
-Déieren,Krokodil,nom,,8,3,crocodile,Krokodil,crocodile,crocodilo,Stad,,den Zoo huet e puer Krokodille bäikritt,
-Déieren,Schmuewel,nom,f.,9,3,hirondelle,"Schwalbe, Rötelschwalbe","swallow, red-rumped swallow","andorinha, andorinha-dáurica",Stad,,"wann d'Schmuewelen déif fléien, da gëtt et gewéinlech Reen",les hirondelles volent bas lorsqu’il va pleuvoir
-Déieren,Kanéngchen,nom,f.,10,3,lapin,"Kaninchen, Wildkaninchen",rabbit,"coelho, coelho-bravo",Stad,,d'Kanner wënsche sech eng Kanéngchen als Hausdéier,
+Déieren,Delfin,nom,m.,6,2,dauphin,Delfin,dolphin,golfinho,Stad,dauphin,op eiser Croisière krute mer Walen an Delfinen ze gesinn,nous avons vu des baleines et des dauphins lors de notre croisière
+Déieren,Kallef,nom,n.,6,2,veau,"Kalb, Rindvieh","calf, pillock","vitelo, cretino",Stad,veau,d'Bauerefra huet d'Kaalwer mam Eemer gedränkt,l’agricultrice a abreuvé les veaux au seau
+Déieren,Elefant,nom,m.,7,2,éléphant,Elefant,elephant,elefante,Stad,elephant,d'Kanner ware mat hirer Joffer d'Elefanten an den Zoo kucken,les enfants ont été voir des éléphants au zoo avec leur institutrice
+Déieren,Harespel,nom,f.,8,3,guêpe,Wespe,wasp,vespa,Stad,guepe,ech sinn dëse Summer schonn zweemol vun enger Harespel gepickt ginn,
+Déieren,Krokodil,nom,m./n.,8,3,crocodile,Krokodil,crocodile,crocodilo,Stad,crocodile,den Zoo huet e puer Krokodille bäikritt,
+Déieren,Schmuewel,nom,f.,9,3,hirondelle,"Schwalbe, Rötelschwalbe","swallow, red-rumped swallow","andorinha, andorinha-dáurica",Stad,hirondelle,"wann d'Schmuewelen déif fléien, da gëtt et gewéinlech Reen",les hirondelles volent bas lorsqu’il va pleuvoir
+Déieren,Kanéngchen,nom,f.,10,3,lapin,"Kaninchen, Wildkaninchen",rabbit,"coelho, coelho-bravo",Stad,lapin,d'Kanner wënsche sech eng Kanéngchen als Hausdéier,
 Déieren,iessen,verbe,,6,2,manger,"essen, leer essen","to eat, to finish","comer, acabar (de comer)",Mëllerdall,,mir iessen de Mëtteg Nuddelen,
 Déieren,lafen,verbe,,5,2,courir,laufen,"to run, to be running","correr, trabalhar, estar em exibição",Rout Bréck,,du kanns méi séier lafen ewéi ech,
-Déieren,spillen,verbe,,7,2,jouer à,spielen,to play,"jogar (a), jogar, desempenhar",Schueberfouer,,am Zuch hunn e puer Leit Kaart gespillt,
+Déieren,spillen,verbe,,7,2,jouer,spielen,to play,"jogar (a), jogar, desempenhar",Schueberfouer,,am Zuch hunn e puer Leit Kaart gespillt,
 Déieren,danzen,verbe,,6,2,danser,tanzen,to dance,dançar,Stad,,meng Cheffin huet um Bal bis mueres fréi mat hirer Frëndin gedanzt,ma patronne a dansé avec sa copine au bal jusqu’aux petites heures du matin
 Déieren,sprangen,verbe,,8,3,sauter,"springen, bespringen","to jump, to crack, to mount","saltar, rachar, padrear",Stad,,ech ka méi héich sprangen ewéi mäi Brudder,
 Déieren,léif,adjectif,,4,1,gentil,"lieb, süß","nice, cute, kind","gentil, lindo, caro",Schueberfouer,,seng nei Frëndin ass emol eng léif Fra!,
@@ -25,20 +25,20 @@ Déieren,witzeg,adjectif,,6,2,drôle,witzig,funny,engraçado,Stad,,ech muss der 
 Déieren,eent,nombre,,0,0,1,1,1,1,,,,
 Déieren,zwee,nombre,,0,0,2,2,2,2,,,,
 Déieren,dräi,nombre,,0,0,3,3,3,3,,,,
-Iessen,Ënn,nom,f.,3,1,oignon,Zwiebel,onion,cebola,Stad,,"den Hobbygäertner huet zwou Reie schéin, déck Ënnen a sengem Gaart",le jardinier amateur a deux rangées de beaux oignons épais dans son jardin
+Iessen,Ënn,nom,f.,3,1,oignon,Zwiebel,onion,cebola,Stad,oignon,"den Hobbygäertner huet zwou Reie schéin, déck Ënnen a sengem Gaart",le jardinier amateur a deux rangées de beaux oignons épais dans son jardin
 Iessen,Kuch,nom,m.,4,1,gâteau,Torte,cake,bolo,Mëllerdall,gateau,ech freeë mech elo op e gutt Stéck Kuch mat enger Taass Kaffi!,"là, je me réjouis à l'avance de prendre un morceau de gâteau et une tasse de café !"
 Iessen,Café,nom,m.,4,1,café,"Gastwirtschaft, Eschweiler-Halte","pub, Eschweiler-Halte","café, Eschweiler-Halte",Mëllerdall,cafe,am Duerf sinn zënter Kuerzem zwee Caféen,"depuis peu, il y a deux cafés dans le village"
 Iessen,Kéis,nom,m.,4,1,fromage,Käse,"cheese, rubbish","queijo, asneiras",Stad,fromage,fir den Owend hunn ech Kéis matbruecht,"pour ce soir, j'ai amené du fromage"
 Iessen,Brout,nom,n.,5,2,pain,Brot,"bread, loaf",pão,Stad,pain,ech hunn dat schwaarzt Brout am léifsten,je préfère le pain noir
-Iessen,Promm,nom,f.,5,2,prune,Pflaume,plum,ameixa,Stad,,d'Tatta huet Gebeess mat Prommen aus hirem Bongert gekacht,la tante a fait de la confiture avec des prunes de son verger
-Iessen,Tomat,nom,f.,5,2,tomate,Tomate,tomato,tomate,Stad,,"ass et net nach ze kal, fir Tomaten ze setzen?",ne fait-il pas encore trop froid pour planter des tomates ?
-Iessen,Banann,nom,f.,6,2,banane,Banane,banana,banana,Stad,,Bananne si bei Sportler e beléifte Snack,les bananes sont un en-cas apprécié des sportifs
-Iessen,Botter,nom,m.,6,2,beurre,Butter,butter,manteiga,Stad,,mäi Papp ësst keng Schmier ouni Botter,mon père ne mange pas de tartine sans beurre
+Iessen,Promm,nom,f.,5,2,prune,Pflaume,plum,ameixa,Stad,prune,d'Tatta huet Gebeess mat Prommen aus hirem Bongert gekacht,la tante a fait de la confiture avec des prunes de son verger
+Iessen,Tomat,nom,f.,5,2,tomate,Tomate,tomato,tomate,Stad,tomate,"ass et net nach ze kal, fir Tomaten ze setzen?",ne fait-il pas encore trop froid pour planter des tomates ?
+Iessen,Banann,nom,f.,6,2,banane,Banane,banana,banana,Stad,banane,Bananne si bei Sportler e beléifte Snack,les bananes sont un en-cas apprécié des sportifs
+Iessen,Botter,nom,m.,6,2,beurre,Butter,butter,manteiga,Stad,beurre,mäi Papp ësst keng Schmier ouni Botter,mon père ne mange pas de tartine sans beurre
 Iessen,Mëllech,nom,f.,7,2,lait,Milch,milk,leite,Stad,lait,d'Mamm wiermt d'Mëllech fir de Bëbee,
-Iessen,Paangech,nom,m.,8,3,crêpe,Pfannkuchen,pancake,crepe,Stad,,ech hätt emol erëm Loscht op eng Geméiszopp mat Paangecher!,
-Iessen,Hammbier,nom,,8,3,framboise,"Himbeere, Himbeeren","raspberry, raspberries","framboesa, framboesas",Stad,,mir hunn e ganzen Eemer Hammbiere gepléckt,
-Iessen,Bréitchen,nom,n.,9,3,petit pain,Brötchen,bun,pão pequeno,Stad,,mäi Mann ësst mueres am léifsten e Bréitchen,"le matin, mon mari mange un petit pain de préférence"
-Iessen,Hieselnoss,nom,f.,10,3,noisette,Haselnuss,hazelnut,avelã,Stad,,et gouf dëst Joer net vill Hieselnëss,il y a eu peu de noisettes cette année
+Iessen,Paangech,nom,m.,8,3,crêpe,Pfannkuchen,pancake,crepe,Stad,crepe,ech hätt emol erëm Loscht op eng Geméiszopp mat Paangecher!,
+Iessen,Hammbier,nom,f./n.,8,3,framboise,"Himbeere, Himbeeren","raspberry, raspberries","framboesa, framboesas",Stad,framboise,mir hunn e ganzen Eemer Hammbiere gepléckt,
+Iessen,Bréitchen,nom,n.,9,3,petit pain,Brötchen,bun,pão pequeno,Stad,petit_pain,mäi Mann ësst mueres am léifsten e Bréitchen,"le matin, mon mari mange un petit pain de préférence"
+Iessen,Hieselnoss,nom,f.,10,3,noisette,Haselnuss,hazelnut,avelã,Stad,noisette,et gouf dëst Joer net vill Hieselnëss,il y a eu peu de noisettes cette année
 Iessen,drénken,verbe,,7,2,boire,"trinken, leer trinken","to drink, to empty","beber, acabar (de beber)",Mëllerdall,,ech drénke just e Glas Waasser,
 Iessen,fléien,verbe,,6,2,voler,fliegen,"to fly, to get thrown out, to be deleted","voar, ir (de avião), ser expulso",Rout Bréck,,ech sinn nach ni (mam) Helikopter geflunn,
 Iessen,sangen,verbe,,6,2,chanter,singen,to sing,cantar,Stad,,fir Chrëschtdag huet de Chouer all déi bekannt Lidder gesongen,"pour Noël, le chœur a chanté tous les chants connus"
