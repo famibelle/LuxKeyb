@@ -2,6 +2,7 @@ package com.example.kreyolkeyboard.carnet
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Typeface
 import android.text.TextUtils
@@ -329,16 +330,17 @@ object CarteCarnet {
         if (impression) {
             // En brun gravé et non en blanc : de petits symboles blancs sur
             // l'or clair de l'écu ne se lisaient pas (BAT v2, 2026-10-26).
+            // Dans les écus élargis de l'impression, à 15 unités (8 pt) : à
+            // 10 et 8,5, le coût et le type ne se lisaient pas à 60 cm.
+            val cout = ImpressionCarte.cout(c)
+            val type = context.getString(ImpressionCarte.type(categorie)).uppercase(Locale.getDefault())
             carte.posee(
-                ligne(context, ImpressionCarte.cout(c), taille = 10f, couleur = metal.trait, gras = true),
-                Ornement.ECU_G_TEXTE
+                ligne(context, cout, taille = tailleEcu(cout, 15f), couleur = metal.trait, gras = true),
+                Ornement.ECU_G_IMPRIME_TEXTE
             )
             carte.posee(
-                ligne(
-                    context, context.getString(ImpressionCarte.type(categorie)).uppercase(Locale.getDefault()),
-                    taille = 8.5f, couleur = metal.trait, gras = true
-                ),
-                Ornement.ECU_D_TEXTE
+                ligne(context, type, taille = tailleEcu(type, 15f), couleur = metal.trait, gras = true),
+                Ornement.ECU_D_IMPRIME_TEXTE
             )
         } else {
             carte.posee(
@@ -433,6 +435,20 @@ object CarteCarnet {
     }
 
     /**
+     * La taille d'un texte d'écu imprimé, en unités de carte : [max], ou moins
+     * si le texte ne tient pas dans [Ornement.ECU_IMPRIME_LARGEUR_TEXTE]
+     * (« SUBSTANTIV », « ADJECTIF »). Mesurée dans la police grasse du
+     * `TextView`, symboles de secours compris, à 100 unités pour ne pas
+     * dépendre de l'arrondi des petites tailles.
+     */
+    private fun tailleEcu(texte: String, max: Float): Float {
+        val largeur = Paint().apply { typeface = Typeface.DEFAULT_BOLD; textSize = 100f }
+            .measureText(texte) * max / 100f
+        return if (largeur <= Ornement.ECU_IMPRIME_LARGEUR_TEXTE) max
+        else max * Ornement.ECU_IMPRIME_LARGEUR_TEXTE / largeur
+    }
+
+    /**
      * Le panneau de texte : le sens, la phrase du LOD, la famille.
      *
      * C'est la boîte de texte d'une carte à jouer, et c'est le cœur de
@@ -461,6 +477,14 @@ object CarteCarnet {
                 maxLines = if (traduction != null || pouvoir != null) 1 else 2
             })
 
+            // Une carte spéciale du jeu imprimé : son pouvoir vient sous le
+            // sens, avant la phrase. Le texte de règle d'abord, le texte
+            // d'ambiance ensuite, comme sur toute carte de jeu ; et si le
+            // panneau déborde, c'est la phrase qui tombe, pas le pouvoir.
+            // 14 unités, 7,6 pt sur la carte de 84 mm : à 9,5 (5 pt), un
+            // enfant ne le lisait pas.
+            if (pouvoir != null) addView(bloc(context, pouvoir, 14f, ENCRE, 3f).apply { maxLines = 2 })
+
             c.exemple?.let { phrase ->
                 // La décomposition d'un numéral est une explication, pas une
                 // citation : elle ne prend pas les guillemets. Espaces
@@ -474,9 +498,8 @@ object CarteCarnet {
             }
 
             if (pouvoir != null) {
-                // Une carte spéciale du jeu imprimé : son pouvoir passe avant
-                // la traduction, il sert à jouer.
-                addView(bloc(context, pouvoir, 9.5f, ENCRE, 3f).apply { maxLines = 2 })
+                // Le pouvoir est déjà posé, sous le sens : il prend la place
+                // de la traduction et de la famille.
             } else if (traduction != null) {
                 // Trois unités d'air : collée à la phrase, la traduction se
                 // lisait comme sa troisième ligne.

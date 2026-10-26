@@ -79,10 +79,17 @@ trop fort.
 ### 2.3 Lisibilité
 
 - **Tailles minimales à l'impression** (carte de 63 × 88 mm) : 6 pt pour une
-  mention légale, **7,5 pt** pour un texte qu'un enfant doit lire, 9 pt et
-  plus pour le mot et le pouvoir, une Force d'au moins 4 mm de haut. Sur la
-  carte de l'appli (300 × 440 unités posées sur 84 mm), une unité vaut environ
-  0,19 mm : **une taille de police de 10 unités donne environ 5,4 pt.**
+  mention légale, **7,5 pt** pour un texte qu'un enfant doit lire (pouvoir,
+  coût, type), 9 pt et plus pour le mot, une Force d'au moins 4 mm de haut.
+  Sur la carte de l'appli (300 × 440 unités posées sur 84 mm), une unité vaut
+  environ 0,19 mm : **une taille de police de 10 unités donne environ 5,4 pt,
+  et 7,5 pt demandent 14 unités.**
+- **État de la carte imprimée** (2026-10-26) : pouvoir à 14 unités (7,6 pt),
+  sur deux lignes, sous le sens et avant la phrase ; écus élargis à 90 unités
+  (`Ornement.ECU_*_IMPRIME`), libellé à 11 (6 pt), coût et type à 15 (8 pt),
+  réduits à la largeur de l'écu pour les mots longs (« SUBSTANTIV »). Encore
+  sous le seuil : la phrase d'exemple (12 unités, 6,5 pt) et la ligne de série
+  (7,5 unités, 4 pt, mention).
 - **Contraste** : au moins 4,5:1 pour le texte (WCAG AA), 7:1 pour le texte
   de moins de 8 pt. Pas de texte clair sur l'or clair, pas de texte sur une
   zone du dessin.
@@ -139,7 +146,10 @@ se compense par sa limite (une fois par partie) et se vérifie en simulation
 
 - Tutoiement, présent, verbe d'action en tête : « Prends une carte du trésor
   de l'adversaire, une fois par partie. »
-- Au plus **15 mots**, au plus **une condition**.
+- Au plus **15 mots**, au plus **une condition**, et **deux lignes à
+  14 unités** dans le panneau, dans chacune des cinq langues : le mesurer
+  (Roboto dans Chromium) avant de l'écrire. Le ✦ en tête suffit à dire que
+  c'est un pouvoir : pas de « Pouvoir : », qui coûtait une ligne.
 - Les mots du jeu sont toujours les mêmes : **Force**, **coût**, **trésor**,
   **réserve**, **main**, **pioche**, **défausse**, **nom**, **verbe**,
   **adjectif**, **nombre**, **famille**. Jamais de synonyme (« la cagnotte »,

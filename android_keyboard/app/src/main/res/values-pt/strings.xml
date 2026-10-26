@@ -676,7 +676,7 @@
     <string name="accueil_traduction">Olá, como está?</string>
     <string name="fierkelsmaart_glose">feira dos leitões</string>
     <string name="fierkelsmaart_traduction">Fierkelsmaart 2027: lá estaremos!</string>
-    <string name="fierkelsmaart_pouvoir">✦ Poder: tira uma carta do tesouro do adversário, uma vez por partida.</string>
+    <string name="fierkelsmaart_pouvoir">✦ Tira uma carta do tesouro do adversário, uma vez por partida.</string>
     <string name="impression_titre">Ficheiro de impressão</string>
     <string name="impression_cette_carte">Esta carta: %1$s</string>
     <string name="impression_fierkelsmaart">A carta Fierkelsmaart</string>

@@ -393,6 +393,24 @@ object Ornement {
     val ECU_G_TEXTE = RectF(28f, 382f, 80f, 408f)
     val ECU_D_TEXTE = RectF(220f, 382f, 272f, 408f)
     /**
+     * Les écus de la carte imprimée, plus larges : ils y portent le coût et le
+     * type du Wuertduell, que des enfants doivent lire. À 52 unités, « ✦✦✦✦ »
+     * ne tenait qu'à 5,4 pt et « ADJECTIF » à 4,6 (skill designer-cartes,
+     * 2026-10-26). Le médaillon de provenance, absent du papier, leur laisse la
+     * place : ils s'arrêtent à 9 unités de son disque (127–173). Même hauteur,
+     * la pointe ne descend pas plus près du bord du cadre.
+     */
+    val ECU_G_IMPRIME = RectF(28f, 375f, 118f, 410f)
+    val ECU_D_IMPRIME = RectF(182f, 375f, 272f, 410f)
+    /**
+     * Le coût et le type, sous le libellé et remontés : sous 392 la pointe de
+     * l'écu se resserre vite, et le bas des lettres doit rester dans l'or.
+     */
+    val ECU_G_IMPRIME_TEXTE = RectF(28f, 384.5f, 118f, 402.5f)
+    val ECU_D_IMPRIME_TEXTE = RectF(182f, 384.5f, 272f, 402.5f)
+    /** La largeur de l'écu imprimé au bas de ses lettres (398,6, 62 unités) : le texte ne la dépasse pas. */
+    const val ECU_IMPRIME_LARGEUR_TEXTE = 60f
+    /**
      * La ligne de série est passée **dans la marge**, où ce genre de mention
      * vit sur une carte imprimée : numéro, date, rang — de
      * l'administratif, qui n'a pas à disputer sa place au contenu.
@@ -1126,8 +1144,8 @@ object Ornement {
     ): Bitmap? {
         val vues = ecus?.first ?: context.getString(R.string.carte_ecu_vues)
         val niveau = ecus?.second ?: context.getString(R.string.carte_ecu_niveau)
-        return couche("m$vues$niveau", rarete, largeurPx, vignette) { c ->
-            dessinerMetal(c, rarete, vignette, vues, niveau)
+        return couche(if (ecus != null) "mi$vues$niveau" else "m$vues$niveau", rarete, largeurPx, vignette) { c ->
+            dessinerMetal(c, rarete, vignette, vues, niveau, imprime = ecus != null)
         }
     }
 
@@ -1525,7 +1543,9 @@ object Ornement {
      * Le centre reste transparent — la face teintée et l'illustration sont
      * peintes dessous, en direct, par [CarteOrnee].
      */
-    private fun dessinerMetal(c: Canvas, rarete: Rarete, vignette: Boolean, vues: String, niveau: String) {
+    private fun dessinerMetal(
+        c: Canvas, rarete: Rarete, vignette: Boolean, vues: String, niveau: String, imprime: Boolean = false
+    ) {
         val p = Paint(Paint.ANTI_ALIAS_FLAG)
         val palier = rarete.ordinal
         val m = metal(rarete)
@@ -1684,19 +1704,25 @@ object Ornement {
         // Sans libellé, deux chiffres nus dans deux blasons ne veulent rien
         // dire — et comme ils ne dépendent pas du mot, ils entrent dans le
         // bitmap mis en cache au même titre que le métal.
-        ecu(c, p, ECU_G, m, palier >= 3)
-        ecu(c, p, ECU_D, m, palier >= 3)
+        //
+        // Sur la carte imprimée, les écus s'élargissent et leur libellé passe
+        // à 11 unités (6 pt), opaque : à 7,5 et 75 %, « COÛT » faisait 4 pt.
+        val ecuG = if (imprime) ECU_G_IMPRIME else ECU_G
+        val ecuD = if (imprime) ECU_D_IMPRIME else ECU_D
+        ecu(c, p, ecuG, m, palier >= 3)
+        ecu(c, p, ecuD, m, palier >= 3)
         p.style = Paint.Style.FILL
         p.shader = null
         p.color = m.trait
-        p.alpha = 190
+        p.alpha = if (imprime) 255 else 190
         p.textAlign = Paint.Align.CENTER
-        p.textSize = 7.5f
+        p.textSize = if (imprime) 11f else 7.5f
         p.typeface = android.graphics.Typeface.create(
             android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD
         )
-        c.drawText(vues, ECU_G.centerX(), ECU_G.top + 9f, p)
-        c.drawText(niveau, ECU_D.centerX(), ECU_D.top + 9f, p)
+        val ligne = if (imprime) 9.5f else 9f
+        c.drawText(vues, ecuG.centerX(), ecuG.top + ligne, p)
+        c.drawText(niveau, ecuD.centerX(), ecuD.top + ligne, p)
         p.alpha = 255
 
         // 12. Le disque du médaillon de provenance, par-dessus le panneau
@@ -2135,7 +2161,7 @@ object Ornement {
      * ouvertures de la même carte montrent les mêmes étincelles aux mêmes
      * endroits, ce qui en fait une propriété de la pièce et non un effet.
      */
-    fun dessinerSemis(c: Canvas, p: Paint, mot: String, rarete: Rarete, vignette: Boolean) {
+    fun dessinerSemis(c: Canvas, p: Paint, mot: String, rarete: Rarete, vignette: Boolean, imprime: Boolean = false) {
         if (rarete != Rarete.TRES_RARE) return
         val haut = if (vignette) HAUTEUR_VIGNETTE else HAUTEUR
         var g = mot.fold(7919) { acc, ch -> acc * 31 + ch.code }
@@ -2147,7 +2173,8 @@ object Ornement {
         // passe pour un défaut d'impression. On retire, au même générateur.
         val interdits = if (vignette) arrayOf(NOM_VIGNETTE, GLOSE_VIGNETTE, BOITE_VIGNETTE)
         else arrayOf(
-            GEMME, PLAQUE, GEMME_CENTRE, NATURE, PANNEAU, ECU_G, ECU_D, PROVENANCE
+            GEMME, PLAQUE, GEMME_CENTRE, NATURE, PANNEAU,
+            if (imprime) ECU_G_IMPRIME else ECU_G, if (imprime) ECU_D_IMPRIME else ECU_D, PROVENANCE
         )
         var poses = 0
         var essais = 0
@@ -4232,7 +4259,7 @@ class CarteOrnee(
         if (boite >= Widderhuelen.BOITE_ACQUISE) Ornement.dessinerSceau(canvas, pinceau, vignette)
         if (plume) Ornement.dessinerPlume(canvas, pinceau, vignette, rarete)
         souvenir?.let { Ornement.dessinerSaison(canvas, pinceau, it, rarete, vignette) }
-        Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette)
+        Ornement.dessinerSemis(canvas, pinceau, mot, rarete, vignette, imprime = ecus != null)
         canvas.restore()
     }
 

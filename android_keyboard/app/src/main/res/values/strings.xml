@@ -680,7 +680,7 @@
     <string name="accueil_traduction">Hello, how are you?</string>
     <string name="fierkelsmaart_glose">piglet market</string>
     <string name="fierkelsmaart_traduction">Fierkelsmaart 2027: we\'ll be there!</string>
-    <string name="fierkelsmaart_pouvoir">✦ Power: take a card from your opponent\'s treasure, once per game.</string>
+    <string name="fierkelsmaart_pouvoir">✦ Take a card from your opponent\'s treasure, once per game.</string>
     <string name="impression_titre">Print file</string>
     <string name="impression_cette_carte">This card: %1$s</string>
     <string name="impression_fierkelsmaart">The Fierkelsmaart card</string>
