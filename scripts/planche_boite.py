@@ -22,9 +22,9 @@ import base64  # noqa: E402
 RACINE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 SELECTION = os.path.join(RACINE, 'Dictionnaires/cartes/selection.csv')
 PAQUETS = {'Déieren': 'les animaux', 'Iessen': 'ce qu’on mange'}
-# Le verso du BAT, s'il a été produit (impression/, hors dépôt) ; sinon le
-# dos schématique de la règle.
-VERSO = os.path.join(RACINE, 'impression/fierkelsmaart/verso_300dpi.png')
+# Le verso commun, publié dans cartes-imprimables/ ; sinon le dos
+# schématique de la règle.
+VERSO = os.path.join(RACINE, 'cartes-imprimables/verso/verso_300dpi.png')
 GENRES = {'m.': 'Nom masculin', 'f.': 'Nom féminin', 'n.': 'Nom neutre'}
 
 ECHELLE = .72

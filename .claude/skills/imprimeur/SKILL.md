@@ -131,10 +131,19 @@ illégale à la vente, sans valeur, et reconnaissable.
      — usage scolaire autorisé, vente interdite ».
    - Marque « Lëtzebuergesch Clavier » + logo déposés au BOIP (Benelux),
      ~250–300 € pour 10 ans : c'est ce qui permet d'agir contre un jeu vendu.
-2. **Ne rien publier d'imprimable**
-   - Fichiers HD, PDF d'impression, dos de carte : dossier `impression/`
-     dans `.gitignore` ou dépôt privé. Vérifier `git status` avant tout commit.
-   - Garder au moins un élément exclusif au papier (dos, cadre doré).
+2. **Ce qui est public, ce qui ne l'est pas** (propriétaire, 2026-10-26)
+   - **Public**, dans `cartes-imprimables/` (README, licence des visuels) :
+     planche de la boîte, dos commun, scripts de dessin (`carte_appli.py`,
+     `verso_luxe.py`). La copie scolaire est voulue ; chaque dos porte
+     « © Lëtzebuergesch Clavier · Usage scolaire libre · vente interdite ».
+   - **Jamais public** : la clé privée et les codes signés (un code publié
+     donne ses cartes à tous), et la Fierkelsmaart tant que l'organisateur
+     n'a pas donné son accord écrit (BAT et `generer_bat.py`, `bat_luxe.py`).
+     Ils vivent dans `impression/` (ignoré) et dans l'archive que garde le
+     propriétaire ; à rapporter dans une nouvelle session.
+   - Ce qui distingue la boîte officielle d'une copie : la **carte code**
+     (cartes ajoutées au carnet), le carton à âme noire, le toilé, la dorure.
+     Vérifier `git status` avant tout commit : rien de `impression/`.
 3. **Authenticité : la carte code** (en place depuis le 2026-10-26, voir
    `CESSION-CARTES.md` § 8)
    - Pas un QR par carte (15 mm au moins, trop de place prise au dessin, et
