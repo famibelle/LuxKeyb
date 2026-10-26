@@ -156,6 +156,13 @@ illégale à la vente, sans valeur, et reconnaissable.
 
 À revoir avec les vrais devis ; refaire les calculs plutôt que recopier.
 
+**Pas de but lucratif : l'objectif est l'équilibre des comptes**
+(propriétaire, 2026-10-26). Le prix public couvre les coûts, rien de plus ;
+un excédent n'est pas un bénéfice, il paie des cartes offertes aux écoles ou
+l'édition suivante. **L'illustration** (52 cartes, dos, boîte) est confiée à
+un illustrateur payé, et c'est elle que le subside du ministère de la Culture
+doit financer (section 8). Ne jamais présenter un chiffre comme « bénéfice ».
+
 ### La gamme (révisée le 2026-10-23, après la règle du jeu)
 
 Les cartes sont d'abord un **jeu** : la règle est publiée sur
@@ -201,9 +208,13 @@ section 4) : c'est le format le moins cher à produire en qualité.
   vendre à 12 € → réservé aux prototypes.
 - Mise de départ : ~1 500–2 250 € de tirage + ~385 € de frais fixes
   (marque, prototypes, maquette).
-- À 12 € : seuil de rentabilité ~160–220 boîtes ; 400 vendues → bénéfice
-  ~+2 000–2 700 €. En librairie (commission 30–40 %), la boîte rapporte
-  ~7–8,5 € : garder le prix public, ne pas le baisser.
+- Prix d'équilibre = (tirage + frais fixes) ÷ boîtes vendues. 500 boîtes,
+  ~100 offertes aux écoles, 400 vendues : ~5–7 € la boîte en vente directe.
+  En librairie (commission 30–40 %), il faut ~7–11 € de prix public pour
+  rapporter autant. Les 12–15 € du tableau sont donc un plafond : fixer le
+  prix avec les devis, pour que dépenses et recettes s'équilibrent.
+- L'illustration n'est pas dans ce prix : elle est payée par le subside.
+  Sans subside, l'ajouter au numérateur, et le prix d'équilibre monte.
 
 **Les mots viennent du LOD** (2026-10-23) : `scripts/candidats_cartes.py`
 compose la boîte (Déieren contre Iessen, noms jumelés par longueur : 50 % de
@@ -280,8 +291,9 @@ un **coffret complet** de 248 cartes à 35–45 € (écoles, impatients).
 - Coût par paquet qualité ~1,25–1,40 € (1,50–1,70 € avec dorure).
 - Frais fixes ~385 € (marque BOIP ~275, prototype ~60, maquette pochette ~50),
   hors emplacement de stand.
-- Seuil de rentabilité ~150 paquets ; ~400 vendus (80 %) → bénéfice ~+600 €.
-- Librairies : 30–40 % de commission → rester à 4 €, pas en dessous.
+- Équilibre à ~2,50–2,70 € le paquet si ~400 sont vendus (80 %). À 4 €,
+  l'excédent (~600 €) couvre la commission des librairies (30–40 %) et des
+  paquets offerts ; le reste va à l'édition suivante.
 - Édition suivante en offset (≥ 1 000) → ~0,60–0,80 € le paquet.
 - TVA : franchise probable sous ~50 000 €/an au Luxembourg — à vérifier.
   Statut (indépendant, asbl) à valider par la Chambre de commerce ou un comptable.
@@ -290,8 +302,11 @@ un **coffret complet** de 248 cartes à 35–45 € (écoles, impatients).
 adresse, avertissement « ne convient pas aux moins de 3 ans », © et licence
 (voir section 6), crédit LOD/ZLS.
 
-**Calendrier Fierkelsmaart (avril 2027)** : marque et statut en novembre,
-fichiers et prototypes décembre–janvier, BAT et série en février.
+**Calendrier Fierkelsmaart (avril 2027)** : marque, statut et dossier de
+subside en novembre, fichiers et prototypes décembre–janvier, BAT et série en
+février. L'illustration doit tenir entre décembre et janvier : choisir
+l'illustrateur avant de déposer le dossier, le devis de ses honoraires en
+fait partie.
 
 ## 8. Contexte : porteur du projet basé au Luxembourg
 
@@ -308,6 +323,16 @@ fichiers et prototypes décembre–janvier, BAT et série en février.
   autorisation d'établissement (guichet.lu, Ministère de l'Économie). Une
   asbl peut vendre si c'est accessoire à son objet (promotion de la langue).
   Conseil gratuit : House of Entrepreneurship (Chambre de commerce).
+- **Subside** : « Demande de subside par un particulier pour la réalisation
+  de projets culturels » (guichet.lu, ministère de la Culture, dépôt sur
+  MyGuichet). La création artistique doit être au centre du projet : c'est
+  l'illustration payée qui le justifie, pas le dessin produit par l'appli.
+  Dossier complet au moins 2 mois avant le début du projet (règle des pages
+  voisines, à vérifier pour les particuliers), jamais après. Budget présenté
+  à l'équilibre : dépenses (illustration, maquette, prototypes, tirage,
+  livraison, stand) = recettes (ventes, subside, apport personnel). Un seul
+  dossier par projet : ne pas y mêler l'adoption du clavier par l'État.
+  Montant, plafond et pièces à fournir à relire sur la page elle-même.
 - **Marque** : le BOIP couvre le Benelux, donc le Luxembourg.
 - **Stand** : se renseigner auprès de l'organisateur ou de la commune pour
   l'emplacement et les éventuelles autorisations de vente.
