@@ -44,6 +44,11 @@ ce qu'elle vaut.
 | Le sens du mot, en français (ou dans la langue de ton édition) | La réponse, que l'adversaire peut vérifier |
 | La phrase d'exemple | Un bonus pour les grands lecteurs |
 
+<figure style="margin:20px auto;max-width:760px;text-align:center;">
+  <img src="assets/regle/carte-annotee.svg" style="width:100%;" alt="La carte « Kaz » annotée : 1, la Force 3 en haut à gauche ; 2, le dessin du chat ; 3, le mot ; 4, la pastille « Nom féminin » ; 5, le sens « chat » ; 6, le coût, un rond">
+  <figcaption>Tout ce qui sert à jouer est écrit sur la carte</figcaption>
+</figure>
+
 **Une règle d'or : pour jouer une carte, on lit son mot à voix haute.**
 
 ## Niveau 1 : la Bataille des mots
@@ -61,6 +66,11 @@ ce qu'elle vaut.
 Celui qui a toutes les cartes a gagné. On peut aussi s'arrêter au bout de dix
 manches : celui qui a le plus de cartes a gagné.
 
+<figure style="margin:20px auto;max-width:760px;text-align:center;">
+  <img src="assets/regle/bataille.svg" style="width:100%;" alt="Deux cartes retournées : Kaz, Force 3, contre Päerd, Force 5. Päerd gagne et emporte les deux cartes">
+  <figcaption>Une manche : Päerd a deux lettres de plus que Kaz</figcaption>
+</figure>
+
 ## Niveau 2 : le Wuertduell
 
 *Dès 8 ans · 2 joueurs · 15 minutes*
@@ -74,6 +84,11 @@ paquets de la boîte, ou celui qu'il a composé (voir [Les paquets](#les-paquets
   regarder : c'est son **trésor**.
 - Il pioche les 5 suivantes : c'est sa **main**.
 - Le reste forme sa **pioche**.
+
+<figure style="margin:20px auto;max-width:760px;text-align:center;">
+  <img src="assets/regle/table.svg" style="width:100%;" alt="Le côté d'un joueur : le trésor de cinq cartes faces cachées, la réserve de trois cartes faces cachées, la pioche, deux noms posés, Hond avec l'adjectif grouss glissé dessous et Fësch, et la main : drénken, Brout et le nombre véier">
+  <figcaption>Ta table de jeu au troisième tour</figcaption>
+</figure>
 
 ### À ton tour
 
@@ -96,6 +111,11 @@ paquets de la boîte, ou celui qu'il a composé (voir [Les paquets](#les-paquets
      gagne, l'autre carte est défaussée. En cas d'égalité, les deux le sont.
    - Si personne ne bloque, tu prends **une carte du trésor** de ton
      adversaire, sans la regarder, et tu la poses à côté de toi.
+
+<figure style="margin:20px auto;max-width:760px;text-align:center;">
+  <img src="assets/regle/combat.svg" style="width:100%;" alt="Hond attaque : Force 4, plus 2 pour l'adjectif grouss, plus 1 pour le sens dit à voix haute, soit 7. Fësch bloque avec 5. Hond gagne et Fësch est défaussé">
+  <figcaption>Un combat : 7 contre 5</figcaption>
+</figure>
 
 ### Les bonus
 

@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 625" role="img" aria-label="La table de jeu : le trésor de 5 cartes, la réserve, la pioche, les noms posés et la main">
+<title>La table de jeu : le trésor de 5 cartes, la réserve, la pioche, les noms posés et la main</title>
+<rect width="760" height="625" rx="18" fill="#F6F1E7"/>
+<text x="30" y="40" text-anchor="start" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="800" fill="#2b2420">Ton côté de la table au troisième tour</text>
+<g transform="translate(30 70) rotate(0) scale(0.62)">
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="#fff" stroke="#9aa4ab" stroke-width="1.2"/>
+  <path d="M8 8 H90 L8 120 Z" fill="#ED2939"/><path d="M142 207 H60 L142 95 Z" fill="#00A1DE"/>
+  <circle cx="75" cy="107" r="22" fill="#fff" stroke="#c9cfd3"/>
+  <text x="75" y="114" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="800" fill="#7a858c">LX</text>
+</g>
+<g transform="translate(64 70) rotate(0) scale(0.62)">
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="#fff" stroke="#9aa4ab" stroke-width="1.2"/>
+  <path d="M8 8 H90 L8 120 Z" fill="#ED2939"/><path d="M142 207 H60 L142 95 Z" fill="#00A1DE"/>
+  <circle cx="75" cy="107" r="22" fill="#fff" stroke="#c9cfd3"/>
+  <text x="75" y="114" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="800" fill="#7a858c">LX</text>
+</g>
+<g transform="translate(98 70) rotate(0) scale(0.62)">
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="#fff" stroke="#9aa4ab" stroke-width="1.2"/>
+  <path d="M8 8 H90 L8 120 Z" fill="#ED2939"/><path d="M142 207 H60 L142 95 Z" fill="#00A1DE"/>
+  <circle cx="75" cy="107" r="22" fill="#fff" stroke="#c9cfd3"/>
+  <text x="75" y="114" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="800" fill="#7a858c">LX</text>
+</g>
+<g transform="translate(132 70) rotate(0) scale(0.62)">
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="#fff" stroke="#9aa4ab" stroke-width="1.2"/>
+  <path d="M8 8 H90 L8 120 Z" fill="#ED2939"/><path d="M142 207 H60 L142 95 Z" fill="#00A1DE"/>
+  <circle cx="75" cy="107" r="22" fill="#fff" stroke="#c9cfd3"/>
+  <text x="75" y="114" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="800" fill="#7a858c">LX</text>
+</g>
+<g transform="translate(166 70) rotate(0) scale(0.62)">
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="#fff" stroke="#9aa4ab" stroke-width="1.2"/>
+  <path d="M8 8 H90 L8 120 Z" fill="#ED2939"/><path d="M142 207 H60 L142 95 Z" fill="#00A1DE"/>
+  <circle cx="75" cy="107" r="22" fill="#fff" stroke="#c9cfd3"/>
+  <text x="75" y="114" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="800" fill="#7a858c">LX</text>
+</g>
+<text x="145" y="225" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="800" fill="#2b2420">Le trésor : 5 cartes</text>
+<text x="145" y="244" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="#5a4e44">que l’adversaire veut prendre</text>
+<g transform="translate(330 70) rotate(0) scale(0.62)">
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="#fff" stroke="#9aa4ab" stroke-width="1.2"/>
+  <path d="M8 8 H90 L8 120 Z" fill="#ED2939"/><path d="M142 207 H60 L142 95 Z" fill="#00A1DE"/>
+  <circle cx="75" cy="107" r="22" fill="#fff" stroke="#c9cfd3"/>
+  <text x="75" y="114" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="800" fill="#7a858c">LX</text>
+</g>
+<g transform="translate(346 76) rotate(0) scale(0.62)">
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="#fff" stroke="#9aa4ab" stroke-width="1.2"/>
+  <path d="M8 8 H90 L8 120 Z" fill="#ED2939"/><path d="M142 207 H60 L142 95 Z" fill="#00A1DE"/>
+  <circle cx="75" cy="107" r="22" fill="#fff" stroke="#c9cfd3"/>
+  <text x="75" y="114" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="800" fill="#7a858c">LX</text>
+</g>
+<g transform="translate(362 82) rotate(0) scale(0.62)">
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="#fff" stroke="#9aa4ab" stroke-width="1.2"/>
+  <path d="M8 8 H90 L8 120 Z" fill="#ED2939"/><path d="M142 207 H60 L142 95 Z" fill="#00A1DE"/>
+  <circle cx="75" cy="107" r="22" fill="#fff" stroke="#c9cfd3"/>
+  <text x="75" y="114" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="800" fill="#7a858c">LX</text>
+</g>
+<text x="395" y="225" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="800" fill="#2b2420">La réserve : 3 cartes</text>
+<text x="395" y="244" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="#5a4e44">= 3 symboles à dépenser</text>
+<g transform="translate(560 70) rotate(0) scale(0.62)">
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="#fff" stroke="#9aa4ab" stroke-width="1.2"/>
+  <path d="M8 8 H90 L8 120 Z" fill="#ED2939"/><path d="M142 207 H60 L142 95 Z" fill="#00A1DE"/>
+  <circle cx="75" cy="107" r="22" fill="#fff" stroke="#c9cfd3"/>
+  <text x="75" y="114" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="800" fill="#7a858c">LX</text>
+</g>
+<g transform="translate(562 68) rotate(0) scale(0.62)">
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="#fff" stroke="#9aa4ab" stroke-width="1.2"/>
+  <path d="M8 8 H90 L8 120 Z" fill="#ED2939"/><path d="M142 207 H60 L142 95 Z" fill="#00A1DE"/>
+  <circle cx="75" cy="107" r="22" fill="#fff" stroke="#c9cfd3"/>
+  <text x="75" y="114" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="800" fill="#7a858c">LX</text>
+</g>
+<g transform="translate(564 66) rotate(0) scale(0.62)">
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="#fff" stroke="#9aa4ab" stroke-width="1.2"/>
+  <path d="M8 8 H90 L8 120 Z" fill="#ED2939"/><path d="M142 207 H60 L142 95 Z" fill="#00A1DE"/>
+  <circle cx="75" cy="107" r="22" fill="#fff" stroke="#c9cfd3"/>
+  <text x="75" y="114" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="800" fill="#7a858c">LX</text>
+</g>
+<g transform="translate(566 64) rotate(0) scale(0.62)">
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="#fff" stroke="#9aa4ab" stroke-width="1.2"/>
+  <path d="M8 8 H90 L8 120 Z" fill="#ED2939"/><path d="M142 207 H60 L142 95 Z" fill="#00A1DE"/>
+  <circle cx="75" cy="107" r="22" fill="#fff" stroke="#c9cfd3"/>
+  <text x="75" y="114" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="800" fill="#7a858c">LX</text>
+</g>
+<text x="608" y="225" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="800" fill="#2b2420">La pioche</text>
+<text x="608" y="244" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="#5a4e44">une carte par tour</text>
+<g transform="translate(50 352) scale(0.78)">
+  <defs><linearGradient id="m7" x1="0" y1="0" x2=".7" y2="1"><stop offset="0" stop-color="#E3B475"/><stop offset="1" stop-color="#B07C3C"/></linearGradient>
+  <linearGradient id="c8" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E2A865"/><stop offset="1" stop-color="#FCE6B6"/></linearGradient></defs>
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="url(#m7)" stroke="#3E2910" stroke-width="1.2"/>
+  <rect x="7" y="7" width="136" height="201" rx="7" fill="#FBF6EA"/>
+  <rect x="12" y="30" width="126" height="80" rx="6" fill="url(#c8)"/>
+  <g transform="translate(12 38) scale(1.26 1.1)"><path d="M16.0 47.7 Q22.2 47.7 21.7 45.9 Q21.1 44.0 27.3 44.0 Q33.6 44.0 33.0 33.5 Q32.4 23.0 38.7 23.0 Q44.9 23.0 44.3 23.6 Q43.8 24.3 50.0 24.3 Q56.2 24.3 55.7 34.7 Q55.1 45.2 61.3 45.2 Q67.6 45.2 67.0 45.2 Q66.4 45.2 72.7 45.2" fill="none" stroke="#3a3a3a" stroke-width="4.4" stroke-linecap="round" opacity=".35" transform="translate(.6 1)"/><path d="M16.0 47.7 Q22.2 47.7 21.7 45.9 Q21.1 44.0 27.3 44.0 Q33.6 44.0 33.0 33.5 Q32.4 23.0 38.7 23.0 Q44.9 23.0 44.3 23.6 Q43.8 24.3 50.0 24.3 Q56.2 24.3 55.7 34.7 Q55.1 45.2 61.3 45.2 Q67.6 45.2 67.0 45.2 Q66.4 45.2 72.7 45.2" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/><circle cx="38.7" cy="23.0" r="2.5" fill="#fff" stroke="#3a3a3a" stroke-width=".8"/><circle cx="50.0" cy="24.3" r="2.5" fill="#fff" stroke="#3a3a3a" stroke-width=".8"/></g>
+  <circle cx="21" cy="21" r="15" fill="#7B2FA6" stroke="#3E2910" stroke-width="1.5"/><text x="21" y="27" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="17" font-weight="800" fill="#fff">6</text>
+  <rect x="14" y="102" width="122" height="27" rx="6" fill="url(#m7)" stroke="#3E2910" stroke-width="1"/>
+  <text x="75" y="121" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="800" fill="#3E2910">grouss</text>
+  <rect x="33" y="135" width="84" height="16" rx="8" fill="#EADFC4"/>
+  <text x="75" y="146.5" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="8.5" font-weight="700" fill="#4b3c22">Adjectif</text>
+  <text x="75" y="172" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#2b2420">grand</text>
+  <text x="75" y="199" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#3E2910">◆◆</text>
+</g>
+<text x="108" y="540" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="800" fill="#3E2910">grouss</text>
+<g transform="translate(50 290) scale(0.78)">
+  <defs><linearGradient id="m9" x1="0" y1="0" x2=".7" y2="1"><stop offset="0" stop-color="#B9C0C4"/><stop offset="1" stop-color="#7E878C"/></linearGradient>
+  <linearGradient id="c10" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A6C6DC"/><stop offset="1" stop-color="#F3EBDC"/></linearGradient></defs>
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="url(#m9)" stroke="#2E3437" stroke-width="1.2"/>
+  <rect x="7" y="7" width="136" height="201" rx="7" fill="#FBF6EA"/>
+  <rect x="12" y="30" width="126" height="80" rx="6" fill="url(#c10)"/>
+  <g transform="translate(75 70) scale(.55)"><path d="M0 -38 C16 -38 26 -28 28 -16 C40 -20 48 -4 42 14 C38 26 30 30 25 26 C22 38 12 46 0 46 C-12 46 -22 38 -25 26 C-30 30 -38 26 -42 14 C-48 -4 -40 -20 -28 -16 C-26 -28 -16 -38 0 -38 Z M-16 -4 A4 4 0 1 0 -8 -4 A4 4 0 1 0 -16 -4 Z M8 -4 A4 4 0 1 0 16 -4 A4 4 0 1 0 8 -4 Z M-12 26 A12 8 0 1 0 12 26 A12 8 0 1 0 -12 26 Z M-6 24 A6 4 0 1 0 6 24 A6 4 0 1 0 -6 24 Z" fill-rule="evenodd" fill="#3a3a3a" opacity=".35" transform="translate(2 3)"/><path d="M0 -38 C16 -38 26 -28 28 -16 C40 -20 48 -4 42 14 C38 26 30 30 25 26 C22 38 12 46 0 46 C-12 46 -22 38 -25 26 C-30 30 -38 26 -42 14 C-48 -4 -40 -20 -28 -16 C-26 -28 -16 -38 0 -38 Z M-16 -4 A4 4 0 1 0 -8 -4 A4 4 0 1 0 -16 -4 Z M8 -4 A4 4 0 1 0 16 -4 A4 4 0 1 0 8 -4 Z M-12 26 A12 8 0 1 0 12 26 A12 8 0 1 0 -12 26 Z M-6 24 A6 4 0 1 0 6 24 A6 4 0 1 0 -6 24 Z" fill-rule="evenodd" fill="#FFFDF6" stroke="#3a3a3a" stroke-width="2.2"/></g>
+  <circle cx="21" cy="21" r="15" fill="#7B2FA6" stroke="#2E3437" stroke-width="1.5"/><text x="21" y="27" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="17" font-weight="800" fill="#fff">4</text>
+  <rect x="14" y="102" width="122" height="27" rx="6" fill="url(#m9)" stroke="#2E3437" stroke-width="1"/>
+  <text x="75" y="121" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="800" fill="#2E3437">Hond</text>
+  <rect x="33" y="135" width="84" height="16" rx="8" fill="#EADFC4"/>
+  <text x="75" y="146.5" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="8.5" font-weight="700" fill="#4b3c22">Nom masculin</text>
+  <text x="75" y="172" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#2b2420">chien</text>
+  <text x="75" y="199" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#2E3437">●</text>
+</g>
+<g transform="translate(210 290) scale(0.78)">
+  <defs><linearGradient id="m11" x1="0" y1="0" x2=".7" y2="1"><stop offset="0" stop-color="#E3B475"/><stop offset="1" stop-color="#B07C3C"/></linearGradient>
+  <linearGradient id="c12" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E2A865"/><stop offset="1" stop-color="#FCE6B6"/></linearGradient></defs>
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="url(#m11)" stroke="#3E2910" stroke-width="1.2"/>
+  <rect x="7" y="7" width="136" height="201" rx="7" fill="#FBF6EA"/>
+  <rect x="12" y="30" width="126" height="80" rx="6" fill="url(#c12)"/>
+  <g transform="translate(75 70) scale(.55)"><path d="M46 0 C30 -26 -6 -30 -22 -14 L-46 -26 L-36 0 L-46 26 L-22 14 C-6 30 30 26 46 0 Z M17.5 -6 A4.5 4.5 0 1 0 26.5 -6 A4.5 4.5 0 1 0 17.5 -6 Z" fill-rule="evenodd" fill="#3a3a3a" opacity=".35" transform="translate(2 3)"/><path d="M46 0 C30 -26 -6 -30 -22 -14 L-46 -26 L-36 0 L-46 26 L-22 14 C-6 30 30 26 46 0 Z M17.5 -6 A4.5 4.5 0 1 0 26.5 -6 A4.5 4.5 0 1 0 17.5 -6 Z" fill-rule="evenodd" fill="#FFFDF6" stroke="#3a3a3a" stroke-width="2.2"/></g>
+  <circle cx="21" cy="21" r="15" fill="#7B2FA6" stroke="#3E2910" stroke-width="1.5"/><text x="21" y="27" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="17" font-weight="800" fill="#fff">5</text>
+  <rect x="14" y="102" width="122" height="27" rx="6" fill="url(#m11)" stroke="#3E2910" stroke-width="1"/>
+  <text x="75" y="121" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="800" fill="#3E2910">Fësch</text>
+  <rect x="33" y="135" width="84" height="16" rx="8" fill="#EADFC4"/>
+  <text x="75" y="146.5" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="8.5" font-weight="700" fill="#4b3c22">Nom masculin</text>
+  <text x="75" y="172" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#2b2420">poisson</text>
+  <text x="75" y="199" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#3E2910">◆◆</text>
+</g>
+<text x="190" y="580" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="800" fill="#2b2420">Tes noms : trois au plus</text>
+<text x="190" y="599" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="#5a4e44">grouss glissé sous Hond : +2 pour toujours</text>
+<g transform="translate(420 308) scale(0.72)">
+  <defs><linearGradient id="m13" x1="0" y1="0" x2=".7" y2="1"><stop offset="0" stop-color="#E3B475"/><stop offset="1" stop-color="#B07C3C"/></linearGradient>
+  <linearGradient id="c14" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E2A865"/><stop offset="1" stop-color="#FCE6B6"/></linearGradient></defs>
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="url(#m13)" stroke="#3E2910" stroke-width="1.2"/>
+  <rect x="7" y="7" width="136" height="201" rx="7" fill="#FBF6EA"/>
+  <rect x="12" y="30" width="126" height="80" rx="6" fill="url(#c14)"/>
+  <g transform="translate(12 38) scale(1.26 1.1)"><path d="M16.0 44.0 Q22.2 44.0 21.7 44.0 Q21.1 44.0 27.3 44.0 Q33.6 44.0 33.0 36.0 Q32.4 28.0 38.7 28.0 Q44.9 28.0 44.3 37.9 Q43.8 47.7 50.0 47.7 Q56.2 47.7 55.7 45.9 Q55.1 44.0 61.3 44.0 Q67.6 44.0 67.0 35.4 Q66.4 26.8 72.7 26.8 Q78.9 26.8 78.3 37.3 Q77.8 47.7 84.0 47.7" fill="none" stroke="#3a3a3a" stroke-width="4.4" stroke-linecap="round" opacity=".35" transform="translate(.6 1)"/><path d="M16.0 44.0 Q22.2 44.0 21.7 44.0 Q21.1 44.0 27.3 44.0 Q33.6 44.0 33.0 36.0 Q32.4 28.0 38.7 28.0 Q44.9 28.0 44.3 37.9 Q43.8 47.7 50.0 47.7 Q56.2 47.7 55.7 45.9 Q55.1 44.0 61.3 44.0 Q67.6 44.0 67.0 35.4 Q66.4 26.8 72.7 26.8 Q78.9 26.8 78.3 37.3 Q77.8 47.7 84.0 47.7" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/><circle cx="38.7" cy="28.0" r="2.5" fill="#fff" stroke="#3a3a3a" stroke-width=".8"/><circle cx="72.7" cy="26.8" r="2.5" fill="#fff" stroke="#3a3a3a" stroke-width=".8"/></g>
+  <circle cx="21" cy="21" r="15" fill="#7B2FA6" stroke="#3E2910" stroke-width="1.5"/><text x="21" y="27" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="17" font-weight="800" fill="#fff">7</text>
+  <rect x="14" y="102" width="122" height="27" rx="6" fill="url(#m13)" stroke="#3E2910" stroke-width="1"/>
+  <text x="75" y="121" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="800" fill="#3E2910">drénken</text>
+  <rect x="33" y="135" width="84" height="16" rx="8" fill="#EADFC4"/>
+  <text x="75" y="146.5" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="8.5" font-weight="700" fill="#4b3c22">Verbe</text>
+  <text x="75" y="172" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#2b2420">boire</text>
+  <text x="75" y="199" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#3E2910">◆◆</text>
+</g>
+<g transform="translate(505 300) scale(0.72)">
+  <defs><linearGradient id="m15" x1="0" y1="0" x2=".7" y2="1"><stop offset="0" stop-color="#E3B475"/><stop offset="1" stop-color="#B07C3C"/></linearGradient>
+  <linearGradient id="c16" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E2A865"/><stop offset="1" stop-color="#FCE6B6"/></linearGradient></defs>
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="url(#m15)" stroke="#3E2910" stroke-width="1.2"/>
+  <rect x="7" y="7" width="136" height="201" rx="7" fill="#FBF6EA"/>
+  <rect x="12" y="30" width="126" height="80" rx="6" fill="url(#c16)"/>
+  <g transform="translate(75 70) scale(.55)"><path d="M-46 26 C-46 -18 -30 -34 0 -34 C30 -34 46 -18 46 26 C46 34 40 36 32 36 L-32 36 C-40 36 -46 34 -46 26 Z M-34 -18 L-20 -22 L-17 -13 L-31 -9 Z M-12 -18 L2 -22 L5 -13 L-9 -9 Z M10 -18 L24 -22 L27 -13 L13 -9 Z" fill-rule="evenodd" fill="#3a3a3a" opacity=".35" transform="translate(2 3)"/><path d="M-46 26 C-46 -18 -30 -34 0 -34 C30 -34 46 -18 46 26 C46 34 40 36 32 36 L-32 36 C-40 36 -46 34 -46 26 Z M-34 -18 L-20 -22 L-17 -13 L-31 -9 Z M-12 -18 L2 -22 L5 -13 L-9 -9 Z M10 -18 L24 -22 L27 -13 L13 -9 Z" fill-rule="evenodd" fill="#FFFDF6" stroke="#3a3a3a" stroke-width="2.2"/></g>
+  <circle cx="21" cy="21" r="15" fill="#7B2FA6" stroke="#3E2910" stroke-width="1.5"/><text x="21" y="27" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="17" font-weight="800" fill="#fff">5</text>
+  <rect x="14" y="102" width="122" height="27" rx="6" fill="url(#m15)" stroke="#3E2910" stroke-width="1"/>
+  <text x="75" y="121" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="800" fill="#3E2910">Brout</text>
+  <rect x="33" y="135" width="84" height="16" rx="8" fill="#EADFC4"/>
+  <text x="75" y="146.5" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="8.5" font-weight="700" fill="#4b3c22">Nom neutre</text>
+  <text x="75" y="172" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#2b2420">pain</text>
+  <text x="75" y="199" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#3E2910">◆◆</text>
+</g>
+<g transform="translate(590 308) scale(0.72)">
+  <defs><linearGradient id="m17" x1="0" y1="0" x2=".7" y2="1"><stop offset="0" stop-color="#B9C0C4"/><stop offset="1" stop-color="#7E878C"/></linearGradient>
+  <linearGradient id="c18" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A6C6DC"/><stop offset="1" stop-color="#F3EBDC"/></linearGradient></defs>
+  <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
+  <rect width="150" height="215" rx="11" fill="url(#m17)" stroke="#2E3437" stroke-width="1.2"/>
+  <rect x="7" y="7" width="136" height="201" rx="7" fill="#FBF6EA"/>
+  <rect x="12" y="30" width="126" height="80" rx="6" fill="url(#c18)"/>
+  <text x="75" y="86" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="44" font-weight="800" fill="#fff" stroke="#3a3a3a" stroke-width="1.5" paint-order="stroke">4</text>
+  
+  <rect x="14" y="102" width="122" height="27" rx="6" fill="url(#m17)" stroke="#2E3437" stroke-width="1"/>
+  <text x="75" y="121" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="800" fill="#2E3437">véier</text>
+  <rect x="33" y="135" width="84" height="16" rx="8" fill="#EADFC4"/>
+  <text x="75" y="146.5" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="8.5" font-weight="700" fill="#4b3c22">Nombre</text>
+  <text x="75" y="172" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" fill="#2b2420">en lettres : véier</text>
+  <text x="75" y="199" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#2E3437">gratuit</text>
+</g>
+<text x="560" y="580" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15" font-weight="800" fill="#2b2420">Ta main</text>
+<text x="560" y="599" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="#5a4e44">tu poses ce que tes symboles permettent</text>
+</svg>
