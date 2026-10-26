@@ -37,8 +37,9 @@ import kotlin.math.roundToInt
  * [DPI] points par pouce (1630 × 2220 px). La carte de l'appli est plus
  * étroite que le poker (300 × 440 contre 63 × 88) : elle est posée sur
  * [HAUTEUR_CARTE_MM] de haut, centrée, et le reste du format est rempli du
- * métal de son palier, jusque dans le fond perdu. Ses textes du bas et sa
- * gemme restent ainsi à plus de 3 mm de la coupe.
+ * métal de son palier, jusque dans le fond perdu. Sa ligne du bas et sa
+ * gemme restent ainsi à près de 4 mm de la coupe : à 86 mm, la ligne du bas
+ * tombait pile sur la limite des 3 mm de sécurité (BAT v2, 2026-10-26).
  *
  * ## Ce qui change sur la carte
  *
@@ -62,7 +63,7 @@ object ImpressionCarte {
     private const val LARGEUR_MM = 63f
     private const val HAUTEUR_MM = 88f
     private const val FOND_PERDU_MM = 3f
-    private const val HAUTEUR_CARTE_MM = 86f
+    private const val HAUTEUR_CARTE_MM = 84f
 
     private fun px(mm: Float): Int = (mm * DPI / 25.4f).roundToInt()
 

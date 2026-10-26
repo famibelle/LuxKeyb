@@ -327,14 +327,16 @@ object CarteCarnet {
         )
 
         if (impression) {
+            // En brun gravé et non en blanc : de petits symboles blancs sur
+            // l'or clair de l'écu ne se lisaient pas (BAT v2, 2026-10-26).
             carte.posee(
-                ligne(context, ImpressionCarte.cout(c), taille = 10f, couleur = Color.WHITE, gras = true),
+                ligne(context, ImpressionCarte.cout(c), taille = 10f, couleur = metal.trait, gras = true),
                 Ornement.ECU_G_TEXTE
             )
             carte.posee(
                 ligne(
                     context, context.getString(ImpressionCarte.type(categorie)).uppercase(Locale.getDefault()),
-                    taille = 8.5f, couleur = Color.WHITE, gras = true
+                    taille = 8.5f, couleur = metal.trait, gras = true
                 ),
                 Ornement.ECU_D_TEXTE
             )

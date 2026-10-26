@@ -79,8 +79,8 @@ Deux voies :
    COÛT et TYPE, pouvoir des cartes spéciales, sans médaillon, saison, sceau
    ni plume), à 600 dpi, 69 × 94 mm fond perdu compris (1630 × 2220 px), et
    l'envoie par le partage Android. La carte de l'appli (300 × 440) est plus
-   étroite que le poker : posée sur 86 mm de haut, le reste est le métal du
-   palier.
+   étroite que le poker : posée sur 84 mm de haut (à 86, la ligne du bas
+   touchait la limite de sécurité), le reste est le métal du palier.
 2. **Redessin** (script Python/HTML + Playwright, `NODE_PATH=$(npm root -g)`) :
    reproduire la mise en page à partir des JSON d'assets. Écarté pour les
    rectos après le premier BAT de la Fierkelsmaart, jugé « moins beau que
