@@ -236,18 +236,28 @@ object CarteCarnet {
             .demanderLieu(cote / Ornement.LARGEUR, pret)
     }
 
-    fun complete(context: Context, c: ContenuCarte): View {
+    /**
+     * [impression] : la carte du jeu de cartes imprimé (voir [ImpressionCarte]).
+     * Elle garde tout le dessin de l'appli et perd ce qui n'a de sens que dans
+     * un carnet : le médaillon de provenance, la saison, le sceau, la plume, le
+     * numéro d'entrée. Ses écus disent le coût et le type, qui servent au jeu.
+     */
+    fun complete(context: Context, c: ContenuCarte, impression: Boolean = false): View {
         val jeu = c.carte.origine
         val metal = Ornement.metal(c.rarete)
-        val souvenir = Souvenir.de(c.carte.premiereFois)
+        val souvenir = if (impression) null else Souvenir.de(c.carte.premiereFois)
         val carte = CarteOrnee(
-            context, c.carte.forme, c.rarete, vignette = false, blason = c.blason, jeu = jeu,
+            context, c.carte.forme, c.rarete, vignette = false, blason = c.blason,
+            jeu = if (impression) null else jeu,
             // Un numéral n'a pas de rang : son palier lit l'orthographe.
             intensite = if (c.carte.nombre != null) Rarete.intensitePourPalier(c.rarete)
             else Rarete.intensitePourRang(c.rang),
             souvenir = souvenir
-        ).avecBoite(c.carte.boite) // pour le sceau d'une carte apprise
-            .avecPlume(c.plume)
+        ).avecBoite(if (impression) 0 else c.carte.boite) // pour le sceau d'une carte apprise
+            .avecPlume(c.plume && !impression)
+        if (impression) {
+            carte.ecus = context.getString(R.string.carte_ecu_cout) to context.getString(R.string.carte_ecu_type)
+        }
 
         carte.posee(
             ligne(context, "${c.carte.forme.length}", taille = 25f, couleur = Color.WHITE, gras = true),
@@ -274,22 +284,21 @@ object CarteCarnet {
         // majuscule du substantif et la finale du verbe — « gesicht » était un
         // mot sans nature, c'est un verbe —, et « Mot » ferme la liste plutôt
         // que de laisser une pastille vide.
-        val nature = context.getString(abrege(
-            when {
-                c.carte.nombre != null -> R.string.cat_nombre
-                c.categorie != null -> c.categorie
-                c.blason.nature == Nature.NOM -> R.string.cat_nom
-                c.blason.nature == Nature.VERBE -> R.string.cat_verbe
-                else -> R.string.cat_mot
-            }
-        ))
+        val categorie = when {
+            c.carte.nombre != null -> R.string.cat_nombre
+            c.categorie != null -> c.categorie
+            c.blason.nature == Nature.NOM -> R.string.cat_nom
+            c.blason.nature == Nature.VERBE -> R.string.cat_verbe
+            else -> R.string.cat_mot
+        }
+        val nature = context.getString(abrege(categorie))
         val vueNature = ligne(context, nature, TYPE_CORPS, ENCRE, gras = true)
         vueNature.tag = floatArrayOf(corpsDeLEtiquette(vueNature), 0f)
         carte.posee(vueNature, Ornement.NATURE_TEXTE)
         // La provenance n'est pas une vue : c'est le médaillon, tracé par la
         // carte elle-même à partir du jeu. Une vue vide le double pour les
         // lecteurs d'écran, qui ne lisent pas une légende dessinée.
-        carte.posee(
+        if (!impression) carte.posee(
             View(context).apply {
                 contentDescription = context.getString(R.string.carte_gagne_a, jeu.libelle(context))
                 importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
@@ -310,32 +319,46 @@ object CarteCarnet {
         // Les écus mordent sur le bas du panneau (375 contre 378) : le texte
         // s'arrête au-dessus, sinon sa dernière ligne passe sous « VUES ».
         carte.posee(
-            panneau(context, c),
+            panneau(context, c, if (impression) ImpressionCarte.pouvoir(context, c) else null),
             RectF(
                 Ornement.PANNEAU_TEXTE.left, Ornement.PANNEAU_TEXTE.top,
                 Ornement.PANNEAU_TEXTE.right, Ornement.ECU_G.top - 3f
             )
         )
 
-        carte.posee(
-            ligne(context, "${c.carte.rencontres}", taille = 15f, couleur = Color.WHITE, gras = true),
-            Ornement.ECU_G_TEXTE
-        )
-        carte.posee(
-            ligne(
-                context,
-                if (c.carte.acquise) "✓" else "${c.carte.boite + 1}",
-                taille = 15f, couleur = Color.WHITE, gras = true
-            ),
-            Ornement.ECU_D_TEXTE
-        )
+        if (impression) {
+            carte.posee(
+                ligne(context, ImpressionCarte.cout(c), taille = 10f, couleur = Color.WHITE, gras = true),
+                Ornement.ECU_G_TEXTE
+            )
+            carte.posee(
+                ligne(
+                    context, context.getString(ImpressionCarte.type(categorie)).uppercase(Locale.getDefault()),
+                    taille = 8.5f, couleur = Color.WHITE, gras = true
+                ),
+                Ornement.ECU_D_TEXTE
+            )
+        } else {
+            carte.posee(
+                ligne(context, "${c.carte.rencontres}", taille = 15f, couleur = Color.WHITE, gras = true),
+                Ornement.ECU_G_TEXTE
+            )
+            carte.posee(
+                ligne(
+                    context,
+                    if (c.carte.acquise) "✓" else "${c.carte.boite + 1}",
+                    taille = 15f, couleur = Color.WHITE, gras = true
+                ),
+                Ornement.ECU_D_TEXTE
+            )
+        }
 
         // Le corps de 7,5 est imposé par la bande, qui vit maintenant dans la
         // marge : voir [Ornement.SERIE_G]. C'est celui des libellés d'écu.
         // Le jeu n'y figure plus : le médaillon le dit déjà, par son emblème
         // et son nom. La date non plus : c'est une donnée technique, la carte
         // n'en montre que la saison, sur son cachet (propriétaire, 2026-10-11).
-        val serie = context.getString(
+        val serie = if (impression) ImpressionCarte.JEU else context.getString(
             R.string.carte_serie,
             "%03d".format(Locale.ROOT, c.carte.numero)
         )
@@ -416,7 +439,7 @@ object CarteCarnet {
      * de déborder — la carte a une taille fixe, et une glose à rallonge ne
      * peut pas pousser les écus hors du cadre.
      */
-    private fun panneau(context: Context, c: ContenuCarte): View =
+    private fun panneau(context: Context, c: ContenuCarte, pouvoir: String? = null): View =
         PanneauTexte(context).apply {
             orientation = LinearLayout.VERTICAL
             // Un texte court se centre plutôt que de laisser une bande vide en bas.
@@ -433,7 +456,7 @@ object CarteCarnet {
             // et la famille reste lisible dans la fiche du Wierderbuch.
             addView(bloc(context, c.glose.ifEmpty { context.getString(R.string.carte_sens_inconnu) }, 15f, ENCRE, 0f).apply {
                 setTypeface(null, Typeface.BOLD)
-                maxLines = if (traduction != null) 1 else 2
+                maxLines = if (traduction != null || pouvoir != null) 1 else 2
             })
 
             c.exemple?.let { phrase ->
@@ -448,7 +471,11 @@ object CarteCarnet {
                 })
             }
 
-            if (traduction != null) {
+            if (pouvoir != null) {
+                // Une carte spéciale du jeu imprimé : son pouvoir passe avant
+                // la traduction, il sert à jouer.
+                addView(bloc(context, pouvoir, 9.5f, ENCRE, 3f).apply { maxLines = 2 })
+            } else if (traduction != null) {
                 // Trois unités d'air : collée à la phrase, la traduction se
                 // lisait comme sa troisième ligne.
                 addView(bloc(context, traduction, 9f, ENCRE_PALE, 3f).apply { maxLines = 2 })

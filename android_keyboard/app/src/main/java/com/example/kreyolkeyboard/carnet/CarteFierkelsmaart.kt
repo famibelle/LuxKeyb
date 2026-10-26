@@ -44,6 +44,16 @@ object CarteFierkelsmaart {
 
     fun est(forme: String): Boolean = forme == FORME
 
+    /**
+     * Le contenu de la carte pour qui ne la possède pas : son fichier
+     * d'impression se fait avant que le moindre joueur l'ait (voir
+     * [ImpressionCarte]).
+     */
+    fun contenu(context: Context): ContenuCarte = CarteCarnet.contenu(
+        context,
+        CarteMot(forme = FORME, premiereFois = 0L, rencontres = 1, numero = 0, jeux = setOf(JeuCarte.CADEAU))
+    )
+
     /** Le contenu de [contenu], corrigé s'il s'agit de la carte de la Fierkelsmaart. */
     fun corriger(context: Context, contenu: ContenuCarte): ContenuCarte = corriger(
         contenu,

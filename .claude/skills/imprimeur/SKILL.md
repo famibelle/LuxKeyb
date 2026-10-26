@@ -72,10 +72,21 @@ Les cartes ne sont pas des images dans le dépôt : elles sont dessinées par le
 code (`CarteCarnet.kt`, `CadreOrne.kt`, `Paysages.kt`, `Blason.kt`).
 Deux voies :
 
-1. **Export depuis l'app** (fidèle) : un test instrumenté ou un écran debug
-   qui rend chaque carte dans un `Bitmap` de 815 × 1110 px et l'écrit en PNG.
+1. **Export depuis l'app — la voie retenue** (`carnet/ImpressionCarte.kt`,
+   2026-10-26) : appui long sur « Partager » dans le lecteur de cartes, puis
+   « Cette carte » ou « La carte Fierkelsmaart ». L'appli dessine le recto
+   avec son propre code (`CarteCarnet.complete(…, impression = true)` : écus
+   COÛT et TYPE, pouvoir des cartes spéciales, sans médaillon, saison, sceau
+   ni plume), à 600 dpi, 69 × 94 mm fond perdu compris (1630 × 2220 px), et
+   l'envoie par le partage Android. La carte de l'appli (300 × 440) est plus
+   étroite que le poker : posée sur 86 mm de haut, le reste est le métal du
+   palier.
 2. **Redessin** (script Python/HTML + Playwright, `NODE_PATH=$(npm root -g)`) :
-   reproduire la mise en page à partir des JSON d'assets.
+   reproduire la mise en page à partir des JSON d'assets. Écarté pour les
+   rectos après le premier BAT de la Fierkelsmaart, jugé « moins beau que
+   sur le téléphone » par le propriétaire : il reste bon pour la planche de
+   BAT (traits de coupe, spécifications, signature) autour du PNG exporté, et
+   pour le verso commun.
 
 Sortie attendue, **jamais dans le dépôt public** (dossier `impression/`
 ignoré par `.gitignore`, ou dépôt privé) :

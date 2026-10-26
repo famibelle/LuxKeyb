@@ -1117,10 +1117,15 @@ object Ornement {
     /**
      * Les deux écus portent un libellé (« VUES », « NIVEAU ») : il entre dans
      * la clef du cache, sinon un changement de langue garderait l'ancien.
+     * [ecus] les remplace : la carte imprimée y écrit « COÛT » et « TYPE »
+     * (voir [ImpressionCarte]).
      */
-    fun metal(context: Context, rarete: Rarete, largeurPx: Int, vignette: Boolean): Bitmap? {
-        val vues = context.getString(R.string.carte_ecu_vues)
-        val niveau = context.getString(R.string.carte_ecu_niveau)
+    fun metal(
+        context: Context, rarete: Rarete, largeurPx: Int, vignette: Boolean,
+        ecus: Pair<String, String>? = null
+    ): Bitmap? {
+        val vues = ecus?.first ?: context.getString(R.string.carte_ecu_vues)
+        val niveau = ecus?.second ?: context.getString(R.string.carte_ecu_niveau)
         return couche("m$vues$niveau", rarete, largeurPx, vignette) { c ->
             dessinerMetal(c, rarete, vignette, vues, niveau)
         }
@@ -3968,6 +3973,13 @@ class CarteOrnee(
      */
     private var matierePrete = true
     private var quandPrete: (() -> Unit)? = null
+
+    /**
+     * Les libellés gravés sur les deux écus, à la place de « VUES » et
+     * « NIVEAU » : la carte imprimée y met « COÛT » et « TYPE », qui servent au
+     * jeu de cartes. À poser avant que la carte ne connaisse sa taille.
+     */
+    var ecus: Pair<String, String>? = null
     private var largeurPreparee = 0
 
     /**
@@ -4011,7 +4023,7 @@ class CarteOrnee(
         Thread({
             // Un échec ne bloque pas la carte : elle retombe sur le rendu direct.
             try {
-                Ornement.metal(ctx, rarete, w, vignette)
+                Ornement.metal(ctx, rarete, w, vignette, ecus)
                 Ornement.rayons(rarete, w, vignette)
             } catch (e: Throwable) {
                 android.util.Log.w("CarteOrnee", "Métal non préparé : ${e.message}")
@@ -4196,7 +4208,7 @@ class CarteOrnee(
             it.encastrement(canvas)
             canvas.restore()
         }
-        Ornement.metal(context, rarete, width, vignette)?.let { canvas.drawBitmap(it, 0f, 0f, null) }
+        Ornement.metal(context, rarete, width, vignette, ecus)?.let { canvas.drawBitmap(it, 0f, 0f, null) }
 
         canvas.save()
         canvas.scale(u, u)
@@ -4270,7 +4282,7 @@ class CarteOrnee(
     private fun couches(canvas: Canvas, u: Float): Boolean {
         if (vignette || android.os.Build.VERSION.SDK_INT < 29 || !canvas.isHardwareAccelerated) return false
         if (emprise >= 0.01f) return false
-        if (!motif.aSonLieu || Ornement.metal(context, rarete, width, vignette) == null) return false
+        if (!motif.aSonLieu || Ornement.metal(context, rarete, width, vignette, ecus) == null) return false
         val anime = ambiance != null
         // Le lieu en plans glisse à chaque trame : il sort de la couche fixe,
         // et le dessin du mot avec lui, qui doit passer devant.

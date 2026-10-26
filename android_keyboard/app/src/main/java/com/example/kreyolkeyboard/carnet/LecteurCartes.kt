@@ -100,7 +100,13 @@ internal class LecteurCartes(
         }
         boutons.addView(pastille(ctx.getString(R.string.carte_partager)) {
             PartageCarte.partager(ctx, cartes[rang])
-        }.also { boutonPartager = it })
+        }.also {
+            // L'appui long donne le fichier d'impression du jeu de cartes :
+            // un outil pour qui fait imprimer les cartes, pas un geste de
+            // joueur, d'où sa place cachée. Voir [ImpressionCarte].
+            it.setOnLongClickListener { ImpressionCarte.choisir(ctx, cartes[rang]); true }
+            boutonPartager = it
+        })
         surCeder?.let { ceder ->
             boutons.addView(pastille(ctx.getString(R.string.carte_ceder)) { ceder(cartes[rang]) }.apply {
                 (layoutParams as LinearLayout.LayoutParams).marginStart = (12 * d).toInt()
