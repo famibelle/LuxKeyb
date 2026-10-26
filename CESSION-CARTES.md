@@ -156,6 +156,10 @@ LUXKEYB:P:1:<série>:<cartes>:<signature>
   `impression/cle_cartes/privee.pem` (**hors dépôt**, à garder hors de ce
   conteneur). L'appli n'embarque que la clé publique (`carnet/CartesPapier.kt`).
 - **Provenance** : `JeuCarte.PAPIER`, médaillon « CARTE EN PAPIER ».
+- **Aucun code signé dans le dépôt**, qui est public : un code de la boîte ou
+  de la Fierkelsmaart y serait offert à tous, pour toujours. Les tests n'en
+  gardent qu'un, pour deux cartes qui se gagnent au clavier. (La première clé
+  a été remplacée le jour même pour cette raison.)
 
 **Ce que le code garantit** : personne ne fabrique un code sans la clé, ni ne
 change les cartes d'un code existant. **Ce qu'il ne garantit pas** : hors

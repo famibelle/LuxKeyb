@@ -18,7 +18,8 @@ elle, ce script ne fait rien : c'est voulu.
 
 Sorties : codes.csv (série, texte du code) et un SVG du code QR par série,
 à poser sur la carte code (15 mm de côté au moins, à tester sur l'épreuve).
-Les sorties vont dans impression/ : un code imprimé ne se publie pas.
+Les sorties vont dans impression/ : un code signé ne se publie **jamais**
+(dépôt public, issue, capture d'écran), il donnerait ses cartes à tous.
 """
 import argparse
 import base64

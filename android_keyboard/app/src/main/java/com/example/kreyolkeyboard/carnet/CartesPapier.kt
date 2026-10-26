@@ -47,9 +47,14 @@ object CartesPapier {
     private const val TAG = "CartesPapier"
     private const val PREFIXE = "LUXKEYB:P:1:"
 
-    /** La clé publique de `impression/cle_cartes/privee.pem`, en X.509 base64. */
+    /**
+     * La clé publique de `impression/cle_cartes/privee.pem`, en X.509 base64.
+     * La première clé (01fc926) a été remplacée le jour même : un test publiait
+     * des codes signés qui donnaient la boîte et la Fierkelsmaart. Aucun code
+     * signé ne va dans le dépôt, sauf pour des cartes qui se gagnent au clavier.
+     */
     private const val CLE_PUBLIQUE =
-        "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEgcM7MJsRRRsPPUblXMRIv6T3PNM8l9dPFsriDLSxCrP90e55SrRN8C1mA52kfYh66n70alTOM22ySXlIDBeNsA=="
+        "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEdrP6FOhPkvCqQA/uh2hP/ND44R4GxKPgoULBIe0kJQXz+pY4EzHocj6hu/k2B10UnbYaeypZ+uJviuuUxGSwqg=="
 
     private const val ACTIF = "cartes_imprimees.json"
     private const val PREFS = "carnet_papier"
