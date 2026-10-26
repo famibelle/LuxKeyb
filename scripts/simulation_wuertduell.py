@@ -85,7 +85,7 @@ def gagnant(t,a,b):
 
 if __name__ == '__main__':
   random.seed(1)
-  for n in (20,25,30,40):
+  for n in (20,25,26,30,40):
     R=[partie(n) for _ in range(4000)]
     tours=[r[0] for r in R]; pi=[max(r[1].pioches,r[2].pioches) for r in R]
     vide=sum(r[1].vide or r[2].vide for r in R)/len(R)

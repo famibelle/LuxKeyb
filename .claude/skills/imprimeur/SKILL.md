@@ -163,21 +163,25 @@ gloutons) :
 |---|---|---|---|
 | 20 | 7, 9 | 17 | 4 % |
 | 25 | 7, 9 | 17 | 0 % |
+| 26 | 7, 9 | 17 | 0 % |
 | 30 | 7, 9 | 17 | 0 % |
 
 Une partie consomme ~17 cartes par joueur (5 trésor + 5 main + ~7 pioches),
-soit ~34 à deux. La règle fixe **25 cartes par joueur** : jamais de pioche
-vide, et de la marge pour des enfants qui jouent plus lentement que des
-automates. Composition d'un paquet de 25 (celle de la simulation) : ~14 noms,
-5 verbes, 2 à 3 adjectifs, 3 à 4 nombres.
+soit ~34 à deux. La règle fixe **26 cartes par joueur** : jamais de pioche
+vide, de la marge pour des enfants qui jouent plus lentement que des
+automates, et les deux paquets font **les 52 cartes d'un jeu classique**
+(propriétaire, 2026-10-26 ; 25 auparavant). Composition d'un paquet de 26
+(`scripts/candidats_cartes.py`) : 14 noms, 5 verbes, 4 adjectifs, 3 nombres.
 
 | Produit | Contenu | Rôle | Prix public indicatif |
 |---|---|---|---|
-| **Boîte de départ** (produit principal) | 54 cartes : 2 paquets de 25 prêts à jouer + 4 cartes de règle | Jouer à deux dès l'ouverture ; sert aussi à la Bataille des mots | 12–15 € |
+| **Boîte de départ** (produit principal) | 54 cartes : 52 à jouer (2 paquets de 26 prêts à jouer) + 2 cartes de règle à la place des jokers | Jouer à deux dès l'ouverture ; sert aussi à la Bataille des mots | 12–15 € |
 | Paquet de 6 (complément) | 3 C / 2 PC / 1 R ou mieux, voir plus bas | Faire évoluer son paquet, collectionner, échanger | 4 € |
 | Coffret complet | toutes les cartes | Écoles, collectionneurs | 35–45 € |
 
-**Pourquoi 54** : c'est le format d'un jeu de cartes standard. Étui, découpe
+**Pourquoi 54** : c'est le format d'un jeu de cartes standard, 52 cartes et
+2 jokers ; le jeu garde ce principe, 52 cartes à jouer et 2 cartes de règle
+(une par jeu, avec un QR vers `docs/regle-du-jeu.md`). Étui, découpe
 et tarifs existent chez tous les imprimeurs (voir la ligne « Jeu de 54 » de la
 section 4) : c'est le format le moins cher à produire en qualité.
 

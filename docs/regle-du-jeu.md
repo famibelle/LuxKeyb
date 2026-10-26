@@ -55,7 +55,8 @@ ce qu'elle vaut.
 
 *Dès 6 ans · 2 joueurs · 5 minutes*
 
-1. Mélangez toutes les cartes et partagez-les en deux paquets, faces cachées.
+1. Mélangez toutes les cartes, par exemple les 52 cartes de la boîte, et
+   partagez-les en deux paquets, faces cachées.
 2. Chaque joueur retourne la première carte de son paquet et lit le mot à voix
    haute.
 3. Le mot le plus long gagne : son joueur prend les deux cartes et les met
@@ -77,7 +78,7 @@ manches : celui qui a le plus de cartes a gagné.
 
 ### Pour commencer
 
-Chaque joueur prend un paquet de **25 cartes** et le mélange : l'un des deux
+Chaque joueur prend un paquet de **26 cartes** et le mélange : l'un des deux
 paquets de la boîte, ou celui qu'il a composé (voir [Les paquets](#les-paquets)).
 
 - Il pose les **5 premières cartes faces cachées** devant lui, sans les
@@ -142,8 +143,11 @@ trésor a perdu. Si ta pioche est vide, tu continues sans piocher.
 
 ### La boîte
 
-La boîte contient **deux paquets de 25 cartes**, prêts à jouer, et les cartes de
-la règle :
+La boîte contient **52 cartes à jouer**, comme un jeu de cartes classique :
+**deux paquets de 26 cartes**, prêts à jouer. Les deux cartes de plus, à la
+place des jokers, résument la règle des deux jeux.
+
+Les deux paquets :
 
 - **Déieren**, les animaux : *Kaz*, *Hond*, *Päerd*, *Fësch*, *Elefant*,
   *Krokodil*…
@@ -151,8 +155,9 @@ la règle :
   *Hieselnoss*…
 
 Chacun a 14 noms, 5 verbes (*iessen*, *lafen*, *sangen*, *schwammen*…),
-3 adjectifs (*grouss*, *kleng*, *staark*…) et 3 nombres. Chaque nom d'un paquet
-a son jumeau de même Force dans l'autre : aucun des deux n'est avantagé.
+4 adjectifs (*grouss*, *kleng*, *staark*, *witzeg*…) et 3 nombres. Chaque nom
+d'un paquet a son jumeau de même Force dans l'autre : aucun des deux n'est
+avantagé.
 
 ### Les extensions
 
@@ -164,6 +169,6 @@ d'autres, puisque le dictionnaire ne manque pas de mots.
 
 Avec les extensions, chacun peut composer le sien :
 
-- **25 cartes** exactement ;
+- **26 cartes** exactement ;
 - **au moins la moitié de noms** ;
 - **un seul exemplaire** de chaque mot.

@@ -9,9 +9,9 @@ Vivier : 341 mots à thème, verbes et adjectifs d'enfant, dont 25 déjà dessin
 
 **Équilibre de la boîte** (simulation, `scripts/simulation_wuertduell.py`) : Déieren gagne 50% des parties contre Iessen ; 6 tours en médiane, 9 pour 90 % des parties.
 
-# La boîte de départ : 2 paquets de 25 + 4 cartes de règle
+# La boîte de départ : 2 paquets de 26 (52 cartes) + 2 cartes de règle
 
-## Paquet Déieren (25 cartes)
+## Paquet Déieren (26 cartes)
 
 | Mot | Nature | Coût | Force | Sens | Paysage | Dessin | Phrase d'exemple |
 |---|---|---|---|---|---|---|---|
@@ -37,11 +37,12 @@ Vivier : 341 mots à thème, verbes et adjectifs d'enfant, dont 25 déjà dessin
 | **léif** | adjectif | ● | 4 | gentil | Schueberfouer | — | *seng nei Frëndin ass emol eng léif Fra!* |
 | **kleng** | adjectif | ◆◆ | 5 | petit | Veianen | — | *de klenge Wee féiert laanscht d'Baach bei d'Millen* |
 | **séier** | adjectif | ◆◆ | 5 | rapide | Stad | — | *ech hat nach ëmmer e Faibel fir séier Autoen* |
+| **witzeg** | adjectif | ◆◆ | 6 | drôle | Stad | — | *ech muss der eng witzeg Geschicht verzielen* |
 | **eent** | nombre | gratuit | — | 1 | — | — |  |
 | **zwee** | nombre | gratuit | — | 2 | — | — |  |
 | **dräi** | nombre | gratuit | — | 3 | — | — |  |
 
-## Paquet Iessen (25 cartes)
+## Paquet Iessen (26 cartes)
 
 | Mot | Nature | Coût | Force | Sens | Paysage | Dessin | Phrase d'exemple |
 |---|---|---|---|---|---|---|---|
@@ -67,6 +68,7 @@ Vivier : 341 mots à thème, verbes et adjectifs d'enfant, dont 25 déjà dessin
 | **grouss** | adjectif | ◆◆ | 6 | grand | Veianen | — | *meng Elteren hunn eng grouss Zomm an Immobilien investéiert* — mes parents ont investi une somme importante dans des biens immobiliers |
 | **staark** | adjectif | ◆◆ | 6 | fort | Stad | — | *iess deng Zopp, da gëss de grouss a staark!* |
 | **schéin** | adjectif | ◆◆ | 6 | beau | Stad | — | *fir hire groussen Dag huet d'Braut sech extra schéin noeneegemaach* — pour son grand jour, la mariée s’est faite toute belle |
+| **daper** | adjectif | ◆◆ | 5 | courageux | Stad | — | *eis Ekipp huet sech daper geschloen* |
 | **véier** | nombre | gratuit | — | 4 | — | — |  |
 | **fënnef** | nombre | gratuit | — | 5 | — | — |  |
 | **sechs** | nombre | gratuit | — | 6 | — | — |  |
@@ -126,8 +128,8 @@ Vivier : 341 mots à thème, verbes et adjectifs d'enfant, dont 25 déjà dessin
 | **Summer** | nom m. | ◆◆ | 6 | été | Veianen | — | *dëst Joer hate mer en dréchene Summer* — cette année, l'été a été très sec |
 | **Séi** | nom m. | ● | 3 | lac | Esch-Sauer | — | *no där äiseger Wanternuecht war de Séi zougefruer* — après cette nuit d'hiver glaciale, le lac était gelé |
 | **Tulp** | nom f. | ● | 4 | tulipe | Stad | — | *d'Pianistin krut nom Concert e Bouquet Tulpen iwwerreecht* — la pianiste a reçu un bouquet de tulipes après le concert |
-| **witzeg** | adjectif | ◆◆ | 6 | drôle | Stad | — | *ech muss der eng witzeg Geschicht verzielen* |
-| **daper** | adjectif | ◆◆ | 5 | courageux | Stad | — | *eis Ekipp huet sech daper geschloen* |
 | **rout** | adjectif | ● | 4 | rouge | Stad | — | *firwat gëss de esou rout (am Gesiicht)?* — pourquoi rougis-tu autant ? |
 | **blo** | adjectif | ● | 3 | bleu | Stad | — | *de Bouf huet e schéine bloe Vëlo geschenkt kritt* — le garçon a reçu un beau vélo bleu en cadeau |
+| **gréng** | adjectif | ◆◆ | 5 | vert | Stad | — | *du däerfs eréischt iwwer d'Strooss goen, wann et gréng gëtt!* — tu ne peux traverser la rue que quand le feu passe au vert ! |
+| **giel** | adjectif | ● | 4 | jaune | Stad | — | *den Dueder vum Ee ass giel* |
 

@@ -20,7 +20,7 @@ enseignant, avant tout fichier d'impression.
 
 Sorties, dans Dictionnaires/cartes/ :
 
-- selection.md : la boîte (deux paquets de 25) et deux extensions, à relire ;
+- selection.md : la boîte (deux paquets de 26) et deux extensions, à relire ;
 - selection.csv : les mêmes cartes, pour produire les fichiers ;
 - candidats.csv : tous les mots à thème, pour remplacer une carte refusée.
 
@@ -245,9 +245,11 @@ def main():
     adjectifs = sorted([f for f in toutes if f['nature'] == 'adjectif'], key=lambda f: ADJECTIFS.index(f['mot']))
 
     # Les verbes et adjectifs se partagent entre les deux paquets, sans doublon,
-    # en alternant pour que chacun ait des coûts variés.
+    # en alternant pour que chacun ait des coûts variés. Quatre adjectifs par
+    # paquet : 14 + 5 + 4 + 3 = 26, et les deux paquets font les 52 cartes d'un
+    # jeu classique (propriétaire, 2026-10-26).
     vb = sorted(verbes[:10], key=lambda f: f['cout'])
-    ad = sorted(adjectifs[:6], key=lambda f: f['cout'])
+    ad = sorted(adjectifs[:8], key=lambda f: f['cout'])
     na, nb = jumeler(noms['Déieren'], noms['Iessen'], LONGUEURS_BOITE)
     paquets = {
         'Déieren': na + vb[0::2] + ad[0::2]
@@ -257,7 +259,7 @@ def main():
     }
     extensions = {
         'Schoul': choisir_noms(noms['Schoul'], {1: 4, 2: 8, 3: 5, 4: 3}) + verbes[10:14],
-        'Natur': choisir_noms(noms['Natur'], {1: 4, 2: 8, 3: 5, 4: 3}) + adjectifs[6:10],
+        'Natur': choisir_noms(noms['Natur'], {1: 4, 2: 8, 3: 5, 4: 3}) + adjectifs[8:12],
     }
 
     os.makedirs(SORTIE, exist_ok=True)
@@ -300,10 +302,10 @@ def simuler(paquets, parties=4000):
     victoires, tours = 0, []
     for i in range(parties):
         if i % 2 == 0:
-            t, ja, jb = sim.partie(25, a, b)
+            t, ja, jb = sim.partie(26, a, b)
             victoires += sim.gagnant(t, ja, jb) == 'a'
         else:
-            t, ja, jb = sim.partie(25, b, a)
+            t, ja, jb = sim.partie(26, b, a)
             victoires += sim.gagnant(t, ja, jb) == 'b'
         tours.append(t)
     tours.sort()
@@ -336,7 +338,7 @@ def rapport(paquets, extensions, toutes, equilibre):
             l.append(f"| **{c['mot']}** | {nat} | {SYMBOLES.get(c['cout'], 'gratuit')} | {c['force'] or '—'} "
                      f"| {c['sens']} | {c['lieu'] or '—'} | {c['dessin'] or '—'} | {ex} |")
         l.append('')
-    l.append('# La boîte de départ : 2 paquets de 25 + 4 cartes de règle')
+    l.append('# La boîte de départ : 2 paquets de 26 (52 cartes) + 2 cartes de règle')
     l.append('')
     for nom, cartes in paquets.items():
         table(f'Paquet {nom}', cartes)

@@ -138,8 +138,10 @@ se compense par sa limite (une fois par partie) et se vérifie en simulation
   moteur de `scripts/simulation_wuertduell.py`). Les noms de deux paquets
   jumeaux sont appariés par longueur (`jumeler()`).
 - Une partie dure **6 à 7 tours** en médiane, 9 pour 90 % des parties, et un
-  joueur y voit 17 cartes : c'est ce qui fixe le paquet à 25
-  (`python3 scripts/simulation_wuertduell.py`).
+  joueur y voit 17 cartes : tout paquet de 25 cartes ou plus suffit
+  (`python3 scripts/simulation_wuertduell.py`). Le paquet est de **26** pour
+  que la boîte garde le principe du jeu classique : 52 cartes à jouer, et
+  2 cartes de règle à la place des jokers (propriétaire, 2026-10-26).
 - Toute nouvelle carte à pouvoir passe par la simulation avant d'être dessinée.
 
 ## 3. Écrire un pouvoir
@@ -275,8 +277,9 @@ gabarit). « Suggestion » : elle serait plus belle.
 5. **La règle** : `docs/regle-du-jeu.md` et le glossaire du § 3.
 6. **Les tests** du § 5, puis le BAT avec la skill `imprimeur`.
 
-Pour une extension (paquet à thème de 25 cartes) : 14 noms, 5 verbes,
-3 adjectifs, 3 nombres comme la boîte, choisis par
+Pour un paquet à thème prêt à jouer (26 cartes) : 14 noms, 5 verbes,
+4 adjectifs, 3 nombres comme la boîte, choisis par
 `scripts/candidats_cartes.py` puis relus à la main (sens premier, mot connu
 d'un enfant, rien de vulgaire ni d'effrayant), et équilibrés contre les deux
-paquets de la boîte.
+paquets de la boîte. Les extensions Schoul et Natur du script (24 cartes) sont
+des réserves où l'on pioche pour composer son paquet de 26.

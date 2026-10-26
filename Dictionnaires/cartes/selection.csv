@@ -21,6 +21,7 @@ Déieren,sprangen,verbe,,8,3,sauter,"springen, bespringen","to jump, to crack, t
 Déieren,léif,adjectif,,4,1,gentil,"lieb, süß","nice, cute, kind","gentil, lindo, caro",Schueberfouer,,seng nei Frëndin ass emol eng léif Fra!,
 Déieren,kleng,adjectif,,5,2,petit,"klein, klein schneiden","small, short, little","pequeno, mais novo",Veianen,,de klenge Wee féiert laanscht d'Baach bei d'Millen,
 Déieren,séier,adjectif,,5,2,rapide,"schnell, sehr","fast, quick, very","rápido, muito",Stad,,ech hat nach ëmmer e Faibel fir séier Autoen,
+Déieren,witzeg,adjectif,,6,2,drôle,witzig,funny,engraçado,Stad,,ech muss der eng witzeg Geschicht verzielen,
 Déieren,eent,nombre,,0,0,1,1,1,1,,,,
 Déieren,zwee,nombre,,0,0,2,2,2,2,,,,
 Déieren,dräi,nombre,,0,0,3,3,3,3,,,,
@@ -46,6 +47,7 @@ Iessen,schwammen,verbe,,9,3,nager,schwimmen,"to swim, to flounder","nadar, atrap
 Iessen,grouss,adjectif,,6,2,grand,groß,"big, basic","grande, mais velho",Veianen,,meng Elteren hunn eng grouss Zomm an Immobilien investéiert,mes parents ont investi une somme importante dans des biens immobiliers
 Iessen,staark,adjectif,,6,2,fort,"stark, (grammatisch) stark","strong, heavy, outrageous","forte, potente",Stad,,"iess deng Zopp, da gëss de grouss a staark!",
 Iessen,schéin,adjectif,,6,2,beau,"schön, sehr","beautiful, nice, handsome","belo, bom, bonito",Stad,,fir hire groussen Dag huet d'Braut sech extra schéin noeneegemaach,"pour son grand jour, la mariée s’est faite toute belle"
+Iessen,daper,adjectif,,5,2,courageux,tapfer,brave,corajoso,Stad,,eis Ekipp huet sech daper geschloen,
 Iessen,véier,nombre,,0,0,4,4,4,4,,,,
 Iessen,fënnef,nombre,,0,0,5,5,5,5,,,,
 Iessen,sechs,nombre,,0,0,6,6,6,6,,,,
@@ -93,7 +95,7 @@ Natur,Sand,nom,m.,4,1,sable,Sand,sand,areia,Esch-Sauer,,"Speis mécht een, andee
 Natur,Summer,nom,m.,6,2,été,Sommer,summer,verão,Veianen,,dëst Joer hate mer en dréchene Summer,"cette année, l'été a été très sec"
 Natur,Séi,nom,m.,3,1,lac,See,lake,lago,Esch-Sauer,,no där äiseger Wanternuecht war de Séi zougefruer,"après cette nuit d'hiver glaciale, le lac était gelé"
 Natur,Tulp,nom,f.,4,1,tulipe,Tulpe,tulip,túlipa,Stad,,d'Pianistin krut nom Concert e Bouquet Tulpen iwwerreecht,la pianiste a reçu un bouquet de tulipes après le concert
-Natur,witzeg,adjectif,,6,2,drôle,witzig,funny,engraçado,Stad,,ech muss der eng witzeg Geschicht verzielen,
-Natur,daper,adjectif,,5,2,courageux,tapfer,brave,corajoso,Stad,,eis Ekipp huet sech daper geschloen,
 Natur,rout,adjectif,,4,1,rouge,"rot, ruhen","red, to have a rest","vermelho, repousar",Stad,,firwat gëss de esou rout (am Gesiicht)?,pourquoi rougis-tu autant ?
 Natur,blo,adjectif,,3,1,bleu,blau,blue,azul,Stad,,de Bouf huet e schéine bloe Vëlo geschenkt kritt,le garçon a reçu un beau vélo bleu en cadeau
+Natur,gréng,adjectif,,5,2,vert,"grün, greinen","green, to grizzle","verde, gemer",Stad,,"du däerfs eréischt iwwer d'Strooss goen, wann et gréng gëtt!",tu ne peux traverser la rue que quand le feu passe au vert !
+Natur,giel,adjectif,,4,1,jaune,gelb,yellow,amarelo,Stad,,den Dueder vum Ee ass giel,
