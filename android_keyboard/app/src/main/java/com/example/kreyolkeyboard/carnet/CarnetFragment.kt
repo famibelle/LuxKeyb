@@ -178,9 +178,10 @@ class CarnetFragment : DialogFragment() {
 
     /**
      * Ce que le prochain scan doit lire : la demande de l'autre téléphone
-     * (on donne), ou la remise qu'il a préparée pour nous (on reçoit).
+     * (on donne), la remise qu'il a préparée pour nous (on reçoit), ou le code
+     * d'une carte en papier ([CartesPapier]).
      */
-    private enum class Scan { DEMANDE, REMISE }
+    private enum class Scan { DEMANDE, REMISE, PAPIER }
 
     private var scanEnCours = Scan.REMISE
 
@@ -273,7 +274,7 @@ class CarnetFragment : DialogFragment() {
                     setStroke(dp(1.5f), 0xAAFFFFFF.toInt())
                 }
                 isClickable = true
-                setOnClickListener { montrerDemande() }
+                setOnClickListener { choisirReception() }
                 boutonRecevoir = this
             })
             addView(TextView(ctx).apply {
@@ -1605,8 +1606,62 @@ class CarnetFragment : DialogFragment() {
     private fun surScan(texte: String) {
         when (scanEnCours) {
             Scan.DEMANDE -> ceder(texte)
-            Scan.REMISE -> recevoir(texte)
+            // Une carte code scannée depuis l'écran de la demande, qui
+            // attendait un autre téléphone : elle se reconnaît quand même.
+            Scan.REMISE -> if (CartesPapier.estCode(texte)) recevoirPapier(texte) else recevoir(texte)
+            Scan.PAPIER -> recevoirPapier(texte)
         }
+    }
+
+    /**
+     * « Recevoir » : d'un autre téléphone ([Cession]), ou du code d'une carte
+     * en papier ([CartesPapier]). Un seul bouton dans l'en-tête, qui n'a pas
+     * la place d'un second sur un écran de 360 dp.
+     */
+    private fun choisirReception() {
+        val ctx = context ?: return
+        android.app.AlertDialog.Builder(ctx)
+            .setTitle(R.string.recevoir_choix_titre)
+            .setItems(arrayOf(getString(R.string.recevoir_telephone), getString(R.string.recevoir_papier))) { _, i ->
+                if (i == 0) montrerDemande() else scanner(Scan.PAPIER)
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    /**
+     * Le code d'une carte en papier : ses cartes entrent au carnet avec la
+     * provenance « carte en papier », et le code ne resservira pas sur ce
+     * téléphone. Chaque mot passe le même contrôle qu'une carte cédée.
+     */
+    private fun recevoirPapier(texte: String) {
+        val ctx = context?.applicatifDansLaLangue() ?: return
+        val code = CartesPapier.lire(texte) ?: return dire(getString(R.string.papier_invalide))
+        if (CartesPapier.dejaUtilise(ctx, code.serie)) return dire(getString(R.string.papier_deja))
+        Thread {
+            val cartes = CartesPapier.cartes(code, CartesPapier.ensembles(ctx))
+                ?.filter { cartePossible(Cession.Remise("", it.forme, it.nombre)) }
+            if (!cartes.isNullOrEmpty()) {
+                cartes.forEach { Carnet.ajouter(ctx, it.forme, JeuCarte.PAPIER, it.nombre) }
+                CartesPapier.noterUtilise(ctx, code.serie)
+            }
+            Handler(Looper.getMainLooper()).post {
+                if (!isAdded) return@post
+                vueCession?.fermer()
+                when {
+                    cartes == null -> dire(getString(R.string.papier_mettre_a_jour))
+                    cartes.isEmpty() -> dire(getString(R.string.papier_invalide))
+                    cartes.size == 1 -> {
+                        dire(getString(R.string.papier_une, cartes[0].forme))
+                        chargerEnFond(ouvrir = cartes[0].forme)
+                    }
+                    else -> {
+                        dire(getString(R.string.papier_plusieurs, cartes.size))
+                        chargerEnFond()
+                    }
+                }
+            }
+        }.start()
     }
 
     private fun dire(message: String) {

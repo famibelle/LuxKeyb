@@ -131,3 +131,44 @@ quand même : c'est un cadeau.
   envoyée.
 - **La fiche Play Store** : l'autorisation caméra apparaît dans la liste des
   autorisations.
+
+## 8. Les cartes en papier : un code signé
+
+Le jeu de cartes imprimé (`docs/regle-du-jeu.md`) verse ses cartes dans le
+carnet par une **carte code** : un QR imprimé sur une carte de règle de la
+boîte, sur une carte de chaque paquet, ou remis au stand pour la
+Fierkelsmaart. « Recevoir » propose « D'un autre téléphone » ou « Le code
+d'une carte en papier » ; le scanner lit les deux.
+
+```
+LUXKEYB:P:1:<série>:<cartes>:<signature>
+```
+
+- **Série** : douze chiffres hexadécimaux tirés au hasard à l'impression ; un
+  code ne sert qu'une fois sur un téléphone (préférences `carnet_papier`, hors
+  sauvegarde).
+- **Cartes** : `@B1` (un ensemble de `assets/cartes_imprimees.json`, écrit par
+  `scripts/candidats_cartes.py`), `Kaz` (un mot) ou `eent#1` (un numéral). Un
+  ensemble imprimé ne change plus : une nouvelle boîte prend un nouvel
+  identifiant, et une appli trop ancienne demande sa mise à jour.
+- **Signature** : ECDSA P-256 sur SHA-256, en base64 URL, faite par
+  `scripts/codes_cartes.py` avec la clé privée
+  `impression/cle_cartes/privee.pem` (**hors dépôt**, à garder hors de ce
+  conteneur). L'appli n'embarque que la clé publique (`carnet/CartesPapier.kt`).
+- **Provenance** : `JeuCarte.PAPIER`, médaillon « CARTE EN PAPIER ».
+
+**Ce que le code garantit** : personne ne fabrique un code sans la clé, ni ne
+change les cartes d'un code existant. **Ce qu'il ne garantit pas** : hors
+ligne, un téléphone ignore qu'un autre a déjà scanné le même code ; une photo
+du code sert plusieurs fois. C'est accepté (usage scolaire toléré). Le code
+protège surtout les cartes qui ne se gagnent pas en jouant, comme la
+Fierkelsmaart.
+
+**Pourquoi pas la photo de la carte** (propriétaire, 2026-10-26) : lire le mot
+sur une photo demandait ML Kit, qui envoie des statistiques à Google, ou un
+moteur hors ligne de plusieurs mégaoctets.
+
+**Si la clé privée est perdue**, les codes déjà imprimés restent valables,
+mais on ne peut plus en signer : il faut une nouvelle paire de clés, dont la
+clé publique remplace l'ancienne dans l'appli (les anciens codes cessent alors
+de marcher, sauf à garder les deux clés).

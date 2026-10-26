@@ -135,11 +135,19 @@ illégale à la vente, sans valeur, et reconnaissable.
    - Fichiers HD, PDF d'impression, dos de carte : dossier `impression/`
      dans `.gitignore` ou dépôt privé. Vérifier `git status` avant tout commit.
    - Garder au moins un élément exclusif au papier (dos, cadre doré).
-3. **Authenticité**
-   - Chaque carte porte un numéro de série et un QR **signé** (clé privée
-     hors dépôt, jamais dans le code ni dans les secrets CI publics).
-     L'application vérifie la signature au scan ; une carte authentique
-     peut débloquer quelque chose dans le carnet, une copie non.
+3. **Authenticité : la carte code** (en place depuis le 2026-10-26, voir
+   `CESSION-CARTES.md` § 8)
+   - Pas un QR par carte (15 mm au moins, trop de place prise au dessin, et
+     le dos doit rester identique) : **une carte code** par boîte (sur une des
+     2 cartes de règle), par paquet, ou au stand. Un scan verse ses cartes
+     dans le carnet, provenance « carte en papier ».
+   - Codes signés par `scripts/codes_cartes.py` (`@B1 -n 500 -o
+     impression/codes/B1`) avec `impression/cle_cartes/privee.pem` (hors
+     dépôt ; le propriétaire en garde une copie hors du conteneur). Chaque
+     code a sa série : **impression à données variables** (un QR différent
+     par boîte), simple en numérique, à demander au devis en offset.
+   - La photo de la carte a été écartée : ML Kit envoie des statistiques à
+     Google, et un moteur hors ligne pèse plusieurs mégaoctets.
    - Finitions difficiles à reproduire : dorure, vernis sélectif, âme bleue.
 4. **Politique décidée** : copie scolaire et éducative tolérée, usage
    commercial interdit. Ne pas proposer de mesure qui gênerait les classes.

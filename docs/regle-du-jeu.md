@@ -145,7 +145,9 @@ trésor a perdu. Si ta pioche est vide, tu continues sans piocher.
 
 La boîte contient **52 cartes à jouer**, comme un jeu de cartes classique :
 **deux paquets de 26 cartes**, prêts à jouer. Les deux cartes de plus, à la
-place des jokers, résument la règle des deux jeux.
+place des jokers, résument la règle des deux jeux. L'une porte aussi un
+**code** : scanné dans le carnet de l'application (« Recevoir », puis « Le code
+d'une carte en papier »), il y ajoute les 52 cartes de la boîte.
 
 Les deux paquets :
 

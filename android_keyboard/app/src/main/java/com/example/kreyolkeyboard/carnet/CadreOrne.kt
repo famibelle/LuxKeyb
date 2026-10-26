@@ -1806,8 +1806,13 @@ object Ornement {
         p.typeface = android.graphics.Typeface.create(
             android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD
         )
-        // Une carte cédée n'a pas été gagnée : elle a été reçue.
-        val dessus = if (jeu == JeuCarte.CADEAU) R.string.carte_recue_medaillon else R.string.carte_gagne_a_medaillon
+        // Une carte cédée n'a pas été gagnée : elle a été reçue. Une carte du
+        // jeu imprimé non plus : « CARTE EN » au-dessus, « PAPIER » dessous.
+        val dessus = when (jeu) {
+            JeuCarte.CADEAU -> R.string.carte_recue_medaillon
+            JeuCarte.PAPIER -> R.string.carte_papier_medaillon
+            else -> R.string.carte_gagne_a_medaillon
+        }
         texteSurArc(c, p, context.getString(dessus), cx, cy, R_EMAIL + 2.2f, true)
         texteSurArc(c, p, jeu.libelle(context).uppercase(), cx, cy, R_MEDAILLON - 3.6f, false)
         p.typeface = android.graphics.Typeface.DEFAULT
@@ -1951,6 +1956,16 @@ object Ornement {
                 trait(0f, -4.5f, 0f, 6.5f)
                 c.drawOval(cx - 5f, cy - 8f, cx - 0.3f, cy - 4.5f, p)
                 c.drawOval(cx + 0.3f, cy - 8f, cx + 5f, cy - 4.5f, p)
+            }
+            // Deux cartes à jouer, l'une penchée derrière l'autre.
+            JeuCarte.PAPIER -> {
+                p.strokeWidth = 1.2f
+                c.save()
+                c.rotate(-14f, cx, cy)
+                c.drawRoundRect(cx - 6.5f, cy - 7f, cx + 2.5f, cy + 5f, 1.5f, 1.5f, p)
+                c.restore()
+                c.drawRoundRect(cx - 2.5f, cy - 5.5f, cx + 6.5f, cy + 6.5f, 1.5f, 1.5f, p)
+                c.drawCircle(cx + 2f, cy + 0.5f, 1.4f, p)
             }
         }
         p.style = Paint.Style.FILL

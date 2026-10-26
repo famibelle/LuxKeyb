@@ -24,6 +24,11 @@ Sorties, dans Dictionnaires/cartes/ :
 - selection.csv : les mêmes cartes, pour produire les fichiers ;
 - candidats.csv : tous les mots à thème, pour remplacer une carte refusée.
 
+Et, dans les assets de l'appli, cartes_imprimees.json : les ensembles qu'un
+code de carte en papier peut nommer (`@B1`, voir carnet/CartesPapier.kt).
+Un ensemble déjà imprimé ne change plus : une nouvelle boîte prend un nouvel
+identifiant.
+
 À lancer depuis la racine du dépôt : python3 scripts/candidats_cartes.py
 """
 import csv
@@ -276,6 +281,21 @@ def main():
         w.writeheader()
         for c in sorted(toutes, key=lambda c: (c['theme'] or c['nature'], c['cout'], c['mot'])):
             w.writerow(c)
+
+    # Les ensembles des codes de cartes en papier. B1 : la boîte de départ,
+    # première édition.
+    def element(c):
+        return f"{c['mot']}#{c['sens']}" if c['nature'] == 'nombre' else c['mot']
+    actifs = {
+        'B1': {'nom': 'Boîte de départ (Déieren, Iessen)',
+               'cartes': [element(c) for nom in ('Déieren', 'Iessen') for c in paquets[nom]]},
+        'SCHOUL1': {'nom': 'Extension Schoul', 'cartes': [element(c) for c in extensions['Schoul']]},
+        'NATUR1': {'nom': 'Extension Natur', 'cartes': [element(c) for c in extensions['Natur']]},
+        'FK27': {'nom': 'Fierkelsmaart 2027', 'cartes': ['Fierkelsmaart']},
+    }
+    with open(os.path.join(A, 'cartes_imprimees.json'), 'w', encoding='utf-8') as f:
+        json.dump({'ensembles': actifs}, f, ensure_ascii=False, indent=1)
+        f.write('\n')
 
     equilibre = simuler(paquets)
     with open(os.path.join(SORTIE, 'selection.md'), 'w', encoding='utf-8') as f:

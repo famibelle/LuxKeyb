@@ -41,7 +41,10 @@ enum class JeuCarte(
     ACCUEIL("ac", "Bienvenue", "👋", 0xFFED2939.toInt()),
 
     /** Pas un jeu : une carte cédée par un autre téléphone. Voir [Cession]. */
-    CADEAU("cd", "Cadeau", "🎁", 0xFFB8860B.toInt());
+    CADEAU("cd", "Cadeau", "🎁", 0xFFB8860B.toInt()),
+
+    /** Pas un jeu : une carte du jeu imprimé, versée par son code. Voir [CartesPapier]. */
+    PAPIER("pp", "Papier", "🃏", 0xFF6D4C41.toInt());
 
     /**
      * Le nom affiché. Les sept jeux gardent leur nom luxembourgeois dans toutes
@@ -51,6 +54,7 @@ enum class JeuCarte(
     fun libelle(context: Context): String = when (this) {
         ACCUEIL -> context.getString(R.string.jeu_accueil)
         CADEAU -> context.getString(R.string.jeu_cadeau)
+        PAPIER -> context.getString(R.string.jeu_papier)
         else -> nom
     }
 
@@ -59,7 +63,7 @@ enum class JeuCarte(
         fun parId(id: String): JeuCarte? = PAR_ID[id]
 
         /** Les sept vrais jeux, dans l'ordre du hub : tout compteur de jeux part d'ici. */
-        val JEUX: List<JeuCarte> = values().filter { it != ACCUEIL && it != CADEAU }
+        val JEUX: List<JeuCarte> = values().filter { it != ACCUEIL && it != CADEAU && it != PAPIER }
     }
 }
 

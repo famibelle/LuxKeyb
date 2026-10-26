@@ -690,6 +690,16 @@
     <string name="carnet_recevoir">🎁 Kréien</string>
     <string name="jeu_cadeau">Kaddo</string>
     <string name="carte_recue_medaillon">KRUT ALS</string>
+    <string name="jeu_papier">Pabeier</string>
+    <string name="carte_papier_medaillon">KAART AUS</string>
+    <string name="recevoir_choix_titre">Eng Kaart kréien</string>
+    <string name="recevoir_telephone">📱 Vun engem aneren Telefon</string>
+    <string name="recevoir_papier">🃏 De Code vun enger Pabeierkaart</string>
+    <string name="papier_invalide">Dëse Code gehéiert zu kenger Pabeierkaart vum Lëtzebuergesch Clavier.</string>
+    <string name="papier_deja">Dëse Code gouf op dësem Telefon schonn benotzt.</string>
+    <string name="papier_mettre_a_jour">Dëse Code kënnt aus enger méi neier Këscht wéi d\'App: aktualiséiert se a scannt de Code nach eng Kéier.</string>
+    <string name="papier_une">„%1$s“ ass an Ärem Carnet</string>
+    <string name="papier_plusieurs">%1$d Pabeierkaarten sinn an Ärem Carnet</string>
     <string name="carte_ceder">🤝 Ofginn</string>
     <string name="ceder_titre">„%1$s“ ofginn?</string>
     <string name="ceder_message">Frot déi aner Persoun, an hirem Carnet op „Kréien“ ze drécken, a scannt dann de Code, deen si weist. D\'Kaart verléisst Äre Carnet an deem Moment, definitiv. Wat Dir geléiert hutt an Är Fieder bleiwen bei Iech.</string>
@@ -710,7 +720,7 @@
     <string name="reception_titre">„%1$s“ ass an Ärem Carnet</string>
     <string name="scan_invite">Riicht d\'Kamera op de Code vun der Kaart</string>
     <string name="camera_pourquoi_titre">De Code vun der Kaart liesen</string>
-    <string name="camera_pourquoi_message">D\'Kamera déngt just dozou, de Code vum aneren Telefon ze liesen. Et gëtt näischt fotograféiert, gespäichert oder geschéckt.</string>
+    <string name="camera_pourquoi_message">D\'Kamera déngt just dozou, e Code ze liesen: dee vun engem aneren Telefon oder vun enger Pabeierkaart. Et gëtt näischt fotograféiert, gespäichert oder geschéckt.</string>
     <string name="camera_pourquoi_ok">Weider</string>
     <string name="reception_impossible">Dës Kaart gëtt et net am Clavier.</string>
     <string name="carte_partage_message">Ech hunn d\'Kaart „%1$s“ (%2$s) mam Lëtzebuergesch Clavier gewonnen.\n\nGratis eroflueden:\nhttps://play.google.com/store/apps/details?id=%3$s&amp;referrer=utm_source%%3Dcard_share%%26utm_campaign%%3Dlaunch_lu\n\n#LëtzebuergeschClavier</string>
