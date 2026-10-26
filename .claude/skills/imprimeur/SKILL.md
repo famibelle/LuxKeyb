@@ -302,11 +302,13 @@ un **coffret complet** de 248 cartes à 35–45 € (écoles, impatients).
 adresse, avertissement « ne convient pas aux moins de 3 ans », © et licence
 (voir section 6), crédit LOD/ZLS.
 
-**Calendrier Fierkelsmaart (avril 2027)** : marque, statut et dossier de
-subside en novembre, fichiers et prototypes décembre–janvier, BAT et série en
-février. L'illustration doit tenir entre décembre et janvier : choisir
-l'illustrateur avant de déposer le dossier, le devis de ses honoraires en
-fait partie.
+**Calendrier Fierkelsmaart (avril 2027)** : marque en novembre, fichiers et
+prototypes décembre–janvier, BAT et série en février, avec les dessins de
+l'appli et sans subside. Pas d'illustrateur au 2026-10-26 : l'édition
+illustrée est un projet distinct, pour la rentrée scolaire 2027, et c'est
+elle qui fait l'objet du dossier de subside (section 8). Illustrateur choisi
+et devis en main avant le dépôt, dossier déposé au moins 2 mois avant le
+début de l'illustration.
 
 ## 8. Contexte : porteur du projet basé au Luxembourg
 
@@ -324,15 +326,39 @@ fait partie.
   asbl peut vendre si c'est accessoire à son objet (promotion de la langue).
   Conseil gratuit : House of Entrepreneurship (Chambre de commerce).
 - **Subside** : « Demande de subside par un particulier pour la réalisation
-  de projets culturels » (guichet.lu, ministère de la Culture, dépôt sur
-  MyGuichet). La création artistique doit être au centre du projet : c'est
-  l'illustration payée qui le justifie, pas le dessin produit par l'appli.
-  Dossier complet au moins 2 mois avant le début du projet (règle des pages
-  voisines, à vérifier pour les particuliers), jamais après. Budget présenté
-  à l'équilibre : dépenses (illustration, maquette, prototypes, tirage,
-  livraison, stand) = recettes (ventes, subside, apport personnel). Un seul
-  dossier par projet : ne pas y mêler l'adoption du clavier par l'État.
-  Montant, plafond et pièces à fournir à relire sur la page elle-même.
+  de projets culturels » (guichet.lu, ministère de la Culture, page du
+  16.12.2025, relevée par le propriétaire le 2026-10-26). Ce qu'elle dit :
+  - **Qui** : personne physique luxembourgeoise ou résidente, active dans le
+    secteur culturel. **Pas les entreprises individuelles** : ne pas prendre
+    d'autorisation d'établissement en nom propre avant d'avoir la réponse,
+    ou passer par une asbl (formulaire distinct).
+  - **Quoi** : la création artistique au centre. Pour un porteur qui n'est
+    pas artiste, le cas prévu est « un particulier qui organise une
+    manifestation culturelle avec des artistes rémunérés » ; le projet
+    s'écrit donc autour de l'illustrateur payé et d'ateliers de jeu publics
+    (médiation, transmission du savoir), pas autour d'un tirage seul.
+  - **Argent** : 60 % maximum des coûts totaux, 5 % minimum payés par le
+    porteur, 95 % maximum d'argent public cumulé. Le subside paie
+    l'illustration tant qu'elle ne dépasse pas 60 % du coût du projet. Il
+    peut payer des honoraires, rien d'autre à un tiers.
+  - **Gratuité** : « la création a une valeur ». Un prix modeste est bien
+    vu, la gratuité générale doit être justifiée : les cartes offertes aux
+    écoles se justifient, pas un jeu donné à tous.
+  - **Quand** : projet réalisé au Luxembourg dans une année civile ; dossier
+    complet au moins 2 mois avant le début du projet, jamais après ; au plus
+    tard 5 jours ouvrables avant une réunion de la commission (mensuelle,
+    sauf août et décembre en 2026).
+  - **Pièces** : budget détaillé, plan de financement, CV artistique ou liens
+    (site, dépôt, presse). Dépôt sur MyGuichet. Questions :
+    subsides@mc.etat.lu.
+  - **Après l'accord** : « Avec le soutien du ministère de la Culture » et
+    son logo sur la boîte, le site et tout support produit ensuite ; une
+    convention écrite avec l'illustrateur (honoraires, cession des droits,
+    pour garder `LICENSE-VISUELS.md` valable) ; projet annulé = subside
+    remboursé, sauf projet de remplacement accepté la même année.
+  - Budget à l'équilibre : dépenses (illustration, maquette, prototypes,
+    tirage, livraison, ateliers, stand) = recettes (ventes, subside, apport).
+    Un seul dossier par projet : ne pas y mêler l'adoption du clavier.
 - **Marque** : le BOIP couvre le Benelux, donc le Luxembourg.
 - **Stand** : se renseigner auprès de l'organisateur ou de la commune pour
   l'emplacement et les éventuelles autorisations de vente.
