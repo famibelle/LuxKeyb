@@ -1,9 +1,50 @@
 {
- "genere_le": "2026-10-21",
- "derniere_version": "37.7.9",
- "derniere_date": "2026-10-21",
+ "genere_le": "2026-10-27",
+ "derniere_version": "37.8.0",
+ "derniere_date": "2026-10-27",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.8.0",
+   "date": "2026-10-27",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "O nível de revisão em seis casas",
+       "texte": "No fundo de cada carta, uma casa enche-se a cada revisão certa, e as seis ficam cheias quando a palavra está aprendida."
+      },
+      {
+       "titre": "A raridade em estrelas",
+       "texte": "Uma carta comum tem uma estrela, uma muito rara tem quatro. Quantas mais estrelas, mais rara é a carta."
+      },
+      {
+       "titre": "Escudos gravados",
+       "texte": "Os dois escudos no fundo da carta são cinzelados como a placa do nome, e o número de vezes que ganhou a palavra lê-se melhor."
+      },
+      {
+       "titre": "Novos desenhos nas cartas",
+       "texte": "A abelha, a formiga, o elefante, a banana, o crepe e mais treze palavras têm agora o seu desenho."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_jauges.png",
+     "alt": "Três cartas da coleção, tal como a aplicação as mostra. 1. «Kaz», gato, em ouro: no escudo NÍVEL, em baixo à direita, uma casa cheia em seis; a raridade, em baixo à direita, tem quatro estrelas cheias em cinco. 2. «Bibliothéik», biblioteca, em prata, com o selo «Geléiert» de uma palavra aprendida: as seis casas do NÍVEL estão cheias, e a raridade tem três estrelas. 3. «Elefant», elefante, em ouro, com o seu novo desenho de elefante diante da cidade à noite: três casas cheias em seis. Os escudos VISTA e NÍVEL são cinzelados, e o número de VISTA está gravado no metal. As cartas estão em francês.",
+     "legende": "O nível de revisão em seis casas, a raridade em estrelas e o novo desenho do elefante."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_jauges.png",
+   "image_alt": "Três cartas da coleção, tal como a aplicação as mostra. 1. «Kaz», gato, em ouro: no escudo NÍVEL, em baixo à direita, uma casa cheia em seis; a raridade, em baixo à direita, tem quatro estrelas cheias em cinco. 2. «Bibliothéik», biblioteca, em prata, com o selo «Geléiert» de uma palavra aprendida: as seis casas do NÍVEL estão cheias, e a raridade tem três estrelas. 3. «Elefant», elefante, em ouro, com o seu novo desenho de elefante diante da cidade à noite: três casas cheias em seis. Os escudos VISTA e NÍVEL são cinzelados, e o número de VISTA está gravado no metal. As cartas estão em francês.",
+   "image_legende": "O nível de revisão em seis casas, a raridade em estrelas e o novo desenho do elefante."
+  },
   {
    "version": "37.7.9",
    "date": "2026-10-21",
@@ -175,25 +216,6 @@
    "image": "Screenshots/lux_aide_visite.gif",
    "image_alt": "Filmado num Galaxy A21s, em cinco ecrãs. 1. O último balão da visita, «Para a rever», destaca o botão «?» no canto superior esquerdo. 2. O «?» abre a ajuda: a visita completa, depois O teclado (Escrever com o teclado, Ditar uma mensagem), As cartas (Ler uma carta, Partilhar uma carta, Ceder ou receber uma carta), A aplicação (Procurar uma palavra, Jogar para aprender palavras, Compreender o início, Acompanhar o seu progresso, Configurar o teclado) e o guia para ler. 3. «Experimentar» abre um campo com o teclado: escreveu-se «Moi» e a barra propõe «Moien». 4. Em Mäi Carnet, um «?» no topo abre a ajuda das cartas. 5. «Partilhar uma carta» abre a carta «Moien» e destaca o botão Partilhar. Os ecrãs estão em francês.",
    "image_legende": "Um «?» sempre visível abre a ajuda: a visita completa ou um só tema, experimentar o teclado sem sair da visita, e a ajuda das cartas na coleção."
-  },
-  {
-   "version": "37.7.4",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "Experimentar o teclado durante a visita",
-       "texte": "Os balões dos gestos e do ditado têm um botão «Experimentar», que abre um pequeno campo com o teclado. Escreva «Moi» e toque em «Moien», ou toque no microfone e fale, sem sair da visita."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

@@ -1,5 +1,37 @@
 {
  "_comment": "English translation of nouveautes.html, by version. Hand-maintained: generate_nouveautes.py merges it into stats/nouveautes-en.json. Each version mirrors the French one from the CHANGELOG: same sections, same number of points, in the same order; a section's title can be left out when _sections translates it. A version that is missing here, or no longer has the French shape, is shown in French with a notice. Text is HTML: escape < and &.",
+  "37.8.0": {
+   "intro": "",
+   "sections": [
+    {
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "The review level as six squares",
+       "texte": "At the bottom of each card, a square fills up with each successful review, and all six are full when the word is learnt."
+      },
+      {
+       "titre": "Rarity in stars",
+       "texte": "A common card has one star, a very rare one has four. The more stars, the rarer the card."
+      },
+      {
+       "titre": "Engraved shields",
+       "texte": "The two shields at the bottom of the card are chased like the name plate, and the number of times you won the word is easier to read."
+      },
+      {
+       "titre": "New drawings on the cards",
+       "texte": "The bee, the ant, the elephant, the banana, the pancake and thirteen other words now have their own drawing."
+      }
+     ]
+    }
+   ],
+   "images": [
+    {
+     "alt": "Three cards from the collection, as the app shows them. 1. “Kaz”, cat, in gold: in the LEVEL shield at the bottom right, one square filled out of six; the rarity at the bottom right, four filled stars out of five. 2. “Bibliothéik”, library, in silver, with the “Geléiert” seal of a learnt word: all six LEVEL squares are full, and the rarity has three stars. 3. “Elefant”, elephant, in gold, with its new elephant drawing in front of the city at night: three squares filled out of six. The SEEN and LEVEL shields are chased, and the SEEN number is engraved in the metal. The cards are in French.",
+     "legende": "The review level as six squares, rarity in stars, and the new elephant drawing."
+    }
+   ]
+  },
  "37.7.9": {
   "intro": "",
   "sections": [

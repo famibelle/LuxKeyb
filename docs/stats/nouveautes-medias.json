@@ -1,5 +1,14 @@
 {
  "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "37.8.0": {
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_jauges.png",
+     "alt": "Trois cartes du carnet, telles que l'appli les affiche. 1. « Kaz », chat, en or : dans l'écu NIVEAU en bas à droite, une case pleine sur six ; la rareté en bas à droite, quatre étoiles pleines sur cinq. 2. « Bibliothéik », bibliothèque, en argent, avec le sceau « Geléiert » d'un mot acquis : les six cases du NIVEAU sont pleines, et la rareté a trois étoiles. 3. « Elefant », éléphant, en or, avec son nouveau dessin d'éléphant devant la ville de nuit : trois cases pleines sur six. Les écus VUES et NIVEAU sont ciselés, le nombre de VUES gravé dans le métal.",
+     "legende": "Le niveau de révision en six cases, la rareté en étoiles, et le nouveau dessin de l'éléphant."
+    }
+   ]
+  },
  "37.7.9": {
   "images": [
    {

@@ -1,9 +1,50 @@
 {
- "genere_le": "2026-10-21",
- "derniere_version": "37.7.9",
- "derniere_date": "2026-10-21",
+ "genere_le": "2026-10-27",
+ "derniere_version": "37.8.0",
+ "derniere_date": "2026-10-27",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.8.0",
+   "date": "2026-10-27",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "The review level as six squares",
+       "texte": "At the bottom of each card, a square fills up with each successful review, and all six are full when the word is learnt."
+      },
+      {
+       "titre": "Rarity in stars",
+       "texte": "A common card has one star, a very rare one has four. The more stars, the rarer the card."
+      },
+      {
+       "titre": "Engraved shields",
+       "texte": "The two shields at the bottom of the card are chased like the name plate, and the number of times you won the word is easier to read."
+      },
+      {
+       "titre": "New drawings on the cards",
+       "texte": "The bee, the ant, the elephant, the banana, the pancake and thirteen other words now have their own drawing."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_jauges.png",
+     "alt": "Three cards from the collection, as the app shows them. 1. “Kaz”, cat, in gold: in the LEVEL shield at the bottom right, one square filled out of six; the rarity at the bottom right, four filled stars out of five. 2. “Bibliothéik”, library, in silver, with the “Geléiert” seal of a learnt word: all six LEVEL squares are full, and the rarity has three stars. 3. “Elefant”, elephant, in gold, with its new elephant drawing in front of the city at night: three squares filled out of six. The SEEN and LEVEL shields are chased, and the SEEN number is engraved in the metal. The cards are in French.",
+     "legende": "The review level as six squares, rarity in stars, and the new elephant drawing."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_jauges.png",
+   "image_alt": "Three cards from the collection, as the app shows them. 1. “Kaz”, cat, in gold: in the LEVEL shield at the bottom right, one square filled out of six; the rarity at the bottom right, four filled stars out of five. 2. “Bibliothéik”, library, in silver, with the “Geléiert” seal of a learnt word: all six LEVEL squares are full, and the rarity has three stars. 3. “Elefant”, elephant, in gold, with its new elephant drawing in front of the city at night: three squares filled out of six. The SEEN and LEVEL shields are chased, and the SEEN number is engraved in the metal. The cards are in French.",
+   "image_legende": "The review level as six squares, rarity in stars, and the new elephant drawing."
+  },
   {
    "version": "37.7.9",
    "date": "2026-10-21",
@@ -175,25 +216,6 @@
    "image": "Screenshots/lux_aide_visite.gif",
    "image_alt": "Filmed on a Galaxy A21s, in five screens. 1. The last bubble of the tour, “To see it again”, lights the “?” button at the top left. 2. The “?” opens the help: the whole tour, then The keyboard (Typing with the keyboard, Dictating a message), The cards (Reading a card, Sharing a card, Giving or receiving a card), The app (Looking up a word, Playing to learn words, Understanding the home screen, Following your progress, Setting up the keyboard) and the guide to read. 3. “Try it” opens a field with the keyboard: “Moi” has been typed and the bar offers “Moien”. 4. In Mäi Carnet, a “?” at the top opens the card help. 5. “Sharing a card” opens the card “Moien” and lights the Share button. The screens are in French.",
    "image_legende": "An always-visible “?” opens the help: the whole tour or a single topic, a try of the keyboard without leaving the tour, and the card help inside the collection."
-  },
-  {
-   "version": "37.7.4",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "Trying the keyboard during the tour",
-       "texte": "The gestures and voice typing bubbles have a “Try it” button that opens a small field with the keyboard. Type “Moi” and tap “Moien”, or tap the microphone and speak, without leaving the tour."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

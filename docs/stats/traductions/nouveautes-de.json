@@ -1,5 +1,37 @@
 {
  "_comment": "Deutsche Übersetzung von nouveautes.html, nach Version. Von Hand gepflegt: generate_nouveautes.py führt sie in stats/nouveautes-de.json zusammen. Jede Version folgt der französischen aus dem CHANGELOG: dieselben Abschnitte, dieselbe Anzahl Punkte, in derselben Reihenfolge; der Titel eines Abschnitts darf fehlen, wenn _sections ihn übersetzt. Eine Version, die hier fehlt oder nicht mehr die französische Form hat, erscheint auf Französisch mit einem Hinweis. Der Text ist HTML: < und & maskieren.",
+  "37.8.0": {
+   "intro": "",
+   "sections": [
+    {
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Die Lernstufe in sechs Feldern",
+       "texte": "Unten auf jeder Karte füllt sich mit jeder erfolgreichen Wiederholung ein Feld, und alle sechs sind voll, wenn das Wort gelernt ist."
+      },
+      {
+       "titre": "Die Seltenheit in Sternen",
+       "texte": "Eine häufige Karte hat einen Stern, eine sehr seltene vier. Je mehr Sterne, desto seltener die Karte."
+      },
+      {
+       "titre": "Gravierte Wappen",
+       "texte": "Die beiden Wappen unten auf der Karte sind ziseliert wie das Namensschild, und die Zahl, wie oft Sie das Wort gewonnen haben, ist besser lesbar."
+      },
+      {
+       "titre": "Neue Zeichnungen auf den Karten",
+       "texte": "Die Biene, die Ameise, der Elefant, die Banane, der Pfannkuchen und dreizehn weitere Wörter haben jetzt ihre eigene Zeichnung."
+      }
+     ]
+    }
+   ],
+   "images": [
+    {
+     "alt": "Drei Karten aus der Sammlung, so wie die App sie zeigt. 1. „Kaz“, Katze, in Gold: im Wappen STUFE unten rechts ist eines von sechs Feldern gefüllt; die Seltenheit unten rechts zeigt vier von fünf gefüllten Sternen. 2. „Bibliothéik“, Bibliothek, in Silber, mit dem Siegel „Geléiert“ eines gelernten Wortes: alle sechs Felder der STUFE sind voll, die Seltenheit hat drei Sterne. 3. „Elefant“ in Gold, mit seiner neuen Elefantenzeichnung vor der Stadt bei Nacht: drei von sechs Feldern sind gefüllt. Die Wappen GESEHEN und STUFE sind ziseliert, die Zahl bei GESEHEN ist ins Metall graviert. Die Karten sind auf Französisch.",
+     "legende": "Die Lernstufe in sechs Feldern, die Seltenheit in Sternen und die neue Elefantenzeichnung."
+    }
+   ]
+  },
  "37.7.9": {
   "intro": "",
   "sections": [

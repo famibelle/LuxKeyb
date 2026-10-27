@@ -1,9 +1,50 @@
 {
- "genere_le": "2026-10-21",
- "derniere_version": "37.7.9",
- "derniere_date": "2026-10-21",
+ "genere_le": "2026-10-27",
+ "derniere_version": "37.8.0",
+ "derniere_date": "2026-10-27",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.8.0",
+   "date": "2026-10-27",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le niveau de révision en six cases",
+       "texte": "En bas de chaque carte, une case se remplit à chaque révision réussie, et les six sont pleines quand le mot est acquis."
+      },
+      {
+       "titre": "La rareté en étoiles",
+       "texte": "Une carte commune a une étoile, une très rare en a quatre. Plus il y a d'étoiles, plus la carte est rare."
+      },
+      {
+       "titre": "Des écus gravés",
+       "texte": "Les deux écus du bas de la carte sont ciselés comme la plaque du nom, et le nombre de fois où vous avez gagné le mot se lit mieux."
+      },
+      {
+       "titre": "De nouveaux dessins sur les cartes",
+       "texte": "L'abeille, la fourmi, l'éléphant, la banane, la crêpe et treize autres mots ont maintenant leur dessin."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_jauges.png",
+     "alt": "Trois cartes du carnet, telles que l'appli les affiche. 1. « Kaz », chat, en or : dans l'écu NIVEAU en bas à droite, une case pleine sur six ; la rareté en bas à droite, quatre étoiles pleines sur cinq. 2. « Bibliothéik », bibliothèque, en argent, avec le sceau « Geléiert » d'un mot acquis : les six cases du NIVEAU sont pleines, et la rareté a trois étoiles. 3. « Elefant », éléphant, en or, avec son nouveau dessin d'éléphant devant la ville de nuit : trois cases pleines sur six. Les écus VUES et NIVEAU sont ciselés, le nombre de VUES gravé dans le métal.",
+     "legende": "Le niveau de révision en six cases, la rareté en étoiles, et le nouveau dessin de l'éléphant."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_jauges.png",
+   "image_alt": "Trois cartes du carnet, telles que l'appli les affiche. 1. « Kaz », chat, en or : dans l'écu NIVEAU en bas à droite, une case pleine sur six ; la rareté en bas à droite, quatre étoiles pleines sur cinq. 2. « Bibliothéik », bibliothèque, en argent, avec le sceau « Geléiert » d'un mot acquis : les six cases du NIVEAU sont pleines, et la rareté a trois étoiles. 3. « Elefant », éléphant, en or, avec son nouveau dessin d'éléphant devant la ville de nuit : trois cases pleines sur six. Les écus VUES et NIVEAU sont ciselés, le nombre de VUES gravé dans le métal.",
+   "image_legende": "Le niveau de révision en six cases, la rareté en étoiles, et le nouveau dessin de l'éléphant."
+  },
   {
    "version": "37.7.9",
    "date": "2026-10-21",
@@ -175,25 +216,6 @@
    "image": "Screenshots/lux_aide_visite.gif",
    "image_alt": "Filmé sur un Galaxy A21s, en cinq écrans. 1. La dernière bulle de la visite, « Pour la revoir », éclaire le bouton « ? » en haut à gauche et dit : « Toute la visite, ou un seul sujet comme la dictée : touchez le ? en haut de l'écran. » 2. Le « ? » ouvre l'aide : « Toute la visite », puis Le clavier (Écrire avec le clavier, Dicter un message), Les cartes (Lire une carte, Partager une carte, Donner ou recevoir une carte), L'application (Chercher un mot, Jouer pour apprendre des mots, Comprendre l'accueil, Suivre vos progrès, Régler le clavier) et le guide à lire. 3. « Essayer » ouvre un champ avec le clavier : on a tapé « Moi », la barre propose « Moien ». 4. Dans Mäi Carnet, un « ? » en haut ouvre l'aide des cartes. 5. « Partager une carte » ouvre la carte « Moien » et éclaire le bouton Partager.",
    "image_legende": "Un « ? » toujours visible ouvre l'aide : la visite entière ou un seul sujet, un essai du clavier sans quitter la visite, et l'aide des cartes dans le carnet."
-  },
-  {
-   "version": "37.7.4",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Essayer le clavier pendant la visite",
-       "texte": "Les bulles des gestes et de la dictée ont un bouton « Essayer », qui ouvre un petit champ avec le clavier. On tape « Moi » et on touche « Moien », ou on touche le micro et on parle, sans quitter la visite."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

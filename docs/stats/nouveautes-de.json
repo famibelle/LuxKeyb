@@ -1,9 +1,50 @@
 {
- "genere_le": "2026-10-21",
- "derniere_version": "37.7.9",
- "derniere_date": "2026-10-21",
+ "genere_le": "2026-10-27",
+ "derniere_version": "37.8.0",
+ "derniere_date": "2026-10-27",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.8.0",
+   "date": "2026-10-27",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Die Lernstufe in sechs Feldern",
+       "texte": "Unten auf jeder Karte füllt sich mit jeder erfolgreichen Wiederholung ein Feld, und alle sechs sind voll, wenn das Wort gelernt ist."
+      },
+      {
+       "titre": "Die Seltenheit in Sternen",
+       "texte": "Eine häufige Karte hat einen Stern, eine sehr seltene vier. Je mehr Sterne, desto seltener die Karte."
+      },
+      {
+       "titre": "Gravierte Wappen",
+       "texte": "Die beiden Wappen unten auf der Karte sind ziseliert wie das Namensschild, und die Zahl, wie oft Sie das Wort gewonnen haben, ist besser lesbar."
+      },
+      {
+       "titre": "Neue Zeichnungen auf den Karten",
+       "texte": "Die Biene, die Ameise, der Elefant, die Banane, der Pfannkuchen und dreizehn weitere Wörter haben jetzt ihre eigene Zeichnung."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_jauges.png",
+     "alt": "Drei Karten aus der Sammlung, so wie die App sie zeigt. 1. „Kaz“, Katze, in Gold: im Wappen STUFE unten rechts ist eines von sechs Feldern gefüllt; die Seltenheit unten rechts zeigt vier von fünf gefüllten Sternen. 2. „Bibliothéik“, Bibliothek, in Silber, mit dem Siegel „Geléiert“ eines gelernten Wortes: alle sechs Felder der STUFE sind voll, die Seltenheit hat drei Sterne. 3. „Elefant“ in Gold, mit seiner neuen Elefantenzeichnung vor der Stadt bei Nacht: drei von sechs Feldern sind gefüllt. Die Wappen GESEHEN und STUFE sind ziseliert, die Zahl bei GESEHEN ist ins Metall graviert. Die Karten sind auf Französisch.",
+     "legende": "Die Lernstufe in sechs Feldern, die Seltenheit in Sternen und die neue Elefantenzeichnung."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_jauges.png",
+   "image_alt": "Drei Karten aus der Sammlung, so wie die App sie zeigt. 1. „Kaz“, Katze, in Gold: im Wappen STUFE unten rechts ist eines von sechs Feldern gefüllt; die Seltenheit unten rechts zeigt vier von fünf gefüllten Sternen. 2. „Bibliothéik“, Bibliothek, in Silber, mit dem Siegel „Geléiert“ eines gelernten Wortes: alle sechs Felder der STUFE sind voll, die Seltenheit hat drei Sterne. 3. „Elefant“ in Gold, mit seiner neuen Elefantenzeichnung vor der Stadt bei Nacht: drei von sechs Feldern sind gefüllt. Die Wappen GESEHEN und STUFE sind ziseliert, die Zahl bei GESEHEN ist ins Metall graviert. Die Karten sind auf Französisch.",
+   "image_legende": "Die Lernstufe in sechs Feldern, die Seltenheit in Sternen und die neue Elefantenzeichnung."
+  },
   {
    "version": "37.7.9",
    "date": "2026-10-21",
@@ -175,25 +216,6 @@
    "image": "Screenshots/lux_aide_visite.gif",
    "image_alt": "Gefilmt auf einem Galaxy A21s, in fünf Bildschirmen. 1. Die letzte Sprechblase des Rundgangs, „Um ihn wiederzusehen“, hebt die Schaltfläche „?“ oben links hervor. 2. Das „?“ öffnet die Hilfe: der ganze Rundgang, dann Die Tastatur (Mit der Tastatur schreiben, Eine Nachricht diktieren), Die Karten (Eine Karte lesen, Eine Karte teilen, Eine Karte abgeben oder empfangen), Die App (Ein Wort suchen, Spielend Wörter lernen, Die Startseite verstehen, Ihren Fortschritt verfolgen, Die Tastatur einstellen) und der Leitfaden zum Lesen. 3. „Ausprobieren“ öffnet ein Feld mit der Tastatur: „Moi“ ist getippt, die Leiste schlägt „Moien“ vor. 4. In Mäi Carnet öffnet ein „?“ oben die Kartenhilfe. 5. „Eine Karte teilen“ öffnet die Karte „Moien“ und hebt die Schaltfläche Teilen hervor. Die Bildschirme sind auf Französisch.",
    "image_legende": "Ein stets sichtbares „?“ öffnet die Hilfe: der ganze Rundgang oder ein einziges Thema, die Tastatur ausprobieren, ohne den Rundgang zu verlassen, und die Kartenhilfe in der Sammlung."
-  },
-  {
-   "version": "37.7.4",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Die Tastatur während des Rundgangs ausprobieren",
-       "texte": "Die Sprechblasen zu den Gesten und zur Spracheingabe haben eine Schaltfläche „Ausprobieren“, die ein kleines Feld mit der Tastatur öffnet. Tippen Sie „Moi“ und dann „Moien“, oder tippen Sie auf das Mikrofon und sprechen Sie, ohne den Rundgang zu verlassen."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }
