@@ -355,6 +355,15 @@ object CarteCarnet {
                 } else ligne(context, texteType, taille = tailleEcu(texteType, 15f), couleur = metal.trait, gras = true),
                 Ornement.ECU_D_IMPRIME_TEXTE
             )
+            // L'index du coin, sous la Force : le type et le coût en petit, là
+            // où ils restent visibles quand la carte est tenue en éventail
+            // (voir [IndexJeu]). Les lecteurs d'écran ont déjà les écus.
+            carte.posee(
+                IndexJeu(context, picto, cout, metal).apply {
+                    importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+                },
+                IndexJeu.CADRE
+            )
         } else {
             carte.posee(
                 ligne(context, "${c.carte.rencontres}", taille = 15f, couleur = Color.WHITE, gras = true),

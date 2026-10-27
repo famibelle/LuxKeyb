@@ -534,6 +534,27 @@ def picto_type(type_, cx):
     return None
 
 
+def index_jeu(type_, cout):
+    """L'index du coin (IndexJeu) : une languette du métal sous la gemme de
+    Force, avec le type en petit et une jauge verticale de quatre places, pour
+    la carte tenue en éventail."""
+    l, t, r, b = 27, 64, 49, 112
+    g = uid('ix')
+    s = (f'<defs>{grad_lineaire(g, 0, t, 0, b, [HI, MID, LO], [0, .45, 1])}</defs>'
+         f'<rect x="{l + .6}" y="{t}" width="{r - l - 1.2}" height="{b - t - .6}" rx="3" fill="url(#{g})" '
+         f'stroke="{TRAIT}" stroke-width="1.2"/>'
+         f'<rect x="{l + 2.4}" y="{t + 1.8}" width="{r - l - 4.8}" height="{b - t - 4.2}" rx="2" fill="none" '
+         f'stroke="{melange(MID, "#ffffff", .55)}" stroke-width=".8"/>')
+    cx = (l + r) / 2
+    image = picto_type(type_, cx)
+    if image:
+        s += f'<g transform="translate({cx} {t + 2.6}) scale(.8) translate({-cx} {-CASE_EMAUX[0]})">{image}</g>'
+    for k in range(PLACES):
+        y = t + 19 + k * 7.3
+        s += piece(cx, y, 3) if k < cout else place(cx, y, 3)
+    return s
+
+
 def jauge_etoiles(n, droite, cy):
     """La rareté (EtoilesRarete) : cinq places d'étoile calées à [droite], [n]
     pleines en émail d'or, les autres en creux. Rend le SVG et le bord gauche."""
@@ -727,6 +748,8 @@ def carte(mot, nature, glose, exemple, pouvoir, cout, type_, serie_g, serie_d, h
     cx_type = (ECU_D_IMPRIME[0] + ECU_D_IMPRIME[2]) / 2
     s.append(picto_type(type_, cx_type)
              or texte(cx_type, CASE_EMAUX[0] + 8 + 15 * .34, type_, 15, TRAIT, 'bold'))
+    # L'index du coin, sous la Force, pour la carte tenue en éventail.
+    s.append(index_jeu(type_, cout))
     milieu = H - (BORD + 2.45) / 2
     s.append(texte(22, milieu + 2.7, serie_g, 7.5, TRAIT, 'bold', ancre='start'))
     # La rareté en jauge de cinq étoiles calée à droite, le mot du palier avant.

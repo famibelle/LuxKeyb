@@ -123,10 +123,10 @@ class PictoType(context: Context, private val forme: Forme, private val trait: I
     enum class Forme { NOM, VERBE, ADJECTIF, NOMBRE }
 
     companion object {
-        private const val ROUGE = 0xFFD32F2F.toInt()
-        private const val ORANGE = 0xFFF57C00.toInt()
-        private const val BLEU = 0xFF2F6FD6.toInt()
-        private const val VERT = 0xFF00897B.toInt()
+        internal const val ROUGE = 0xFFD32F2F.toInt()
+        internal const val ORANGE = 0xFFF57C00.toInt()
+        internal const val BLEU = 0xFF2F6FD6.toInt()
+        internal const val VERT = 0xFF00897B.toInt()
 
         /** La forme d'un type de [ImpressionCarte.type], ou `null` pour « Mot », qui reste écrit. */
         fun pour(@StringRes type: Int): Forme? = when (type) {
@@ -141,13 +141,21 @@ class PictoType(context: Context, private val forme: Forme, private val trait: I
     private val p = Paint(Paint.ANTI_ALIAS_FLAG)
 
     override fun onDraw(canvas: Canvas) {
-        val u = height / Email.CASE
-        val cx = width / 2f
+        dessiner(canvas, p, forme, width / 2f, 0f, height / Email.CASE, trait)
+    }
+}
+
+/**
+ * L'image d'un type ([PictoType.Forme]), dans une case de [Email.CASE] unités
+ * dont le haut est en [haut], centrée en [cx] ; [u] est la taille d'une unité.
+ * Partagée par l'écu TYPE ([PictoType]) et l'index du coin ([IndexJeu]).
+ */
+internal fun dessiner(canvas: Canvas, p: Paint, forme: PictoType.Forme, cx: Float, haut: Float, u: Float, trait: Int) {
         // Tout tient entre 1,2 et 14,8 unités de la case : 13,6 de haut.
         fun x(v: Float) = cx + v * u
-        fun y(v: Float) = v * u
+        fun y(v: Float) = haut + v * u
         when (forme) {
-            Forme.NOM -> {
+            PictoType.Forme.NOM -> {
                 // La tête et le buste, séparés d'un filet d'or.
                 val bonhomme = Path().apply {
                     addCircle(x(0f), y(4.3f), 3.1f * u, Path.Direction.CW)
@@ -158,9 +166,9 @@ class PictoType(context: Context, private val forme: Forme, private val trait: I
                     lineTo(x(5.6f), y(14.8f))
                     close()
                 }
-                Email.peindre(canvas, p, bonhomme, ROUGE, trait, u)
+                Email.peindre(canvas, p, bonhomme, PictoType.ROUGE, trait, u)
             }
-            Forme.VERBE -> {
+            PictoType.Forme.VERBE -> {
                 // Large : à 1,8 unité d'épaisseur, l'éclair se lisait comme un trait.
                 val eclair = Path().apply {
                     moveTo(x(0.4f), y(1.2f))
@@ -172,9 +180,9 @@ class PictoType(context: Context, private val forme: Forme, private val trait: I
                     lineTo(x(3.8f), y(1.2f))
                     close()
                 }
-                Email.peindre(canvas, p, eclair, ORANGE, trait, u)
+                Email.peindre(canvas, p, eclair, PictoType.ORANGE, trait, u)
             }
-            Forme.ADJECTIF -> {
+            PictoType.Forme.ADJECTIF -> {
                 val bouclier = Path().apply {
                     moveTo(x(-5.4f), y(1.6f))
                     lineTo(x(5.4f), y(1.6f))
@@ -183,7 +191,7 @@ class PictoType(context: Context, private val forme: Forme, private val trait: I
                     cubicTo(x(-2.6f), y(13.4f), x(-5.4f), y(11.2f), x(-5.4f), y(7.4f))
                     close()
                 }
-                Email.peindre(canvas, p, bouclier, BLEU, trait, u)
+                Email.peindre(canvas, p, bouclier, PictoType.BLEU, trait, u)
                 // Le « + » blanc du renfort.
                 p.style = Paint.Style.STROKE
                 p.strokeCap = Paint.Cap.ROUND
@@ -194,14 +202,14 @@ class PictoType(context: Context, private val forme: Forme, private val trait: I
                 p.strokeCap = Paint.Cap.BUTT
                 p.style = Paint.Style.FILL
             }
-            Forme.NOMBRE -> {
+            PictoType.Forme.NOMBRE -> {
                 // Un badge émaillé qui porte « 123 ». Une pièce « +1 » disait
                 // ce que le nombre rapporte, mais se confondait avec les
                 // pièces du coût, juste à côté (propriétaire, 2026-10-27).
                 val badge = Path().apply {
                     addRoundRect(x(-7f), y(2.6f), x(7f), y(13.4f), 2.8f * u, 2.8f * u, Path.Direction.CW)
                 }
-                Email.peindre(canvas, p, badge, VERT, trait, u)
+                Email.peindre(canvas, p, badge, PictoType.VERT, trait, u)
                 p.typeface = Typeface.DEFAULT_BOLD
                 p.textAlign = Paint.Align.CENTER
                 p.textSize = 7.4f * u
@@ -209,7 +217,6 @@ class PictoType(context: Context, private val forme: Forme, private val trait: I
                 canvas.drawText("123", cx, y(8f) + 7.4f * u * 0.36f, p)
             }
         }
-    }
 }
 
 /**
@@ -249,8 +256,11 @@ class PictoCout(context: Context, private val cout: Int, private val trait: Int)
         }
     }
 
-    /** Une place vide : le creux d'une pièce, son ombre en haut, sa lèvre claire en bas. */
-    private fun place(c: Canvas, x: Float, y: Float, r: Float, u: Float) {
+    private fun place(c: Canvas, x: Float, y: Float, r: Float, u: Float) = placeVide(c, p, ovale, x, y, r, u)
+}
+
+/** Une place de pièce vide : le creux d'une pièce, son ombre en haut, sa lèvre claire en bas. */
+internal fun placeVide(c: Canvas, p: Paint, ovale: RectF, x: Float, y: Float, r: Float, u: Float) {
         ovale.set(x - r, y - r, x + r, y + r)
         p.shader = null
         p.style = Paint.Style.FILL
@@ -263,7 +273,6 @@ class PictoCout(context: Context, private val cout: Int, private val trait: Int)
         p.color = 0x99FFFFFF.toInt()
         c.drawArc(ovale, 10f, 160f, false, p)
         p.style = Paint.Style.FILL
-    }
 }
 
 /**
@@ -331,4 +340,68 @@ class EtoilesRarete(context: Context, private val nombre: Int, private val trait
         }
         close()
     }
+}
+
+/**
+ * L'index du coin de la carte imprimée : une languette du métal de la carte,
+ * suspendue sous la gemme de Force, qui répète en petit le type (son image)
+ * et le coût (une jauge verticale de quatre places).
+ *
+ * C'est l'index des cartes à jouer. Tenue en éventail, une carte recouverte
+ * par la suivante ne montre qu'une bande d'environ 49 unités à gauche : la
+ * planche de contrôle l'a montré (2026-10-27), on n'y voyait que la Force,
+ * pas ce que la carte coûte ni ce qu'elle fait. Les cartes de football à
+ * collectionner rangent leurs chiffres le long de ce bord pour la même raison.
+ * Les écus du bas restent la référence, en grand ; l'index sert la main.
+ */
+class IndexJeu(
+    context: Context,
+    private val forme: PictoType.Forme?,
+    private val cout: Int,
+    private val metal: Ornement.Metal
+) : View(context) {
+
+    companion object {
+        /** La languette, en unités de carte : sous la gemme de Force (11–65). */
+        val CADRE = RectF(27f, 64f, 49f, 112f)
+    }
+
+    private val p = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val ovale = RectF()
+    private val cadre = RectF()
+
+    override fun onDraw(canvas: Canvas) {
+        val u = width / CADRE.width()
+        val cx = width / 2f
+        // La languette : le métal du palier, son contour, un biseau clair.
+        cadre.set(0.6f * u, 0f, width - 0.6f * u, height - 0.6f * u)
+        p.shader = LinearGradient(
+            0f, 0f, 0f, height.toFloat(),
+            intArrayOf(metal.hi, metal.mid, metal.lo), floatArrayOf(0f, 0.45f, 1f), Shader.TileMode.CLAMP
+        )
+        p.style = Paint.Style.FILL
+        p.color = Color.BLACK
+        canvas.drawRoundRect(cadre, 3f * u, 3f * u, p)
+        p.shader = null
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 1.2f * u
+        p.color = metal.trait
+        canvas.drawRoundRect(cadre, 3f * u, 3f * u, p)
+        p.strokeWidth = 0.8f * u
+        p.color = 0x8CFFFFFF.toInt()
+        canvas.drawRoundRect(
+            RectF(cadre.left + 1.8f * u, cadre.top + 1.8f * u, cadre.right - 1.8f * u, cadre.bottom - 1.8f * u),
+            2f * u, 2f * u, p
+        )
+        p.style = Paint.Style.FILL
+        // Le type, aux quatre cinquièmes de sa taille dans l'écu.
+        forme?.let { dessiner(canvas, p, it, cx, 2.6f * u, 0.8f * u, metal.trait) }
+        // Le coût : quatre places de haut en bas, remplies d'autant de pièces.
+        val r = 3f * u
+        for (k in 0 until PictoCout.PLACES) {
+            val y = (19f + k * 7.3f) * u
+            if (k < cout) piece(canvas, p, cx, y, r, metal.trait, u) else placeVide(canvas, p, ovale, cx, y, r, u)
+        }
+    }
+
 }
