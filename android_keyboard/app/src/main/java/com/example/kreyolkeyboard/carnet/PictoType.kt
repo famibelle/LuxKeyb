@@ -265,3 +265,70 @@ class PictoCout(context: Context, private val cout: Int, private val trait: Int)
         p.style = Paint.Style.FILL
     }
 }
+
+/**
+ * La rareté d'une carte imprimée, sur la ligne du bas : une **jauge de cinq
+ * places d'étoile**, dont autant sont remplies que le palier le dit (★ commun,
+ * ★★ peu commun, ★★★ rare, ★★★★ très rare, ★★★★★ l'ultra rare).
+ *
+ * Même principe que la jauge du coût ([PictoCout], propriétaire,
+ * 2026-10-27) : le maximum se voit, et cinq étoiles sont le maximum que tout
+ * le monde connaît. La cinquième place, vide sur presque toutes les cartes,
+ * dit qu'il existe plus rare encore. Étoile pleine : l'émail d'or des pièces ;
+ * étoile vide : un léger creux dans le métal. Calée à droite de la ligne, à la
+ * même place sur toutes les cartes ; le mot du palier vient juste avant.
+ */
+class EtoilesRarete(context: Context, private val nombre: Int, private val trait: Int) : View(context) {
+
+    companion object {
+        const val PLACES = 5
+        /** La largeur d'une place, en unités de carte. */
+        const val PAS = 8.2f
+        /** La hauteur de la ligne du bas, en unités de carte (Ornement.SERIE_D). */
+        private const val HAUTEUR = 9.5f
+    }
+
+    private val p = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    override fun onDraw(canvas: Canvas) {
+        val u = height / HAUTEUR
+        val pas = width / PLACES.toFloat()
+        val rayon = minOf(pas * 0.48f, height * 0.5f)
+        val cy = height / 2f
+        for (k in 0 until PLACES) {
+            val etoile = etoile(pas * (k + 0.5f), cy + rayon * 0.06f, rayon, rayon * 0.42f)
+            if (k < nombre) Email.peindre(canvas, p, etoile, 0xFFF2B705.toInt(), trait, u) else creux(canvas, etoile, u)
+        }
+    }
+
+    /** Une place vide : le creux d'une étoile, sa lèvre claire en bas. */
+    private fun creux(c: Canvas, chemin: Path, u: Float) {
+        p.shader = null
+        p.style = Paint.Style.FILL
+        p.color = 0x33000000
+        c.drawPath(chemin, p)
+        p.style = Paint.Style.STROKE
+        p.strokeJoin = Paint.Join.ROUND
+        p.strokeWidth = 0.5f * u
+        p.color = 0x99FFFFFF.toInt()
+        c.save()
+        c.translate(0f, 0.45f * u)
+        c.drawPath(chemin, p)
+        c.restore()
+        p.color = 0x59000000
+        p.strokeWidth = 0.45f * u
+        c.drawPath(chemin, p)
+        p.style = Paint.Style.FILL
+    }
+
+    private fun etoile(cx: Float, cy: Float, rayon: Float, creux: Float): Path = Path().apply {
+        for (k in 0 until 10) {
+            val a = k * Math.PI.toFloat() / 5f - Math.PI.toFloat() / 2f
+            val r = if (k % 2 == 0) rayon else creux
+            val x = cx + kotlin.math.cos(a) * r
+            val y = cy + kotlin.math.sin(a) * r
+            if (k == 0) moveTo(x, y) else lineTo(x, y)
+        }
+        close()
+    }
+}

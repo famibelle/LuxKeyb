@@ -404,24 +404,39 @@ object CarteCarnet {
         // rare), ★★★★★ pour l'ultra rare : ● ◆ ★ ✦ ne se comprennent que si
         // on les a appris, alors qu'un enfant de 6 ans sait qu'avec plus
         // d'étoiles, c'est plus rare (propriétaire, 2026-10-27).
-        val symbole = if (!impression) c.rarete.symbole
-            else "★".repeat(if (CarteFierkelsmaart.est(c.carte.forme)) 5 else c.rarete.ordinal + 1)
-        // Sur papier, pas de rang (« 9426ᵉ ») : il ne dit rien à un enfant, et
-        // il vient des fréquences d'un corpus sous licence non commerciale,
-        // dont le jeu vendu ne doit pas dépendre (skill imprimeur). L'ultra
-        // rare garde son édition.
-        val fin = when {
-            !impression -> " · $rang"
-            CarteFierkelsmaart.est(c.carte.forme) -> " · ${CarteFierkelsmaart.EDITION}"
-            else -> ""
+        if (!impression) {
+            carte.posee(
+                ligne(
+                    context,
+                    "${c.rarete.symbole} $palier · $rang",
+                    taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.END
+                ),
+                Ornement.serieD(c.rarete)
+            )
+            return carte
         }
+        // Sur papier, la rareté est une jauge de cinq étoiles calée à droite
+        // ([EtoilesRarete]), le mot du palier juste avant. Pas de rang
+        // (« 9426ᵉ ») : il ne dit rien à un enfant, et il vient des fréquences
+        // d'un corpus sous licence non commerciale, dont le jeu vendu ne doit
+        // pas dépendre (skill imprimeur). L'ultra rare garde son édition.
+        val ultra = CarteFierkelsmaart.est(c.carte.forme)
+        val bande = Ornement.serieD(c.rarete)
+        val jauge = RectF(bande.right - EtoilesRarete.PLACES * EtoilesRarete.PAS, bande.top, bande.right, bande.bottom)
+        carte.posee(
+            EtoilesRarete(context, if (ultra) 5 else c.rarete.ordinal + 1, metal.trait).apply {
+                contentDescription = palier
+                importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+            },
+            jauge
+        )
         carte.posee(
             ligne(
                 context,
-                "$symbole $palier$fin",
+                if (ultra) "$palier · ${CarteFierkelsmaart.EDITION}" else palier,
                 taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.END
             ),
-            Ornement.serieD(c.rarete)
+            RectF(bande.left, bande.top, jauge.left - 2.5f, bande.bottom)
         )
         return carte
     }
