@@ -93,10 +93,15 @@ trop fort.
   le coût nul = quatre places vides, sans chiffre). **Type** : l'image de ce
   que fait la carte (`PictoType`) : personnage rouge (nom), éclair orange
   (verbe), bouclier bleu « + » (adjectif), « 123 » sur badge vert (nombre).
-  **Rareté** : en étoiles sur la ligne du bas, ★ à ★★★★, ★★★★★ pour l'ultra
-  rare. **Médaillon** : emblème du paquet sur émail à la couleur de la
+  **Rareté** : une jauge de cinq places d'étoile calée à droite de la ligne
+  du bas (`EtoilesRarete`), étoiles pleines en émail d'or, vides en creux :
+  ★☆☆☆☆ commun à ★★★★☆ très rare, ★★★★★ l'ultra rare ; le mot du palier juste
+  avant, sans le rang de fréquence (licence du corpus, et illisible pour un
+  enfant). Cinq places : le maximum connu de tous, et la cinquième, vide sur
+  presque toutes les cartes, fait désirer l'ultra rare. **Médaillon** : emblème du paquet sur émail à la couleur de la
   rareté, légende « WUERTDUELL » / paquet. **Numéro** : « Wuertduell · n° 012 ».
-  Écartés, à ne pas reprendre : ● ◆◆ ★★★ ✦✦✦✦ pour le coût (seul le nombre
+  Écartés, à ne pas reprendre : ● ◆ ★ ✦ pour la rareté (il faut les avoir
+  appris), ● ◆◆ ★★★ ✦✦✦✦ pour le coût (seul le nombre
   comptait, et c'étaient les symboles de la rareté), les symboles Montessori
   pour le type (il faut les avoir appris), une pièce « +1 » pour le nombre
   (confondue avec les pièces du coût), un « 0 » seul (sans rapport visuel
