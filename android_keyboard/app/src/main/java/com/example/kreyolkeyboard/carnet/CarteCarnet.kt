@@ -406,10 +406,19 @@ object CarteCarnet {
         // d'étoiles, c'est plus rare (propriétaire, 2026-10-27).
         val symbole = if (!impression) c.rarete.symbole
             else "★".repeat(if (CarteFierkelsmaart.est(c.carte.forme)) 5 else c.rarete.ordinal + 1)
+        // Sur papier, pas de rang (« 9426ᵉ ») : il ne dit rien à un enfant, et
+        // il vient des fréquences d'un corpus sous licence non commerciale,
+        // dont le jeu vendu ne doit pas dépendre (skill imprimeur). L'ultra
+        // rare garde son édition.
+        val fin = when {
+            !impression -> " · $rang"
+            CarteFierkelsmaart.est(c.carte.forme) -> " · ${CarteFierkelsmaart.EDITION}"
+            else -> ""
+        }
         carte.posee(
             ligne(
                 context,
-                "$symbole $palier · $rang",
+                "$symbole $palier$fin",
                 taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.END
             ),
             Ornement.serieD(c.rarete)
