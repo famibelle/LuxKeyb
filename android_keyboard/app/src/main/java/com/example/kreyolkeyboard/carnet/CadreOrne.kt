@@ -397,17 +397,24 @@ object Ornement {
      * type du Wuertduell, que des enfants doivent lire. À 52 unités, « ✦✦✦✦ »
      * ne tenait qu'à 5,4 pt et « ADJECTIF » à 4,6 (skill designer-cartes,
      * 2026-10-26). Le médaillon de provenance, absent du papier, leur laisse la
-     * place : ils s'arrêtent à 9 unités de son disque (127–173). Même hauteur,
-     * la pointe ne descend pas plus près du bord du cadre.
+     * place : ils s'arrêtent à 9 unités de son disque (127–173).
+     *
+     * Quatre unités plus hauts que ceux de l'appli (35 → 39, la pointe
+     * descend de 404 à 407, encore à 15 unités du bord de la face) : le
+     * libellé collait au bord haut de l'écu et l'accent de « COÛT » le
+     * touchait (propriétaire, 2026-10-27). Il descend de 2,5 unités
+     * ([LIGNE_LIBELLE_IMPRIME]), et les émaux du coût et du type avec lui.
      */
-    val ECU_G_IMPRIME = RectF(28f, 375f, 118f, 410f)
-    val ECU_D_IMPRIME = RectF(182f, 375f, 272f, 410f)
+    val ECU_G_IMPRIME = RectF(28f, 375f, 118f, 414f)
+    val ECU_D_IMPRIME = RectF(182f, 375f, 272f, 414f)
+    /** La ligne de base du libellé « COÛT » ou « TYPE » sous le bord haut de l'écu imprimé. */
+    const val LIGNE_LIBELLE_IMPRIME = 12f
     /**
-     * Le coût et le type, sous le libellé et remontés : sous 392 la pointe de
-     * l'écu se resserre vite, et le bas des lettres doit rester dans l'or.
+     * Les émaux du coût et du type ([PictoCout], [PictoType]), sous le
+     * libellé : 16 unités, dont le bas reste dans l'or au-dessus de la pointe.
      */
-    val ECU_G_IMPRIME_TEXTE = RectF(28f, 384.5f, 118f, 402.5f)
-    val ECU_D_IMPRIME_TEXTE = RectF(182f, 384.5f, 272f, 402.5f)
+    val ECU_G_IMPRIME_TEXTE = RectF(28f, 388.5f, 118f, 404.5f)
+    val ECU_D_IMPRIME_TEXTE = RectF(182f, 388.5f, 272f, 404.5f)
     /** La largeur de l'écu imprimé au bas de ses lettres (398,6, 62 unités) : le texte ne la dépasse pas. */
     const val ECU_IMPRIME_LARGEUR_TEXTE = 60f
     /**
@@ -1720,7 +1727,7 @@ object Ornement {
         p.typeface = android.graphics.Typeface.create(
             android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD
         )
-        val ligne = if (imprime) 9.5f else 9f
+        val ligne = if (imprime) LIGNE_LIBELLE_IMPRIME else 9f
         c.drawText(vues, ecuG.centerX(), ecuG.top + ligne, p)
         c.drawText(niveau, ecuD.centerX(), ecuD.top + ligne, p)
         p.alpha = 255
@@ -1780,23 +1787,7 @@ object Ornement {
     fun dessinerMedaillon(context: Context, c: Canvas, p: Paint, jeu: JeuCarte, m: Metal) {
         val cx = PROVENANCE.centerX()
         val cy = PROVENANCE.centerY()
-        val hsv = FloatArray(3)
-        Color.colorToHSV(jeu.couleur, hsv)
-        val clair = Color.HSVToColor(floatArrayOf(hsv[0], hsv[1] * 0.55f, min(1f, hsv[2] + 0.25f)))
-        val sombre = Color.HSVToColor(floatArrayOf(hsv[0], min(1f, hsv[1] + 0.1f), hsv[2] * 0.55f))
-
-        p.style = Paint.Style.FILL
-        p.color = Color.BLACK
-        p.shader = RadialGradient(
-            cx - R_EMAIL * 0.3f, cy - R_EMAIL * 0.35f, R_EMAIL * 1.5f,
-            intArrayOf(clair, jeu.couleur, sombre), floatArrayOf(0f, 0.5f, 1f), Shader.TileMode.CLAMP
-        )
-        c.drawCircle(cx, cy, R_EMAIL, p)
-        p.shader = null
-        p.style = Paint.Style.STROKE
-        p.strokeWidth = 1f
-        p.color = 0x40000000
-        c.drawCircle(cx, cy, R_EMAIL - 0.5f, p)
+        email(c, p, jeu.couleur, cx, cy)
 
         emblemeDuJeu(c, p, jeu, cx, cy)
 
@@ -1818,6 +1809,155 @@ object Ornement {
         p.typeface = android.graphics.Typeface.DEFAULT
         p.strokeCap = Paint.Cap.BUTT
         p.strokeJoin = Paint.Join.MITER
+    }
+
+    /** L'émail du médaillon : une couleur bombée, claire en haut à gauche, et son ombre de bord. */
+    private fun email(c: Canvas, p: Paint, couleur: Int, cx: Float, cy: Float) {
+        val hsv = FloatArray(3)
+        Color.colorToHSV(couleur, hsv)
+        val clair = Color.HSVToColor(floatArrayOf(hsv[0], hsv[1] * 0.55f, min(1f, hsv[2] + 0.25f)))
+        val sombre = Color.HSVToColor(floatArrayOf(hsv[0], min(1f, hsv[1] + 0.1f), hsv[2] * 0.55f))
+
+        p.style = Paint.Style.FILL
+        p.color = Color.BLACK
+        p.shader = RadialGradient(
+            cx - R_EMAIL * 0.3f, cy - R_EMAIL * 0.35f, R_EMAIL * 1.5f,
+            intArrayOf(clair, couleur, sombre), floatArrayOf(0f, 0.5f, 1f), Shader.TileMode.CLAMP
+        )
+        c.drawCircle(cx, cy, R_EMAIL, p)
+        p.shader = null
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 1f
+        p.color = 0x40000000
+        c.drawCircle(cx, cy, R_EMAIL - 0.5f, p)
+    }
+
+    /**
+     * Le médaillon de la carte imprimée, qui n'a pas de jeu de provenance :
+     * l'emblème de son **paquet**, sur un émail à la couleur de sa **rareté**.
+     *
+     * Vide, le disque était le seul ornement de la carte à ne rien dire,
+     * alors que celui de l'appli est le plus varié (propriétaire,
+     * 2026-10-27). C'est le symbole d'extension des cartes à collectionner :
+     * la forme dit d'où vient la carte, la couleur dit sa rareté. Et c'est un
+     * fait utile au jeu : après une partie, il dit à quel paquet rendre la
+     * carte (patte Déieren, couverts Iessen, livre Schoul, feuille Natur,
+     * étoile de la Fierkelsmaart). Une carte hors collection garde l'emblème
+     * de la carte en papier, sans nom de paquet.
+     *
+     * La légende est celle du médaillon de l'appli, en arc : le nom du jeu
+     * en haut, le paquet en bas.
+     */
+    fun dessinerMedaillonImprime(c: Canvas, p: Paint, paquet: ImpressionCarte.Paquet?, rarete: Rarete, m: Metal) {
+        val cx = PROVENANCE.centerX()
+        val cy = PROVENANCE.centerY()
+        email(c, p, rarete.couleur, cx, cy)
+        if (paquet == null) emblemeDuJeu(c, p, JeuCarte.PAPIER, cx, cy) else emblemeDuPaquet(c, p, paquet, cx, cy)
+
+        p.style = Paint.Style.FILL
+        p.color = m.trait
+        p.typeface = android.graphics.Typeface.create(
+            android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD
+        )
+        texteSurArc(c, p, ImpressionCarte.JEU.uppercase(), cx, cy, R_EMAIL + 2.2f, true)
+        paquet?.let { texteSurArc(c, p, it.nom.uppercase(), cx, cy, R_MEDAILLON - 3.6f, false) }
+        p.typeface = android.graphics.Typeface.DEFAULT
+        p.strokeCap = Paint.Cap.BUTT
+        p.strokeJoin = Paint.Join.MITER
+    }
+
+    /** L'emblème d'un paquet imprimé, en blanc, dans un rayon de huit unités, comme [emblemeDuJeu]. */
+    private fun emblemeDuPaquet(c: Canvas, p: Paint, paquet: ImpressionCarte.Paquet, cx: Float, cy: Float) {
+        p.shader = null
+        p.strokeCap = Paint.Cap.ROUND
+        p.strokeJoin = Paint.Join.ROUND
+        p.color = 0xF2FFFFFF.toInt()
+        val chemin = Path()
+        when (paquet) {
+            // Une patte : le coussinet et quatre doigts.
+            ImpressionCarte.Paquet.DEIEREN -> {
+                p.style = Paint.Style.FILL
+                chemin.moveTo(cx, cy - 0.2f)
+                chemin.cubicTo(cx + 3.4f, cy - 0.2f, cx + 5.4f, cy + 3.6f, cx + 4.2f, cy + 5.4f)
+                chemin.cubicTo(cx + 3.2f, cy + 6.9f, cx + 1.4f, cy + 5.9f, cx, cy + 5.9f)
+                chemin.cubicTo(cx - 1.4f, cy + 5.9f, cx - 3.2f, cy + 6.9f, cx - 4.2f, cy + 5.4f)
+                chemin.cubicTo(cx - 5.4f, cy + 3.6f, cx - 3.4f, cy - 0.2f, cx, cy - 0.2f)
+                chemin.close()
+                c.drawPath(chemin, p)
+                for ((x, y, r) in listOf(Triple(-5.2f, -1.6f, 1.6f), Triple(-2f, -5.2f, 1.75f),
+                                         Triple(2f, -5.2f, 1.75f), Triple(5.2f, -1.6f, 1.6f))) {
+                    c.drawOval(cx + x - r * 0.85f, cy + y - r, cx + x + r * 0.85f, cy + y + r, p)
+                }
+            }
+            // Une fourchette et un couteau.
+            ImpressionCarte.Paquet.IESSEN -> {
+                p.style = Paint.Style.STROKE
+                p.strokeWidth = 1.2f
+                for (x in floatArrayOf(-5.4f, -3.6f, -1.8f)) c.drawLine(cx + x, cy - 7f, cx + x, cy - 3f, p)
+                chemin.moveTo(cx - 5.4f, cy - 3f)
+                chemin.quadTo(cx - 3.6f, cy - 0.6f, cx - 1.8f, cy - 3f)
+                c.drawPath(chemin, p)
+                p.strokeWidth = 1.5f
+                c.drawLine(cx - 3.6f, cy - 1.8f, cx - 3.6f, cy + 7f, p)
+                p.style = Paint.Style.FILL
+                chemin.reset()
+                chemin.moveTo(cx + 3f, cy - 7f)
+                chemin.cubicTo(cx + 6.2f, cy - 5f, cx + 6.2f, cy - 0.5f, cx + 5.4f, cy + 0.8f)
+                chemin.lineTo(cx + 3f, cy + 0.8f)
+                chemin.close()
+                c.drawPath(chemin, p)
+                p.style = Paint.Style.STROKE
+                c.drawLine(cx + 3.7f, cy + 0.8f, cx + 3.7f, cy + 7f, p)
+            }
+            // Un livre ouvert.
+            ImpressionCarte.Paquet.SCHOUL -> {
+                p.style = Paint.Style.STROKE
+                p.strokeWidth = 1.2f
+                for (sens in floatArrayOf(-1f, 1f)) {
+                    chemin.reset()
+                    chemin.moveTo(cx, cy - 3.6f)
+                    chemin.quadTo(cx + sens * 3.6f, cy - 6f, cx + sens * 7f, cy - 4.6f)
+                    chemin.lineTo(cx + sens * 7f, cy + 4.4f)
+                    chemin.quadTo(cx + sens * 3.6f, cy + 3f, cx, cy + 5.4f)
+                    c.drawPath(chemin, p)
+                }
+                c.drawLine(cx, cy - 3.6f, cx, cy + 5.4f, p)
+                p.strokeWidth = 0.8f
+                for (sens in floatArrayOf(-1f, 1f)) for (k in 0..1) {
+                    val y = cy - 1.6f + k * 2.6f
+                    c.drawLine(cx + sens * 1.8f, y - 0.4f, cx + sens * 5.2f, y - 0.9f, p)
+                }
+            }
+            // Une feuille et sa nervure.
+            ImpressionCarte.Paquet.NATUR -> {
+                p.style = Paint.Style.FILL
+                chemin.moveTo(cx - 5.6f, cy + 5.6f)
+                chemin.cubicTo(cx - 7f, cy - 2f, cx - 1f, cy - 6.6f, cx + 6.4f, cy - 6.4f)
+                chemin.cubicTo(cx + 6.6f, cy + 1f, cx + 2f, cy + 7f, cx - 5.6f, cy + 5.6f)
+                chemin.close()
+                c.drawPath(chemin, p)
+                p.style = Paint.Style.STROKE
+                p.strokeWidth = 1f
+                p.color = 0x99000000.toInt()
+                c.drawLine(cx - 5.6f, cy + 5.6f, cx + 3.6f, cy - 3.6f, p)
+                p.color = 0xF2FFFFFF.toInt()
+                p.strokeWidth = 1.3f
+                c.drawLine(cx - 5.6f, cy + 5.6f, cx - 7.4f, cy + 7.4f, p)
+            }
+            // L'étoile à quatre branches de l'ultra rare.
+            ImpressionCarte.Paquet.FIERKELSMAART -> {
+                p.style = Paint.Style.FILL
+                for (k in 0 until 8) {
+                    val a = k * Math.PI.toFloat() / 4f - Math.PI.toFloat() / 2f
+                    val r = if (k % 2 == 0) 7.6f else 2.2f
+                    if (k == 0) chemin.moveTo(cx + cos(a) * r, cy + sin(a) * r)
+                    else chemin.lineTo(cx + cos(a) * r, cy + sin(a) * r)
+                }
+                chemin.close()
+                c.drawPath(chemin, p)
+            }
+        }
+        p.style = Paint.Style.FILL
     }
 
     /**
@@ -4022,6 +4162,12 @@ class CarteOrnee(
      * jeu de cartes. À poser avant que la carte ne connaisse sa taille.
      */
     var ecus: Pair<String, String>? = null
+
+    /**
+     * Le paquet d'une carte imprimée, dont le médaillon porte l'emblème
+     * ([Ornement.dessinerMedaillonImprime]) ; `null` hors collection.
+     */
+    var paquetImprime: ImpressionCarte.Paquet? = null
     private var largeurPreparee = 0
 
     /**
@@ -4269,6 +4415,9 @@ class CarteOrnee(
                 intensite, dirX, dirY
             )
             jeu?.let { Ornement.dessinerMedaillon(context, canvas, pinceau, it, Ornement.metal(rarete)) }
+            if (jeu == null && ecus != null) {
+                Ornement.dessinerMedaillonImprime(canvas, pinceau, paquetImprime, rarete, Ornement.metal(rarete))
+            }
             pivoterLesBosses(canvas, pinceau)
         }
         if (boite >= Widderhuelen.BOITE_ACQUISE) Ornement.dessinerSceau(canvas, pinceau, vignette)

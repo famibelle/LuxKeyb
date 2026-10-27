@@ -128,6 +128,44 @@ object ImpressionCarte {
         return null
     }
 
+    /**
+     * Les paquets du jeu imprimé, dont le médaillon de la carte porte
+     * l'emblème ([Ornement.dessinerMedaillonImprime]). [nom] est celui des
+     * « paquets » de `cartes_imprimees.json`, écrit par
+     * `scripts/candidats_cartes.py`.
+     */
+    enum class Paquet(val nom: String) {
+        DEIEREN("Déieren"), IESSEN("Iessen"), SCHOUL("Schoul"), NATUR("Natur"), FIERKELSMAART("Fierkelsmaart");
+
+        companion object {
+            fun deNom(nom: String): Paquet? = entries.firstOrNull { it.nom == nom }
+        }
+    }
+
+    /**
+     * Le paquet d'une carte : l'ensemble qui la contient, découpé par ses
+     * « paquets » dans l'ordre de ses cartes (la boîte : 26 Déieren puis
+     * 26 Iessen). `null` pour une carte hors collection, ou si l'actif ne dit
+     * pas ses paquets.
+     */
+    fun paquet(
+        forme: String, nombre: Int?,
+        ensembles: Map<String, List<String>>, paquets: Map<String, List<Pair<String, Int>>>
+    ): Paquet? {
+        val cle = if (nombre != null) "$forme#$nombre" else forme
+        for ((id, cartes) in ensembles) {
+            val i = cartes.indexOf(cle)
+            if (i < 0) continue
+            var fin = 0
+            for ((nom, taille) in paquets[id] ?: return null) {
+                fin += taille
+                if (i < fin) return Paquet.deNom(nom)
+            }
+            return null
+        }
+        return null
+    }
+
     /** Le pouvoir d'une carte spéciale, écrit sur la carte imprimée ; `null` pour les autres. */
     fun pouvoir(context: Context, c: ContenuCarte): String? =
         if (CarteFierkelsmaart.est(c.carte.forme)) context.getString(R.string.fierkelsmaart_pouvoir) else null

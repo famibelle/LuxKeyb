@@ -55,6 +55,16 @@
     "véier#4",
     "fënnef#5",
     "sechs#6"
+   ],
+   "paquets": [
+    [
+     "Déieren",
+     26
+    ],
+    [
+     "Iessen",
+     26
+    ]
    ]
   },
   "SCHOUL1": {
@@ -84,6 +94,12 @@
     "schreiwen",
     "molen",
     "laachen"
+   ],
+   "paquets": [
+    [
+     "Schoul",
+     24
+    ]
    ]
   },
   "NATUR1": {
@@ -113,12 +129,24 @@
     "blo",
     "gréng",
     "giel"
+   ],
+   "paquets": [
+    [
+     "Natur",
+     24
+    ]
    ]
   },
   "FK27": {
    "nom": "Fierkelsmaart 2027",
    "cartes": [
     "Fierkelsmaart"
+   ],
+   "paquets": [
+    [
+     "Fierkelsmaart",
+     1
+    ]
    ]
   }
  }

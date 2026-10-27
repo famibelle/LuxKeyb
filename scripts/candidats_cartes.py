@@ -296,12 +296,18 @@ def main():
     # première édition.
     def element(c):
         return f"{c['mot']}#{c['sens']}" if c['nature'] == 'nombre' else c['mot']
+    # « paquets » découpe chaque ensemble, dans l'ordre de ses cartes : le
+    # médaillon de la carte imprimée porte l'emblème de son paquet, qui dit à
+    # quel paquet la rendre après une partie (ImpressionCarte.paquet).
     actifs = {
         'B1': {'nom': 'Boîte de départ (Déieren, Iessen)',
-               'cartes': [element(c) for nom in ('Déieren', 'Iessen') for c in paquets[nom]]},
-        'SCHOUL1': {'nom': 'Extension Schoul', 'cartes': [element(c) for c in extensions['Schoul']]},
-        'NATUR1': {'nom': 'Extension Natur', 'cartes': [element(c) for c in extensions['Natur']]},
-        'FK27': {'nom': 'Fierkelsmaart 2027', 'cartes': ['Fierkelsmaart']},
+               'cartes': [element(c) for nom in ('Déieren', 'Iessen') for c in paquets[nom]],
+               'paquets': [[nom, len(paquets[nom])] for nom in ('Déieren', 'Iessen')]},
+        'SCHOUL1': {'nom': 'Extension Schoul', 'cartes': [element(c) for c in extensions['Schoul']],
+                    'paquets': [['Schoul', len(extensions['Schoul'])]]},
+        'NATUR1': {'nom': 'Extension Natur', 'cartes': [element(c) for c in extensions['Natur']],
+                   'paquets': [['Natur', len(extensions['Natur'])]]},
+        'FK27': {'nom': 'Fierkelsmaart 2027', 'cartes': ['Fierkelsmaart'], 'paquets': [['Fierkelsmaart', 1]]},
     }
     with open(os.path.join(A, 'cartes_imprimees.json'), 'w', encoding='utf-8') as f:
         json.dump({'ensembles': actifs}, f, ensure_ascii=False, indent=1)

@@ -258,6 +258,9 @@ object CarteCarnet {
             .avecPlume(c.plume && !impression)
         if (impression) {
             carte.ecus = context.getString(R.string.carte_ecu_cout) to context.getString(R.string.carte_ecu_type)
+            carte.paquetImprime = ImpressionCarte.paquet(
+                c.carte.forme, c.carte.nombre, CartesPapier.ensembles(context), CartesPapier.paquets(context)
+            )
         }
 
         carte.posee(
@@ -328,13 +331,16 @@ object CarteCarnet {
         )
 
         if (impression) {
-            // En brun gravé et non en blanc : de petits symboles blancs sur
-            // l'or clair de l'écu ne se lisaient pas (BAT v2, 2026-10-26).
-            // Dans les écus élargis de l'impression, à 15 unités (8 pt) : à
-            // 10 et 8,5, le coût et le type ne se lisaient pas à 60 cm.
+            // Le coût et le type en émaux sertis, de même hauteur (voir
+            // [PictoCout], [PictoType]) : en texte brun, à 15 unités, ils se
+            // lisaient mais restaient plats sur l'or ciselé, et le rond du
+            // coût était deux fois plus petit que le triangle du type.
             val cout = ImpressionCarte.cout(c)
             carte.posee(
-                ligne(context, cout, taille = tailleEcu(cout, 15f), couleur = metal.trait, gras = true),
+                PictoCout(context, cout, metal.trait).apply {
+                    contentDescription = context.getString(R.string.carte_ecu_cout) + " " + cout
+                    importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+                },
                 Ornement.ECU_G_IMPRIME_TEXTE
             )
             // Le type en pictogramme (voir [PictoType]) ; seul « Mot », qui

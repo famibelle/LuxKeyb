@@ -57,6 +57,37 @@ class NumeroCollectionTest {
         assertNull(ImpressionCarte.numero("Buch", null, e))
     }
 
+    private fun paquets(): Map<String, List<Pair<String, Int>>> {
+        val racine = JSONObject(File("src/main/assets/cartes_imprimees.json").readText()).getJSONObject("ensembles")
+        return racine.keys().asSequence().associateWith { id ->
+            val liste = racine.getJSONObject(id).getJSONArray("paquets")
+            (0 until liste.length()).map { k -> liste.getJSONArray(k).let { it.getString(0) to it.getInt(1) } }
+        }
+    }
+
+    @Test
+    fun leMedaillonDitLePaquet() {
+        val e = ensembles()
+        val p = paquets()
+        assertEquals(ImpressionCarte.Paquet.DEIEREN, ImpressionCarte.paquet("Kaz", null, e, p))
+        assertEquals(ImpressionCarte.Paquet.DEIEREN, ImpressionCarte.paquet("dräi", 3, e, p))
+        assertEquals(ImpressionCarte.Paquet.IESSEN, ImpressionCarte.paquet("Ënn", null, e, p))
+        assertEquals(ImpressionCarte.Paquet.IESSEN, ImpressionCarte.paquet("sechs", 6, e, p))
+        assertEquals(ImpressionCarte.Paquet.SCHOUL, ImpressionCarte.paquet("Buch", null, e, p))
+        assertEquals(ImpressionCarte.Paquet.NATUR, ImpressionCarte.paquet("giel", null, e, p))
+        assertEquals(ImpressionCarte.Paquet.FIERKELSMAART, ImpressionCarte.paquet("Fierkelsmaart", null, e, p))
+        assertNull(ImpressionCarte.paquet("Haus", null, e, p))
+    }
+
+    @Test
+    fun lesPaquetsCouvrentChaqueEnsembleEtPortentUnEmbleme() {
+        val e = ensembles()
+        for ((id, liste) in paquets()) {
+            assertEquals("les paquets de $id ne couvrent pas ses cartes", e.getValue(id).size, liste.sumOf { it.second })
+            for ((nom, _) in liste) assertTrue("paquet $nom sans emblème", ImpressionCarte.Paquet.deNom(nom) != null)
+        }
+    }
+
     @Test
     fun chaqueCarteDeLaCollectionASonPropreNumero() {
         val e = ensembles()

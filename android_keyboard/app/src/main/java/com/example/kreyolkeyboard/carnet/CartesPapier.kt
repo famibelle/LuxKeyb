@@ -170,6 +170,27 @@ object CartesPapier {
         emptyMap()
     }.also { ensembles = it }
 
+    @Volatile
+    private var paquets: Map<String, List<Pair<String, Int>>>? = null
+
+    /**
+     * Les « paquets » de chaque ensemble de `cartes_imprimees.json` : leur nom
+     * et leur nombre de cartes, dans l'ordre des cartes. Lus pour le
+     * médaillon de la carte imprimée ([ImpressionCarte.paquet]).
+     */
+    fun paquets(context: Context): Map<String, List<Pair<String, Int>>> = paquets ?: try {
+        val racine = JSONObject(context.assets.open(ACTIF).bufferedReader().use { it.readText() })
+            .getJSONObject("ensembles")
+        racine.keys().asSequence().associateWith { id ->
+            val liste = racine.getJSONObject(id).optJSONArray("paquets")
+            if (liste == null) emptyList()
+            else (0 until liste.length()).map { k -> liste.getJSONArray(k).let { it.getString(0) to it.getInt(1) } }
+        }
+    } catch (e: Exception) {
+        Log.e(TAG, "Paquets illisibles: ${e.message}")
+        emptyMap()
+    }.also { paquets = it }
+
     fun dejaUtilise(context: Context, serie: String): Boolean = serie in series(context)
 
     fun noterUtilise(context: Context, serie: String) {
