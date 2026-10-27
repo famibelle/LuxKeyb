@@ -86,10 +86,35 @@ trop fort.
   et 7,5 pt demandent 14 unités.**
 - **État de la carte imprimée** (2026-10-26) : pouvoir à 14 unités (7,6 pt),
   sur deux lignes, sous le sens et avant la phrase ; écus élargis à 90 unités
-  (`Ornement.ECU_*_IMPRIME`), libellé à 11 (6 pt), coût et type à 15 (8 pt),
-  réduits à la largeur de l'écu pour les mots longs (« SUBSTANTIV »). Encore
-  sous le seuil : la phrase d'exemple (12 unités, 6,5 pt) et la ligne de série
-  (7,5 unités, 4 pt, mention).
+  (`Ornement.ECU_*_IMPRIME`), libellé à 11 (6 pt), coût à 15 (8 pt). Depuis
+  le 2026-10-27, le **type est un pictogramme** (`carnet/PictoType.kt`, et
+  `picto_type` dans `carte_appli.py`) : les symboles de grammaire Montessori,
+  grand triangle noir (nom, 16 unités, 3 mm), rond rouge (verbe), triangle
+  bleu plus petit (adjectif, 12,5 unités : à 11 il se perdait sur l'argent),
+  « 123 » (nombre). Forme et couleur ensemble, lisibles en noir et blanc et en
+  deutéranopie (planche vérifiée). « Mot » seul reste écrit. Depuis la même
+  journée, sur remarques du propriétaire : écus imprimés de 39 unités et
+  libellé abaissé (il collait au bord haut) ; coût et type en **émaux
+  sertis** de même hauteur (`PictoCout`, `PictoType`, objet `Email` : ombre,
+  dégradé, reflet, sertissure ; « 0 » et « 123 » gravés) ; le **médaillon**
+  porte l'emblème du paquet (patte Déieren, couverts Iessen, livre Schoul,
+  feuille Natur, étoile Fierkelsmaart) sur un émail à la couleur de la
+  rareté, légende « WUERTDUELL » / paquet (`dessinerMedaillonImprime`,
+  paquets lus dans `cartes_imprimees.json`). Vide, il était le seul ornement
+  qui ne disait rien. La ligne de série
+  porte le **numéro de collection** : « Wuertduell · n° 012 »
+  (`ImpressionCarte.numero`, ordre de `cartes_imprimees.json` : boîte 1–52,
+  Schoul 53–76, Natur 77–100 ; la Fierkelsmaart, promo, sans numéro ; pas de
+  total, il changerait à chaque extension). Encore sous le seuil : la phrase
+  d'exemple (12 unités, 6,5 pt) et la ligne de série (7,5 unités, 4 pt,
+  mention, donc le numéro aussi).
+- **Test de l'éventail** (2026-10-27, Kaz, iessen, kleng, dräi exportés de
+  l'appli) : sur une carte recouverte, **seule la Force reste visible** ; le
+  coût est coupé et le type caché à droite. Un enfant qui tient sa main en
+  éventail ne voit pas ce qu'il peut jouer. Piste à valider par le
+  propriétaire avant tout dessin : une colonne de jeu le long du bord gauche,
+  sous la gemme (coût et pictogramme du type), comme les cartes de football à
+  collectionner.
 - **Contraste** : au moins 4,5:1 pour le texte (WCAG AA), 7:1 pour le texte
   de moins de 8 pt. Pas de texte clair sur l'or clair, pas de texte sur une
   zone du dessin.
@@ -180,6 +205,7 @@ et la skill `imprimeur` (format, fond perdu, budget, licences, imprimeurs).
 | Raretés (4 paliers), natures, champs | `carnet/CarnetModels.kt` (`Rarete`) |
 | Carte spéciale | `carnet/CarteFierkelsmaart.kt` (modèle à suivre) |
 | Version imprimée (écus COÛT et TYPE, pouvoir) | `carnet/ImpressionCarte.kt`, `complete(…, impression = true)` |
+| Pictogramme du type, numéro de collection | `carnet/PictoType.kt`, `ImpressionCarte.numero` (`NumeroCollectionTest`) |
 | Sélection des mots des paquets | `scripts/candidats_cartes.py` → `Dictionnaires/cartes/` |
 | Figures de la règle | `scripts/illustrations_regle.py` → `docs/assets/regle/` |
 | BAT, verso, rendu SVG (hors dépôt) | `impression/fierkelsmaart/` (`carte_appli.py`, `verso_luxe.py`, `bat_luxe.py`) |
@@ -200,7 +226,16 @@ Contraintes propres au projet, non négociables :
   L'impression enlève ce qui raconte le carnet (médaillon de provenance,
   saison, sceau, plume) et ajoute ce qui sert au jeu (coût, type, pouvoir).
 - **Le verso est commun**, symétrique par demi-tour, sans aucun indice sur le
-  recto (ni palier, ni série).
+  recto (ni palier, ni série). Tout ce qu'on y ajoute va par paire, l'une
+  tournée d'un demi-tour : la mention « © … · vente interdite » est écrite aux
+  deux bouts, et les acanthes des flancs ont leur reflet en bas (2026-10-27 :
+  recopiées du recto, elles s'arrêtaient aux deux tiers et la mention n'était
+  qu'en bas, deux indices du sens de la carte). Sur le plateau, le dégradé
+  tombait à 1,9:1 sous « Clavier » : chaque lettre a un fin halo d'or clair
+  (`CA.HI`, 0,6 unité, 10,5:1 contre le texte), fait de copies pleines
+  décalées en cercle, car un texte détouré sort en Type 3. Un bandeau clair
+  autour de la mention a été essayé et refusé (« une pastille », propriétaire,
+  2026-10-27).
 - **Licences** : les mots et sens du LOD (CC0) s'impriment ; **jamais** une
   phrase du corpus RTL (`luxemburgish_cloze.json`, CC BY-NC) ; jamais le logo
   d'un tiers (on s'inspire, comme le porcelet de la Fierkelsmaart) ; accord

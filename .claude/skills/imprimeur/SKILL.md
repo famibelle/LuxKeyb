@@ -233,9 +233,11 @@ mots n'ont pas de champ au carnet et tomberaient tous dans « Stad ».
   raretés ci-dessous est à refaire selon cette règle avant tout fichier.
 - Les deux paquets de la boîte ont une **composition fixe** (pas de hasard) ;
   le hasard et les très rares restent dans les paquets de 6.
-- Gabarit papier : écu gauche = coût en gros, écu droit = icône du type
-  (nom, verbe, adjectif, nombre) à la place de VUES et NIVEAU, qui n'ont pas
-  de sens hors de l'appli.
+- Gabarit papier : écu gauche = coût en gros, écu droit = pictogramme du
+  type (fait le 2026-10-27, symboles Montessori, `carnet/PictoType.kt`) à la
+  place de VUES et NIVEAU, qui n'ont pas de sens hors de l'appli. Numéro de
+  collection en bas à gauche, « Wuertduell · n° 012 » (`ImpressionCarte.numero`) :
+  une fois une édition imprimée, ne plus réordonner `cartes_imprimees.json`.
 
 **Raretés imprimées** : fixées à la main pour le papier (pas dérivées de
 `luxemburgish_dict.json`, qui est en partie CC BY-NC → interdit à la vente).
@@ -298,6 +300,28 @@ un **coffret complet** de 248 cartes à 35–45 € (écoles, impatients).
 **Emballage** : pochette scellée ou kraft étiquetée ; mentions fabricant et
 adresse, avertissement « ne convient pas aux moins de 3 ans », © et licence
 (voir section 6), crédit LOD/ZLS.
+
+Repris des paquets de cartes du commerce (Panini Adrenalyn XL, examinés le
+2026-10-27), à demander au devis :
+
+- **Les chances imprimées sur la pochette** : « 6 cartes : 3 communes,
+  2 peu communes, 1 rare ou mieux · très rare : environ 1 paquet sur 6 ».
+  Honnête pour des enfants, rassurant pour les parents.
+- **Pochette opaque et scellée** (métallisée ou kraft épais thermoscellé) : on
+  ne doit pas repérer une rare à la lumière ni rouvrir sans trace.
+- **« 6 Kaarten » dans un coin du recto**, l'année de l'édition, et au dos le
+  fabricant et son adresse, FSC si le carton l'est, le logo de tri, un
+  **code-barres EAN** (indispensable en librairie, adhésion GS1 Luxembourg),
+  les mentions en lb, fr, de, en, pt.
+- **Variantes numérotées** d'une même carte (métal ou dorure différents,
+  « 07/50 ») : la rareté par la beauté, jamais par la Force. Demande
+  l'impression à données variables, déjà nécessaire pour les codes.
+- **Carte code** : le QR signé, avec dessous « Scanne avec Lëtzebuergesch
+  Clavier » et l'adresse du site. Pas de date d'expiration (les codes ne se
+  révoquent pas, et elle pousse à l'achat) ; pas de code court à taper
+  (sans serveur, il se devinerait).
+- À ne pas reprendre : les cartes plus fortes parce que plus rares, un dos
+  qui change d'une carte à l'autre.
 
 **Calendrier Fierkelsmaart (avril 2027)** : marque et statut en novembre,
 fichiers et prototypes décembre–janvier, BAT et série en février.
