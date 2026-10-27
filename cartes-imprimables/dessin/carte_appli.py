@@ -41,12 +41,12 @@ PANNEAU = (38, 262, 262, 384)
 PANNEAU_TEXTE = (48, 277, 252, 378)
 ECU_G = (28, 375, 80, 410)
 ECU_D = (220, 375, 272, 410)
-# Les écus élargis de la carte imprimée (Ornement.ECU_*_IMPRIME), 4 unités
-# plus hauts depuis le 2026-10-27 : le libellé collait au bord haut.
-ECU_G_IMPRIME = (28, 375, 118, 414)
-ECU_D_IMPRIME = (182, 375, 272, 414)
-LIGNE_LIBELLE_IMPRIME = 12           # Ornement.LIGNE_LIBELLE_IMPRIME
-CASE_EMAUX = (388.5, 16)             # Ornement.ECU_*_IMPRIME_TEXTE : haut, hauteur
+# Les écus de la carte imprimée (Ornement.ECU_*_IMPRIME) depuis le
+# 2026-10-27 : 74 × 39, ornés (biseau, filet gravé, rivets), libellé gravé.
+ECU_G_IMPRIME = (36, 375, 110, 414)
+ECU_D_IMPRIME = (190, 375, 264, 414)
+LIGNE_LIBELLE_IMPRIME = 10.6         # Ornement.LIGNE_LIBELLE_IMPRIME
+CASE_EMAUX = (385.4, 16)             # Ornement.ECU_*_IMPRIME_TEXTE : haut, hauteur
 R_MEDAILLON, R_EMAIL = 23, 13
 ENCRE, ENCRE_DOUCE, ENCRE_PALE = '#1B1610', '#4A4234', '#7A7160'
 
@@ -274,13 +274,32 @@ def chemin_ecu(r):
     return f'M{l} {t} L{rr} {t} L{rr} {t + h * .5} Q{(l + rr) / 2} {b + h * .16} {l} {t + h * .5} Z'
 
 
-def ecu(r):
-    g = uid('e')
+def ecu(r, orne=False):
+    """Ornement.ecu : [orne] (la carte imprimée) ajoute le biseau clair, le
+    filet gravé ouvert en haut (la bande du libellé) et les deux rivets."""
+    g, ouvert = uid('e'), uid('eo')
     l, t, rr, b = r
     d = chemin_ecu(r)
-    return (f'<defs>{grad_lineaire(g, 0, t, 0, b, [HI, MID, LO], [0, .45, 1])}</defs>'
-            f'<path d="{d}" fill="url(#{g})" stroke="{TRAIT}" stroke-width="1.4"/>'
-            f'<path d="{d}" fill="none" stroke="{melange(MID, "#ffffff", .5)}" stroke-width=".9"/>')
+    s = (f'<defs>{grad_lineaire(g, 0, t, 0, b, [HI, MID, LO], [0, .45, 1])}</defs>'
+         f'<path d="{d}" fill="url(#{g})" stroke="{TRAIT}" stroke-width="1.4"/>'
+         f'<path d="{d}" fill="none" stroke="{melange(MID, "#ffffff", .5)}" stroke-width=".9"/>')
+    if orne:
+        s += (f'<path d="{chemin_ecu((l + 2.6, t + 2.6, rr - 2.6, b - 2.6))}" fill="none" '
+              f'stroke="{melange(MID, "#ffffff", .55)}" stroke-width="1"/>'
+              f'<clipPath id="{ouvert}"><rect x="{l}" y="{t + 9}" width="{rr - l}" height="{b - t}"/></clipPath>'
+              f'<path d="{chemin_ecu((l + 3.8, t + 3.8, rr - 3.8, b - 3.8))}" fill="none" '
+              f'stroke="{melange(MID, TRAIT, .6)}" stroke-width=".5" clip-path="url(#{ouvert})"/>'
+              + joyau(l + 7, t + 7, 1.5, HI) + joyau(rr - 7, t + 7, 1.5, HI))
+    return s
+
+
+def libelle_grave(cx, y, texte_):
+    """Le libellé d'écu gravé dans l'écu, à 7 unités : lèvre claire en bas,
+    ombre en haut, creux un peu plus sombre que l'or."""
+    esp = 'letter-spacing="1"'
+    return (texte(cx, y + .5, texte_, 7, HI, 'bold', extra=esp)
+            + texte(cx, y - .35, texte_, 7, melange(MID, TRAIT, .65), 'bold', extra=esp)
+            + texte(cx, y, texte_, 7, melange(LO, TRAIT, .45), 'bold', extra=esp))
 
 
 def brillance():
@@ -424,14 +443,14 @@ def mot_grave(mot, r, taille):
     return ''.join(s)
 
 
-# Les émaux du coût et du type, comme carnet/PictoType.kt (Email, PictoType,
-# PictoCout) : ombre portée, dégradé clair en haut à gauche, reflet,
-# sertissure, tous à la même hauteur. Le type suit les symboles de grammaire
-# Montessori (grand triangle noir pour le nom, rond rouge pour le verbe,
-# triangle bleu plus petit pour l'adjectif), « 123 » gravé pour le nombre.
-# Ombre et reflet sont des couleurs pleines mélangées d'avance : une
-# transparence avant un dégradé délave le PDF de Chromium.
-PICTO_NOIR, PICTO_ROUGE, PICTO_BLEU, NIELLE = '#2A2622', '#D32F2F', '#2F6FD6', '#3B2A12'
+# Les émaux du coût et du type, comme carnet/PictoType.kt (Email, piece,
+# PictoType, PictoCout) : ombre portée, dégradé clair en haut à gauche,
+# reflet, sertissure. Le coût est une jauge de quatre places de pièce ; le
+# type, l'image de ce que fait la carte (personnage, éclair, bouclier « + »,
+# badge « 123 »). Ombre, reflet et creux sont des couleurs pleines mélangées
+# d'avance : une transparence avant un dégradé délave le PDF de Chromium.
+ROUGE, ORANGE, BLEU, VERT, OR_PIECE = '#D32F2F', '#F57C00', '#2F6FD6', '#00897B', '#F2B705'
+PLACES, DIAMETRE_PIECE, PAS_PIECE = 4, 10.5, 13
 
 
 def email(d, bbox, couleur):
@@ -448,17 +467,6 @@ def email(d, bbox, couleur):
             f'<path d="{d}" fill="none" stroke="{TRAIT}" stroke-width=".9" stroke-linejoin="round"/>')
 
 
-def graver(texte_, cx, cy, taille):
-    """Des chiffres gravés : la lèvre claire dessous, le creux sombre dessus."""
-    base = cy + taille * .36
-    return texte(cx, base + .7, texte_, taille, '#FFF4D6', 'bold') + texte(cx, base, texte_, taille, TRAIT, 'bold')
-
-
-def triangle(cx, base, h):
-    d = h / 1.732
-    return f'M{cx} {base - h} L{cx + d:.2f} {base} L{cx - d:.2f} {base} Z', (cx - d, base - h, cx + d, base)
-
-
 def cercle(cx, cy, r):
     return (f'M{cx - r} {cy} A{r} {r} 0 1 0 {cx + r} {cy} A{r} {r} 0 1 0 {cx - r} {cy} Z',
             (cx - r, cy - r, cx + r, cy + r))
@@ -473,42 +481,66 @@ def etoile(cx, cy, branches, rayon, creux):
     return 'M' + ' L'.join(pts) + ' Z', (cx - rayon, cy - rayon, cx + rayon, cy + rayon)
 
 
+def piece(x, y, r):
+    """Une pièce d'or : émail d'or cerclé de sombre, et l'anneau gravé d'une pièce."""
+    return (email(*cercle(x, y, r), OR_PIECE)
+            + f'<circle cx="{x}" cy="{y}" r="{r * .68:.2f}" fill="none" stroke="#9A6400" stroke-width=".6"/>')
+
+
+def place(x, y, r):
+    """Une place de pièce vide : le creux, son ombre en haut, sa lèvre claire en bas."""
+    def arc(a0, a1):
+        p0 = (x + r * math.cos(math.radians(a0)), y + r * math.sin(math.radians(a0)))
+        p1 = (x + r * math.cos(math.radians(a1)), y + r * math.sin(math.radians(a1)))
+        return f'M{p0[0]:.2f} {p0[1]:.2f} A{r} {r} 0 0 1 {p1[0]:.2f} {p1[1]:.2f}'
+    return (f'<circle cx="{x}" cy="{y}" r="{r}" fill="{melange(MID, "#000000", .14)}"/>'
+            f'<path d="{arc(190, 350)}" fill="none" stroke="{melange(MID, "#000000", .35)}" stroke-width=".8"/>'
+            f'<path d="{arc(10, 170)}" fill="none" stroke="{melange(MID, "#ffffff", .6)}" stroke-width=".8"/>')
+
+
 def picto_type(type_, cx):
-    """Le pictogramme de [type_] ('nom', 'verbe', 'adjectif', 'nombre') dans la
-    case des émaux, ou None pour un autre type."""
+    """L'image de [type_] ('nom', 'verbe', 'adjectif', 'nombre') dans la case
+    des émaux (PictoType), ou None pour un autre type."""
     haut = CASE_EMAUX[0]
-    base = haut + 14.5
+
+    def X(v):
+        return f'{cx + v:.2f}'
+
+    def Y(v):
+        return f'{haut + v:.2f}'
     if type_ == 'nom':
-        return email(*triangle(cx, base, 13.5), PICTO_NOIR)
-    if type_ == 'adjectif':
-        return email(*triangle(cx, base, 10.5), PICTO_BLEU)
+        r = 3.1
+        d = (f'M{X(-r)} {Y(4.3)} A{r} {r} 0 1 0 {X(r)} {Y(4.3)} A{r} {r} 0 1 0 {X(-r)} {Y(4.3)} Z '
+             f'M{X(-5.6)} {Y(14.8)} L{X(-5.6)} {Y(12.2)} C{X(-5.6)} {Y(9)} {X(-3.2)} {Y(8.2)} {X(0)} {Y(8.2)} '
+             f'C{X(3.2)} {Y(8.2)} {X(5.6)} {Y(9)} {X(5.6)} {Y(12.2)} L{X(5.6)} {Y(14.8)} Z')
+        return email(d, (cx - 5.6, haut + 1.2, cx + 5.6, haut + 14.8), ROUGE)
     if type_ == 'verbe':
-        return email(*cercle(cx, haut + 8, 6.25), PICTO_ROUGE)
+        pts = [(0.4, 1.2), (-5, 9.2), (-0.6, 9.2), (-2.6, 14.8), (5, 6.2), (0.8, 6.2), (3.8, 1.2)]
+        d = 'M' + ' L'.join(f'{X(a)} {Y(b)}' for a, b in pts) + ' Z'
+        return email(d, (cx - 5, haut + 1.2, cx + 5, haut + 14.8), ORANGE)
+    if type_ == 'adjectif':
+        d = (f'M{X(-5.4)} {Y(1.6)} L{X(5.4)} {Y(1.6)} L{X(5.4)} {Y(7.4)} '
+             f'C{X(5.4)} {Y(11.2)} {X(2.6)} {Y(13.4)} {X(0)} {Y(14.8)} '
+             f'C{X(-2.6)} {Y(13.4)} {X(-5.4)} {Y(11.2)} {X(-5.4)} {Y(7.4)} Z')
+        plus = (f'<path d="M{X(-2.6)} {Y(7.4)} L{X(2.6)} {Y(7.4)} M{X(0)} {Y(4.8)} L{X(0)} {Y(10)}" '
+                f'stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" fill="none"/>')
+        return email(d, (cx - 5.4, haut + 1.6, cx + 5.4, haut + 14.8), BLEU) + plus
     if type_ == 'nombre':
-        return graver('123', cx, haut + 8, 13)
+        d = (f'M{X(-4.2)} {Y(2.6)} L{X(4.2)} {Y(2.6)} A2.8 2.8 0 0 1 {X(7)} {Y(5.4)} L{X(7)} {Y(10.6)} '
+             f'A2.8 2.8 0 0 1 {X(4.2)} {Y(13.4)} L{X(-4.2)} {Y(13.4)} A2.8 2.8 0 0 1 {X(-7)} {Y(10.6)} '
+             f'L{X(-7)} {Y(5.4)} A2.8 2.8 0 0 1 {X(-4.2)} {Y(2.6)} Z')
+        return (email(d, (cx - 7, haut + 2.6, cx + 7, haut + 13.4), VERT)
+                + texte(cx, haut + 8 + 7.4 * .36, '123', 7.4, '#ffffff', 'bold'))
     return None
 
 
 def picto_cout(cout, cx):
-    """Le coût : autant de symboles en émail sombre que la carte coûte, ou « 0 » gravé."""
+    """Le coût (PictoCout) : une jauge de quatre places, [cout] remplies d'une pièce d'or."""
     cy = CASE_EMAUX[0] + 8
-    if cout in ('', '0'):
-        return graver('0', cx, cy, 13)
-    s = ''
-    depart = cx - (len(cout) - 1) * 13 / 2
-    for k, sym in enumerate(cout):
-        x = depart + k * 13
-        if sym == '●':
-            forme = cercle(x, cy, 5.75)
-        elif sym == '◆':
-            forme = (f'M{x} {cy - 6.5} L{x + 4.75} {cy} L{x} {cy + 6.5} L{x - 4.75} {cy} Z',
-                     (x - 4.75, cy - 6.5, x + 4.75, cy + 6.5))
-        elif sym == '★':
-            forme = etoile(x, cy + .6, 5, 6.9, 2.9)
-        else:
-            forme = etoile(x, cy, 4, 6.8, 2.3)
-        s += email(*forme, NIELLE)
-    return s
+    r = DIAMETRE_PIECE / 2
+    depart = cx - (PLACES - 1) * PAS_PIECE / 2
+    return ''.join(piece(depart + k * PAS_PIECE, cy, r) if k < cout else place(depart + k * PAS_PIECE, cy, r)
+                   for k in range(PLACES))
 
 
 def texte_arc(cx, cy, r, texte_, haut):
@@ -621,11 +653,9 @@ def carte(mot, nature, glose, exemple, pouvoir, cout, type_, serie_g, serie_d, h
              f'<rect x="{l}" y="{t}" width="{r_ - l}" height="{b - t}" rx="{rr}" fill="url(#{g})" stroke="{TRAIT}" stroke-width="1.2"/>'
              f'<rect x="{l + 2.5}" y="{t + 2.5}" width="{r_ - l - 5}" height="{b - t - 5}" rx="{rr - 2.5}" fill="none" '
              f'stroke="{melange(MID, "#ffffff", .55)}" stroke-width=".9"/>')
-    s.append(ecu(ECU_G_IMPRIME) + ecu(ECU_D_IMPRIME))
-    s.append(texte((ECU_G_IMPRIME[0] + ECU_G_IMPRIME[2]) / 2, ECU_G_IMPRIME[1] + LIGNE_LIBELLE_IMPRIME, 'COÛT', 11,
-                   TRAIT, 'bold'))
-    s.append(texte((ECU_D_IMPRIME[0] + ECU_D_IMPRIME[2]) / 2, ECU_D_IMPRIME[1] + LIGNE_LIBELLE_IMPRIME, 'TYPE', 11,
-                   TRAIT, 'bold'))
+    s.append(ecu(ECU_G_IMPRIME, orne=True) + ecu(ECU_D_IMPRIME, orne=True))
+    s.append(libelle_grave((ECU_G_IMPRIME[0] + ECU_G_IMPRIME[2]) / 2, ECU_G_IMPRIME[1] + LIGNE_LIBELLE_IMPRIME, 'COÛT'))
+    s.append(libelle_grave((ECU_D_IMPRIME[0] + ECU_D_IMPRIME[2]) / 2, ECU_D_IMPRIME[1] + LIGNE_LIBELLE_IMPRIME, 'TYPE'))
     pcx, pcy = (PROVENANCE[0] + PROVENANCE[2]) / 2, (PROVENANCE[1] + PROVENANCE[3]) / 2
     g = uid('m')
     s.append(f'<defs>{grad_lineaire(g, 0, pcy - 23, 0, pcy + 23, [HI, MID])}</defs>'

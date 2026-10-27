@@ -84,30 +84,25 @@ trop fort.
   Sur la carte de l'appli (300 × 440 unités posées sur 84 mm), une unité vaut
   environ 0,19 mm : **une taille de police de 10 unités donne environ 5,4 pt,
   et 7,5 pt demandent 14 unités.**
-- **État de la carte imprimée** (2026-10-26) : pouvoir à 14 unités (7,6 pt),
-  sur deux lignes, sous le sens et avant la phrase ; écus élargis à 90 unités
-  (`Ornement.ECU_*_IMPRIME`), libellé à 11 (6 pt), coût à 15 (8 pt). Depuis
-  le 2026-10-27, le **type est un pictogramme** (`carnet/PictoType.kt`, et
-  `picto_type` dans `carte_appli.py`) : les symboles de grammaire Montessori,
-  grand triangle noir (nom, 16 unités, 3 mm), rond rouge (verbe), triangle
-  bleu plus petit (adjectif, 12,5 unités : à 11 il se perdait sur l'argent),
-  « 123 » (nombre). Forme et couleur ensemble, lisibles en noir et blanc et en
-  deutéranopie (planche vérifiée). « Mot » seul reste écrit. Depuis la même
-  journée, sur remarques du propriétaire : écus imprimés de 39 unités et
-  libellé abaissé (il collait au bord haut) ; coût et type en **émaux
-  sertis** de même hauteur (`PictoCout`, `PictoType`, objet `Email` : ombre,
-  dégradé, reflet, sertissure ; « 0 » et « 123 » gravés) ; le **médaillon**
-  porte l'emblème du paquet (patte Déieren, couverts Iessen, livre Schoul,
-  feuille Natur, étoile Fierkelsmaart) sur un émail à la couleur de la
-  rareté, légende « WUERTDUELL » / paquet (`dessinerMedaillonImprime`,
-  paquets lus dans `cartes_imprimees.json`). Vide, il était le seul ornement
-  qui ne disait rien. La ligne de série
-  porte le **numéro de collection** : « Wuertduell · n° 012 »
-  (`ImpressionCarte.numero`, ordre de `cartes_imprimees.json` : boîte 1–52,
-  Schoul 53–76, Natur 77–100 ; la Fierkelsmaart, promo, sans numéro ; pas de
-  total, il changerait à chaque extension). Encore sous le seuil : la phrase
-  d'exemple (12 unités, 6,5 pt) et la ligne de série (7,5 unités, 4 pt,
-  mention, donc le numéro aussi).
+- **État de la carte imprimée** (2026-10-27, après une journée de remarques
+  du propriétaire) : le public commence à 6 ans, donc **chaque symbole doit
+  se comprendre sans l'avoir appris**. Écus de 74 × 39 (`Ornement.ECU_*_IMPRIME`),
+  ornés comme la plaque (biseau, filet gravé ouvert en haut, rivets), libellé
+  « COÛT » / « TYPE » gravé à 7 unités. **Coût** : une jauge de quatre places
+  de pièce, autant remplies d'une pièce d'or que le coût (`PictoCout`, 0 à 4 ;
+  le coût nul = quatre places vides, sans chiffre). **Type** : l'image de ce
+  que fait la carte (`PictoType`) : personnage rouge (nom), éclair orange
+  (verbe), bouclier bleu « + » (adjectif), « 123 » sur badge vert (nombre).
+  **Rareté** : en étoiles sur la ligne du bas, ★ à ★★★★, ★★★★★ pour l'ultra
+  rare. **Médaillon** : emblème du paquet sur émail à la couleur de la
+  rareté, légende « WUERTDUELL » / paquet. **Numéro** : « Wuertduell · n° 012 ».
+  Écartés, à ne pas reprendre : ● ◆◆ ★★★ ✦✦✦✦ pour le coût (seul le nombre
+  comptait, et c'étaient les symboles de la rareté), les symboles Montessori
+  pour le type (il faut les avoir appris), une pièce « +1 » pour le nombre
+  (confondue avec les pièces du coût), un « 0 » seul (sans rapport visuel
+  avec les pièces), un bandeau autour de la mention du dos. Encore sous le
+  seuil de lisibilité : la phrase d'exemple (12 unités, 6,5 pt), la ligne de
+  série et le libellé des écus (7 unités, environ 4 pt).
 - **Test de l'éventail** (2026-10-27, Kaz, iessen, kleng, dräi exportés de
   l'appli) : sur une carte recouverte, **seule la Force reste visible** ; le
   coût est coupé et le type caché à droite. Un enfant qui tient sa main en
