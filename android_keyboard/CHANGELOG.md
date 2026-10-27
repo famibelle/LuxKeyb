@@ -9,6 +9,15 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.8.0] - 2026-10-27
+
+### ✨ Améliorations
+
+- **Le niveau de révision en six cases** : en bas de chaque carte, une case se remplit à chaque révision réussie, et les six sont pleines quand le mot est acquis.
+- **La rareté en étoiles** : une carte commune a une étoile, une très rare en a quatre. Plus il y a d'étoiles, plus la carte est rare.
+- **Des écus gravés** : les deux écus du bas de la carte sont ciselés comme la plaque du nom, et le nombre de fois où vous avez gagné le mot se lit mieux.
+- **De nouveaux dessins sur les cartes** : l'abeille, la fourmi, l'éléphant, la banane, la crêpe et treize autres mots ont maintenant leur dessin.
+
 ## [37.7.9] - 2026-10-21
 
 ### ✨ Améliorations
