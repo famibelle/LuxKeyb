@@ -41,9 +41,13 @@ PANNEAU = (38, 262, 262, 384)
 PANNEAU_TEXTE = (48, 277, 252, 378)
 ECU_G = (28, 375, 80, 410)
 ECU_D = (220, 375, 272, 410)
-# Les écus élargis de la carte imprimée (Ornement.ECU_*_IMPRIME, 2026-10-26).
-ECU_G_IMPRIME = (28, 375, 118, 410)
-ECU_D_IMPRIME = (182, 375, 272, 410)
+# Les écus élargis de la carte imprimée (Ornement.ECU_*_IMPRIME), 4 unités
+# plus hauts depuis le 2026-10-27 : le libellé collait au bord haut.
+ECU_G_IMPRIME = (28, 375, 118, 414)
+ECU_D_IMPRIME = (182, 375, 272, 414)
+LIGNE_LIBELLE_IMPRIME = 12           # Ornement.LIGNE_LIBELLE_IMPRIME
+CASE_EMAUX = (388.5, 16)             # Ornement.ECU_*_IMPRIME_TEXTE : haut, hauteur
+R_MEDAILLON, R_EMAIL = 23, 13
 ENCRE, ENCRE_DOUCE, ENCRE_PALE = '#1B1610', '#4A4234', '#7A7160'
 
 SANS = "font-family=\"'Roboto', 'DejaVu Sans', sans-serif\""
@@ -420,38 +424,113 @@ def mot_grave(mot, r, taille):
     return ''.join(s)
 
 
-# Le type en pictogramme, comme carnet/PictoType.kt : les symboles de
-# grammaire Montessori (grand triangle noir pour le nom, rond rouge pour le
-# verbe, triangle bleu plus petit pour l'adjectif), « 123 » pour le nombre.
-PICTO_NOIR, PICTO_ROUGE, PICTO_BLEU = '#15120E', '#D32F2F', '#2F6FD6'
+# Les émaux du coût et du type, comme carnet/PictoType.kt (Email, PictoType,
+# PictoCout) : ombre portée, dégradé clair en haut à gauche, reflet,
+# sertissure, tous à la même hauteur. Le type suit les symboles de grammaire
+# Montessori (grand triangle noir pour le nom, rond rouge pour le verbe,
+# triangle bleu plus petit pour l'adjectif), « 123 » gravé pour le nombre.
+# Ombre et reflet sont des couleurs pleines mélangées d'avance : une
+# transparence avant un dégradé délave le PDF de Chromium.
+PICTO_NOIR, PICTO_ROUGE, PICTO_BLEU, NIELLE = '#2A2622', '#D32F2F', '#2F6FD6', '#3B2A12'
 
 
-def picto_type(type_, cx, haut):
+def email(d, bbox, couleur):
+    """L'émail serti du chemin [d], de boîte [bbox] = (x0, y0, x1, y1)."""
+    x0, y0, x1, y1 = bbox
+    g, c = uid('emg'), uid('emc')
+    l, h = x1 - x0, y1 - y0
+    return (f'<defs>{grad_lineaire(g, x0, y0, x1, y1, [melange(couleur, "#ffffff", .45), couleur, melange(couleur, "#000000", .45)])}'
+            f'<clipPath id="{c}"><path d="{d}"/></clipPath></defs>'
+            f'<path d="{d}" fill="{melange(MID, "#000000", .35)}" transform="translate(.5 .7)"/>'
+            f'<path d="{d}" fill="url(#{g})"/>'
+            f'<ellipse cx="{x0 + l * .35:.2f}" cy="{y0 + h * .25:.2f}" rx="{l * .21:.2f}" ry="{h * .15:.2f}" '
+            f'fill="{melange(couleur, "#ffffff", .6)}" clip-path="url(#{c})"/>'
+            f'<path d="{d}" fill="none" stroke="{TRAIT}" stroke-width=".9" stroke-linejoin="round"/>')
+
+
+def graver(texte_, cx, cy, taille):
+    """Des chiffres gravés : la lèvre claire dessous, le creux sombre dessus."""
+    base = cy + taille * .36
+    return texte(cx, base + .7, texte_, taille, '#FFF4D6', 'bold') + texte(cx, base, texte_, taille, TRAIT, 'bold')
+
+
+def triangle(cx, base, h):
+    d = h / 1.732
+    return f'M{cx} {base - h} L{cx + d:.2f} {base} L{cx - d:.2f} {base} Z', (cx - d, base - h, cx + d, base)
+
+
+def cercle(cx, cy, r):
+    return (f'M{cx - r} {cy} A{r} {r} 0 1 0 {cx + r} {cy} A{r} {r} 0 1 0 {cx - r} {cy} Z',
+            (cx - r, cy - r, cx + r, cy + r))
+
+
+def etoile(cx, cy, branches, rayon, creux):
+    pts = []
+    for k in range(2 * branches):
+        a = k * math.pi / branches - math.pi / 2
+        r = rayon if k % 2 == 0 else creux
+        pts.append(f'{cx + math.cos(a) * r:.2f} {cy + math.sin(a) * r:.2f}')
+    return 'M' + ' L'.join(pts) + ' Z', (cx - rayon, cy - rayon, cx + rayon, cy + rayon)
+
+
+def picto_type(type_, cx):
     """Le pictogramme de [type_] ('nom', 'verbe', 'adjectif', 'nombre') dans la
-    case de 18 unités qui commence à [haut], ou None pour un autre type."""
-    base = haut + 17
-    trait = f'stroke="{TRAIT}" stroke-width="1.1" stroke-linejoin="round"'
-
-    def triangle(h, couleur):
-        d = h / 1.732
-        return f'<path d="M{cx} {base - h} L{cx + d:.2f} {base} L{cx - d:.2f} {base} Z" fill="{couleur}" {trait}/>'
-
+    case des émaux, ou None pour un autre type."""
+    haut = CASE_EMAUX[0]
+    base = haut + 14.5
     if type_ == 'nom':
-        return triangle(16, PICTO_NOIR)
+        return email(*triangle(cx, base, 13.5), PICTO_NOIR)
     if type_ == 'adjectif':
-        return triangle(12.5, PICTO_BLEU)
+        return email(*triangle(cx, base, 10.5), PICTO_BLEU)
     if type_ == 'verbe':
-        return f'<circle cx="{cx}" cy="{haut + 9}" r="7.5" fill="{PICTO_ROUGE}" {trait}/>'
+        return email(*cercle(cx, haut + 8, 6.25), PICTO_ROUGE)
     if type_ == 'nombre':
-        return texte(cx, haut + 9 + 15 * .36, '123', 15, TRAIT, 'bold')
+        return graver('123', cx, haut + 8, 13)
     return None
+
+
+def picto_cout(cout, cx):
+    """Le coût : autant de symboles en émail sombre que la carte coûte, ou « 0 » gravé."""
+    cy = CASE_EMAUX[0] + 8
+    if cout in ('', '0'):
+        return graver('0', cx, cy, 13)
+    s = ''
+    depart = cx - (len(cout) - 1) * 13 / 2
+    for k, sym in enumerate(cout):
+        x = depart + k * 13
+        if sym == '●':
+            forme = cercle(x, cy, 5.75)
+        elif sym == '◆':
+            forme = (f'M{x} {cy - 6.5} L{x + 4.75} {cy} L{x} {cy + 6.5} L{x - 4.75} {cy} Z',
+                     (x - 4.75, cy - 6.5, x + 4.75, cy + 6.5))
+        elif sym == '★':
+            forme = etoile(x, cy + .6, 5, 6.9, 2.9)
+        else:
+            forme = etoile(x, cy, 4, 6.8, 2.3)
+        s += email(*forme, NIELLE)
+    return s
+
+
+def texte_arc(cx, cy, r, texte_, haut):
+    """La légende en arc du médaillon (Ornement.texteSurArc) : en haut, les
+    lettres vers l'extérieur ; en bas, vers le centre, lues à l'endroit."""
+    i = uid('arc')
+    balayage = 1 if haut else 0
+    # Trop long, le texte se serre pour tenir dans 90 % du demi-cercle, comme
+    # dans l'appli (largeur estimée : 0,66 em par capitale grasse).
+    dispo = math.pi * r * .9
+    serre = (f' textLength="{dispo:.1f}" lengthAdjust="spacingAndGlyphs"'
+             if len(texte_) * 5.6 * .66 > dispo else '')
+    return (f'<defs><path id="{i}" d="M{cx - r} {cy} A{r} {r} 0 0 {balayage} {cx + r} {cy}"/></defs>'
+            f'<text {SANS} font-size="5.6" font-weight="bold" fill="{TRAIT}" letter-spacing=".34">'
+            f'<textPath href="#{i}" startOffset="50%" text-anchor="middle"{serre}>{texte_}</textPath></text>')
 
 
 # ------------------------------------------------------------- la carte
 
 
 def carte(mot, nature, glose, exemple, pouvoir, cout, type_, serie_g, serie_d, hue_champ,
-          fenetre_defs, fenetre_art, largeur_px):
+          fenetre_defs, fenetre_art, largeur_px, paquet='Fierkelsmaart'):
     """Le SVG de la carte (viewBox 0 0 300 440), moulure au pixel pour [largeur_px]."""
     teinte = teinte_de(mot, hue_champ)
     eclat = melange(HI, '#ffffff', .7)
@@ -543,8 +622,10 @@ def carte(mot, nature, glose, exemple, pouvoir, cout, type_, serie_g, serie_d, h
              f'<rect x="{l + 2.5}" y="{t + 2.5}" width="{r_ - l - 5}" height="{b - t - 5}" rx="{rr - 2.5}" fill="none" '
              f'stroke="{melange(MID, "#ffffff", .55)}" stroke-width=".9"/>')
     s.append(ecu(ECU_G_IMPRIME) + ecu(ECU_D_IMPRIME))
-    s.append(texte((ECU_G_IMPRIME[0] + ECU_G_IMPRIME[2]) / 2, ECU_G_IMPRIME[1] + 9.5, 'COÛT', 11, TRAIT, 'bold'))
-    s.append(texte((ECU_D_IMPRIME[0] + ECU_D_IMPRIME[2]) / 2, ECU_D_IMPRIME[1] + 9.5, 'TYPE', 11, TRAIT, 'bold'))
+    s.append(texte((ECU_G_IMPRIME[0] + ECU_G_IMPRIME[2]) / 2, ECU_G_IMPRIME[1] + LIGNE_LIBELLE_IMPRIME, 'COÛT', 11,
+                   TRAIT, 'bold'))
+    s.append(texte((ECU_D_IMPRIME[0] + ECU_D_IMPRIME[2]) / 2, ECU_D_IMPRIME[1] + LIGNE_LIBELLE_IMPRIME, 'TYPE', 11,
+                   TRAIT, 'bold'))
     pcx, pcy = (PROVENANCE[0] + PROVENANCE[2]) / 2, (PROVENANCE[1] + PROVENANCE[3]) / 2
     g = uid('m')
     s.append(f'<defs>{grad_lineaire(g, 0, pcy - 23, 0, pcy + 23, [HI, MID])}</defs>'
@@ -554,9 +635,10 @@ def carte(mot, nature, glose, exemple, pouvoir, cout, type_, serie_g, serie_d, h
     for i in range(24):
         a = i / 24 * 2 * math.pi
         s.append(joyau(pcx + math.cos(a) * 22.4, pcy + math.sin(a) * 22.4, .8, HI))
-    # La carte imprimée n'a pas de provenance : l'émail prend la couleur du
-    # palier (Rarete.TRES_RARE.couleur) et l'étoile de l'ultra rare, au lieu
-    # d'un disque vide.
+    # La carte imprimée n'a pas de provenance : le médaillon porte l'emblème
+    # de son paquet sur un émail à la couleur du palier
+    # (Ornement.dessinerMedaillonImprime). Ce portage ne rend que la
+    # Fierkelsmaart : émail du très rare, étoile de l'ultra rare.
     g = uid('email')
     violet = '#8E24AA'
     s.append(f'<defs><radialGradient id="{g}" gradientUnits="userSpaceOnUse" cx="{pcx - 13 * .3}" cy="{pcy - 13 * .35}" '
@@ -564,7 +646,9 @@ def carte(mot, nature, glose, exemple, pouvoir, cout, type_, serie_g, serie_d, h
              f'<stop offset=".5" stop-color="{violet}"/><stop offset="1" stop-color="{melange(violet, "#000000", .45)}"/>'
              f'</radialGradient></defs><circle cx="{pcx}" cy="{pcy}" r="13" fill="url(#{g})"/>'
              f'<circle cx="{pcx}" cy="{pcy}" r="12.5" fill="none" stroke="{melange(violet, "#000000", .6)}" stroke-width="1"/>')
-    s.append(texte(pcx, pcy + 6.3, '✦', 17, melange(HI, '#ffffff', .3), famille="font-family=\"'DejaVu Sans'\""))
+    s.append(f'<path d="{etoile(pcx, pcy, 4, 7.6, 2.2)[0]}" fill="{melange("#ffffff", violet, .05)}"/>')
+    s.append(texte_arc(pcx, pcy, R_EMAIL + 2.2, 'WUERTDUELL', True))
+    s.append(texte_arc(pcx, pcy, R_MEDAILLON - 3.6, paquet.upper(), False))
 
     # Les gemmes taillées, le semis.
     s.append(gemme(GEMME, 4, teinte) + gemme(GEMME_CENTRE, 3, teinte))
@@ -587,13 +671,12 @@ def carte(mot, nature, glose, exemple, pouvoir, cout, type_, serie_g, serie_d, h
             y += t_ * .93
             s.append(texte(150, y, txt, t_, coul, poids, style))
             y += t_ * .24
-    # Centrés dans 384,5–402,5 comme les TextView : ligne de base à
-    # 393,5 + 0,34 em (Roboto). 15 unités : « ✦✦✦✦ » tient dans les
-    # 60 unités de ECU_IMPRIME_LARGEUR_TEXTE. Le type est un pictogramme
-    # (picto_type) ; seul un type sans rôle au jeu reste écrit.
-    s.append(texte((ECU_G_IMPRIME[0] + ECU_G_IMPRIME[2]) / 2, 393.5 + 15 * .34, cout, 15, TRAIT, 'bold'))
+    # Le coût et le type en émaux (picto_cout, picto_type) ; seul un type
+    # sans rôle au jeu reste écrit.
+    s.append(picto_cout(cout, (ECU_G_IMPRIME[0] + ECU_G_IMPRIME[2]) / 2))
     cx_type = (ECU_D_IMPRIME[0] + ECU_D_IMPRIME[2]) / 2
-    s.append(picto_type(type_, cx_type, 384.5) or texte(cx_type, 393.5 + 15 * .34, type_, 15, TRAIT, 'bold'))
+    s.append(picto_type(type_, cx_type)
+             or texte(cx_type, CASE_EMAUX[0] + 8 + 15 * .34, type_, 15, TRAIT, 'bold'))
     milieu = H - (BORD + 2.45) / 2
     s.append(texte(22, milieu + 2.7, serie_g, 7.5, TRAIT, 'bold', ancre='start'))
     s.append(texte(278, milieu + 2.7, serie_d, 7.5, TRAIT, 'bold', ancre='end'))
