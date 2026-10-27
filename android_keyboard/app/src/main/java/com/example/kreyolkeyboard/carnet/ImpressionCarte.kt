@@ -68,17 +68,24 @@ object ImpressionCarte {
     private fun px(mm: Float): Int = (mm * DPI / 25.4f).roundToInt()
 
     /**
-     * Le coût au jeu : il suit la longueur du mot, comme sa Force (règle du
-     * jeu). Un nombre ne coûte rien.
+     * Le coût au jeu, en pièces : il suit la longueur du mot, comme sa Force
+     * (règle du jeu). 1 à 4 lettres, 1 pièce ; 5 à 7, 2 ; 8 à 10, 3 ; 11 et
+     * plus, 4. Un nombre ne coûte rien.
+     *
+     * L'écu montrait ● ◆◆ ★★★ ✦✦✦✦ : seul le nombre de symboles comptait, la
+     * forme changeait sans rien dire, et c'étaient les symboles de la rareté.
+     * Le propriétaire ne les comprenait pas, et le public commence à 6 ans
+     * (2026-10-27) : des pièces identiques se comptent d'un coup d'œil
+     * jusqu'à quatre, et chacun sait qu'on paie avec.
      */
-    fun cout(c: ContenuCarte): String {
-        if (c.carte.nombre != null) return "0"
+    fun cout(c: ContenuCarte): Int {
+        if (c.carte.nombre != null) return 0
         val n = c.carte.forme.length
         return when {
-            n <= 4 -> "●"
-            n <= 7 -> "◆◆"
-            n <= 10 -> "★★★"
-            else -> "✦✦✦✦"
+            n <= 4 -> 1
+            n <= 7 -> 2
+            n <= 10 -> 3
+            else -> 4
         }
     }
 

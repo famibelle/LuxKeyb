@@ -12,8 +12,6 @@ import android.graphics.Typeface
 import android.view.View
 import androidx.annotation.StringRes
 import com.example.kreyolkeyboard.R
-import kotlin.math.cos
-import kotlin.math.sin
 
 /**
  * Les émaux des deux écus de la carte imprimée : le type ([PictoType]) et le
@@ -24,9 +22,8 @@ import kotlin.math.sin
  * et le triangle du type n'avaient pas la même taille (propriétaire,
  * 2026-10-27). Chaque symbole est donc un émail serti, comme les gemmes et le
  * médaillon : une ombre portée, un dégradé clair en haut à gauche, un reflet,
- * une sertissure sombre. Tous tiennent dans la même hauteur, 12 à 13,5 unités
- * (environ 2,5 mm), réglée à l'œil : un triangle paraît plus petit qu'un rond
- * de même hauteur.
+ * une sertissure sombre. Tous tiennent dans la même hauteur, 11 à 13,6 unités
+ * (environ 2,5 mm).
  *
  * Tout se dessine en unités de carte, rapportées à la hauteur de la case
  * ([Ornement.ECU_D_IMPRIME_TEXTE], [CASE] unités).
@@ -81,73 +78,55 @@ internal object Email {
         c.drawPath(chemin, p)
         p.style = Paint.Style.FILL
     }
+}
 
-    /** Des chiffres gravés : une lèvre claire dessous, le creux sombre dessus, comme [MotGrave]. */
-    fun graver(c: Canvas, p: Paint, texte: String, cx: Float, cy: Float, taille: Float, trait: Int, u: Float) {
-        p.shader = null
-        p.style = Paint.Style.FILL
-        p.typeface = Typeface.DEFAULT_BOLD
-        p.textAlign = Paint.Align.CENTER
-        p.textSize = taille * u
-        val base = cy + taille * u * 0.36f
-        p.color = 0xFFFFF4D6.toInt()
-        c.drawText(texte, cx, base + 0.7f * u, p)
-        p.color = trait
-        c.drawText(texte, cx, base, p)
-    }
-
-    /** Un triangle équilatéral pointe en haut, de hauteur [h], posé sur [base]. */
-    fun triangle(cx: Float, base: Float, h: Float): Path = Path().apply {
-        val demi = h / 1.732f
-        moveTo(cx, base - h)
-        lineTo(cx + demi, base)
-        lineTo(cx - demi, base)
-        close()
-    }
-
-    /** Une étoile à [branches] branches, pointe en haut. */
-    fun etoile(cx: Float, cy: Float, branches: Int, rayon: Float, creux: Float): Path = Path().apply {
-        for (k in 0 until 2 * branches) {
-            val a = k * Math.PI.toFloat() / branches - Math.PI.toFloat() / 2f
-            val r = if (k % 2 == 0) rayon else creux
-            if (k == 0) moveTo(cx + cos(a) * r, cy + sin(a) * r) else lineTo(cx + cos(a) * r, cy + sin(a) * r)
-        }
-        close()
-    }
+/**
+ * Une pièce d'or : le coût d'une carte se paie en pièces ([PictoCout]). Un
+ * émail d'or plus chaud que le métal de l'écu, cerclé de sombre pour s'en
+ * détacher, avec l'anneau gravé d'une pièce.
+ */
+internal fun piece(c: Canvas, p: Paint, x: Float, y: Float, r: Float, trait: Int, u: Float) {
+    Email.peindre(c, p, Path().apply { addCircle(x, y, r, Path.Direction.CW) }, 0xFFF2B705.toInt(), trait, u)
+    p.style = Paint.Style.STROKE
+    p.strokeWidth = 0.6f * u
+    p.color = 0xFF9A6400.toInt()
+    c.drawCircle(x, y, r * 0.68f, p)
+    p.style = Paint.Style.FILL
 }
 
 /**
  * Le type d'une carte imprimée, en pictogramme, dans l'écu TYPE.
  *
- * Le type dit ce que fait la carte au Wuertduell (un nom se pose et attaque,
- * un verbe agit, un adjectif renforce, un nombre donne un symbole de plus :
- * `docs/regle-du-jeu.md`), et c'est un enfant de 6 ans qui doit le lire.
- * Écrit en toutes lettres, « SUBSTANTIV » devait rétrécir pour tenir dans
- * l'écu et changeait de longueur avec la langue de l'édition. Un pictogramme
- * se lit sans savoir lire, et c'est le même dans les cinq langues (idée
- * reprise des cartes à collectionner, qui disent le poste d'un joueur par un
- * petit terrain, 2026-10-27).
+ * Le type dit ce que fait la carte au Wuertduell (`docs/regle-du-jeu.md`), et
+ * le public commence à 6 ans : le pictogramme montre donc **ce que la carte
+ * fait**, pas ce qu'elle est en grammaire.
  *
- * Les formes sont les **symboles de grammaire Montessori**, que des
- * enseignants connaissent déjà : grand triangle noir pour le nom, rond rouge
- * pour le verbe, triangle bleu plus petit pour l'adjectif. Le bleu est plus
- * clair que le bleu nuit de Montessori : en noir et blanc, il doit rester
- * distinct du noir du nom, en plus d'être plus petit. Le nombre, que
- * Montessori ne code pas, est gravé « 123 ».
+ * - **nom** : un personnage (rouge). La règle le dit : « un nom est un
+ *   personnage », il se pose devant toi, attaque et bloque ;
+ * - **verbe** : un éclair (orange), l'action d'un tour ;
+ * - **adjectif** : un bouclier marqué « + » (bleu), le renfort qui reste ;
+ * - **nombre** : « 123 » sur un badge vert. Une pièce « +1 » (ce que le
+ *   nombre rapporte) se confondait avec les pièces du coût, juste à côté.
  *
- * Forme et couleur codent ensemble (skill designer-cartes § 2.3) : un enfant
- * daltonien et une photocopie distinguent encore les quatre. Le nom de la
- * carte reste écrit en toutes lettres sur la pastille de nature, et la vue
- * porte le type pour les lecteurs d'écran. Le rendu est celui de [Email].
+ * Les symboles Montessori d'abord retenus (grand triangle noir, rond rouge,
+ * petit triangle bleu) ne se comprenaient pas sans les avoir appris : le
+ * propriétaire lui-même ne les lisait pas (2026-10-27). Un enfant de 6 ans
+ * reconnaît un bonhomme, un éclair, un bouclier, des chiffres.
+ *
+ * Quatre silhouettes différentes et quatre couleurs : un enfant daltonien et
+ * une photocopie les distinguent encore (skill designer-cartes § 2.3). La
+ * nature reste écrite en toutes lettres sur la pastille, et la vue porte le
+ * type pour les lecteurs d'écran. Le rendu est celui de [Email].
  */
 class PictoType(context: Context, private val forme: Forme, private val trait: Int) : View(context) {
 
     enum class Forme { NOM, VERBE, ADJECTIF, NOMBRE }
 
     companion object {
-        private const val NOIR = 0xFF2A2622.toInt()
         private const val ROUGE = 0xFFD32F2F.toInt()
+        private const val ORANGE = 0xFFF57C00.toInt()
         private const val BLEU = 0xFF2F6FD6.toInt()
+        private const val VERT = 0xFF00897B.toInt()
 
         /** La forme d'un type de [ImpressionCarte.type], ou `null` pour « Mot », qui reste écrit. */
         fun pour(@StringRes type: Int): Forme? = when (type) {
@@ -164,58 +143,125 @@ class PictoType(context: Context, private val forme: Forme, private val trait: I
     override fun onDraw(canvas: Canvas) {
         val u = height / Email.CASE
         val cx = width / 2f
-        // Les deux triangles posent sur la même ligne : l'adjectif se voit
-        // plus petit que le nom même quand on n'a qu'une carte sous les yeux.
-        // Pas plus petit que 10,5 (2 mm) : à 9, le triangle bleu se perdait
-        // sur l'argent d'une commune (planche de contrôle, 2026-10-27).
-        val base = 14.5f * u
+        // Tout tient entre 1,2 et 14,8 unités de la case : 13,6 de haut.
+        fun x(v: Float) = cx + v * u
+        fun y(v: Float) = v * u
         when (forme) {
-            Forme.NOM -> Email.peindre(canvas, p, Email.triangle(cx, base, 13.5f * u), NOIR, trait, u)
-            Forme.ADJECTIF -> Email.peindre(canvas, p, Email.triangle(cx, base, 10.5f * u), BLEU, trait, u)
-            Forme.VERBE -> Email.peindre(
-                canvas, p, Path().apply { addCircle(cx, 8f * u, 6.25f * u, Path.Direction.CW) }, ROUGE, trait, u
-            )
-            Forme.NOMBRE -> Email.graver(canvas, p, "123", cx, 8f * u, 13f, trait, u)
+            Forme.NOM -> {
+                // La tête et le buste, séparés d'un filet d'or.
+                val bonhomme = Path().apply {
+                    addCircle(x(0f), y(4.3f), 3.1f * u, Path.Direction.CW)
+                    moveTo(x(-5.6f), y(14.8f))
+                    lineTo(x(-5.6f), y(12.2f))
+                    cubicTo(x(-5.6f), y(9f), x(-3.2f), y(8.2f), x(0f), y(8.2f))
+                    cubicTo(x(3.2f), y(8.2f), x(5.6f), y(9f), x(5.6f), y(12.2f))
+                    lineTo(x(5.6f), y(14.8f))
+                    close()
+                }
+                Email.peindre(canvas, p, bonhomme, ROUGE, trait, u)
+            }
+            Forme.VERBE -> {
+                // Large : à 1,8 unité d'épaisseur, l'éclair se lisait comme un trait.
+                val eclair = Path().apply {
+                    moveTo(x(0.4f), y(1.2f))
+                    lineTo(x(-5f), y(9.2f))
+                    lineTo(x(-0.6f), y(9.2f))
+                    lineTo(x(-2.6f), y(14.8f))
+                    lineTo(x(5f), y(6.2f))
+                    lineTo(x(0.8f), y(6.2f))
+                    lineTo(x(3.8f), y(1.2f))
+                    close()
+                }
+                Email.peindre(canvas, p, eclair, ORANGE, trait, u)
+            }
+            Forme.ADJECTIF -> {
+                val bouclier = Path().apply {
+                    moveTo(x(-5.4f), y(1.6f))
+                    lineTo(x(5.4f), y(1.6f))
+                    lineTo(x(5.4f), y(7.4f))
+                    cubicTo(x(5.4f), y(11.2f), x(2.6f), y(13.4f), x(0f), y(14.8f))
+                    cubicTo(x(-2.6f), y(13.4f), x(-5.4f), y(11.2f), x(-5.4f), y(7.4f))
+                    close()
+                }
+                Email.peindre(canvas, p, bouclier, BLEU, trait, u)
+                // Le « + » blanc du renfort.
+                p.style = Paint.Style.STROKE
+                p.strokeCap = Paint.Cap.ROUND
+                p.strokeWidth = 1.7f * u
+                p.color = Color.WHITE
+                canvas.drawLine(x(-2.6f), y(7.4f), x(2.6f), y(7.4f), p)
+                canvas.drawLine(x(0f), y(4.8f), x(0f), y(10f), p)
+                p.strokeCap = Paint.Cap.BUTT
+                p.style = Paint.Style.FILL
+            }
+            Forme.NOMBRE -> {
+                // Un badge émaillé qui porte « 123 ». Une pièce « +1 » disait
+                // ce que le nombre rapporte, mais se confondait avec les
+                // pièces du coût, juste à côté (propriétaire, 2026-10-27).
+                val badge = Path().apply {
+                    addRoundRect(x(-7f), y(2.6f), x(7f), y(13.4f), 2.8f * u, 2.8f * u, Path.Direction.CW)
+                }
+                Email.peindre(canvas, p, badge, VERT, trait, u)
+                p.typeface = Typeface.DEFAULT_BOLD
+                p.textAlign = Paint.Align.CENTER
+                p.textSize = 7.4f * u
+                p.color = Color.WHITE
+                canvas.drawText("123", cx, y(8f) + 7.4f * u * 0.36f, p)
+            }
         }
     }
 }
 
 /**
- * Le coût d'une carte imprimée, dans l'écu COÛT : autant de symboles que la
- * carte coûte (● ◆◆ ★★★ ✦✦✦✦, `ImpressionCarte.cout`), chacun en émail serti
- * sombre ([Email]), ou un « 0 » gravé pour un nombre, qui ne coûte rien.
+ * Le coût d'une carte imprimée, dans l'écu COÛT : une **jauge de quatre places
+ * de pièce**, dont autant sont remplies d'une pièce d'or que la carte coûte
+ * (`ImpressionCarte.cout`, 0 à 4), de gauche à droite.
+ *
+ * Quatre places sur toutes les cartes (proposition du propriétaire,
+ * 2026-10-27) : le coût est toujours au même endroit, une jauge pleine se lit
+ * « cher » d'un coup d'œil, le maximum se voit, et le coût nul n'a plus besoin
+ * de chiffre : ses quatre places sont vides. Jusqu'à quatre, un enfant voit le
+ * nombre de pièces sans les compter. Les places vides sont un creux discret,
+ * pour qu'on ne les compte pas comme des pièces.
  */
-class PictoCout(context: Context, private val cout: String, private val trait: Int) : View(context) {
+class PictoCout(context: Context, private val cout: Int, private val trait: Int) : View(context) {
 
     companion object {
-        private const val NIELLE = 0xFF3B2A12.toInt()
-        /** L'écart entre deux symboles, de centre à centre : quatre tiennent dans les 60 unités de l'écu. */
+        /** Le coût le plus haut de la règle, donc le nombre de places. */
+        const val PLACES = 4
+        /** Le diamètre d'une pièce, en unités de carte. */
+        private const val DIAMETRE = 10.5f
+        /** De centre à centre : 2,5 unités d'or entre deux places. */
         private const val PAS = 13f
     }
 
     private val p = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val ovale = RectF()
 
     override fun onDraw(canvas: Canvas) {
         val u = height / Email.CASE
         val cy = 8f * u
-        if (cout == "0" || cout.isEmpty()) {
-            Email.graver(canvas, p, "0", width / 2f, cy, 13f, trait, u)
-            return
-        }
-        val n = cout.length
-        val depart = width / 2f - (n - 1) * PAS * u / 2f
-        for (k in 0 until n) {
+        val r = DIAMETRE / 2f * u
+        val depart = width / 2f - (PLACES - 1) * PAS * u / 2f
+        for (k in 0 until PLACES) {
             val x = depart + k * PAS * u
-            val chemin = when (cout[k]) {
-                '●' -> Path().apply { addCircle(x, cy, 5.75f * u, Path.Direction.CW) }
-                '◆' -> Path().apply {
-                    moveTo(x, cy - 6.5f * u); lineTo(x + 4.75f * u, cy)
-                    lineTo(x, cy + 6.5f * u); lineTo(x - 4.75f * u, cy); close()
-                }
-                '★' -> Email.etoile(x, cy + 0.6f * u, 5, 6.9f * u, 2.9f * u)
-                else -> Email.etoile(x, cy, 4, 6.8f * u, 2.3f * u)
-            }
-            Email.peindre(canvas, p, chemin, NIELLE, trait, u)
+            if (k < cout) piece(canvas, p, x, cy, r, trait, u) else place(canvas, x, cy, r, u)
         }
+    }
+
+    /** Une place vide : le creux d'une pièce, son ombre en haut, sa lèvre claire en bas. */
+    private fun place(c: Canvas, x: Float, y: Float, r: Float, u: Float) {
+        ovale.set(x - r, y - r, x + r, y + r)
+        p.shader = null
+        p.style = Paint.Style.FILL
+        p.color = 0x24000000
+        c.drawCircle(x, y, r, p)
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 0.8f * u
+        p.color = 0x59000000
+        c.drawArc(ovale, 190f, 160f, false, p)
+        p.color = 0x99FFFFFF.toInt()
+        c.drawArc(ovale, 10f, 160f, false, p)
+        p.style = Paint.Style.FILL
     }
 }

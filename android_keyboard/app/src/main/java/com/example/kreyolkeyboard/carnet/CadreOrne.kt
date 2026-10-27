@@ -404,18 +404,29 @@ object Ornement {
      * libellé collait au bord haut de l'écu et l'accent de « COÛT » le
      * touchait (propriétaire, 2026-10-27). Il descend de 2,5 unités
      * ([LIGNE_LIBELLE_IMPRIME]), et les émaux du coût et du type avec lui.
+     *
+     * Et 74 unités de large au lieu de 90 : une fois le type passé en
+     * pictogramme, les écus de 90 étaient de larges bannières d'or vide, sans
+     * relief à côté du médaillon (« pas jolis », propriétaire, 2026-10-27).
+     * À 74 × 39 ils retrouvent la proportion d'un blason, et quatre émaux de
+     * coût y tiennent encore ([PictoCout]). Ils sont ornés comme la plaque
+     * (voir [ecu]).
      */
-    val ECU_G_IMPRIME = RectF(28f, 375f, 118f, 414f)
-    val ECU_D_IMPRIME = RectF(182f, 375f, 272f, 414f)
+    val ECU_G_IMPRIME = RectF(36f, 375f, 110f, 414f)
+    val ECU_D_IMPRIME = RectF(190f, 375f, 264f, 414f)
     /** La ligne de base du libellé « COÛT » ou « TYPE » sous le bord haut de l'écu imprimé. */
-    const val LIGNE_LIBELLE_IMPRIME = 12f
+    const val LIGNE_LIBELLE_IMPRIME = 10.6f
     /**
      * Les émaux du coût et du type ([PictoCout], [PictoType]), sous le
-     * libellé : 16 unités, dont le bas reste dans l'or au-dessus de la pointe.
+     * libellé : 16 unités, aussi haut que le libellé le permet. Plus bas,
+     * les pièces des bords descendaient dans l'arrondi de l'écu et frôlaient
+     * ses filets (propriétaire, 2026-10-27) : le libellé est passé à 7 unités
+     * pour leur laisser la place, et la jauge est centrée à 393,4, où l'écu
+     * garde encore 57 unités de large entre ses filets.
      */
-    val ECU_G_IMPRIME_TEXTE = RectF(28f, 388.5f, 118f, 404.5f)
-    val ECU_D_IMPRIME_TEXTE = RectF(182f, 388.5f, 272f, 404.5f)
-    /** La largeur de l'écu imprimé au bas de ses lettres (398,6, 62 unités) : le texte ne la dépasse pas. */
+    val ECU_G_IMPRIME_TEXTE = RectF(36f, 385.4f, 110f, 401.4f)
+    val ECU_D_IMPRIME_TEXTE = RectF(190f, 385.4f, 264f, 401.4f)
+    /** La largeur de l'écu imprimé au bas de ses lettres (398,6, 61 unités) : le texte ne la dépasse pas. */
     const val ECU_IMPRIME_LARGEUR_TEXTE = 60f
     /**
      * La ligne de série est passée **dans la marge**, où ce genre de mention
@@ -1052,7 +1063,14 @@ object Ornement {
     }
 
     /** L'écu d'une statistique : un blason à base arrondie. */
-    private fun ecu(c: Canvas, p: Paint, r: RectF, m: Metal, filet: Boolean) {
+    /**
+     * Un écu : le blason d'or, son contour, et sur un palier rare son filet
+     * clair. [orne] (la carte imprimée) ajoute ce qui rend la plaque du nom
+     * précieuse : un biseau clair en retrait, un filet gravé plus fin dedans,
+     * ouvert en haut pour laisser sa bande au libellé, et deux rivets aux
+     * angles du haut.
+     */
+    private fun ecu(c: Canvas, p: Paint, r: RectF, m: Metal, filet: Boolean, orne: Boolean = false) {
         val chemin = cheminEcu(r)
         p.style = Paint.Style.FILL
         // Un dégradé est multiplié par l'alpha du pinceau : sans ce retour à
@@ -1073,6 +1091,25 @@ object Ornement {
             p.strokeWidth = 0.9f
             p.color = 0x80FFFFFF.toInt()
             c.drawPath(chemin, p)
+        }
+        if (orne) {
+            p.strokeWidth = 1f
+            p.color = 0x8CFFFFFF.toInt()
+            c.drawPath(cheminEcu(RectF(r.left + 2.6f, r.top + 2.6f, r.right - 2.6f, r.bottom - 2.6f)), p)
+            // Le filet gravé est ouvert en haut, comme un cartouche : il ne
+            // longe que les côtés et la pointe. Fermé, il passait juste sous
+            // le bord et l'accent de « COÛT » le touchait (propriétaire,
+            // 2026-10-27).
+            p.strokeWidth = 0.5f
+            p.color = m.trait
+            p.alpha = 150
+            c.save()
+            c.clipRect(r.left, r.top + 9f, r.right, r.bottom + 10f)
+            c.drawPath(cheminEcu(RectF(r.left + 3.8f, r.top + 3.8f, r.right - 3.8f, r.bottom - 3.8f)), p)
+            c.restore()
+            p.alpha = 255
+            joyau(c, p, r.left + 7f, r.top + 7f, 1.5f, m.hi, 0)
+            joyau(c, p, r.right - 7f, r.top + 7f, 1.5f, m.hi, 0)
         }
     }
 
@@ -1716,21 +1753,45 @@ object Ornement {
         // à 11 unités (6 pt), opaque : à 7,5 et 75 %, « COÛT » faisait 4 pt.
         val ecuG = if (imprime) ECU_G_IMPRIME else ECU_G
         val ecuD = if (imprime) ECU_D_IMPRIME else ECU_D
-        ecu(c, p, ecuG, m, palier >= 3)
-        ecu(c, p, ecuD, m, palier >= 3)
+        ecu(c, p, ecuG, m, palier >= 3, orne = imprime)
+        ecu(c, p, ecuD, m, palier >= 3, orne = imprime)
         p.style = Paint.Style.FILL
         p.shader = null
-        p.color = m.trait
-        p.alpha = if (imprime) 255 else 190
         p.textAlign = Paint.Align.CENTER
-        p.textSize = if (imprime) 11f else 7.5f
         p.typeface = android.graphics.Typeface.create(
             android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD
         )
-        val ligne = if (imprime) LIGNE_LIBELLE_IMPRIME else 9f
-        c.drawText(vues, ecuG.centerX(), ecuG.top + ligne, p)
-        c.drawText(niveau, ecuD.centerX(), ecuD.top + ligne, p)
-        p.alpha = 255
+        if (imprime) {
+            // Gravé dans l'écu, comme le nom dans la plaque ([MotGrave]) : un
+            // creux un peu plus sombre que l'or, son ombre au bord du haut, sa
+            // lèvre claire au bord du bas. À 7 unités et espacé : le libellé
+            // aide l'enfant qui commence à lire, mais c'est la jauge et
+            // l'image dessous qui informent. À 10, l'accent de « COÛT »
+            // mordait sur les filets du haut ; à 8, il poussait les pièces
+            // dans l'arrondi de l'écu (propriétaire, 2026-10-27).
+            p.textSize = 7f
+            p.letterSpacing = 0.14f
+            val creux = Email.melange(m.lo, m.trait, 0.45f)
+            for ((texte, ecu) in listOf(vues to ecuG, niveau to ecuD)) {
+                val base = ecu.top + LIGNE_LIBELLE_IMPRIME
+                p.color = m.hi
+                c.drawText(texte, ecu.centerX(), base + 0.5f, p)
+                p.color = m.trait
+                p.alpha = 150
+                c.drawText(texte, ecu.centerX(), base - 0.35f, p)
+                p.alpha = 255
+                p.color = creux
+                c.drawText(texte, ecu.centerX(), base, p)
+            }
+            p.letterSpacing = 0f
+        } else {
+            p.color = m.trait
+            p.alpha = 190
+            p.textSize = 7.5f
+            c.drawText(vues, ecuG.centerX(), ecuG.top + 9f, p)
+            c.drawText(niveau, ecuD.centerX(), ecuD.top + 9f, p)
+            p.alpha = 255
+        }
 
         // 12. Le disque du médaillon de provenance, par-dessus le panneau
         //     qu'il mord, entre les deux écus.

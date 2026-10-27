@@ -338,7 +338,7 @@ object CarteCarnet {
             val cout = ImpressionCarte.cout(c)
             carte.posee(
                 PictoCout(context, cout, metal.trait).apply {
-                    contentDescription = context.getString(R.string.carte_ecu_cout) + " " + cout
+                    contentDescription = context.getString(R.string.carte_ecu_cout) + " $cout"
                     importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
                 },
                 Ornement.ECU_G_IMPRIME_TEXTE
@@ -400,10 +400,16 @@ object CarteCarnet {
             ?: context.getString(R.string.carte_hors_corpus)
         val palier = if (CarteFierkelsmaart.est(c.carte.forme)) context.getString(R.string.rarete_ultra_rare)
             else context.getString(c.rarete.libelle)
+        // Sur papier, la rareté se dit en étoiles, de ★ (commun) à ★★★★ (très
+        // rare), ★★★★★ pour l'ultra rare : ● ◆ ★ ✦ ne se comprennent que si
+        // on les a appris, alors qu'un enfant de 6 ans sait qu'avec plus
+        // d'étoiles, c'est plus rare (propriétaire, 2026-10-27).
+        val symbole = if (!impression) c.rarete.symbole
+            else "★".repeat(if (CarteFierkelsmaart.est(c.carte.forme)) 5 else c.rarete.ordinal + 1)
         carte.posee(
             ligne(
                 context,
-                "${c.rarete.symbole} $palier · $rang",
+                "$symbole $palier · $rang",
                 taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.END
             ),
             Ornement.serieD(c.rarete)
