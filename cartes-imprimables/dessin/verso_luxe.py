@@ -127,12 +127,23 @@ def verso(largeur_px, logo_png):
     for transf in ('', f'translate({L} 0) scale(-1 1)', f'translate(0 {H}) scale(1 -1)', f'translate({L} {H}) scale(-1 -1)'):
         s.append(f'<g transform="{transf}">{fer}</g>')
 
-    # Les acanthes et les rivets des flancs, comme au recto.
+    # Les acanthes des flancs : trois en haut, et leur reflet en bas, pour que
+    # le dos reste symétrique par demi-tour. Recopiées du recto, dont le pas
+    # s'arrête au-dessus des écus, elles finissaient aux deux tiers de la
+    # hauteur : le bas des flancs était nu et disait dans quel sens la carte
+    # était tenue (2026-10-27). Le reflet est dessiné à part, pour ne pas
+    # dupliquer les identifiants des dégradés.
     depart = 66
-    pas = (H - depart - 80) / 5
-    for i in range(5):
-        y = depart + i * pas
-        s.append(CA.feuille(b / 2 - 3, y, 9, -28) + CA.feuille(L - b / 2 + 3, y, 9, 208))
+    pas = (H - 2 * depart) / 5
+
+    def acanthes():
+        return ''.join(CA.feuille(b / 2 - 3, depart + i * pas, 9, -28) + CA.feuille(L - b / 2 + 3, depart + i * pas, 9, 208)
+                       for i in range(3))
+
+    s.append(acanthes())
+    s.append(f'<g transform="translate(0 {H}) scale(1 -1)">{acanthes()}</g>')
+
+    # Les rivets des flancs, comme au recto.
     for y in (H * .30, H * .70):
         s.append(CA.joyau(b + 6, y, 3.2, CA.HI) + CA.joyau(L - b - 6, y, 3.2, CA.HI))
 
@@ -156,8 +167,33 @@ def verso(largeur_px, logo_png):
     # visuels (LICENSE-VISUELS.md), que chaque carte porte depuis que les
     # fichiers sont publics. Le crédit du LOD passe sur l'emballage (CC0 ne
     # demande pas de mention).
+    #
+    # Posée à même le plateau, sa moitié gauche tombait sur la bande sombre du
+    # dégradé, à 1,9:1 de contraste là où un texte de 4 pt en demande 7. Un
+    # bandeau d'or clair réglait le contraste mais encadrait la mention comme
+    # une étiquette (propriétaire, 2026-10-27) : chaque lettre a donc un fin
+    # halo d'or clair, comme une gravure, et le texte reste sur l'or. Le halo
+    # est fait de copies pleines décalées en cercle, comme la lèvre de
+    # carte_appli.mot_grave : un texte détouré (stroke) sortirait en police
+    # Type 3 du PDF, que les imprimeurs refusent.
+    #
+    # Elle est écrite aux deux bouts, la seconde tournée d'un demi-tour :
+    # seule en bas, elle disait le sens de la carte (2026-10-27).
     milieu = H - (b + 2.45) / 2
-    s.append(CA.texte(22, milieu + 2.7, '© Lëtzebuergesch Clavier', 7.5, CA.TRAIT, 'bold', ancre='start'))
-    s.append(CA.texte(278, milieu + 2.7, 'Usage scolaire libre · vente interdite', 7.5, CA.TRAIT, 'bold', ancre='end'))
+    halo = CA.HI
+
+    def mention():
+        m = ''
+        for txt, x, ancre in (('© Lëtzebuergesch Clavier', 22, 'start'),
+                              ('Usage scolaire libre · vente interdite', 278, 'end')):
+            for k in range(16):
+                a = k / 16 * 2 * math.pi
+                m += CA.texte(f'{x + .6 * math.cos(a):.2f}', f'{milieu + 2.7 + .6 * math.sin(a):.2f}', txt, 7.5,
+                              halo, 'bold', ancre=ancre)
+            m += CA.texte(x, milieu + 2.7, txt, 7.5, CA.TRAIT, 'bold', ancre=ancre)
+        return m
+
+    s.append(mention())
+    s.append(f'<g transform="rotate(180 {cx} {cy})">{mention()}</g>')
     s.insert(0, f'<defs>{CA.defs_joyaux()}</defs>')
     return '\n'.join(s)
