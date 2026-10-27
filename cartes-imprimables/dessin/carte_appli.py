@@ -420,6 +420,33 @@ def mot_grave(mot, r, taille):
     return ''.join(s)
 
 
+# Le type en pictogramme, comme carnet/PictoType.kt : les symboles de
+# grammaire Montessori (grand triangle noir pour le nom, rond rouge pour le
+# verbe, triangle bleu plus petit pour l'adjectif), « 123 » pour le nombre.
+PICTO_NOIR, PICTO_ROUGE, PICTO_BLEU = '#15120E', '#D32F2F', '#2F6FD6'
+
+
+def picto_type(type_, cx, haut):
+    """Le pictogramme de [type_] ('nom', 'verbe', 'adjectif', 'nombre') dans la
+    case de 18 unités qui commence à [haut], ou None pour un autre type."""
+    base = haut + 17
+    trait = f'stroke="{TRAIT}" stroke-width="1.1" stroke-linejoin="round"'
+
+    def triangle(h, couleur):
+        d = h / 1.732
+        return f'<path d="M{cx} {base - h} L{cx + d:.2f} {base} L{cx - d:.2f} {base} Z" fill="{couleur}" {trait}/>'
+
+    if type_ == 'nom':
+        return triangle(16, PICTO_NOIR)
+    if type_ == 'adjectif':
+        return triangle(12.5, PICTO_BLEU)
+    if type_ == 'verbe':
+        return f'<circle cx="{cx}" cy="{haut + 9}" r="7.5" fill="{PICTO_ROUGE}" {trait}/>'
+    if type_ == 'nombre':
+        return texte(cx, haut + 9 + 15 * .36, '123', 15, TRAIT, 'bold')
+    return None
+
+
 # ------------------------------------------------------------- la carte
 
 
@@ -561,10 +588,12 @@ def carte(mot, nature, glose, exemple, pouvoir, cout, type_, serie_g, serie_d, h
             s.append(texte(150, y, txt, t_, coul, poids, style))
             y += t_ * .24
     # Centrés dans 384,5–402,5 comme les TextView : ligne de base à
-    # 393,5 + 0,34 em (Roboto). 15 unités : « ✦✦✦✦ » et « NOM » tiennent
-    # dans les 60 unités de ECU_IMPRIME_LARGEUR_TEXTE.
+    # 393,5 + 0,34 em (Roboto). 15 unités : « ✦✦✦✦ » tient dans les
+    # 60 unités de ECU_IMPRIME_LARGEUR_TEXTE. Le type est un pictogramme
+    # (picto_type) ; seul un type sans rôle au jeu reste écrit.
     s.append(texte((ECU_G_IMPRIME[0] + ECU_G_IMPRIME[2]) / 2, 393.5 + 15 * .34, cout, 15, TRAIT, 'bold'))
-    s.append(texte((ECU_D_IMPRIME[0] + ECU_D_IMPRIME[2]) / 2, 393.5 + 15 * .34, type_, 15, TRAIT, 'bold'))
+    cx_type = (ECU_D_IMPRIME[0] + ECU_D_IMPRIME[2]) / 2
+    s.append(picto_type(type_, cx_type, 384.5) or texte(cx_type, 393.5 + 15 * .34, type_, 15, TRAIT, 'bold'))
     milieu = H - (BORD + 2.45) / 2
     s.append(texte(22, milieu + 2.7, serie_g, 7.5, TRAIT, 'bold', ancre='start'))
     s.append(texte(278, milieu + 2.7, serie_d, 7.5, TRAIT, 'bold', ancre='end'))

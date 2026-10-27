@@ -91,6 +91,43 @@ object ImpressionCarte {
         else -> R.string.cat_mot
     }
 
+    /**
+     * Les ensembles numérotés de `cartes_imprimees.json`, dans l'ordre de la
+     * collection : la boîte de départ, puis les extensions.
+     *
+     * Un numéro par carte, comme sur les cartes à collectionner : il dit ce
+     * qui manque et permet une liste à cocher (idée reprise des cartes du
+     * commerce, 2026-10-27). Sans total : la collection grandit avec les
+     * extensions, et un « / 100 » imprimé serait faux à la suivante.
+     *
+     * La carte promotionnelle (FK27, la Fierkelsmaart) est hors numérotation,
+     * comme les cartes promo des grands jeux : son édition se lit déjà à
+     * droite de la ligne.
+     */
+    val COLLECTION = listOf("B1", "SCHOUL1", "NATUR1")
+
+    /**
+     * Le numéro de collection d'une carte : sa place dans les ensembles de
+     * [COLLECTION], mis bout à bout (Kaz 1, sechs 52, Buch 53…), ou `null`
+     * pour une carte hors collection.
+     *
+     * Les numéros se lisent sur l'ordre des listes : une fois une édition
+     * imprimée, ne plus réordonner ses cartes ni en insérer, et mettre les
+     * nouvelles dans un ensemble ajouté à la fin. Si un ensemble manque, rien
+     * n'est numéroté plutôt que de décaler tous les numéros qui le suivent.
+     */
+    fun numero(forme: String, nombre: Int?, ensembles: Map<String, List<String>>): Int? {
+        val cle = if (nombre != null) "$forme#$nombre" else forme
+        var avant = 0
+        for (id in COLLECTION) {
+            val cartes = ensembles[id] ?: return null
+            val i = cartes.indexOf(cle)
+            if (i >= 0) return avant + i + 1
+            avant += cartes.size
+        }
+        return null
+    }
+
     /** Le pouvoir d'une carte spéciale, écrit sur la carte imprimée ; `null` pour les autres. */
     fun pouvoir(context: Context, c: ContenuCarte): String? =
         if (CarteFierkelsmaart.est(c.carte.forme)) context.getString(R.string.fierkelsmaart_pouvoir) else null

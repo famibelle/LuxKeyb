@@ -333,13 +333,20 @@ object CarteCarnet {
             // Dans les écus élargis de l'impression, à 15 unités (8 pt) : à
             // 10 et 8,5, le coût et le type ne se lisaient pas à 60 cm.
             val cout = ImpressionCarte.cout(c)
-            val type = context.getString(ImpressionCarte.type(categorie)).uppercase(Locale.getDefault())
             carte.posee(
                 ligne(context, cout, taille = tailleEcu(cout, 15f), couleur = metal.trait, gras = true),
                 Ornement.ECU_G_IMPRIME_TEXTE
             )
+            // Le type en pictogramme (voir [PictoType]) ; seul « Mot », qui
+            // n'a pas de rôle au jeu, reste écrit.
+            val type = ImpressionCarte.type(categorie)
+            val picto = PictoType.pour(type)
+            val texteType = context.getString(type).uppercase(Locale.getDefault())
             carte.posee(
-                ligne(context, type, taille = tailleEcu(type, 15f), couleur = metal.trait, gras = true),
+                if (picto != null) PictoType(context, picto, metal.trait).apply {
+                    contentDescription = context.getString(type)
+                    importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+                } else ligne(context, texteType, taille = tailleEcu(texteType, 15f), couleur = metal.trait, gras = true),
                 Ornement.ECU_D_IMPRIME_TEXTE
             )
         } else {
@@ -362,7 +369,14 @@ object CarteCarnet {
         // Le jeu n'y figure plus : le médaillon le dit déjà, par son emblème
         // et son nom. La date non plus : c'est une donnée technique, la carte
         // n'en montre que la saison, sur son cachet (propriétaire, 2026-10-11).
-        val serie = if (impression) ImpressionCarte.JEU else context.getString(
+        // Sur papier, le numéro est celui de la collection imprimée
+        // ([ImpressionCarte.numero]) : « Wuertduell · n° 012 ». Une carte hors
+        // collection ne porte que le nom du jeu.
+        val serie = if (impression) {
+            ImpressionCarte.numero(c.carte.forme, c.carte.nombre, CartesPapier.ensembles(context))
+                ?.let { "${ImpressionCarte.JEU} · " + context.getString(R.string.carte_serie, "%03d".format(Locale.ROOT, it)) }
+                ?: ImpressionCarte.JEU
+        } else context.getString(
             R.string.carte_serie,
             "%03d".format(Locale.ROOT, c.carte.numero)
         )
