@@ -85,7 +85,9 @@ PALIERS = {
     3: (('#F2F6F9', '#B9C4CE', '#3D474F'), ('#463A76', '#F7B179')),
     4: (('#FFF0BC', '#E0B74E', '#4A3208'), ('#091030', '#2A3B70')),
 }
-SYMBOLES = {0: 'gratuit', 1: '●', 2: '◆◆', 3: '★★★', 4: '✦✦✦✦'}
+# Le coût en jauge de quatre places de pièce, le type en image : comme la
+# carte imprimée (carnet/PictoType.kt, 2026-10-27).
+PLACES = 4
 VOYELLES = 'aeiouyäëéèêîïôöüû'
 _ids = [0]
 
@@ -113,6 +115,44 @@ def trace(mot):
     return (f'<path d="{d}" fill="none" stroke="#3a3a3a" stroke-width="4.4" stroke-linecap="round" opacity=".35" '
             f'transform="translate(.6 1)"/><path d="{d}" fill="none" stroke="#fff" stroke-width="3.2" '
             f'stroke-linecap="round"/>{noeuds}')
+
+
+def jauge(cout, cx, cy):
+    """Le coût : quatre places, [cout] remplies d'une pièce d'or."""
+    s = ''
+    for k in range(PLACES):
+        x = cx + (k - (PLACES - 1) / 2) * 11
+        if k < cout:
+            s += (f'<circle cx="{x}" cy="{cy}" r="4.4" fill="#F2B705" stroke="#6E4A00" stroke-width="1"/>'
+                  f'<circle cx="{x}" cy="{cy}" r="2.7" fill="none" stroke="#9A6400" stroke-width=".6"/>')
+        else:
+            s += f'<circle cx="{x}" cy="{cy}" r="4.4" fill="#E4DAC3" stroke="#B5A98F" stroke-width=".8"/>'
+    return s
+
+
+def image_type(nature, cx, cy):
+    """Le type en image : personnage (nom), éclair (verbe), bouclier « + »
+    (adjectif), « 123 » (nombre), dans une boîte de 14 unités."""
+    trait = 'stroke="#3a2a10" stroke-width="1" stroke-linejoin="round"'
+    # « Nombre » commence par « Nom » : le nombre se teste en premier.
+    if nature.startswith('Nombre'):
+        return (f'<rect x="{cx - 7}" y="{cy - 5.4}" width="14" height="10.8" rx="2.8" fill="#00897B" {trait}/>'
+                f'<text x="{cx}" y="{cy + 2.6}" text-anchor="middle" {POLICE} font-size="7.4" font-weight="800" '
+                f'fill="#fff">123</text>')
+    if nature.startswith('Nom'):
+        return (f'<circle cx="{cx}" cy="{cy - 3.6}" r="3" fill="#D32F2F" {trait}/>'
+                f'<path d="M{cx - 5.4} {cy + 7} V{cy + 4.6} C{cx - 5.4} {cy + 1.4} {cx - 3} {cy + .6} {cx} {cy + .6} '
+                f'C{cx + 3} {cy + .6} {cx + 5.4} {cy + 1.4} {cx + 5.4} {cy + 4.6} V{cy + 7} Z" fill="#D32F2F" {trait}/>')
+    if nature.startswith('Verbe'):
+        pts = [(0.4, -6.8), (-5, 1.2), (-0.6, 1.2), (-2.6, 6.8), (5, -1.8), (0.8, -1.8), (3.8, -6.8)]
+        return (f'<path d="M' + ' L'.join(f'{cx + a:.1f} {cy + b:.1f}' for a, b in pts)
+                + f' Z" fill="#F57C00" {trait}/>')
+    if nature.startswith('Adjectif'):
+        return (f'<path d="M{cx - 5.4} {cy - 6.4} H{cx + 5.4} V{cy - .6} C{cx + 5.4} {cy + 3.2} {cx + 2.6} {cy + 5.4} '
+                f'{cx} {cy + 6.8} C{cx - 2.6} {cy + 5.4} {cx - 5.4} {cy + 3.2} {cx - 5.4} {cy - .6} Z" fill="#2F6FD6" {trait}/>'
+                f'<path d="M{cx - 2.6} {cy - .6} H{cx + 2.6} M{cx} {cy - 3.2} V{cy + 2}" stroke="#fff" '
+                f'stroke-width="1.7" stroke-linecap="round"/>')
+    return ''
 
 
 def carte(x, y, mot, nature, sens, cout, force=None, dessin=None, echelle=1.0, sous=None):
@@ -148,7 +188,8 @@ def carte(x, y, mot, nature, sens, cout, force=None, dessin=None, echelle=1.0, s
   <rect x="33" y="135" width="84" height="16" rx="8" fill="#EADFC4"/>
   <text x="75" y="146.5" text-anchor="middle" {POLICE} font-size="8.5" font-weight="700" fill="#4b3c22">{nature}</text>
   <text x="75" y="172" text-anchor="middle" {POLICE} font-size="13" fill="#2b2420">{sens if not nature.startswith('Nombre') else 'en lettres : ' + mot}</text>
-  <text x="75" y="199" text-anchor="middle" {POLICE} font-size="12" fill="{metal[2]}">{SYMBOLES[cout]}</text>
+  {jauge(cout, 44, 195)}
+  {image_type(nature, 112, 195)}
 </g>'''
 
 
@@ -185,23 +226,25 @@ def carte_annotee():
     s = 1.9
     c = carte(40, 30, 'Kaz', 'Nom féminin', 'chat', 1, dessin='chat', echelle=s)
     reperes = [  # (x, y) sur la carte, en unités de carte
-        (46, 14), (122, 44), (125, 116), (117, 143), (110, 172), (98, 199)]
+        (46, 14), (122, 44), (125, 116), (117, 143), (110, 172), (44, 212), (132, 195)]
     legendes = [
         ('La Force', 'le nombre de lettres du mot : K-a-z, 3'),
         ('Le dessin', 'il montre ce que le mot veut dire'),
         ('Le mot', 'à lire à voix haute pour jouer la carte'),
         ('La nature et le genre', 'nom, verbe, adjectif ou nombre ; féminin'),
         ('Le sens', 'la réponse, que l’adversaire peut vérifier'),
-        ('Le coût', 'on compte les symboles : ● coûte 1'),
+        ('Le coût', 'on compte les pièces d’or : Kaz coûte 1'),
+        ('Le type', 'ce que fait la carte : un personnage, c’est un nom'),
     ]
     corps = [c]
     for i, ((px, py), (titre, detail)) in enumerate(zip(reperes, legendes), 1):
         corps.append(numero(40 + px * s, 30 + py * s, i))
-        y = 70 + (i - 1) * 62
+        y = 62 + (i - 1) * 56
         corps.append(numero(380, y - 5, i))
         corps.append(texte(400, y, titre, 17, 800))
         corps.append(texte(400, y + 21, detail, 14, 400, '#5a4e44'))
-    return svg(760, 470, '\n'.join(corps), 'Une carte annotée : la Force, le dessin, le mot, la nature, le sens et le coût')
+    return svg(760, 470, '\n'.join(corps),
+               'Une carte annotée : la Force, le dessin, le mot, la nature, le sens, le coût et le type')
 
 
 def bataille():
@@ -228,7 +271,7 @@ def table():
     for i in range(3):
         corps.append(dos(330 + i * 16, 70 + i * 6, .62))
     corps.append(texte(395, 225, 'La réserve : 3 cartes', 15, 800, ancre='middle'))
-    corps.append(texte(395, 244, '= 3 symboles à dépenser', 13, 400, '#5a4e44', 'middle'))
+    corps.append(texte(395, 244, '= 3 pièces à dépenser', 13, 400, '#5a4e44', 'middle'))
     # la pioche
     for i in range(4):
         corps.append(dos(560 + i * 2, 70 - i * 2, .62))
@@ -248,7 +291,7 @@ def table():
         corps.append(carte(420 + i * 85, 300 + abs(i - 1) * 8, m, n, s_, c, echelle=.72,
                            force=(0 if c == 0 else None), dessin=d))
     corps.append(texte(560, 580, 'Ta main', 15, 800, ancre='middle'))
-    corps.append(texte(560, 599, 'tu poses ce que tes symboles permettent', 13, 400, '#5a4e44', 'middle'))
+    corps.append(texte(560, 599, 'tu poses ce que tes pièces permettent', 13, 400, '#5a4e44', 'middle'))
     return svg(760, 625, '\n'.join(corps),
                'La table de jeu : le trésor de 5 cartes, la réserve, la pioche, les noms posés et la main')
 

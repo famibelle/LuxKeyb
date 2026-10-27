@@ -74,7 +74,7 @@ REGLES = [
         'Égalité : le premier qui dit', 'le sens les emporte.']),
     ('Wuertduell', 'dès 8 ans · 2 joueurs', [
         'Trésor : 5 cartes cachées.', 'Main : 5 cartes.', '',
-        'Pioche · réserve · pose · attaque.', 'Verbe +3 · adjectif +2', 'Nombre : gratuit, +1 symbole.',
+        'Pioche · réserve · pose · attaque.', 'Verbe +3 · adjectif +2', 'Nombre : gratuit, +1 pièce.',
         'Gagne : prends les 5 cartes', 'du trésor adverse.']),
 ]
 
@@ -94,11 +94,12 @@ def planche():
     for nom, theme in PAQUETS.items():
         paquet = cartes[nom]
         total += len(paquet)
-        courbe = collections.Counter(IR.SYMBOLES[int(c['cout'])] for c in paquet)
+        courbe = collections.Counter(int(c['cout']) for c in paquet)
         natures = collections.Counter(c['nature'] for c in paquet)
         resume = (f"{len(paquet)} cartes : {natures['nom']} noms, {natures['verbe']} verbes, "
                   f"{natures['adjectif']} adjectifs, {natures['nombre']} nombres · coûts "
-                  + ', '.join(f'{n} × {s}' for s, n in sorted(courbe.items(), key=lambda t: len(t[0]))))
+                  + ', '.join(f"{n} × {cout} pièce{'s' if cout > 1 else ''}" if cout else f'{n} gratuits'
+                              for cout, n in sorted(courbe.items())))
         y += 24
         corps.append(IR.texte(MARGE, y, f'Paquet {nom}, {theme}', 20, 800))
         corps.append(IR.texte(MARGE + 330, y, resume, 14, 400, '#5a4e44'))

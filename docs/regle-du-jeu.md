@@ -38,14 +38,16 @@ ce qu'elle vaut.
 | Sur la carte | Dans le jeu |
 |---|---|
 | Le chiffre de la pastille, en haut à gauche (le nombre de lettres du mot) | La **Force** : *Kaz* 3, *Fierkel* 7, *Päiperlek* 9 |
-| Les symboles de rareté ● ◆ ★ ✦ | Le **coût** : on les compte, de 1 à 4 |
-| La nature du mot : nom, verbe, adjectif, nombre | Ce que fait la carte |
+| Les pièces d'or de la jauge, en bas à gauche | Le **coût** : on les compte, de 0 à 4 |
+| L'image en bas à droite : un personnage (nom), un éclair (verbe), un bouclier « + » (adjectif), « 123 » (nombre) | Ce que fait la carte |
 | Le genre du nom, sur la pastille : masculin, féminin ou neutre | La **famille** de la carte |
 | Le sens du mot, en français (ou dans la langue de ton édition) | La réponse, que l'adversaire peut vérifier |
 | La phrase d'exemple | Un bonus pour les grands lecteurs |
+| L'image du médaillon, en bas au milieu | Le paquet de la carte, pour la ranger après la partie |
+| Les étoiles, en bas à droite, de ★ à ★★★★ | Rien : plus il y a d'étoiles, plus la carte est rare |
 
 <figure style="margin:20px auto;max-width:760px;text-align:center;">
-  <img src="assets/regle/carte-annotee.svg" style="width:100%;" alt="La carte « Kaz » annotée : 1, la Force 3 en haut à gauche ; 2, le dessin du chat ; 3, le mot ; 4, la pastille « Nom féminin » ; 5, le sens « chat » ; 6, le coût, un rond">
+  <img src="assets/regle/carte-annotee.svg" style="width:100%;" alt="La carte « Kaz » annotée : 1, la Force 3 en haut à gauche ; 2, le dessin du chat ; 3, le mot ; 4, la pastille « Nom féminin » ; 5, le sens « chat » ; 6, le coût, une pièce sur quatre places ; 7, le type, un personnage">
   <figcaption>Tout ce qui sert à jouer est écrit sur la carte</figcaption>
 </figure>
 
@@ -96,17 +98,16 @@ paquets de la boîte, ou celui qu'il a composé (voir [Les paquets](#les-paquets
 1. **Pioche** une carte.
 2. **Remplis ta réserve.** Pose une carte de ta main face cachée sur le côté :
    c'est ta **réserve**. Une seule par tour. Chaque carte de ta réserve te donne
-   **1 symbole** à dépenser à chaque tour.
-3. **Pose des cartes**, autant que tes symboles le permettent : une carte ●
-   coûte 1, une carte ◆◆ coûte 2, une carte ★★★ coûte 3, une carte ✦✦✦✦
-   coûte 4. Lis le mot à voix haute.
+   **1 pièce** à dépenser à chaque tour.
+3. **Pose des cartes**, autant que tes pièces le permettent : une carte coûte
+   autant de pièces qu'elle en montre, de 1 à 4. Lis le mot à voix haute.
    - Un **nom** est un personnage : il se pose devant toi. Trois au plus.
    - Un **verbe** est une action : +3 de Force à l'un de tes noms pour ce tour,
      puis la carte est défaussée.
    - Un **adjectif** se glisse sous l'un de tes noms : +2 de Force pour toujours.
      *grouss* sous *Hond*, et voilà un grand chien.
    - Un **nombre** ne coûte rien : dis-le en luxembourgeois, et il te donne
-     1 symbole de plus pour ce tour. Puis il est défaussé.
+     1 pièce de plus pour ce tour. Puis il est défaussé.
 4. **Attaque** avec chacun des noms que tu avais déjà posés au tour d'avant.
    - L'adversaire peut **bloquer** avec l'un des siens : la plus grande Force
      gagne, l'autre carte est défaussée. En cas d'égalité, les deux le sont.
