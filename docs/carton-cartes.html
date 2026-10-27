@@ -1,0 +1,50 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Carton des cartes</title>
+<link rel="stylesheet" href="assets/fredoka-embed.css">
+<style>
+@page{size:A4 portrait;margin:0}
+:root{--r:#ED2939;--n:#1d1d2b}
+html,body{margin:0;background:#fff;font-family:Fredoka,sans-serif}
+.feuille{position:relative;width:210mm;height:297mm;overflow:hidden}
+/* intérieur 65 x 90 x 19 mm : 52 cartes poker 63 x 88, environ 17 mm d'épaisseur */
+.p{position:absolute;z-index:1;box-sizing:border-box}
+.coul{background:var(--r);color:#fff}
+.fonce{background:var(--n);color:#fff}
+svg{position:absolute;left:0;top:0}
+.c{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.titre{font-weight:600;font-size:15pt;line-height:1.05}
+.sous{font-size:8pt;opacity:.9;margin-top:1.5mm}
+.carte{width:33mm;border-radius:2.5mm;box-shadow:0 1mm 2.5mm rgba(0,0,0,.35);transform:rotate(-4deg);margin:2.5mm 0}
+.tranche{font-weight:600;font-size:9pt;writing-mode:vertical-rl;letter-spacing:.3mm}
+.mentions{font-size:6pt;line-height:1.35;opacity:.8;margin-top:4mm}
+.legende{position:absolute;left:12mm;bottom:10mm;font-size:8pt;color:#555;line-height:1.5}
+</style></head><body><div class="feuille">
+<!-- origine du patron : x0=15mm, y0=40mm. Colonnes : colle 12 | face 65 | côté 19 | dos 65 | côté 19 -->
+<!-- Lignes : languette 15 | couvercle 19 | corps 90 | fond 19 | languette 15 -->
+<!-- face -->
+<div class="p coul c" style="left:30mm;top:74mm;width:65mm;height:90mm">
+ <img src="assets/logo/luxkeyb-logo-192.png" style="width:11mm;border-radius:2mm">
+ <img class="carte" src="newsletter/2026-10/v_kran.webp">
+ <div class="titre">Lëtzebuergesch<br>Clavier</div><div class="sous">52 Kaarten · 52 cartes</div></div>
+<!-- côtés -->
+<div class="p c" style="left:95mm;top:74mm;width:19mm;height:90mm;color:#fff"><div class="tranche">Lëtzebuergesch Clavier · 52 Kaarten</div></div>
+<div class="p c" style="left:179mm;top:74mm;width:19mm;height:90mm;color:#fff"><div class="tranche">Lëtzebuergesch Clavier · 52 Kaarten</div></div>
+<!-- dos -->
+<div class="p fonce c" style="left:114mm;top:74mm;width:65mm;height:90mm;padding:5mm">
+ <div class="titre" style="font-size:12pt">Vous le parlez.<br>Maintenant, vous l'écrivez.</div>
+ <img src="assets/qr-luxkeyb-store.png" style="width:26mm;background:#fff;padding:1.5mm;border-radius:2mm;margin:5mm 0 2mm">
+ <div class="sous">Le clavier luxembourgeois,<br>gratuit sur Google Play</div>
+ <div class="mentions">© Lëtzebuergesch Clavier<br>usage scolaire libre · vente interdite<br>Mots&nbsp;: LOD / ZLS (CC0)</div></div>
+<!-- couvercle (sur le dos, se rabat sur le dessus) -->
+<div class="p c" style="left:114mm;top:55mm;width:65mm;height:19mm;color:#fff"><div class="titre" style="font-size:10pt">Lëtzebuergesch Clavier</div></div>
+<svg width="210mm" height="297mm" viewBox="0 0 210 297" style="z-index:0">
+ <path d="M18,77 L30,74 L95,74 L98,60 L111,60 L114,74 L114,55 Q114,40 122,40 L171,40 Q179,40 179,55 L179,74 L182,60 L195,60 L198,74 L198,164 L195,178 L182,178 L179,164 L114,164 L111,178 L98,178 L95,164 L95,183 Q95,198 87,198 L38,198 Q30,198 30,183 L30,164 L18,161 Z" fill="#ED2939"/>
+ <rect x="114" y="74" width="65" height="90" fill="#1d1d2b"/>
+ <rect x="18" y="77" width="12" height="84" fill="#fff"/>
+ <path d="M18,77 L30,74 L95,74 L98,60 L111,60 L114,74 L114,55 Q114,40 122,40 L171,40 Q179,40 179,55 L179,74 L182,60 L195,60 L198,74 L198,164 L195,178 L182,178 L179,164 L114,164 L111,178 L98,178 L95,164 L95,183 Q95,198 87,198 L38,198 Q30,198 30,183 L30,164 L18,161 Z" fill="none" stroke="#000" stroke-width=".3"/>
+ <path d="M30,74V164 M95,74V164 M114,74V164 M179,74V164 M114,74H179 M114,55H179 M30,164H95 M30,183H95 M95,74H114 M179,74H198 M95,164H114 M179,164H198" fill="none" stroke="#fff" stroke-width=".3" stroke-dasharray="1.5 1"/>
+ <text x="24" y="120" font-size="3" fill="#888" text-anchor="middle" transform="rotate(-90 24 120)">colle</text>
+</svg>
+<div class="legende"><b>Carton pour 52 cartes</b> (format poker 63 × 88 mm), intérieur 65 × 90 × 19 mm.<br>
+Imprimer à 100 % sur papier cartonné 250 à 300 g. Découper sur le contour, marquer et plier sur toutes les lignes intérieures.<br>
+Coller la languette de gauche sous le bord du dernier côté. Le couvercle se rabat sur le dessus et sa languette rentre dans la face.</div>
+</div></body></html>
