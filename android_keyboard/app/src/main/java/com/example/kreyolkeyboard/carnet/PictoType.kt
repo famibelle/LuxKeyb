@@ -405,3 +405,87 @@ class IndexJeu(
     }
 
 }
+
+/**
+ * Un nombre gravé dans un écu de la carte de l'appli (l'écu VUES) : une lèvre
+ * claire sous un creux du ton sombre du métal, comme le nom dans la plaque.
+ * En blanc, comme avant, il se lisait mal sur l'or clair : c'est la leçon du
+ * premier BAT de la carte imprimée (2026-10-26), reprise ici le 2026-10-27.
+ */
+class ChiffreGrave(context: Context, private val texte: String, private val metal: Ornement.Metal) : View(context) {
+
+    private val p = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        typeface = Typeface.DEFAULT_BOLD
+        textAlign = Paint.Align.CENTER
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        val u = height / Email.CASE
+        val taille = 12.5f * u
+        p.textSize = taille
+        val dispo = width - 8f * u
+        if (p.measureText(texte) > dispo) p.textSize = taille * dispo / p.measureText(texte)
+        val base = 7.6f * u + p.textSize * 0.36f
+        p.color = metal.hi
+        canvas.drawText(texte, width / 2f, base + 0.7f * u, p)
+        p.color = metal.trait
+        canvas.drawText(texte, width / 2f, base, p)
+    }
+}
+
+/**
+ * Le niveau d'une carte de l'appli, dans l'écu NIVEAU : une jauge de six
+ * cases, une par casier de la Boîte de Leitner. Une case se remplit à chaque
+ * casier franchi : vide pour une carte neuve, les six pleines quand le mot
+ * est acquis. Remplir jusqu'au casier courant aurait rempli la jauge dès le
+ * dernier casier, et une carte acquise n'aurait pas eu l'air différente.
+ *
+ * L'idée vient de la jauge de pièces de la carte imprimée (propriétaire,
+ * 2026-10-27) : le chiffre « 3 » ne disait pas sur combien, la jauge montre
+ * le chemin parcouru et ce qui reste. Des cases plutôt que des ronds : ce
+ * sont les casiers de la boîte. Remplies de l'or des étoiles de rareté, vides
+ * en creux dans le métal.
+ */
+class JaugeNiveau(context: Context, private val remplies: Int, private val trait: Int) : View(context) {
+
+    companion object {
+        /** Autant de cases que de casiers : Widderhuelen.BOITE_ACQUISE. */
+        val CASES = Widderhuelen.BOITE_ACQUISE
+        private const val COTE = 4.6f
+        private const val PAS = 6f
+    }
+
+    private val p = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val carre = RectF()
+
+    override fun onDraw(canvas: Canvas) {
+        val u = height / Email.CASE
+        // Centrée une unité au-dessus du milieu de la case : plus bas, les
+        // cases des bords mordaient sur l'arrondi de l'écu de l'appli.
+        val cy = 7f * u
+        val depart = width / 2f - (CASES - 1) * PAS * u / 2f
+        val demi = COTE / 2f * u
+        for (k in 0 until CASES) {
+            val x = depart + k * PAS * u
+            carre.set(x - demi, cy - demi, x + demi, cy + demi)
+            val chemin = Path().apply { addRoundRect(carre, 1f * u, 1f * u, Path.Direction.CW) }
+            if (k < remplies) Email.peindre(canvas, p, chemin, 0xFFF2B705.toInt(), trait, u)
+            else {
+                p.shader = null
+                p.style = Paint.Style.FILL
+                p.color = 0x33000000
+                canvas.drawPath(chemin, p)
+                p.style = Paint.Style.STROKE
+                p.strokeWidth = 0.5f * u
+                p.color = 0x99FFFFFF.toInt()
+                canvas.save()
+                canvas.translate(0f, 0.4f * u)
+                canvas.drawPath(chemin, p)
+                canvas.restore()
+                p.color = 0x59000000
+                canvas.drawPath(chemin, p)
+                p.style = Paint.Style.FILL
+            }
+        }
+    }
+}

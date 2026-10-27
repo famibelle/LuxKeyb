@@ -47,7 +47,13 @@ def couper(texte, police, largeur, d):
     return lignes
 
 
-def fleche(d, x0, y0, x1, y1):
+def fleche(d, x0, y0, x1, y1, coude=None):
+    """Une flèche de (x0, y0) à (x1, y1) ; avec [coude], elle passe d'abord
+    par ce point, pour arriver d'en haut sur une cible de la ligne du bas."""
+    if coude:
+        for epais, coul in ((10, FOND), (4, ACCENT)):
+            d.line((x0, y0) + coude, fill=coul, width=epais)
+        x0, y0 = coude
     for epais, coul in ((10, FOND), (4, ACCENT)):
         d.line((x0, y0, x1, y1), fill=coul, width=epais)
     ang = math.atan2(y1 - y0, x1 - x0)
@@ -76,6 +82,10 @@ def planche(source, boite, cible_l, legendes, sortie):
         lx = couper(texte, F_TEXTE, col_l, tmp)
         h = len(lt) * 42 + len(lx) * 37
         blocs.append([rep, lt, lx, (px, py), h])
+    # Une cible de la ligne du bas, au bord gauche de la carte : sa flèche,
+    # tirée droit depuis la colonne, longeait toute la ligne et cachait les
+    # étoiles de rareté (2026-10-27). Elle passe par un coude au-dessus.
+    coudes = {i for i, b in enumerate(blocs) if b[3][1] > y1 - 40 and b[3][0] < (x0 + x1) / 2}
 
     # Chaque légende vise la hauteur de sa cible, puis on écarte les chevauchements.
     total = sum(b[4] for b in blocs) + ESPACE * (len(blocs) - 1)
@@ -96,9 +106,9 @@ def planche(source, boite, cible_l, legendes, sortie):
     out = Image.new("RGB", (LARGEUR, haut), FOND)
     out.paste(carte, (MARGE, cy))
     d = ImageDraw.Draw(out)
-    for (rep, lt, lx, (px, py), h), y in zip(blocs, ys):
+    for i, ((rep, lt, lx, (px, py), h), y) in enumerate(zip(blocs, ys)):
         tx, ty = MARGE + (px - x0) * s, cy + (py - y0) * s
-        fleche(d, col_x - 16, y + 21, tx, ty)
+        fleche(d, col_x - 16, y + 21, tx, ty, coude=(tx + 70, ty - 30) if i in coudes else None)
         d.ellipse((col_x - 2, y + 1, col_x + 40, y + 43), fill=ACCENT)
         d.text((col_x + 19, y + 22), str(rep), font=F_NUM, fill=FOND, anchor="mm")
         yy = y
@@ -123,8 +133,8 @@ LEGENDES = {
         "texte": [("Nature et jeu", "ce qu'est le mot, et où il a été gagné"), ("Sens", "la traduction du mot"),
                   ("Exemple", "le mot dans une phrase"), ("Traduction", "de la phrase, quand le ZLS l'a publiée")],
         "bas": [("VUES", "combien de fois vous avez gagné le mot"), ("Médaillon", "le jeu qui a donné la carte"),
-                ("NIVEAU", "le casier de révision, de 1 à 6"), ("Numéro et poinçon", "le numéro de la carte et le signe de sa saison"),
-                ("Rareté et rang", "le palier, puis la place du mot parmi les plus fréquents")],
+                ("NIVEAU", "six cases, une par casier de révision"), ("Numéro et poinçon", "le numéro de la carte et le signe de sa saison"),
+                ("Rareté et rang", "les étoiles, le palier, puis la place du mot parmi les plus fréquents")],
         "vignette": [("Le mot", ""), ("Jeu et sens", "l'emoji du jeu, puis le début du sens"),
                      ("Niveau", "six traits, remplis à chaque casier gagné")],
     },
@@ -134,8 +144,8 @@ LEGENDES = {
         "texte": [("Word class and game", "what the word is, and where it was won"), ("Meaning", "the translation of the word"),
                   ("Example", "the word in a sentence"), ("Translation", "of the sentence, when the ZLS published one")],
         "bas": [("SEEN", "how many times you won the word"), ("Medallion", "the game that gave the card"),
-                ("LEVEL", "the review compartment, from 1 to 6"), ("Number and hallmark", "the card number and the sign of its season"),
-                ("Rarity and rank", "the tier, then the word's place among the most frequent")],
+                ("LEVEL", "six squares, one per review compartment"), ("Number and hallmark", "the card number and the sign of its season"),
+                ("Rarity and rank", "the stars, the tier, then the word's place among the most frequent")],
         "vignette": [("The word", ""), ("Game and meaning", "the game's emoji, then the start of the meaning"),
                      ("Level", "six bars, filled with each compartment passed")],
     },
@@ -145,8 +155,8 @@ LEGENDES = {
         "texte": [("Wortart und Spiel", "was das Wort ist und wo es gewonnen wurde"), ("Bedeutung", "die Übersetzung des Wortes"),
                   ("Beispiel", "das Wort in einem Satz"), ("Übersetzung", "des Satzes, wenn der ZLS eine veröffentlicht hat")],
         "bas": [("GESEHEN", "wie oft Sie das Wort gewonnen haben"), ("Medaillon", "das Spiel, das die Karte gab"),
-                ("STUFE", "das Fach der Lernkartei, von 1 bis 6"), ("Nummer und Stempel", "die Kartennummer und das Zeichen ihrer Jahreszeit"),
-                ("Seltenheit und Rang", "die Stufe, dann der Platz des Wortes unter den häufigsten")],
+                ("STUFE", "sechs Felder, eines pro Fach der Lernkartei"), ("Nummer und Stempel", "die Kartennummer und das Zeichen ihrer Jahreszeit"),
+                ("Seltenheit und Rang", "die Sterne, die Stufe, dann der Platz des Wortes unter den häufigsten")],
         "vignette": [("Das Wort", ""), ("Spiel und Bedeutung", "das Emoji des Spiels, dann der Anfang der Bedeutung"),
                      ("Stufe", "sechs Striche, gefüllt mit jedem geschafften Fach")],
     },
@@ -156,8 +166,8 @@ LEGENDES = {
         "texte": [("Classe e jogo", "o que a palavra é, e onde foi ganha"), ("Sentido", "a tradução da palavra"),
                   ("Exemplo", "a palavra numa frase"), ("Tradução", "da frase, quando o ZLS a publicou")],
         "bas": [("VISTA", "quantas vezes ganhou a palavra"), ("Medalhão", "o jogo que deu a carta"),
-                ("NÍVEL", "o compartimento de revisão, de 1 a 6"), ("Número e punção", "o número da carta e o sinal da sua estação"),
-                ("Raridade e posição", "o nível, depois o lugar da palavra entre as mais frequentes")],
+                ("NÍVEL", "seis casas, uma por compartimento de revisão"), ("Número e punção", "o número da carta e o sinal da sua estação"),
+                ("Raridade e posição", "as estrelas, o nível, depois o lugar da palavra entre as mais frequentes")],
         "vignette": [("A palavra", ""), ("Jogo e sentido", "o emoji do jogo, depois o início do sentido"),
                      ("Nível", "seis traços, preenchidos a cada compartimento")],
     },
@@ -167,8 +177,8 @@ LEGENDES = {
         "texte": [("Wuertaart a Spill", "wat d'Wuert ass, a wou et gewonnen gouf"), ("Bedeitung", "d'Iwwersetzung vum Wuert"),
                   ("Beispill", "d'Wuert an engem Saz"), ("Iwwersetzung", "vum Saz, wann den ZLS eng publizéiert huet")],
         "bas": [("GESINN", "wéi dacks Dir d'Wuert gewonnen hutt"), ("Medaillon", "d'Spill, dat d'Kaart ginn huet"),
-                ("NIVEAU", "d'Fach vun der Widderhuelung, vun 1 bis 6"), ("Nummer a Stempel", "d'Nummer vun der Kaart an d'Zeeche vun hirer Joreszäit"),
-                ("Seelenheet a Rang", "d'Stuf, dann d'Plaz vum Wuert ënner deenen heefegsten")],
+                ("NIVEAU", "sechs Felder, eent pro Fach vun der Widderhuelung"), ("Nummer a Stempel", "d'Nummer vun der Kaart an d'Zeeche vun hirer Joreszäit"),
+                ("Seelenheet a Rang", "d'Stären, d'Stuf, dann d'Plaz vum Wuert ënner deenen heefegsten")],
         "vignette": [("D'Wuert", ""), ("Spill a Bedeitung", "d'Emoji vum Spill, dann den Ufank vun der Bedeitung"),
                      ("Niveau", "sechs Stréch, gefëllt mat all gepackte Fach")],
     },
@@ -177,7 +187,8 @@ LEGENDES = {
 # Les cibles, en pixels des captures du pixel9 (1080 x 2424) : la carte
 # « Waasser » ouverte depuis Mäi Carnet trié A → Z, et la grille du même
 # carnet défilée jusqu'en bas, où la vignette « Waasser » est entière.
-# Remesurées le 2026-10-21 sur la carte à paysage (37.7.5), carnet de 11 cartes.
+# Remesurées le 2026-10-21 sur la carte à paysage (37.7.5), carnet de 11 cartes ;
+# celles du bas vérifiées le 2026-10-27 sur la carte aux jauges (niveau, étoiles).
 CIBLES = {
     "haut": ((57, 426, 1022, 1182), [(539, 1085), (179, 548), (727, 776), (1013, 849)]),
     "texte": ((57, 1200, 1022, 1612), [(539, 1255), (700, 1376), (700, 1461), (700, 1551)]),
@@ -190,7 +201,9 @@ if __name__ == "__main__":
     racine = Path(__file__).resolve().parents[2]
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--carte", required=True)
-    ap.add_argument("--grille", required=True)
+    ap.add_argument("--grille", help="facultatif : sans grille, la planche de la vignette n'est pas refaite")
+    ap.add_argument("--planches", default="haut,texte,bas",
+                    help="les planches de la carte à refaire, séparées par des virgules")
     ap.add_argument("--langue", default="en", choices=sorted(LEGENDES))
     args = ap.parse_args()
     # L'anglais est la langue par défaut de l'app (values/), donc des drawables.
@@ -199,7 +212,7 @@ if __name__ == "__main__":
     T.mkdir(parents=True, exist_ok=True)
     L = LEGENDES[args.langue]
 
-    for nom in ("haut", "texte", "bas"):
+    for nom in args.planches.split(","):
         boite, cibles = CIBLES[nom]
         legendes = L[nom]
         if nom == "texte" and args.langue == "pt":
@@ -212,6 +225,8 @@ if __name__ == "__main__":
             (debut + i, titre, texte, xy) for i, ((titre, texte), xy) in enumerate(zip(legendes, cibles))
         ], f"{T}/guide_carte_{nom}.png")
 
+    if not args.grille:
+        raise SystemExit(0)
     boite, cibles = VIGNETTE
     planche(args.grille, boite, 420, [
         (rep, titre, texte, xy) for rep, (titre, texte), xy in zip("ABC", L["vignette"], cibles)

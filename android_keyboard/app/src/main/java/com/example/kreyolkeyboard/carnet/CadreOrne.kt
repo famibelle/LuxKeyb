@@ -390,8 +390,8 @@ object Ornement {
     val ECU_G = RectF(28f, 375f, 80f, 410f)
     val ECU_D = RectF(220f, 375f, 272f, 410f)
     /** Le chiffre d'un écu : sous le libellé gravé, pas par-dessus. */
-    val ECU_G_TEXTE = RectF(28f, 382f, 80f, 408f)
-    val ECU_D_TEXTE = RectF(220f, 382f, 272f, 408f)
+    val ECU_G_TEXTE = RectF(28f, 385.4f, 80f, 401.4f)
+    val ECU_D_TEXTE = RectF(220f, 385.4f, 272f, 401.4f)
     /**
      * Les écus de la carte imprimée, plus larges : ils y portent le coût et le
      * type du Wuertduell, que des enfants doivent lire. À 52 unités, « ✦✦✦✦ »
@@ -1753,15 +1753,18 @@ object Ornement {
         // à 11 unités (6 pt), opaque : à 7,5 et 75 %, « COÛT » faisait 4 pt.
         val ecuG = if (imprime) ECU_G_IMPRIME else ECU_G
         val ecuD = if (imprime) ECU_D_IMPRIME else ECU_D
-        ecu(c, p, ecuG, m, palier >= 3, orne = imprime)
-        ecu(c, p, ecuD, m, palier >= 3, orne = imprime)
+        // Ornés et gravés dans l'appli comme sur papier (2026-10-27) : la
+        // carte imprimée a montré qu'un écu d'or uni, à côté du médaillon,
+        // faisait une bannière vide.
+        ecu(c, p, ecuG, m, palier >= 3, orne = true)
+        ecu(c, p, ecuD, m, palier >= 3, orne = true)
         p.style = Paint.Style.FILL
         p.shader = null
         p.textAlign = Paint.Align.CENTER
         p.typeface = android.graphics.Typeface.create(
             android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD
         )
-        if (imprime) {
+        run {
             // Gravé dans l'écu, comme le nom dans la plaque ([MotGrave]) : un
             // creux un peu plus sombre que l'or, son ombre au bord du haut, sa
             // lèvre claire au bord du bas. À 7 unités et espacé : le libellé
@@ -1769,10 +1772,16 @@ object Ornement {
             // l'image dessous qui informent. À 10, l'accent de « COÛT »
             // mordait sur les filets du haut ; à 8, il poussait les pièces
             // dans l'arrondi de l'écu (propriétaire, 2026-10-27).
-            p.textSize = 7f
             p.letterSpacing = 0.14f
             val creux = Email.melange(m.lo, m.trait, 0.45f)
             for ((texte, ecu) in listOf(vues to ecuG, niveau to ecuD)) {
+                // Entre les deux rivets, avec trois unités d'air de chaque
+                // côté : un libellé plus long (« NIVEAU », « GESEHEN » dans
+                // l'écu de 52 de l'appli) se resserre.
+                p.textSize = 7f
+                val large = p.measureText(texte)
+                val dispo = ecu.width() - 24f
+                if (large > dispo) p.textSize = 7f * dispo / large
                 val base = ecu.top + LIGNE_LIBELLE_IMPRIME
                 p.color = m.hi
                 c.drawText(texte, ecu.centerX(), base + 0.5f, p)
@@ -1784,13 +1793,6 @@ object Ornement {
                 c.drawText(texte, ecu.centerX(), base, p)
             }
             p.letterSpacing = 0f
-        } else {
-            p.color = m.trait
-            p.alpha = 190
-            p.textSize = 7.5f
-            c.drawText(vues, ecuG.centerX(), ecuG.top + 9f, p)
-            c.drawText(niveau, ecuD.centerX(), ecuD.top + 9f, p)
-            p.alpha = 255
         }
 
         // 12. Le disque du médaillon de provenance, par-dessus le panneau

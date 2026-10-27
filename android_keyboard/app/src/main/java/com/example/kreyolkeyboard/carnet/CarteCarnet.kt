@@ -365,16 +365,14 @@ object CarteCarnet {
                 IndexJeu.CADRE
             )
         } else {
+            // VUES gravé, NIVEAU en jauge des six casiers (voir [JaugeNiveau]).
+            carte.posee(ChiffreGrave(context, "${c.carte.rencontres}", metal), Ornement.ECU_G_TEXTE)
+            val niveau = if (c.carte.acquise) JaugeNiveau.CASES else c.carte.boite
             carte.posee(
-                ligne(context, "${c.carte.rencontres}", taille = 15f, couleur = Color.WHITE, gras = true),
-                Ornement.ECU_G_TEXTE
-            )
-            carte.posee(
-                ligne(
-                    context,
-                    if (c.carte.acquise) "✓" else "${c.carte.boite + 1}",
-                    taille = 15f, couleur = Color.WHITE, gras = true
-                ),
+                JaugeNiveau(context, niveau, metal.trait).apply {
+                    contentDescription = context.getString(R.string.carte_ecu_niveau) + " $niveau / ${JaugeNiveau.CASES}"
+                    importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+                },
                 Ornement.ECU_D_TEXTE
             )
         }
@@ -413,22 +411,14 @@ object CarteCarnet {
         // rare), ★★★★★ pour l'ultra rare : ● ◆ ★ ✦ ne se comprennent que si
         // on les a appris, alors qu'un enfant de 6 ans sait qu'avec plus
         // d'étoiles, c'est plus rare (propriétaire, 2026-10-27).
-        if (!impression) {
-            carte.posee(
-                ligne(
-                    context,
-                    "${c.rarete.symbole} $palier · $rang",
-                    taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.END
-                ),
-                Ornement.serieD(c.rarete)
-            )
-            return carte
-        }
-        // Sur papier, la rareté est une jauge de cinq étoiles calée à droite
-        // ([EtoilesRarete]), le mot du palier juste avant. Pas de rang
-        // (« 9426ᵉ ») : il ne dit rien à un enfant, et il vient des fréquences
-        // d'un corpus sous licence non commerciale, dont le jeu vendu ne doit
-        // pas dépendre (skill imprimeur). L'ultra rare garde son édition.
+        // La rareté est une jauge de cinq étoiles calée à droite
+        // ([EtoilesRarete]), le mot du palier juste avant : les symboles
+        // ● ◆ ★ ✦ ne se comprenaient pas sans les avoir appris (propriétaire,
+        // 2026-10-27, d'abord sur la carte imprimée). L'appli garde le rang
+        // après le palier. Pas sur papier : il ne dit rien à un enfant, et il
+        // vient des fréquences d'un corpus sous licence non commerciale, dont
+        // le jeu vendu ne doit pas dépendre (skill imprimeur). L'ultra rare
+        // garde son édition.
         val ultra = CarteFierkelsmaart.est(c.carte.forme)
         val bande = Ornement.serieD(c.rarete)
         val jauge = RectF(bande.right - EtoilesRarete.PLACES * EtoilesRarete.PAS, bande.top, bande.right, bande.bottom)
@@ -442,7 +432,7 @@ object CarteCarnet {
         carte.posee(
             ligne(
                 context,
-                if (ultra) "$palier · ${CarteFierkelsmaart.EDITION}" else palier,
+                if (ultra || !impression) "$palier · $rang" else palier,
                 taille = 7.5f, couleur = metal.trait, gras = true, ou = Gravity.END
             ),
             RectF(bande.left, bande.top, jauge.left - 2.5f, bande.bottom)
