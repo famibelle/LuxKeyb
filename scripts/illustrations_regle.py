@@ -139,7 +139,9 @@ def image_type(nature, cx, cy):
         return (f'<rect x="{cx - 7}" y="{cy - 5.4}" width="14" height="10.8" rx="2.8" fill="#00897B" {trait}/>'
                 f'<text x="{cx}" y="{cy + 2.6}" text-anchor="middle" {POLICE} font-size="7.4" font-weight="800" '
                 f'fill="#fff">123</text>')
-    if nature.startswith('Nom'):
+    # Les noms à deux genres s'écrivent « Masc. ou neutre » : tout ce qui
+    # n'est ni nombre, ni verbe, ni adjectif est un nom.
+    if not nature.startswith(('Verbe', 'Adjectif')):
         return (f'<circle cx="{cx}" cy="{cy - 3.6}" r="3" fill="#D32F2F" {trait}/>'
                 f'<path d="M{cx - 5.4} {cy + 7} V{cy + 4.6} C{cx - 5.4} {cy + 1.4} {cx - 3} {cy + .6} {cx} {cy + .6} '
                 f'C{cx + 3} {cy + .6} {cx + 5.4} {cy + 1.4} {cx + 5.4} {cy + 4.6} V{cy + 7} Z" fill="#D32F2F" {trait}/>')
