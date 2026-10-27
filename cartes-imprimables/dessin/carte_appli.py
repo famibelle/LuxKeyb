@@ -534,6 +534,26 @@ def picto_type(type_, cx):
     return None
 
 
+def jauge_etoiles(n, droite, cy):
+    """La rareté (EtoilesRarete) : cinq places d'étoile calées à [droite], [n]
+    pleines en émail d'or, les autres en creux. Rend le SVG et le bord gauche."""
+    pas, places = 8.2, 5
+    rayon = pas * .48
+    gauche = droite - places * pas
+    s = ''
+    for k in range(places):
+        d, bbox = etoile(gauche + pas * (k + .5), cy + rayon * .06, 5, rayon, rayon * .42)
+        if k < n:
+            s += email(d, bbox, OR_PIECE)
+        else:
+            s += (f'<path d="{d}" fill="{melange(MID, "#000000", .16)}"/>'
+                  f'<path d="{d}" fill="none" stroke="{melange(MID, "#ffffff", .6)}" stroke-width=".5" '
+                  f'stroke-linejoin="round" transform="translate(0 .45)"/>'
+                  f'<path d="{d}" fill="none" stroke="{melange(MID, "#000000", .35)}" stroke-width=".45" '
+                  f'stroke-linejoin="round"/>')
+    return s, gauche
+
+
 def picto_cout(cout, cx):
     """Le coût (PictoCout) : une jauge de quatre places, [cout] remplies d'une pièce d'or."""
     cy = CASE_EMAUX[0] + 8
@@ -562,7 +582,7 @@ def texte_arc(cx, cy, r, texte_, haut):
 
 
 def carte(mot, nature, glose, exemple, pouvoir, cout, type_, serie_g, serie_d, hue_champ,
-          fenetre_defs, fenetre_art, largeur_px, paquet='Fierkelsmaart'):
+          fenetre_defs, fenetre_art, largeur_px, paquet='Fierkelsmaart', etoiles=5):
     """Le SVG de la carte (viewBox 0 0 300 440), moulure au pixel pour [largeur_px]."""
     teinte = teinte_de(mot, hue_champ)
     eclat = melange(HI, '#ffffff', .7)
@@ -709,6 +729,9 @@ def carte(mot, nature, glose, exemple, pouvoir, cout, type_, serie_g, serie_d, h
              or texte(cx_type, CASE_EMAUX[0] + 8 + 15 * .34, type_, 15, TRAIT, 'bold'))
     milieu = H - (BORD + 2.45) / 2
     s.append(texte(22, milieu + 2.7, serie_g, 7.5, TRAIT, 'bold', ancre='start'))
-    s.append(texte(278, milieu + 2.7, serie_d, 7.5, TRAIT, 'bold', ancre='end'))
+    # La rareté en jauge de cinq étoiles calée à droite, le mot du palier avant.
+    jauge, gauche = jauge_etoiles(etoiles, 278, milieu)
+    s.append(jauge)
+    s.append(texte(gauche - 2.5, milieu + 2.7, serie_d, 7.5, TRAIT, 'bold', ancre='end'))
     s.insert(0, f'<defs>{defs_joyaux()}</defs>')
     return '\n'.join(s)

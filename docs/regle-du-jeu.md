@@ -44,7 +44,7 @@ ce qu'elle vaut.
 | Le sens du mot, en français (ou dans la langue de ton édition) | La réponse, que l'adversaire peut vérifier |
 | La phrase d'exemple | Un bonus pour les grands lecteurs |
 | L'image du médaillon, en bas au milieu | Le paquet de la carte, pour la ranger après la partie |
-| Les étoiles, en bas à droite, de ★ à ★★★★ | Rien : plus il y a d'étoiles, plus la carte est rare |
+| Les étoiles, en bas à droite, de ★☆☆☆☆ à ★★★★★ | Rien : plus il y a d'étoiles pleines, plus la carte est rare |
 
 <figure style="margin:20px auto;max-width:760px;text-align:center;">
   <img src="assets/regle/carte-annotee.svg" style="width:100%;" alt="La carte « Kaz » annotée : 1, la Force 3 en haut à gauche ; 2, le dessin du chat ; 3, le mot ; 4, la pastille « Nom féminin » ; 5, le sens « chat » ; 6, le coût, une pièce sur quatre places ; 7, le type, un personnage">
