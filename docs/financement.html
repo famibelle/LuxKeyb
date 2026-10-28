@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Financement : Lëtzebuergesch Clavier</title>
-<meta name="description" content="Objectif : 10 000 € pour Lëtzebuergesch Clavier, gratuit et sans publicité. Ce que les dons financent (relecture par des linguistes, version iOS, dictée, maintenance), nos engagements envers les donateurs, et le compteur des dons reçus.">
+<meta name="description" content="Financement participatif de Lëtzebuergesch Clavier, gratuit et sans publicité : objectif 10 000 €. Les paliers (relecture par des linguistes, version iOS, dictée, maintenance), les contreparties, nos engagements et le compteur des dons reçus.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
@@ -39,6 +39,7 @@ p{margin:0 0 12px;}
 a{color:var(--sea);}
 strong{font-weight:700;}
 .muted{color:var(--ink-soft);font-size:14.5px;}
+[hidden]{display:none !important;}
 
 /* La jauge de la collecte. Les valeurs écrites dans le HTML sont celles de
    stats/financement.json au moment du commit : sans JavaScript, ou si le
@@ -48,8 +49,10 @@ strong{font-weight:700;}
 .collecte .recu{font-size:clamp(30px,7vw,40px);font-weight:800;letter-spacing:-0.02em;line-height:1;color:var(--sea);font-variant-numeric:tabular-nums;}
 .collecte .sur{font-size:15px;color:var(--ink-soft);}
 .collecte .sur strong{color:var(--ink);}
-.jauge{height:14px;border-radius:7px;background:var(--stripe);border:1px solid var(--line);overflow:hidden;}
+.jauge{position:relative;height:14px;border-radius:7px;background:var(--stripe);border:1px solid var(--line);overflow:hidden;}
 .jauge > span{display:block;height:100%;width:0;background:var(--gradient);border-radius:7px;transition:width .6s ease;}
+/* Les paliers marqués sur la jauge, pour voir où l'on en est de chacun. */
+.jauge > i{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--card);opacity:.9;}
 .collecte .detail{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;margin:10px 0 16px;font-size:14px;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
 .btn-soutien{
   display:block;text-decoration:none;text-align:center;
@@ -61,21 +64,42 @@ strong{font-weight:700;}
 .btn-soutien:hover{filter:brightness(1.08);}
 .collecte .note{font-size:13.5px;color:var(--ink-soft);margin:10px 0 0;text-align:center;}
 
-/* Ce que financent les dons, dans l'ordre où l'argent sera dépensé. */
-.chantiers{list-style:none;padding:0;margin:0;counter-reset:ch;}
-.chantiers li{
-  counter-increment:ch;position:relative;
+/* Les paliers : ce que débloque chaque seuil de la collecte, dans l'ordre où
+   l'argent sera dépensé. Un palier atteint est coché par le script. */
+.paliers{list-style:none;padding:0;margin:0;}
+.paliers li{
+  display:grid;grid-template-columns:86px 1fr;gap:2px 12px;
   border:1px solid var(--line);border-radius:10px;background:var(--card);
-  padding:13px 14px 13px 52px;margin:0 0 8px;
+  padding:13px 14px;margin:0 0 8px;
 }
-.chantiers li::before{
-  content:counter(ch);position:absolute;left:14px;top:13px;
-  width:26px;height:26px;border-radius:50%;
-  background:var(--sea-soft);color:var(--sea);
-  font-weight:800;font-size:14px;line-height:26px;text-align:center;
+.paliers .seuil{grid-row:span 2;font-weight:800;font-size:17px;color:var(--sea);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.paliers strong{display:block;}
+.paliers span{color:var(--ink-soft);font-size:15px;}
+.paliers li.atteint{border-color:var(--sea);background:var(--sea-soft);}
+.paliers li.atteint .seuil::after{content:" ✓";}
+@media (max-width:420px){
+  .paliers li{grid-template-columns:1fr;}
+  .paliers .seuil{grid-row:auto;}
 }
-.chantiers strong{display:block;margin-bottom:2px;}
-.chantiers span{color:var(--ink-soft);font-size:15px;}
+
+/* Les contreparties : une carte par niveau de participation. */
+.contreparties{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:0 0 12px;padding:0;list-style:none;}
+.contreparties li{
+  display:flex;flex-direction:column;gap:6px;
+  background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 14px 14px;
+}
+.contreparties .prix{font-size:24px;font-weight:800;color:var(--sea);letter-spacing:-0.02em;line-height:1.1;}
+.contreparties strong{font-size:16px;}
+.contreparties span{font-size:14.5px;color:var(--ink-soft);flex:1;}
+.contreparties a[data-cle]{
+  display:block;text-align:center;text-decoration:none;font-weight:700;font-size:14.5px;
+  border:1.5px solid var(--sea);color:var(--sea);border-radius:9px;padding:9px 12px;margin-top:6px;
+}
+.contreparties a[data-cle]:hover{background:var(--sea-soft);}
+
+/* Les soutiens publics, recopiés d'Open Collective. */
+.soutiens{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;}
+.soutiens li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:14.5px;}
 
 /* Les engagements : une liste courte, chacun vérifiable sur cette page. */
 .engagements{margin:0;padding-left:20px;}
@@ -116,7 +140,7 @@ td.vide{color:var(--ink-soft);font-style:italic;}
 <div class="wrap">
 
 <header class="page">
-  <p class="eyebrow">Financement · objectif 10 000 €</p>
+  <p class="eyebrow">Financement participatif · objectif 10 000 €</p>
   <h1>Aidez le luxembourgeois à s'écrire sur tous les téléphones</h1>
   <p class="lead">
     Lëtzebuergesch Clavier est gratuit, sans publicité et sans collecte de
@@ -136,42 +160,88 @@ td.vide{color:var(--ink-soft);font-style:italic;}
     </div>
     <div class="detail">
       <span id="f-pourcent">0 % de l'objectif</span>
+      <span id="f-fin" hidden></span>
       <span id="f-donateurs">Soyez le premier donateur</span>
     </div>
-    <a class="btn-soutien" href="https://www.buymeacoffee.com/famibelle" rel="noopener" target="_blank">☕ Faire un don</a>
-    <p class="note">
+    <a class="btn-soutien" id="f-participer" href="https://www.buymeacoffee.com/famibelle" rel="noopener" target="_blank">☕ Participer</a>
+    <p class="note" id="f-note">
       Don ponctuel, du montant de votre choix, par Buy Me a Coffee.
-      Compteur mis à jour à la main, le <span id="f-date">28 octobre 2026</span>.
+      Compteur mis à jour le 28 octobre 2026.
     </p>
   </div>
 </header>
 
 <section>
-  <h2>Ce que financent les 10 000 €</h2>
+  <h2>Les paliers</h2>
   <p class="muted">
-    Dans l'ordre où l'argent sera dépensé. Le clavier existe et fonctionne :
-    aucun de ces chantiers ne consiste à le construire, tous consistent à le
-    rendre plus juste et à le porter plus loin. Le détail est dans la
-    <a href="dossier-feuille-de-route.html">feuille de route</a>.
+    Ce que débloque chaque seuil, dans l'ordre où l'argent sera dépensé. Le
+    clavier existe et fonctionne : aucun palier ne consiste à le construire,
+    tous consistent à le rendre plus juste et à le porter plus loin. Le
+    détail est dans la <a href="dossier-feuille-de-route.html">feuille de route</a>.
   </p>
-  <ol class="chantiers">
-    <li>
+  <ol class="paliers" id="f-paliers">
+    <li data-seuil="2500">
+      <span class="seuil">2 500 €</span>
       <strong>Relecture par des linguistes du luxembourgeois</strong>
       <span>Des journées de linguistes pour relire la couverture du dictionnaire, trancher les variantes orthographiques et corriger les suggestions qui tombent à côté.</span>
     </li>
-    <li>
+    <li data-seuil="5000">
+      <span class="seuil">5 000 €</span>
       <strong>Version iOS</strong>
       <span>Le compte développeur Apple et le portage en extension clavier. Les données et le moteur ne dépendent pas d'Android : c'est l'interface qui est à refaire. Au Luxembourg, près de la moitié de la navigation mobile se fait depuis un iPhone.</span>
     </li>
-    <li>
+    <li data-seuil="7500">
+      <span class="seuil">7 500 €</span>
       <strong>Dictée luxembourgeoise</strong>
       <span>Aujourd'hui, la dictée passe par un service distant. Il reste à choisir et à intégrer la solution qui la portera dans la durée.</span>
     </li>
-    <li>
+    <li data-seuil="10000">
+      <span class="seuil">10 000 €</span>
       <strong>Maintenance</strong>
       <span>Compatibilité avec les nouvelles versions d'Android et d'iOS, régénération du dictionnaire à chaque republication du LOD, réponses aux retours.</span>
     </li>
   </ol>
+</section>
+
+<section id="contreparties" hidden>
+  <h2>Participer, et ce que vous recevez</h2>
+  <p class="muted">
+    Les contributions passent par Open Collective, qui tient les comptes de la
+    collecte et les publie. Pour une boîte de cartes, l'adresse d'envoi vous
+    est demandée au moment de la contribution.
+  </p>
+  <ul class="contreparties">
+    <li>
+      <span class="prix">5 €</span>
+      <strong>Merci</strong>
+      <span>Votre nom dans la liste des soutiens de cette page, si vous contribuez publiquement.</span>
+      <a data-cle="merci" data-montant="5" href="#">Participer</a>
+    </li>
+    <li>
+      <span class="prix">25 €</span>
+      <strong>Boîte de départ</strong>
+      <span>Votre nom dans la liste, et une boîte du jeu de cartes (54 cartes : la <a href="regle-du-jeu.html">Bataille des mots et le Wuertduell</a>), envoyée dès le premier tirage.</span>
+      <a data-cle="boite" data-montant="25" data-adresse href="#">Participer</a>
+    </li>
+    <li>
+      <span class="prix">100 €</span>
+      <strong>Pour une classe</strong>
+      <span>Cinq boîtes de départ pour une école, une association ou un atelier, et votre nom dans la liste.</span>
+      <a data-cle="classe" data-montant="100" data-adresse href="#">Participer</a>
+    </li>
+    <li>
+      <span class="prix">500 €</span>
+      <strong>Mécène</strong>
+      <span>Pour une entreprise ou une institution : le nom de votre organisation dans la liste des soutiens, et dix boîtes de départ à distribuer.</span>
+      <a data-cle="mecene" data-montant="500" data-adresse href="#">Participer</a>
+    </li>
+  </ul>
+  <p class="muted">Ou <a id="f-libre" href="#">un montant libre</a>, sans contrepartie.</p>
+</section>
+
+<section id="soutiens" hidden>
+  <h2>Ils ont soutenu le projet</h2>
+  <ul class="soutiens" id="f-soutiens"></ul>
 </section>
 
 <section>
@@ -179,8 +249,8 @@ td.vide{color:var(--ink-soft);font-style:italic;}
   <ol class="engagements">
     <li><strong>Le clavier reste gratuit et sans publicité</strong>, quel que soit le montant réuni. Un don n'achète aucune fonctionnalité réservée.</li>
     <li><strong>Le compteur est public.</strong> Le montant reçu et le nombre de donateurs sont affichés en haut de cette page, avec la date de mise à jour.</li>
-    <li><strong>Chaque dépense est publiée</strong> dans le relevé ci-dessous : date, objet, montant.</li>
-    <li><strong>Les fonds suivent l'ordre annoncé.</strong> Les dons ne sont pas conditionnés à l'atteinte de l'objectif : s'il n'est pas atteint, l'argent reçu finance les chantiers dans l'ordre de la liste, en commençant par le premier.</li>
+    <li><strong>Chaque dépense est publiée</strong> dans le relevé ci-dessous : date, objet, montant. Le coût des contreparties (impression des cartes, envoi) y figure comme le reste.</li>
+    <li><strong>Les fonds suivent l'ordre des paliers.</strong> Les dons ne sont pas conditionnés à l'atteinte de l'objectif : s'il n'est pas atteint, l'argent reçu finance les paliers dans l'ordre, en commençant par le premier.</li>
     <li><strong>Rien de ce que vous tapez ne sort du téléphone</strong>, donateur ou non. Le don ne change rien à la <a href="privacy/privacy-policy.html">politique de confidentialité</a>.</li>
   </ol>
 </section>
@@ -217,12 +287,20 @@ td.vide{color:var(--ink-soft);font-style:italic;}
 </footer>
 
 <script>
-// Le compteur et le relevé viennent de stats/financement.json : c'est le seul
-// fichier à modifier quand un don arrive ou qu'une dépense est faite.
+// Tout vient de stats/financement.json, que docs/scripts/sync_financement.py
+// recopie chaque jour depuis Open Collective. Tant que le slug
+// `opencollective` y est vide, la page reste sur Buy Me a Coffee et les
+// contreparties sont masquées : elles ne peuvent pas être livrées sans
+// l'adresse que seul un palier Open Collective sait demander.
 (function () {
-  var eur = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  // minimumFractionDigits explicite : sans lui, d'anciens Safari refusent un
+  // maximum inférieur aux deux décimales par défaut de l'euro.
+  var eur = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  // Les dépenses gardent leurs centimes : un relevé arrondi n'en est plus un.
+  var eurCts = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
   var jour = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
   function $(id) { return document.getElementById(id); }
+  function date(iso) { return new Date(iso + 'T12:00:00'); }
 
   fetch('stats/financement.json', { cache: 'no-cache' })
     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
@@ -237,14 +315,64 @@ td.vide{color:var(--ink-soft);font-style:italic;}
       $('f-pourcent').textContent = Math.floor(pct) + ' % de l\'objectif';
       $('f-donateurs').textContent = f.donateurs === 0 ? 'Soyez le premier donateur'
         : f.donateurs + (f.donateurs > 1 ? ' donateurs' : ' donateur');
-      $('f-date').textContent = jour.format(new Date(f.mis_a_jour + 'T12:00:00'));
+
+      if (f.fin) {
+        var restant = Math.ceil((date(f.fin) - new Date()) / 864e5);
+        $('f-fin').textContent = restant > 1 ? 'Encore ' + restant + ' jours'
+          : restant === 1 ? 'Dernier jour' : 'Collecte terminée';
+        $('f-fin').hidden = false;
+      }
+
+      [].forEach.call(document.querySelectorAll('#f-paliers li'), function (li) {
+        var seuil = +li.dataset.seuil;
+        li.classList.toggle('atteint', f.collecte >= seuil);
+        if (seuil < f.objectif) {
+          var repere = document.createElement('i');
+          repere.style.left = (seuil / f.objectif * 100) + '%';
+          $('f-jauge').appendChild(repere);
+        }
+      });
+
+      var slug = (f.opencollective || '').trim();
+      var maj = jour.format(date(f.mis_a_jour));
+      if (slug) {
+        var base = 'https://opencollective.com/' + encodeURIComponent(slug);
+        var liens = f.liens || {};
+        $('f-participer').href = base + '/contribute';
+        $('f-participer').textContent = '💶 Participer';
+        $('f-libre').href = base + '/donate';
+        // Un palier Open Collective précis si son adresse est connue ; sinon
+        // la page des contreparties pour celles qui demandent une adresse, et
+        // le formulaire de don au bon montant pour les autres.
+        [].forEach.call(document.querySelectorAll('.contreparties a[data-cle]'), function (a) {
+          a.href = liens[a.dataset.cle]
+            || (a.hasAttribute('data-adresse') ? base + '/contribute' : base + '/donate?amount=' + a.dataset.montant);
+          a.target = '_blank';
+          a.rel = 'noopener';
+        });
+        $('contreparties').hidden = false;
+        $('f-note').textContent = 'Paiement par Open Collective, qui publie les comptes de la collecte. '
+          + 'Compteur mis à jour chaque jour, dernier changement le ' + maj + '.';
+      } else {
+        $('f-note').textContent = 'Don ponctuel, du montant de votre choix, par Buy Me a Coffee. '
+          + 'Compteur mis à jour le ' + maj + '.';
+      }
+
+      if (f.soutiens && f.soutiens.length) {
+        f.soutiens.forEach(function (nom) {
+          var li = document.createElement('li');
+          li.textContent = nom;
+          $('f-soutiens').appendChild(li);
+        });
+        $('soutiens').hidden = false;
+      }
 
       if (f.depenses && f.depenses.length) {
         var tbody = $('f-depenses');
         tbody.textContent = '';
         f.depenses.forEach(function (d) {
           var tr = document.createElement('tr');
-          [jour.format(new Date(d.date + 'T12:00:00')), d.objet, eur.format(d.montant)].forEach(function (v, i) {
+          [jour.format(date(d.date)), d.objet, eurCts.format(d.montant)].forEach(function (v, i) {
             var td = document.createElement('td');
             td.textContent = v;
             if (i === 2) td.className = 'v';

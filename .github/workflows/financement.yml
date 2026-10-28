@@ -1,0 +1,57 @@
+name: 💶 Financement — compteur de la collecte
+
+# Recopie chaque jour dans docs/stats/financement.json ce qu'Open Collective
+# publie de la collecte : montant reçu, contributeurs, dépenses payées. La page
+# docs/financement.html lit ce fichier ; c'est lui qui tient l'engagement
+# « le compteur est public » sans que personne ait à y penser.
+#
+# Tant que le slug `opencollective` du fichier est vide, le script ne fait que
+# recalculer les totaux à partir des montants `hors_plateforme` saisis à la
+# main.
+#
+# Le commit est poussé avec le GITHUB_TOKEN : il ne redéclenche aucun workflow,
+# donc pas de boucle avec le déclencheur `push` ci-dessous.
+
+permissions:
+  contents: write
+
+on:
+  schedule:
+    - cron: '17 5 * * *'
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs/stats/financement.json'
+      - 'docs/scripts/sync_financement.py'
+  workflow_dispatch:
+
+concurrency:
+  group: financement
+  cancel-in-progress: false
+
+jobs:
+  compteur:
+    name: 🔄 Compteur
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+
+    - uses: actions/setup-python@v6
+      with:
+        python-version: '3.11'
+
+    - name: 📥 Lire Open Collective
+      run: python docs/scripts/sync_financement.py
+
+    - name: 📤 Publier si le compteur a bougé
+      run: |
+        set -euo pipefail
+        if git diff --quiet -- docs/stats/financement.json; then
+          echo "Compteur inchangé."
+          exit 0
+        fi
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add docs/stats/financement.json
+        git commit -m "chore(financement): compteur de la collecte"
+        git push

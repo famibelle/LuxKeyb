@@ -1,7 +1,16 @@
 {
   "objectif": 10000,
+  "fin": null,
+  "opencollective": "",
+  "liens": {},
+  "hors_plateforme": {
+    "montant": 0,
+    "donateurs": 0,
+    "depenses": []
+  },
   "collecte": 0,
   "donateurs": 0,
-  "mis_a_jour": "2026-10-28",
-  "depenses": []
+  "soutiens": [],
+  "depenses": [],
+  "mis_a_jour": "2026-10-28"
 }
