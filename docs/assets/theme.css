@@ -221,6 +221,7 @@ nav.site strong { color: var(--ink); }
 /* Bouton d'installation : la seule action principale de la page. */
 .btn-installer {
   display: inline-block;
+  text-align: center;
   padding: 18px 32px;
   background: #ED2939;
   color: #fff;
@@ -231,6 +232,9 @@ nav.site strong { color: var(--ink); }
   line-height: 1.3;
 }
 .btn-installer:hover { filter: brightness(1.07); color: #fff; }
+/* Plus précis que « .markdown-body a », qui teintait le texte du bouton. */
+.markdown-body a.btn-installer,
+.markdown-body a.btn-installer:hover { color: #fff; }
 .btn-installer:focus-visible { outline: 3px solid var(--sea); outline-offset: 3px; }
 
 /* L'avertissement Android est annoncé ici, avant qu'Android ne le montre. */

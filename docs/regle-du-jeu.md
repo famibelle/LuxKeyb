@@ -10,6 +10,7 @@ lang: fr
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="guide.html">📘 Guide</a> ·
   <strong>🃏 Règle du jeu</strong> ·
+  <a href="commander.html">🛒 Commander</a> ·
   <a href="faq.html">❓ Aide</a> ·
   <button type="button" class="theme-toggle" aria-label="Passer en mode sombre">🌙</button>
 </nav>
@@ -26,7 +27,8 @@ Zenter fir d'Lëtzebuerger Sprooch : des milliers de mots à jouer, de *Kaz* à
 *Krokodil*.
 
 Le jeu imprimé est en préparation : voici la règle, pour l'essayer et nous dire
-ce qu'elle vaut.
+ce qu'elle vaut. [Laissez votre adresse](commander.html) : nous vous écrirons à sa
+sortie, pour le recevoir chez vous.
 
 ## Il te faut
 

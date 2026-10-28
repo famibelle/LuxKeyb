@@ -351,7 +351,28 @@ fichiers et prototypes décembre–janvier, BAT et série en février.
   guichet.lu ou la Chambre de commerce, ne jamais les présenter comme
   certaines.
 
-## 9. Comment répondre
+## 9. Vente en ligne (décisions du 2026-10-28)
+
+Tout est dans `BOUTIQUE-CARTES.md` ; l'essentiel :
+
+- **Impression à la demande, envoi direct** par l'imprimeur chez le client,
+  paiement par **Stripe Payment Links**, livraison **LU, BE, FR, DE**.
+- **Imprimeur de l'UE obligatoire** pour l'envoi direct : depuis Hong Kong
+  (MakePlayingCards), le client paie à la livraison TVA, 3 € de douane par
+  article (depuis le 1er juillet 2026) et frais de dédouanement. À défaut,
+  impression à la demande **par lots** livrés au Luxembourg, puis POST.
+- **Prix** : à l'unité, la boîte livrée coûte ~18–30 € ; les 12–15 € du § 7
+  supposent l'offset. Prix fixé après devis.
+- **Carte code par e-mail** (`scripts/commandes.py`, réserve
+  `impression/codes/B1-boutique`) : la carte de règle d'une boîte imprimée à
+  la demande ne porte **aucun** code signé.
+- En ligne : la boîte, puis extensions et coffret ; **pas les paquets de 6**
+  (hasard et pochette scellée impossibles à la demande).
+- Avant d'ouvrir : statut, TVA de l'envoi depuis un autre pays (AED),
+  conditions de vente, mentions légales, **marquage CE et EN 71** (jouet dès
+  6 ans), notice des données de la boutique.
+
+## 10. Comment répondre
 
 - Toujours demander ou supposer explicitement : quel ensemble de cartes,
   combien d'exemplaires, boîte ou non.
