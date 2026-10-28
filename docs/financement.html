@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Financement : Lëtzebuergesch Clavier</title>
+<meta name="description" content="Comment Lëtzebuergesch Clavier est financé : gratuit, sans publicité, sans financement reçu à ce jour. Ce qui peut être soutenu, ce qui ne peut pas être fait sur du temps libre, et comment aider.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Lëtzebuergesch Clavier">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Financement : Lëtzebuergesch Clavier">
+<meta property="og:description" content="Gratuit, sans publicité, sans financement reçu à ce jour. Ce qui peut être soutenu et comment aider le projet.">
+<meta property="og:url" content="https://famibelle.github.io/LuxKeyb/financement.html">
+<meta property="og:image" content="https://famibelle.github.io/LuxKeyb/assets/ads/export/google-paysage-A.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;scroll-behavior:smooth;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55;
+  overflow-x:clip;
+  overflow-wrap:break-word;
+}
+.wrap{max-width:820px;margin:0 auto;}
+header.page{padding:22px 0 4px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sea);margin:0 0 10px;}
+h1{font-size:clamp(26px,5.6vw,36px);font-weight:800;line-height:1.12;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:64ch;margin:0 0 10px;}
+section{margin-top:44px;}
+h2{font-size:21px;font-weight:800;margin:0 0 10px;letter-spacing:-0.01em;scroll-margin-top:70px;}
+p{margin:0 0 12px;}
+ul{margin:0 0 12px;padding-left:20px;}
+li{margin-bottom:6px;}
+a{color:var(--sea);}
+strong{font-weight:700;}
+
+/* Les chiffres d'entrée : ce que le projet a reçu, dit en une ligne. */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:0 0 6px;}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 16px 14px;}
+.tile .n{display:block;font-size:28px;font-weight:800;color:var(--sea);letter-spacing:-0.02em;line-height:1.1;}
+.tile .k{display:block;font-size:14px;color:var(--ink-soft);margin-top:6px;}
+
+/* Le bouton de soutien, le seul lien payant de la page. */
+.soutien{
+  display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+  background:var(--sun-soft);border:1px solid var(--line);border-radius:12px;
+  padding:18px;margin:0 0 6px;
+}
+.soutien p{margin:0;flex:1 1 260px;}
+.btn-soutien{
+  display:inline-block;text-decoration:none;text-align:center;
+  font-weight:700;font-size:15px;border-radius:9px;padding:12px 18px;
+  background:var(--sun);color:#fff;
+}
+.btn-soutien:hover{filter:brightness(1.08);}
+
+/* Une liste de ce qui reste à faire, avec ce qui le bloque. */
+.besoins{list-style:none;padding:0;margin:0;}
+.besoins li{
+  border:1px solid var(--line);border-radius:10px;background:var(--card);
+  padding:12px 14px;margin:0 0 8px;
+}
+.besoins strong{display:block;margin-bottom:2px;}
+.besoins span{color:var(--ink-soft);font-size:15px;}
+
+.muted{color:var(--ink-soft);font-size:14.5px;}
+
+/* Les aides non financières : même poids que le don dans la page. */
+.aides{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:0;padding:0;list-style:none;}
+.aides li{margin:0;}
+.aides a{
+  display:block;height:100%;text-decoration:none;color:var(--ink);
+  background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;
+}
+.aides a:hover{border-color:var(--sea);}
+.aides strong{display:block;color:var(--sea);margin-bottom:4px;}
+.aides span{font-size:14.5px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="faq.html">❓ FAQ</a> ·
+  <a href="dossier.html">📄 Dossier</a> ·
+  <strong>💶 Financement</strong> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+</nav>
+
+<div class="wrap">
+
+<header class="page">
+  <p class="eyebrow">Financement</p>
+  <h1>Un projet gratuit, financé par le temps de quelques personnes</h1>
+  <p class="lead">
+    Lëtzebuergesch Clavier est gratuit, sans publicité et sans collecte de
+    données. À ce jour, il n'a reçu aucun financement, ni public ni privé.
+    Cette page dit ce qui le fait tenir, ce qui le bloque, et comment aider
+    si vous le souhaitez.
+  </p>
+</header>
+
+<section>
+  <div class="tiles">
+    <div class="tile"><span class="n">0 €</span><span class="k">de financement public reçu à ce jour</span></div>
+    <div class="tile"><span class="n">0 €</span><span class="k">de financement privé, et aucune publicité</span></div>
+    <div class="tile"><span class="n">MIT</span><span class="k">licence du code : libre de reprise et de modification</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Soutenir le projet financièrement</h2>
+  <p class="section-note muted">Facultatif. Le clavier restera gratuit dans tous les cas.</p>
+  <div class="soutien">
+    <p>
+      Un don ponctuel aide à faire avancer le projet. Il ne donne accès à
+      aucune fonctionnalité supplémentaire et n'ouvre droit à aucune
+      contrepartie.
+    </p>
+    <a class="btn-soutien" href="https://www.buymeacoffee.com/famibelle" rel="noopener" target="_blank">☕ Offrir un café</a>
+  </div>
+</section>
+
+<section>
+  <h2>Ce qui reste à financer</h2>
+  <p class="section-note muted">
+    Ce que le projet ne peut pas faire sur du temps libre, par ordre
+    d'importance. Chaque ligne est un chantier distinct.
+  </p>
+  <ul class="besoins">
+    <li>
+      <strong>Validation linguistique</strong>
+      <span>Faire relire les suggestions et les accents par des locuteurs et des linguistes du luxembourgeois.</span>
+    </li>
+    <li>
+      <strong>Dictée luxembourgeoise sans connexion</strong>
+      <span>Aujourd'hui, la dictée vocale demande une connexion. Une version qui fonctionne hors ligne reste à construire.</span>
+    </li>
+    <li>
+      <strong>Version iOS</strong>
+      <span>Le moteur est écrit en Kotlin et en JavaScript, la partie à reprendre est l'interface. Elle n'est ni commencée ni exclue.</span>
+    </li>
+    <li>
+      <strong>Maintenance dans la durée</strong>
+      <span>Mises à jour d'Android, nouvelles versions du dictionnaire, réponses aux retours. Le projet ne doit pas dépendre d'une seule personne.</span>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Un financement public, à l'étude</h2>
+  <p>
+    Le projet envisage une demande de financement public de type recherche et
+    développement, pour les chantiers ci-dessus qui ne peuvent pas attendre le
+    temps libre. Cette démarche n'est pas encore engagée. Le dossier
+    institutionnel détaille ce qui est déjà fait et ce qui reste à faire :
+    voir le <a href="dossier.html">dossier</a>.
+  </p>
+</section>
+
+<section>
+  <h2>Aider sans argent</h2>
+  <ul class="aides">
+    <li><a href="index.html#installer"><strong>📲 Installer et utiliser</strong><span>C'est le nombre d'utilisateurs qui pèse auprès des institutions.</span></a></li>
+    <li><a href="feedbacks_form.html"><strong>💬 Signaler un mot</strong><span>Un mot absent, une suggestion à côté, un blocage : chaque retour compte.</span></a></li>
+    <li><a href="ambassadeurs.html"><strong>📣 Diffuser</strong><span>Tracts, affiches et triptyques à partager autour de vous.</span></a></li>
+    <li><a href="https://github.com/famibelle/LuxKeyb"><strong>💻 Contribuer sur GitHub</strong><span>Le code et les données sont ouverts. Une étoile aide aussi à le trouver.</span></a></li>
+  </ul>
+</section>
+
+</div>
+
+<footer class="page">
+  <p class="muted" style="text-align:center;margin-top:48px;">
+    Lëtzebuergesch Clavier · <a href="faq.html">Questions fréquentes</a> ·
+    <a href="privacy/privacy-policy.html">Confidentialité</a>
+  </p>
+</footer>
+
+</body>
+</html>
