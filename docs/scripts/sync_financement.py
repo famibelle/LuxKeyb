@@ -6,8 +6,8 @@ Le fichier mêle deux sortes de champs :
 - ceux qu'on écrit à la main : `objectif`, `fin` (AAAA-MM-JJ ou null),
   `opencollective` (le slug du collectif, vide tant qu'il n'existe pas),
   `liens` (adresse d'un palier Open Collective par contrepartie) et
-  `hors_plateforme` (dons reçus ailleurs : Buy Me a Coffee, virements, et les
-  dépenses payées avec cet argent) ;
+  `hors_plateforme` (dons reçus ailleurs, sur eticrowd ou par virement, et
+  les dépenses payées avec cet argent) ;
 - ceux que ce script calcule : `collecte`, `donateurs`, `soutiens`,
   `depenses`, `mis_a_jour`. Les modifier à la main ne sert à rien, ils sont
   réécrits au passage suivant.
@@ -16,6 +16,12 @@ Open Collective est la source de vérité quand le slug est renseigné : montant
 reçu, nombre de contributeurs, noms des contributeurs publics, dépenses
 payées. Son API publique se lit sans jeton. Sans slug, seuls les montants
 `hors_plateforme` comptent.
+
+Un collectif hébergé par Open Source Collective tient ses comptes en dollars.
+Le total reçu est converti en euros par l'API elle-même ; chaque dépense l'est
+au taux du jour où elle a été payée, et garde son montant d'origine
+(`montant_origine`, `devise`) pour que le relevé reste vérifiable contre celui
+d'Open Collective.
 
 `mis_a_jour` ne change que si un chiffre a changé : sans quoi le workflow
 quotidien ferait un commit par jour pour rien.
@@ -26,7 +32,6 @@ Usage : python docs/scripts/sync_financement.py
 import datetime
 import json
 import pathlib
-import sys
 import urllib.request
 
 FICHIER = pathlib.Path(__file__).resolve().parent.parent / "stats" / "financement.json"
@@ -52,14 +57,20 @@ query ($slug: String) {
 REQUETE_DEPENSES = """
 query ($slug: String) {
   expenses(account: {slug: $slug}, status: [PAID], limit: 100) {
-    nodes { description createdAt amountV2 { value currency } }
+    nodes { description createdAt paidAt amountV2 { value currency } }
   }
 }
 """
 
+REQUETE_TAUX = """
+query ($demandes: [CurrencyExchangeRateRequest!]!) {
+  currencyExchangeRate(requests: $demandes) { value fromCurrency }
+}
+"""
 
-def graphql(requete, slug):
-    corps = json.dumps({"query": requete, "variables": {"slug": slug}}).encode()
+
+def graphql(requete, variables):
+    corps = json.dumps({"query": requete, "variables": variables}).encode()
     req = urllib.request.Request(
         API, data=corps,
         headers={"Content-Type": "application/json", "User-Agent": "LuxKeyb-financement"},
@@ -73,13 +84,9 @@ def graphql(requete, slug):
 
 def interroger(slug):
     """Ce que dit Open Collective du collectif `slug`, ramené à nos champs."""
-    compte = graphql(REQUETE_COLLECTIF, slug)["account"]
+    compte = graphql(REQUETE_COLLECTIF, {"slug": slug})["account"]
     if compte is None:
         raise RuntimeError(f"aucun collectif « {slug} » sur Open Collective")
-    if compte["currency"] != "EUR":
-        # Le montant est converti par l'API, mais les dépenses arrivent dans la
-        # devise du collectif et la page les affiche en euros.
-        print(f"Attention : le collectif est en {compte['currency']}, pas en EUR.", file=sys.stderr)
 
     soutiens = []
     for c in (compte.get("contributors") or {}).get("nodes") or []:
@@ -89,18 +96,39 @@ def interroger(slug):
 
     depenses = [
         {
-            "date": d["createdAt"][:10],
+            "date": (d["paidAt"] or d["createdAt"])[:10],
             "objet": d["description"],
-            "montant": round(d["amountV2"]["value"], 2),
+            "montant": d["amountV2"]["value"],
+            "devise": d["amountV2"]["currency"],
         }
-        for d in graphql(REQUETE_DEPENSES, slug)["expenses"]["nodes"]
+        for d in graphql(REQUETE_DEPENSES, {"slug": slug})["expenses"]["nodes"]
     ]
+    en_euros(depenses)
     return {
         "collecte": compte["stats"]["totalAmountReceived"]["value"] or 0,
         "donateurs": compte["stats"]["contributorsCount"] or 0,
         "soutiens": soutiens,
         "depenses": depenses,
     }
+
+
+def en_euros(depenses):
+    """Convertit sur place les dépenses qui ne sont pas en euros."""
+    autres = [d for d in depenses if d["devise"] != "EUR"]
+    if autres:
+        taux = graphql(REQUETE_TAUX, {"demandes": [
+            {"fromCurrency": d["devise"], "toCurrency": "EUR", "date": d["date"] + "T12:00:00Z"}
+            for d in autres
+        ]})["currencyExchangeRate"]
+        if len(taux) != len(autres) or any(t["fromCurrency"] != d["devise"] for t, d in zip(taux, autres)):
+            raise RuntimeError("Open Collective : taux de change incomplets")
+        for d, t in zip(autres, taux):
+            d["montant_origine"] = round(d["montant"], 2)
+            d["montant"] = d["montant"] * t["value"]
+    for d in depenses:
+        d["montant"] = round(d["montant"], 2)
+        if d["devise"] == "EUR":
+            del d["devise"]
 
 
 def fusionner(f, oc, aujourd_hui):

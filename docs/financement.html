@@ -61,7 +61,9 @@ strong{font-weight:700;}
      le contraste (3,2:1 en clair, 2:1 en sombre). */
   background:var(--sun);color:#1C2624;
 }
-.btn-soutien:hover{filter:brightness(1.08);}
+.btn-soutien[href]:hover{filter:brightness(1.08);}
+/* Sans adresse, le bouton attend l'ouverture de la collecte. */
+.btn-soutien:not([href]){opacity:.6;cursor:default;}
 .collecte .note{font-size:13.5px;color:var(--ink-soft);margin:10px 0 0;text-align:center;}
 
 /* Les paliers : ce que débloque chaque seuil de la collecte, dans l'ordre où
@@ -163,10 +165,10 @@ td.vide{color:var(--ink-soft);font-style:italic;}
       <span id="f-fin" hidden></span>
       <span id="f-donateurs">Soyez le premier donateur</span>
     </div>
-    <a class="btn-soutien" id="f-participer" href="https://www.buymeacoffee.com/famibelle" rel="noopener" target="_blank">☕ Participer</a>
+    <a class="btn-soutien" id="f-participer" aria-disabled="true">La collecte ouvre très bientôt</a>
     <p class="note" id="f-note">
-      Don ponctuel, du montant de votre choix, par Buy Me a Coffee.
-      Compteur mis à jour le 28 octobre 2026.
+      Les contributions passeront par Open Collective, qui publie les comptes
+      de la collecte.
     </p>
   </div>
 </header>
@@ -248,6 +250,7 @@ td.vide{color:var(--ink-soft);font-style:italic;}
   <h2>Nos engagements envers les donateurs</h2>
   <ol class="engagements">
     <li><strong>Le clavier reste gratuit et sans publicité</strong>, quel que soit le montant réuni. Un don n'achète aucune fonctionnalité réservée.</li>
+    <li><strong>L'argent ne passe par aucun compte personnel.</strong> Il est détenu par l'hôte fiscal de la collecte, qui règle les dépenses directement aux prestataires, sur facture.</li>
     <li><strong>Le compteur est public.</strong> Le montant reçu et le nombre de donateurs sont affichés en haut de cette page, avec la date de mise à jour.</li>
     <li><strong>Chaque dépense est publiée</strong> dans le relevé ci-dessous : date, objet, montant. Le coût des contreparties (impression des cartes, envoi) y figure comme le reste.</li>
     <li><strong>Les fonds suivent l'ordre des paliers.</strong> Les dons ne sont pas conditionnés à l'atteinte de l'objectif : s'il n'est pas atteint, l'argent reçu finance les paliers dans l'ordre, en commençant par le premier.</li>
@@ -289,9 +292,9 @@ td.vide{color:var(--ink-soft);font-style:italic;}
 <script>
 // Tout vient de stats/financement.json, que docs/scripts/sync_financement.py
 // recopie chaque jour depuis Open Collective. Tant que le slug
-// `opencollective` y est vide, la page reste sur Buy Me a Coffee et les
-// contreparties sont masquées : elles ne peuvent pas être livrées sans
-// l'adresse que seul un palier Open Collective sait demander.
+// `opencollective` y est vide, le bouton reste inactif et les contreparties
+// masquées : la collecte ne passe que par l'hôte fiscal, pour que l'argent ne
+// transite par aucun compte personnel.
 (function () {
   // minimumFractionDigits explicite : sans lui, d'anciens Safari refusent un
   // maximum inférieur aux deux décimales par défaut de l'euro.
@@ -339,6 +342,9 @@ td.vide{color:var(--ink-soft);font-style:italic;}
         var base = 'https://opencollective.com/' + encodeURIComponent(slug);
         var liens = f.liens || {};
         $('f-participer').href = base + '/contribute';
+        $('f-participer').removeAttribute('aria-disabled');
+        $('f-participer').target = '_blank';
+        $('f-participer').rel = 'noopener';
         $('f-participer').textContent = '💶 Participer';
         $('f-libre').href = base + '/donate';
         // Un palier Open Collective précis si son adresse est connue ; sinon
@@ -353,9 +359,6 @@ td.vide{color:var(--ink-soft);font-style:italic;}
         $('contreparties').hidden = false;
         $('f-note').textContent = 'Paiement par Open Collective, qui publie les comptes de la collecte. '
           + 'Compteur mis à jour chaque jour, dernier changement le ' + maj + '.';
-      } else {
-        $('f-note').textContent = 'Don ponctuel, du montant de votre choix, par Buy Me a Coffee. '
-          + 'Compteur mis à jour le ' + maj + '.';
       }
 
       if (f.soutiens && f.soutiens.length) {
@@ -372,7 +375,13 @@ td.vide{color:var(--ink-soft);font-style:italic;}
         tbody.textContent = '';
         f.depenses.forEach(function (d) {
           var tr = document.createElement('tr');
-          [jour.format(date(d.date)), d.objet, eurCts.format(d.montant)].forEach(function (v, i) {
+          // Une dépense payée dans une autre devise garde son montant
+          // d'origine, celui qu'affiche le relevé d'Open Collective.
+          var montant = eurCts.format(d.montant);
+          if (d.devise) {
+            montant += ' (' + new Intl.NumberFormat('fr-FR', { style: 'currency', currency: d.devise }).format(d.montant_origine) + ')';
+          }
+          [jour.format(date(d.date)), d.objet, montant].forEach(function (v, i) {
             var td = document.createElement('td');
             td.textContent = v;
             if (i === 2) td.className = 'v';
