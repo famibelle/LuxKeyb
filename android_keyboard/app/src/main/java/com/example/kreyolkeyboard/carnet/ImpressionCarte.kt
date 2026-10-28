@@ -100,7 +100,9 @@ object ImpressionCarte {
 
     /**
      * Les ensembles numérotés de `cartes_imprimees.json`, dans l'ordre de la
-     * collection : la boîte de départ, puis les extensions.
+     * collection : la boîte de départ (B1), puis l'extension Schoul et Natur
+     * (E1), deux jeux de 54 cartes. Les extensions de 24 cartes (SCHOUL1,
+     * NATUR1) ont été retirées avant toute impression (2026-10-28).
      *
      * Un numéro par carte, comme sur les cartes à collectionner : il dit ce
      * qui manque et permet une liste à cocher (idée reprise des cartes du
@@ -111,11 +113,11 @@ object ImpressionCarte {
      * comme les cartes promo des grands jeux : son édition se lit déjà à
      * droite de la ligne.
      */
-    val COLLECTION = listOf("B1", "SCHOUL1", "NATUR1")
+    val COLLECTION = listOf("B1", "E1")
 
     /**
      * Le numéro de collection d'une carte : sa place dans les ensembles de
-     * [COLLECTION], mis bout à bout (Kaz 1, sechs 52, Buch 53…), ou `null`
+     * [COLLECTION], mis bout à bout (Kaz 1, sechs 52, Fro 53, zwielef 104), ou `null`
      * pour une carte hors collection.
      *
      * Les numéros se lisent sur l'ordre des listes : une fois une édition

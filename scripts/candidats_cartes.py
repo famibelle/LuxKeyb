@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Tire du LOD les mots des cartes imprimées : la boîte de départ et les
-extensions à thème du Wuertduell (docs/regle-du-jeu.md).
+"""Tire du LOD les mots des cartes imprimées : la boîte de départ et
+l'extension du Wuertduell (docs/regle-du-jeu.md), deux jeux de 54 cartes.
 
 Tout vient de données CC0 : catégories, sens (FR, DE, EN, PT), genres et
 phrases d'exemple du LOD, traductions des phrases par le ZLS, et le classement
@@ -20,7 +20,7 @@ enseignant, avant tout fichier d'impression.
 
 Sorties, dans Dictionnaires/cartes/ :
 
-- selection.md : la boîte (deux paquets de 26) et deux extensions, à relire ;
+- selection.md : la boîte et l'extension (chacune deux paquets de 26), à relire ;
 - selection.csv : les mêmes cartes, pour produire les fichiers ;
 - candidats.csv : tous les mots à thème, pour remplacer une carte refusée.
 
@@ -80,12 +80,13 @@ THEMES = {
         professeur instituteur institutrice élève classe leçon devoir lettre page
         papier ciseaux colle récréation pupitre chaise table globe ordinateur calcul
         dictée examen bibliothèque pinceau dessin chanson musique alphabet trousse
-        taille-crayon calculatrice horloge""",
+        taille-crayon calculatrice horloge question phrase mathématiques feutre""",
     'Natur': """arbre fleur herbe feuille forêt montagne colline rivière ruisseau lac
         mer plage pierre rocher sable ciel nuage soleil lune étoile pluie neige vent
         orage arc-en-ciel brouillard champ prairie jardin rose tulipe sapin chêne hêtre
         bouleau buisson mousse champignon terre feu île grotte cascade source vallée
-        printemps été automne hiver arc-en-ciel éclair tonnerre""",
+        printemps été automne hiver arc-en-ciel éclair tonnerre planète racine verger
+        gel glacier saison coquelicot tournesol paysage flocon cerisier ortie""",
 }
 THEMES = {t: set(v.split()) for t, v in THEMES.items()}
 
@@ -99,6 +100,17 @@ VERBES = """iessen drénken schlofen lafen sprangen schwammen fléien spillen sa
     kachen""".split()
 ADJECTIFS = """grouss kleng staark séier schéin léif witzeg daper rout blo gréng
     giel schwaarz wäiss waarm kal al jonk frou midd""".split()
+
+# L'extension : ses verbes et adjectifs suivent ceux de la boîte dans les
+# listes (aucun mot en double, la règle interdit deux exemplaires d'un mot dans
+# un paquet composé), répartis à la main par thème et **à coût égal** : un
+# verbe ★★★ et quatre ◆◆ de chaque côté, et les adjectifs à un point près
+# (13 en tout). Les couleurs à dessiner vont à l'école, le temps qu'il fait à
+# la nature.
+VERBES_EXTENSION = {'Schoul': 'liesen schreiwen molen laachen sichen'.split(),
+                    'Natur': 'klammen falen fannen kräischen kachen'.split()}
+ADJECTIFS_EXTENSION = {'Schoul': 'rout giel wäiss schwaarz'.split(),
+                       'Natur': 'gréng blo waarm kal'.split()}
 
 # Sens à écarter, en mots entiers. La carte n'imprime que le **premier** sens :
 # c'est lui qu'on filtre, avec la phrase d'exemple. Filtrer tout l'article
@@ -145,13 +157,22 @@ GENRES = {'M': 'm.', 'F': 'f.', 'N': 'n.', 'MN': 'm./n.', 'FN': 'f./n.', 'MF': '
 # à » attend un complément que la carte n'a pas.
 SENS_IMPRIME = {'spillen': 'jouer'}
 
+# Les faux amis du thème : leur premier sens en français tombe dans une liste
+# de [THEMES], mais le LOD parle d'autre chose. « Eclair » est la pâtisserie
+# (l'éclair d'orage se dit « Blëtz »), « Mousse » le dessert : ils entraient
+# dans Natur avec une phrase de pâtissier. « Gel » est celui des cheveux,
+# « Saison » celle d'une équipe, « Filz » et « Feuter » le tissu : plus courts
+# que « Frascht », « Joreszäit » et « Tuschstëft », ils les auraient évincés
+# ([un_par_sens] garde le mot le plus court d'un sens).
+FAUX_AMIS = {'Eclair', 'Mousse', 'Gel', 'Saison', 'Filz', 'Feuter'}
+
 
 def fiche(mot):
     c = CAT.get(mot, '')
     gloss = SENS['fr'].get(mot, '')
     if not gloss or not re.fullmatch(r"[A-Za-zÀ-ÿë'-]+", mot) or len(mot) < 2 or len(mot) > 14:
         return None
-    if mot.isupper():  # sigles : « GBP » est une livre, pas un livre
+    if mot.isupper() or mot in FAUX_AMIS:  # sigles : « GBP » est une livre, pas un livre
         return None
     nature = {'SUBST': 'nom', 'VRB': 'verbe', 'ADJ': 'adjectif'}.get(c.split(' ')[0])
     if nature is None:
@@ -193,22 +214,6 @@ def un_par_sens(fiches):
     return list(garde.values())
 
 
-# Une courbe de coût par paquet de 14 noms : ce qui fait des parties à 7 tours.
-COURBE_NOMS = {1: 4, 2: 6, 3: 3, 4: 1}
-
-
-def choisir_noms(fiches, courbe=COURBE_NOMS):
-    choix = []
-    par_cout = {c: sorted([f for f in fiches if f['cout'] == c], key=preference) for c in courbe}
-    manque = 0
-    for c, n in courbe.items():
-        pris = par_cout[c][:n]
-        choix += pris
-        manque += n - len(pris)
-    reste = sorted([f for f in fiches if f not in choix], key=preference)
-    return choix + reste[:manque]
-
-
 # Les longueurs des 14 noms d'un paquet de la boîte : la courbe de coût
 # (4 ●, 6 ◆◆, 3 ★★★, 1 ✦✦✦✦) qui fait des parties à 6 ou 7 tours.
 LONGUEURS_BOITE = [3, 4, 4, 4, 5, 5, 5, 6, 6, 7, 8, 8, 9, 11]
@@ -241,7 +246,11 @@ def jumeler(vivier_a, vivier_b, longueurs):
     return pris_a, pris_b
 
 
-NOMBRES = ['eent', 'zwee', 'dräi', 'véier', 'fënnef', 'sechs']
+# 1 à 6 dans la boîte, 7 à 12 dans l'extension (orthographe de ZuelenSpeller) :
+# la valeur d'un nombre ne compte pas au jeu, mais deux cartes « eent » dans un
+# paquet composé seraient deux exemplaires du même mot.
+NOMBRES = ['eent', 'zwee', 'dräi', 'véier', 'fënnef', 'sechs',
+           'siwen', 'aacht', 'néng', 'zéng', 'eelef', 'zwielef']
 
 
 def carte_nombre(mot, valeur):
@@ -270,11 +279,29 @@ def main():
         'Déieren': na + vb[0::2] + ad[0::2]
         + [carte_nombre(m, i + 1) for i, m in enumerate(NOMBRES[:3])],
         'Iessen': nb + vb[1::2] + ad[1::2]
-        + [carte_nombre(m, i + 4) for i, m in enumerate(NOMBRES[3:])],
+        + [carte_nombre(m, i + 4) for i, m in enumerate(NOMBRES[3:6])],
     }
-    extensions = {
-        'Schoul': choisir_noms(noms['Schoul'], {1: 4, 2: 8, 3: 5, 4: 3}) + verbes[10:14],
-        'Natur': choisir_noms(noms['Natur'], {1: 4, 2: 8, 3: 5, 4: 3}) + adjectifs[8:12],
+    # L'extension, faite comme la boîte : 54 cartes, deux paquets de 26
+    # (14 noms jumelés, 5 verbes, 4 adjectifs, 3 nombres) et 2 cartes de règle.
+    # Elle se joue seule, Schoul contre Natur, ou complète la boîte
+    # (propriétaire, 2026-10-28 ; deux extensions de 24 cartes auparavant).
+    deja = {c['mot'] for p in paquets.values() for c in p}
+    def fiches(mots):
+        trouve = [next((f for f in toutes if f['mot'] == m), None) for m in mots]
+        if None in trouve or deja & set(mots):
+            sys.exit(f"extension : mot absent du LOD ou déjà dans la boîte parmi {', '.join(mots)}")
+        return sorted(trouve, key=lambda f: f['cout'])
+    # Les noms suivent la courbe **réelle** de la boîte (Kanéngchen a 10 lettres,
+    # pas 11) : à Force et coût égaux, un paquet de l'extension tient tête à un
+    # paquet de la boîte. Les mots de 3, 7, 9 et 10 lettres manquaient à Natur
+    # et à Schoul : les sens ajoutés à [THEMES] le 2026-10-28 (planète, flocon,
+    # tournesol, mathématiques, feutre…) les apportent.
+    ns, nn = jumeler(noms['Schoul'], noms['Natur'], [len(f['mot']) for f in na])
+    extension = {
+        'Schoul': ns + fiches(VERBES_EXTENSION['Schoul']) + fiches(ADJECTIFS_EXTENSION['Schoul'])
+        + [carte_nombre(m, i + 7) for i, m in enumerate(NOMBRES[6:9])],
+        'Natur': nn + fiches(VERBES_EXTENSION['Natur']) + fiches(ADJECTIFS_EXTENSION['Natur'])
+        + [carte_nombre(m, i + 10) for i, m in enumerate(NOMBRES[9:12])],
     }
 
     os.makedirs(SORTIE, exist_ok=True)
@@ -283,7 +310,7 @@ def main():
     with open(os.path.join(SORTIE, 'selection.csv'), 'w', newline='', encoding='utf-8') as f:
         w = csv.DictWriter(f, champs, extrasaction='ignore')
         w.writeheader()
-        for nom, cartes in list(paquets.items()) + list(extensions.items()):
+        for nom, cartes in list(paquets.items()) + list(extension.items()):
             for c in cartes:
                 w.writerow({'ensemble': nom, **c})
     with open(os.path.join(SORTIE, 'candidats.csv'), 'w', newline='', encoding='utf-8') as f:
@@ -293,7 +320,8 @@ def main():
             w.writerow(c)
 
     # Les ensembles des codes de cartes en papier. B1 : la boîte de départ,
-    # première édition.
+    # première édition ; E1 : l'extension, première édition. SCHOUL1 et NATUR1
+    # (les extensions de 24 cartes) sont retirés : jamais imprimés.
     def element(c):
         return f"{c['mot']}#{c['sens']}" if c['nature'] == 'nombre' else c['mot']
     # « paquets » découpe chaque ensemble, dans l'ordre de ses cartes : le
@@ -303,26 +331,31 @@ def main():
         'B1': {'nom': 'Boîte de départ (Déieren, Iessen)',
                'cartes': [element(c) for nom in ('Déieren', 'Iessen') for c in paquets[nom]],
                'paquets': [[nom, len(paquets[nom])] for nom in ('Déieren', 'Iessen')]},
-        'SCHOUL1': {'nom': 'Extension Schoul', 'cartes': [element(c) for c in extensions['Schoul']],
-                    'paquets': [['Schoul', len(extensions['Schoul'])]]},
-        'NATUR1': {'nom': 'Extension Natur', 'cartes': [element(c) for c in extensions['Natur']],
-                   'paquets': [['Natur', len(extensions['Natur'])]]},
+        'E1': {'nom': 'Extension (Schoul, Natur)',
+               'cartes': [element(c) for nom in ('Schoul', 'Natur') for c in extension[nom]],
+               'paquets': [[nom, len(extension[nom])] for nom in ('Schoul', 'Natur')]},
         'FK27': {'nom': 'Fierkelsmaart 2027', 'cartes': ['Fierkelsmaart'], 'paquets': [['Fierkelsmaart', 1]]},
     }
     with open(os.path.join(A, 'cartes_imprimees.json'), 'w', encoding='utf-8') as f:
         json.dump({'ensembles': actifs}, f, ensure_ascii=False, indent=1)
         f.write('\n')
 
-    equilibre = simuler(paquets)
+    # Un paquet de l'extension joue aussi contre un paquet de la boîte (skill
+    # designer-cartes) : les quatre rencontres croisées se vérifient aussi.
+    tous = {**paquets, **extension}
+    equilibre = {'boîte': simuler(paquets, 'Déieren', 'Iessen'),
+                 'extension': simuler(extension, 'Schoul', 'Natur'),
+                 'croisés': ', '.join(simuler(tous, a, b).split(' ;')[0].replace(' des parties', '')
+                                      for a in ('Schoul', 'Natur') for b in ('Déieren', 'Iessen'))}
     with open(os.path.join(SORTIE, 'selection.md'), 'w', encoding='utf-8') as f:
-        f.write(rapport(paquets, extensions, toutes, equilibre))
-    print(equilibre)
-    for nom, cartes in list(paquets.items()) + list(extensions.items()):
+        f.write(rapport(paquets, extension, toutes, equilibre))
+    print('\n'.join(equilibre.values()))
+    for nom, cartes in list(paquets.items()) + list(extension.items()):
         print(nom, len(cartes), ' '.join(c['mot'] for c in cartes))
 
 
-def simuler(paquets, parties=4000):
-    """Équilibre de la boîte : chaque paquet commence une partie sur deux."""
+def simuler(paquets, nom_a, nom_b, parties=4000):
+    """Équilibre d'un jeu de deux paquets : chacun commence une partie sur deux."""
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import simulation_wuertduell as sim
     random.seed(7)
@@ -337,7 +370,7 @@ def simuler(paquets, parties=4000):
             return frozenset(ids[g] for g in genre.split('/') if g in ids) or frozenset([100 + i])
         return [(t[c['nature']], c['force'], c['cout'], famille(i, c['genre']))
                 for i, c in enumerate(p)]
-    a, b = cartes(paquets['Déieren']), cartes(paquets['Iessen'])
+    a, b = cartes(paquets[nom_a]), cartes(paquets[nom_b])
     victoires, tours = 0, []
     for i in range(parties):
         if i % 2 == 0:
@@ -348,12 +381,12 @@ def simuler(paquets, parties=4000):
             victoires += sim.gagnant(t, ja, jb) == 'b'
         tours.append(t)
     tours.sort()
-    return (f"Déieren gagne {victoires / parties:.0%} des parties contre Iessen ; "
+    return (f"{nom_a} gagne {victoires / parties:.0%} des parties contre {nom_b} ; "
             f"{tours[len(tours) // 2]} tours en médiane, {tours[int(len(tours) * .9)]} pour 90 % des parties")
 
 
-def rapport(paquets, extensions, toutes, equilibre):
-    l = ['# Cartes imprimées : la boîte et les extensions',
+def rapport(paquets, extension, toutes, equilibre):
+    l = ['# Cartes imprimées : la boîte et l\'extension',
          '',
          'Proposition produite par `scripts/candidats_cartes.py` à partir du LOD (CC0).',
          '**À relire avant impression**, idéalement par un enseignant : le LOD ne dit',
@@ -363,7 +396,11 @@ def rapport(paquets, extensions, toutes, equilibre):
          f'Vivier : {len(toutes)} mots à thème, verbes et adjectifs d\'enfant, dont '
          f"{sum(1 for c in toutes if c['dessin'])} déjà dessinés dans l'application.",
          '',
-         f'**Équilibre de la boîte** (simulation, `scripts/simulation_wuertduell.py`) : {equilibre}.',
+         f"**Équilibre de la boîte** (simulation, `scripts/simulation_wuertduell.py`) : {equilibre['boîte']}.",
+         '',
+         f"**Équilibre de l'extension** : {equilibre['extension']}.",
+         '',
+         f"**L'extension contre la boîte** : {equilibre['croisés']}.",
          '']
 
     def table(titre, cartes):
@@ -381,10 +418,10 @@ def rapport(paquets, extensions, toutes, equilibre):
     l.append('')
     for nom, cartes in paquets.items():
         table(f'Paquet {nom}', cartes)
-    l.append('# Les extensions')
+    l.append("# L'extension : 2 paquets de 26 (52 cartes) + 2 cartes de règle")
     l.append('')
-    for nom, cartes in extensions.items():
-        table(f'Extension {nom}', cartes)
+    for nom, cartes in extension.items():
+        table(f'Paquet {nom}', cartes)
     return '\n'.join(l) + '\n'
 
 

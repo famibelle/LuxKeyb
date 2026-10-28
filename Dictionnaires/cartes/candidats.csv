@@ -197,12 +197,14 @@ Natur,Baach,nom,f.,5,2,ruisseau,"Bach, Diddelenger Baach, Keeler Baach","stream,
 Natur,Bierg,nom,m.,5,2,montagne,"Berg, Hang, Bürge","mountain, slope, guarantor","montanha, encosta, garante",Esch-Sauer,,meng Eltere ginn all Joer an d'Bierger,
 Natur,Bierk,nom,f.,5,2,bouleau,Birke,birch,bétula,Stad,,d'Gemengegäertner hu Bierke laanscht de Wee geplanzt,les jardiniers communaux ont planté des bouleaux le long du chemin
 Natur,Blumm,nom,f.,5,2,fleur,"Blume, Bukett","flower, bouquet","flor, bouquet",Stad,,d'Kanner hunn eng wonnerschéi Blumm am Park gesinn,les enfants ont vu une fleur magnifique dans le parc
+Natur,Bongert,nom,m.,7,2,verger,Obstgarten,orchard,pomar,Stad,,eisen Noper huet a sengem Bongert Mirabellebeem geplanzt,notre voisin a planté des mirabelliers dans son verger
 Natur,Buedem,nom,m.,6,2,terre,Boden,"earth, floor, base","terra, solo, base",Esch-Sauer,,an aarme Biedem wiisst net vill,
 Natur,Bësch,nom,m.,5,2,forêt,Wald,forest,floresta,Esch-Sauer,foret,mir ginn all Sonndeg an de Bësch spadséieren,
 Natur,Dimmer,nom,m.,6,2,tonnerre,"Donner, Gewitter","thunder, thunderstorm","trovão, trovoada",Stad,,vu Wäitem huet een den Dimmer héieren,on entendait le tonnerre au loin
 Natur,Donner,nom,m.,6,2,tonnerre,Donner,thunder,trovão,Stad,,ech hat als Kand Angscht virum Blëtz a virum Donner,"enfant, j'avais peur de la foudre et du tonnerre"
-Natur,Eclair,nom,f.,6,2,éclair,Eclair,eclair,éclair,Stad,,de Pâtissier an eiser Strooss mécht déi bescht Eclaire wäit a breet,le pâtissier dans notre rue fait les meilleurs éclairs à des kilomètres à la ronde
 Natur,Feier,nom,n.,5,2,feu,"Feuer, Feier","fire, celebration","fogo, incêndio, festa",Gëlle Fra,,d'Kanner maachen de Mëtteg mat hiren Elteren e Feier am Gaart,
+Natur,Flack,nom,f.,5,2,flocon,Flocke,flake,floco,Stad,,haut de Moien ass bei eis déi éischt Flack Schnéi gefall,
+Natur,Frascht,nom,m.,7,2,gel,Frost,frost,geada,Stad,,de Frascht ass nach net aus dem Buedem,
 Natur,Gaart,nom,m.,5,2,jardin,Garten,garden,jardim,Esch-Sauer,,mir hunn hannenaus e grousse Gaart,
 Natur,Grott,nom,f.,5,2,grotte,Grotte,grotto,gruta,Stad,,d'Muttergottes ass dem Meedchen an der Grott erschéngen,
 Natur,Himmel,nom,m.,6,2,ciel,Himmel,"sky, heaven, baldachin","céu, Céu, baldaquino",Esch-Sauer,,wat ass den Himmel haut esou schéi blo!,comme le ciel est beau et bleu aujourd’hui !
@@ -210,9 +212,9 @@ Natur,Hiwwel,nom,m.,6,2,colline,Hügel,hill,colina,Stad,,uewen um Hiwwel steet e
 Natur,Insel,nom,f.,5,2,île,Insel,island,ilha,Esch-Sauer,ile,an der Vakanz si mir vun Insel zu Insel geseegelt,
 Natur,Kraut,nom,n.,5,2,herbe,Kraut,herb,erva,Stad,,wat wiisst dann do fir e Kraut?,
 Natur,Mound,nom,m.,5,2,lune,Mond,moon,lua,Esch-Sauer,lune,um Mound ass nach kee Liewe fonnt ginn,
-Natur,Mousse,nom,f.,6,2,mousse,Mousse,mousse,mousse,Stad,,als Dessert zerwéieren ech gären eng Mousse,
 Natur,Niwwel,nom,m.,6,2,brouillard,Nebel,fog,nevoeiro,Stad,,den Niwwel ass amgaang ze falen,
 Natur,Plage,nom,f.,5,2,plage,"Strand, Burscheider Strand","beach, Bourscheid-Plage","praia, Bourscheid-Plage",Stad,,d'Kanner hunn sech op der Plage an de Sand agegruewen,
+Natur,Planéit,nom,m.,7,2,planète,Planet,planet,planeta,Stad,,d'Planéiten dréie ronderëm d'Sonn,
 Natur,Quell,nom,f.,5,2,source,Quelle,"spring, source","fonte (de água), fonte",Stad,,d'Waasserwierk huet eng nei Quell gefaasst,
 Natur,Reebou,nom,m.,6,2,arc en ciel,Regenbogen,rainbow,arco-íris,Stad,,d'Kanner hunn d'Faarwe vum Reebou bewonnert,
 Natur,Schaum,nom,m.,6,2,mousse,Schaum,foam,espuma,Stad,,an deem Humpen do ass méi Schaum ewéi Béier!,
@@ -223,24 +225,35 @@ Natur,Strand,nom,m.,6,2,plage,Strand,beach,praia,Stad,,d'Kanner sammele Muschele
 Natur,Summer,nom,m.,6,2,été,Sommer,summer,verão,Veianen,,dëst Joer hate mer en dréchene Summer,"cette année, l'été a été très sec"
 Natur,Wanter,nom,m.,6,2,hiver,Winter,winter,inverno,Veianen,flocon,mat engem Tank Mazout komme mer gutt iwwer de Wanter,un plein de fioul nous permet de passer l’hiver
 Natur,Wollek,nom,f.,6,2,nuage,Wolke,cloud,nuvem,Stad,,et war keng eenzeg Wollek um Himmel,
+Natur,Wuerzel,nom,f.,7,2,racine,"Wurzel, Möhre","root, carrot","raiz, cenoura",Stad,,du muss d'Onkraut mat der Wuerzel erausrappen,tu dois arracher les mauvaises herbes avec la racine
 Natur,Bichenholz,nom,n.,10,3,hêtre,Buchenholz,(beech)wood,(madeira de) faia,Stad,,hie brennt nëmme Bichenholz a senger Schminni,
 Natur,Blietchen,nom,n.,9,3,feuille,"Blättchen, Rohrblatt","(cigarette) paper, reed, leaflet","mortalha, palheta, boletim",Stad,,"léin mer e Blietchen, fir eng Zigarett ze dréien!",
 Natur,Champignon,nom,m.,10,3,champignon,Pilz,mushroom,cogumelo,Stad,,"de Kach hat vergiess, d'Champignonen an d'Zooss ze schneiden",le cuisinier avait oublié de couper les champignons dans la sauce
 Natur,Dännebam,nom,m.,8,3,sapin,"Tannenbaum, Fichte, (Gemeine) Kiefer",,"abeto, espruce, pinheiro-silvestre",Stad,,op den Dännebeem wuessen d'Zapen d'Luucht aus,
 Natur,Eechenholz,nom,n.,10,3,chêne,Eichenholz,oak (wood),(madeira de) carvalho,Stad,,Eechenholz ass vill méi haart ewéi Bierkenholz,le bois de chêne est beaucoup plus dur que le bois de bouleau
+Natur,Feierblumm,nom,f.,10,3,coquelicot,Klatschmohn,poppy,papoila,Stad,,um Bord vun de Felder gesäit een nees méi Feierblummen a Karblummen,"en bordure des champs, on retrouve à nouveau des coquelicots et des bleuets"
 Natur,Fréijoer,nom,n.,8,3,printemps,Frühling,spring,primavera,Veianen,,dëst Fréijoer stinn d'Beem fréi an der Bléi,
+Natur,Gletscher,nom,m.,9,3,glacier,Gletscher,glacier,glaciar,Stad,,d'Gletscher glënneren an der Mëttessonn,
 Natur,Hierscht,nom,m.,8,3,automne,Herbst,autumn,outono,Veianen,,am Hierscht falen d'Blieder vun de Beem,"en automne, les feuilles tombent des arbres"
+Natur,Joreszäit,nom,f.,9,3,saison,Jahreszeit,season,estação,Stad,,ëm dës Joreszäit gëtt et fréi däischter,
+Natur,Landschaft,nom,f.,10,3,paysage,Landschaft,landscape,paisagem,Stad,,"vill Touriste kommen heihin, fir d'Landschaft ze genéissen",
+Natur,Sonneblumm,nom,f.,10,3,tournesol,Sonnenblume,sunflower,girassol,Stad,,mir si laanscht Felder voller Sonneblumme gefuer,nous avons longé des champs pleins de tournesols
 Natur,Äerdbuedem,nom,m.,10,3,terre,Erdboden,ground,terra,Stad,,d'Biergaarbechter schaffe meeschtens ënner dem Äerdbuedem,
 Natur,Blummemotiv,nom,n.,11,4,fleur,Blumenmotiv,floral design,flor,Stad,,de Goldschmadd huet de Käerzestänner mat engem Blummemotiv ziseléiert,l’orfèvre a ciselé le chandelier avec un motif floral
+Natur,Brennnessel,nom,f.,11,4,ortie,Brennnessel,(stinging) nettle,urtiga,Stad,,"et deet net gutt, wann s de an d'Brennnessele fäls",ce n’est pas agréable de tomber dans les orties
 Natur,Donnerwieder,nom,n.,12,4,orage,Gewitter,thunderstorm,trovoada,Stad,,,
+Natur,Kiischtebam,nom,m.,11,4,cerisier,Kirschbaum,cherry tree,cerejeira,Stad,,de Kiischtebam steet a voller Bléi,
+Natur,Schnéiflack,nom,f.,11,4,flocon,Schneeflocke,snowflake,floco de neve,Stad,,kuerz viru Chrëschtdag sinn déi éischt Schnéiflacke gefall,"peu avant Noël, les premiers flocons de neige sont tombés"
 Schoul,Bild,nom,n.,4,1,tableau,Bild,"picture, (mental) picture, image","quadro, imagem",Schueberfouer,,ech muss dat neit Bild nach arumme loossen,
 Schoul,Buch,nom,n.,4,1,livre,Buch,"book, account book","livro, livro de contas",Neimënster,livre,"et ass sécher net einfach, e gutt Buch ze schreiwen",écrire un bon livre n’est certainement pas facile
+Schoul,Fro,nom,f.,3,1,question,Frage,question,"pergunta, questão",Neimënster,,mat där Fro hat ech net gerechent!,je ne m'attendais pas à cette question !
 Schoul,Heft,nom,n.,4,1,cahier,Heft,notebook,caderno,Stad,,haut de Moien huet de Schoulmeeschter d'Hefter kontrolléiert,
 Schoul,Koll,nom,m.,4,1,colle,Klebstoff,glue,cola,Stad,,ech hunn d'Poppenhaus mat engem extrae Koll gepecht,
 Schoul,Lidd,nom,n.,4,1,chanson,Lied,song,canção,Neimënster,,d'Scouten hu beim Lagerfeier flott Lidder gesongen,
 Schoul,Läim,nom,m.,4,1,colle,Leim,glue,cola (para madeira),Stad,,"maach d'Dëppe mam Läim zou, soss verdréchent en!",
 Schoul,Pech,nom,m.,4,1,colle,"Klebstoff, Klebeband, Pech","glue, Sellotape, bad luck","cola, fita-cola, má sorte",Stad,,ech hunn den Ziedel mat Pech un d'Dier gehaangen,
 Schoul,Pond,nom,n.,4,1,livre,"Pfund, Pfund Sterling, Britische(s) Pfund","pound, pounds, British pound","libra, libras, libra (esterlina)",Stad,,ech ginn nach zwee Bauerebrout vum Pond bei de Bäcker sichen,je vais acheter encore deux pains de campagne d'une livre chez le boulanger
+Schoul,Saz,nom,m.,3,1,phrase,"Satz, Saatgut","sentence, movement, bound","frase, movimento, pulo",Neimënster,,dee Riedner ass bekannt fir seng laang Sätz,cet orateur est connu pour ses longues phrases
 Schoul,Song,nom,m.,4,1,chanson,Song,,canção,Neimënster,,hues de schonn den neiste Song vun dëser Band héieren?,
 Schoul,Aufgab,nom,f.,6,2,devoir,Aufgabe,"duty, exercise","dever, tarefa, exercício",Gëlle Fra,,"hien huet sech et zur Aufgab gemaach, de Weesekanner ze hëllefen",il s'est donné pour mission d'aider les orphelins
 Schoul,Bréif,nom,m.,5,2,lettre,Brief,letter,carta,Neimënster,lettre,"ech hu vergiess, en Timber op de Bréif ze pechen",j’ai oublié de coller un timbre sur la lettre
@@ -260,15 +273,18 @@ Schoul,Musek,nom,f.,5,2,musique,"Musik, Musikkapelle","music, brass band","músi
 Schoul,Pabeier,nom,m.,7,2,papier,"Papier, Paper, Wertpapier","paper, papers, security","papel, trabalho, título",Neimënster,,et ass kee Pabeier méi op der Toilette!,il n'y a plus de papier aux toilettes !
 Schoul,Pinsel,nom,m.,6,2,pinceau,Pinsel,paintbrush,pincel,Stad,,den Usträicher wäscht seng Pinselen am Terpetäin aus,
 Schoul,Proff,nom,m.,5,2,professeur,Lehrer,teacher,professor,Neimënster,,dee jonke Proff ass bei all senge Schüler beléift,
+Schoul,Quizfro,nom,f.,7,2,question,Quizfrage,,,Stad,,"bei där enger Quizfro wousste mer net, wat mer sollen äntweren",
 Schoul,Reegel,nom,f.,6,2,règle,Regel,"rule, (general) rule, period","regra, regra (geral), período",Gëlle Fra,,an dësem Haus leeën ech d'Reegele fest!,
 Schoul,Schoul,nom,f.,6,2,école,Schule,school,escola,Esch-Sauer,ecole,mir sinn zesummen an d'Schoul gaangen,
 Schoul,Schéier,nom,f.,7,2,ciseaux,Schere,"(pair of) scissors, claw","tesoura, pinça",Stad,,"dës Schéier ass gutt, fir graffe Stoft ze schneiden",
 Schoul,Schüler,nom,m.,7,2,élève,Schüler,pupil,aluno,Neimënster,,d'Schüler waarden am Schoulsall op hir Professesch,
+Schoul,Sproch,nom,m.,6,2,phrase,Spruch,saying,frase,Neimënster,,"ech froe mech, wuer hien déi flott Spréch ëmmer nees siche geet!",
 Schoul,Spëtzer,nom,m.,7,2,taille crayon,Bleistiftspitzer,pencil sharpener,apara-lápis,Stad,,"mäi Bläistëft ass ganz stompeg, kanns de mir däi Spëtzer léinen?",
 Schoul,Stull,nom,m.,5,2,chaise,"Stuhl, Heilige Stuhl","chair, stool","cadeira, fezes, Santa Sé",Stad,,huel der e Stull a setz dech bei eis!,prends une chaise et installe-toi avec nous !
 Schoul,Tabell,nom,f.,6,2,tableau,Tabelle,"table, (league) table","tabela (de dados), classificação",Neimënster,,déi vill Donnéeë wiere méi iwwersiichtlech an enger Tabell,
 Schoul,Tablo,nom,m.,5,2,tableau,"Gemälde, Tabelle","painting, table","quadro, tabela (de dados)",Stad,,déi vill Donnéeë wiere méi iwwersiichtlech an engem Tablo,
 Schoul,Tafel,nom,f.,5,2,tableau,Tafel,blackboard,quadro (preto),Stad,,d'Joffer huet mech haut un d'Tafel geruff,
+Schoul,Testfro,nom,f.,7,2,question,Testfrage,test question,pergunta,Stad,,d'Kandidaten hate Schwieregkeete bei der leschter Testfro,
 Schoul,Trousse,nom,f.,7,2,trousse,Tasche,case,estojo,Stad,,hues de keng kleng Schéier an denger Trousse?,tu n'as pas de petits ciseaux dans ta trousse ?
 Schoul,Ziedel,nom,m.,6,2,papier,Zettel,piece of paper,(pedaço de) papel,Stad,,meng Fra pecht fir alles en Ziedel op de Frigo,
 Schoul,Alphabet,nom,n.,8,3,alphabet,Alphabet,alphabet,alfabeto,Stad,,den S kënnt am Alphabet virum T,la lettre S vient avant la lettre T dans l’alphabet
@@ -276,19 +292,27 @@ Schoul,Berechnung,nom,f.,10,3,calcul,Berechnung,calculation,"avaliação, calcul
 Schoul,Bläistëft,nom,m.,9,3,crayon,Bleistift,pencil,lápis,Stad,,ech schreiwe meng Notizen am léifste mat engem Bläistëft,je préfère écrire mes notes au crayon
 Schoul,Buschtaf,nom,m.,8,3,lettre,Buchstabe,letter,letra,Stad,,Dir hutt bei mengem Numm e Buschtaf vergiess,vous avez oublié une lettre dans mon nom
 Schoul,Computer,nom,m.,8,3,ordinateur,Computer,computer,computador,Neimënster,ordinateur,d'Computere ginn ëmmer méi bëlleg,
+Schoul,Filzstëft,nom,m.,9,3,feutre,Filzstift,felt-tip pen,caneta de feltro,Stad,,"d'Kand krut gejaut, well et mam Filzstëft op d'Tapéit gemoolt hat",
+Schoul,Géigefro,nom,f.,8,3,question,Gegenfrage,counter question,pergunta,Stad,,hien äntwert ëmmer mat Géigefroen,
 Schoul,Iessdësch,nom,m.,9,3,table,Esstisch,dining table,mesa (da sala de jantar),Stad,,mir hunn eisen Iessdësch vun engem Schräiner op d'Mooss maache gelooss,
 Schoul,Lektioun,nom,f.,8,3,leçon,Lektion,lesson,"lição, lição (de vida)",Stad,,hie wousst seng Lektioun auswenneg,
+Schoul,Mathematik,nom,f.,10,3,mathématiques,Mathematik,mathematics,matemática,Stad,,d'Arithmeetik ass e wichtegen Deel vun der Mathematik,l’arithmétique est une partie fondamentale des mathématiques
 Schoul,Professer,nom,m.,9,3,professeur,"Lehrer, Professor",,professor,Neimënster,,dee jonke Professer ass bei all senge Studente beléift,
+Schoul,Questioun,nom,f.,9,3,question,Frage,question,questão,Stad,,,
 Schoul,Rechnung,nom,f.,8,3,calcul,Rechnung,"calculation, bill, estimate","cálculo, fatura, estimativa",Veianen,,"ech fäerte ganz, de Schräiner mécht eis eng déck Rechnung!",j'ai bien peur que le menuisier ne nous fasse une grosse facture !
 Schoul,Schachtel,nom,f.,9,3,trousse,Federmäppchen,pencil case,estojo (escolar),Stad,,d'Kanner sollen e Bläistëft an e Gummi an der Schachtel hunn,les enfants doivent avoir un crayon et une gomme dans la trousse
 Schoul,Schoulsak,nom,m.,9,3,cartable,Schulranzen,school bag,mala de escola,Stad,,e schwéiere Schoulsak ass eng Belaaschtung fir de Kanner hire Réck,
 Schoul,Schülerin,nom,f.,9,3,élève,Schülerin,,aluna,Neimënster,,Biologie ass där Schülerin hiert Liblingsfach,
 Schoul,Standauer,nom,f.,9,3,horloge,Standuhr,grandfather clock,relógio de caixa alta,Stad,,de Pendel vun der Standauer ass stoe bliwwen,
 Schoul,Sterling,nom,n.,8,3,livre,Britische(s) Pfund,pound sterling,libra (esterlina),Stad,,a ganz Groussbritannie gëtt mat Pond Sterling bezuelt,
+Schoul,Tuschbic,nom,m.,8,3,feutre,Filzstift,felt-tip pen,caneta de feltro,Stad,,"d'Kand krut gejaut, well et mam Tuschbic op d'Tapéit gemoolt hat",
+Schoul,Tuschfaarf,nom,f.,10,3,feutre,Filzstift,felt-tip pen,caneta de feltro,Stad,,"am Gank hänke Biller, déi d'Kanner mat Tuschfaarwe gemoolt hunn",
+Schoul,Tuschstëft,nom,m.,10,3,feutre,Filzstift,felt-tip pen,caneta de feltro,Stad,,"d'Kand krut gejaut, well et mam Tuschstëft op d'Tapéit gemoolt hat",
 Schoul,Zeechnung,nom,f.,9,3,dessin,Zeichnung,drawing,desenho,Stad,,dem Karikaturist seng Zeechnunge sinn elo all als Buch erauskomm,
 Schoul,Bibliothéik,nom,f.,11,4,bibliothèque,"Bibliothek, Bücherschrank","library, bookcase",biblioteca,Neimënster,,ech hu mir an der Bibliothéik e flott Buch geléint,j'ai emprunté un chouette livre à la bibliothèque
 Schoul,Bicherschaf,nom,m.,11,4,bibliothèque,Bücherschrank,bookcase,biblioteca,Stad,,mir hunn eis vum Schräiner zwee Bicherschief op d'Mooss maache gelooss,
 Schoul,Diplomprüfung,nom,f.,13,4,examen,Diplomprüfung,finals,exame final,Stad,,"all Student ass frou, wann e seng Diplomprüfung hanner sech huet",
+Schoul,Froestellung,nom,f.,12,4,question,Fragestellung,question,questão,Stad,,,
 Schoul,Museksschüler,nom,m.,13,4,élève,Schüler,music student,aluno de música,Stad,,d'Museksschüler hunn haut dräi nei Akkorde geléiert,
 Schoul,Noutestänner,nom,m.,12,4,pupitre,Notenständer,music stand,estante (de música),Stad,,,
 Schoul,Rechemaschinn,nom,f.,13,4,calculatrice,"Rechenmaschine, Taschenrechner","calculator, pocket calculator","calculadora, calculadora de bolso",Stad,,den Ticket aus der Rechemaschinn geet mer duer als Quittung,

@@ -165,16 +165,19 @@ Chacun a 14 noms, 5 verbes (*iessen*, *lafen*, *sangen*, *schwammen*…),
 d'un paquet a son jumeau de même Force dans l'autre : aucun des deux n'est
 avantagé.
 
-### Les extensions
+### L'extension
 
-Des paquets à thème s'ajoutent à la boîte : **Schoul** (l'école : *Buch*,
-*Heft*, *Schoulsak*…) et **Natur** (*Bam*, *Sonn*, *Mound*, *Reen*…), puis
-d'autres, puisque le dictionnaire ne manque pas de mots. Elles se commandent
-avec la boîte, [sur la page Commander](commander.html).
+Une deuxième boîte de **54 cartes**, faite comme la première : deux paquets
+de 26 prêts à jouer, **Schoul** (l'école : *Buch*, *Heft*, *Schoulsak*,
+*Mathematik*…) et **Natur** (*Bam*, *Sonn*, *Mound*, *Gletscher*…), et les
+2 cartes de règle. Elle se joue seule, Schoul contre Natur, ou avec la boîte :
+chacun de ses paquets tient tête à *Déieren* comme à *Iessen*. Aucun mot n'est
+dans les deux boîtes. D'autres suivront, puisque le dictionnaire ne manque pas
+de mots. Elle se commande avec la boîte, [sur la page Commander](commander.html).
 
 ### Composer son paquet
 
-Avec les extensions, chacun peut composer le sien :
+Avec la boîte et l'extension, chacun peut composer le sien :
 
 - **26 cartes** exactement ;
 - **au moins la moitié de noms** ;

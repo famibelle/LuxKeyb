@@ -10,8 +10,7 @@ chez le propriétaire :
    les remboursées) ;
 2. il donne à chaque jeu une carte code signée, prise dans une réserve de
    impression/codes/ faite par scripts/codes_cartes.py ; le nom de la réserve
-   est la métadonnée `codes` du produit Stripe (`B1-boutique`,
-   `SCHOUL1-boutique`, `NATUR1-boutique`) ;
+   est la métadonnée `codes` du produit Stripe (`B1-boutique`, `E1-boutique`) ;
 3. il écrit, par commande, la fiche à recopier chez l'imprimeur (l'adresse du
    client) et l'e-mail qui porte le ou les codes QR ;
 4. sur demande, il envoie ces e-mails.

@@ -35,11 +35,12 @@ class NumeroCollectionTest {
     }
 
     @Test
-    fun lesExtensionsSuiventLaBoite() {
+    fun lExtensionSuitLaBoite() {
         val e = ensembles()
-        assertEquals(53, ImpressionCarte.numero("Buch", null, e))
-        assertEquals(77, ImpressionCarte.numero("Bam", null, e))
-        assertEquals(100, ImpressionCarte.numero("giel", null, e))
+        assertEquals(53, ImpressionCarte.numero("Fro", null, e))
+        assertEquals(76, ImpressionCarte.numero("siwen", 7, e))
+        assertEquals(79, ImpressionCarte.numero("Bam", null, e))
+        assertEquals(104, ImpressionCarte.numero("zwielef", 12, e))
     }
 
     @Test
@@ -54,7 +55,7 @@ class NumeroCollectionTest {
     @Test
     fun unEnsembleManquantNeDecalePasLesNumeros() {
         val e = ensembles() - "B1"
-        assertNull(ImpressionCarte.numero("Buch", null, e))
+        assertNull(ImpressionCarte.numero("Fro", null, e))
     }
 
     private fun paquets(): Map<String, List<Pair<String, Int>>> {
@@ -74,7 +75,9 @@ class NumeroCollectionTest {
         assertEquals(ImpressionCarte.Paquet.IESSEN, ImpressionCarte.paquet("Ënn", null, e, p))
         assertEquals(ImpressionCarte.Paquet.IESSEN, ImpressionCarte.paquet("sechs", 6, e, p))
         assertEquals(ImpressionCarte.Paquet.SCHOUL, ImpressionCarte.paquet("Buch", null, e, p))
-        assertEquals(ImpressionCarte.Paquet.NATUR, ImpressionCarte.paquet("giel", null, e, p))
+        assertEquals(ImpressionCarte.Paquet.SCHOUL, ImpressionCarte.paquet("néng", 9, e, p))
+        assertEquals(ImpressionCarte.Paquet.NATUR, ImpressionCarte.paquet("Reen", null, e, p))
+        assertEquals(ImpressionCarte.Paquet.NATUR, ImpressionCarte.paquet("zwielef", 12, e, p))
         assertEquals(ImpressionCarte.Paquet.FIERKELSMAART, ImpressionCarte.paquet("Fierkelsmaart", null, e, p))
         assertNull(ImpressionCarte.paquet("Haus", null, e, p))
     }

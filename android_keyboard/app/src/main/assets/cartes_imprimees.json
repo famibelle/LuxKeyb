@@ -67,73 +67,70 @@
     ]
    ]
   },
-  "SCHOUL1": {
-   "nom": "Extension Schoul",
+  "E1": {
+   "nom": "Extension (Schoul, Natur)",
    "cartes": [
+    "Fro",
     "Buch",
     "Heft",
     "Koll",
-    "Lidd",
     "Bréif",
     "Dësch",
-    "Schoul",
     "Musek",
+    "Schoul",
     "Calcul",
     "Crayong",
-    "Examen",
-    "Trousse",
     "Computer",
     "Alphabet",
     "Schoulsak",
-    "Standauer",
-    "Lektioun",
-    "Bibliothéik",
-    "Schouljoffer",
-    "Rechemaschinn",
+    "Mathematik",
     "liesen",
-    "schreiwen",
     "molen",
-    "laachen"
-   ],
-   "paquets": [
-    [
-     "Schoul",
-     24
-    ]
-   ]
-  },
-  "NATUR1": {
-   "nom": "Extension Natur",
-   "cartes": [
+    "laachen",
+    "sichen",
+    "schreiwen",
+    "rout",
+    "giel",
+    "wäiss",
+    "schwaarz",
+    "siwen#7",
+    "aacht#8",
+    "néng#9",
     "Bam",
     "Reen",
     "Sonn",
     "Bich",
-    "Wanter",
     "Bësch",
     "Insel",
     "Mound",
-    "Bierk",
+    "Wanter",
     "Donner",
-    "Eclair",
-    "Hiwwel",
+    "Bongert",
     "Hierscht",
     "Fréijoer",
-    "Donnerwieder",
-    "Pilz",
-    "Sand",
-    "Summer",
-    "Séi",
-    "Tulp",
-    "rout",
+    "Gletscher",
+    "Feierblumm",
+    "klammen",
+    "falen",
+    "fannen",
+    "kachen",
+    "kräischen",
     "blo",
+    "kal",
     "gréng",
-    "giel"
+    "waarm",
+    "zéng#10",
+    "eelef#11",
+    "zwielef#12"
    ],
    "paquets": [
     [
+     "Schoul",
+     26
+    ],
+    [
      "Natur",
-     24
+     26
     ]
    ]
   },

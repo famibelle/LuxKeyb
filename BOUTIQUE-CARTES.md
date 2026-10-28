@@ -18,8 +18,8 @@ reçoive chez elle**. Choix du propriétaire, le 2026-10-28 :
 - **Paiement par Stripe Payment Links** : un lien de paiement par produit, sans
   serveur. Le site reste statique (GitHub Pages).
 - **Livraison au Luxembourg, en Belgique, en France et en Allemagne.**
-- **Trois produits** : la boîte de départ et les extensions *Schoul* et
-  *Natur* (même jour).
+- **Deux produits de 54 cartes** : la boîte de départ et l'extension
+  *Schoul* et *Natur* (même jour ; deux extensions de 24 cartes d'abord).
 
 ## 2. La chaîne, de la commande à la boîte
 
@@ -64,12 +64,21 @@ docs/commander.md ──► paiement Stripe ──► docs/merci-commande.md
 
 - **La boîte de départ** (54 cartes, `docs/regle-du-jeu.md`) : 2 paquets de
   26 et 2 cartes de règle. Ensemble `@B1`.
-- **Les extensions *Schoul* et *Natur*** (ajoutées le 2026-10-28) : 24 cartes
-  chacune, dans leur étui, sans carte de règle. Ensembles `@SCHOUL1` et
-  `@NATUR1`, dans l'appli depuis le 26 octobre : leurs codes marchent sans
-  mise à jour. Elles complètent la boîte (chacun compose son paquet de 26) ;
-  on peut en acheter une seule, pour qui a déjà la boîte. Liste des cartes :
-  `Dictionnaires/cartes/selection.md`.
+- **L'extension *Schoul* et *Natur*** (2026-10-28) : 54 cartes comme la
+  boîte, 2 paquets de 26 (14 noms, 5 verbes, 4 adjectifs, 3 nombres chacun)
+  et les 2 cartes de règle. Ensemble `@E1`. Elle se joue seule (Schoul contre
+  Natur, 49 % / 51 % en simulation) ou avec la boîte (chacun de ses paquets à
+  49–51 % contre Déieren et Iessen), et aucun mot n'est dans les deux boîtes.
+  Même format que la boîte, donc même étui et même grille de prix chez
+  l'imprimeur. Cartes : `Dictionnaires/cartes/selection.md`.
+  - **L'appli doit être publiée avant la vente** : `@E1` n'est connu que des
+    versions qui suivent ce changement, et une plus ancienne répond « mettez à
+    jour » au scan du code.
+  - Les extensions de 24 cartes (`@SCHOUL1`, `@NATUR1`) sont retirées de
+    l'appli : jamais imprimées, aucun code signé connu. Si un code a été
+    signé pour elles, les remettre dans `cartes_imprimees.json`.
+  - 15 de ses 28 noms n'ont pas encore de dessin (la boîte en a un pour chaque
+    nom depuis le 2026-10-26) : à dessiner avant le BAT.
 - **Plus tard**, le coffret complet : un jeu fixe lui aussi, que l'impression
   à la demande sait faire.
 - **Pas les paquets de 6.** Leur hasard (3 communes, 2 peu communes, 1 rare ou
@@ -124,11 +133,9 @@ plus simple pour la TVA (§ 8).
 | Stripe (~1,5 % + 0,25 € par carte de l'UE, à vérifier sur stripe.com) | ~0,70 € |
 | **Coût livré** | **~18–30 €** |
 
-**Une extension** (24 cartes, étui) coûte moins que la boîte, mais pas deux
-fois moins : l'étui et la mise en route pèsent autant, et certains imprimeurs
-facturent par tranches de cartes (24 peut coûter le prix de 36). À chiffrer
-au devis ; vendue seule, son envoi pèse lourd dans le prix, d'où les articles
-optionnels du § 6 (une seule commande, un seul port).
+**L'extension** a le format de la boîte (54 cartes, même étui) : même coût,
+même prix. Les deux ensemble partent en une commande et un seul port (articles
+optionnels, § 6), ce qui allège le prix par boîte.
 
 La boîte à **12–15 €** de la skill imprimeur (§ 7) repose sur un tirage offset
 de 500 boîtes à 3–4,5 € : elle **n'est pas tenable** en impression à la
@@ -145,21 +152,20 @@ offset et le stock (skill § 7) ramènent la boîte vers 12–15 €.
 - **Compte** au nom de la structure (§ 8), avec son IBAN. Faire d'abord tout le
   parcours en **mode test** (cartes de test, clé `rk_test_…` : le script écrit
   alors dans `impression/commandes-test/`).
-- **Trois produits**, prix unique en euros, photo ; pas de TVA tant que la
+- **Deux produits**, prix unique en euros, photo ; pas de TVA tant que la
   franchise s'applique (§ 8) :
 
   | Produit | Métadonnée `codes` |
   |---|---|
   | Wuertduell — boîte de départ | `B1-boutique` |
-  | Wuertduell — extension Schoul | `SCHOUL1-boutique` |
-  | Wuertduell — extension Natur | `NATUR1-boutique` |
+  | Wuertduell — extension Schoul et Natur | `E1-boutique` |
 
   La métadonnée nomme le dossier de `impression/codes/` où le script prend
   les codes. Sans elle, le script ignore le produit : c'est ce qui sépare les
   cartes d'un éventuel autre paiement sur le même compte.
-- **Trois liens de paiement**, un par produit (les boutons de la page), mais
-  chacun propose **les deux autres en articles optionnels** : la boîte et une
-  extension font une seule commande, un seul port et un seul colis. Si le
+- **Deux liens de paiement**, un par produit (les boutons de la page), mais
+  chacun propose **l'autre en article optionnel** : la boîte et l'extension
+  font une seule commande, un seul port et un seul colis. Si le
   tableau de bord n'offre pas les articles optionnels, la vente croisée du
   produit fait presque la même chose. Pour chaque lien :
   - quantité modifiable par le client, de 1 à 5 ;
@@ -179,9 +185,9 @@ offset et le stock (skill § 7) ramènent la boîte vers 12–15 €.
   produits, PaymentIntents et charges. Elle vit dans la variable
   `STRIPE_CLE`, jamais dans un fichier du dépôt.
 - **Les liens** se collent enfin dans `docs/commander.md` (`stripe_lien`,
-  `stripe_lien_schoul`, `stripe_lien_natur`, avec `prix` et
-  `prix_extension`) : celui de la boîte remplace la liste d'attente par les
-  boutons ; le lien vide d'une extension cache seulement son bouton.
+  `stripe_lien_extension`, avec `prix` et `prix_extension`) : celui de la
+  boîte remplace la liste d'attente par les boutons ; le lien vide de
+  l'extension cache seulement son bouton.
 
 ## 7. La carte code part par e-mail
 
@@ -192,8 +198,7 @@ pris dans une réserve signée pour la boutique seule, une par produit (nommée
 
 ```bash
 python3 scripts/codes_cartes.py @B1 -n 200 -o impression/codes/B1-boutique
-python3 scripts/codes_cartes.py @SCHOUL1 -n 100 -o impression/codes/SCHOUL1-boutique
-python3 scripts/codes_cartes.py @NATUR1 -n 100 -o impression/codes/NATUR1-boutique
+python3 scripts/codes_cartes.py @E1 -n 200 -o impression/codes/E1-boutique
 ```
 
 Une commande de plusieurs jeux reçoit un seul e-mail, avec un code par jeu et
@@ -274,10 +279,10 @@ certaines.
 - **`docs/commander.md`** : la page de la boutique. Tant que `stripe_lien` est
   vide, elle propose la **liste d'attente** (le formulaire Formspree des avis,
   avec le sujet « Liste d'attente : boutique Wuertduell » et des cases pour
-  la boîte et chaque extension, qui mesurent la demande de chacune ; un
+  la boîte et l'extension, qui mesurent la demande de chacune ; un
   formulaire à part sera plus propre si les inscriptions dépassent le quota
   gratuit). Une fois `stripe_lien`, `prix` et `fabricant` remplis, elle montre
-  le bouton de la boîte, ceux des extensions dont le lien est rempli, les prix
+  le bouton de la boîte, celui de l'extension si son lien est rempli, les prix
   et les informations du produit.
 - **`docs/merci-commande.md`** : le retour après le paiement, hors des moteurs
   de recherche (`noindex: true`, lu par `_includes/head-custom.html`).
@@ -332,7 +337,7 @@ après sa préparation.
 À compléter et à faire relire par un juriste avant toute publication.
 
 1. **Vendeur** : nom, forme, adresse, e-mail, n° d'autorisation, RCS, TVA.
-2. **Produits** : la boîte de départ du Wuertduell et les extensions Schoul
+2. **Produits** : la boîte de départ du Wuertduell et l'extension Schoul
    et Natur, leur contenu, l'âge conseillé, le code envoyé par e-mail pour
    chaque jeu, qui ajoute ses cartes dans l'application gratuite
    Lëtzebuergesch Clavier.

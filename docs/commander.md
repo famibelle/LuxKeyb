@@ -1,16 +1,15 @@
 ---
 title: "Commander le jeu de cartes"
-description: "Le Wuertduell, le jeu de cartes du Lëtzebuergesch Clavier : la boîte de 54 cartes en luxembourgeois et les extensions Schoul et Natur, imprimées à la demande et livrées chez vous au Luxembourg, en Belgique, en France et en Allemagne."
+description: "Le Wuertduell, le jeu de cartes du Lëtzebuergesch Clavier : la boîte de départ et l'extension Schoul et Natur, 54 cartes en luxembourgeois chacune, imprimées à la demande et livrées chez vous au Luxembourg, en Belgique, en France et en Allemagne."
 lang: fr
 # La boutique (BOUTIQUE-CARTES.md). Tant que stripe_lien (la boîte) est vide,
 # la page propose la liste d'attente. Ne le remplir qu'après la liste du § 8
 # de la note : statut, conditions de vente, mentions légales, marquage CE.
-# Un lien vide d'extension cache seulement son bouton.
+# Un lien vide pour l'extension cache seulement son bouton.
 stripe_lien: ""
-stripe_lien_schoul: ""
-stripe_lien_natur: ""
+stripe_lien_extension: ""
 prix: ""            # la boîte, ex. « 29 €, livraison comprise »
-prix_extension: ""  # une extension, ex. « 12 € »
+prix_extension: ""  # l'extension, ex. « 29 €, livraison comprise »
 delai: "deux à trois semaines"
 fabricant: ""   # nom, adresse postale et e-mail du vendeur, obligatoires sur la page de vente
 ---
@@ -27,8 +26,8 @@ fabricant: ""   # nom, adresse postale et e-mail du vendeur, obligatoires sur la
 
 <p class="chapo">Le <strong>Wuertduell</strong> : 54 cartes en luxembourgeois,
 imprimées à la demande et livrées chez vous. On joue tout de suite, à deux,
-dès 6 ans, et les extensions <em>Schoul</em> et <em>Natur</em> agrandissent
-le jeu.</p>
+dès 6 ans, et l'extension <em>Schoul</em> et <em>Natur</em> double le
+jeu.</p>
 
 <figure style="margin:20px auto;max-width:620px;text-align:center;">
   <img src="assets/cartes-eventail.png" style="width:100%;" alt="Quatre cartes en éventail : Bam (arbre) en étain, Sonn (soleil) en bronze, Brëll (lunettes) en argent, Kran (grue) en or">
@@ -44,17 +43,22 @@ le jeu.</p>
 - **Un code par e-mail**, un par boîte : scanné dans le carnet de
   l'application, il y ajoute les 52 cartes de la boîte.
 
-## Les extensions
+## L'extension Schoul et Natur
 
-- **Schoul**, l'école : 24 cartes, de *Buch* et *Heft* à *Schoulsak* et
-  *Schouljoffer*, avec des verbes pour la classe : *liesen*, *schreiwen*,
-  *molen*…
-- **Natur** : 24 cartes, *Bam*, *Sonn*, *Mound*, *Reen*, *Donnerwieder*… et
-  les couleurs *rout*, *blo*, *gréng*, *giel*.
+Une deuxième boîte de 54 cartes, faite comme la première :
 
-Elles complètent la boîte : avec elles, chacun compose son propre paquet de
-26 cartes ([voir la règle](regle-du-jeu.html#les-paquets)). Chaque extension a
-aussi son code par e-mail, qui ajoute ses 24 cartes au carnet.
+- **52 cartes à jouer** : deux paquets de 26, *Schoul* (l'école : *Buch*,
+  *Heft*, *Schoulsak*, *Mathematik*, et des verbes pour la classe comme
+  *liesen*, *schreiwen*, *molen*) et *Natur* (*Bam*, *Sonn*, *Mound*,
+  *Gletscher*, les saisons, et des mots comme *gréng*, *waarm*, *klammen*).
+- **2 cartes de règle**, comme dans la boîte de départ.
+- **Un code par e-mail**, un par boîte, qui ajoute ses 52 cartes au carnet.
+
+Elle se joue seule, Schoul contre Natur, ou avec la boîte de départ : chacun
+de ses paquets tient tête à ceux de la boîte, et avec les deux boîtes, chacun
+compose son propre paquet de 26 cartes
+([voir la règle](regle-du-jeu.html#les-paquets)). Aucun mot n'est dans les
+deux boîtes.
 
 Toutes les cartes sont au format poker (63 × 88 mm). Les mots, leurs sens et
 leurs phrases viennent du [Lëtzebuerger Online Dictionnaire](https://lod.lu).
@@ -63,7 +67,7 @@ leurs phrases viennent du [Lëtzebuerger Online Dictionnaire](https://lod.lu).
 
 Au **Luxembourg**, en **Belgique**, en **France** et en **Allemagne**. Chaque
 jeu est imprimé pour vous, puis envoyé directement chez vous : comptez
-{{ page.delai }}. Au moment de payer, vous pouvez ajouter les extensions à la
+{{ page.delai }}. Au moment de payer, vous pouvez ajouter l'extension à la
 boîte, ou l'inverse : tout part dans la même commande.
 
 {% if page.stripe_lien != "" %}
@@ -72,11 +76,10 @@ boîte, ou l'inverse : tout part dans la même commande.
 <p class="chapo-note">La boîte de départ : {{ page.prix }}</p>
 
 <p style="margin:20px 0 8px;"><a href="{{ page.stripe_lien }}" class="btn-installer">🛒 Commander la boîte</a></p>
-{% if page.stripe_lien_schoul != "" or page.stripe_lien_natur != "" %}
-<p class="chapo-note" style="margin-top:24px;">Une extension : {{ page.prix_extension }}</p>
+{% if page.stripe_lien_extension != "" %}
+<p class="chapo-note" style="margin-top:24px;">L'extension Schoul et Natur : {{ page.prix_extension }}</p>
 
-<p>{% if page.stripe_lien_schoul != "" %}<a href="{{ page.stripe_lien_schoul }}" class="btn-secondaire">Commander Schoul</a>{% endif %}
-{% if page.stripe_lien_natur != "" %}<a href="{{ page.stripe_lien_natur }}" class="btn-secondaire">Commander Natur</a>{% endif %}</p>
+<p><a href="{{ page.stripe_lien_extension }}" class="btn-secondaire">Commander l'extension</a></p>
 {% endif %}
 <p class="note">Paiement sécurisé par Stripe, qui vous demande l'adresse de
 livraison. Vous pouvez renoncer à votre achat dans les 14 jours qui suivent la
@@ -104,8 +107,7 @@ seul e-mail**, le jour où les commandes ouvrent.
   <fieldset style="margin:0 0 10px;padding:0;border:0;">
     <legend style="padding:0;">Ce qui vous intéresse</legend>
     <label><input type="checkbox" name="interet_boite" value="oui" checked> La boîte de départ</label><br>
-    <label><input type="checkbox" name="interet_schoul" value="oui"> L'extension Schoul</label><br>
-    <label><input type="checkbox" name="interet_natur" value="oui"> L'extension Natur</label>
+    <label><input type="checkbox" name="interet_extension" value="oui"> L'extension Schoul et Natur</label>
   </fieldset>
   <p style="margin:0 0 14px;">
     <label for="attente-pays">Pays de livraison</label><br>
