@@ -51,20 +51,20 @@ Iessen,daper,adjectif,,5,2,courageux,tapfer,brave,corajoso,Stad,,eis Ekipp huet 
 Iessen,véier,nombre,,0,0,4,4,4,4,,,,
 Iessen,fënnef,nombre,,0,0,5,5,5,5,,,,
 Iessen,sechs,nombre,,0,0,6,6,6,6,,,,
-Schoul,Fro,nom,f.,3,1,question,Frage,question,"pergunta, questão",Neimënster,,mat där Fro hat ech net gerechent!,je ne m'attendais pas à cette question !
+Schoul,Fro,nom,f.,3,1,question,Frage,question,"pergunta, questão",Neimënster,question,mat där Fro hat ech net gerechent!,je ne m'attendais pas à cette question !
 Schoul,Buch,nom,n.,4,1,livre,Buch,"book, account book","livro, livro de contas",Neimënster,livre,"et ass sécher net einfach, e gutt Buch ze schreiwen",écrire un bon livre n’est certainement pas facile
-Schoul,Heft,nom,n.,4,1,cahier,Heft,notebook,caderno,Stad,,haut de Moien huet de Schoulmeeschter d'Hefter kontrolléiert,
-Schoul,Koll,nom,m.,4,1,colle,Klebstoff,glue,cola,Stad,,ech hunn d'Poppenhaus mat engem extrae Koll gepecht,
+Schoul,Heft,nom,n.,4,1,cahier,Heft,notebook,caderno,Stad,cahier,haut de Moien huet de Schoulmeeschter d'Hefter kontrolléiert,
+Schoul,Koll,nom,m.,4,1,colle,Klebstoff,glue,cola,Stad,colle,ech hunn d'Poppenhaus mat engem extrae Koll gepecht,
 Schoul,Bréif,nom,m.,5,2,lettre,Brief,letter,carta,Neimënster,lettre,"ech hu vergiess, en Timber op de Bréif ze pechen",j’ai oublié de coller un timbre sur la lettre
 Schoul,Dësch,nom,m.,5,2,table,Tisch,table,mesa,Esch-Sauer,table,iwwer Dësch gëtt net geschwat!,
 Schoul,Musek,nom,f.,5,2,musique,"Musik, Musikkapelle","music, brass band","música, banda municipal",Stad,note,am Hannergrond leeft eng agreabel Musek,
+Schoul,Calcul,nom,m.,6,2,calcul,Kalkül,calculation,calculismo,Stad,calcul,"hien handelt net aus Guttmiddegkeet, mee aus puerem Calcul","il n’agit pas par bonté, mais par pur calcul"
 Schoul,Schoul,nom,f.,6,2,école,Schule,school,escola,Esch-Sauer,ecole,mir sinn zesummen an d'Schoul gaangen,
-Schoul,Calcul,nom,m.,6,2,calcul,Kalkül,calculation,calculismo,Stad,,"hien handelt net aus Guttmiddegkeet, mee aus puerem Calcul","il n’agit pas par bonté, mais par pur calcul"
-Schoul,Crayong,nom,m.,7,2,crayon,Bleistift,pencil,lápis,Stad,,et soll een ni mam Crayong ënnerschreiwen,il ne faut jamais signer au crayon
+Schoul,Crayong,nom,m.,7,2,crayon,Bleistift,pencil,lápis,Stad,crayon,et soll een ni mam Crayong ënnerschreiwen,il ne faut jamais signer au crayon
+Schoul,Alphabet,nom,n.,8,3,alphabet,Alphabet,alphabet,alfabeto,Stad,alphabet,den S kënnt am Alphabet virum T,la lettre S vient avant la lettre T dans l’alphabet
 Schoul,Computer,nom,m.,8,3,ordinateur,Computer,computer,computador,Neimënster,ordinateur,d'Computere ginn ëmmer méi bëlleg,
-Schoul,Alphabet,nom,n.,8,3,alphabet,Alphabet,alphabet,alfabeto,Stad,,den S kënnt am Alphabet virum T,la lettre S vient avant la lettre T dans l’alphabet
-Schoul,Schoulsak,nom,m.,9,3,cartable,Schulranzen,school bag,mala de escola,Stad,,e schwéiere Schoulsak ass eng Belaaschtung fir de Kanner hire Réck,
-Schoul,Mathematik,nom,f.,10,3,mathématiques,Mathematik,mathematics,matemática,Stad,,d'Arithmeetik ass e wichtegen Deel vun der Mathematik,l’arithmétique est une partie fondamentale des mathématiques
+Schoul,Schoulsak,nom,m.,9,3,cartable,Schulranzen,school bag,mala de escola,Stad,cartable,e schwéiere Schoulsak ass eng Belaaschtung fir de Kanner hire Réck,
+Schoul,Mathematik,nom,f.,10,3,mathématiques,Mathematik,mathematics,matemática,Stad,mathematiques,d'Arithmeetik ass e wichtegen Deel vun der Mathematik,l’arithmétique est une partie fondamentale des mathématiques
 Schoul,liesen,verbe,,6,2,lire,lesen,"to read, to read out, to pick","ler, vindimar",Neimënster,,hien huet vu Klengem un e Brëll gebraucht fir ze liesen,"depuis qu'il est petit, il a besoin de lunettes pour lire"
 Schoul,molen,verbe,,5,2,dessiner,malen,to paint,desenhar,Stad,,"komm, ech probéieren emol, dech ze molen!",
 Schoul,laachen,verbe,,7,2,rire,"lachen, spotten, lächeln","to laugh, to smirk, to smile (at)","rir(-se), gargalhar, sorrir (para)",Stad,,de ganze Sall huet iwwer de Witz gelaacht,
@@ -78,19 +78,19 @@ Schoul,siwen,nombre,,0,0,7,7,7,7,,,,
 Schoul,aacht,nombre,,0,0,8,8,8,8,,,,
 Schoul,néng,nombre,,0,0,9,9,9,9,,,,
 Natur,Bam,nom,m.,3,1,arbre,Baum,tree,árvore,Mëllerdall,arbre,dëse Bam ass méi ewéi honnert Joer al,cet arbre a plus de cent ans
+Natur,Bich,nom,f.,4,1,hêtre,Buche,beech,faia,Stad,hetre,hanner der Kierch stinn dräi grouss Bichen,trois grands hêtres se trouvent derrière l’église
 Natur,Reen,nom,m.,4,1,pluie,Regen,rain,chuva,Esch-Sauer,pluie,"huel e Prabbeli mat, et gëtt Reen!",
 Natur,Sonn,nom,f.,4,1,soleil,Sonne,sun,"Sol, sol",Esch-Sauer,soleil,wéi vill Sonne gëtt et an eisem Universum?,
-Natur,Bich,nom,f.,4,1,hêtre,Buche,beech,faia,Stad,,hanner der Kierch stinn dräi grouss Bichen,trois grands hêtres se trouvent derrière l’église
 Natur,Bësch,nom,m.,5,2,forêt,Wald,forest,floresta,Esch-Sauer,foret,mir ginn all Sonndeg an de Bësch spadséieren,
 Natur,Insel,nom,f.,5,2,île,Insel,island,ilha,Esch-Sauer,ile,an der Vakanz si mir vun Insel zu Insel geseegelt,
 Natur,Mound,nom,m.,5,2,lune,Mond,moon,lua,Esch-Sauer,lune,um Mound ass nach kee Liewe fonnt ginn,
+Natur,Donner,nom,m.,6,2,tonnerre,Donner,thunder,trovão,Stad,orage,ech hat als Kand Angscht virum Blëtz a virum Donner,"enfant, j'avais peur de la foudre et du tonnerre"
 Natur,Wanter,nom,m.,6,2,hiver,Winter,winter,inverno,Veianen,flocon,mat engem Tank Mazout komme mer gutt iwwer de Wanter,un plein de fioul nous permet de passer l’hiver
-Natur,Donner,nom,m.,6,2,tonnerre,Donner,thunder,trovão,Stad,,ech hat als Kand Angscht virum Blëtz a virum Donner,"enfant, j'avais peur de la foudre et du tonnerre"
-Natur,Bongert,nom,m.,7,2,verger,Obstgarten,orchard,pomar,Stad,,eisen Noper huet a sengem Bongert Mirabellebeem geplanzt,notre voisin a planté des mirabelliers dans son verger
-Natur,Hierscht,nom,m.,8,3,automne,Herbst,autumn,outono,Veianen,,am Hierscht falen d'Blieder vun de Beem,"en automne, les feuilles tombent des arbres"
-Natur,Fréijoer,nom,n.,8,3,printemps,Frühling,spring,primavera,Veianen,,dëst Fréijoer stinn d'Beem fréi an der Bléi,
-Natur,Gletscher,nom,m.,9,3,glacier,Gletscher,glacier,glaciar,Stad,,d'Gletscher glënneren an der Mëttessonn,
-Natur,Feierblumm,nom,f.,10,3,coquelicot,Klatschmohn,poppy,papoila,Stad,,um Bord vun de Felder gesäit een nees méi Feierblummen a Karblummen,"en bordure des champs, on retrouve à nouveau des coquelicots et des bleuets"
+Natur,Bongert,nom,m.,7,2,verger,Obstgarten,orchard,pomar,Stad,verger,eisen Noper huet a sengem Bongert Mirabellebeem geplanzt,notre voisin a planté des mirabelliers dans son verger
+Natur,Hierscht,nom,m.,8,3,automne,Herbst,autumn,outono,Veianen,automne,am Hierscht falen d'Blieder vun de Beem,"en automne, les feuilles tombent des arbres"
+Natur,Fréijoer,nom,n.,8,3,printemps,Frühling,spring,primavera,Veianen,printemps,dëst Fréijoer stinn d'Beem fréi an der Bléi,
+Natur,Gletscher,nom,m.,9,3,glacier,Gletscher,glacier,glaciar,Stad,glacier,d'Gletscher glënneren an der Mëttessonn,
+Natur,Feierblumm,nom,f.,10,3,coquelicot,Klatschmohn,poppy,papoila,Stad,coquelicot,um Bord vun de Felder gesäit een nees méi Feierblummen a Karblummen,"en bordure des champs, on retrouve à nouveau des coquelicots et des bleuets"
 Natur,klammen,verbe,,7,2,grimper,"steigen, klettern","to climb, to climb (up), to climb in(to)","subir, descer, fazer escalada",Rout Bréck,,"hie klëmmt op d'Leeder, fir eng nei Bier anzedréien",il monte sur l’échelle pour visser une nouvelle ampoule
 Natur,falen,verbe,,5,2,tomber,"fallen, falten","to fall, to fall (over), to ring out","cair, ser tomado, ressoar",Rout Bréck,,hënt ass Schnéi gefall,
 Natur,fannen,verbe,,6,2,trouver,finden,to find,achar,Stad,,ech hunn am Bësch eng Auer fonnt,

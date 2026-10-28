@@ -1593,5 +1593,272 @@ internal object Meubles {
             p.cubicTo(-4f, 0f, -9f, 3f, -12f, 8f)
             p.close()                                                  // le reflet
         },
+
+        // ---- l'extension du Wuertduell, Schoul et Natur (scripts/silhouettes_boite.py) ----
+        // Même règle que pour la boîte : chacun des 28 noms de l'extension porte
+        // un dessin sur le jeu imprimé (propriétaire, 2026-10-28). Ces quinze
+        // silhouettes complètent les treize que la bibliothèque avait déjà.
+        "question" to { p ->                                   // Fro
+            p.moveTo(-30f, -40f)
+            p.lineTo(30f, -40f)
+            p.cubicTo(38f, -40f, 44f, -34f, 44f, -26f)
+            p.lineTo(44f, 10f)
+            p.cubicTo(44f, 18f, 38f, 24f, 30f, 24f)
+            p.lineTo(-6f, 24f)
+            p.lineTo(-30f, 44f)
+            p.lineTo(-22f, 24f)
+            p.lineTo(-30f, 24f)
+            p.cubicTo(-38f, 24f, -44f, 18f, -44f, 10f)
+            p.lineTo(-44f, -26f)
+            p.cubicTo(-44f, -34f, -38f, -40f, -30f, -40f)
+            p.close()                                                  // la bulle
+            p.pol(-5.8f, -19.7f, -5.1f, -21.1f, -4.5f, -22f, -3.6f, -22.8f, -2.6f, -23.4f, -1.6f, -23.8f, -0.4f, -24f, 0.7f, -24f, 1.9f, -23.7f, 2.9f, -23.2f, 3.9f, -22.6f, 4.7f, -21.8f, 5.3f, -20.8f, 5.7f, -19.8f, 6f, -18.6f, 6f, -17.5f, 5.8f, -16.3f, 5.3f, -15.3f, 4.7f, -14.3f, 3.9f, -13.5f, 1.7f, -11.6f, -3.7f, -2.4f, -4f, 4f, 4f, 4f, 3.7f, 0.4f, 8.3f, -7.1f, 9.2f, -7.4f, 11f, -9.4f, 12.5f, -11.6f, 13.5f, -14.1f, 13.9f, -16.8f, 13.9f, -19.5f, 13.4f, -22.1f, 12.4f, -24.6f, 10.9f, -26.8f, 9f, -28.7f, 6.8f, -30.2f, 4.3f, -31.3f, 1.7f, -31.9f, -1f, -32f, -3.6f, -31.5f, -6.1f, -30.6f, -8.4f, -29.2f, -10.4f, -27.4f, -12f, -25.2f, -13f, -23.1f) // le point d'interrogation, en réserve
+            p.disque(0f, 13f, 4.6f)
+        },
+        "cahier" to { p ->                                   // Heft
+            p.arrondi(-24f, -44f, 40f, 44f, 5f)                        // la couverture
+            p.arrondi(-10f, -30f, 30f, -6f, 3f)                        // l'étiquette, en réserve
+            p.arrondi(-4f, -22f, 24f, -19.5f, 1.2f)                    // ses lignes
+            p.arrondi(-4f, -16f, 16f, -13.5f, 1.2f)
+            p.arrondi(-38f, -37f, -16f, -31f, 3f)
+            p.arrondi(-38f, -23f, -16f, -17f, 3f)
+            p.arrondi(-38f, -9f, -16f, -3f, 3f)
+            p.arrondi(-38f, 5f, -16f, 11f, 3f)
+            p.arrondi(-38f, 19f, -16f, 25f, 3f)
+            p.arrondi(-38f, 33f, -16f, 39f, 3f)                        // la spirale, qui passe dans la couverture
+        },
+        "colle" to { p ->                                   // Koll
+            p.pol(-30.6f, -39f, -22.8f, -34.5f, -27f, -31.2f, -27.8f, -25.8f, -32f, -22.5f, -32.8f, -17.2f, -37f, -13.8f, -37.8f, -8.5f, -45.6f, -13f) // le pli du tube
+            p.moveTo(-20.6f, -34.4f)
+            p.lineTo(14.9f, -13.9f)
+            p.cubicTo(21.9f, -9.9f, 20.8f, -0.1f, 25.5f, 3.8f)
+            p.lineTo(31.9f, 8.7f)
+            p.lineTo(26.9f, 17.3f)
+            p.lineTo(19.5f, 14.2f)
+            p.cubicTo(13.8f, 12.1f, 5.9f, 17.9f, -1.1f, 13.9f)
+            p.lineTo(-36.6f, -6.6f)
+            p.close()                                                  // le tube et son bec
+            p.moveTo(-16.9f, -21.8f)
+            p.lineTo(4.8f, -9.3f)
+            p.cubicTo(6f, -8.6f, 6.4f, -7.1f, 5.7f, -5.9f)
+            p.lineTo(1.2f, 1.9f)
+            p.cubicTo(0.5f, 3.1f, -1f, 3.5f, -2.2f, 2.8f)
+            p.lineTo(-23.9f, -9.7f)
+            p.cubicTo(-25f, -10.4f, -25.5f, -11.9f, -24.8f, -13.1f)
+            p.lineTo(-20.3f, -20.9f)
+            p.cubicTo(-19.6f, -22.1f, -18f, -22.5f, -16.9f, -21.8f)
+            p.close()                                                  // l'étiquette
+            p.moveTo(36f, 26f)
+            p.cubicTo(41f, 33f, 44f, 37f, 44f, 41f)
+            p.cubicTo(44f, 45.5f, 40.5f, 48f, 36f, 48f)
+            p.cubicTo(31.5f, 48f, 28f, 45.5f, 28f, 41f)
+            p.cubicTo(28f, 37f, 31f, 33f, 36f, 26f)
+            p.close()                                                  // la goutte
+        },
+        "calcul" to { p ->                                   // Calcul
+            p.arrondi(-42f, -42f, -2f, -2f, 7f)
+            p.arrondi(-42f, 2f, -2f, 42f, 7f)
+            p.arrondi(2f, -42f, 42f, -2f, 7f)
+            p.arrondi(2f, 2f, 42f, 42f, 7f)                            // les quatre touches
+            p.pol(-25.5f, -33f, -18.5f, -33f, -18.5f, -25.5f, -11f, -25.5f, -11f, -18.5f, -18.5f, -18.5f, -18.5f, -11f, -25.5f, -11f, -25.5f, -18.5f, -33f, -18.5f, -33f, -25.5f, -25.5f, -25.5f) // plus, moins, fois, divisé, en réserve
+            p.arrondi(11f, -25.5f, 33f, -18.5f, 2f)
+            p.pol(-16f, 11f, -11f, 16f, -17.1f, 22f, -11f, 28f, -16f, 33f, -22f, 26.9f, -28f, 33f, -33f, 28f, -26.9f, 22f, -33f, 16f, -28f, 11f, -22f, 17.1f)
+            p.arrondi(11f, 19f, 33f, 25f, 2f)
+            p.disque(22f, 13f, 3.4f)
+            p.disque(22f, 31f, 3.4f)
+        },
+        "crayon" to { p ->                                   // Crayong
+            p.pol(-39.6f, 39.6f, -35.8f, 30.7f, -30.7f, 35.8f)         // la mine
+            p.pol(-34.9f, 28.7f, -28.3f, 15.6f, -15.6f, 28.3f, -28.7f, 34.9f) // le bois taillé
+            p.pol(-26.9f, 14.1f, 15.6f, -28.3f, 28.3f, -15.6f, -14.1f, 26.9f) // le corps
+            p.pol(-20.4f, 15f, 16.4f, -21.8f, 17.5f, -20.6f, -19.2f, 16.1f) // ses pans
+            p.pol(-16.1f, 19.2f, 20.6f, -17.5f, 21.8f, -16.4f, -15f, 20.4f)
+            p.pol(16.6f, -30.1f, 23.7f, -37.1f, 37.1f, -23.7f, 30.1f, -16.6f) // la virole
+            p.pol(21.9f, -30.4f, 23.3f, -31.8f, 31.8f, -23.3f, 30.4f, -21.9f)
+            p.moveTo(27.9f, -40.7f)
+            p.lineTo(30.8f, -43.5f)
+            p.cubicTo(32.1f, -44.9f, 34.3f, -44.9f, 35.7f, -43.5f)
+            p.lineTo(43.5f, -35.7f)
+            p.cubicTo(44.9f, -34.3f, 44.9f, -32.1f, 43.5f, -30.8f)
+            p.lineTo(40.7f, -27.9f)
+            p.cubicTo(39.3f, -26.6f, 37.1f, -26.6f, 35.7f, -27.9f)
+            p.lineTo(27.9f, -35.7f)
+            p.cubicTo(26.6f, -37.1f, 26.6f, -39.3f, 27.9f, -40.7f)
+            p.close()                                                  // la gomme
+        },
+        "alphabet" to { p ->                                   // Alphabet
+            p.arrondi(-20f, -44f, 20f, -4f, 4f)                        // les trois cubes
+            p.arrondi(-44f, 2f, -4f, 42f, 4f)
+            p.arrondi(4f, 2f, 44f, 42f, 4f)
+            p.pol(-13f, -11f, -3.5f, -37f, 3.5f, -37f, 13f, -11f, 6.6f, -11f, 4.7f, -16.5f, -4.7f, -16.5f, -6.6f, -11f)
+            p.pol(-2.9f, -22f, 0f, -30.5f, 2.9f, -22f)                 // A, B, C, en réserve
+            p.moveTo(-35f, 9f)
+            p.lineTo(-22f, 9f)
+            p.cubicTo(-15f, 9f, -12.5f, 12.5f, -12.5f, 15.5f)
+            p.cubicTo(-12.5f, 18.5f, -14f, 20.5f, -16f, 21.5f)
+            p.cubicTo(-13f, 22.5f, -11f, 25f, -11f, 28.5f)
+            p.cubicTo(-11f, 32.5f, -14.5f, 35f, -21f, 35f)
+            p.lineTo(-35f, 35f)
+            p.close()
+            p.moveTo(-28.6f, 14.2f)
+            p.lineTo(-22.5f, 14.2f)
+            p.cubicTo(-19.6f, 14.2f, -18.4f, 15.4f, -18.4f, 17f)
+            p.cubicTo(-18.4f, 18.7f, -19.6f, 19.6f, -22.5f, 19.6f)
+            p.lineTo(-28.6f, 19.6f)
+            p.close()
+            p.moveTo(-28.6f, 24.6f)
+            p.lineTo(-21.5f, 24.6f)
+            p.cubicTo(-18.6f, 24.6f, -17.2f, 26f, -17.2f, 27.4f)
+            p.cubicTo(-17.2f, 28.8f, -18.6f, 29.9f, -21.5f, 29.9f)
+            p.lineTo(-28.6f, 29.9f)
+            p.close()
+            p.pol(34.3f, 30.7f, 32.7f, 32.3f, 30.8f, 33.7f, 28.6f, 34.7f, 26.3f, 35.3f, 24f, 35.5f, 21.7f, 35.3f, 19.4f, 34.7f, 17.3f, 33.7f, 15.3f, 32.3f, 13.7f, 30.7f, 12.3f, 28.8f, 11.3f, 26.6f, 10.7f, 24.3f, 10.5f, 22f, 10.7f, 19.7f, 11.3f, 17.4f, 12.3f, 15.2f, 13.7f, 13.3f, 15.3f, 11.7f, 17.2f, 10.3f, 19.4f, 9.3f, 21.7f, 8.7f, 24f, 8.5f, 26.3f, 8.7f, 28.6f, 9.3f, 30.8f, 10.3f, 32.7f, 11.7f, 34.3f, 13.3f, 29.7f, 17.2f, 28.8f, 16.3f, 27.7f, 15.6f, 26.5f, 15f, 25.3f, 14.7f, 24f, 14.6f, 22.7f, 14.7f, 21.5f, 15f, 20.3f, 15.6f, 19.2f, 16.3f, 18.3f, 17.2f, 17.6f, 18.3f, 17f, 19.5f, 16.7f, 20.7f, 16.6f, 22f, 16.7f, 23.3f, 17f, 24.5f, 17.6f, 25.7f, 18.3f, 26.8f, 19.2f, 27.7f, 20.3f, 28.4f, 21.5f, 29f, 22.7f, 29.3f, 24f, 29.4f, 25.3f, 29.3f, 26.5f, 29f, 27.7f, 28.4f, 28.8f, 27.7f, 29.7f, 26.8f)
+        },
+        "cartable" to { p ->                                   // Schoulsak
+            p.pol(-9.5f, -35.8f, -9.3f, -37.9f, -8.8f, -39.6f, -7.9f, -41.3f, -6.7f, -42.7f, -5.3f, -43.9f, -3.6f, -44.8f, -1.9f, -45.3f, 0f, -45.5f, 1.9f, -45.3f, 3.6f, -44.8f, 5.3f, -43.9f, 6.7f, -42.7f, 7.9f, -41.3f, 8.8f, -39.6f, 9.3f, -37.9f, 9.5f, -35.8f, 14.5f, -36.2f, 14.2f, -38.8f, 13.4f, -41.5f, 12.1f, -44.1f, 10.3f, -46.3f, 8.1f, -48.1f, 5.5f, -49.4f, 2.8f, -50.2f, 0f, -50.5f, -2.8f, -50.2f, -5.5f, -49.4f, -8.1f, -48.1f, -10.3f, -46.3f, -12.1f, -44.1f, -13.4f, -41.5f, -14.2f, -38.8f, -14.5f, -36.2f) // la poignée
+            p.arrondi(-34f, -32f, 34f, 46f, 10f)                       // le sac
+            p.pol(-27.3f, -32f, -27.3f, 2f, -27.3f, 2.1f, -27.1f, 4.2f, -26.4f, 6.3f, -25.4f, 8.3f, -24f, 10f, -22.3f, 11.4f, -20.3f, 12.4f, -18.2f, 13.1f, -16f, 13.3f, 16f, 13.3f, 18.2f, 13.1f, 20.3f, 12.4f, 22.3f, 11.4f, 24f, 10f, 25.4f, 8.3f, 26.4f, 6.3f, 27.1f, 4.2f, 27.3f, 2f, 27.3f, -32f, 24.7f, -32f, 24.7f, 2f, 24.5f, 3.7f, 24f, 5.3f, 23.2f, 6.8f, 22.2f, 8.2f, 20.8f, 9.2f, 19.3f, 10f, 17.7f, 10.5f, 16f, 10.7f, -16f, 10.7f, -17.7f, 10.5f, -19.3f, 10f, -20.8f, 9.2f, -22.2f, 8.2f, -23.2f, 6.8f, -24f, 5.3f, -24.5f, 3.7f, -24.7f, 1.9f, -24.7f, 2f, -24.7f, -32f) // le bord du rabat, en réserve
+            p.arrondi(-20f, 16f, -10f, 26f, 1.5f)
+            p.arrondi(-17f, 19f, -13f, 23f, 0.8f)
+            p.arrondi(10f, 16f, 20f, 26f, 1.5f)
+            p.arrondi(13f, 19f, 17f, 23f, 0.8f)                        // les fermoirs
+        },
+        "mathematiques" to { p ->                                   // Mathematik
+            p.pol(-46f, 44f, -46f, -28f, 26f, 44f)                     // l'équerre
+            p.pol(-38f, 36f, -38f, -8f, 6f, 36f)                       // son jour
+            p.pol(-46f, -16f, -40f, -16f, -40f, -14.4f, -46f, -14.4f)
+            p.pol(-46f, -4f, -40f, -4f, -40f, -2.4f, -46f, -2.4f)
+            p.pol(-46f, 8f, -40f, 8f, -40f, 9.6f, -46f, 9.6f)
+            p.pol(-46f, 20f, -40f, 20f, -40f, 21.6f, -46f, 21.6f)
+            p.pol(-46f, 32f, -40f, 32f, -40f, 33.6f, -46f, 33.6f)      // ses graduations
+            p.disque(30f, -38f, 6.5f)                                  // la tête du compas
+            p.disque(30f, -38f, 2.4f)
+            p.pol(28f, -50f, 32f, -50f, 32f, -45.5f, 28f, -45.5f)      // sa poignée
+            p.pol(24f, -32.7f, 13f, 13.3f, 19f, 14.7f, 30f, -31.3f)    // la jambe à la pointe
+            p.pol(14.2f, 16.8f, 18.2f, 17.8f, 13.4f, 28f)              // la pointe
+            p.pol(30f, -31.3f, 39f, 6.7f, 45f, 5.3f, 36f, -32.7f)      // la jambe au crayon
+            p.pol(39.4f, 9f, 45f, 8f, 44.4f, 20f)                      // sa mine
+        },
+        "hetre" to { p ->                                   // Bich
+            p.moveTo(0f, -46f)
+            p.cubicTo(30f, -46f, 48f, -30f, 48f, -10f)
+            p.cubicTo(48f, 8f, 32f, 18f, 14f, 18f)
+            p.lineTo(6f, 18f)
+            p.lineTo(6f, 14f)
+            p.lineTo(-6f, 14f)
+            p.lineTo(-6f, 18f)
+            p.lineTo(-14f, 18f)
+            p.cubicTo(-32f, 18f, -48f, 8f, -48f, -10f)
+            p.cubicTo(-48f, -30f, -30f, -46f, 0f, -46f)
+            p.close()                                                  // la couronne
+            p.pol(-3.5f, 14f, -3f, -2f, -22f, -18f, -19f, -22f, 0f, -7f, 19f, -22f, 22f, -18f, 3f, -2f, 3.5f, 14f) // les branches, en réserve
+            p.pol(-2f, -10f, -1.5f, -28f, 1.5f, -28f, 2f, -10f)
+            p.moveTo(-6f, 20f)
+            p.lineTo(6f, 20f)
+            p.lineTo(7f, 34f)
+            p.cubicTo(8f, 40f, 14f, 42f, 22f, 44f)
+            p.lineTo(-22f, 44f)
+            p.cubicTo(-14f, 42f, -8f, 40f, -7f, 34f)
+            p.close()                                                  // le fût et ses racines
+        },
+        "orage" to { p ->                                   // Donner
+            p.moveTo(-38f, 6f)
+            p.cubicTo(-50f, 6f, -50f, -14f, -37f, -15f)
+            p.cubicTo(-37f, -30f, -20f, -36f, -10f, -26f)
+            p.cubicTo(-4f, -44f, 22f, -44f, 25f, -24f)
+            p.cubicTo(38f, -30f, 50f, -14f, 41f, -2f)
+            p.cubicTo(46f, 4f, 44f, 6f, 38f, 6f)
+            p.close()                                                  // le nuage
+            p.pol(-4f, 10f, 14f, 10f, 4f, 24f, 15f, 24f, -10f, 49f, -2f, 31f, -13f, 31f) // l'éclair
+        },
+        "verger" to { p ->                                   // Bongert
+            p.moveTo(-42f, -6f)
+            p.cubicTo(-50f, -10f, -48f, -26f, -37f, -26f)
+            p.cubicTo(-36f, -38f, -18f, -42f, -12f, -32f)
+            p.cubicTo(0f, -38f, 12f, -24f, 4f, -14f)
+            p.cubicTo(12f, -6f, 4f, 6f, -8f, 2f)
+            p.cubicTo(-14f, 8f, -28f, 8f, -32f, 2f)
+            p.cubicTo(-42f, 6f, -48f, 0f, -42f, -6f)
+            p.close()                                                  // les deux pommiers
+            p.moveTo(10.2f, 4.3f)
+            p.cubicTo(4.4f, 1.4f, 5.8f, -10.1f, 13.8f, -10.1f)
+            p.cubicTo(14.5f, -18.7f, 27.4f, -21.6f, 31.8f, -14.4f)
+            p.cubicTo(40.4f, -18.7f, 49f, -8.6f, 43.3f, -1.4f)
+            p.cubicTo(49f, 4.3f, 43.3f, 13f, 34.6f, 10.1f)
+            p.cubicTo(30.3f, 14.4f, 20.2f, 14.4f, 17.4f, 10.1f)
+            p.cubicTo(10.2f, 13f, 5.8f, 8.6f, 10.2f, 4.3f)
+            p.close()
+            p.disque(-28f, -16f, 3.8f)
+            p.disque(-12f, -24f, 3.8f)
+            p.disque(-22f, 2f, 3.8f)
+            p.disque(-4f, -8f, 3.8f)
+            p.disque(20f, -4f, 3.8f)
+            p.disque(32f, -8f, 3.8f)
+            p.disque(27f, 8f, 3.8f)                                    // les pommes, en réserve
+            p.pol(-24f, 9f, -16f, 9f, -16f, 36f, -24f, 36f)            // les troncs
+            p.pol(23f, 14f, 29f, 14f, 29f, 36f, 23f, 36f)
+            p.arrondi(-48f, 38f, 48f, 46f, 4f)                         // l'herbe
+        },
+        "automne" to { p ->                                   // Hierscht
+            p.pol(0f, -46f, 6f, -32f, 15f, -36f, 12f, -21f, 30f, -27f, 25f, -15f, 33f, -11f, 22f, -2f, 26f, 6f, 10f, 4f, 3f, 10f, 2f, 22f, -2f, 22f, -3f, 10f, -10f, 4f, -26f, 6f, -22f, -2f, -33f, -11f, -25f, -15f, -30f, -27f, -12f, -21f, -15f, -36f, -6f, -32f) // la feuille d'érable
+            p.pol(-1f, 2f, 0f, -30f, 1f, 2f)                           // sa nervure
+            p.moveTo(20.2f, 27.1f)
+            p.cubicTo(29.1f, 24.8f, 38.9f, 31.7f, 39.8f, 40.9f)
+            p.cubicTo(30.9f, 43.2f, 21.1f, 36.3f, 20.2f, 27.1f)
+            p.close()                                                  // les feuilles qui tombent
+            p.moveTo(-40.5f, 33.1f)
+            p.cubicTo(-37.5f, 26.7f, -30f, 23.9f, -23.5f, 26.9f)
+            p.cubicTo(-26.5f, 33.3f, -34f, 36.1f, -40.5f, 33.1f)
+            p.close()
+        },
+        "printemps" to { p ->                                   // Fréijoer
+            p.moveTo(-42f, 46f)
+            p.lineTo(-42f, 40f)
+            p.cubicTo(-30f, 30f, -12f, 26f, 0f, 26f)
+            p.cubicTo(12f, 26f, 30f, 30f, 42f, 40f)
+            p.lineTo(42f, 46f)
+            p.close()                                                  // la terre
+            p.pol(3f, 22.8f, 2f, 10f, 3f, -1.8f, -3f, -2.2f, -4f, 10f, -3f, 23.2f) // la tige
+            p.moveTo(-4f, -6f)
+            p.cubicTo(-12f, -26f, -30f, -34f, -44f, -30f)
+            p.cubicTo(-40f, -16f, -24f, -4f, -4f, -6f)
+            p.close()                                                  // les deux feuilles
+            p.moveTo(4f, -6f)
+            p.cubicTo(10f, -32f, 30f, -44f, 46f, -40f)
+            p.cubicTo(44f, -20f, 26f, -4f, 4f, -6f)
+            p.close()
+            p.pol(-9.5f, -11.7f, -23.5f, -21.8f, -35.6f, -27.8f, -36.4f, -26.2f, -24.5f, -20.2f, -10.5f, -10.3f) // leurs nervures
+            p.pol(10.6f, -11.4f, 24.6f, -25.3f, 38.5f, -34.2f, 37.5f, -35.8f, 23.4f, -26.7f, 9.4f, -12.6f)
+        },
+        "glacier" to { p ->                                   // Gletscher
+            p.pol(10f, -46f, 22.1f, -18f, 22f, -8f, 14f, -16f, 8f, -2f, 2f, -18f, -4f, -10f, -5f, -16f) // la glace du grand sommet
+            p.pol(-6.6f, -12.8f, -4f, -6.8f, 2f, -14.8f, 8f, 1.2f, 14f, -12.8f, 22f, -4.8f, 23.5f, -14.8f, 48f, 42f, -0.9f, 42f, -16f, 6f) // sa roche, rognée par le petit
+            p.pol(-27f, -8f, -20.3f, 8f, -22f, 14f, -27f, 6f, -32f, 14f, -33.7f, 8f) // la glace du petit
+            p.pol(-35.1f, 11.2f, -32f, 17.2f, -27f, 9.2f, -22f, 17.2f, -18.9f, 11.2f, -6f, 42f, -48f, 42f) // sa roche
+        },
+        "coquelicot" to { p ->                                   // Feierblumm
+            p.pol(33f, -20f, 33.7f, -18.4f, 34.3f, -16.8f, 34.7f, -15.1f, 34.9f, -13.3f, 35f, -11.5f, 34.8f, -9.7f, 34.5f, -7.9f, 34f, -6.2f, 33.2f, -4.5f, 32.3f, -2.9f, 31.3f, -1.4f, 30f, 0f, 28.6f, 1.3f, 27.1f, 2.3f, 25.5f, 3.2f, 23.8f, 4f, 22.1f, 4.5f, 20.3f, 4.8f, 18.5f, 5f, 16.7f, 4.9f, 14.9f, 4.7f, 13.2f, 4.3f, 11.6f, 3.7f, 10f, 3f, 8.4f, 3.7f, 6.8f, 4.3f, 5.1f, 4.7f, 3.3f, 4.9f, 1.5f, 5f, -0.3f, 4.8f, -2.1f, 4.5f, -3.8f, 4f, -5.5f, 3.2f, -7.1f, 2.3f, -8.6f, 1.3f, -10f, 0f, -11.3f, -1.4f, -12.3f, -2.9f, -13.2f, -4.5f, -14f, -6.2f, -14.5f, -7.9f, -14.8f, -9.7f, -15f, -11.5f, -14.9f, -13.3f, -14.7f, -15.1f, -14.3f, -16.8f, -13.7f, -18.4f, -13f, -20f, -13.7f, -21.6f, -14.3f, -23.2f, -14.7f, -24.9f, -14.9f, -26.7f, -15f, -28.5f, -14.8f, -30.3f, -14.5f, -32.1f, -14f, -33.8f, -13.2f, -35.5f, -12.3f, -37.1f, -11.3f, -38.6f, -10f, -40f, -8.6f, -41.3f, -7.1f, -42.3f, -5.5f, -43.2f, -3.8f, -44f, -2.1f, -44.5f, -0.3f, -44.8f, 1.5f, -45f, 3.3f, -44.9f, 5.1f, -44.7f, 6.8f, -44.3f, 8.4f, -43.7f, 10f, -43f, 11.6f, -43.7f, 13.2f, -44.3f, 14.9f, -44.7f, 16.7f, -44.9f, 18.5f, -45f, 20.3f, -44.8f, 22.1f, -44.5f, 23.8f, -44f, 25.5f, -43.2f, 27.1f, -42.3f, 28.6f, -41.3f, 30f, -40f, 31.3f, -38.6f, 32.3f, -37.1f, 33.2f, -35.5f, 34f, -33.8f, 34.5f, -32.1f, 34.8f, -30.3f, 35f, -28.5f, 34.9f, -26.7f, 34.7f, -24.9f, 34.3f, -23.2f, 33.7f, -21.6f) // les quatre pétales
+            p.pol(-11.8f, -33f, -11.2f, -34.4f, -10.5f, -35.7f, -9.7f, -36.9f, -8.8f, -38f, -7.7f, -39.1f, -6.5f, -40f, -5.3f, -40.8f, -3.9f, -41.4f, -4.8f, -43.1f, -6.2f, -42.3f, -7.6f, -41.4f, -8.9f, -40.4f, -10.1f, -39.3f, -11.1f, -38f, -12.1f, -36.6f, -12.9f, -35.2f, -13.5f, -33.7f)
+            p.pol(23f, -41.8f, 24.4f, -41.2f, 25.7f, -40.5f, 26.9f, -39.7f, 28f, -38.8f, 29.1f, -37.7f, 30f, -36.5f, 30.8f, -35.3f, 31.4f, -33.9f, 33.1f, -34.8f, 32.3f, -36.2f, 31.4f, -37.6f, 30.4f, -38.9f, 29.3f, -40.1f, 28f, -41.1f, 26.6f, -42.1f, 25.2f, -42.9f, 23.7f, -43.5f)
+            p.pol(31.8f, -7f, 31.2f, -5.6f, 30.5f, -4.3f, 29.7f, -3.1f, 28.8f, -2f, 27.7f, -0.9f, 26.5f, 0f, 25.3f, 0.8f, 23.9f, 1.4f, 24.8f, 3.1f, 26.2f, 2.3f, 27.6f, 1.4f, 28.9f, 0.4f, 30.1f, -0.7f, 31.1f, -2f, 32.1f, -3.4f, 32.9f, -4.8f, 33.5f, -6.3f)
+            p.pol(-3f, 1.8f, -4.4f, 1.2f, -5.7f, 0.5f, -6.9f, -0.3f, -8f, -1.2f, -9.1f, -2.3f, -10f, -3.5f, -10.8f, -4.7f, -11.4f, -6.1f, -13.1f, -5.2f, -12.3f, -3.8f, -11.4f, -2.4f, -10.4f, -1.1f, -9.3f, 0.1f, -8f, 1.1f, -6.6f, 2.1f, -5.2f, 2.9f, -3.7f, 3.5f) // leurs recouvrements
+            p.disque(10f, -20f, 11.5f)                                 // le cœur, en réserve
+            p.disque(10f, -20f, 5f)                                    // la capsule
+            p.disque(18.6f, -20f, 1.8f)
+            p.disque(16.1f, -13.9f, 1.8f)
+            p.disque(10f, -11.4f, 1.8f)
+            p.disque(3.9f, -13.9f, 1.8f)
+            p.disque(1.4f, -20f, 1.8f)
+            p.disque(3.9f, -26.1f, 1.8f)
+            p.disque(10f, -28.6f, 1.8f)
+            p.disque(16.1f, -26.1f, 1.8f)                              // les étamines
+            p.pol(7.7f, 6.9f, 6.7f, 29.7f, 3.8f, 39.4f, 1.8f, 46.4f, 6.2f, 47.6f, 8.2f, 40.6f, 11.3f, 30.3f, 12.3f, 7.1f) // la tige
+            p.pol(-16f, 46.7f, -19f, 23.6f, -24.2f, 5.1f, -32.4f, -1.9f, -39.6f, 0.1f, -38.4f, 3.9f, -33.6f, 1.9f, -27.8f, 6.9f, -23f, 24.4f, -20f, 47.3f) // la tige du bouton
+            p.moveTo(-42f, 4f)
+            p.cubicTo(-36f, 4f, -33f, 12f, -35f, 20f)
+            p.cubicTo(-37f, 26f, -45f, 26f, -47f, 20f)
+            p.cubicTo(-49f, 12f, -48f, 4f, -42f, 4f)
+            p.close()                                                  // le bouton, penché
+        },
     )
 }

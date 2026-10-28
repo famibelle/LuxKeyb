@@ -67,8 +67,8 @@ docs/commander.md ──► paiement Stripe ──► docs/merci-commande.md
 - **L'extension *Schoul* et *Natur*** (2026-10-28) : 54 cartes comme la
   boîte, 2 paquets de 26 (14 noms, 5 verbes, 4 adjectifs, 3 nombres chacun)
   et les 2 cartes de règle. Ensemble `@E1`. Elle se joue seule (Schoul contre
-  Natur, 49 % / 51 % en simulation) ou avec la boîte (chacun de ses paquets à
-  49–51 % contre Déieren et Iessen), et aucun mot n'est dans les deux boîtes.
+  Natur, 48 % / 52 % en simulation) ou avec la boîte (chacun de ses paquets à
+  48–50 % contre Déieren et Iessen), et aucun mot n'est dans les deux boîtes.
   Même format que la boîte, donc même étui et même grille de prix chez
   l'imprimeur. Cartes : `Dictionnaires/cartes/selection.md`.
   - **L'appli doit être publiée avant la vente** : `@E1` n'est connu que des
@@ -77,8 +77,8 @@ docs/commander.md ──► paiement Stripe ──► docs/merci-commande.md
   - Les extensions de 24 cartes (`@SCHOUL1`, `@NATUR1`) sont retirées de
     l'appli : jamais imprimées, aucun code signé connu. Si un code a été
     signé pour elles, les remettre dans `cartes_imprimees.json`.
-  - 15 de ses 28 noms n'ont pas encore de dessin (la boîte en a un pour chaque
-    nom depuis le 2026-10-26) : à dessiner avant le BAT.
+  - Chacun de ses 28 noms a son dessin, comme ceux de la boîte : 15 ont été
+    dessinés pour elle le 2026-10-28 (`scripts/silhouettes_boite.py`).
 - **Plus tard**, le coffret complet : un jeu fixe lui aussi, que l'impression
   à la demande sait faire.
 - **Pas les paquets de 6.** Leur hasard (3 communes, 2 peu communes, 1 rare ou

@@ -218,7 +218,7 @@ section 4) : c'est le format le moins cher à produire en qualité.
 **Les mots viennent du LOD** (2026-10-23) : `scripts/candidats_cartes.py`
 compose la boîte (Déieren contre Iessen, noms jumelés par longueur : 50 % de
 victoires de chaque côté en simulation) et l'extension (Schoul contre Natur,
-54 cartes faites comme la boîte, 2026-10-28 : même courbe de Force, 49–51 %
+54 cartes faites comme la boîte, 2026-10-28 : même courbe de Force, 48–52 %
 contre ses paquets comme contre ceux de la boîte, aucun mot en commun),
 dans `Dictionnaires/cartes/` : `selection.md` à relire, `selection.csv` pour
 les fichiers, `candidats.csv` pour remplacer un mot. Verbes et adjectifs

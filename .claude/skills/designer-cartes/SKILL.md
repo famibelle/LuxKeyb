@@ -318,5 +318,11 @@ Pour un paquet à thème prêt à jouer (26 cartes) : 14 noms, 5 verbes,
 d'un enfant, rien de vulgaire ni d'effrayant), et équilibrés contre les deux
 paquets de la boîte. L'extension (`@E1`, 2026-10-28) est faite ainsi :
 Schoul contre Natur, 54 cartes comme la boîte, noms sur la courbe de Force de
-la boîte, 49–51 % contre tous les paquets en simulation (`selection.md`).
-15 de ses 28 noms attendent leur dessin.
+la boîte, 48–52 % contre tous les paquets en simulation (`selection.md`).
+Chacun de ses 28 noms a son dessin : 15 silhouettes nouvelles (question,
+cahier, colle, calcul, crayon, alphabet, cartable, mathématiques, hêtre,
+orage, verger, automne, printemps, glacier, coquelicot) dans
+`scripts/silhouettes_boite.py`, section « l'extension », recopiées dans
+`Meubles.kt`. Une silhouette nouvelle passe le test du pouce (vignette à 25 %,
+clair sur sombre et sombre sur clair) à côté des meubles voisins : le hêtre
+ne doit pas se lire comme « arbre », ni l'orage comme « pluie ».
