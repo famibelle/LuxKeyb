@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Financement : Lëtzebuergesch Clavier</title>
-<meta name="description" content="Comment Lëtzebuergesch Clavier est financé : gratuit, sans publicité, sans financement reçu à ce jour. Ce qui peut être soutenu, ce qui ne peut pas être fait sur du temps libre, et comment aider.">
+<meta name="description" content="Objectif : 10 000 € pour Lëtzebuergesch Clavier, gratuit et sans publicité. Ce que les dons financent (relecture par des linguistes, version iOS, dictée, maintenance), nos engagements envers les donateurs, et le compteur des dons reçus.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
@@ -12,8 +12,8 @@
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Lëtzebuergesch Clavier">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Financement : Lëtzebuergesch Clavier">
-<meta property="og:description" content="Gratuit, sans publicité, sans financement reçu à ce jour. Ce qui peut être soutenu et comment aider le projet.">
+<meta property="og:title" content="Objectif 10 000 € : Lëtzebuergesch Clavier">
+<meta property="og:description" content="Un clavier luxembourgeois gratuit et sans publicité. Aidez-nous à réunir 10 000 € pour la relecture par des linguistes, la version iOS et la maintenance.">
 <meta property="og:url" content="https://famibelle.github.io/LuxKeyb/financement.html">
 <meta property="og:image" content="https://famibelle.github.io/LuxKeyb/assets/ads/export/google-paysage-A.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -36,41 +36,58 @@ h1{font-size:clamp(26px,5.6vw,36px);font-weight:800;line-height:1.12;letter-spac
 section{margin-top:44px;}
 h2{font-size:21px;font-weight:800;margin:0 0 10px;letter-spacing:-0.01em;scroll-margin-top:70px;}
 p{margin:0 0 12px;}
-ul{margin:0 0 12px;padding-left:20px;}
-li{margin-bottom:6px;}
 a{color:var(--sea);}
 strong{font-weight:700;}
+.muted{color:var(--ink-soft);font-size:14.5px;}
 
-/* Les chiffres d'entrée : ce que le projet a reçu, dit en une ligne. */
-.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:0 0 6px;}
-.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 16px 14px;}
-.tile .n{display:block;font-size:28px;font-weight:800;color:var(--sea);letter-spacing:-0.02em;line-height:1.1;}
-.tile .k{display:block;font-size:14px;color:var(--ink-soft);margin-top:6px;}
-
-/* Le bouton de soutien, le seul lien payant de la page. */
-.soutien{
-  display:flex;flex-wrap:wrap;gap:12px;align-items:center;
-  background:var(--sun-soft);border:1px solid var(--line);border-radius:12px;
-  padding:18px;margin:0 0 6px;
-}
-.soutien p{margin:0;flex:1 1 260px;}
+/* La jauge de la collecte. Les valeurs écrites dans le HTML sont celles de
+   stats/financement.json au moment du commit : sans JavaScript, ou si le
+   fichier ne charge pas, la page reste juste à cette date près. */
+.collecte{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 18px 18px;margin-top:22px;}
+.collecte .chiffres{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 16px;margin:0 0 10px;}
+.collecte .recu{font-size:clamp(30px,7vw,40px);font-weight:800;letter-spacing:-0.02em;line-height:1;color:var(--sea);font-variant-numeric:tabular-nums;}
+.collecte .sur{font-size:15px;color:var(--ink-soft);}
+.collecte .sur strong{color:var(--ink);}
+.jauge{height:14px;border-radius:7px;background:var(--stripe);border:1px solid var(--line);overflow:hidden;}
+.jauge > span{display:block;height:100%;width:0;background:var(--gradient);border-radius:7px;transition:width .6s ease;}
+.collecte .detail{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;margin:10px 0 16px;font-size:14px;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
 .btn-soutien{
-  display:inline-block;text-decoration:none;text-align:center;
-  font-weight:700;font-size:15px;border-radius:9px;padding:12px 18px;
-  background:var(--sun);color:#fff;
+  display:block;text-decoration:none;text-align:center;
+  font-weight:700;font-size:16px;border-radius:10px;padding:14px 18px;
+  /* Texte sombre dans les deux thèmes : le blanc sur l'ambre ne tient pas
+     le contraste (3,2:1 en clair, 2:1 en sombre). */
+  background:var(--sun);color:#1C2624;
 }
 .btn-soutien:hover{filter:brightness(1.08);}
+.collecte .note{font-size:13.5px;color:var(--ink-soft);margin:10px 0 0;text-align:center;}
 
-/* Une liste de ce qui reste à faire, avec ce qui le bloque. */
-.besoins{list-style:none;padding:0;margin:0;}
-.besoins li{
+/* Ce que financent les dons, dans l'ordre où l'argent sera dépensé. */
+.chantiers{list-style:none;padding:0;margin:0;counter-reset:ch;}
+.chantiers li{
+  counter-increment:ch;position:relative;
   border:1px solid var(--line);border-radius:10px;background:var(--card);
-  padding:12px 14px;margin:0 0 8px;
+  padding:13px 14px 13px 52px;margin:0 0 8px;
 }
-.besoins strong{display:block;margin-bottom:2px;}
-.besoins span{color:var(--ink-soft);font-size:15px;}
+.chantiers li::before{
+  content:counter(ch);position:absolute;left:14px;top:13px;
+  width:26px;height:26px;border-radius:50%;
+  background:var(--sea-soft);color:var(--sea);
+  font-weight:800;font-size:14px;line-height:26px;text-align:center;
+}
+.chantiers strong{display:block;margin-bottom:2px;}
+.chantiers span{color:var(--ink-soft);font-size:15px;}
 
-.muted{color:var(--ink-soft);font-size:14.5px;}
+/* Les engagements : une liste courte, chacun vérifiable sur cette page. */
+.engagements{margin:0;padding-left:20px;}
+.engagements li{margin-bottom:9px;}
+
+/* Le relevé des dépenses, rempli depuis stats/financement.json. */
+.t-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:320px;}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);}
+th{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:700;}
+td.v{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+td.vide{color:var(--ink-soft);font-style:italic;}
 
 /* Les aides non financières : même poids que le don dans la page. */
 .aides{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:0;padding:0;list-style:none;}
@@ -99,72 +116,85 @@ strong{font-weight:700;}
 <div class="wrap">
 
 <header class="page">
-  <p class="eyebrow">Financement</p>
-  <h1>Un projet gratuit, financé par le temps de quelques personnes</h1>
+  <p class="eyebrow">Financement · objectif 10 000 €</p>
+  <h1>Aidez le luxembourgeois à s'écrire sur tous les téléphones</h1>
   <p class="lead">
     Lëtzebuergesch Clavier est gratuit, sans publicité et sans collecte de
-    données. À ce jour, il n'a reçu aucun financement, ni public ni privé.
-    Cette page dit ce qui le fait tenir, ce qui le bloque, et comment aider
-    si vous le souhaitez.
+    données. Il n'a reçu aucun financement, ni public ni privé : il tient sur
+    du temps libre. Nous cherchons à réunir <strong>10 000 €</strong> pour
+    ce que le temps libre ne permet pas de faire.
   </p>
+
+  <div class="collecte" id="collecte">
+    <div class="chiffres">
+      <span class="recu" id="f-recu">0 €</span>
+      <span class="sur">collectés sur un objectif de <strong id="f-objectif">10 000 €</strong></span>
+    </div>
+    <div class="jauge" role="progressbar" aria-label="Avancement de la collecte"
+         aria-valuemin="0" aria-valuemax="10000" aria-valuenow="0" id="f-jauge">
+      <span id="f-barre"></span>
+    </div>
+    <div class="detail">
+      <span id="f-pourcent">0 % de l'objectif</span>
+      <span id="f-donateurs">Soyez le premier donateur</span>
+    </div>
+    <a class="btn-soutien" href="https://www.buymeacoffee.com/famibelle" rel="noopener" target="_blank">☕ Faire un don</a>
+    <p class="note">
+      Don ponctuel, du montant de votre choix, par Buy Me a Coffee.
+      Compteur mis à jour à la main, le <span id="f-date">28 octobre 2026</span>.
+    </p>
+  </div>
 </header>
 
 <section>
-  <div class="tiles">
-    <div class="tile"><span class="n">0 €</span><span class="k">de financement public reçu à ce jour</span></div>
-    <div class="tile"><span class="n">0 €</span><span class="k">de financement privé, et aucune publicité</span></div>
-    <div class="tile"><span class="n">MIT</span><span class="k">licence du code : libre de reprise et de modification</span></div>
-  </div>
-</section>
-
-<section>
-  <h2>Soutenir le projet financièrement</h2>
-  <p class="section-note muted">Facultatif. Le clavier restera gratuit dans tous les cas.</p>
-  <div class="soutien">
-    <p>
-      Un don ponctuel aide à faire avancer le projet. Il ne donne accès à
-      aucune fonctionnalité supplémentaire et n'ouvre droit à aucune
-      contrepartie.
-    </p>
-    <a class="btn-soutien" href="https://www.buymeacoffee.com/famibelle" rel="noopener" target="_blank">☕ Offrir un café</a>
-  </div>
-</section>
-
-<section>
-  <h2>Ce qui reste à financer</h2>
-  <p class="section-note muted">
-    Ce que le projet ne peut pas faire sur du temps libre, par ordre
-    d'importance. Chaque ligne est un chantier distinct.
+  <h2>Ce que financent les 10 000 €</h2>
+  <p class="muted">
+    Dans l'ordre où l'argent sera dépensé. Le clavier existe et fonctionne :
+    aucun de ces chantiers ne consiste à le construire, tous consistent à le
+    rendre plus juste et à le porter plus loin. Le détail est dans la
+    <a href="dossier-feuille-de-route.html">feuille de route</a>.
   </p>
-  <ul class="besoins">
+  <ol class="chantiers">
     <li>
-      <strong>Validation linguistique</strong>
-      <span>Faire relire les suggestions et les accents par des locuteurs et des linguistes du luxembourgeois.</span>
-    </li>
-    <li>
-      <strong>Dictée luxembourgeoise sans connexion</strong>
-      <span>Aujourd'hui, la dictée vocale demande une connexion. Une version qui fonctionne hors ligne reste à construire.</span>
+      <strong>Relecture par des linguistes du luxembourgeois</strong>
+      <span>Des journées de linguistes pour relire la couverture du dictionnaire, trancher les variantes orthographiques et corriger les suggestions qui tombent à côté.</span>
     </li>
     <li>
       <strong>Version iOS</strong>
-      <span>Le moteur est écrit en Kotlin et en JavaScript, la partie à reprendre est l'interface. Elle n'est ni commencée ni exclue.</span>
+      <span>Le compte développeur Apple et le portage en extension clavier. Les données et le moteur ne dépendent pas d'Android : c'est l'interface qui est à refaire. Au Luxembourg, près de la moitié de la navigation mobile se fait depuis un iPhone.</span>
     </li>
     <li>
-      <strong>Maintenance dans la durée</strong>
-      <span>Mises à jour d'Android, nouvelles versions du dictionnaire, réponses aux retours. Le projet ne doit pas dépendre d'une seule personne.</span>
+      <strong>Dictée luxembourgeoise</strong>
+      <span>Aujourd'hui, la dictée passe par un service distant. Il reste à choisir et à intégrer la solution qui la portera dans la durée.</span>
     </li>
-  </ul>
+    <li>
+      <strong>Maintenance</strong>
+      <span>Compatibilité avec les nouvelles versions d'Android et d'iOS, régénération du dictionnaire à chaque republication du LOD, réponses aux retours.</span>
+    </li>
+  </ol>
 </section>
 
 <section>
-  <h2>Un financement public, à l'étude</h2>
-  <p>
-    Le projet envisage une demande de financement public de type recherche et
-    développement, pour les chantiers ci-dessus qui ne peuvent pas attendre le
-    temps libre. Cette démarche n'est pas encore engagée. Le dossier
-    institutionnel détaille ce qui est déjà fait et ce qui reste à faire :
-    voir le <a href="dossier.html">dossier</a>.
-  </p>
+  <h2>Nos engagements envers les donateurs</h2>
+  <ol class="engagements">
+    <li><strong>Le clavier reste gratuit et sans publicité</strong>, quel que soit le montant réuni. Un don n'achète aucune fonctionnalité réservée.</li>
+    <li><strong>Le compteur est public.</strong> Le montant reçu et le nombre de donateurs sont affichés en haut de cette page, avec la date de mise à jour.</li>
+    <li><strong>Chaque dépense est publiée</strong> dans le relevé ci-dessous : date, objet, montant.</li>
+    <li><strong>Les fonds suivent l'ordre annoncé.</strong> Les dons ne sont pas conditionnés à l'atteinte de l'objectif : s'il n'est pas atteint, l'argent reçu finance les chantiers dans l'ordre de la liste, en commençant par le premier.</li>
+    <li><strong>Rien de ce que vous tapez ne sort du téléphone</strong>, donateur ou non. Le don ne change rien à la <a href="privacy/privacy-policy.html">politique de confidentialité</a>.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Relevé des dépenses</h2>
+  <div class="t-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Objet</th><th style="text-align:right">Montant</th></tr></thead>
+      <tbody id="f-depenses">
+        <tr><td class="vide" colspan="3">Aucune dépense à ce jour.</td></tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 <section>
@@ -172,7 +202,7 @@ strong{font-weight:700;}
   <ul class="aides">
     <li><a href="index.html#installer"><strong>📲 Installer et utiliser</strong><span>C'est le nombre d'utilisateurs qui pèse auprès des institutions.</span></a></li>
     <li><a href="feedbacks_form.html"><strong>💬 Signaler un mot</strong><span>Un mot absent, une suggestion à côté, un blocage : chaque retour compte.</span></a></li>
-    <li><a href="ambassadeurs.html"><strong>📣 Diffuser</strong><span>Tracts, affiches et triptyques à partager autour de vous.</span></a></li>
+    <li><a href="ambassadeurs.html"><strong>📣 Partager la collecte</strong><span>Envoyez cette page, ou diffusez les tracts et affiches de l'espace ambassadeurs.</span></a></li>
     <li><a href="https://github.com/famibelle/LuxKeyb"><strong>💻 Contribuer sur GitHub</strong><span>Le code et les données sont ouverts. Une étoile aide aussi à le trouver.</span></a></li>
   </ul>
 </section>
@@ -186,5 +216,46 @@ strong{font-weight:700;}
   </p>
 </footer>
 
+<script>
+// Le compteur et le relevé viennent de stats/financement.json : c'est le seul
+// fichier à modifier quand un don arrive ou qu'une dépense est faite.
+(function () {
+  var eur = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  var jour = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  function $(id) { return document.getElementById(id); }
+
+  fetch('stats/financement.json', { cache: 'no-cache' })
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function (f) {
+      var pct = f.objectif > 0 ? Math.min(100, f.collecte / f.objectif * 100) : 0;
+      $('f-recu').textContent = eur.format(f.collecte);
+      $('f-objectif').textContent = eur.format(f.objectif);
+      $('f-barre').style.width = pct + '%';
+      $('f-jauge').setAttribute('aria-valuemax', f.objectif);
+      $('f-jauge').setAttribute('aria-valuenow', f.collecte);
+      // Arrondi vers le bas : 99,6 % ne doit pas s'afficher « 100 % ».
+      $('f-pourcent').textContent = Math.floor(pct) + ' % de l\'objectif';
+      $('f-donateurs').textContent = f.donateurs === 0 ? 'Soyez le premier donateur'
+        : f.donateurs + (f.donateurs > 1 ? ' donateurs' : ' donateur');
+      $('f-date').textContent = jour.format(new Date(f.mis_a_jour + 'T12:00:00'));
+
+      if (f.depenses && f.depenses.length) {
+        var tbody = $('f-depenses');
+        tbody.textContent = '';
+        f.depenses.forEach(function (d) {
+          var tr = document.createElement('tr');
+          [jour.format(new Date(d.date + 'T12:00:00')), d.objet, eur.format(d.montant)].forEach(function (v, i) {
+            var td = document.createElement('td');
+            td.textContent = v;
+            if (i === 2) td.className = 'v';
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+      }
+    })
+    .catch(function () { /* Les valeurs du HTML restent affichées. */ });
+})();
+</script>
 </body>
 </html>
