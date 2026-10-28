@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """Prépare les commandes de la boutique en ligne (BOUTIQUE-CARTES.md).
 
-Une boîte commandée sur le site se paie par un lien de paiement Stripe, puis
-elle est imprimée à la demande et envoyée par l'imprimeur directement chez le
-client. Ce script fait le lien entre les deux, chez le propriétaire :
+Un jeu commandé sur le site (la boîte de départ, une extension) se paie par un
+lien de paiement Stripe, puis il est imprimé à la demande et envoyé par
+l'imprimeur directement chez le client. Ce script fait le lien entre les deux,
+chez le propriétaire :
 
 1. il lit les paiements Stripe terminés (les sessions Checkout payées, sans
    les remboursées) ;
-2. il donne à chaque boîte une carte code signée, prise dans une réserve de
+2. il donne à chaque jeu une carte code signée, prise dans une réserve de
    impression/codes/ faite par scripts/codes_cartes.py ; le nom de la réserve
-   est la métadonnée `codes` du produit Stripe (`B1-boutique`) ;
+   est la métadonnée `codes` du produit Stripe (`B1-boutique`,
+   `SCHOUL1-boutique`, `NATUR1-boutique`) ;
 3. il écrit, par commande, la fiche à recopier chez l'imprimeur (l'adresse du
    client) et l'e-mail qui porte le ou les codes QR ;
 4. sur demande, il envoie ces e-mails.
@@ -159,7 +161,8 @@ def reserve_libre(reserve, donnes):
     chemin = os.path.join(CODES, reserve, 'codes.csv')
     if not os.path.exists(chemin):
         sys.exit(f'réserve de codes absente : {chemin}\n'
-                 f'La signer : python3 scripts/codes_cartes.py @B1 -n 200 -o impression/codes/{reserve}')
+                 f'La signer : python3 scripts/codes_cartes.py @{reserve.split("-")[0]} -n 200 '
+                 f'-o impression/codes/{reserve}')
     with open(chemin, newline='', encoding='utf-8') as f:
         return [(l['serie'], l['code']) for l in csv.DictReader(f) if l['serie'] not in donnes]
 
@@ -191,28 +194,34 @@ def fiche(numero, session, lignes):
 
 
 def courriel(numero, session, lignes, pngs, delai, expediteur):
+    """L'e-mail des codes ; `pngs` donne, pour chaque code, son jeu et son image."""
     client = session.get('customer_details') or {}
     nom = client.get('name') or livraison(session)[0]
     n = len(pngs)
     produits = '\n'.join(f'  {q} × {produit}' for produit, q, _ in lignes)
-    codes = ('le code joint ajoute les cartes de la boîte' if n == 1 else
-             f'les {n} codes joints, un par boîte, ajoutent chacun les cartes d\'une boîte')
+    noms = ['code.png'] if n == 1 else [f'code-{i}.png' for i in range(1, n + 1)]
+    if n == 1:
+        codes = 'Le code joint (code.png) les ajoute à votre carnet :'
+    else:
+        codes = ('Chaque code joint ajoute à votre carnet les cartes d\'un jeu :\n' +
+                 '\n'.join(f'  {f} : {produit}' for f, (produit, _) in zip(noms, pngs)) +
+                 '\nPour chacun :')
     m = EmailMessage()
     if expediteur:
         m['From'] = expediteur
     m['To'] = client['email']
-    m['Subject'] = f"Wuertduell {numero} : {'le code de votre boîte' if n == 1 else 'les codes de vos boîtes'}"
+    m['Subject'] = f"Wuertduell {numero} : {'le code de vos cartes' if n == 1 else 'les codes de vos cartes'}"
     m.set_content(f"""Bonjour {nom},
 
 Merci pour votre commande {numero} :
 {produits}
 
-Chaque boîte est imprimée à la demande, rien que pour vous, puis envoyée
+Chaque jeu est imprimé à la demande, rien que pour vous, puis envoyé
 directement par l'imprimeur à l'adresse donnée lors du paiement. Comptez
 {delai}.
 
-Vos cartes vous attendent aussi dans l'application Lëtzebuergesch Clavier :
-{codes} au carnet.
+Vos cartes vous attendent aussi dans l'application Lëtzebuergesch Clavier.
+{codes}
   1. Dans le carnet de l'application, touchez « 🎁 Recevoir ».
   2. Choisissez « 🃏 Le code d'une carte en papier ».
   3. Visez le code, affiché sur un ordinateur ou imprimé : un téléphone ne
@@ -227,9 +236,8 @@ Bonne partie !
 Lëtzebuergesch Clavier
 {SITE}/regle-du-jeu.html
 """)
-    for i, png in enumerate(pngs, 1):
-        m.add_attachment(png, maintype='image', subtype='png',
-                         filename='code.png' if n == 1 else f'code-{i}.png')
+    for f, (_, png) in zip(noms, pngs):
+        m.add_attachment(png, maintype='image', subtype='png', filename=f)
     return m
 
 
@@ -279,14 +287,14 @@ def preparer(a):
         dossier = os.path.join(base, numero)
         os.makedirs(dossier, exist_ok=True)
         donnes_ici, pngs = [], []
-        for _, q, reserve in lignes:
+        for produit, q, reserve in lignes:
             for _ in range(q):
                 serie, texte = libres[reserve].pop(0)
                 png = qr_png(texte)
                 with open(os.path.join(dossier, f'{serie}.png'), 'wb') as f:
                     f.write(png)
                 donnes_ici.append(f'{reserve}/{serie}')
-                pngs.append(png)
+                pngs.append((produit, png))
         texte = fiche(numero, session, lignes)
         with open(os.path.join(dossier, 'fiche.txt'), 'w', encoding='utf-8') as f:
             f.write(texte)

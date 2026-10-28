@@ -366,8 +366,10 @@ Tout est dans `BOUTIQUE-CARTES.md` ; l'essentiel :
 - **Carte code par e-mail** (`scripts/commandes.py`, réserve
   `impression/codes/B1-boutique`) : la carte de règle d'une boîte imprimée à
   la demande ne porte **aucun** code signé.
-- En ligne : la boîte, puis extensions et coffret ; **pas les paquets de 6**
-  (hasard et pochette scellée impossibles à la demande).
+- En ligne : la boîte et les extensions *Schoul* et *Natur* (24 cartes,
+  codes `@SCHOUL1`, `@NATUR1`), un lien Stripe par produit avec les deux
+  autres en articles optionnels ; plus tard le coffret. **Pas les paquets de
+  6** (hasard et pochette scellée impossibles à la demande).
 - Avant d'ouvrir : statut, TVA de l'envoi depuis un autre pays (AED),
   conditions de vente, mentions légales, **marquage CE et EN 71** (jouet dès
   6 ans), notice des données de la boutique.

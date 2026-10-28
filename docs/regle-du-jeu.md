@@ -169,7 +169,8 @@ avantagé.
 
 Des paquets à thème s'ajoutent à la boîte : **Schoul** (l'école : *Buch*,
 *Heft*, *Schoulsak*…) et **Natur** (*Bam*, *Sonn*, *Mound*, *Reen*…), puis
-d'autres, puisque le dictionnaire ne manque pas de mots.
+d'autres, puisque le dictionnaire ne manque pas de mots. Elles se commandent
+avec la boîte, [sur la page Commander](commander.html).
 
 ### Composer son paquet
 

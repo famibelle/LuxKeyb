@@ -18,6 +18,8 @@ reçoive chez elle**. Choix du propriétaire, le 2026-10-28 :
 - **Paiement par Stripe Payment Links** : un lien de paiement par produit, sans
   serveur. Le site reste statique (GitHub Pages).
 - **Livraison au Luxembourg, en Belgique, en France et en Allemagne.**
+- **Trois produits** : la boîte de départ et les extensions *Schoul* et
+  *Natur* (même jour).
 
 ## 2. La chaîne, de la commande à la boîte
 
@@ -37,13 +39,14 @@ docs/commander.md ──► paiement Stripe ──► docs/merci-commande.md
 
 1. **Le client** lit la page Commander (contenu, prix, délai, âge, vendeur) et
    touche « Commander ».
-2. **Stripe** demande la quantité (1 à 5), l'e-mail, le téléphone, l'adresse
-   de livraison (LU, BE, FR, DE seulement), l'acceptation des conditions de
-   vente, et encaisse. Il envoie le reçu et ramène le client sur
+2. **Stripe** demande la quantité de chaque jeu (1 à 5 ; les deux autres
+   produits s'ajoutent en articles optionnels), l'e-mail, le téléphone,
+   l'adresse de livraison (LU, BE, FR, DE seulement), l'acceptation des
+   conditions de vente, et encaisse. Il envoie le reçu et ramène le client sur
    `merci-commande.html`.
 3. **Le propriétaire** lance `scripts/commandes.py preparer` (§ 10) : chaque
    nouvelle commande payée reçoit un numéro (`WD-0001`), un code signé par
-   boîte, une fiche avec l'adresse à recopier chez l'imprimeur et un e-mail
+   jeu (boîte ou extension), une fiche avec l'adresse à recopier chez l'imprimeur et un e-mail
    prêt, avec le code QR en pièce jointe.
 4. Il **passe la commande chez l'imprimeur** avec l'adresse du client comme
    adresse de livraison, sans prix ni facture dans le colis, et note le
@@ -59,10 +62,16 @@ docs/commander.md ──► paiement Stripe ──► docs/merci-commande.md
 
 ## 3. Ce qu'on vend en ligne
 
-- **La boîte de départ** (54 cartes, `docs/regle-du-jeu.md`) : seul produit au
-  lancement.
-- **Plus tard**, les extensions *Schoul* et *Natur* et le coffret complet :
-  ce sont des jeux fixes, que l'impression à la demande sait faire.
+- **La boîte de départ** (54 cartes, `docs/regle-du-jeu.md`) : 2 paquets de
+  26 et 2 cartes de règle. Ensemble `@B1`.
+- **Les extensions *Schoul* et *Natur*** (ajoutées le 2026-10-28) : 24 cartes
+  chacune, dans leur étui, sans carte de règle. Ensembles `@SCHOUL1` et
+  `@NATUR1`, dans l'appli depuis le 26 octobre : leurs codes marchent sans
+  mise à jour. Elles complètent la boîte (chacun compose son paquet de 26) ;
+  on peut en acheter une seule, pour qui a déjà la boîte. Liste des cartes :
+  `Dictionnaires/cartes/selection.md`.
+- **Plus tard**, le coffret complet : un jeu fixe lui aussi, que l'impression
+  à la demande sait faire.
 - **Pas les paquets de 6.** Leur hasard (3 communes, 2 peu communes, 1 rare ou
   mieux) et leur pochette scellée demandent un tirage assemblé ; l'impression
   à la demande imprime toujours le même jeu. Ils restent pour le stand et une
@@ -115,6 +124,12 @@ plus simple pour la TVA (§ 8).
 | Stripe (~1,5 % + 0,25 € par carte de l'UE, à vérifier sur stripe.com) | ~0,70 € |
 | **Coût livré** | **~18–30 €** |
 
+**Une extension** (24 cartes, étui) coûte moins que la boîte, mais pas deux
+fois moins : l'étui et la mise en route pèsent autant, et certains imprimeurs
+facturent par tranches de cartes (24 peut coûter le prix de 36). À chiffrer
+au devis ; vendue seule, son envoi pèse lourd dans le prix, d'où les articles
+optionnels du § 6 (une seule commande, un seul port).
+
 La boîte à **12–15 €** de la skill imprimeur (§ 7) repose sur un tirage offset
 de 500 boîtes à 3–4,5 € : elle **n'est pas tenable** en impression à la
 demande. Le prix se fixe après le devis : coût livré réel, plus ~20 % pour
@@ -130,13 +145,23 @@ offset et le stock (skill § 7) ramènent la boîte vers 12–15 €.
 - **Compte** au nom de la structure (§ 8), avec son IBAN. Faire d'abord tout le
   parcours en **mode test** (cartes de test, clé `rk_test_…` : le script écrit
   alors dans `impression/commandes-test/`).
-- **Produit** « Wuertduell — boîte de départ », prix unique en euros, photo.
-  Pas de TVA tant que la franchise s'applique (§ 8).
-- **Métadonnée du produit** : `codes` = `B1-boutique`, le dossier de
-  `impression/codes/` où le script prend les codes. Sans elle, le script
-  ignore le produit : c'est ce qui sépare les cartes d'un éventuel autre
-  paiement sur le même compte.
-- **Lien de paiement** :
+- **Trois produits**, prix unique en euros, photo ; pas de TVA tant que la
+  franchise s'applique (§ 8) :
+
+  | Produit | Métadonnée `codes` |
+  |---|---|
+  | Wuertduell — boîte de départ | `B1-boutique` |
+  | Wuertduell — extension Schoul | `SCHOUL1-boutique` |
+  | Wuertduell — extension Natur | `NATUR1-boutique` |
+
+  La métadonnée nomme le dossier de `impression/codes/` où le script prend
+  les codes. Sans elle, le script ignore le produit : c'est ce qui sépare les
+  cartes d'un éventuel autre paiement sur le même compte.
+- **Trois liens de paiement**, un par produit (les boutons de la page), mais
+  chacun propose **les deux autres en articles optionnels** : la boîte et une
+  extension font une seule commande, un seul port et un seul colis. Si le
+  tableau de bord n'offre pas les articles optionnels, la vente croisée du
+  produit fait presque la même chose. Pour chaque lien :
   - quantité modifiable par le client, de 1 à 5 ;
   - adresse de livraison demandée, pays limités à LU, BE, FR, DE ;
   - téléphone demandé (utile au transporteur) ;
@@ -153,18 +178,26 @@ offset et le stock (skill § 7) ramènent la boîte vers 12–15 €.
 - **Clé restreinte** pour le script, en lecture seule : sessions Checkout,
   produits, PaymentIntents et charges. Elle vit dans la variable
   `STRIPE_CLE`, jamais dans un fichier du dépôt.
-- **Le lien** se colle enfin dans `docs/commander.md` (`stripe_lien:`) : la
-  page remplace alors la liste d'attente par le bouton « Commander ».
+- **Les liens** se collent enfin dans `docs/commander.md` (`stripe_lien`,
+  `stripe_lien_schoul`, `stripe_lien_natur`, avec `prix` et
+  `prix_extension`) : celui de la boîte remplace la liste d'attente par les
+  boutons ; le lien vide d'une extension cache seulement son bouton.
 
 ## 7. La carte code part par e-mail
 
 L'impression à la demande imprime le même jeu pour tout le monde : pas de QR
-différent par boîte. **Le code part donc par e-mail**, un par boîte commandée,
-pris dans une réserve signée pour la boutique seule :
+différent par boîte. **Le code part donc par e-mail**, un par jeu commandé,
+pris dans une réserve signée pour la boutique seule, une par produit (nommée
+`<ENSEMBLE>-boutique`) :
 
 ```bash
 python3 scripts/codes_cartes.py @B1 -n 200 -o impression/codes/B1-boutique
+python3 scripts/codes_cartes.py @SCHOUL1 -n 100 -o impression/codes/SCHOUL1-boutique
+python3 scripts/codes_cartes.py @NATUR1 -n 100 -o impression/codes/NATUR1-boutique
 ```
+
+Une commande de plusieurs jeux reçoit un seul e-mail, avec un code par jeu et
+la liste de ce que chacun ajoute.
 
 - Une réserve **à part** de celles du stand et des boîtes imprimées en série :
   un code n'est jamais donné deux fois. Le script s'arrête, sans rien
@@ -240,9 +273,11 @@ certaines.
 
 - **`docs/commander.md`** : la page de la boutique. Tant que `stripe_lien` est
   vide, elle propose la **liste d'attente** (le formulaire Formspree des avis,
-  avec le sujet « Liste d'attente : boîte Wuertduell » ; un formulaire à part
-  sera plus propre si les inscriptions dépassent le quota gratuit). Une fois
-  `stripe_lien`, `prix` et `fabricant` remplis, elle montre le bouton, le prix
+  avec le sujet « Liste d'attente : boutique Wuertduell » et des cases pour
+  la boîte et chaque extension, qui mesurent la demande de chacune ; un
+  formulaire à part sera plus propre si les inscriptions dépassent le quota
+  gratuit). Une fois `stripe_lien`, `prix` et `fabricant` remplis, elle montre
+  le bouton de la boîte, ceux des extensions dont le lien est rempli, les prix
   et les informations du produit.
 - **`docs/merci-commande.md`** : le retour après le paiement, hors des moteurs
   de recherche (`noindex: true`, lu par `_includes/head-custom.html`).
@@ -297,9 +332,10 @@ après sa préparation.
 À compléter et à faire relire par un juriste avant toute publication.
 
 1. **Vendeur** : nom, forme, adresse, e-mail, n° d'autorisation, RCS, TVA.
-2. **Produits** : la boîte de départ du Wuertduell, son contenu, l'âge
-   conseillé, le code envoyé par e-mail qui ajoute les cartes dans
-   l'application gratuite Lëtzebuergesch Clavier.
+2. **Produits** : la boîte de départ du Wuertduell et les extensions Schoul
+   et Natur, leur contenu, l'âge conseillé, le code envoyé par e-mail pour
+   chaque jeu, qui ajoute ses cartes dans l'application gratuite
+   Lëtzebuergesch Clavier.
 3. **Prix** : en euros, toutes taxes comprises (mention de franchise le cas
    échéant), frais de livraison indiqués avant le paiement.
 4. **Commande et paiement** : par la page Commander, paiement par Stripe ; le
@@ -308,7 +344,7 @@ après sa préparation.
    demande puis envoi direct par l'imprimeur ; délai indicatif ; que faire
    d'un colis abîmé ou perdu.
 6. **Droit de rétractation** : 14 jours à compter de la réception, sans motif ;
-   comment l'exercer (e-mail ou formulaire type) ; retour de la boîte aux
+   comment l'exercer (e-mail ou formulaire type) ; retour des jeux aux
    frais du client ; remboursement sous 14 jours par le même moyen de paiement.
    Le code déjà envoyé reste valable.
 7. **Garantie légale de conformité** : deux ans.

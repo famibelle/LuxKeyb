@@ -237,6 +237,22 @@ nav.site strong { color: var(--ink); }
 .markdown-body a.btn-installer:hover { color: #fff; }
 .btn-installer:focus-visible { outline: 3px solid var(--sea); outline-offset: 3px; }
 
+/* Action secondaire, sous le bouton principal (extensions de la boutique). */
+.markdown-body a.btn-secondaire {
+  display: inline-block;
+  text-align: center;
+  margin: 4px 8px 4px 0;
+  padding: 12px 22px;
+  border: 2px solid var(--sea);
+  border-radius: 10px;
+  color: var(--sea);
+  font-weight: 700;
+  font-size: 18px;
+  text-decoration: none;
+}
+.markdown-body a.btn-secondaire:hover { background: var(--sea-soft); color: var(--sea); }
+.markdown-body a.btn-secondaire:focus-visible { outline: 3px solid var(--sea); outline-offset: 3px; }
+
 /* L'avertissement Android est annoncé ici, avant qu'Android ne le montre. */
 .markdown-body .rassurance {
   margin: 18px 0 0;
