@@ -4685,6 +4685,15 @@ class CarteOrnee(
  * à chaque trame, dans la boîte 100 × 66 du paysage, et l'irisation d'une très
  * rare passe par-dessus le tout quand l'appareil tourne.
  */
+/** Le temps que met le nuage d'une très rare à traverser la fenêtre. */
+private const val PERIODE_NUAGE = 75_000L
+
+/** Sa course quand la carte penche à fond, entre celle du lointain et celle du milieu ([Paysages.GLISSEMENT]). */
+private const val GLISSEMENT_NUAGE = 0.031f
+
+/** Le haut du nuage, en unités du paysage : dans le ciel, au-dessus des crêtes. */
+private const val HAUTEUR_NUAGE = 6f
+
 class Motif(
     mot: String,
     rarete: Rarete,
@@ -4724,6 +4733,8 @@ class Motif(
     private var plans: Array<Bitmap>? = null
     private var plansManques = false
     private val ouPlan = RectF()
+    /** Le nuage d'une très rare, découpé à la taille de la fenêtre : voir [peindreNuage]. */
+    private var nuage: Bitmap? = null
 
     /** Vrai quand le lieu est en plans, et donc à peindre à chaque trame. */
     val enPlans: Boolean get() = profondeur && plans != null
@@ -4889,7 +4900,28 @@ class Motif(
                 visible.right + mx + dx, visible.bottom + my + dy
             )
             c.drawBitmap(etages[i], null, ouPlan, peinture)
+            if (i == 0) peindreNuage(c, l, h, regardX, regardY)
         }
+    }
+
+    /**
+     * Le nuage d'une très rare ([Paysages.nuage]) : il traverse la fenêtre de
+     * gauche à droite en [PERIODE_NUAGE], entre le lointain et le milieu, et
+     * glisse avec le regard à la vitesse d'entre les deux. Lent, et seul de
+     * son espèce : la règle 7 de la skill `direction-artistique`.
+     *
+     * Il avance avec l'horloge, à chaque trame que l'ambiance de la carte
+     * demande ; une carte sans ambiance le montre immobile.
+     */
+    private fun peindreNuage(c: Canvas, l: Int, h: Int, regardX: Float, regardY: Float) {
+        val b = nuage?.takeIf { !it.isRecycled } ?: Paysages.nuage(heure, l, h)?.also { nuage = it } ?: return
+        val k = cadrage[0]
+        val phase = (android.os.SystemClock.uptimeMillis() % PERIODE_NUAGE) / PERIODE_NUAGE.toFloat()
+        val xBoite = -Paysages.NUAGE_LARGEUR + phase * (Paysages.LARGEUR + Paysages.NUAGE_LARGEUR)
+        val x = visible.left + cadrage[1] + xBoite * k + GLISSEMENT_NUAGE * visible.width() * regardX
+        val y = visible.top + cadrage[2] + HAUTEUR_NUAGE * k + GLISSEMENT_NUAGE * visible.height() * regardY
+        ouPlan.set(x, y, x + Paysages.NUAGE_LARGEUR * k, y + Paysages.NUAGE_HAUTEUR * k)
+        c.drawBitmap(b, null, ouPlan, peinture)
     }
 
     /**
