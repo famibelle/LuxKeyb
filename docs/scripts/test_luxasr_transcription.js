@@ -4,16 +4,17 @@
  *
  *     node docs/scripts/test_luxasr_transcription.js
  *
- * **Les cas sont synthétiques.** Le schéma JSON que rend LuxASR avec
- * `diarization=Enabled` n'est pas documenté publiquement : ces cas couvrent
- * les formes que le normaliseur accepte (WhisperX et ses variantes, SRT, VTT,
- * texte à préfixes), pas la réponse réelle du service. Le jour où un vrai
- * résultat est relevé, l'ajouter ici, anonymisé, en tête de liste
+ * Le premier cas est une **vraie réponse** de LuxASR (relevé du 29 octobre
+ * 2026, `.claude/skills/transcription/releves/`). Les suivants sont
+ * synthétiques : ils couvrent les autres formes que le normaliseur accepte
+ * (variantes de WhisperX, SRT, VTT, texte à préfixes), pas des réponses
+ * observées. Tout nouveau relevé réel s'ajoute en tête
  * (.claude/skills/transcription/SKILL.md § 6).
  */
 'use strict';
 
 const assert = require('assert');
+const fs = require('fs');
 const path = require('path');
 
 require(path.join(__dirname, '..', 'assets', 'luxasr-transcription.js'));
@@ -23,6 +24,30 @@ const cas = [];
 function test(nom, f) { cas.push([nom, f]); }
 
 const nom = (l) => ({ SPEAKER_00: 'Anna', SPEAKER_01: 'Jos' })[l] || l;
+const RELEVE = path.join(__dirname, '..', '..', '.claude', 'skills', 'transcription',
+                         'releves', '2026-10-29', 'resultat.json');
+
+test('Réel (29/10/2026) : tableau à la racine, un segment de 2 min coupé en phrases', () => {
+  const brut = fs.readFileSync(RELEVE, 'utf8');
+  const source = JSON.parse(brut)[0];
+  const d = T.normaliser(brut);
+  assert.strictEqual(d.format, 'json');
+  assert.deepStrictEqual(d.locuteurs, ['SPEAKER_00'], 'le service n\'a vu qu\'une voix');
+  assert.ok(d.segments.length >= 10, d.segments.length + ' phrases');
+  // Fidélité : les phrases recollées redonnent le texte du service, élisions
+  // comprises (« d'Leit », pas « d' Leit »).
+  assert.strictEqual(d.segments.map((s) => s.texte).join(' '), source.text.replace(/\s+/g, ' ').trim());
+  assert.ok(d.segments.some((s) => s.texte.includes("d'Leit")));
+  for (const s of d.segments) {
+    assert.ok(s.fin - s.debut <= 9, `phrase de ${(s.fin - s.debut).toFixed(1)} s : ${s.texte}`);
+    assert.ok(s.texte.length <= 115, `phrase de ${s.texte.length} caractères`);
+  }
+  assert.strictEqual(d.segments[0].debut, source.start);
+  assert.strictEqual(d.segments[d.segments.length - 1].fin, source.end);
+  const tours = T.tours(d);
+  assert.ok(tours.length >= 3, 'deux minutes d\'une voix font plusieurs paragraphes');
+  assert.ok(T.versSrt(d, nom).split('\n\n').length === d.segments.length, 'un sous-titre par phrase');
+});
 
 test('WhisperX : segments, temps et locuteurs', () => {
   const d = T.normaliser(JSON.stringify({
@@ -58,6 +83,26 @@ test('WhisperX : un segment dont les mots changent de locuteur est coupé', () =
   assert.strictEqual(d.segments[1].texte, 'Nee, net haut.');
   assert.strictEqual(d.segments[1].debut, 1.0);
   assert.strictEqual(d.segments[1].fin, 2.0);
+});
+
+test('Phrases : point après 2 s, virgule après 4 s, coupe franche après 8 s', () => {
+  const mots = [];
+  let t = 0;
+  const dire = (w) => { mots.push({ word: ' ' + w, start: t, end: t + 0.4, speaker: 'A' }); t += 0.5; };
+  'Jo. Nee.'.split(' ').forEach(dire);                           // trop court pour fermer
+  'Dat ass eng laang Iwwerleeung iwwer de Wieder.'.split(' ').forEach(dire);
+  for (let i = 0; i < 30; i++) dire('bla');                      // ni point ni virgule
+  const texte = mots.map((m) => m.word).join('').trim();
+  const d = T.normaliser([{ start: 0, end: t, text: texte, speaker: 'A', words: mots }]);
+  assert.strictEqual(d.segments[0].texte, 'Jo. Nee. Dat ass eng laang Iwwerleeung iwwer de Wieder.');
+  assert.ok(d.segments.slice(1).every((s) => s.fin - s.debut <= 8.5), 'aucune phrase au-delà de 8 s');
+  assert.strictEqual(d.segments.map((s) => s.texte).join(' '), texte);
+});
+
+test('Sans alignement possible, les mots sont recollés', () => {
+  const d = T.normaliser([{ start: 0, end: 2, text: 'Texte sans rapport',
+    words: [{ word: ' Moien', start: 0, end: 1, speaker: 'A' }, { word: ' Jos', start: 1, end: 2, speaker: 'B' }] }]);
+  assert.deepStrictEqual(d.segments.map((s) => [s.locuteur, s.texte]), [['A', 'Moien'], ['B', 'Jos']]);
 });
 
 test('Variantes de clés, temps en chaînes, tableau sous « result »', () => {
@@ -184,7 +229,8 @@ test('Horloge et type de contenu', () => {
   assert.strictEqual(T.horloge(5), '0:05');
   assert.strictEqual(T.horloge(3725.9), '1:02:05');
   assert.strictEqual(T.typeAudio({ type: 'audio/x-m4a', name: 'a.m4a' }), 'audio/mp4');
-  assert.strictEqual(T.typeAudio({ type: 'video/mp4', name: 'a.mp4' }), 'audio/mp4');
+  assert.strictEqual(T.typeAudio({ type: 'video/mp4', name: 'a.mp4' }), 'video/mp4');
+  assert.strictEqual(T.typeAudio({ type: '', name: 'Film.MOV' }), 'video/quicktime');
   assert.strictEqual(T.typeAudio({ type: '', name: 'Interview.OPUS' }), 'audio/ogg');
   assert.strictEqual(T.typeAudio({ type: 'audio/mpeg', name: 'a.mp3' }), 'audio/mpeg');
   assert.strictEqual(T.typeAudio({ type: 'application/pdf', name: 'a.pdf' }), null);
