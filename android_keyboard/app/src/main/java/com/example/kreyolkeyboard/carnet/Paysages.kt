@@ -437,7 +437,7 @@ object Paysages {
         val formes = arrayOf(loin.extractAlpha(), couches[1].extractAlpha(), couches[2].extractAlpha())
         val unite = ks[0][0]
         ombrer(fond, formes[0], 0, 0, unite, heure, 1, OMBRE_SUR_LE_CIEL)
-        trancher(loin, formes[0], unite, heure, TRANCHE_AU_LOIN)
+        trancher(loin, formes[0], unite, heure, lointain = true)
         Canvas(fond).drawBitmap(loin, 0f, 0f, null)
         if (souvenir != null) {
             Habillage.appliquerPlans(couches, arrayOf(loin, couches[1], couches[2]), lieu, heure, souvenir,
@@ -491,6 +491,8 @@ object Paysages {
         )
         val c = Canvas(b)
         c.scale(k, k)
+        // De la place au-dessus pour sa bordure.
+        c.translate(0f, 0.7f)
         Peintre(c, heure).nuage()
         val forme = b.extractAlpha()
         trancher(b, forme, k, heure)
@@ -501,7 +503,7 @@ object Paysages {
 
     /** La boîte du nuage, en unités du paysage. */
     const val NUAGE_LARGEUR = 28f
-    const val NUAGE_HAUTEUR = 10f
+    const val NUAGE_HAUTEUR = 11f
 
     /**
      * La part de chemin vers la couleur de l'horizon, par plan : le lointain
@@ -522,9 +524,6 @@ object Paysages {
     private const val OMBRE_SUR_LE_FOND = 0.6f
     private const val OMBRE_SUR_LE_CIEL = 0.35f
 
-    /** La tranche du lointain, moins vive : le liseré d'une crête entière se lit vite comme un trait. */
-    private const val TRANCHE_AU_LOIN = 0.6f
-
     /**
      * L'ombre d'un carton sur un carton de derrière, en unités de la boîte :
      * où elle tombe par plan d'écart, puis son flou.
@@ -537,8 +536,13 @@ object Paysages {
     private const val OMBRE_MONTEE = 0.55f
     private const val OMBRE_FLOU = 1.1f
 
-    /** L'épaisseur de la tranche claire au bord haut de chaque carton, en unités de la boîte. */
-    private const val TRANCHE = 0.3f
+    /**
+     * L'épaisseur de la bordure blanche, en unités de la boîte : environ un
+     * quart de millimètre sur la carte imprimée, deux à trois pixels sur un
+     * téléphone. Un liseré au seul bord haut (jusqu'en 37.9.1) ne se voyait
+     * pas la nuit.
+     */
+    private const val TRANCHE = 0.5f
 
     /**
      * Mélange [b] vers [vers] de la part [t], là où la silhouette [forme] (de
@@ -587,18 +591,58 @@ object Paysages {
     private const val OMBRE = 0xFF0B1020.toInt()
 
     /**
-     * La tranche du carton : un liseré clair juste au-dessus de son bord haut,
-     * la découpe que la rampe éclaire. Posé derrière ce que le calque porte,
-     * il ne se voit qu'au bord.
+     * La tranche du carton : une bordure blanche tout autour de la découpe,
+     * l'âme du papier qu'on voit au bord de tout découpage, la signature du
+     * théâtre de papier. Posée derrière ce que le calque porte, elle ne se
+     * voit qu'au bord. Elle reste blanche la nuit, à peine teintée par le
+     * ciel : c'est le papier, pas la lumière.
      */
-    private fun trancher(b: Bitmap, forme: Bitmap, unite: Float, heure: Heure, force: Float = 1f) {
+    private fun trancher(b: Bitmap, forme: Bitmap, unite: Float, heure: Heure, lointain: Boolean = false) {
+        val r = max(1f, TRANCHE * unite)
+        val ro = max(1f, FIL * unite)
+        val w = forme.width
+        val h = forme.height
+        // D'abord ce qui est trop fin pour une paire de ciseaux (rayons d'une
+        // roue, haubans, piliers grêles) : la silhouette rognée puis regonflée
+        // de [FIL] les efface. Ils restent peints sur le carton, sans bordure ;
+        // bordés, ils devenaient des traits blancs.
+        val ouvert = Bitmap.createBitmap(w, h, Bitmap.Config.ALPHA_8)
+        val co = Canvas(ouvert)
+        co.drawBitmap(forme, 0f, 0f, null)
+        val dans = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN) }
+        for (k in 0 until 12) {
+            val a = k * PI.toFloat() / 6f
+            co.drawBitmap(forme, ro * cos(a), ro * sin(a), dans)
+        }
+        // Puis le pourtour : la silhouette rognée répétée tout autour d'elle,
+        // posée une seule fois pour que sa transparence reste celle voulue.
+        val tour = Bitmap.createBitmap(w, h, Bitmap.Config.ALPHA_8)
+        val ct = Canvas(tour)
+        val plein = Paint(Paint.FILTER_BITMAP_FLAG)
+        for (rayon in floatArrayOf(ro, ro + r)) for (k in 0 until 12) {
+            val a = k * PI.toFloat() / 6f
+            ct.drawBitmap(ouvert, rayon * cos(a), rayon * sin(a), plein)
+        }
+        ouvert.recycle()
+        val blanc = if (heure.nuit) Heure.melange(BLANC_PAPIER, heure.cielHaut, 0.12f) else BLANC_PAPIER
         val p = Paint(Paint.FILTER_BITMAP_FLAG).apply {
-            color = Heure.melange(heure.cielBas, 0xFFFFFFFF.toInt(), if (heure.nuit) 0.3f else 0.6f)
-            alpha = ((if (heure.nuit) 0.45f else 0.7f) * force * 255f).roundToInt()
+            // Le lointain s'efface aussi par sa bordure, vers l'horizon.
+            color = if (lointain) Heure.melange(blanc, heure.cielBas, 0.45f) else blanc
+            alpha = ((if (lointain) 0.7f else 0.95f) * 255f).roundToInt()
             xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OVER)
         }
-        Canvas(b).drawBitmap(forme, 0f, -max(1f, TRANCHE * unite), p)
+        Canvas(b).drawBitmap(tour, 0f, 0f, p)
+        tour.recycle()
     }
+
+    /**
+     * Ce qui est plus fin que deux fois ceci, en unités de la boîte, n'a pas
+     * de bordure : voir [trancher].
+     */
+    private const val FIL = 0.45f
+
+    /** L'âme du papier, d'un blanc à peine chaud, comme un carton découpé. */
+    private const val BLANC_PAPIER = 0xFFFFFBF2.toInt()
 
     fun dessiner(c: Canvas, lieu: Lieu, heure: Heure, ciel: Boolean = true, lieuAussi: Boolean = true,
                  seul: Int = -1) {
