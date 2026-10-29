@@ -57,7 +57,7 @@ android {
     // l'application compile les mêmes sources avec les siennes.
     sourceSets {
         main {
-            java.srcDirs += '../noyau/src/main/kotlin'
+            kotlin.srcDirs += '../noyau/src/main/kotlin'
         }
     }
 
