@@ -27,11 +27,14 @@ récent l'emporte.
 
 ## 1. Conditions d'usage — à respecter avant toute ligne de code
 
-- **Une intégration demande leur accord.** Leur section « API access » dit :
-  « We are opening API access now for limited access. […] If you plan to
-  integrate our service into another application, contact us first for
-  permission and conditions. » La page Labs est une intégration : **elle ne
-  se publie pas avant leur accord écrit.** Le contact est Peter Gilles
+- **L'accord de l'Université et son cadre.** Leur section « API access »
+  dit : « We are opening API access now for limited access. […] If you plan
+  to integrate our service into another application, contact us first for
+  permission and conditions. » Accord obtenu, relayé par le propriétaire du
+  dépôt le 29 octobre 2026 : **usage de laboratoire et exploratoire, charge
+  modérée, pour des tests et l'exploration de l'API.** C'est le cadre de la
+  page Labs. Tout ce qui en sortirait (usage de production, volume, nouvelle
+  surface publique) repasse d'abord par eux. Le contact est Peter Gilles
   (adresse sur leur page).
 - **C'est leur serveur.** Un appel à la fois, jamais en parallèle ; un
   travail soumis est suivi jusqu'au bout, jamais resoumis ; chaque essai de
@@ -229,9 +232,15 @@ observé le 29 octobre : le travail de la sonde était déjà fini).
 
 Ce que fait la page en attendant :
 
+- **Une demi-seconde de silence d'abord** (`sonderCors`, `outfmt=text`,
+  `diarization=Disabled`, 16 044 octets) : si sa réponse est illisible, le
+  vrai fichier ne part pas. Leur serveur ne traite qu'un travail minuscule au
+  lieu d'une heure d'audio, et le visiteur ne téléverse pas 100 Mo pour rien.
+  Une réponse lue est mémorisée sept jours dans ce navigateur
+  (`luxasr-cors-lisible`) : les envois suivants partent sans vérification.
 - Envoi par `XMLHttpRequest` : un fichier entièrement parti puis une réponse
-  illisible donne `CORS`, un envoi coupé donne `RESEAU` (les deux rendent
-  `status 0`).
+  illisible donne `CORS` (`fichierParti: true`), un envoi coupé donne
+  `RESEAU` (les deux rendent `status 0`).
 - Sur `CORS`, **aucun nouvel essai** (chaque essai crée un travail inutile
   chez eux) ; elle renvoie vers le formulaire de <https://luxasr.uni.lu> puis
   « Ouvrir un résultat ». Un échec CORS de moins de sept jours est rappelé au
