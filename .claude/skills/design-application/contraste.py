@@ -71,19 +71,24 @@ PALETTES = {
     ],
     "Appli compagnon (SettingsActivity.kt)": [
         ("titre blanc sur bandeau #0080FF", "#FFFFFF", "#0080FF"),
-        ("onglet actif orange sur blanc", "#FF8C00", "#FFFFFF"),
+        ("onglet actif Encres.ORANGE sur son fond", "#AD5600", "#FFF5E6"),
+        ("surtitre Encres.ORANGE sur blanc", "#AD5600", "#FFFFFF"),
         ("onglet inactif gris sur blanc", "#888888", "#FFFFFF"),
         ("texte secondaire #6B6B6B sur #F5F5F5", "#6B6B6B", "#F5F5F5"),
         ("lien #1976D2 sur blanc", "#1976D2", "#FFFFFF"),
-        ("blanc sur vert réussite #4CAF50", "#FFFFFF", "#4CAF50"),
+        ("blanc sur Encres.VERT", "#FFFFFF", "#2E7D32"),
+        ("Encres.VERT sur #E8F5E9", "#2E7D32", "#E8F5E9"),
         ("blanc sur violet carnet #5E35B1", "#FFFFFF", "#5E35B1"),
         ("lavande #E8E0FF sur violet carnet", "#E8E0FF", "#5E35B1"),
         ("brun #5D4037 sur blanc", "#5D4037", "#FFFFFF"),
         ("blanc sur sarcelle #0E6E76", "#FFFFFF", "#0E6E76"),
     ],
-    "Remplaçants proposés (§ 9)": [
-        ("orange foncé #B35900 sur blanc", "#B35900", "#FFFFFF"),
-        ("blanc sur vert foncé #2E7D32", "#FFFFFF", "#2E7D32"),
+    "Dette restante (§ 9)": [
+        ("bleu #2196F3, mots à découvrir", "#2196F3", "#EEF7FE"),
+        ("blanc sur case jaune Wuertriet", "#FFFFFF", "#FFC107"),
+        ("blanc sur case grise Wuertriet", "#FFFFFF", "#9E9E9E"),
+    ],
+    "Remplaçant proposé (§ 9)": [
         ("blanc sur bleu nuit #003876", "#FFFFFF", "#003876"),
     ],
 }

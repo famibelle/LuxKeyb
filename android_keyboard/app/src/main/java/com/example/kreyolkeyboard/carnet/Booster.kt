@@ -309,7 +309,7 @@ object Booster {
             setPadding(dp(20f), dp(11f), dp(20f), dp(11f))
             background = GradientDrawable().apply {
                 cornerRadius = 24f * d
-                setColor(jeu.couleur)
+                setColor(jeu.encre)
             }
             isClickable = true
             visibility = View.GONE

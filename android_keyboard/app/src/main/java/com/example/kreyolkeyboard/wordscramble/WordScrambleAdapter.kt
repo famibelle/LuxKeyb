@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.FrameLayout
 import android.widget.TextView
+import com.example.kreyolkeyboard.Encres
 
 /**
  * Adaptateur pour afficher les lettres mélangées
@@ -50,7 +51,7 @@ class ScrambledLettersAdapter(
             tvLetter.setBackgroundColor(Color.parseColor("#BDBDBD"))
         } else {
             tvLetter.alpha = 1.0f
-            tvLetter.setBackgroundColor(Color.parseColor("#4CAF50"))
+            tvLetter.setBackgroundColor(Color.parseColor(Encres.VERT))
         }
         
         frameLayout.addView(tvLetter)

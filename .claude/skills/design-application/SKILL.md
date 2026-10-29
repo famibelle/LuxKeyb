@@ -102,11 +102,12 @@ pas va dans `KeyboardColors`, avec son contraste en commentaire.
 | Texte principal | `#1C1C1C` (accueil), `#333333`, `#212121` | partout | ≥ 12:1 | ✓ trois quasi-noirs pour un rôle : prendre `#1C1C1C` |
 | Texte secondaire | `#6B6B6B` | accueil | 4,89:1 sur `#F5F5F5` | ✓ plancher : ne pas éclaircir |
 | Bandeau d'en-tête | `#0080FF`, titre blanc 22 sp gras | `createAppHeader`, `KeyboardSettingsActivity.BLEU` | 3,80:1 | ⚠ texte large seulement ; bleu hérité, hors drapeau (§ 9) |
-| Onglet actif | `#FF8C00` (libellé, trait), fond `#FFF5E6` | `createTab` | **2,33:1** | ✗ libellé de 11 sp illisible (§ 9) |
+| Orange qui porte du texte | `Encres.ORANGE` = `#AD5600` | libellé d'onglet actif, surtitres, rangs, Wuertlück, bouton « Effacer », puce « Partager » du clavier | 5,11:1 (4,74:1 sur le fond `#FFF5E6` de l'onglet) | ✓ |
+| Orange de décor | `#FF8C00` | trait de l'onglet actif, pastille de nouveau palier | 2,33:1 | ✓ jamais sous du texte |
 | Onglet inactif | `Color.GRAY` (`#888888`) | `createTab` | 3,54:1 | ⚠ |
-| Surtitre de carte | `#FF8C00`, 12 sp gras, espacé 0,1 | « Mot du jour » | 2,33:1 | ✗ même défaut |
 | Lien d'action | `#1976D2` | « Voir dans le Wierderbuch » | 4,60:1 | ✓ |
-| Réussite | `#4CAF50` sous texte blanc | `createReadyBanner`, étapes faites | **2,78:1** | ✗ (§ 9) |
+| Vert qui porte du texte | `Encres.VERT` = `#2E7D32` | bandeau « Tout est prêt », étapes faites, « Valider », réponses justes, cases de Wuertriet et Wuertmix, Wuertriet | 5,13:1 | ✓ |
+| Vert de décor | `#4CAF50` | anneau de chargement, confettis | 2,78:1 | ✓ jamais sous du texte |
 | Progression, partage | `#0E6E76` (sarcelle) | Mäi Lëtzebuergesch, carte de niveau | 5,98:1 | ✓ |
 | Texte d'explication chaleureux | `#5D4037` (brun) | guide, à propos | 9,32:1 | ✓ |
 
@@ -126,9 +127,12 @@ couleur, reprise dans son en-tête, ses boutons et la provenance des cartes :
 | Wuertplaz | 🔡 | `#00796B` |
 | *Bienvenue / Cadeau / Papier* | 👋 🎁 🃏 | `#ED2939` / `#B8860B` / `#6D4C41` |
 
-Un nouveau jeu prend une couleur **qu'aucun autre n'a**, et sa couleur ne
-porte du texte blanc que si `contraste.py` dit ≥ 4,5:1 (Wuertlück et
-Wuertriet ne le permettent pas ; Zuelwuert seulement en grand).
+Un nouveau jeu prend une couleur **qu'aucun autre n'a**. Sa couleur porte
+du texte (titre de la carte du hub, filtre du carnet, bouton de pochette)
+seulement si `contraste.py` dit ≥ 4,5:1 ; sinon `JeuCarte.encre` et la carte
+du hub prennent une version foncée, le décor des cartes garde la claire.
+C'est le cas de Wuertriet (`#4CAF50` → `#2E7D32`) et de Wuertlück
+(`#FF8C00` → `#AD5600`). Zuelwuert (4,32:1) ne tient qu'en grand.
 
 **Le carnet** : violet `Carnet.COULEUR` = `#5E35B1` (blanc dessus 8,02:1,
 lavande `#E8E0FF` pour le texte secondaire). Il n'appartient à aucun jeu ;
@@ -139,12 +143,14 @@ rare `#1E88E5` ★, très rare `#8E24AA` ✦. Le symbole répété est obligatoi
 commun et peu commun se confondent en deutéranopie.
 
 **Les états d'un jeu** : neutre `#1976D2` (ou la couleur du jeu), juste
-`#4CAF50`, faux `#E53935`, choisi `#E3F2FD`. Juste et faux s'accompagnent
+`Encres.VERT`, faux `#E53935`, choisi `#E3F2FD`. Juste et faux s'accompagnent
 toujours d'un mot ou d'un signe (✓ ✗), jamais de la couleur seule.
 
 ### 2.5 Ce qu'on ne fait pas
 
-- Pas de texte bleu ciel, orange `#FF8C00` ou vert `#4CAF50` sur fond clair.
+- Pas de texte bleu ciel, orange `#FF8C00` ou vert `#4CAF50` sur fond clair,
+  ni de texte blanc sur eux : pour du texte, `Encres.ORANGE` et `Encres.VERT`
+  (`Encres.kt`).
 - Pas de dégradé entre deux couleurs de sens (rouge→bleu, jeu→jeu).
 - Pas de couleur concaténée à un alpha (`"#4CAF50" + "20"`) : passer par
   `avecOpacite(couleur, alpha)`, sinon `parseColor` lit `#AARRGGBB` et donne
@@ -287,20 +293,21 @@ par écran, pas d'un coup.
 
 ## 9. La dette graphique connue
 
-Classée par gravité. Corrige ce que touche ta tâche ; propose le reste, ne
+Classée par gravité. L'orange et le vert sous du texte (2,33:1 et 2,78:1)
+sont corrigés : `Encres.kt`. Restent, du même ordre : le bleu `#2196F3` des
+mots à découvrir (2,88:1 sur son fond), les cases jaunes `#FFC107` et grises
+`#9E9E9E` de Wuertriet sous lettre blanche (1,6:1 et 2,68:1). Corrige ce que touche ta tâche ; propose le reste, ne
 l'impose pas. **Changer la couleur du bandeau ou des onglets engage
 l'identité : demande d'abord au propriétaire.**
 
 | # | Défaut | Mesure | Proposition |
 |---|---|---|---|
-| 1 | Libellé et surtitre orange `#FF8C00` sur blanc | 2,33:1 | Garder l'orange pour le trait et la pastille, passer le texte en `#B35900` (4,83:1) ou en encre `#1C1C1C` gras. |
-| 2 | Texte blanc sur vert `#4CAF50` (bandeau « Tout est prêt », étapes faites) | 2,78:1 | Vert `#2E7D32` (5,13:1) sous le texte ; `#4CAF50` réservé aux pastilles et coches. |
-| 3 | Bandeau `#0080FF`, orange d'onglet : couleurs du clavier créole, hors drapeau | 3,80:1 | Bandeau bleu nuit `#003876` (11,49:1) et accent rouge du drapeau pour l'onglet actif : l'appli ressemblerait enfin à son clavier. À valider. |
-| 4 | Pas de thème sombre dans l'appli | — | § 8. |
-| 5 | Rembourrages en pixels bruts (`setPadding(20, …)`), `cornerRadius = 12` sans `enDp` | — | Convertir en dp à chaque écran touché. |
-| 6 | Deux cartes : `createCard` carrée (onglets) et `createRoundedCard` 16 dp (accueil) | — | Converger vers la carte arrondie, écran par écran. |
-| 7 | Trois quasi-noirs (`#1C1C1C`, `#212121`, `#333333`) et plusieurs gris | — | Un jeton encre, un jeton encre atténuée. |
-| 8 | `colors.xml`, `dimens.xml` morts | — | Les supprimer, ou les remplacer par la vraie palette si l'appli passe aux ressources. |
+| 1 | Bandeau `#0080FF`, orange d'onglet : couleurs du clavier créole, hors drapeau | 3,80:1 | Bandeau bleu nuit `#003876` (11,49:1) et accent rouge du drapeau pour l'onglet actif (avec un rouge foncé pour son libellé) : l'appli ressemblerait enfin à son clavier. À valider. |
+| 2 | Pas de thème sombre dans l'appli | — | § 8. |
+| 3 | Rembourrages en pixels bruts (`setPadding(20, …)`), `cornerRadius = 12` sans `enDp` | — | Convertir en dp à chaque écran touché. |
+| 4 | Deux cartes : `createCard` carrée (onglets) et `createRoundedCard` 16 dp (accueil) | — | Converger vers la carte arrondie, écran par écran. |
+| 5 | Trois quasi-noirs (`#1C1C1C`, `#212121`, `#333333`) et plusieurs gris | — | Un jeton encre, un jeton encre atténuée. |
+| 6 | `colors.xml`, `dimens.xml` morts | — | Les supprimer, ou les remplacer par la vraie palette si l'appli passe aux ressources. |
 
 ## 10. L'outil : `contraste.py`
 
