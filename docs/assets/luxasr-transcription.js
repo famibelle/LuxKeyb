@@ -183,6 +183,17 @@
       fini = true;
     }
 
+    var params = ['language=lb',
+                  'diarization=' + (options.diarisation === false ? 'Disabled' : 'Enabled'),
+                  'outfmt=json'];
+    // `num_speakers` n'est pas documenté pour l'API : c'est ce qu'envoie leur
+    // propre formulaire au même `/asr2` (relevé dans luxasr_main.js), et
+    // seulement avec la diarisation, comme ici.
+    var n = parseInt(options.locuteurs, 10);
+    if (options.diarisation !== false && n >= 1 && n <= 10) params.push('num_speakers=' + n);
+    // Au-delà de 900 caractères, le service ignore la suite (documenté).
+    if (options.prompt) params.push('prompt=' + encodeURIComponent(options.prompt.slice(0, 900)));
+
     if (corsDejaVu()) envoyer();
     else {
       prevenir('onEtat', 'VERIF');
@@ -198,7 +209,7 @@
     function envoyer() {
       xhr = new XMLHttpRequest();
       var envoye = false, dernierProgres = 0;
-      xhr.open('POST', requeteAsr2(options));
+      xhr.open('POST', BASE + '/asr2?' + params.join('&'));
       // Pas de `X-Filename` : le préflight n'autorise que `Content-Type` et
       // `Authorization`.
       xhr.setRequestHeader('Content-Type', typeAudio(fichier) || 'audio/wav');
@@ -276,108 +287,6 @@
         try { if (xhr && xhr.readyState !== 4) xhr.abort(); } catch (e) {}
       }
     };
-  }
-
-  /** L'adresse de soumission, la même pour la page et pour la commande curl. */
-  function requeteAsr2(options) {
-    var p = ['language=lb',
-             'diarization=' + (options.diarisation === false ? 'Disabled' : 'Enabled'),
-             'outfmt=json'];
-    // `num_speakers` n'est pas documenté pour l'API : c'est ce qu'envoie leur
-    // propre formulaire au même `/asr2` (relevé dans luxasr_main.js), et
-    // seulement avec la diarisation, comme ici.
-    var n = parseInt(options.locuteurs, 10);
-    if (options.diarisation !== false && n >= 1 && n <= 10) p.push('num_speakers=' + n);
-    // Au-delà de 900 caractères, le service ignore la suite (documenté).
-    if (options.prompt) p.push('prompt=' + encoder(options.prompt.slice(0, 900)));
-    return BASE + '/asr2?' + p.join('&');
-  }
-
-  /* encodeURIComponent laisse passer ! ' ( ) * : on les encode aussi, pour que
-     l'adresse reste inerte collée dans un terminal, bash comme PowerShell. */
-  function encoder(v) {
-    return encodeURIComponent(v).replace(/[!'()*]/g, function (c) {
-      return '%' + c.charCodeAt(0).toString(16).toUpperCase();
-    });
-  }
-
-  // --- Commande curl ------------------------------------------------------
-
-  /*
-   * Tant que CORS bloque la page, l'envoi peut se faire depuis l'ordinateur du
-   * visiteur : curl n'est pas soumis à CORS. La page écrit la commande pour
-   * son fichier et ses réglages : les étapes A, B et C de leur documentation,
-   * le même sondage que la page (2 s, puis une seconde de plus à chaque tour,
-   * 10 s au plus), et le résultat lu une seule fois, écrit en JSON à côté du
-   * fichier. Le visiteur l'ouvre ensuite dans la page. Rien ne passe par un
-   * tiers : son ordinateur parle directement au service.
-   */
-  var MESSAGES_CURL = {
-    refus: 'LuxASR : envoi refusé.',
-    travail: 'LuxASR : travail {id}, transcription en cours…',
-    echec: 'LuxASR : échec ({statut}).',
-    fini: 'LuxASR : résultat dans {sortie}'
-  };
-
-  function bash(s) { return "'" + String(s).replace(/'/g, "'\\''") + "'"; }
-  function ps(s) { return "'" + String(s).replace(/'/g, "''") + "'"; }
-
-  /** `{id}` ou `{statut}` dans un message : littéral entre apostrophes, variable entre guillemets. */
-  function echoBash(modele, cle, variable) {
-    var morceaux = modele.split('{' + cle + '}');
-    return 'echo ' + morceaux.map(bash).join('"' + variable + '"');
-  }
-  function echoPs(modele, cle, expression) {
-    var morceaux = modele.split('{' + cle + '}');
-    return '(' + morceaux.map(ps).join(' + ' + expression + ' + ') + ')';
-  }
-
-  /**
-   * La commande à coller dans un terminal. [o] : `nom` et `type` du fichier,
-   * `diarisation`, `locuteurs`, `prompt` ; [systeme] : `'unix'` (bash, zsh :
-   * macOS, Linux) ou `'windows'` (PowerShell, avec le curl.exe de Windows 10
-   * et suivants) ; [messages] : textes affichés, `MESSAGES_CURL` par défaut.
-   */
-  function commandeCurl(o, systeme, messages) {
-    var m = messages || MESSAGES_CURL;
-    var url = requeteAsr2(o);
-    var sortie = (String(o.nom).replace(/\.[^.]+$/, '') || 'transcription') + '.luxasr.json';
-    var fini = m.fini.replace('{sortie}', sortie);
-    // `X-Filename` est facultatif ; un en-tête HTTP ne porte que de l'ASCII.
-    var nomAscii = /^[\x20-\x7e]+$/.test(o.nom);
-    var type = o.type || 'audio/mpeg';
-    if (systeme === 'windows') {
-      return [
-        '& { $f = ' + ps(o.nom) + '; $u = ' + ps(BASE) + '; $d = 2',
-        '  $r = curl.exe -sS -X POST ' + ps(url) + ' -H ' + ps('Content-Type: ' + type) +
-          (nomAscii ? ' -H ' + ps('X-Filename: ' + o.nom) : '') + ' --data-binary "@$f" | ConvertFrom-Json',
-        '  if (-not $r.job_id) { ' + ps(m.refus) + '; return }',
-        '  ' + echoPs(m.travail, 'id', '$r.job_id'),
-        '  do { Start-Sleep -Seconds $d; $d = [Math]::Min($d + 1, 10)',
-        '       $s = curl.exe -sS "$u/v3/asr/jobs/$($r.job_id)" | ConvertFrom-Json',
-        "  } while ($s.status -eq 'queued' -or $s.status -eq 'processing')",
-        "  if ($s.status -ne 'completed') { " + echoPs(m.echec, 'statut', '$s.status') + '; return }',
-        '  curl.exe -sS "$u/v3/asr/jobs/$($r.job_id)/result" -o ' + ps(sortie),
-        '  ' + ps(fini) + ' }'
-      ].join('\n');
-    }
-    return [
-      '( f=' + bash(o.nom) + '; u=' + bash(BASE) + '; d=2',
-      '  id=$(curl -sS -X POST ' + bash(url) + ' -H ' + bash('Content-Type: ' + type) +
-        (nomAscii ? ' -H ' + bash('X-Filename: ' + o.nom) : '') + ' --data-binary "@$f" |',
-      "    sed -n 's/.*\"job_id\" *: *\"\\([^\"]*\\)\".*/\\1/p')",
-      '  [ -n "$id" ] || { echo ' + bash(m.refus) + '; exit 1; }',
-      '  ' + echoBash(m.travail, 'id', '$id'),
-      '  while :; do sleep $d; [ $d -lt 10 ] && d=$((d + 1))',
-      '    s=$(curl -sS "$u/v3/asr/jobs/$id")',
-      '    case "$s" in',
-      "      *'\"completed\"'*) break ;;",
-      "      *'\"queued\"'*|*'\"processing\"'*) ;;",
-      '      *) ' + echoBash(m.echec, 'statut', '$s') + '; exit 1 ;;',
-      '    esac',
-      '  done',
-      '  curl -sS "$u/v3/asr/jobs/$id/result" -o ' + bash(sortie) + ' && echo ' + bash(fini) + ' )'
-    ].join('\n');
   }
 
   function messageDe(corps, brut) {
@@ -870,8 +779,6 @@
     TAILLE_MAX: TAILLE_MAX,
     DUREE_MAX_S: DUREE_MAX_S,
     typeAudio: typeAudio,
-    commandeCurl: commandeCurl,
-    MESSAGES_CURL: MESSAGES_CURL,
     estResultat: estResultat,
     transcrire: transcrire,
     normaliser: normaliser,

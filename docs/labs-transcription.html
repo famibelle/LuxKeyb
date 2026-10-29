@@ -119,18 +119,6 @@ code{font-family:var(--mono);font-size:13px;background:var(--stripe);padding:1px
   border-radius:10px;padding:12px 16px;font-size:14.5px;margin:0 0 16px;}
 .info p:last-child{margin-bottom:0;}
 
-details.curl summary{cursor:pointer;font-weight:700;font-size:15px;}
-details.curl[open] summary{margin-bottom:10px;}
-details.curl p{font-size:14.5px;color:var(--ink-soft);}
-.systemes{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;}
-.systemes button{font:inherit;font-size:13.5px;font-weight:700;padding:6px 12px;border-radius:999px;cursor:pointer;
-  border:1.5px solid var(--line);background:var(--card);color:var(--ink);}
-.systemes button[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:var(--paper);}
-.systemes button:focus-visible{outline:2px solid var(--sea);outline-offset:2px;}
-pre.commande{margin:0 0 10px;padding:12px;border-radius:9px;border:1px solid var(--line);background:var(--stripe);
-  font-family:var(--mono);font-size:12px;line-height:1.5;white-space:pre;overflow-x:auto;max-width:100%;}
-details.curl .exports .btn{padding:9px 14px;font-size:14px;}
-@media (max-width: 600px){ details.curl .exports .btn{display:inline-block;width:auto;} }
 details.import{margin-top:4px;}
 details.import summary{cursor:pointer;font-weight:700;font-size:15px;}
 details.import[open] summary{margin-bottom:10px;}
@@ -371,10 +359,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     </div>
     <p class="note-cors" id="note-cors" hidden data-i18n="note-cors">
       Lors de votre dernier essai, ce navigateur n'a pas pu lire la réponse du
-      service. Vous pouvez réessayer, le service l'a peut-être corrigé, ou
-      passer par <code>curl</code> depuis votre ordinateur (plus bas, « Avec
-      curl »), ou par <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a>, et
-      ouvrir le résultat ici.
+      service (voir plus bas). Vous pouvez réessayer, le service l'a peut-être
+      corrigé, ou passer par <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a>
+      et ouvrir le résultat ici.
     </p>
 
     <div class="suivi" id="suivi" hidden aria-live="polite">
@@ -389,30 +376,6 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 
     <div class="erreur" id="erreur" hidden role="alert"></div>
   </div>
-
-  <details class="card curl" id="curl">
-    <summary data-i18n="curl-summary">⌨️ Avec curl, depuis votre ordinateur</summary>
-    <p data-i18n="curl-p">
-      Tant que le service ne laisse pas une page web lire ses réponses, votre
-      ordinateur peut faire l'envoi lui-même : <code>curl</code> n'est pas
-      soumis à cette règle. Choisissez le fichier ci-dessus et vos réglages,
-      ouvrez un terminal dans le dossier du fichier, collez la commande. Elle
-      envoie le fichier à LuxASR, attend la transcription et l'enregistre à
-      côté, en JSON. Ouvrez ensuite ce fichier ici : la lecture par voix, le
-      lecteur et les exports s'y retrouvent.
-    </p>
-    <div class="systemes" role="group" aria-label="Système" data-i18n-aria="curl-systeme">
-      <button type="button" id="curl-unix" aria-pressed="true">macOS · Linux</button>
-      <button type="button" id="curl-win" aria-pressed="false">Windows (PowerShell)</button>
-    </div>
-    <pre class="commande" id="curl-commande" tabindex="0"></pre>
-    <p class="aide" id="curl-note" hidden data-i18n="curl-note">Aucun fichier choisi : remplacez <code>enregistrement.mp3</code> par le nom du vôtre, ou choisissez-le ci-dessus.</p>
-    <div class="exports">
-      <button type="button" class="btn" id="curl-copier" data-i18n="curl-copier">📋 Copier la commande</button>
-      <label class="btn" for="f-resultat-curl" data-i18n="curl-ouvrir">📄 Ouvrir le résultat</label>
-      <input type="file" id="f-resultat-curl" class="sr-only" accept=".json,application/json">
-    </div>
-  </details>
 
   <details class="card import" id="import">
     <summary data-i18n="import-summary">Vous avez déjà un résultat LuxASR ?</summary>
@@ -620,16 +583,10 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'opt-accord': 'The people recorded agree to have their voices transcribed by LuxASR.',
     'go': 'Transcribe',
     'annuler': 'Cancel',
-    'note-cors': 'On your last attempt, this browser could not read the service’s reply. You can try again, the service may have fixed it, or go through <code>curl</code> from your computer (below, “With curl”), or through <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a>, and open the result here.',
+    'note-cors': 'On your last attempt, this browser could not read the service’s reply (see below). You can try again, the service may have fixed it, or go through <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> and open the result here.',
     'etape-envoi': 'Upload',
     'etape-file': 'Queue',
     'etape-traitement': 'Transcription',
-    'curl-summary': '⌨️ With curl, from your computer',
-    'curl-p': 'As long as the service does not let a web page read its replies, your computer can do the upload itself: <code>curl</code> is not subject to that rule. Choose the file above and your settings, open a terminal in the file’s folder, paste the command. It sends the file to LuxASR, waits for the transcription and saves it next to the file, as JSON. Then open that file here: the voice view, the player and the exports all work.',
-    'curl-systeme': 'System',
-    'curl-note': 'No file chosen: replace <code>enregistrement.mp3</code> with your file’s name, or choose it above.',
-    'curl-copier': '📋 Copy the command',
-    'curl-ouvrir': '📄 Open the result',
     'import-summary': 'Already have a LuxASR result?',
     'import-p': 'Open a file produced by LuxASR here (JSON, SRT, VTT or text), for instance from the form on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a>: you get the speaker view, renaming and exports. The file stays in your browser. Also choose the recording above to listen while you read.',
     'import-btn': '📄 Open a result',
@@ -750,8 +707,6 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         return (l ? l + (l > 1 ? ' locuteurs' : ' locuteur') : 'Voix non séparées') + ' · ' + r + (d ? ' · ' + d : '');
       },
       copie: '✅ Copié',
-      curl: { refus: 'LuxASR : envoi refusé.', travail: 'LuxASR : travail {id}, transcription en cours…',
-              echec: 'LuxASR : échec ({statut}).', fini: 'LuxASR : résultat dans {sortie}' },
       boucle: function (m, n, t) { return '« ' + m + ' » répété ' + n + ' fois' + (t ? ' à ' + t : ''); },
       boucles: function (liste, reste) {
         return '<strong>La reconnaissance a bégayé</strong> : ' + liste + (reste ? ', et ' + reste + ' autre' + (reste > 1 ? 's' : '') : '') +
@@ -765,7 +720,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
           return (d && d.fichierParti
             ? 'Le fichier est bien parti, mais <strong>le service n\'a pas laissé cette page lire sa réponse</strong>.'
             : '<strong>Votre fichier n\'est pas parti</strong> : le service ne laisse pas encore une page web lire ses réponses, et la page l\'a vérifié avec une demi-seconde de silence avant de rien envoyer.') +
-            ' C\'est un réglage de leur serveur (l\'en-tête CORS de l\'accusé de réception), pas un problème de votre fichier : réessayer n\'y changera rien. En attendant, <strong>envoyez-le avec curl depuis votre ordinateur</strong>, la commande est prête juste en dessous, ou transcrivez-le sur <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> au format JSON ; puis ouvrez le résultat ici.';
+            ' C\'est un réglage de leur serveur (l\'en-tête CORS de l\'accusé de réception), pas un problème de votre fichier : réessayer n\'y changera rien. En attendant, transcrivez-le sur <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> au format JSON, puis ouvrez le résultat ici avec « Vous avez déjà un résultat LuxASR ? ».';
         },
         RESEAU: 'La liaison avec le service a été coupée, ou il est injoignable. Vérifiez la connexion, puis réessayez.',
         REFUS: function (d) { return 'Le service a refusé le fichier (erreur ' + d.status + ')' + (d.message ? ' : « ' + d.message + ' »' : '.'); },
@@ -794,8 +749,6 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         return (l ? l + (l > 1 ? ' speakers' : ' speaker') : 'Voices not separated') + ' · ' + r + (d ? ' · ' + d : '');
       },
       copie: '✅ Copied',
-      curl: { refus: 'LuxASR: upload refused.', travail: 'LuxASR: job {id}, transcribing…',
-              echec: 'LuxASR: failed ({statut}).', fini: 'LuxASR: result in {sortie}' },
       boucle: function (m, n, t) { return '“' + m + '” repeated ' + n + ' times' + (t ? ' at ' + t : ''); },
       boucles: function (liste, reste) {
         return '<strong>The recognition stuttered</strong>: ' + liste + (reste ? ', and ' + reste + ' more' : '') +
@@ -809,7 +762,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
           return (d && d.fichierParti
             ? 'The file did leave, but <strong>the service did not let this page read its reply</strong>.'
             : '<strong>Your file was not sent</strong>: the service does not yet let a web page read its replies, and the page checked this with half a second of silence before sending anything.') +
-            ' That is a setting on their server (the CORS header on the acknowledgement), not a problem with your file: retrying won’t change it. Meanwhile, <strong>send it with curl from your computer</strong>, the command is ready just below, or transcribe it on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> in JSON format; then open the result here.';
+            ' That is a setting on their server (the CORS header on the acknowledgement), not a problem with your file: retrying won’t change it. Meanwhile, transcribe it on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> in JSON format, then open the result here with “Already have a LuxASR result?”.';
         },
         RESEAU: 'The link to the service was cut, or it cannot be reached. Check the connection, then try again.',
         REFUS: function (d) { return 'The service refused the file (error ' + d.status + ')' + (d.message ? ': “' + d.message + '”' : '.'); },
@@ -855,7 +808,6 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     $('fiche').hidden = false;
     $('fiche-nom').textContent = f.name;
     majFiche();
-    majCurl();
     if (!T.typeAudio(f)) { montrerErreur('FORMAT'); return majBouton(); }
     if (f.size > T.TAILLE_MAX) { montrerErreur('TROP_GROS', M().mo(f.size)); return majBouton(); }
 
@@ -927,9 +879,6 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         fin();
         if (code === 'CORS') {
           try { localStorage.setItem(CLE_CORS, String(Date.now())); } catch (e) {}
-          // La voie qui marche malgré CORS : la commande curl, toute prête.
-          majCurl();
-          $('curl').open = true;
         }
         montrerErreur(code, detail);
       }
@@ -960,7 +909,6 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     $('opt-voix').disabled = enCours || !$('opt-diar').checked;
     $('opt-prompt').disabled = enCours;
     $('f-resultat').disabled = enCours;
-    $('f-resultat-curl').disabled = enCours;
     majBouton();
   }
 
@@ -1227,41 +1175,6 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     }
   });
 
-  // --- Commande curl -----------------------------------------------------
-
-  var systeme = /Win/i.test(navigator.platform || navigator.userAgent) ? 'windows' : 'unix';
-
-  function majCurl() {
-    var o = {
-      nom: audio ? audio.name : 'enregistrement.mp3',
-      type: audio ? T.typeAudio(audio) : 'audio/mpeg',
-      diarisation: $('opt-diar').checked,
-      locuteurs: $('opt-voix').value,
-      prompt: $('opt-prompt').value.trim()
-    };
-    $('curl-commande').textContent = T.commandeCurl(o, systeme, M().curl);
-    $('curl-note').hidden = !!audio;
-    $('curl-unix').setAttribute('aria-pressed', systeme === 'unix' ? 'true' : 'false');
-    $('curl-win').setAttribute('aria-pressed', systeme === 'windows' ? 'true' : 'false');
-  }
-
-  $('curl-unix').addEventListener('click', function () { systeme = 'unix'; majCurl(); });
-  $('curl-win').addEventListener('click', function () { systeme = 'windows'; majCurl(); });
-  ['opt-diar', 'opt-voix', 'opt-prompt'].forEach(function (id) {
-    $(id).addEventListener('input', majCurl);
-    $(id).addEventListener('change', majCurl);
-  });
-  $('curl-copier').addEventListener('click', function () {
-    var b = this;
-    if (!navigator.clipboard) return;
-    navigator.clipboard.writeText($('curl-commande').textContent).then(function () {
-      var avant = b.innerHTML;
-      b.textContent = M().copie;
-      setTimeout(function () { b.innerHTML = avant; }, 1600);
-    }, function () {});
-  });
-  $('f-resultat-curl').addEventListener('change', function () { if (this.files[0]) importer(this.files[0]); this.value = ''; });
-
   // --- Câblage ----------------------------------------------------------
 
   $('f-audio').addEventListener('change', function () { choisirAudio(this.files[0]); this.value = ''; });
@@ -1294,11 +1207,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     var vu = +localStorage.getItem(CLE_CORS);
     if (vu && Date.now() - vu < 7 * 86400000) $('note-cors').hidden = false;
   } catch (e) {}
-  majCurl();
 
   document.addEventListener('labs-langue', function () {
     majFiche();
-    majCurl();
     if (tache) majSuivi();
     if (derniereErreur) montrerErreur(derniereErreur[0], derniereErreur[1]);
     if (doc) dessiner();
