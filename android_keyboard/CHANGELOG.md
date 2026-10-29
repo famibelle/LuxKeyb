@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.9.1] - 2026-10-29
+
+### ✨ Améliorations
+
+- **Une carte partagée garde son théâtre de papier** : l'image envoyée avec « Partager » montre les mêmes cartons que dans l'appli, avec les coulisses des cartes rares et le nuage des très rares.
+
 ## [37.9.0] - 2026-10-29
 
 ### ✨ Nouveautés
