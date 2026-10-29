@@ -186,6 +186,37 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 .lang-toggle:hover{border-color:var(--sea);}
 .lang-toggle:focus-visible{outline:2px solid var(--sea);outline-offset:2px;}
 
+/* Les deux façons de transcrire : un fichier, ou le micro en direct. */
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 14px;}
+.modes button{display:block;text-align:left;border:1.5px solid var(--line);background:var(--card);
+  color:var(--ink);border-radius:12px;padding:12px 14px;cursor:pointer;font:inherit;min-width:0;}
+.modes button .t{display:block;font-weight:800;font-size:15.5px;}
+.modes button .s{display:block;font-size:13px;color:var(--ink-soft);margin-top:2px;}
+.modes button[aria-selected="true"]{border-color:var(--sea);background:var(--sea-soft);box-shadow:inset 0 0 0 1px var(--sea);}
+.modes button:focus-visible{outline:2px solid var(--sea);outline-offset:2px;}
+.modes button[disabled]{opacity:.5;cursor:not-allowed;}
+.accord{margin:0 0 14px;}
+
+.direct-barre{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;}
+.direct-barre .btn{font-size:15px;padding:12px 20px;}
+@media (max-width: 600px){ .direct-barre .btn{display:inline-block;width:auto;} }
+.d-niveau{display:inline-block;width:72px;height:8px;border-radius:4px;background:var(--stripe);
+  border:1px solid var(--line);overflow:hidden;}
+.d-niveau span{display:block;height:100%;width:0;background:var(--sea);transition:width .1s;}
+.d-etat{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+.d-etat.on{color:var(--hibiscus);font-weight:700;}
+.d-texte{margin-top:14px;min-height:150px;max-height:60vh;overflow:auto;border:1px solid var(--line);
+  border-radius:10px;background:var(--paper);padding:12px 14px;font-size:16px;line-height:1.6;}
+.d-para{margin:0 0 10px;}
+.d-para:last-child{margin-bottom:0;}
+.d-para .ts{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-right:8px;
+  font-variant-numeric:tabular-nums;}
+.d-para .partiel{color:var(--ink-soft);text-decoration:underline dotted;text-underline-offset:4px;}
+.d-vide{color:var(--ink-soft);margin:0;}
+.direct .exports{margin-top:12px;}
+.direct .aide{font-size:13px;color:var(--ink-soft);margin:12px 0 0;}
+@media (prefers-reduced-motion: reduce){ .d-niveau span{transition:none;} }
+
 [hidden]{display:none !important;}
 </style>
 </head>
@@ -219,13 +250,13 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <a href="labs.html" data-i18n="tab-dictee">🎙️ Dictée</a>
     <a href="labs-transcription.html" aria-current="page" data-i18n="tab-transcription">🎧 Transcription</a>
   </nav>
-  <h1 data-i18n="h1">Qui a dit quoi ? Transcrire un enregistrement 🎧</h1>
+  <h1 data-i18n="h1">Transcrire du luxembourgeois, d'un fichier ou en direct 🎧</h1>
   <p class="lead" data-i18n="lead">
-    Déposez un enregistrement en <strong>luxembourgeois</strong> : une réunion,
-    une interview, un podcast. Le service LuxASR l'écrit et
-    <strong>sépare les voix</strong> : chaque réplique est rattachée à son
-    locuteur et à l'instant où elle est dite. Vous écoutez en lisant, vous
-    nommez les locuteurs, vous emportez le texte ou les sous-titres.
+    Deux façons de mettre par écrit ce qui se dit en <strong>luxembourgeois</strong>.
+    <strong>Un fichier</strong> : déposez une réunion, une interview, un podcast ;
+    le service LuxASR l'écrit et sépare les voix, chaque réplique rattachée à
+    son locuteur et à l'instant où elle est dite. <strong>En direct</strong> :
+    le texte s'écrit pendant qu'on parle autour du micro.
   </p>
 </header>
 
@@ -235,7 +266,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       🎓 La transcription et la séparation des voix sont le travail de
       <a href="https://luxasr.uni.lu/">LuxASR</a>, le service de reconnaissance
       de la parole luxembourgeoise de l'<strong>Université du Luxembourg</strong>.
-      Cette page envoie le fichier et met en forme ce qui revient. Merci à leur
+      Cette page envoie le son et met en forme ce qui revient. Merci à leur
       équipe.
     </p>
   </div>
@@ -246,8 +277,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 
   <div class="warn">
     <p data-i18n="warn-p1">
-      <strong>🔊 Votre enregistrement part à l'Université du Luxembourg</strong>,
-      qui le transcrit sur ses serveurs : c'est leur
+      <strong>🔊 Le son part à l'Université du Luxembourg</strong>, fichier ou
+      micro, et elle le transcrit sur ses serveurs : c'est leur
       <a href="https://luxasr.uni.lu/">politique de protection des données</a>
       qui s'applique. Le traitement a lieu sur un serveur de l'Université, au
       Luxembourg ; l'audio y est effacé dès la fin du traitement, le texte dès
@@ -255,11 +286,30 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       reçoit et ne garde rien : la page tourne dans votre navigateur.
     </p>
     <p data-i18n="warn-p2">
-      Ne déposez que des enregistrements que vous avez le droit de faire
-      transcrire, avec l'accord des personnes qu'on y entend.
+      Ne transcrivez que ce que vous avez le droit d'enregistrer, avec l'accord
+      des personnes qu'on y entend.
     </p>
   </div>
 
+  <div class="opts accord">
+    <label class="ligne">
+      <input type="checkbox" id="opt-accord">
+      <span data-i18n="opt-accord">Les personnes enregistrées sont d'accord pour que leur voix soit transcrite par LuxASR.</span>
+    </label>
+  </div>
+
+  <div class="modes" role="tablist" aria-label="Façon de transcrire" data-i18n-aria="modes-aria">
+    <button type="button" role="tab" id="mode-fichier" aria-controls="panneau-fichier" aria-selected="true">
+      <span class="t" data-i18n="mode-fichier">📁 Un fichier</span>
+      <span class="s" data-i18n="mode-fichier-s">voix séparées, sous-titres</span>
+    </button>
+    <button type="button" role="tab" id="mode-direct" aria-controls="panneau-direct" aria-selected="false" tabindex="-1">
+      <span class="t" data-i18n="mode-direct">🎙️ En direct</span>
+      <span class="s" data-i18n="mode-direct-s">au fil de la parole, au micro</span>
+    </button>
+  </div>
+
+  <div id="panneau-fichier" role="tabpanel" aria-labelledby="mode-fichier">
   <div class="card">
     <label class="drop" id="drop" for="f-audio">
       <input type="file" id="f-audio" class="sr-only"
@@ -293,10 +343,6 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       <input type="text" id="opt-prompt" autocomplete="off" spellcheck="false"
              placeholder="Gemengerot, Schäffen, Esch-Uelzecht" maxlength="400">
       <p class="aide" data-i18n="opt-prompt-aide">Écrits comme ils doivent l'être, séparés par des virgules : le service s'en sert pour les orthographier dans tout l'enregistrement.</p>
-      <label class="ligne" style="margin-top:14px">
-        <input type="checkbox" id="opt-accord">
-        <span data-i18n="opt-accord">Les personnes enregistrées sont d'accord pour que leur voix soit transcrite par LuxASR.</span>
-      </label>
     </fieldset>
 
     <div class="actions">
@@ -335,6 +381,32 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <label class="btn" for="f-resultat" data-i18n="import-btn">📄 Ouvrir un résultat</label>
     <input type="file" id="f-resultat" class="sr-only" accept=".json,.srt,.vtt,.txt,application/json,text/plain,text/vtt">
   </details>
+  </div>
+
+  <div id="panneau-direct" role="tabpanel" aria-labelledby="mode-direct" hidden>
+    <div class="card direct">
+      <div class="direct-barre">
+        <button type="button" class="btn primary" id="d-go" disabled data-i18n="d-go">🎙️ Démarrer</button>
+        <button type="button" class="btn" id="d-stop" hidden data-i18n="d-stop">⏹ Arrêter</button>
+        <span class="d-niveau" aria-hidden="true"><span id="d-niveau"></span></span>
+        <span class="d-etat" id="d-etat" aria-live="polite"></span>
+      </div>
+      <div class="d-texte" id="d-texte">
+        <p class="d-vide" id="d-vide" data-i18n="d-vide">Le texte s'écrira ici pendant qu'on parle. La fin d'une phrase, soulignée, peut encore changer.</p>
+      </div>
+      <div class="erreur" id="d-erreur" hidden role="alert"></div>
+      <div class="exports" id="d-exports" hidden>
+        <button type="button" class="btn" data-direct="copier" data-i18n="exp-copier">📋 Copier le texte</button>
+        <button type="button" class="btn" data-direct="txt">TXT</button>
+        <button type="button" class="btn" data-direct="effacer" data-i18n="d-effacer">Effacer</button>
+      </div>
+      <p class="aide" data-i18n="d-aide">
+        En direct, les voix ne sont pas séparées : pour savoir qui a dit quoi,
+        enregistrez, puis passez par « Un fichier ». Une heure d'écoute au plus ;
+        gardez la page ouverte et l'écran allumé.
+      </p>
+    </div>
+  </div>
 </section>
 
 <section id="resultat" hidden>
@@ -378,6 +450,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <li data-i18n="savoir-2"><strong>Les répliques très courtes, les voix proches et celles qui se chevauchent</strong> sont mal séparées, c'est une limite connue de la méthode. Indiquer le nombre de voix aide nettement, au prix parfois d'un peu de justesse du texte ; une pièce calme et un micro proche de chacun aident aussi.</li>
     <li data-i18n="savoir-3"><strong>Le service est fait pour le luxembourgeois.</strong> Un passage dans une autre langue peut revenir mal transcrit.</li>
     <li data-i18n="savoir-4"><strong>L'attente dépend surtout de la file</strong> : le service traite les fichiers de tout le monde, les uns après les autres. Gardez la page ouverte jusqu'au résultat.</li>
+    <li data-i18n="savoir-direct"><strong>En direct, le texte arrive au fil de la parole</strong>, une seconde environ après les mots, et se corrige jusqu'à la fin de la phrase. C'est le même service que la dictée du clavier, sans séparation des voix.</li>
     <li data-i18n="savoir-5"><strong>Une vidéo marche aussi</strong> : seule sa piste son est transcrite, mais c'est le fichier entier qui part. Pour un long film, extraire le son d'abord accélère l'envoi.</li>
   </ul>
 </section>
@@ -399,6 +472,16 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       sous-titre. Les phrases consécutives d'une même voix forment un tour de
       parole ; c'est de cette liste que sont tirés les exports TXT, SRT, VTT et
       JSON. La réponse brute du service reste téléchargeable telle quelle.
+    </p>
+    <p data-i18n="tech-direct">
+      <strong>En direct</strong>, la page parle au service comme la dictée du
+      clavier : une connexion WebSocket, le son en PCM 16 bits à 16 kHz au fil
+      de sa capture, et en retour le texte confirmé et la fin de phrase encore
+      instable. Pour qu'une longue écoute ne pèse pas sur le service, la
+      connexion est renouvelée environ toutes les deux minutes, pendant une
+      pause, sans couper le micro : ce qui est capté pendant le raccord part
+      juste après. Les horodatages des paragraphes sont approximatifs, à une
+      seconde près.
     </p>
     <p data-i18n="tech-p3">
       <strong>Pourquoi l'envoi peut échouer d'emblée.</strong> Une page web ne
@@ -451,12 +534,22 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'tabs-aria': 'Labs sections',
     'tab-dictee': '🎙️ Dictation',
     'tab-transcription': '🎧 Transcription',
-    'h1': 'Who said what? Transcribe a recording 🎧',
-    'lead': 'Drop a recording in <strong>Luxembourgish</strong>: a meeting, an interview, a podcast. The LuxASR service writes it down and <strong>separates the voices</strong>: each line is tied to its speaker and to the moment it is said. You listen while you read, name the speakers, and take away the text or the subtitles.',
-    'thanks-p': '🎓 Transcription and voice separation are the work of <a href="https://luxasr.uni.lu/">LuxASR</a>, the Luxembourgish speech recognition service of the <strong>University of Luxembourg</strong>. This page sends the file and lays out what comes back. Thanks to their team.',
+    'h1': 'Transcribe Luxembourgish, from a file or live 🎧',
+    'lead': 'Two ways to put what is said in <strong>Luxembourgish</strong> into writing. <strong>A file</strong>: drop a meeting, an interview, a podcast; the LuxASR service writes it down and separates the voices, each line tied to its speaker and to the moment it is said. <strong>Live</strong>: the text writes itself as people speak around the microphone.',
+    'thanks-p': '🎓 Transcription and voice separation are the work of <a href="https://luxasr.uni.lu/">LuxASR</a>, the Luxembourgish speech recognition service of the <strong>University of Luxembourg</strong>. This page sends the sound and lays out what comes back. Thanks to their team.',
     'outil-h2': 'Transcribe',
-    'warn-p1': "<strong>🔊 Your recording goes to the University of Luxembourg</strong>, which transcribes it on its servers: their <a href=\"https://luxasr.uni.lu/\">data protection policy</a> applies. Processing takes place on a University server in Luxembourg; the audio is deleted as soon as processing ends, the text as soon as it is read, and nothing is used to train their models. This site receives and keeps nothing: the page runs in your browser.",
-    'warn-p2': 'Only upload recordings you are allowed to have transcribed, with the consent of the people heard in them.',
+    'warn-p1': "<strong>🔊 The sound goes to the University of Luxembourg</strong>, file or microphone, and it transcribes it on its servers: their <a href=\"https://luxasr.uni.lu/\">data protection policy</a> applies. Processing takes place on a University server in Luxembourg; the audio is deleted as soon as processing ends, the text as soon as it is read, and nothing is used to train their models. This site receives and keeps nothing: the page runs in your browser.",
+    'warn-p2': 'Only transcribe what you are allowed to record, with the consent of the people heard in it.',
+    'modes-aria': 'How to transcribe',
+    'mode-fichier': '📁 A file',
+    'mode-fichier-s': 'separated voices, subtitles',
+    'mode-direct': '🎙️ Live',
+    'mode-direct-s': 'as people speak, from the microphone',
+    'd-go': '🎙️ Start',
+    'd-stop': '⏹ Stop',
+    'd-vide': 'The text will appear here as people speak. The end of a sentence, underlined, can still change.',
+    'd-effacer': 'Clear',
+    'd-aide': 'Live, voices are not separated: to know who said what, record, then use “A file”. One hour of listening at most; keep the page open and the screen on.',
     'drop-big': '📂 Choose a recording, or drop it here',
     'drop-small': 'MP3, M4A, WAV, OGG, FLAC, or a video (MP4, MOV, WebM) · 100 MB and 90 minutes at most',
     'opts-legend': 'Settings',
@@ -490,10 +583,12 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'savoir-2': '<strong>Very short lines, similar voices and overlapping voices</strong> are poorly separated: a known limit of the method. Giving the number of voices helps a lot, sometimes at the cost of some accuracy in the text; a quiet room and a microphone close to each speaker help too.',
     'savoir-3': '<strong>The service is made for Luxembourgish.</strong> A passage in another language may come back poorly transcribed.',
     'savoir-4': '<strong>The wait depends mostly on the queue</strong>: the service handles everyone’s files, one after another. Keep the page open until the result arrives.',
+    'savoir-direct': '<strong>Live, the text arrives as people speak</strong>, about a second after the words, and keeps being corrected until the end of the sentence. It is the same service as the keyboard’s dictation, without voice separation.',
     'savoir-5': '<strong>A video works too</strong>: only its sound track is transcribed, but the whole file is sent. For a long film, extracting the sound first speeds up the upload.',
     'tech-h3': 'For the curious: how it works',
     'tech-p1': 'The page sends the file as is to LuxASR’s batch API (<code>POST /asr2</code>, with <code>diarization=Enabled</code> and <code>outfmt=json</code>), then asks how the job is doing, every two seconds at first and less and less often after that, and reads the result, only once: the service deletes it as soon as it has served it. The file goes straight from your browser to the service: it does not go through this site.',
     'tech-p2': 'The result is turned into a list of sentences (start, end, speaker, text), cut using each word’s timing and the size of a subtitle. Consecutive sentences from the same voice make one turn; the TXT, SRT, VTT and JSON exports are drawn from that list. The service’s raw reply stays downloadable as is.',
+    'tech-direct': '<strong>Live</strong>, the page talks to the service like the keyboard’s dictation: a WebSocket connection, the sound as 16-bit PCM at 16 kHz as it is captured, and in return the confirmed text and the still-unstable end of the sentence. So that a long session does not weigh on the service, the connection is renewed about every two minutes, during a pause, without cutting the microphone: what is captured during the switch is sent right after. Paragraph timestamps are approximate, to within a second.',
     'tech-p3': '<strong>Why the upload may fail straight away.</strong> A web page can only read another site’s reply if that site allows it, through a “CORS” header. As observed in September and again on 29 October 2026, the service did not yet set it on the acknowledgement of an upload. If that is still the case, the page tells you so, without retrying in vain, and suggests transcribing on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> and opening the result here.',
     'feedback-h2': 'Tell us how it goes',
     'feedback-p': 'Labs is for trying things before deciding. The most useful thing to send us: <strong>the kind of recording, its length, the number of voices, and what was separated well or badly</strong>.',
@@ -564,6 +659,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 </script>
 
 <script src="assets/luxasr-transcription.js"></script>
+<script src="assets/luxasr-direct.js"></script>
 <script>
 // L'outil : choisir un fichier, l'envoyer, suivre le travail, puis lire la
 // transcription par locuteur en écoutant. Toute la logique de service et de
@@ -772,6 +868,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   }
 
   function basculer(enCours) {
+    if (enCours) document.body.setAttribute('data-occupe', 'fichier');
+    else if (document.body.getAttribute('data-occupe') === 'fichier') document.body.removeAttribute('data-occupe');
+    document.dispatchEvent(new CustomEvent('labs-occupe'));
     $('annuler').hidden = !enCours;
     $('f-audio').disabled = enCours;
     $('opt-diar').disabled = enCours;
@@ -1082,6 +1181,253 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     if (derniereErreur) montrerErreur(derniereErreur[0], derniereErreur[1]);
     if (doc) dessiner();
   });
+})();
+</script>
+
+<script>
+// Le choix du mode, et la transcription en direct. Le client du flux est dans
+// luxasr-direct.js ; ici, on dessine les paragraphes qu'il rend.
+(function () {
+  'use strict';
+  var D = window.LuxAsrDirect, T = window.LuxAsrTranscription;
+  function $(id) { return document.getElementById(id); }
+
+  var MOTS = {
+    fr: {
+      connexion: 'Connexion à LuxASR…',
+      ecoute: function (t) { return '● ' + t; },
+      lent: ' · connexion lente',
+      arret: 'Fin de la transcription…',
+      fini: function (t) { return 'Terminé · ' + t; },
+      copie: '✅ Copié',
+      indispo: 'Ce navigateur ne permet pas la transcription en direct : il faut un micro et une page ouverte en https.',
+      quitter: 'La transcription en direct est en cours.',
+      err: {
+        MIC: 'Le micro est refusé ou absent. Autorisez-le pour cette page dans le navigateur, puis réessayez.',
+        SERVICE: 'La liaison avec LuxASR n\'a pas pu s\'établir, ou elle s\'est perdue. Le texte déjà écrit est gardé.',
+        LENT: 'La connexion est trop lente : le son prenait plus de 30 secondes de retard. Le texte déjà écrit est gardé.',
+        DUREE: 'Une heure d\'écoute : la transcription s\'est arrêtée. Relancez-la pour continuer.'
+      }
+    },
+    en: {
+      connexion: 'Connecting to LuxASR…',
+      ecoute: function (t) { return '● ' + t; },
+      lent: ' · slow connection',
+      arret: 'Finishing the transcription…',
+      fini: function (t) { return 'Done · ' + t; },
+      copie: '✅ Copied',
+      indispo: 'This browser does not allow live transcription: it needs a microphone and a page opened over https.',
+      quitter: 'Live transcription is running.',
+      err: {
+        MIC: 'The microphone is refused or missing. Allow it for this page in the browser, then try again.',
+        SERVICE: 'The link to LuxASR could not be set up, or it was lost. The text already written is kept.',
+        LENT: 'The connection is too slow: the sound was more than 30 seconds behind. The text already written is kept.',
+        DUREE: 'One hour of listening: the transcription stopped. Start it again to carry on.'
+      }
+    }
+  };
+  function M() { return MOTS[window.__labsLang === 'en' ? 'en' : 'fr']; }
+
+  // --- Choix du mode ----------------------------------------------------
+
+  var ONGLETS = [['mode-fichier', 'panneau-fichier'], ['mode-direct', 'panneau-direct']];
+
+  function montrer(mode, parUtilisateur) {
+    ONGLETS.forEach(function (o) {
+      var actif = o[0] === mode;
+      $(o[0]).setAttribute('aria-selected', actif ? 'true' : 'false');
+      $(o[0]).tabIndex = actif ? 0 : -1;
+      $(o[1]).hidden = !actif;
+    });
+    // Le résultat d'un fichier n'a de sens que sous le mode fichier.
+    $('resultat').style.display = mode === 'mode-fichier' ? '' : 'none';
+    if (parUtilisateur) {
+      try { history.replaceState(null, '', mode === 'mode-direct' ? '#direct' : location.pathname + location.search); } catch (e) {}
+    }
+  }
+
+  ONGLETS.forEach(function (o, i) {
+    $(o[0]).addEventListener('click', function () { if (!this.disabled) montrer(o[0], true); });
+    $(o[0]).addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var autre = ONGLETS[1 - i][0];
+      if ($(autre).disabled) return;
+      e.preventDefault();
+      montrer(autre, true);
+      $(autre).focus();
+    });
+  });
+
+  // Une transcription en cours fige le choix du mode : on ne quitte pas un
+  // envoi ou une écoute par mégarde.
+  function figerModes() {
+    var occupe = document.body.getAttribute('data-occupe');
+    $('mode-fichier').disabled = occupe === 'direct';
+    $('mode-direct').disabled = occupe === 'fichier';
+  }
+  document.addEventListener('labs-occupe', figerModes);
+
+  montrer(location.hash === '#direct' ? 'mode-direct' : 'mode-fichier', false);
+
+  // --- Direct -----------------------------------------------------------
+
+  var session = null, paragraphes = [], lent = false, verrou = null, raisonFin = null, dureeFinale = 0;
+  var disponible = D && D.disponible();
+
+  function majBouton() {
+    $('d-go').disabled = !disponible || !$('opt-accord').checked || !!session;
+  }
+
+  function demarrer() {
+    if ($('d-go').disabled) return;
+    $('d-erreur').hidden = true;
+    raisonFin = null;
+    paragraphes = [];
+    dessiner();
+    lent = false;
+    session = D({
+      onEtat: function (e) { etat(e); },
+      onNiveau: function (n) { $('d-niveau').style.width = Math.round(n * 100) + '%'; },
+      onTexte: function (p) { paragraphes = p; dessiner(); },
+      onAlerte: function (code, v) { if (code === 'LENT') { lent = v > 0; etat(session && session.etat); } },
+      onFin: function (p, raison) {
+        paragraphes = p;
+        raisonFin = raison;
+        dureeFinale = session ? session.secondes : 0;
+        session = null;
+        dessiner();
+        erreur();
+        etat('REPOS');
+      }
+    });
+    session.start();
+  }
+
+  function etat(e) {
+    var enCours = e === 'CONNEXION' || e === 'ECOUTE' || e === 'ARRET';
+    $('d-go').hidden = enCours;
+    $('d-stop').hidden = !enCours;
+    $('d-stop').disabled = e === 'ARRET';
+    var el = $('d-etat');
+    el.classList.toggle('on', e === 'ECOUTE');
+    if (e === 'CONNEXION') el.textContent = M().connexion;
+    else if (e === 'ECOUTE') el.textContent = M().ecoute(T.horloge(session ? session.secondes : 0)) + (lent ? M().lent : '');
+    else if (e === 'ARRET') el.textContent = M().arret;
+    else el.textContent = paragraphes.length && !raisonFin ? M().fini(duree()) : '';
+    if (e !== 'ECOUTE') $('d-niveau').style.width = '0';
+
+    if (enCours) document.body.setAttribute('data-occupe', 'direct');
+    else if (document.body.getAttribute('data-occupe') === 'direct') document.body.removeAttribute('data-occupe');
+    figerModes();
+    $('opt-accord').disabled = enCours;
+    garderEcran(enCours);
+    majBouton();
+  }
+
+  function duree() { return T.horloge(dureeFinale); }
+
+  // Le chrono avance même sans nouveau texte.
+  setInterval(function () { if (session && session.etat === 'ECOUTE') etat('ECOUTE'); }, 1000);
+
+  /* Un écran qui s'éteint coupe le micro sur la plupart des téléphones. */
+  function garderEcran(oui) {
+    if (oui && !verrou && navigator.wakeLock) {
+      navigator.wakeLock.request('screen').then(function (v) { verrou = v; }, function () {});
+    } else if (!oui && verrou) {
+      verrou.release().catch(function () {});
+      verrou = null;
+    }
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && session && !verrou) garderEcran(true);
+  });
+
+  function erreur() {
+    var m = raisonFin && M().err[raisonFin];
+    $('d-erreur').hidden = !m;
+    if (m) $('d-erreur').innerHTML = '<p>' + m + '</p>';
+  }
+
+  function el(tag, classe, texte) {
+    var e = document.createElement(tag);
+    if (classe) e.className = classe;
+    if (texte != null) e.textContent = texte;
+    return e;
+  }
+
+  function dessiner() {
+    var boite = $('d-texte');
+    // On suit le texte qui s'écrit, sauf si l'on est remonté le relire.
+    var enBas = boite.scrollHeight - boite.scrollTop - boite.clientHeight < 40;
+    var frag = document.createDocumentFragment();
+    paragraphes.forEach(function (p) {
+      var para = el('p', 'd-para');
+      para.appendChild(el('span', 'ts', T.horloge(p.debut)));
+      var texte = T.reduireBoucles(p.texte || '');
+      if (texte) para.appendChild(document.createTextNode(texte));
+      if (p.partiel) {
+        if (texte) para.appendChild(document.createTextNode(' '));
+        para.appendChild(el('span', 'partiel', p.partiel));
+      }
+      frag.appendChild(para);
+    });
+    $('d-vide').hidden = paragraphes.length > 0;
+    Array.prototype.slice.call(boite.querySelectorAll('.d-para')).forEach(function (n) { n.remove(); });
+    boite.appendChild(frag);
+    if (enBas) boite.scrollTop = boite.scrollHeight;
+    $('d-exports').hidden = !paragraphes.length || !!session;
+  }
+
+  function texteBrut() {
+    return paragraphes.map(function (p) {
+      return '[' + T.horloge(p.debut) + '] ' + T.reduireBoucles(((p.texte || '') + ' ' + (p.partiel || '')).trim());
+    }).join('\n\n') + '\n';
+  }
+
+  $('d-exports').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-direct]');
+    if (!b) return;
+    var f = b.getAttribute('data-direct');
+    if (f === 'copier' && navigator.clipboard) {
+      navigator.clipboard.writeText(texteBrut()).then(function () {
+        var avant = b.innerHTML;
+        b.textContent = M().copie;
+        setTimeout(function () { b.innerHTML = avant; }, 1600);
+      }, function () {});
+    }
+    if (f === 'txt') {
+      var d = new Date(), z = function (n) { return (n < 10 ? '0' : '') + n; };
+      var nom = 'transcription-direct-' + d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()) +
+                '-' + z(d.getHours()) + z(d.getMinutes()) + '.txt';
+      var url = URL.createObjectURL(new Blob([texteBrut()], { type: 'text/plain;charset=utf-8' }));
+      var a = el('a'); a.href = url; a.download = nom;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+    }
+    if (f === 'effacer') {
+      paragraphes = []; raisonFin = null;
+      dessiner(); erreur(); etat('REPOS');
+    }
+  });
+
+  $('d-go').addEventListener('click', demarrer);
+  $('d-stop').addEventListener('click', function () { if (session) session.stop(); });
+  $('opt-accord').addEventListener('change', majBouton);
+  window.addEventListener('beforeunload', function (e) {
+    if (session) { e.preventDefault(); e.returnValue = M().quitter; }
+  });
+  window.addEventListener('pagehide', function () { if (session) session.annuler(); });
+
+  if (!disponible) {
+    $('d-erreur').innerHTML = '<p>' + M().indispo + '</p>';
+    $('d-erreur').hidden = false;
+  }
+  document.addEventListener('labs-langue', function () {
+    if (!disponible) $('d-erreur').innerHTML = '<p>' + M().indispo + '</p>';
+    else erreur();
+    etat(session ? session.etat : 'REPOS');
+  });
+  majBouton();
 })();
 </script>
 
