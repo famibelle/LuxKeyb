@@ -81,6 +81,14 @@ Deux voies :
    l'envoie par le partage Android. La carte de l'appli (300 × 440) est plus
    étroite que le poker : posée sur 84 mm de haut (à 86, la ligne du bas
    touchait la limite de sécurité), le reste est le métal du palier.
+   **Pour la boîte entière** (2026-10-29) : `python3 scripts/rectos_boite.py
+   carnet` (le carnet des 52 cartes B1, à poser dans
+   `shared_prefs/carnet_cartes.xml` d'un build debug sur l'émulateur), puis
+   `scripts/exporter_rectos.sh 52` (lecteur ouvert sur la première carte, tri
+   « Récentes »), puis `scripts/rectos_boite.py assembler` (img2pdf requis).
+   Il écrit le 600 dpi dans `impression/boite/` (privé) et la version 300 dpi
+   publique dans `cartes-imprimables/boite/` (`rectos_52.pdf`, `liste.csv`),
+   comme Medhi l'a choisi.
 2. **Redessin** (script Python/HTML + Playwright, `NODE_PATH=$(npm root -g)`) :
    reproduire la mise en page à partir des JSON d'assets. Écarté pour les
    rectos après le premier BAT de la Fierkelsmaart, jugé « moins beau que
