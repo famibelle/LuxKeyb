@@ -24,6 +24,16 @@
  *   non sur l'horloge (`stt/bench/probe_gap.py`).
  * - **Une liaison coupée est reprise** de la même façon, ECHECS_MAX fois.
  *
+ * **La traduction en direct**, sur demande, est celle du service lui-même
+ * (`translation_enabled`, `translation_target` dans la configuration, ceux de
+ * leur propre client `rt.js`) : vérifiée vers le français le 26 septembre 2026,
+ * elle arrive phrase par phrase dans des messages `translation` à part, 0,7 à
+ * 2,2 s après que la phrase s'est engagée, `accumulated_translation` portant
+ * tout ce qui a été traduit sur la liaison. Chaque ajout est rattaché au
+ * paragraphe de la dernière phrase engagée. Comme il arrive après le texte,
+ * une liaison qui finit (renouvellement, arrêt) reste ouverte jusqu'à
+ * TRADUCTION_GRACE_MS pour recevoir la traduction de sa dernière phrase.
+ *
  * Pas de séparation des voix : le flux n'en fait pas. C'est la voie par lots
  * (`luxasr-transcription.js`) qui la donne, avec un fichier.
  *
@@ -64,6 +74,10 @@
   var RETARD_MAX_S = 30;
 
   var ECHECS_MAX = 3;
+  /* La traduction d'une phrase arrive jusqu'à 2,2 s après elle (mesuré le
+     26 septembre 2026) : on l'attend un peu plus avant de fermer une liaison. */
+  var TRADUCTION_GRACE_MS = 3500;
+
   /* Une liaison qui ne s'ouvre pas dans ce délai est tenue pour perdue. */
   var CONNEXION_MAX_MS = 8000;
   var LEVEL_FULL_SCALE = 0.18;     // même échelle que le micro du clavier
@@ -89,13 +103,25 @@
    * Une séance d'écoute. [ecouteur] reçoit :
    * - `onEtat(etat)` parmi `REPOS`, `CONNEXION`, `ECOUTE`, `ARRET` ;
    * - `onNiveau(0..1)` à chaque bloc capté ;
-   * - `onTexte(paragraphes)`, `[{ debut, texte, partiel }]`, `partiel` étant
-   *   la queue encore instable du dernier paragraphe ;
+   * - `onTexte(paragraphes)`, `[{ debut, texte, partiel, traduction }]`,
+   *   `partiel` étant la queue encore instable du dernier paragraphe, et
+   *   `traduction` le texte traduit de ce paragraphe, s'il est demandé et arrivé ;
    * - `onAlerte('LENT', secondesEnRetard)` puis `onAlerte('LENT', 0)` au retour ;
    * - `onFin(paragraphes, raison)`, `raison` à `null` sur un arrêt demandé,
    *   sinon `MIC`, `SERVICE`, `LENT` ou `DUREE`.
+   *
+   * [options] : `traduction` (faux par défaut : la traduction ajoute un travail
+   * chez eux que tout le monde ne demande pas), `langueCible` (`'fr'`, la seule
+   * vérifiée).
    */
-  function LuxAsrDirect(ecouteur) {
+  function LuxAsrDirect(ecouteur, options) {
+    options = options || {};
+    var traduire = !!options.traduction, cible = options.langueCible || 'fr';
+    /** Traductions par paragraphe (même indice que `paragraphes()`). */
+    var traductions = [];
+    /** Liaisons finies qui attendent encore la traduction de leur fin. */
+    var enGrace = [];
+    var attenteFin = null;
     var ctx = null, flux = null, source = null, noeud = null, puits = null;
     var moduleCharge = false, resteEchantillon = 0;
     var etat = 'REPOS', generation = 0;
@@ -227,7 +253,9 @@
         echecs = 0;
         // Les réglages partent avant la première trame ; puis ce qui a été
         // capté pendant l'ouverture, d'un trait.
-        l.ws.send(JSON.stringify({ type: 'config', language: 'lb' }));
+        var config = { type: 'config', language: 'lb' };
+        if (traduire) { config.translation_enabled = true; config.translation_target = cible; }
+        l.ws.send(JSON.stringify(config));
         enAttente.forEach(function (b) { l.ws.send(b); });
         enAttente = [];
         if (etat === 'CONNEXION') setEtat('ECOUTE');
@@ -236,8 +264,11 @@
         if (etat === 'ARRET') demanderStop(l);
       };
       l.ws.onmessage = function (ev) {
-        if (gen !== generation || l !== liaison || typeof ev.data !== 'string') return;
+        if (gen !== generation || typeof ev.data !== 'string') return;
         var m; try { m = JSON.parse(ev.data); } catch (e) { return; }
+        // Une liaison finie ne reçoit plus que sa traduction en retard.
+        if (m.type === 'translation') { surTraduction(l, m); return; }
+        if (l !== liaison || l.finie) return;
         if (m.type === 'transcription') surTranscription(m);
         else if (m.type === 'recording_stopped') conclureLiaison(l);
       };
@@ -264,6 +295,8 @@
 
     function fermer(l) {
       clearTimeout(l.delai);
+      clearTimeout(l.grace);
+      enGrace = enGrace.filter(function (x) { return x !== l; });
       try { l.ws.onopen = l.ws.onmessage = l.ws.onerror = l.ws.onclose = null; l.ws.close(1000); } catch (e) {}
     }
 
@@ -286,15 +319,30 @@
       l.finie = true;
       clearTimeout(minuteur);
       figer();
-      fermer(l);
+      // Sa dernière phrase n'est peut-être pas encore traduite : la liaison
+      // reste ouverte, pour ses seuls messages `translation`, le temps qu'elle
+      // arrive.
+      if (traduire && l.tradAttendue) {
+        enGrace.push(l);
+        l.grace = setTimeout(function () { fermer(l); verifierFin(); }, TRADUCTION_GRACE_MS);
+      } else {
+        fermer(l);
+      }
       renouvellement = false;
       if (etat === 'ECOUTE') { ouvrirLiaison(); return; }
       if (etat === 'ARRET') {
         // Le micro est coupé, mais de l'audio capté pendant le raccord attend
         // encore : une dernière liaison le transcrit.
         if (enAttente.length) { ouvrirLiaison(); return; }
-        finir(null);
+        attenteFin = true;
+        verifierFin();
       }
+    }
+
+    /** Arrêt demandé, tout engagé : on rend la main quand plus aucune
+        traduction n'est attendue. */
+    function verifierFin() {
+      if (attenteFin && !enGrace.length) { attenteFin = null; finir(null); }
     }
 
     // --- Texte ------------------------------------------------------------
@@ -319,6 +367,11 @@
         marques.push({ debut: debut, offset: acc.length, suite: !!suite });
         close = false;
       }
+      if (nouveau.length > acc.length) {
+        // Du texte engagé : sa traduction viendra, rattachée à ce paragraphe.
+        liaison.tradAttendue = true;
+        liaison.indexCommit = fusionner(figes, courantsDe(nouveau, false)).length - 1;
+      }
       acc = nouveau;
       queue = q;
       if (m.send_reason === 'silence_commit' && !q.trim()) { close = true; closeA = maintenant; }
@@ -329,14 +382,34 @@
     }
 
     /** Les paragraphes de la liaison en cours, tirés du texte engagé. */
-    function courants(avecQueue) {
+    function courants(avecQueue) { return courantsDe(acc, avecQueue); }
+
+    function courantsDe(texte, avecQueue) {
       var res = [];
       marques.forEach(function (mk, i) {
-        var fin = i + 1 < marques.length ? marques[i + 1].offset : acc.length;
-        res.push({ debut: mk.debut, texte: acc.slice(mk.offset, fin).trim(), suite: mk.suite });
+        var fin = i + 1 < marques.length ? marques[i + 1].offset : texte.length;
+        res.push({ debut: mk.debut, texte: texte.slice(mk.offset, fin).trim(), suite: mk.suite });
       });
       if (avecQueue && queue.trim() && res.length) res[res.length - 1].partiel = queue.trim();
       return res;
+    }
+
+    /**
+     * Un message `translation` : ce qui s'ajoute à `accumulated_translation`
+     * revient au paragraphe de la dernière phrase engagée sur cette liaison.
+     * Les indices tiennent parce que les paragraphes ne font que s'ajouter.
+     */
+    function surTraduction(l, m) {
+      if (!traduire || m.success === false || typeof m.accumulated_translation !== 'string') return;
+      var t = m.accumulated_translation, vu = l.tradVu || '';
+      // Une traduction réécrite (rare) : on ne garde que ce qui dépasse.
+      var ajout = (t.indexOf(vu) === 0 ? t.slice(vu.length) : t.length > vu.length ? t.slice(vu.length) : '').trim();
+      l.tradVu = t;
+      l.tradAttendue = false;
+      var i = l.indexCommit != null ? l.indexCommit : -1;
+      if (ajout && i >= 0) traductions[i] = ((traductions[i] || '') + ' ' + ajout).trim();
+      prevenir('onTexte', paragraphes());
+      if (l.finie && enGrace.indexOf(l) >= 0) { fermer(l); verifierFin(); }
     }
 
     function fusionner(base, ajout) {
@@ -354,7 +427,11 @@
     }
 
     /** Tout le texte de la séance, la queue instable à part sur le dernier paragraphe. */
-    function paragraphes() { return fusionner(figes, courants(true)); }
+    function paragraphes() {
+      var ps = fusionner(figes, courants(true));
+      ps.forEach(function (p, i) { if (traductions[i]) p.traduction = traductions[i]; });
+      return ps;
+    }
 
     /** Fige la liaison qui finit. Après « stop », le service a déjà tout
         engagé ; sinon (grâce écoulée, coupure) on garde la queue affichée. */
@@ -403,6 +480,8 @@
 
     function finir(raison) {
       clearTimeout(minuteur);
+      enGrace.slice().forEach(fermer);
+      attenteFin = null;
       debrancher();
       generation++;
       liaison = null; enAttente = []; renouvellement = false;
@@ -420,7 +499,8 @@
       start: function () {
         if (etat !== 'REPOS') return;
         var gen = ++generation;
-        figes = []; acc = ''; queue = ''; marques = []; enAttente = [];
+        figes = []; acc = ''; queue = ''; marques = []; enAttente = []; traductions = [];
+        enGrace = []; attenteFin = null;
         echantillons = 0; debutLiaison = 0; close = true; closeA = 0; debutParagraphe = 0;
         echecs = 0; numero = 0; lent = false; renouvellement = false; raisonFin = null;
         setEtat('CONNEXION');
@@ -448,6 +528,7 @@
         generation++;
         clearTimeout(minuteur);
         if (liaison) { liaison.finie = true; fermer(liaison); }
+        enGrace.slice().forEach(fermer);
         debrancher();
         liaison = null; enAttente = [];
         setEtat('REPOS');

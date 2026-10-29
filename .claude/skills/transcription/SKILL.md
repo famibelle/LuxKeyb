@@ -14,6 +14,7 @@ clavier l'utilise de deux façons, à ne pas confondre :
 | Voie | WebSocket `wss://luxasr.uni.lu/prod/ws/transcribe` | le même WebSocket, en continu | HTTP par lots : `POST /asr2` puis `/v3/asr/jobs/…` |
 | Code | `LuxAsrSession.kt`, `docs/assets/luxasr-client.js` | `docs/assets/luxasr-direct.js` | `docs/assets/luxasr-transcription.js`, `luxasr_transcrire.py` (ici) |
 | Durée | un énoncé : 5 s de silence ou 90 s l'arrêtent | jusqu'à l'arrêt, une heure au plus | le fichier entier |
+| Traduction | non (le simulateur du site l'affiche) | **oui, en français**, sur demande | non |
 | Locuteurs | non | non | **oui** (`diarization=Enabled`) |
 | Horodatage | non | par paragraphe, à une seconde près | oui, jusqu'au mot (`outfmt=json`) |
 | Amorçage (`prompt`), `beam_size` | non | non | oui |
@@ -295,6 +296,20 @@ Ce que `luxasr-direct.js` y ajoute pour une écoute qui dure :
    même règle que les fichiers (§ 4, règle 8).
 7. L'écran est gardé allumé (`navigator.wakeLock`) pendant l'écoute : sur un
    téléphone, un écran qui s'éteint coupe le micro.
+8. **Traduction en direct**, sur demande (`options.traduction`, désactivée par
+   défaut : c'est un travail de plus chez eux). La configuration porte
+   `translation_enabled: true` et `translation_target: "fr"`, comme leur propre
+   client `rt.js` ; seul le français a été vérifié (26 septembre 2026). Les
+   traductions reviennent dans des messages `translation` à part
+   (`success`, `accumulated_translation` : tout ce qui a été traduit sur la
+   liaison), phrase par phrase, 0,7 à 2,2 s après l'engagement ; le
+   `translation` des messages `transcription` n'est qu'un état, jamais le
+   texte. Chaque ajout est rattaché au paragraphe de la dernière phrase
+   engagée sur sa liaison. Comme il arrive après le texte, une liaison qui
+   finit reste ouverte jusqu'à 3,5 s pour ses seuls messages `translation`,
+   au renouvellement comme à l'arrêt ; l'arrêt ne rend la main qu'ensuite.
+   Autres langues cibles : à relever d'abord dans `rt.js` sur leur site, puis
+   à vérifier en direct, avant de les proposer.
 
 Pas de séparation des voix : le flux n'en fait pas. Pour « qui a dit quoi »,
 enregistrer puis passer par le fichier.
@@ -353,7 +368,11 @@ jamais simuler une réponse en la présentant comme réelle.
    `--use-fake-ui-for-media-stream` et `--use-file-for-fake-audio-capture=`
    un WAV qui alterne son et silences. Vérifier que les mots arrivent sans trou
    ni doublon à travers les renouvellements et une coupure, et les messages
-   du service injoignable et du micro refusé.
+   du service injoignable et du micro refusé. Pour la traduction, le faux
+   service répond 0,8 s après chaque engagement, et après
+   `recording_stopped` pour le dernier (« motN » devenu « tradN ») : chaque
+   paragraphe doit porter la traduction de ses propres mots, et aucune ne
+   doit manquer aux renouvellements ni à l'arrêt.
 4. **En vrai**, quand le réseau le permet : un enregistrement court à deux voix,
    une seule soumission, et le relevé consigné dans `releves/` ; pour le
    direct, quelques minutes d'écoute, au moins deux renouvellements.

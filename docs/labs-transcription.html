@@ -207,8 +207,14 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 .d-etat.on{color:var(--hibiscus);font-weight:700;}
 .d-texte{margin-top:14px;min-height:150px;max-height:60vh;overflow:auto;border:1px solid var(--line);
   border-radius:10px;background:var(--paper);padding:12px 14px;font-size:16px;line-height:1.6;}
-.d-para{margin:0 0 10px;}
-.d-para:last-child{margin-bottom:0;}
+.d-bloc{margin:0 0 12px;}
+.d-bloc:last-child{margin-bottom:0;}
+.d-para{margin:0;}
+.d-trad{margin:3px 0 0;padding-left:10px;border-left:3px solid var(--sea);color:var(--ink-soft);
+  font-size:15px;font-style:italic;}
+.d-option{display:flex;gap:10px;align-items:flex-start;margin:0 0 14px;font-size:15px;}
+.d-option input{margin-top:4px;flex:0 0 auto;width:18px;height:18px;accent-color:var(--sea);}
+.d-option small{display:block;color:var(--ink-soft);font-size:13px;}
 .d-para .ts{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin-right:8px;
   font-variant-numeric:tabular-nums;}
 .d-para .partiel{color:var(--ink-soft);text-decoration:underline dotted;text-underline-offset:4px;}
@@ -387,6 +393,11 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 
   <div id="panneau-direct" role="tabpanel" aria-labelledby="mode-direct" hidden>
     <div class="card direct">
+      <label class="d-option">
+        <input type="checkbox" id="d-trad">
+        <span><span data-i18n="d-trad">🇫🇷 Traduire en français, en direct</span>
+          <small data-i18n="d-trad-aide">Par le même service : la traduction arrive phrase par phrase, une à deux secondes après le texte, sous chaque paragraphe.</small></span>
+      </label>
       <div class="direct-barre">
         <button type="button" class="btn primary" id="d-go" disabled data-i18n="d-go">🎙️ Démarrer</button>
         <button type="button" class="btn" id="d-stop" hidden data-i18n="d-stop">⏹ Arrêter</button>
@@ -452,7 +463,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <li data-i18n="savoir-2"><strong>Les répliques très courtes, les voix proches et celles qui se chevauchent</strong> sont mal séparées, c'est une limite connue de la méthode. Indiquer le nombre de voix aide nettement, au prix parfois d'un peu de justesse du texte ; une pièce calme et un micro proche de chacun aident aussi.</li>
     <li data-i18n="savoir-3"><strong>Le service est fait pour le luxembourgeois.</strong> Un passage dans une autre langue peut revenir mal transcrit.</li>
     <li data-i18n="savoir-4"><strong>L'attente dépend surtout de la file</strong> : le service traite les fichiers de tout le monde, les uns après les autres. Gardez la page ouverte jusqu'au résultat.</li>
-    <li data-i18n="savoir-direct"><strong>En direct, le texte arrive au fil de la parole</strong>, une seconde environ après les mots, et se corrige jusqu'à la fin de la phrase. C'est le même service que la dictée du clavier, sans séparation des voix.</li>
+    <li data-i18n="savoir-direct"><strong>En direct, le texte arrive au fil de la parole</strong>, une seconde environ après les mots, et se corrige jusqu'à la fin de la phrase. C'est le même service que la dictée du clavier, sans séparation des voix. Sa traduction en français, si vous la demandez, est aussi la leur : elle suit phrase par phrase, et se trompe comme toute traduction automatique.</li>
     <li data-i18n="savoir-5"><strong>Une vidéo marche aussi</strong> : seule sa piste son est transcrite, mais c'est le fichier entier qui part. Pour un long film, extraire le son d'abord accélère l'envoi.</li>
   </ul>
 </section>
@@ -483,7 +494,10 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       connexion est renouvelée environ toutes les deux minutes, pendant une
       pause, sans couper le micro : ce qui est capté pendant le raccord part
       juste après. Les horodatages des paragraphes sont approximatifs, à une
-      seconde près.
+      seconde près. La traduction est demandée au service dans la même
+      connexion (<code>translation_enabled</code>, cible <code>fr</code>) ; elle
+      revient phrase par phrase et se range sous le paragraphe de la phrase
+      traduite.
     </p>
     <p data-i18n="tech-p3">
       <strong>Pourquoi l'envoi peut échouer d'emblée.</strong> Une page web ne
@@ -549,6 +563,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'mode-fichier-s': 'separated voices, subtitles',
     'mode-direct': '🎙️ Live',
     'mode-direct-s': 'as people speak, from the microphone',
+    'd-trad': '🇫🇷 Translate into French, live',
+    'd-trad-aide': 'By the same service: the translation arrives sentence by sentence, one to two seconds after the text, under each paragraph.',
     'd-go': '🎙️ Start',
     'd-stop': '⏹ Stop',
     'd-vide': 'The text will appear here as people speak. The end of a sentence, underlined, can still change.',
@@ -587,12 +603,12 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'savoir-2': '<strong>Very short lines, similar voices and overlapping voices</strong> are poorly separated: a known limit of the method. Giving the number of voices helps a lot, sometimes at the cost of some accuracy in the text; a quiet room and a microphone close to each speaker help too.',
     'savoir-3': '<strong>The service is made for Luxembourgish.</strong> A passage in another language may come back poorly transcribed.',
     'savoir-4': '<strong>The wait depends mostly on the queue</strong>: the service handles everyone’s files, one after another. Keep the page open until the result arrives.',
-    'savoir-direct': '<strong>Live, the text arrives as people speak</strong>, about a second after the words, and keeps being corrected until the end of the sentence. It is the same service as the keyboard’s dictation, without voice separation.',
+    'savoir-direct': '<strong>Live, the text arrives as people speak</strong>, about a second after the words, and keeps being corrected until the end of the sentence. It is the same service as the keyboard’s dictation, without voice separation. Its French translation, if you ask for it, is theirs too: it follows sentence by sentence, and makes mistakes like any machine translation.',
     'savoir-5': '<strong>A video works too</strong>: only its sound track is transcribed, but the whole file is sent. For a long film, extracting the sound first speeds up the upload.',
     'tech-h3': 'For the curious: how it works',
     'tech-p1': 'The page sends the file as is to LuxASR’s batch API (<code>POST /asr2</code>, with <code>diarization=Enabled</code> and <code>outfmt=json</code>), then asks how the job is doing, every two seconds at first and less and less often after that, and reads the result, only once: the service deletes it as soon as it has served it. The file goes straight from your browser to the service: it does not go through this site.',
     'tech-p2': 'The result is turned into a list of sentences (start, end, speaker, text), cut using each word’s timing and the size of a subtitle. Consecutive sentences from the same voice make one turn; the TXT, SRT, VTT and JSON exports are drawn from that list. The service’s raw reply stays downloadable as is.',
-    'tech-direct': '<strong>Live</strong>, the page talks to the service like the keyboard’s dictation: a WebSocket connection, the sound as 16-bit PCM at 16 kHz as it is captured, and in return the confirmed text and the still-unstable end of the sentence. So that a long session does not weigh on the service, the connection is renewed about every two minutes, during a pause, without cutting the microphone: what is captured during the switch is sent right after. Paragraph timestamps are approximate, to within a second.',
+    'tech-direct': '<strong>Live</strong>, the page talks to the service like the keyboard’s dictation: a WebSocket connection, the sound as 16-bit PCM at 16 kHz as it is captured, and in return the confirmed text and the still-unstable end of the sentence. So that a long session does not weigh on the service, the connection is renewed about every two minutes, during a pause, without cutting the microphone: what is captured during the switch is sent right after. Paragraph timestamps are approximate, to within a second. The translation is requested from the service on the same connection (<code>translation_enabled</code>, target <code>fr</code>); it comes back sentence by sentence and is placed under the paragraph of the translated sentence.',
     'tech-p3': '<strong>Why the upload may fail straight away.</strong> A web page can only read another site’s reply if that site allows it, through a “CORS” header. As observed in September and again on 29 October 2026, the service did not yet set it on the acknowledgement of an upload. So the page first checks with half a second of silence, so as not to make the service work on your file in vain. If that is still the case, the page tells you so, without retrying in vain, and suggests transcribing on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> and opening the result here.',
     'feedback-h2': 'Tell us how it goes',
     'feedback-p': 'Labs is for trying things before deciding. The most useful thing to send us: <strong>the kind of recording, its length, the number of voices, and what was separated well or badly</strong>.',
@@ -1302,6 +1318,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     paragraphes = [];
     dessiner();
     lent = false;
+    var traduire = $('d-trad').checked;
     session = D({
       onEtat: function (e) { etat(e); },
       onNiveau: function (n) { $('d-niveau').style.width = Math.round(n * 100) + '%'; },
@@ -1316,7 +1333,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         erreur();
         etat('REPOS');
       }
-    });
+    }, { traduction: traduire, langueCible: 'fr' });
     session.start();
   }
 
@@ -1337,6 +1354,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     else if (document.body.getAttribute('data-occupe') === 'direct') document.body.removeAttribute('data-occupe');
     figerModes();
     $('opt-accord').disabled = enCours;
+    $('d-trad').disabled = enCours;
     garderEcran(enCours);
     majBouton();
   }
@@ -1378,7 +1396,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     var enBas = boite.scrollHeight - boite.scrollTop - boite.clientHeight < 40;
     var frag = document.createDocumentFragment();
     paragraphes.forEach(function (p) {
+      var bloc = el('div', 'd-bloc');
       var para = el('p', 'd-para');
+      para.setAttribute('lang', 'lb');
       para.appendChild(el('span', 'ts', T.horloge(p.debut)));
       var texte = T.reduireBoucles(p.texte || '');
       if (texte) para.appendChild(document.createTextNode(texte));
@@ -1386,10 +1406,16 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         if (texte) para.appendChild(document.createTextNode(' '));
         para.appendChild(el('span', 'partiel', p.partiel));
       }
-      frag.appendChild(para);
+      bloc.appendChild(para);
+      if (p.traduction) {
+        var trad = el('p', 'd-trad', T.reduireBoucles(p.traduction));
+        trad.setAttribute('lang', 'fr');
+        bloc.appendChild(trad);
+      }
+      frag.appendChild(bloc);
     });
     $('d-vide').hidden = paragraphes.length > 0;
-    Array.prototype.slice.call(boite.querySelectorAll('.d-para')).forEach(function (n) { n.remove(); });
+    Array.prototype.slice.call(boite.querySelectorAll('.d-bloc')).forEach(function (n) { n.remove(); });
     boite.appendChild(frag);
     if (enBas) boite.scrollTop = boite.scrollHeight;
     $('d-exports').hidden = !paragraphes.length || !!session;
@@ -1397,7 +1423,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 
   function texteBrut() {
     return paragraphes.map(function (p) {
-      return '[' + T.horloge(p.debut) + '] ' + T.reduireBoucles(((p.texte || '') + ' ' + (p.partiel || '')).trim());
+      return '[' + T.horloge(p.debut) + '] ' + T.reduireBoucles(((p.texte || '') + ' ' + (p.partiel || '')).trim()) +
+             (p.traduction ? '\n[fr] ' + T.reduireBoucles(p.traduction) : '');
     }).join('\n\n') + '\n';
   }
 
