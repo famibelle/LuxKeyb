@@ -90,6 +90,11 @@ code{font-family:var(--mono);font-size:13px;background:var(--stripe);padding:1px
   border:1.5px solid var(--line);background:var(--paper);color:var(--ink);}
 .opts input[type=text]:focus{outline:2px solid var(--sea);outline-offset:1px;border-color:var(--sea);}
 .opts .aide{font-size:13px;color:var(--ink-soft);margin:6px 0 0;}
+.opts .voix{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 0 14px 28px;font-size:14.5px;}
+.opts select{font:inherit;font-size:14.5px;padding:6px 10px;border-radius:8px;
+  border:1.5px solid var(--line);background:var(--paper);color:var(--ink);}
+.opts select:focus{outline:2px solid var(--sea);outline-offset:1px;}
+.opts select:disabled{opacity:.5;}
 
 .actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px;}
 .actions .btn{font-size:15px;padding:12px 20px;}
@@ -110,6 +115,9 @@ code{font-family:var(--mono);font-size:13px;background:var(--stripe);padding:1px
 .erreur{margin-top:16px;border:1px solid var(--line);border-left:4px solid var(--hibiscus);
   background:var(--hibiscus-soft);border-radius:10px;padding:14px 16px;font-size:14.5px;}
 .erreur p:last-child{margin-bottom:0;}
+.info{border:1px solid var(--line);border-left:4px solid var(--sun);background:var(--sun-soft);
+  border-radius:10px;padding:12px 16px;font-size:14.5px;margin:0 0 16px;}
+.info p:last-child{margin-bottom:0;}
 
 details.import{margin-top:4px;}
 details.import summary{cursor:pointer;font-weight:700;font-size:15px;}
@@ -241,8 +249,10 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       <strong>🔊 Votre enregistrement part à l'Université du Luxembourg</strong>,
       qui le transcrit sur ses serveurs : c'est leur
       <a href="https://luxasr.uni.lu/">politique de protection des données</a>
-      qui s'applique. Ce site ne reçoit et ne garde rien : la page tourne dans
-      votre navigateur.
+      qui s'applique. Le traitement a lieu sur un serveur de l'Université, au
+      Luxembourg ; l'audio y est effacé dès la fin du traitement, le texte dès
+      qu'il est lu, et rien ne sert à entraîner leurs modèles. Ce site ne
+      reçoit et ne garde rien : la page tourne dans votre navigateur.
     </p>
     <p data-i18n="warn-p2">
       Ne déposez que des enregistrements que vous avez le droit de faire
@@ -253,9 +263,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <div class="card">
     <label class="drop" id="drop" for="f-audio">
       <input type="file" id="f-audio" class="sr-only"
-             accept="audio/*,video/mp4,video/webm,video/quicktime,.m4a,.opus,.flac">
+             accept="audio/*,video/*,.m4a,.opus,.flac,.wma,.mp2">
       <span class="big" data-i18n="drop-big">📂 Choisir un enregistrement, ou le glisser ici</span>
-      <span class="small" data-i18n="drop-small">MP3, M4A, WAV, OGG, FLAC, WebM, ou une vidéo MP4 · 100 Mo et 90 minutes au plus</span>
+      <span class="small" data-i18n="drop-small">MP3, M4A, WAV, OGG, FLAC, ou une vidéo (MP4, MOV, WebM) · 100 Mo et 90 minutes au plus</span>
     </label>
 
     <div class="fiche" id="fiche" hidden>
@@ -270,6 +280,15 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         <span><span data-i18n="opt-diar">Séparer les voix</span>
           <small data-i18n="opt-diar-aide">Décochez pour un enregistrement à une seule voix : le service va plus vite.</small></span>
       </label>
+      <div class="voix">
+        <label for="opt-voix" data-i18n="opt-voix">Nombre de voix</label>
+        <select id="opt-voix">
+          <option value="" data-i18n="opt-voix-auto">à détecter</option>
+          <option>2</option><option>3</option><option>4</option><option>5</option>
+          <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+        </select>
+        <small class="aide" style="margin:0" data-i18n="opt-voix-aide">Le donner aide beaucoup quand les voix se ressemblent.</small>
+      </div>
       <label class="champ" for="opt-prompt" data-i18n="opt-prompt">Noms propres et mots rares (facultatif)</label>
       <input type="text" id="opt-prompt" autocomplete="off" spellcheck="false"
              placeholder="Gemengerot, Schäffen, Esch-Uelzecht" maxlength="400">
@@ -322,6 +341,15 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <h2 id="resultat-h2" tabindex="-1" data-i18n="resultat-h2">La transcription</h2>
   <div class="lecteur" id="lecteur" hidden><audio id="audio" controls preload="metadata"></audio></div>
   <p class="resume" id="resume"></p>
+  <div class="info" id="une-voix" hidden>
+    <p data-i18n="une-voix-p">
+      <strong>Une seule voix a été détectée.</strong> Si l'enregistrement en
+      contient plusieurs, indiquez leur nombre dans « Nombre de voix » et
+      relancez : la détection automatique confond souvent des voix proches et
+      des répliques courtes. Vous pouvez aussi rattacher vous-même les
+      paragraphes en lisant.
+    </p>
+  </div>
   <div class="locuteurs" id="locuteurs"></div>
   <div class="erreur" id="inconnu" hidden>
     <p data-i18n="inconnu-p">Le résultat est arrivé, mais sous une forme que cette page ne sait pas encore lire. Le voici tel quel ; il reste téléchargeable avec « Réponse brute ».</p>
@@ -346,7 +374,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <h2 data-i18n="savoir-h2">Bon à savoir</h2>
   <ul class="facts">
     <li data-i18n="savoir-1"><strong>Les voix sont séparées, pas reconnues.</strong> Le service regroupe ce qui sonne comme une même voix, sans savoir qui parle : renommez les locuteurs une fois le texte affiché, les exports suivent.</li>
-    <li data-i18n="savoir-2"><strong>Les répliques très courtes et les voix qui se chevauchent</strong> sont mal séparées, c'est une limite connue de la méthode. Une pièce calme et un micro proche de chacun aident beaucoup.</li>
+    <li data-i18n="savoir-2"><strong>Les répliques très courtes, les voix proches et celles qui se chevauchent</strong> sont mal séparées, c'est une limite connue de la méthode. Indiquer le nombre de voix aide ; une pièce calme et un micro proche de chacun aussi.</li>
     <li data-i18n="savoir-3"><strong>Le service est fait pour le luxembourgeois.</strong> Un passage dans une autre langue peut revenir mal transcrit.</li>
     <li data-i18n="savoir-4"><strong>L'attente dépend surtout de la file</strong> : le service traite les fichiers de tout le monde, les uns après les autres. Gardez la page ouverte jusqu'au résultat.</li>
     <li data-i18n="savoir-5"><strong>Une vidéo marche aussi</strong> : seule sa piste son est transcrite, mais c'est le fichier entier qui part. Pour un long film, extraire le son d'abord accélère l'envoi.</li>
@@ -359,22 +387,23 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <p data-i18n="tech-p1">
       La page envoie le fichier tel quel à l'API par lots de LuxASR
       (<code>POST /asr2</code>, avec <code>diarization=Enabled</code> et
-      <code>outfmt=json</code>), puis demande où en est le travail toutes les
-      deux secondes, puis toutes les cinq au-delà d'une minute, et lit le
-      résultat. Le fichier va directement de votre navigateur au service : il ne
+      <code>outfmt=json</code>), puis demande où en est le travail, d'abord
+      toutes les deux secondes puis de plus en plus rarement, et lit le
+      résultat, une seule fois : le service l'efface dès qu'il l'a servi. Le fichier va directement de votre navigateur au service : il ne
       passe pas par ce site.
     </p>
     <p data-i18n="tech-p2">
-      Le résultat est ramené à une liste de répliques (début, fin, locuteur,
-      texte). Les segments consécutifs d'une même voix forment un tour de
+      Le résultat est ramené à une liste de phrases (début, fin, locuteur,
+      texte), coupées grâce à l'horodatage de chaque mot et à la taille d'un
+      sous-titre. Les phrases consécutives d'une même voix forment un tour de
       parole ; c'est de cette liste que sont tirés les exports TXT, SRT, VTT et
       JSON. La réponse brute du service reste téléchargeable telle quelle.
     </p>
     <p data-i18n="tech-p3">
       <strong>Pourquoi l'envoi peut échouer d'emblée.</strong> Une page web ne
       peut lire la réponse d'un autre site que si ce site l'y autorise, par un
-      en-tête « CORS ». Relevé en septembre 2026, le service ne le posait pas
-      encore sur l'accusé de réception d'un envoi. Si c'est toujours le cas, la
+      en-tête « CORS ». Relevé en septembre puis le 29 octobre 2026, le service
+      ne le posait pas encore sur l'accusé de réception d'un envoi. Si c'est toujours le cas, la
       page vous le dit, sans réessayer à vide, et vous propose de transcrire sur
       <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> puis d'ouvrir le
       résultat ici.
@@ -425,13 +454,16 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'lead': 'Drop a recording in <strong>Luxembourgish</strong>: a meeting, an interview, a podcast. The LuxASR service writes it down and <strong>separates the voices</strong>: each line is tied to its speaker and to the moment it is said. You listen while you read, name the speakers, and take away the text or the subtitles.',
     'thanks-p': '🎓 Transcription and voice separation are the work of <a href="https://luxasr.uni.lu/">LuxASR</a>, the Luxembourgish speech recognition service of the <strong>University of Luxembourg</strong>. This page sends the file and lays out what comes back. Thanks to their team.',
     'outil-h2': 'Transcribe',
-    'warn-p1': "<strong>🔊 Your recording goes to the University of Luxembourg</strong>, which transcribes it on its servers: their <a href=\"https://luxasr.uni.lu/\">data protection policy</a> applies. This site receives and keeps nothing: the page runs in your browser.",
+    'warn-p1': "<strong>🔊 Your recording goes to the University of Luxembourg</strong>, which transcribes it on its servers: their <a href=\"https://luxasr.uni.lu/\">data protection policy</a> applies. Processing takes place on a University server in Luxembourg; the audio is deleted as soon as processing ends, the text as soon as it is read, and nothing is used to train their models. This site receives and keeps nothing: the page runs in your browser.",
     'warn-p2': 'Only upload recordings you are allowed to have transcribed, with the consent of the people heard in them.',
     'drop-big': '📂 Choose a recording, or drop it here',
-    'drop-small': 'MP3, M4A, WAV, OGG, FLAC, WebM, or an MP4 video · 100 MB and 90 minutes at most',
+    'drop-small': 'MP3, M4A, WAV, OGG, FLAC, or a video (MP4, MOV, WebM) · 100 MB and 90 minutes at most',
     'opts-legend': 'Settings',
     'opt-diar': 'Separate the voices',
     'opt-diar-aide': 'Untick for a single-voice recording: the service is faster.',
+    'opt-voix': 'Number of voices',
+    'opt-voix-auto': 'detect',
+    'opt-voix-aide': 'Giving it helps a lot when the voices sound alike.',
     'opt-prompt': 'Proper names and rare words (optional)',
     'opt-prompt-aide': 'Spelled as they should be, separated by commas: the service uses them to spell those words throughout the recording.',
     'opt-accord': 'The people recorded agree to have their voices transcribed by LuxASR.',
@@ -445,6 +477,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'import-p': 'Open a file produced by LuxASR here (JSON, SRT, VTT or text), for instance from the form on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a>: you get the speaker view, renaming and exports. The file stays in your browser. Also choose the recording above to listen while you read.',
     'import-btn': '📄 Open a result',
     'resultat-h2': 'The transcript',
+    'une-voix-p': '<strong>Only one voice was detected.</strong> If the recording holds several, set their number under “Number of voices” and start again: automatic detection often confuses similar voices and short lines. You can also reassign the paragraphs yourself while reading.',
     'inconnu-p': 'The result arrived, but in a form this page cannot read yet. Here it is as is; you can still download it with “Raw reply”.',
     'exp-copier': '📋 Copy the text',
     'exp-srt-title': 'Subtitles',
@@ -453,14 +486,14 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'resultat-credit': 'Automatic transcription by LuxASR, University of Luxembourg. It gets some of the words wrong: proofread it before sharing.',
     'savoir-h2': 'Good to know',
     'savoir-1': '<strong>Voices are separated, not recognised.</strong> The service groups what sounds like the same voice without knowing who is speaking: rename the speakers once the text is shown, and the exports follow.',
-    'savoir-2': '<strong>Very short lines and overlapping voices</strong> are poorly separated: a known limit of the method. A quiet room and a microphone close to each speaker help a lot.',
+    'savoir-2': '<strong>Very short lines, similar voices and overlapping voices</strong> are poorly separated: a known limit of the method. Giving the number of voices helps; so do a quiet room and a microphone close to each speaker.',
     'savoir-3': '<strong>The service is made for Luxembourgish.</strong> A passage in another language may come back poorly transcribed.',
     'savoir-4': '<strong>The wait depends mostly on the queue</strong>: the service handles everyone’s files, one after another. Keep the page open until the result arrives.',
     'savoir-5': '<strong>A video works too</strong>: only its sound track is transcribed, but the whole file is sent. For a long film, extracting the sound first speeds up the upload.',
     'tech-h3': 'For the curious: how it works',
-    'tech-p1': 'The page sends the file as is to LuxASR’s batch API (<code>POST /asr2</code>, with <code>diarization=Enabled</code> and <code>outfmt=json</code>), then asks how the job is doing every two seconds, then every five after a minute, and reads the result. The file goes straight from your browser to the service: it does not go through this site.',
-    'tech-p2': 'The result is turned into a list of lines (start, end, speaker, text). Consecutive segments from the same voice make one turn; the TXT, SRT, VTT and JSON exports are drawn from that list. The service’s raw reply stays downloadable as is.',
-    'tech-p3': '<strong>Why the upload may fail straight away.</strong> A web page can only read another site’s reply if that site allows it, through a “CORS” header. As observed in September 2026, the service did not yet set it on the acknowledgement of an upload. If that is still the case, the page tells you so, without retrying in vain, and suggests transcribing on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> and opening the result here.',
+    'tech-p1': 'The page sends the file as is to LuxASR’s batch API (<code>POST /asr2</code>, with <code>diarization=Enabled</code> and <code>outfmt=json</code>), then asks how the job is doing, every two seconds at first and less and less often after that, and reads the result, only once: the service deletes it as soon as it has served it. The file goes straight from your browser to the service: it does not go through this site.',
+    'tech-p2': 'The result is turned into a list of sentences (start, end, speaker, text), cut using each word’s timing and the size of a subtitle. Consecutive sentences from the same voice make one turn; the TXT, SRT, VTT and JSON exports are drawn from that list. The service’s raw reply stays downloadable as is.',
+    'tech-p3': '<strong>Why the upload may fail straight away.</strong> A web page can only read another site’s reply if that site allows it, through a “CORS” header. As observed in September and again on 29 October 2026, the service did not yet set it on the acknowledgement of an upload. If that is still the case, the page tells you so, without retrying in vain, and suggests transcribing on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> and opening the result here.',
     'feedback-h2': 'Tell us how it goes',
     'feedback-p': 'Labs is for trying things before deciding. The most useful thing to send us: <strong>the kind of recording, its length, the number of voices, and what was separated well or badly</strong>.',
     'feedback-form': '💬 Feedback form',
@@ -546,6 +579,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       envoi: function (f) { return f == null ? 'Envoi du fichier…' : 'Envoi du fichier : ' + Math.round(f * 100) + ' %'; },
       file: function (p) { return p != null ? 'En file d\'attente, position ' + p : 'En file d\'attente chez LuxASR'; },
       traitement: 'Transcription en cours',
+      reste: function (t) { return ' · encore ' + t + ' environ'; },
       ecoule: function (t) { return ' · ' + t + ' écoulées'; },
       annule: 'Annulé. Si le fichier était déjà parti, le service finit de le traiter de son côté ; rien n\'est gardé ici.',
       locuteur: function (n) { return 'Locuteur ' + n; },
@@ -564,6 +598,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         REFUS: function (d) { return 'Le service a refusé le fichier (erreur ' + d.status + ')' + (d.message ? ' : « ' + d.message + ' »' : '.'); },
         ECHEC: function (d) { return 'Le service n\'a pas réussi à transcrire ce fichier' + (d ? ' : « ' + d + ' »' : '.'); },
         DELAI: 'Toujours pas de résultat au bout d\'une heure : la file du service est sans doute saturée. Réessayez plus tard.',
+        INTROUVABLE: 'Le service ne trouve plus ce travail : il a expiré ou a été supprimé. Relancez la transcription.',
         SANS_JOB: 'Le service a répondu sans numéro de travail : la réponse est inattendue, impossible de suivre la transcription.',
         VIDE: 'Le service n\'a rien reconnu dans cet enregistrement. Est-il bien en luxembourgeois, et audible ?',
         LECTURE: 'Ce fichier n\'a pas pu être lu.'
@@ -575,6 +610,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       envoi: function (f) { return f == null ? 'Uploading the file…' : 'Uploading the file: ' + Math.round(f * 100) + '%'; },
       file: function (p) { return p != null ? 'In the queue, position ' + p : 'In the LuxASR queue'; },
       traitement: 'Transcribing',
+      reste: function (t) { return ' · about ' + t + ' to go'; },
       ecoule: function (t) { return ' · ' + t + ' elapsed'; },
       annule: 'Cancelled. If the file had already left, the service finishes processing it on its side; nothing is kept here.',
       locuteur: function (n) { return 'Speaker ' + n; },
@@ -593,6 +629,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         REFUS: function (d) { return 'The service refused the file (error ' + d.status + ')' + (d.message ? ': “' + d.message + '”' : '.'); },
         ECHEC: function (d) { return 'The service could not transcribe this file' + (d ? ': “' + d + '”' : '.'); },
         DELAI: 'Still no result after an hour: the service’s queue is probably saturated. Try again later.',
+        INTROUVABLE: 'The service can no longer find this job: it expired or was deleted. Start the transcription again.',
         SANS_JOB: 'The service replied without a job number: unexpected reply, the transcription cannot be followed.',
         VIDE: 'The service recognised nothing in this recording. Is it in Luxembourgish, and audible?',
         LECTURE: 'This file could not be read.'
@@ -612,6 +649,10 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   var CLE_CORS = 'labs-transcription-cors';
   var audio = null, urlAudio = null, dureeAudio = null, audioValide = false;
   var tache = null, etape = null, t0 = 0, chrono = null, progres = null, position = null;
+  /* Estimation du service (`eta_seconds`) et instant où elle a été reçue. */
+  var eta = null, etaRecue = 0;
+  /* Ce qui a été demandé pour la transcription affichée. */
+  var demande = null;
   var doc = null, brut = '', baseNom = 'transcription', noms = {};
   var derniereErreur = null;
 
@@ -670,20 +711,23 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     cacherErreur();
     $('resultat').hidden = true;
     doc = null;
-    etape = 'ENVOI'; progres = 0; position = null; t0 = Date.now();
+    etape = 'ENVOI'; progres = 0; position = null; eta = null; t0 = Date.now();
+    demande = { diarisation: $('opt-diar').checked, locuteurs: $('opt-voix').value };
     $('suivi').hidden = false;
     basculer(true);
     majSuivi();
     clearInterval(chrono);
     chrono = setInterval(majSuivi, 1000);
     tache = T.transcrire(audio, {
-      diarisation: $('opt-diar').checked,
+      diarisation: demande.diarisation,
+      locuteurs: demande.locuteurs,
       prompt: $('opt-prompt').value.trim()
     }, {
       onEtat: function (e, info) {
         etape = e;
         if (e === 'ENVOI') progres = info;
         if (e === 'FILE') position = info && info.position != null ? info.position : null;
+        if (e !== 'ENVOI') { eta = info && info.eta != null ? info.eta : null; etaRecue = Date.now(); }
         majSuivi();
       },
       onResultat: function (texte) {
@@ -720,6 +764,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     $('annuler').hidden = !enCours;
     $('f-audio').disabled = enCours;
     $('opt-diar').disabled = enCours;
+    $('opt-voix').disabled = enCours || !$('opt-diar').checked;
     $('opt-prompt').disabled = enCours;
     $('f-resultat').disabled = enCours;
     majBouton();
@@ -738,7 +783,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     else barre.hidden = true;
     var texte = etape === 'ENVOI' ? M().envoi(progres)
               : etape === 'FILE' ? M().file(position) : M().traitement;
-    $('detail').textContent = texte + M().ecoule(T.horloge((Date.now() - t0) / 1000));
+    var reste = eta != null && etape !== 'ENVOI' ? eta - (Date.now() - etaRecue) / 1000 : null;
+    $('detail').textContent = texte + (reste > 0 ? M().reste(T.horloge(reste)) : '') +
+                              M().ecoule(T.horloge((Date.now() - t0) / 1000));
   }
 
   // --- Erreurs ----------------------------------------------------------
@@ -759,6 +806,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 
   function importer(f) {
     cacherErreur();
+    demande = null;
     var lecteur = new FileReader();
     lecteur.onload = function () {
       if (!audio) baseNom = f.name.replace(/\.[^.]+$/, '') || 'transcription';
@@ -779,6 +827,11 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       return;
     }
     $('resultat').hidden = false;
+    // La diarisation automatique a tout mis sur une voix (relevé du 29 octobre
+    // 2026 : deux voix féminines proches, des questions de 3 à 5 s) : on le
+    // dit, et on indique le réglage qui aide.
+    $('une-voix').hidden = !(depuisService && demande && demande.diarisation &&
+                             !demande.locuteurs && doc.locuteurs.length <= 1);
     $('inconnu').hidden = doc.format !== 'inconnu';
     $('brut').hidden = doc.format !== 'inconnu';
     if (doc.format === 'inconnu') $('brut').textContent = texte.slice(0, 20000);
@@ -975,6 +1028,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   $('f-audio').addEventListener('change', function () { choisirAudio(this.files[0]); this.value = ''; });
   $('f-resultat').addEventListener('change', function () { if (this.files[0]) importer(this.files[0]); this.value = ''; });
   $('opt-accord').addEventListener('change', majBouton);
+  $('opt-diar').addEventListener('change', function () { $('opt-voix').disabled = !this.checked; });
   $('go').addEventListener('click', lancer);
   $('annuler').addEventListener('click', annuler);
 

@@ -17,8 +17,12 @@
  * `completed`, puis `/result`. `diarization=Enabled`, `outfmt=json` : le JSON
  * est le seul format qui porte à la fois les temps et les locuteurs.
  *
- * **CORS** : relevé le 2 septembre 2026, le `202 Accepted` de `/asr2` ne porte
- * pas d'`Access-Control-Allow-Origin`. Le navigateur envoie la requête, le
+ * **Le résultat ne se lit qu'une fois** : le service l'efface dès qu'il a été
+ * servi (documenté). On ne le redemande donc jamais, et la page en garde la
+ * réponse brute.
+ *
+ * **CORS** : relevé le 2 septembre puis le 29 octobre 2026, le `202 Accepted`
+ * de `/asr2` ne porte pas d'`Access-Control-Allow-Origin`. Le navigateur envoie la requête, le
  * service crée le travail, mais la page ne peut pas lire son `job_id`. L'envoi
  * passe donc par `XMLHttpRequest`, dont les évènements d'envoi permettent de
  * séparer deux échecs qui rendent tous deux `status 0` : fichier entièrement
@@ -26,11 +30,12 @@
  * on ne réessaie jamais : chaque essai ferait travailler leur serveur pour
  * rien.
  *
- * **Le schéma du JSON n'est pas documenté publiquement.** Le normaliseur
- * accepte la forme de WhisperX (les modèles sont de la famille Whisper) et ses
- * variantes courantes, ainsi que SRT, VTT et le texte à préfixes de locuteur.
- * Ce qu'il ne reconnaît pas, il le dit (`format: 'inconnu'`) au lieu de
- * deviner : la page montre alors la réponse brute.
+ * **Le schéma du JSON n'est pas documenté**, mais relevé le 29 octobre 2026 :
+ * un tableau de segments `{speaker, start, end, text, words}` à la racine, des
+ * mots `{start, end, word, probability, speaker}`. Le normaliseur accepte cette
+ * forme, les variantes de WhisperX, ainsi que SRT, VTT et le texte à préfixes
+ * de locuteur. Ce qu'il ne reconnaît pas, il le dit (`format: 'inconnu'`) au
+ * lieu de deviner : la page montre alors la réponse brute.
  */
 (function (racine) {
   'use strict';
@@ -39,17 +44,18 @@
      origine locale pour reproduire CORS au réel. */
   var BASE = racine.LUXASR_BASE || 'https://luxasr.uni.lu';
 
-  /* Nos plafonds, pas ceux du service, qui n'en publie pas : l'accès aux lots
-     est accordé pour un usage de laboratoire, à ménager. */
+  /* Nos plafonds. Le site du service accepte 500 Mo et ne fixe pas de durée ;
+     son API est ouverte « for limited access » : on reste bien en deçà. */
   var TAILLE_MAX = 100 * 1024 * 1024;
   var DUREE_MAX_S = 90 * 60;
 
-  /* Sondage poli : toutes les 2 s, puis toutes les 5 s au-delà d'une minute.
-     La dictée sonde à 200 ms pour un énoncé de 10 s ; un fichier d'une heure
-     ne le justifie pas. */
-  var SONDAGE_RAPIDE_MS = 2000;
-  var SONDAGE_LENT_MS = 5000;
-  var SONDAGE_RAPIDE_PENDANT_MS = 60000;
+  /* Sondage poli, calqué sur leur client officiel (`luxasr_transcribe.py`) :
+     2 s, puis 1,2 fois plus à chaque tour, plafonné ici à 10 s. La dictée
+     sonde à 200 ms pour un énoncé de 10 s ; un fichier d'une heure ne le
+     justifie pas. */
+  var SONDAGE_INITIAL_MS = 2000;
+  var SONDAGE_FACTEUR = 1.2;
+  var SONDAGE_MAX_MS = 10000;
   var ATTENTE_MAX_MS = 60 * 60 * 1000;
 
   /* Sondages illisibles d'affilée avant de conclure à une coupure. */
@@ -57,20 +63,21 @@
 
   // --- Type de contenu ----------------------------------------------------
 
-  /* Le service veut un `Content-Type: audio/*` et un vrai conteneur. Une vidéo
-     MP4 ou WebM est le même conteneur que son audio : on l'annonce comme tel
-     plutôt que de la décoder dans le navigateur, ce qui prendrait des
-     centaines de Mo de mémoire pour une heure de film. */
+  /* Le service veut un `Content-Type: audio/*` ou `video/*` et un vrai
+     conteneur avec une piste son (documenté). Une vidéo part donc telle quelle,
+     sans être décodée dans le navigateur, ce qui prendrait des centaines de Mo
+     de mémoire pour une heure de film. */
   var PAR_EXTENSION = {
-    wav: 'audio/wav', mp3: 'audio/mpeg', m4a: 'audio/mp4', mp4: 'audio/mp4',
+    wav: 'audio/wav', mp3: 'audio/mpeg', mp2: 'audio/mpeg', m4a: 'audio/mp4',
     aac: 'audio/aac', ogg: 'audio/ogg', oga: 'audio/ogg', opus: 'audio/ogg',
-    flac: 'audio/flac', webm: 'audio/webm', weba: 'audio/webm', mov: 'audio/mp4'
+    flac: 'audio/flac', weba: 'audio/webm', wma: 'audio/x-ms-wma',
+    mp4: 'video/mp4', mov: 'video/quicktime', qta: 'video/quicktime',
+    webm: 'video/webm', wmv: 'video/x-ms-wmv'
   };
   var SYNONYMES = {
     'audio/x-wav': 'audio/wav', 'audio/wave': 'audio/wav', 'audio/vnd.wave': 'audio/wav',
     'audio/x-m4a': 'audio/mp4', 'audio/m4a': 'audio/mp4', 'audio/mp3': 'audio/mpeg',
-    'audio/x-flac': 'audio/flac', 'video/mp4': 'audio/mp4',
-    'video/quicktime': 'audio/mp4', 'video/webm': 'audio/webm'
+    'audio/x-flac': 'audio/flac'
   };
 
   function extension(nom) {
@@ -82,7 +89,7 @@
   function typeAudio(fichier) {
     var t = (fichier.type || '').toLowerCase().split(';')[0];
     if (SYNONYMES[t]) return SYNONYMES[t];
-    if (t.indexOf('audio/') === 0) return t;
+    if (t.indexOf('audio/') === 0 || t.indexOf('video/') === 0) return t;
     return PAR_EXTENSION[extension(fichier.name)] || null;
   }
 
@@ -98,19 +105,22 @@
    * Soumet [fichier] et suit le travail jusqu'au résultat.
    *
    * [ecouteur] reçoit :
-   * - `onEtat('ENVOI', fraction|null)`, puis `onEtat('FILE', {position})`,
-   *   `onEtat('TRAITEMENT')`, et enfin `onResultat(texteBrut, jobId)` ;
+   * - `onEtat('ENVOI', fraction|null)`, puis `onEtat('FILE', {position, eta})`,
+   *   `onEtat('TRAITEMENT', {eta})`, et enfin `onResultat(texteBrut, jobId)` ;
+   *   `eta` est l'estimation du service en secondes, quand il en donne une ;
    * - ou `onErreur(code, detail)`, `code` parmi `CORS`, `RESEAU`, `REFUS`
-   *   (détail : `{status, message}`), `ECHEC`, `DELAI`, `SANS_JOB`.
+   *   (détail : `{status, message}`), `ECHEC`, `INTROUVABLE`, `DELAI`,
+   *   `SANS_JOB`.
    *
-   * [options] : `diarisation` (vrai par défaut), `prompt`.
+   * [options] : `diarisation` (vrai par défaut), `locuteurs` (nombre de voix,
+   * 1 à 10, sinon automatique), `prompt`.
    * Rend `{ annuler() }` : on cesse d'envoyer ou de sonder. Le service n'a pas
    * d'annulation publique ; un travail déjà soumis s'y termine de lui-même.
    */
   function transcrire(fichier, options, ecouteur) {
     options = options || {};
     var fini = false, xhr = null, minuteur = null;
-    var t0 = Date.now(), echecs = 0;
+    var t0 = Date.now(), echecs = 0, delai = SONDAGE_INITIAL_MS;
 
     function prevenir(nom, a, b) {
       if (fini && nom !== 'onResultat' && nom !== 'onErreur') return;
@@ -126,7 +136,13 @@
     var params = ['language=lb',
                   'diarization=' + (options.diarisation === false ? 'Disabled' : 'Enabled'),
                   'outfmt=json'];
-    if (options.prompt) params.push('prompt=' + encodeURIComponent(options.prompt));
+    // `num_speakers` n'est pas documenté pour l'API : c'est ce qu'envoie leur
+    // propre formulaire au même `/asr2` (relevé dans luxasr_main.js), et
+    // seulement avec la diarisation, comme ici.
+    var n = parseInt(options.locuteurs, 10);
+    if (options.diarisation !== false && n >= 1 && n <= 10) params.push('num_speakers=' + n);
+    // Au-delà de 900 caractères, le service ignore la suite (documenté).
+    if (options.prompt) params.push('prompt=' + encodeURIComponent(options.prompt.slice(0, 900)));
 
     xhr = new XMLHttpRequest();
     var envoye = false, dernierProgres = 0;
@@ -160,8 +176,7 @@
     xhr.send(fichier);
 
     function sonder(job) {
-      var ecoule = Date.now() - t0;
-      if (ecoule > ATTENTE_MAX_MS) { terminer('onErreur', 'DELAI'); return; }
+      if (Date.now() - t0 > ATTENTE_MAX_MS) { terminer('onErreur', 'DELAI'); return; }
       minuteur = setTimeout(function () {
         if (fini) return;
         fetch(BASE + '/v3/asr/jobs/' + encodeURIComponent(job), { cache: 'no-store' })
@@ -170,19 +185,24 @@
             if (fini) return;
             echecs = 0;
             var etat = s && s.status;
+            var eta = nombre(s, ['eta_seconds']);
             if (etat === 'completed') { recuperer(job); return; }
             if (etat === 'failed') { terminer('onErreur', 'ECHEC', messageDe(s, '')); return; }
-            if (etat === 'processing') prevenir('onEtat', 'TRAITEMENT');
-            else prevenir('onEtat', 'FILE', { position: nombre(s, ['position', 'queue_position', 'queue_pos']) });
+            // Identifiant inconnu, expiré ou supprimé : 404 `not_found`.
+            if (etat === 'not_found') { terminer('onErreur', 'INTROUVABLE'); return; }
+            if (etat === 'processing') prevenir('onEtat', 'TRAITEMENT', { eta: eta });
+            else prevenir('onEtat', 'FILE', { position: nombre(s, ['queue_position', 'position']), eta: eta });
             sonder(job);
           }, function () {
             if (fini) return;
             if (++echecs >= ECHECS_SONDAGE_MAX) { terminer('onErreur', 'RESEAU'); return; }
             sonder(job);
           });
-      }, ecoule < SONDAGE_RAPIDE_PENDANT_MS ? SONDAGE_RAPIDE_MS : SONDAGE_LENT_MS);
+      }, delai);
+      delai = Math.min(SONDAGE_MAX_MS, delai * SONDAGE_FACTEUR);
     }
 
+    /* Une seule lecture : le service efface le résultat dès qu'il l'a servi. */
     function recuperer(job) {
       fetch(BASE + '/v3/asr/jobs/' + encodeURIComponent(job) + '/result', { cache: 'no-store' })
         .then(function (r) {
@@ -259,6 +279,41 @@
 
   function libelle(v) { return v === null || v === undefined || v === '' ? null : String(v); }
 
+  /*
+   * Découpage en phrases d'un segment dont les mots sont horodatés. Relevé le
+   * 29 octobre 2026 : LuxASR rend deux minutes d'une même voix en un seul
+   * segment, soit un sous-titre de 2 249 caractères et une surbrillance qui
+   * couvre tout. On ferme une phrase sur un point quand elle a assez duré, sur
+   * une virgule quand elle devient longue, et n'importe où au-delà. Les seuils
+   * visent un sous-titre : deux lignes de 42 caractères, le `maxlen` du service.
+   * La lecture n'en souffre pas, la page recolle les phrases d'un même tour.
+   */
+  var PHRASE_MIN_S = 2, PHRASE_MIN_CAR = 25;
+  var PHRASE_SOUPLE_S = 4, PHRASE_SOUPLE_CAR = 60;
+  var PHRASE_MAX_S = 8, PHRASE_MAX_CAR = 100;
+  /* Écart toléré entre deux mots dans le texte (espaces, ponctuation isolée). */
+  var ALIGNEMENT_JEU = 12;
+
+  function motDe(w) { return nettoyer(premier(w, ['word', 'text', 'token'])); }
+
+  /**
+   * Place chaque mot dans le texte du segment, pour couper ce texte-là et non
+   * des mots recollés : Whisper sépare les élisions (« d' » puis « Leit »), et
+   * les recoller écrirait « d' Leit » là où le service a écrit « d'Leit ».
+   * Rend la position de début de chaque mot, ou `null` si l'un d'eux manque.
+   */
+  function aligner(texte, mots) {
+    var pos = 0, debuts = [];
+    for (var i = 0; i < mots.length; i++) {
+      var m = motDe(mots[i]);
+      var k = m ? texte.indexOf(m, pos) : pos;
+      if (k < 0 || k - pos > ALIGNEMENT_JEU) return null;
+      debuts.push(k);
+      pos = k + m.length;
+    }
+    return debuts;
+  }
+
   /** Un segment brut → un ou plusieurs segments normalisés. */
   function segmentsDe(el) {
     if (typeof el === 'string') el = { text: el };
@@ -270,31 +325,54 @@
     var texte = premier(el, ['text', 'transcript', 'sentence', 'content']);
     texte = texte != null ? nettoyer(texte) : recoller(mots);
 
-    // WhisperX attribue le locuteur au mot : un segment peut en couvrir deux.
-    // On le coupe à chaque changement, les mots sans locuteur suivant le
-    // précédent.
-    var groupes = [], courant = null;
-    mots.forEach(function (w) {
-      var l = libelle(premier(w, ['speaker', 'spk', 'speaker_id'])) || (courant ? courant.loc : loc);
-      if (!courant || courant.loc !== l) { courant = { loc: l, mots: [] }; groupes.push(courant); }
-      courant.mots.push(w);
-    });
-    var parMot = groupes.some(function (g) { return g.loc; });
-    if (parMot && groupes.length > 1) {
-      return groupes.map(function (g, i) {
-        var a = secondes(premier(g.mots[0], ['start', 'begin']));
-        var b = secondes(premier(g.mots[g.mots.length - 1], ['end', 'stop']));
-        return { debut: a != null ? a : (i === 0 ? debut : null),
-                 fin: b != null ? b : (i === groupes.length - 1 ? fin : null),
-                 locuteur: g.loc, texte: recoller(g.mots) };
-      }).filter(function (s) { return s.texte; });
-    }
-    if (!loc && parMot) loc = groupes[0].loc;
-    if (!loc) {
+    var parMot = mots.some(function (w) { return libelle(premier(w, ['speaker', 'spk', 'speaker_id'])); });
+    if (!loc && !parMot) {
       var p = PREFIXE.exec(texte);
       if (p) { loc = p[1]; texte = texte.slice(p[0].length); }
     }
-    return texte ? [{ debut: debut, fin: fin, locuteur: loc, texte: texte }] : [];
+    if (!mots.length) return texte ? [{ debut: debut, fin: fin, locuteur: loc, texte: texte }] : [];
+
+    // Les mots portent le locuteur (WhisperX) : un segment peut en couvrir
+    // deux. On coupe à chaque changement — un mot sans locuteur suit le
+    // précédent —, et en phrases à l'intérieur d'une même voix.
+    var groupes = [], g = null;
+    // `suite` : le groupe commence au milieu d'une phrase, après une coupe sur
+    // une virgule ou en force. Son point final le ferme alors toujours, même
+    // court ; sinon la phrase suivante s'y accrocherait.
+    mots.forEach(function (w, i) {
+      var l = libelle(premier(w, ['speaker', 'spk', 'speaker_id'])) || (g ? g.loc : loc);
+      var a = secondes(premier(w, ['start', 'begin']));
+      var b = secondes(premier(w, ['end', 'stop']));
+      var m = motDe(w);
+      if (!g || g.loc !== l || g.ferme) {
+        g = { loc: l, i0: i, debut: a, fin: b, car: 0, ferme: false,
+              suite: !!(g && g.ferme && g.loc === l && !g.point) };
+        groupes.push(g);
+      } else {
+        if (g.debut == null) g.debut = a;
+        if (b != null) g.fin = b;
+      }
+      g.i1 = i;
+      g.car += m.length + 1;
+      var duree = g.debut != null && g.fin != null ? g.fin - g.debut : 0;
+      g.point = /[.?!…]["»”)]?$/.test(m);
+      g.ferme = (g.point && (g.suite || duree >= PHRASE_MIN_S || g.car >= PHRASE_MIN_CAR)) ||
+                (/[,;:]$/.test(m) && (duree >= PHRASE_SOUPLE_S || g.car >= PHRASE_SOUPLE_CAR)) ||
+                duree >= PHRASE_MAX_S || g.car >= PHRASE_MAX_CAR;
+    });
+
+    var debuts = aligner(texte, mots);
+    return groupes.map(function (g, n) {
+      var dernier = n === groupes.length - 1;
+      // Le texte entre deux mots revient au groupe qui précède : rien ne se
+      // perd, ni ponctuation ni élision.
+      var t = debuts ? nettoyer(texte.slice(n === 0 ? 0 : debuts[g.i0],
+                                            dernier ? texte.length : debuts[groupes[n + 1].i0]))
+                     : recoller(mots.slice(g.i0, g.i1 + 1));
+      return { debut: g.debut != null ? g.debut : (n === 0 ? debut : null),
+               fin: g.fin != null ? g.fin : (dernier ? fin : null),
+               locuteur: g.loc, texte: t };
+    }).filter(function (sg) { return sg.texte; });
   }
 
   var CLES_LISTE = ['segments', 'result', 'results', 'transcription', 'transcript',
@@ -449,10 +527,16 @@
     return doc;
   }
 
+  /* Un tour plus long est coupé en paragraphes, chacun avec son horodatage :
+     deux minutes d'un seul tenant ne se lisent ni ne se parcourent. La coupe
+     attend un début de phrase, sauf au-delà de TOUR_FORCE_S. */
+  var TOUR_MAX_S = 45, TOUR_FORCE_S = 75;
+
   /**
    * Les segments regroupés pour la lecture : les segments consécutifs d'un
    * même locuteur forment un tour de parole. Sans locuteurs, on coupe en
-   * paragraphes sur les silences de plus de 2 s.
+   * paragraphes sur les silences de plus de 2 s. Dans les deux cas, un
+   * paragraphe passé TOUR_MAX_S s'arrête à la fin de phrase suivante.
    */
   function tours(doc) {
     var res = [], courant = null;
@@ -460,7 +544,10 @@
       var precedent = doc.segments[i - 1];
       var coupe = !courant ||
         (doc.diarise ? sg.locuteur !== courant.locuteur
-                     : !(precedent && precedent.fin != null && sg.debut != null && sg.debut - precedent.fin < 2));
+                     : !(precedent && precedent.fin != null && sg.debut != null && sg.debut - precedent.fin < 2)) ||
+        (courant.debut != null && sg.debut != null &&
+         (sg.debut - courant.debut >= TOUR_FORCE_S ||
+          (sg.debut - courant.debut >= TOUR_MAX_S && /[.?!…]["»”)]?$/.test(precedent.texte))));
       if (coupe) { courant = { locuteur: sg.locuteur, debut: sg.debut, indices: [] }; res.push(courant); }
       courant.indices.push(i);
     });

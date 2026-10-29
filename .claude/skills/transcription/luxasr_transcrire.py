@@ -7,8 +7,10 @@
 
 Le fichier part tel quel, en octets bruts (jamais en multipart, l'ancien flux
 déprécié), avec un `Content-Type` déduit de l'extension. Le travail est suivi
-jusqu'au bout : un seul envoi, un sondage toutes les 2 s puis toutes les 5 s,
-comme le demande l'usage poli d'un service qui n'est pas le nôtre (SKILL.md § 1).
+jusqu'au bout : un seul envoi, un sondage à 2 s puis 1,2 fois plus espacé à
+chaque tour (10 s au plus), comme leur client officiel (SKILL.md § 1). Le
+résultat ne se lit qu'une fois, le service l'efface aussitôt : il est écrit
+avant toute autre chose.
 
 `--sonde-cors` vérifie si une page web peut lire la réponse 202 de `/asr2`
 (SKILL.md § 4). Elle soumet une demi-seconde de silence : un travail
@@ -27,10 +29,12 @@ BASE = "https://luxasr.uni.lu"
 ORIGINE_SITE = "https://famibelle.github.io"
 
 TYPES = {
-    ".wav": "audio/wav", ".mp3": "audio/mpeg", ".m4a": "audio/mp4",
-    ".mp4": "audio/mp4", ".aac": "audio/aac", ".ogg": "audio/ogg",
+    ".wav": "audio/wav", ".mp3": "audio/mpeg", ".mp2": "audio/mpeg",
+    ".m4a": "audio/mp4", ".aac": "audio/aac", ".ogg": "audio/ogg",
     ".oga": "audio/ogg", ".opus": "audio/ogg", ".flac": "audio/flac",
-    ".webm": "audio/webm", ".weba": "audio/webm", ".mov": "audio/mp4",
+    ".weba": "audio/webm", ".wma": "audio/x-ms-wma",
+    ".mp4": "video/mp4", ".mov": "video/quicktime", ".qta": "video/quicktime",
+    ".webm": "video/webm", ".wmv": "video/x-ms-wmv",
 }
 
 
@@ -53,21 +57,22 @@ def soumettre(octets, content_type, nom=None, origine=None, **params):
 
 def suivre(job, delai_max=3600):
     """Sonde le travail jusqu'à `completed` ; rend le corps du résultat."""
-    t0, dernier = time.time(), None
+    t0, dernier, pause = time.time(), None, 2.0
     while True:
-        ecoule = time.time() - t0
-        if ecoule > delai_max:
+        if time.time() - t0 > delai_max:
             raise TimeoutError(f"travail {job} toujours en cours après {delai_max} s")
-        time.sleep(2 if ecoule < 60 else 5)
+        time.sleep(pause)
+        pause = min(10.0, pause * 1.2)
         s = requests.get(f"{BASE}/v3/asr/jobs/{job}", timeout=30).json()
         etat = s.get("status")
         if etat != dernier:
-            journal(f"[{time.time() - t0:6.1f} s] {etat}")
+            extra = "".join(f" {k}={s[k]}" for k in ("queue_position", "eta_seconds") if k in s)
+            journal(f"[{time.time() - t0:6.1f} s] {etat}{extra}")
             dernier = etat
         if etat == "completed":
             break
-        if etat == "failed":
-            raise RuntimeError(f"travail {job} en échec : {str(s)[:300]}")
+        if etat in ("failed", "not_found"):
+            raise RuntimeError(f"travail {job} : {etat} : {str(s)[:300]}")
     r = requests.get(f"{BASE}/v3/asr/jobs/{job}/result", timeout=120)
     r.raise_for_status()
     return r.text
@@ -126,7 +131,11 @@ def main():
                     help="json (défaut), text, colored_text, srt, vtt, textgrid, maxqda")
     ap.add_argument("--sans-diarisation", action="store_true",
                     help="un seul locuteur : n'active pas la séparation des voix")
-    ap.add_argument("--prompt", help="amorçage orthographique (noms propres, jargon)")
+    ap.add_argument("--locuteurs", type=int, choices=range(1, 11), metavar="N",
+                    help="nombre de voix, 1 à 10 (num_speakers, non documenté pour "
+                         "l'API : c'est ce qu'envoie leur formulaire)")
+    ap.add_argument("--prompt", help="amorçage orthographique (noms propres, jargon ; "
+                                     "900 caractères au plus)")
     ap.add_argument("--beam", type=int, help="largeur du faisceau (défaut du service sinon)")
     ap.add_argument("--langue", default="lb")
     ap.add_argument("--sonde-cors", action="store_true",
@@ -153,7 +162,8 @@ def main():
     r = soumettre(octets, ctype, nom=args.fichier.name,
                   language=args.langue, outfmt=args.outfmt,
                   diarization="Disabled" if args.sans_diarisation else "Enabled",
-                  prompt=args.prompt, beam_size=args.beam)
+                  num_speakers=None if args.sans_diarisation else args.locuteurs,
+                  prompt=args.prompt[:900] if args.prompt else None, beam_size=args.beam)
     job = r.json()["job_id"]
     journal(f"travail {job}")
     resultat = suivre(job)
