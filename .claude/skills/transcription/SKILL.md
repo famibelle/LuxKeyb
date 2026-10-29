@@ -20,8 +20,9 @@ clavier l'utilise de deux façons, à ne pas confondre :
 | Amorçage (`prompt`), `beam_size` | non | non | oui |
 | Navigateur | passe (un WebSocket ignore CORS) | passe | **bloqué par CORS** : le 202 de `/asr2` n'a pas d'en-tête (§ 5) |
 
-Les relevés bruts sont dans `releves/` : `releves/2026-10-29/api.md` (la
-documentation lue sur leur site, citations et URL), `sonde-cors.txt`,
+Les relevés bruts sont dans `releves/` : `releves/2026-10-29/api-officielle.md`
+(leur documentation « API access », copiée telle quelle : **la référence**),
+`api.md` (son analyse : documenté ou seulement observé, citations et URL), `sonde-cors.txt`,
 `essai.md` et `resultat.json` (une vraie réponse). Ce qui suit en est la
 synthèse ; en cas de doute, c'est le relevé qui fait foi, et un relevé plus
 récent l'emporte.
@@ -79,7 +80,7 @@ Paramètres, en chaîne de requête :
 | `beam_size` | entier (5 sur le site) | documenté ; laisser le défaut |
 | `min_silence_duration_ms` | entier (2000) | documenté ; laisser le défaut |
 | `maxlen` | 42 | documenté, pour SRT et VTT du service |
-| `prompt` | texte, **900 caractères au plus** (la suite est ignorée) | documenté : seulement des mots qui peuvent être dans l'audio ; encoder pour l'URL |
+| `prompt` | texte, **900 caractères au plus** (la suite est ignorée) | documenté : les mots importants d'abord, orthographe et majuscules exactes, séparés par des virgules ou des points, et seulement des mots qui peuvent être dans l'audio (sinon ils peuvent y apparaître) ; encoder pour l'URL. Le champ de la page accepte 900 caractères et le dit |
 | `num_speakers` | entier 1 à 10, seulement avec `diarization=Enabled` | **non documenté pour l'API**, mais c'est ce qu'envoie leur propre formulaire au même `/asr2` (`luxasr_main.js`), et **le serveur en tient compte** (essai du 29 octobre 2026, § 3). Envoyé par la page et le script quand on le choisit |
 | `vad_filter`, `origin`, `target_langs`, `speaker_identification` | | envoyés par leur site, non documentés : ne pas les utiliser sans leur accord |
 
@@ -220,7 +221,11 @@ GET  jobs/{id}/result  200  ACAO : *
 
 Le navigateur envoie le fichier, le service crée le travail, mais la page
 **ne peut pas lire le `job_id`** : la rubrique ne fonctionne pour personne
-tant que ce n'est pas corrigé. Cause probable, à leur proposer : nginx n'ajoute
+tant que ce n'est pas corrigé. Confirmé depuis le site publié le 29 octobre
+2026 (message « Votre fichier n'est pas parti »). Leur documentation n'en dit
+rien : elle ne vise que des clients comme `curl`, que CORS ne concerne pas.
+Le même défaut rend aussi illisible, dans le navigateur, le 404
+`not_found` du suivi : la page le prend alors pour une coupure (`RESEAU`). Cause probable, à leur proposer : nginx n'ajoute
 un `add_header` qu'aux codes 200, 201, 204, 206 et 3xx, **pas au 202**, sauf
 avec le drapeau `always` :
 

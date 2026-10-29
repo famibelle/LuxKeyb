@@ -349,8 +349,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       </div>
       <label class="champ" for="opt-prompt" data-i18n="opt-prompt">Noms propres et mots rares (facultatif)</label>
       <input type="text" id="opt-prompt" autocomplete="off" spellcheck="false"
-             placeholder="Gemengerot, Schäffen, Esch-Uelzecht" maxlength="400">
-      <p class="aide" data-i18n="opt-prompt-aide">Écrits comme ils doivent l'être, séparés par des virgules : le service s'en sert pour les orthographier dans tout l'enregistrement.</p>
+             placeholder="Gemengerot, Schäffen, Esch-Uelzecht" maxlength="900">
+      <p class="aide" data-i18n="opt-prompt-aide">Les plus importants d'abord, avec l'orthographe et les majuscules exactes, séparés par des virgules : le service s'en sert pour les écrire juste dans tout l'enregistrement. N'y mettez que des mots qu'on entend vraiment, sinon ils peuvent apparaître dans le texte.</p>
     </fieldset>
 
     <div class="actions">
@@ -579,7 +579,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'opt-voix-auto': 'detect',
     'opt-voix-aide': 'Give it if you know it: in our test with two similar voices, automatic detection separated none of them, the given number separated them.',
     'opt-prompt': 'Proper names and rare words (optional)',
-    'opt-prompt-aide': 'Spelled as they should be, separated by commas: the service uses them to spell those words throughout the recording.',
+    'opt-prompt-aide': 'Most important first, with exact spelling and capitals, separated by commas: the service uses them to write those words correctly throughout the recording. Only include words that are actually said, otherwise they may show up in the text.',
     'opt-accord': 'The people recorded agree to have their voices transcribed by LuxASR.',
     'go': 'Transcribe',
     'annuler': 'Cancel',
