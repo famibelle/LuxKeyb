@@ -223,6 +223,21 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 .direct .aide{font-size:13px;color:var(--ink-soft);margin:12px 0 0;}
 @media (prefers-reduced-motion: reduce){ .d-niveau span{transition:none;} }
 
+/* Compte rendu : des consignes et la transcription, copiées pour Claude. */
+.cr{margin:12px 0;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--sea-soft);}
+.cr-ligne{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;}
+.cr .btn{padding:10px 16px;font-size:14.5px;}
+@media (max-width: 600px){ .cr .btn{display:inline-block;width:auto;} }
+.cr-langue{display:inline-flex;align-items:center;gap:6px;font-size:14px;}
+.cr select{font:inherit;font-size:14px;padding:5px 8px;border-radius:8px;border:1.5px solid var(--line);
+  background:var(--paper);color:var(--ink);}
+.cr select:focus{outline:2px solid var(--sea);outline-offset:1px;}
+.cr .aide{font-size:13px;color:var(--ink-soft);margin:8px 0 0;}
+.cr-etat{margin-top:8px;font-size:14px;}
+.cr-etat p{margin:0;}
+.cr-etat textarea{width:100%;min-height:150px;margin-top:6px;padding:8px;border-radius:8px;border:1px solid var(--line);
+  background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:12px;}
+
 [hidden]{display:none !important;}
 </style>
 </head>
@@ -413,6 +428,20 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         <button type="button" class="btn" data-direct="txt">TXT</button>
         <button type="button" class="btn" data-direct="effacer" data-i18n="d-effacer">Effacer</button>
       </div>
+      <div class="cr" id="cr-direct" hidden>
+        <div class="cr-ligne">
+          <button type="button" class="btn primary" data-cr="direct" data-i18n="cr-bouton">📝 Préparer le compte rendu</button>
+          <label class="cr-langue"><span data-i18n="cr-en">en</span>
+            <select data-cr-langue="direct">
+              <option value="fr" data-i18n="cr-fr">français</option>
+              <option value="lb" data-i18n="cr-lb">luxembourgeois</option>
+              <option value="de" data-i18n="cr-de">allemand</option>
+              <option value="en" data-i18n="cr-anglais">anglais</option>
+            </select></label>
+        </div>
+        <p class="aide" data-i18n="cr-aide">Copie des consignes et la transcription, puis ouvre Claude dans un nouvel onglet : collez-y le tout pour obtenir le compte rendu (participants, résumé, décisions, actions). Le texte, pas l'audio, part alors chez Anthropic, sous votre propre compte Claude.</p>
+        <div class="cr-etat" data-cr-etat="direct" role="status" hidden></div>
+      </div>
       <p class="aide" data-i18n="d-aide">
         En direct, les voix ne sont pas séparées : pour savoir qui a dit quoi,
         enregistrez, puis passez par « Un fichier ». Une heure d'écoute au plus ;
@@ -449,6 +478,20 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <button type="button" class="btn" data-export="vtt" data-i18n-title="exp-vtt-title" title="Sous-titres web, avec les locuteurs">VTT</button>
     <button type="button" class="btn" data-export="json">JSON</button>
     <button type="button" class="btn" data-export="brut" data-i18n="exp-brut">Réponse brute</button>
+  </div>
+  <div class="cr" id="cr-fichier">
+    <div class="cr-ligne">
+      <button type="button" class="btn primary" data-cr="fichier" data-i18n="cr-bouton">📝 Préparer le compte rendu</button>
+      <label class="cr-langue"><span data-i18n="cr-en">en</span>
+        <select data-cr-langue="fichier">
+          <option value="fr" data-i18n="cr-fr">français</option>
+          <option value="lb" data-i18n="cr-lb">luxembourgeois</option>
+          <option value="de" data-i18n="cr-de">allemand</option>
+          <option value="en" data-i18n="cr-anglais">anglais</option>
+        </select></label>
+    </div>
+    <p class="aide" data-i18n="cr-aide">Copie des consignes et la transcription, puis ouvre Claude dans un nouvel onglet : collez-y le tout pour obtenir le compte rendu (participants, résumé, décisions, actions). Le texte, pas l'audio, part alors chez Anthropic, sous votre propre compte Claude.</p>
+    <div class="cr-etat" data-cr-etat="fichier" role="status" hidden></div>
   </div>
   <p class="muted" data-i18n="resultat-credit">
     Transcription automatique par LuxASR, Université du Luxembourg. Elle se
@@ -591,6 +634,10 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'import-p': 'Open a file produced by LuxASR here (JSON, SRT, VTT or text), for instance from the form on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a>: you get the speaker view, renaming and exports. The file stays in your browser. Also choose the recording above to listen while you read.',
     'import-btn': '📄 Open a result',
     'resultat-h2': 'The transcript',
+    'cr-bouton': '📝 Prepare the minutes',
+    'cr-en': 'in',
+    'cr-fr': 'French', 'cr-lb': 'Luxembourgish', 'cr-de': 'German', 'cr-anglais': 'English',
+    'cr-aide': 'Copies instructions and the transcript, then opens Claude in a new tab: paste it all there to get the minutes (participants, summary, decisions, action items). The text, not the audio, then goes to Anthropic, under your own Claude account.',
     'une-voix-p': '<strong>Only one voice was detected.</strong> If the recording holds several, set their number under “Number of voices” and start again: automatic detection often confuses similar voices and short lines. You can also reassign the paragraphs yourself while reading.',
     'inconnu-p': 'The result arrived, but in a form this page cannot read yet. Here it is as is; you can still download it with “Raw reply”.',
     'exp-copier': '📋 Copy the text',
@@ -1095,6 +1142,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     actif = -1;
 
     var horodate = doc.horodate;
+    $('cr-fichier').hidden = doc.format === 'inconnu';
     Array.prototype.forEach.call(document.querySelectorAll('[data-export]'), function (b) {
       var f = b.getAttribute('data-export');
       b.hidden = doc.format === 'inconnu' ? f !== 'brut'
@@ -1174,6 +1222,14 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       telecharger(brut, baseNom + '.luxasr' + (json ? '.json' : '.txt'), json ? 'application/json' : 'text/plain');
     }
   });
+
+  // --- Compte rendu ------------------------------------------------------
+
+  // La transcription telle que l'export TXT, noms donnés aux voix compris.
+  (window.__labsTextes = window.__labsTextes || {}).fichier = function () {
+    return doc && doc.format !== 'inconnu' && doc.segments.length
+      ? { texte: T.versTexte(doc, nom), voix: doc.diarise } : null;
+  };
 
   // --- Câblage ----------------------------------------------------------
 
@@ -1419,7 +1475,18 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     boite.appendChild(frag);
     if (enBas) boite.scrollTop = boite.scrollHeight;
     $('d-exports').hidden = !paragraphes.length || !!session;
+    $('cr-direct').hidden = $('d-exports').hidden;
   }
+
+  // Le texte luxembourgeois seul : le compte rendu se fait sur l'original.
+  (window.__labsTextes = window.__labsTextes || {}).direct = function () {
+    return paragraphes.length && !session ? {
+      texte: paragraphes.map(function (p) {
+        return '[' + T.horloge(p.debut) + '] ' + T.reduireBoucles(((p.texte || '') + ' ' + (p.partiel || '')).trim());
+      }).join('\n\n'),
+      voix: false
+    } : null;
+  };
 
   function texteBrut() {
     return paragraphes.map(function (p) {
@@ -1472,6 +1539,82 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     etat(session ? session.etat : 'REPOS');
   });
   majBouton();
+})();
+</script>
+
+<script>
+// Le compte rendu : les consignes et la transcription vont au presse-papiers,
+// puis Claude s'ouvre dans un nouvel onglet ; le visiteur colle. Ni clé ni
+// serveur : c'est son compte qui travaille. Chaque mode fournit son texte par
+// window.__labsTextes[mode].
+(function () {
+  'use strict';
+  var T = window.LuxAsrTranscription;
+  var CLAUDE = 'https://claude.ai/new';
+  var MOTS = {
+    fr: {
+      copie: '✅ Copié. Collez-le dans la conversation Claude qui vient de s\'ouvrir (Ctrl+V, ou ⌘V sur Mac).',
+      bloque: '✅ Copié. Le navigateur a bloqué le nouvel onglet : ouvrez <a href="' + CLAUDE + '" target="_blank" rel="noopener">claude.ai</a> et collez (Ctrl+V, ou ⌘V sur Mac).',
+      manuel: 'Le navigateur n\'a pas permis la copie : copiez le texte ci-dessous, puis collez-le dans <a href="' + CLAUDE + '" target="_blank" rel="noopener">claude.ai</a>.'
+    },
+    en: {
+      copie: '✅ Copied. Paste it into the Claude conversation that just opened (Ctrl+V, or ⌘V on a Mac).',
+      bloque: '✅ Copied. The browser blocked the new tab: open <a href="' + CLAUDE + '" target="_blank" rel="noopener">claude.ai</a> and paste (Ctrl+V, or ⌘V on a Mac).',
+      manuel: 'The browser did not allow copying: copy the text below, then paste it into <a href="' + CLAUDE + '" target="_blank" rel="noopener">claude.ai</a>.'
+    }
+  };
+  function langue() { return window.__labsLang === 'en' ? 'en' : 'fr'; }
+  function M() { return MOTS[langue()]; }
+
+  function afficher(source, html, texte) {
+    var etat = document.querySelector('[data-cr-etat="' + source + '"]');
+    etat.innerHTML = '<p>' + html + '</p>';
+    if (texte != null) {
+      var zone = document.createElement('textarea');
+      zone.readOnly = true;
+      zone.value = texte;
+      etat.appendChild(zone);
+      zone.focus();
+      zone.select();
+    }
+    etat.hidden = false;
+  }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-cr]');
+    if (!b) return;
+    var source = b.getAttribute('data-cr');
+    var lire = window.__labsTextes && window.__labsTextes[source];
+    var t = lire && lire();
+    if (!t) return;
+    var consignes = T.consignesCompteRendu({
+      texte: t.texte, voix: t.voix, interface: langue(),
+      langue: document.querySelector('[data-cr-langue="' + source + '"]').value
+    });
+    // Le presse-papiers d'abord : il exige que la page ait le focus, que le
+    // nouvel onglet lui prendrait.
+    var copie = navigator.clipboard && navigator.clipboard.writeText
+      ? navigator.clipboard.writeText(consignes) : Promise.reject();
+    copie.then(function () {
+      var onglet = window.open(CLAUDE, '_blank');
+      if (onglet) { try { onglet.opener = null; } catch (err) {} }
+      afficher(source, onglet ? M().copie : M().bloque);
+    }, function () {
+      afficher(source, M().manuel, consignes);
+    });
+  });
+
+  // La langue du compte rendu suit celle de la page, tant qu'on ne l'a pas choisie.
+  var selects = Array.prototype.slice.call(document.querySelectorAll('[data-cr-langue]'));
+  selects.forEach(function (s) {
+    s.addEventListener('change', function () { s.setAttribute('data-choisie', '1'); });
+  });
+  function suivre() {
+    selects.forEach(function (s) { if (!s.hasAttribute('data-choisie')) s.value = langue(); });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-cr-etat]'), function (e) { e.hidden = true; });
+  }
+  document.addEventListener('labs-langue', suivre);
+  suivre();
 })();
 </script>
 

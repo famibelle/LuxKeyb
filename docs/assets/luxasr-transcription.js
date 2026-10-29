@@ -775,6 +775,69 @@
     }, null, 2) + '\n';
   }
 
+  // --- Compte rendu ------------------------------------------------------
+
+  /*
+   * Les consignes d'un compte rendu, suivies de la transcription : la page les
+   * copie, le visiteur les colle dans Claude (claude.ai). Ni clé, ni serveur :
+   * c'est son propre compte qui travaille. Les consignes demandent de ne rien
+   * inventer et de citer les horodatages, parce que la reconnaissance et la
+   * séparation des voix se trompent parfois.
+   */
+  var LANGUES_CR = {
+    fr: { fr: 'français', lb: 'luxembourgeois', de: 'allemand', en: 'anglais' },
+    en: { fr: 'French', lb: 'Luxembourgish', de: 'German', en: 'English' }
+  };
+
+  /**
+   * [o] : `texte` (la transcription, une réplique ou un paragraphe par bloc,
+   * horodatage entre crochets en tête), `voix` (les voix sont-elles séparées
+   * et nommées), `langue` du compte rendu (`fr`, `lb`, `de`, `en`), `interface`
+   * (`fr` ou `en`, la langue des consignes).
+   */
+  function consignesCompteRendu(o) {
+    var en = o.interface === 'en';
+    var langues = LANGUES_CR[en ? 'en' : 'fr'];
+    var langue = langues[o.langue] || langues[en ? 'en' : 'fr'];
+    var lignes = en ? [
+      'Here is the automatic transcript of a recording in Luxembourgish, produced by LuxASR (University of Luxembourg).',
+      o.voix
+        ? 'Each line starts with its timestamp in square brackets and the name of its speaker; speech recognition and voice separation can contain errors.'
+        : 'Each paragraph starts with its timestamp in square brackets; voices are not separated, and speech recognition can contain errors.',
+      '',
+      'Write minutes of it in ' + langue + ', with:',
+      '- the participants (' + (o.voix ? 'as named in the transcript; “Speaker N” means a voice without a name' : 'if they can be inferred from the text') + ');',
+      '- a five-line summary;',
+      '- the topics discussed;',
+      '- the decisions made;',
+      '- the action items: who, what, by when;',
+      '- the questions left open.',
+      '',
+      'Do not invent anything: if a piece of information is missing, say so. Point out what seems mistranscribed or uncertain, and quote the timestamp of important passages so they can be listened to again.',
+      '',
+      '--- Start of transcript ---'
+    ] : [
+      'Voici la transcription automatique d\'un enregistrement en luxembourgeois, faite par LuxASR (Université du Luxembourg).',
+      o.voix
+        ? 'Chaque réplique commence par son horodatage entre crochets et le nom de son locuteur ; la reconnaissance vocale et la séparation des voix peuvent contenir des erreurs.'
+        : 'Chaque paragraphe commence par son horodatage entre crochets ; les voix n\'y sont pas séparées, et la reconnaissance vocale peut contenir des erreurs.',
+      '',
+      'Rédige-en un compte rendu en ' + langue + ', avec :',
+      '- les participants (' + (o.voix ? 'tels que nommés dans la transcription ; « Locuteur N » désigne une voix sans nom' : 's\'ils se déduisent du texte') + ') ;',
+      '- un résumé en cinq lignes ;',
+      '- les points discutés ;',
+      '- les décisions prises ;',
+      '- les actions à mener : qui, quoi, pour quand ;',
+      '- les questions restées ouvertes.',
+      '',
+      'N\'invente rien : si une information manque, dis-le. Signale ce qui semble mal transcrit ou incertain, et cite l\'horodatage des passages importants pour qu\'on puisse les réécouter.',
+      '',
+      '--- Début de la transcription ---'
+    ];
+    return lignes.join('\n') + '\n' + String(o.texte || '').trim() + '\n' +
+           (en ? '--- End of transcript ---' : '--- Fin de la transcription ---') + '\n';
+  }
+
   racine.LuxAsrTranscription = {
     TAILLE_MAX: TAILLE_MAX,
     DUREE_MAX_S: DUREE_MAX_S,
@@ -789,6 +852,7 @@
     versTexte: versTexte,
     versSrt: versSrt,
     versVtt: versVtt,
-    versJson: versJson
+    versJson: versJson,
+    consignesCompteRendu: consignesCompteRendu
   };
 })(typeof window !== 'undefined' ? window : globalThis);

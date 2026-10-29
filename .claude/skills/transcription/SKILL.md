@@ -332,6 +332,31 @@ la dictée n'en ouvre que de 90 s au plus. À relever au premier essai réel
 (durée, taille des messages, coupures éventuelles) et à consigner dans
 `releves/`.
 
+## 6 bis. Le compte rendu
+
+Le bouton « 📝 Préparer le compte rendu », sous le résultat d'un fichier et
+sous le texte du direct une fois l'écoute arrêtée, ne résume rien lui-même :
+il copie dans le presse-papiers des consignes et la transcription
+(`consignesCompteRendu()` de `luxasr-transcription.js`), puis ouvre
+<https://claude.ai/new> dans un nouvel onglet, où le visiteur colle. Ni clé
+d'API, ni serveur, ni coût pour le site : c'est son propre compte Claude qui
+travaille, et le texte (pas l'audio) part chez Anthropic sous ce compte ; la
+page le dit.
+
+- Consignes : participants, résumé en cinq lignes, points discutés,
+  décisions, actions (qui, quoi, pour quand), questions ouvertes ; ne rien
+  inventer, signaler l'incertain, citer les horodatages. Langue du compte
+  rendu au choix (français, luxembourgeois, allemand, anglais), celle de la
+  page par défaut ; consignes dans la langue de la page.
+- Texte : l'export TXT pour un fichier (noms donnés aux voix compris) ; pour
+  le direct, les paragraphes luxembourgeois horodatés, sans la traduction.
+- Le presse-papiers passe avant l'ouverture de l'onglet : `writeText` exige
+  que la page ait le focus. Onglet bloqué : la page donne le lien. Copie
+  refusée : le texte s'affiche, sélectionné, à copier à la main.
+- Un compte rendu dans la page, en un clic, demanderait un relais serveur
+  détenant une clé d'API (une clé ne se publie pas dans une page statique) :
+  écarté pour l'instant, au profit de ce bouton.
+
 ## 7. Transcrire en ligne de commande
 
 ```bash

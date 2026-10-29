@@ -273,6 +273,24 @@ test('Horloge et type de contenu', () => {
   assert.ok(!T.estResultat({ name: 'son.wav' }));
 });
 
+test('Compte rendu : consignes, langue choisie, transcription entre deux balises', () => {
+  const d = T.normaliser({ segments: [
+    { start: 0, end: 2, text: 'Moien', speaker: 'SPEAKER_00' },
+    { start: 2, end: 4, text: 'Salut', speaker: 'SPEAKER_01' },
+  ] });
+  const texte = T.versTexte(d, nom);
+  const c = T.consignesCompteRendu({ texte, voix: true, langue: 'de', interface: 'fr' });
+  assert.ok(c.startsWith("Voici la transcription automatique d'un enregistrement en luxembourgeois"));
+  assert.ok(c.includes('Rédige-en un compte rendu en allemand'), 'langue du compte rendu');
+  assert.ok(c.includes('« Locuteur N » désigne une voix sans nom'), 'consigne propre aux voix séparées');
+  assert.ok(c.includes("N'invente rien") && c.includes('horodatage'), 'prudence et horodatages');
+  assert.ok(c.includes('--- Début de la transcription ---\n[0:00] Anna : Moien\n\n[0:02] Jos : Salut\n--- Fin de la transcription ---'),
+            'transcription intacte entre les balises');
+  const en = T.consignesCompteRendu({ texte: '[0:00] Moien', voix: false, langue: 'lb', interface: 'en' });
+  assert.ok(en.includes('Write minutes of it in Luxembourgish') && en.includes('voices are not separated'), 'consignes anglaises, sans voix');
+  assert.ok(en.includes('--- Start of transcript ---\n[0:00] Moien\n--- End of transcript ---'));
+});
+
 let echecs = 0;
 for (const [n, f] of cas) {
   try { f(); console.log('ok    ' + n); }
