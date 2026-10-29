@@ -70,15 +70,18 @@ class ServiceEcoute : Service() {
         if (Build.VERSION.SDK_INT >= 29) startForeground(NOTIF, notif, ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
         else startForeground(NOTIF, notif)
         val r = id?.let { ReunionApp.instance.registre.lire(it) }
-        if (r == null || reunion != null) { if (reunion == null) arreterService(); return }
+        if (reunion != null) return
+        if (r == null) {
+            // Réunion introuvable (effacée entre-temps) : l'écran ne doit pas l'attendre.
+            EtatDirect.termine = true
+            arreterService()
+            return
+        }
         reunion = r
         r.etape = Reunion.Etape.ECOUTE
         r.enregistrer()
 
-        EtatDirect.apply {
-            reunionId = r.id; etat = DirectLuxAsr.Etat.CONNEXION; paragraphes = emptyList()
-            secondes = 0.0; niveau = 0f; retard = 0.0; termine = false; microEnPanne = false
-        }
+        EtatDirect.commencer(r.id)
         verrou = (getSystemService(Context.POWER_SERVICE) as PowerManager)
             .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "luxreunion:ecoute").apply { acquire(5 * 3600_000L) }
 

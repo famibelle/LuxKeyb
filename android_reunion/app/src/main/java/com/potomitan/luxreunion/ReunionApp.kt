@@ -129,6 +129,17 @@ object EtatDirect {
     @Volatile var microEnPanne = false
 
     val enCours: Boolean get() = reunionId != null && !termine
+
+    /**
+     * Une nouvelle réunion commence. Appelé avant de lancer le service, et
+     * pas seulement par lui : l'écran du direct s'ouvre peut-être avant que
+     * le service ait démarré, et ne doit voir ni « aucune réunion » ni la
+     * réunion précédente, terminée.
+     */
+    fun commencer(id: String) {
+        reunionId = id; etat = DirectLuxAsr.Etat.CONNEXION; paragraphes = emptyList()
+        secondes = 0.0; niveau = 0f; retard = 0.0; termine = false; microEnPanne = false
+    }
 }
 
 /** Le planificateur du direct, sur un fil Android à lui. */

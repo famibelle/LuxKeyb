@@ -129,6 +129,7 @@ class PreparationActivity : Activity() {
             etape = Reunion.Etape.ECOUTE
             enregistrer()
         }
+        EtatDirect.commencer(r.id)
         ServiceEcoute.demarrer(this, r.id)
         startActivity(Intent(this, DirectActivity::class.java))
         finish()
