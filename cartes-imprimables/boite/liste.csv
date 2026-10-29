@@ -1,0 +1,53 @@
+numero,mot,paquet,nature,force,cout,rarete,sens
+001,Kaz,Déieren,nom,3,1,Très rare,chat
+002,Beie,Déieren,nom,4,1,Très rare,abeille
+003,Hond,Déieren,nom,4,1,Peu commun,chien
+004,Léiw,Déieren,nom,4,1,Rare,lion
+005,Ameis,Déieren,nom,5,2,Très rare,fourmi
+006,Fësch,Déieren,nom,5,2,Peu commun,poisson
+007,Päerd,Déieren,nom,5,2,Rare,cheval
+008,Delfin,Déieren,nom,6,2,Très rare,dauphin
+009,Kallef,Déieren,nom,6,2,Très rare,veau
+010,Elefant,Déieren,nom,7,2,Très rare,éléphant
+011,Harespel,Déieren,nom,8,3,Très rare,guêpe
+012,Krokodil,Déieren,nom,8,3,Très rare,crocodile
+013,Schmuewel,Déieren,nom,9,3,Très rare,hirondelle
+014,Kanéngchen,Déieren,nom,10,3,Très rare,lapin
+015,iessen,Déieren,verbe,6,2,Peu commun,manger
+016,lafen,Déieren,verbe,5,2,Commun,courir
+017,spillen,Déieren,verbe,7,2,Commun,jouer
+018,danzen,Déieren,verbe,6,2,Très rare,danser
+019,sprangen,Déieren,verbe,8,3,Très rare,sauter
+020,léif,Déieren,adjectif,4,1,Très rare,gentil
+021,kleng,Déieren,adjectif,5,2,Commun,petit
+022,séier,Déieren,adjectif,5,2,Commun,rapide
+023,witzeg,Déieren,adjectif,6,2,Très rare,drôle
+024,eent,Déieren,nombre,4,0,Commun,1
+025,zwee,Déieren,nombre,4,0,Commun,2
+026,dräi,Déieren,nombre,4,0,Commun,3
+027,Ënn,Iessen,nom,3,1,Très rare,oignon
+028,Kuch,Iessen,nom,4,1,Rare,gâteau
+029,Café,Iessen,nom,4,1,Commun,café
+030,Kéis,Iessen,nom,4,1,Très rare,fromage
+031,Brout,Iessen,nom,5,2,Rare,pain
+032,Promm,Iessen,nom,5,2,Très rare,prune
+033,Tomat,Iessen,nom,5,2,Très rare,tomate
+034,Banann,Iessen,nom,6,2,Très rare,banane
+035,Botter,Iessen,nom,6,2,Très rare,beurre
+036,Mëllech,Iessen,nom,7,2,Peu commun,lait
+037,Paangech,Iessen,nom,8,3,Très rare,crêpe
+038,Hammbier,Iessen,nom,8,3,Très rare,framboise
+039,Bréitchen,Iessen,nom,9,3,Très rare,petit pain
+040,Hieselnoss,Iessen,nom,10,3,Très rare,noisette
+041,drénken,Iessen,verbe,7,2,Peu commun,boire
+042,fléien,Iessen,verbe,6,2,Commun,voler
+043,sangen,Iessen,verbe,6,2,Très rare,chanter
+044,schlofen,Iessen,verbe,8,3,Peu commun,dormir
+045,schwammen,Iessen,verbe,9,3,Rare,nager
+046,grouss,Iessen,adjectif,6,2,Commun,grand
+047,staark,Iessen,adjectif,6,2,Commun,fort
+048,schéin,Iessen,adjectif,6,2,Peu commun,beau
+049,daper,Iessen,adjectif,5,2,Très rare,courageux
+050,véier,Iessen,nombre,5,0,Commun,4
+051,fënnef,Iessen,nombre,6,0,Commun,5
+052,sechs,Iessen,nombre,5,0,Commun,6
