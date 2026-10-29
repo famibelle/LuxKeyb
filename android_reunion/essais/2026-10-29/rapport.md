@@ -4,6 +4,8 @@ Appareil : émulateur `pixel9` (Android 16, 1080 × 2424, densité 420, GPU `swa
 Build : `Letzebuergesch_Reunion_v0.1.0_debug.apk`, depuis `main` à `54923057`.
 Aucune modification du code de l'application pendant l'essai.
 
+En un coup d'œil : `parcours_reunion.gif` (10 écrans) et `parcours_reunion.png` (planche en trois étapes : enregistrement et transcription, direct, compte rendu). Le direct n'y montre qu'un mot traduit, faute de son sur l'émulateur (§ 5).
+
 ## 1. Construction, installation, tests sur appareil
 
 - `./gradlew installDebug` : **réussi** (4 min 6 s, premier build).
