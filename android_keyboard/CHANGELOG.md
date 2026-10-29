@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.9.2] - 2026-10-29
+
+### ✨ Améliorations
+
+- **Les cartons ont leur bordure blanche** : dans la carte ouverte et sur l'image partagée, chaque carton découpé est cerné d'un bord blanc, comme du vrai papier, même sur les cartes de nuit.
+
 ## [37.9.1] - 2026-10-29
 
 ### ✨ Améliorations
