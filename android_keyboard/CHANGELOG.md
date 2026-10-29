@@ -9,6 +9,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.9.0] - 2026-10-29
+
+### ✨ Nouveautés
+
+- **Les cartes deviennent un petit théâtre de papier** : dans la carte ouverte, le paysage est fait de cartons découpés posés les uns devant les autres, chacun avec son ombre et son bord clair. Penchez le téléphone : les cartons glissent chacun à leur vitesse, comme un décor de théâtre.
+- **Plus la carte est rare, plus le décor est riche** : les cartes rares ajoutent des coulisses, deux arbres en silhouette de chaque côté, et les très rares un nuage qui traverse lentement le ciel.
+
 ## [37.8.0] - 2026-10-27
 
 ### ✨ Améliorations
