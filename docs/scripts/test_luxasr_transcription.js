@@ -9,7 +9,7 @@
  * synthétiques : ils couvrent les autres formes que le normaliseur accepte
  * (variantes de WhisperX, SRT, VTT, texte à préfixes), pas des réponses
  * observées. Tout nouveau relevé réel s'ajoute en tête
- * (.claude/skills/transcription/SKILL.md § 6).
+ * (.claude/skills/transcription/SKILL.md § 8).
  */
 'use strict';
 

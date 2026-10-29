@@ -716,6 +716,8 @@
     estResultat: estResultat,
     transcrire: transcrire,
     normaliser: normaliser,
+    /** Les boucles de Whisper d'un texte, réduites (même règle que le normaliseur). */
+    reduireBoucles: function (texte) { return reduireTexte(texte, [], null); },
     tours: tours,
     horloge: horloge,
     versTexte: versTexte,

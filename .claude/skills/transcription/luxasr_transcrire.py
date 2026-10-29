@@ -13,7 +13,7 @@ résultat ne se lit qu'une fois, le service l'efface aussitôt : il est écrit
 avant toute autre chose.
 
 `--sonde-cors` vérifie si une page web peut lire la réponse 202 de `/asr2`
-(SKILL.md § 4). Elle soumet une demi-seconde de silence : un travail
+(SKILL.md § 5). Elle soumet une demi-seconde de silence : un travail
 minuscule, mais un vrai travail.
 """
 
@@ -119,7 +119,7 @@ def sonde_cors(origine):
     print("\nVerdict : " + ("une page web peut lire le job_id."
                             if lisible else
                             "le 202 n'a pas d'en-tête CORS — la page ne peut "
-                            "pas lire le job_id (SKILL.md § 4)."))
+                            "pas lire le job_id (SKILL.md § 5)."))
 
 
 def main():

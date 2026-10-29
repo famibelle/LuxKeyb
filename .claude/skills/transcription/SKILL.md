@@ -1,6 +1,6 @@
 ---
 name: transcription
-description: Transcrire et diariser (« qui a dit quoi ») des enregistrements en luxembourgeois avec l'API par lots de LuxASR, le service de reconnaissance de la parole de l'Université du Luxembourg — paramètres de /asr2 et du suivi /v3/asr/jobs, formats de sortie, séparation des locuteurs (num_speakers), schéma JSON relevé, découpage en phrases et tours de parole, exports TXT/SRT/VTT/JSON, contrainte CORS côté navigateur, conditions d'usage du service. À utiliser quand on transcrit un fichier audio ou vidéo, quand on touche à la page Labs « Transcription » (docs/labs-transcription.html, docs/assets/luxasr-transcription.js), quand on appelle /asr2 depuis du code, ou quand une transcription LuxASR revient vide, mal découpée, sur une seule voix ou bloquée par le navigateur. Pas pour la dictée en direct du clavier (WebSocket), qui a son propre client.
+description: Transcrire et diariser (« qui a dit quoi ») des enregistrements en luxembourgeois avec l'API par lots de LuxASR, le service de reconnaissance de la parole de l'Université du Luxembourg — paramètres de /asr2 et du suivi /v3/asr/jobs, formats de sortie, séparation des locuteurs (num_speakers), schéma JSON relevé, découpage en phrases et tours de parole, exports TXT/SRT/VTT/JSON, contrainte CORS côté navigateur, conditions d'usage du service. Couvre aussi la transcription en direct d'une longue écoute par le flux WebSocket (docs/assets/luxasr-direct.js : liaisons renouvelées, paragraphes). À utiliser quand on transcrit un fichier audio ou vidéo ou un micro en continu, quand on touche à la page Labs « Transcription » (docs/labs-transcription.html, docs/assets/luxasr-transcription.js, docs/assets/luxasr-direct.js), quand on appelle /asr2 depuis du code, ou quand une transcription LuxASR revient vide, mal découpée, sur une seule voix ou bloquée par le navigateur. Pas pour la dictée du clavier (énoncés courts), qui a son propre client.
 ---
 
 # Transcription LuxASR — enregistrements, locuteurs, exports
@@ -9,14 +9,15 @@ LuxASR (<https://luxasr.uni.lu>) est le service de reconnaissance de la parole
 luxembourgeoise de l'Université du Luxembourg (Peter Gilles et son équipe). Le
 clavier l'utilise de deux façons, à ne pas confondre :
 
-| | Dictée en direct | Transcription d'un fichier (cette skill) |
-|---|---|---|
-| Voie | WebSocket `wss://luxasr.uni.lu/prod/ws/transcribe` | HTTP par lots : `POST /asr2` puis `/v3/asr/jobs/…` |
-| Code | `LuxAsrSession.kt`, `docs/assets/luxasr-client.js` | `docs/assets/luxasr-transcription.js`, `luxasr_transcrire.py` (ici) |
-| Locuteurs | non | **oui** (`diarization=Enabled`) |
-| Horodatage | non | oui, jusqu'au mot (`outfmt=json`) |
-| Amorçage (`prompt`), `beam_size` | non | oui |
-| Navigateur | passe (un WebSocket ignore CORS) | **bloqué par CORS** : le 202 de `/asr2` n'a pas d'en-tête (§ 5) |
+| | Dictée du clavier | Transcription en direct (§ 6) | Transcription d'un fichier |
+|---|---|---|---|
+| Voie | WebSocket `wss://luxasr.uni.lu/prod/ws/transcribe` | le même WebSocket, en continu | HTTP par lots : `POST /asr2` puis `/v3/asr/jobs/…` |
+| Code | `LuxAsrSession.kt`, `docs/assets/luxasr-client.js` | `docs/assets/luxasr-direct.js` | `docs/assets/luxasr-transcription.js`, `luxasr_transcrire.py` (ici) |
+| Durée | un énoncé : 5 s de silence ou 90 s l'arrêtent | jusqu'à l'arrêt, une heure au plus | le fichier entier |
+| Locuteurs | non | non | **oui** (`diarization=Enabled`) |
+| Horodatage | non | par paragraphe, à une seconde près | oui, jusqu'au mot (`outfmt=json`) |
+| Amorçage (`prompt`), `beam_size` | non | non | oui |
+| Navigateur | passe (un WebSocket ignore CORS) | passe | **bloqué par CORS** : le 202 de `/asr2` n'a pas d'en-tête (§ 5) |
 
 Les relevés bruts sont dans `releves/` : `releves/2026-10-29/api.md` (la
 documentation lue sur leur site, citations et URL), `sonde-cors.txt`,
@@ -248,7 +249,53 @@ Quand l'en-tête apparaît sur le 202 : consigner la sonde dans `releves/`,
 mettre à jour ce paragraphe, l'en-tête de `luxasr-transcription.js`, celui de
 `luxasr-client.js` et le paragraphe « Pour les curieux » de la page.
 
-## 6. Transcrire en ligne de commande
+## 6. La transcription en direct
+
+Même service et même protocole que la dictée (`LuxAsrSession.kt`) :
+
+- `config` en JSON d'abord (`{"type": "config", "language": "lb"}`), puis le
+  PCM 16 bits little-endian, 16 kHz mono, en trames binaires de ~160 ms ;
+  `{"type": "stop"}` pour conclure ;
+- en retour, `connected`, puis des `transcription` : `accumulated_text` (engagé,
+  ne fait que grandir), `partial_text` (queue encore instable), et
+  `send_reason: "silence_commit"` avec une queue vide quand le service clôt une
+  phrase, après un peu moins d'une seconde de silence ; `recording_stopped`
+  après « stop », une fois toute la queue engagée ; `error`.
+
+Ce que `luxasr-direct.js` y ajoute pour une écoute qui dure :
+
+1. **Le silence ne clôt rien** : la dictée s'arrête après 5 s de silence, le
+   direct seulement quand on le demande, une heure au plus.
+2. **La liaison est renouvelée** à la première phrase close passé 120 s, de
+   force passé 600 s : chaque message porte tout l'`accumulated_text` de la
+   liaison, qui sinon grandirait sans fin. « stop » sur l'ancienne,
+   `recording_stopped`, puis une nouvelle liaison. Le micro ne s'arrête pas :
+   ce qu'il capte pendant le raccord est gardé et envoyé d'un trait à
+   l'ouverture, puisque le service découpe sur les échantillons reçus et non
+   sur l'horloge (`stt/bench/probe_gap.py`).
+3. **Une liaison coupée est reprise** de la même façon, trois fois ; une
+   liaison qui ne s'ouvre pas en 8 s est tenue pour perdue. Le texte déjà
+   écrit est toujours gardé.
+4. **Paragraphes** : un silence de plus de 2,5 s entre une phrase close et le
+   texte suivant en ouvre un, de même qu'un paragraphe de plus de 45 s à la
+   phrase close suivante. L'horodatage est l'instant d'arrivée du texte moins
+   la latence du premier aperçu (~1 s), d'où « à une seconde près ».
+5. **Réseau lent** : au-delà de 2 s d'audio en attente d'envoi, la page le
+   signale ; au-delà de 30 s, elle arrête et garde le texte.
+6. Les boucles de Whisper sont réduites à l'affichage et à l'export par la
+   même règle que les fichiers (§ 4, règle 8).
+7. L'écran est gardé allumé (`navigator.wakeLock`) pendant l'écoute : sur un
+   téléphone, un écran qui s'éteint coupe le micro.
+
+Pas de séparation des voix : le flux n'en fait pas. Pour « qui a dit quoi »,
+enregistrer puis passer par le fichier.
+
+Ce que le flux réel fait d'une liaison de deux minutes n'a pas été mesuré :
+la dictée n'en ouvre que de 90 s au plus. À relever au premier essai réel
+(durée, taille des messages, coupures éventuelles) et à consigner dans
+`releves/`.
+
+## 7. Transcrire en ligne de commande
 
 ```bash
 # Diarisation activée, JSON brut dans un fichier (lu une seule fois : il est écrit d'abord)
@@ -273,7 +320,7 @@ politique réseau doit autoriser ce domaine. Sinon, les relevés se font depuis
 une machine qui y accède et se commitent dans `releves/AAAA-MM-JJ/`. Ne
 jamais simuler une réponse en la présentant comme réelle.
 
-## 7. Tester une modification
+## 8. Tester une modification
 
 1. **Normaliseur** (sans réseau) : `node docs/scripts/test_luxasr_transcription.js`.
    Les deux premiers cas sont les vraies réponses du 29 octobre 2026 : avec
@@ -290,14 +337,24 @@ jamais simuler une réponse en la présentant comme réelle.
    avant envoi, import d'un résultat, et les deux vraies réponses rejouées
    (une seule voix détectée ; deux voix et une boucle réduite). Contrôler à
    360 px (aucun défilement horizontal), en thème sombre et en anglais.
-3. **En vrai**, quand le réseau le permet : un enregistrement court à deux voix,
-   une seule soumission, et le relevé consigné dans `releves/`.
+3. **Direct** : un faux service WebSocket local qui suit le protocole du § 6
+   (un mot numéroté par demi-seconde de son, engagé après 0,8 s de silence),
+   sur `window.LUXASR_BASE_FLUX`, avec `window.LUXASR_ROTATION_S` raccourci ;
+   Chromium lancé avec `--use-fake-device-for-media-stream`,
+   `--use-fake-ui-for-media-stream` et `--use-file-for-fake-audio-capture=`
+   un WAV qui alterne son et silences. Vérifier que les mots arrivent sans trou
+   ni doublon à travers les renouvellements et une coupure, et les messages
+   du service injoignable et du micro refusé.
+4. **En vrai**, quand le réseau le permet : un enregistrement court à deux voix,
+   une seule soumission, et le relevé consigné dans `releves/` ; pour le
+   direct, quelques minutes d'écoute, au moins deux renouvellements.
 
-## 8. Où est quoi
+## 9. Où est quoi
 
 - `docs/labs-transcription.html` : la rubrique Labs, FR/EN (`?lang=en`).
 - `docs/assets/luxasr-transcription.js` : client `/asr2`, normaliseur, exports,
   sans aucun dessin (même principe que `luxasr-client.js`).
+- `docs/assets/luxasr-direct.js` : client du flux pour le direct, sans dessin.
 - `docs/labs.html` : la page Labs (dictée) ; les deux pages partagent le
   sous-menu « Dictée · Transcription ».
 - `docs/scripts/test_luxasr_transcription.js` : tests du normaliseur.
