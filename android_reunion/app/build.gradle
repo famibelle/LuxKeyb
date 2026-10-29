@@ -1,0 +1,117 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdk = 36
+    namespace 'com.potomitan.luxreunion'
+
+    signingConfigs {
+        release {
+            // Même clé que le clavier, lue au même endroit (keystore.properties
+            // local, gradle.properties ou variables d'environnement de la CI) :
+            // une signature stable est ce qui permet d'installer une mise à
+            // jour par-dessus la précédente sans perdre les réunions.
+            def props = new Properties()
+            def fichierProps = rootProject.file('keystore.properties')
+            if (fichierProps.exists()) fichierProps.withInputStream { props.load(it) }
+            def lire = { String nom -> props.getProperty(nom) ?: project.findProperty(nom) ?: System.getenv(nom) }
+
+            def chemin = lire('KEYSTORE_FILE')
+            def fichier = chemin ? rootProject.file(chemin) : null
+            if (fichier?.exists() && lire('STORE_PASSWORD') && lire('KEY_ALIAS') && lire('KEY_PASSWORD')) {
+                storeFile fichier
+                storePassword lire('STORE_PASSWORD')
+                keyAlias lire('KEY_ALIAS')
+                keyPassword lire('KEY_PASSWORD')
+                project.ext.signatureProduction = true
+            } else {
+                project.ext.signatureProduction = false
+            }
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.potomitan.luxreunion"
+        // Android 8 : java.time et les canaux de notification, dont le SDK
+        // Claude et le service d'écoute ont besoin.
+        minSdk = 26
+        targetSdk = 36
+        versionCode = 1
+        versionName "0.1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            // Pas de R8 : le SDK Claude désérialise ses réponses par réflexion
+            // (Jackson, kotlin-reflect), que la réduction casserait sans
+            // règles maintenues à la main. L'APK y gagne quelques Mo.
+            minifyEnabled = false
+            shrinkResources = false
+            if (project.ext.signatureProduction) signingConfig signingConfigs.release
+        }
+    }
+
+    // Le noyau est du Kotlin pur, testé à part sur la JVM (noyau/build.gradle) :
+    // l'application compile les mêmes sources avec les siennes.
+    sourceSets {
+        main {
+            java.srcDirs += '../noyau/src/main/kotlin'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    packaging {
+        resources {
+            // Fichiers d'accompagnement des bibliothèques Java (Jackson,
+            // OkHttp, SDK Claude) que plusieurs déclarent à l'identique, et
+            // classes Java 9+ des jars multi-versions, qu'Android ignore.
+            excludes += [
+                'META-INF/DEPENDENCIES', 'META-INF/LICENSE*', 'META-INF/NOTICE*', 'META-INF/*.md',
+                'META-INF/INDEX.LIST', 'META-INF/versions/**', 'META-INF/FastDoubleParser-*',
+                'META-INF/io.netty.versions.properties', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+            ]
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+}
+
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        variant.outputs.each { output ->
+            def version = output.versionName.getOrElse(variant.name)
+            output.outputFileName.set("Letzebuergesch_Reunion_v${version}_${variant.buildType}.apk")
+        }
+    }
+}
+
+// Une release signée avec la clé debug ne pourrait pas être mise à jour par la
+// suivante : on refuse de la produire plutôt que de le découvrir sur le téléphone.
+tasks.matching { it.name in ['validateSigningRelease', 'packageRelease'] }.configureEach {
+    doFirst {
+        if (!project.ext.signatureProduction) {
+            throw new GradleException("Signature de release non configurée : KEYSTORE_FILE, STORE_PASSWORD, " +
+                                      "KEY_ALIAS, KEY_PASSWORD (keystore.properties ou environnement).")
+        }
+    }
+}
+
+dependencies {
+    // Les mêmes versions que noyau/build.gradle : c'est le même code.
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.anthropic:anthropic-java:3.3.0'
+
+    // Tests sur appareil : le SDK Claude, OkHttp et MediaCodec sur un vrai
+    // Android, contre de faux services locaux.
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
+}

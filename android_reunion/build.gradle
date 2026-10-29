@@ -1,0 +1,4 @@
+plugins {
+    // Même AGP que le clavier : Kotlin y est compilé nativement (built-in Kotlin).
+    id 'com.android.application' version '9.3.1' apply false
+}

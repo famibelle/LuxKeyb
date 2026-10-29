@@ -15,6 +15,15 @@ android_keyboard/build/
 android_keyboard/local.properties
 android_keyboard/.idea/
 android_keyboard/*.iml
+
+# Application de réunion (android_reunion/) : sorties de build, régénérables.
+android_reunion/.gradle/
+android_reunion/build/
+android_reunion/app/build/
+android_reunion/noyau/.gradle/
+android_reunion/noyau/build/
+android_reunion/local.properties
+android_reunion/keystore.properties
 # Cache CMake/ninja du module natif STT : un `git add` large l'a fait entrer
 # dans la release 22.12.3 (337 fichiers), avec le gitlink whisper.cpp qui va
 # avec — cassant le build Pages, qui clone les sous-modules et ne trouve pas

@@ -1,6 +1,6 @@
 ---
 name: transcription
-description: Transcrire et diariser (« qui a dit quoi ») des enregistrements en luxembourgeois avec l'API par lots de LuxASR, le service de reconnaissance de la parole de l'Université du Luxembourg — paramètres de /asr2 et du suivi /v3/asr/jobs, formats de sortie, séparation des locuteurs (num_speakers), schéma JSON relevé, découpage en phrases et tours de parole, exports TXT/SRT/VTT/JSON, contrainte CORS côté navigateur, conditions d'usage du service. Couvre aussi la transcription en direct d'une longue écoute par le flux WebSocket (docs/assets/luxasr-direct.js : liaisons renouvelées, paragraphes). À utiliser quand on transcrit un fichier audio ou vidéo ou un micro en continu, quand on touche à la page Labs « Transcription » (docs/labs-transcription.html, docs/assets/luxasr-transcription.js, docs/assets/luxasr-direct.js), quand on appelle /asr2 depuis du code, ou quand une transcription LuxASR revient vide, mal découpée, sur une seule voix ou bloquée par le navigateur. Pas pour la dictée du clavier (énoncés courts), qui a son propre client.
+description: Transcrire et diariser (« qui a dit quoi ») des enregistrements en luxembourgeois avec l'API par lots de LuxASR, le service de reconnaissance de la parole de l'Université du Luxembourg — paramètres de /asr2 et du suivi /v3/asr/jobs, formats de sortie, séparation des locuteurs (num_speakers), schéma JSON relevé, découpage en phrases et tours de parole, exports TXT/SRT/VTT/JSON, contrainte CORS côté navigateur, conditions d'usage du service. Couvre aussi la transcription en direct d'une longue écoute par le flux WebSocket (docs/assets/luxasr-direct.js : liaisons renouvelées, paragraphes). À utiliser quand on transcrit un fichier audio ou vidéo ou un micro en continu, quand on touche à la page Labs « Transcription » (docs/labs-transcription.html, docs/assets/luxasr-transcription.js, docs/assets/luxasr-direct.js) ou à l'application de réunion (android_reunion/), quand on appelle /asr2 depuis du code, ou quand une transcription LuxASR revient vide, mal découpée, sur une seule voix ou bloquée par le navigateur. Pas pour la dictée du clavier (énoncés courts), qui a son propre client.
 ---
 
 # Transcription LuxASR — enregistrements, locuteurs, exports
@@ -428,3 +428,9 @@ jamais simuler une réponse en la présentant comme réelle.
   fichier et sonde CORS.
 - `.claude/skills/transcription/releves/` : relevés réels, datés.
 - `stt/bench/luxasr_api.py` : client `/asr2` du banc de mesure de la dictée.
+- `android_reunion/` : l'application Android « Lëtzebuergesch Réunion »
+  (direct traduit, transcription complète, compte rendu par Claude). Son
+  noyau (`android_reunion/noyau/`) transpose en Kotlin le normaliseur et le
+  client du direct ci-dessus, avec les mêmes seuils, et se teste sur la JVM
+  sur les mêmes relevés. Une règle changée ici se change là aussi. Voir son
+  `README.md`.

@@ -1,0 +1,15 @@
+// Construction autonome du noyau : du Kotlin pur, sans Android, qui se compile
+// et se teste sur n'importe quelle JVM (et dans la CI avant l'APK). Le module
+// Android, lui, compile ces mêmes sources avec les siennes (app/build.gradle).
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}
+rootProject.name = "noyau"

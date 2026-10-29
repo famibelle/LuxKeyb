@@ -1,0 +1,54 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '2.2.21'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+kotlin {
+    compilerOptions { jvmTarget = JvmTarget.JVM_17 }
+}
+
+dependencies {
+    // Les mêmes versions que app/build.gradle : c'est le même code.
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.anthropic:anthropic-java:3.3.0'
+    // Android fournit org.json : l'embarquer dans l'APK doublerait des
+    // classes du système. Sur la JVM, il le faut pour compiler et tester.
+    compileOnly 'org.json:json:20240303'
+
+    testImplementation 'org.json:json:20240303'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
+}
+
+test {
+    testLogging {
+        events 'failed'
+        exceptionFormat 'full'
+    }
+}
+
+// Vérification locale du module Android, sans SDK Android : ses sources
+// compilées contre les classes d'Android publiées par Robolectric
+// (android-all). Ce n'est pas un APK, seulement le typage — l'APK se
+// construit dans la CI (.github/workflows/reunion-apk.yml).
+//     ./gradlew -p noyau compileVerifAppKotlin -PverifierApp
+if (project.hasProperty('verifierApp')) {
+    sourceSets {
+        verifApp {
+            kotlin.srcDirs = ['../app/src/main/java', 'src/verifApp/kotlin']
+        }
+    }
+    dependencies {
+        verifAppImplementation sourceSets.main.output
+        verifAppImplementation 'com.squareup.okhttp3:okhttp:4.12.0'
+        verifAppImplementation 'com.anthropic:anthropic-java:3.3.0'
+        verifAppCompileOnly 'org.robolectric:android-all:16-robolectric-13921718'
+    }
+}

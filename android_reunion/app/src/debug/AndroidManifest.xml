@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Build debug seulement : les tests sur appareil parlent en HTTP clair à de
+     faux services sur le téléphone même (MockWebServer). La release n'a rien de tel. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:networkSecurityConfig="@xml/reseau_tests" />
+</manifest>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- La charte du clavier : bleu #0080FF, fond #F5F5F5, cartes blanches.
+         L'interface est dessinée en code (Charte.kt) ; le thème ne fixe que
+         ce que le système dessine lui-même (curseurs, interrupteurs, dialogues). -->
+    <style name="Theme.Reunion" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/bleu</item>
+        <item name="android:colorPrimaryDark">@color/bleu_fonce</item>
+        <item name="android:colorAccent">@color/bleu</item>
+        <item name="android:windowBackground">@color/fond</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>
