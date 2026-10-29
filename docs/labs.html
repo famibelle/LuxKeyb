@@ -168,6 +168,14 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 .thanks h2{margin-top:0;}
 .thanks p:last-child{margin-bottom:0;}
 
+/* Les rubriques de Labs : mêmes pastilles sur labs-transcription.html. */
+.labs-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px;}
+.labs-tabs a{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;
+  border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;
+  font-size:14px;text-decoration:none;}
+.labs-tabs a:hover{border-color:var(--sea);}
+.labs-tabs a[aria-current="page"]{background:var(--sea);border-color:var(--sea);color:var(--paper);}
+
 /* La partie technique est pliée : elle sert aux partenaires et aux curieux,
    pas à la personne qui veut seulement dicter. */
 details.tech summary{cursor:pointer;font-weight:700;font-size:15.5px;}
@@ -201,6 +209,10 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
 
 <header class="page">
   <p class="eyebrow" data-i18n="eyebrow">Lëtzebuergesch Clavier · Labs</p>
+  <nav class="labs-tabs" aria-label="Rubriques de Labs" data-i18n-aria="tabs-aria">
+    <a href="labs.html" aria-current="page" data-i18n="tab-dictee">🎙️ Dictée</a>
+    <a href="labs-transcription.html" data-i18n="tab-transcription">🎧 Transcription</a>
+  </nav>
   <h1 data-i18n="h1">Parlez, le clavier écrit 🔬</h1>
   <p class="lead" data-i18n="lead">
     La <strong>dictée vocale luxembourgeoise</strong> est sortie de l'atelier :
@@ -570,6 +582,9 @@ details.tech p{color:var(--ink-soft);font-size:14.5px;}
     'title': 'Labs · Luxembourgish dictation',
     'meta-desc': "Luxembourgish voice dictation in the Lëtzebuergesch Clavier keyboard, in the stable version since 33.0.0: speak, the keyboard writes. Recognition is provided by the University of Luxembourg's LuxASR service.",
     'eyebrow': 'Lëtzebuergesch Clavier · Labs',
+    'tabs-aria': 'Labs sections',
+    'tab-dictee': '🎙️ Dictation',
+    'tab-transcription': '🎧 Transcription',
     'h1': 'Speak, the keyboard writes 🔬',
     'lead': "<strong>Luxembourgish voice dictation</strong> has left the workshop: since version 33.0.0 it is in the keyboard everyone installs. You speak, and the text writes itself as your sentence goes. This page tells how it works, where your voice goes, and what it is worth, measured.",
     'thanks-h2': '🎓 Dictation by the University of Luxembourg',
