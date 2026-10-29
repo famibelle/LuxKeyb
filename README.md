@@ -206,7 +206,7 @@ s'affiche en aperçu. Aucun enregistrement n'est conservé sur le téléphone.
 d'une branche de travail, pour la faire essayer avant qu'elle n'atteigne la
 version stable. La dictée vocale y a été essayée avant d'entrer dans la
 version stable avec la 33.0.0 ; la page
-[Labs](https://famibelle.github.io/LuxKeyb/labs.html) raconte désormais son
+[Labs](https://famibelle.github.io/LuxKeyb/labs-dictee.html) raconte désormais son
 fonctionnement.
 
 ### Installer une version Labs

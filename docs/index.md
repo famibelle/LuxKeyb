@@ -105,7 +105,7 @@ une connexion Internet :
 
 Elle n'est pas infaillible : relisez avant d'envoyer. Les détails sont dans la
 [politique de confidentialité](privacy/privacy-policy.html#dictee-vocale), et son
-fonctionnement pas à pas sur la page [Labs](labs.html).
+fonctionnement pas à pas sur la page [Labs](labs-dictee.html).
 
 ## Ce qui vous retenait, et ce qui a changé
 

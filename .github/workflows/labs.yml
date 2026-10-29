@@ -318,7 +318,7 @@ jobs:
         ## Installation
 
         Page d'installation, avec flashcode et marche à suivre :
-        <https://famibelle.github.io/LuxKeyb/labs.html>
+        <https://famibelle.github.io/LuxKeyb/labs-dictee.html>
 
         L'APK ne contient plus aucune reconnaissance embarquée : la dictée passe
         entièrement par le service. Le téléphone a besoin d'une connexion pour
