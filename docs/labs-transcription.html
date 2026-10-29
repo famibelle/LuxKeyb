@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="title">Labs · Transcrire un enregistrement</title>
+<meta name="description" content="Transcrire un enregistrement en luxembourgeois et séparer les voix : réunion, interview, podcast. La reconnaissance est assurée par le service LuxASR de l'Université du Luxembourg." data-i18n-content="meta-desc">
+<link rel="canonical" href="https://famibelle.github.io/LuxKeyb/labs-transcription.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Lëtzebuergesch Clavier">
+<meta property="og:url" content="https://famibelle.github.io/LuxKeyb/labs-transcription.html">
+<meta property="og:title" content="Qui a dit quoi ? Transcrire un enregistrement luxembourgeois 🎧">
+<meta property="og:description" content="Déposez un enregistrement en luxembourgeois : LuxASR l'écrit et sépare les voix.">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="assets/theme.css">
+<script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<script defer src="assets/theme.js"></script>
+<style>
+*{box-sizing:border-box;}
+html{overflow-x:clip;}
+body{
+  margin:0; padding:0 18px 70px;
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  line-height:1.55; overflow-x:clip; overflow-wrap:break-word;
+}
+.wrap{max-width:720px;margin:0 auto;}
+header.page{padding:20px 0 10px;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--sun);margin:0 0 10px;}
+h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin:0 0 12px;text-wrap:balance;}
+.lead{font-size:16.5px;color:var(--ink-soft);max-width:58ch;margin:0 0 8px;}
+h2{font-size:19px;font-weight:800;margin:0 0 10px;letter-spacing:-0.01em;}
+h3{font-size:15.5px;font-weight:700;margin:18px 0 4px;}
+section{margin-top:38px;}
+p{margin:0 0 12px;}
+.muted{color:var(--ink-soft);font-size:14px;}
+a{color:var(--sea);}
+code{font-family:var(--mono);font-size:13px;background:var(--stripe);padding:1px 5px;border-radius:4px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px;}
+.card h3{margin-top:0;}
+.card p:last-child{margin-bottom:0;}
+
+/* Une couleur par voix, la même partout : pastille de la légende, filet de
+   la réplique. Six teintes tirées de la palette, puis on recommence. */
+:root{--spk-1:#0E6E76;--spk-2:#C94A3B;--spk-3:#94600F;--spk-4:#5B4FA8;--spk-5:#2E7D32;--spk-6:#A23B72;}
+@media (prefers-color-scheme: dark){
+  :root{--spk-1:#5FC7CE;--spk-2:#F0897C;--spk-3:#E3AE5E;--spk-4:#ADA2F2;--spk-5:#7CC47F;--spk-6:#E28AB8;}
+}
+:root[data-theme="dark"]{--spk-1:#5FC7CE;--spk-2:#F0897C;--spk-3:#E3AE5E;--spk-4:#ADA2F2;--spk-5:#7CC47F;--spk-6:#E28AB8;}
+:root[data-theme="light"]{--spk-1:#0E6E76;--spk-2:#C94A3B;--spk-3:#94600F;--spk-4:#5B4FA8;--spk-5:#2E7D32;--spk-6:#A23B72;}
+
+/* Les rubriques de Labs : mêmes pastilles sur labs.html. */
+.labs-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px;}
+.labs-tabs a{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;
+  border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;
+  font-size:14px;text-decoration:none;}
+.labs-tabs a:hover{border-color:var(--sea);}
+.labs-tabs a[aria-current="page"]{background:var(--sea);border-color:var(--sea);color:var(--paper);}
+
+.thanks{border:1px solid var(--line);border-left:4px solid var(--sea);
+  background:var(--card);border-radius:10px;padding:16px 18px;}
+.thanks p:last-child{margin-bottom:0;}
+
+/* L'avertissement précède le bouton : il prévient d'un envoi de la voix à
+   un tiers, et doit se lire avant de déposer quoi que ce soit. */
+.warn{border:1px solid var(--line);border-left:4px solid var(--sun);
+  background:var(--sun-soft);border-radius:10px;padding:14px 18px;margin:0 0 14px;font-size:14.5px;}
+.warn p:last-child{margin-bottom:0;}
+
+.drop{display:block;border:2px dashed var(--line);border-radius:12px;padding:22px 16px;
+  text-align:center;cursor:pointer;background:var(--paper);transition:border-color .15s,background .15s;}
+.drop:hover,.drop.over{border-color:var(--sea);background:var(--sea-soft);}
+.drop:focus-within{outline:2px solid var(--sea);outline-offset:2px;}
+.drop .big{display:block;font-weight:700;font-size:16px;margin-bottom:4px;}
+.drop .small{display:block;font-size:13px;color:var(--ink-soft);}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0;}
+
+.fiche{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:12px;
+  padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper);}
+.fiche .nom{font-weight:700;min-width:0;flex:1 1 200px;overflow-wrap:anywhere;}
+.fiche .meta{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);}
+
+.opts{border:0;padding:0;margin:16px 0 0;min-width:0;}
+.opts .ligne{display:flex;gap:10px;align-items:flex-start;margin:0 0 12px;font-size:15px;}
+.opts .ligne input{margin-top:4px;flex:0 0 auto;width:18px;height:18px;accent-color:var(--sea);}
+.opts .ligne small{display:block;color:var(--ink-soft);font-size:13px;}
+.opts label.champ{display:block;font-weight:700;font-size:14.5px;margin:4px 0 6px;}
+.opts input[type=text]{width:100%;font:inherit;font-size:15px;padding:10px 12px;border-radius:9px;
+  border:1.5px solid var(--line);background:var(--paper);color:var(--ink);}
+.opts input[type=text]:focus{outline:2px solid var(--sea);outline-offset:1px;border-color:var(--sea);}
+.opts .aide{font-size:13px;color:var(--ink-soft);margin:6px 0 0;}
+
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px;}
+.actions .btn{font-size:15px;padding:12px 20px;}
+.btn[disabled]{opacity:.45;cursor:not-allowed;filter:none;}
+.note-cors{font-size:13.5px;color:var(--ink-soft);margin:12px 0 0;}
+
+.suivi{margin-top:18px;border-top:1px solid var(--line);padding-top:14px;}
+.etapes{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;}
+.etapes li{color:var(--ink-soft);display:flex;align-items:center;gap:6px;}
+.etapes li::before{content:"○";font-family:var(--mono);}
+.etapes li[data-etat="courant"]{color:var(--ink);font-weight:700;}
+.etapes li[data-etat="courant"]::before{content:"◐";color:var(--sun);}
+.etapes li[data-etat="fait"]::before{content:"●";color:var(--sea);}
+.suivi progress{width:100%;height:8px;margin:12px 0 4px;accent-color:var(--sea);}
+.suivi .detail{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);margin:6px 0 0;
+  font-variant-numeric:tabular-nums;}
+
+.erreur{margin-top:16px;border:1px solid var(--line);border-left:4px solid var(--hibiscus);
+  background:var(--hibiscus-soft);border-radius:10px;padding:14px 16px;font-size:14.5px;}
+.erreur p:last-child{margin-bottom:0;}
+
+details.import{margin-top:4px;}
+details.import summary{cursor:pointer;font-weight:700;font-size:15px;}
+details.import[open] summary{margin-bottom:10px;}
+details.import p{font-size:14.5px;color:var(--ink-soft);}
+
+/* Le lecteur reste en haut pendant qu'on lit : on écoute en suivant. */
+.lecteur{position:sticky;top:0;z-index:2;background:var(--paper);padding:10px 0;
+  border-bottom:1px solid var(--line);margin:0 0 14px;}
+.lecteur audio{width:100%;display:block;}
+.resume{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);margin:0 0 12px;}
+
+.locuteurs{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin:0 0 18px;}
+.spk{display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px;border:1px solid var(--line);border-left:4px solid var(--c);
+  border-radius:9px;padding:6px 8px 6px 10px;background:var(--card);min-width:0;}
+.spk input{flex:1 1 9em;min-width:7em;font:inherit;font-weight:700;font-size:14.5px;color:var(--ink);
+  background:transparent;border:1px solid transparent;border-radius:6px;padding:4px 6px;}
+.spk input:hover{border-color:var(--line);}
+.spk input:focus{outline:2px solid var(--sea);outline-offset:0;background:var(--paper);}
+.spk .compte{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);white-space:nowrap;}
+
+.texte{margin:0 0 16px;}
+.tour{border-left:4px solid var(--c, var(--line));padding:2px 0 2px 14px;margin:0 0 16px;}
+.tour-tete{display:flex;align-items:baseline;gap:10px;margin:0 0 2px;}
+.tour .qui{font-weight:800;font-size:14.5px;color:var(--c, var(--ink));}
+.tour .ts{font-family:var(--mono);font-size:12px;color:var(--ink-soft);background:none;border:0;
+  padding:2px 0;cursor:pointer;font-variant-numeric:tabular-nums;}
+.tour .ts:hover{color:var(--sea);text-decoration:underline;}
+.tour .ts:focus-visible{outline:2px solid var(--sea);outline-offset:2px;border-radius:3px;}
+.tour-texte{margin:0;font-size:16px;line-height:1.6;}
+.avec-audio .seg{cursor:pointer;border-radius:3px;}
+.avec-audio .seg:hover{background:var(--stripe);}
+.seg.on{background:var(--sun-soft);box-shadow:0 0 0 2px var(--sun-soft);}
+
+.exports{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px;}
+.exports .btn{padding:9px 14px;font-size:14px;}
+/* theme.css met tous les boutons en pleine largeur sur téléphone ; ici ce
+   sont des formats de trois lettres, côte à côte ils tiennent sur deux lignes. */
+@media (max-width: 600px){ .exports .btn{display:inline-block;width:auto;} }
+.brut{max-height:420px;overflow:auto;font-family:var(--mono);font-size:12.5px;white-space:pre-wrap;
+  background:var(--stripe);border:1px solid var(--line);border-radius:9px;padding:12px;margin:0 0 12px;}
+
+.facts{list-style:none;margin:0;padding:0;}
+.facts li{padding:9px 0;border-bottom:1px solid var(--line);}
+.facts li:last-child{border-bottom:0;}
+.facts strong{color:var(--ink);}
+.facts li{color:var(--ink-soft);font-size:15px;}
+
+details.tech summary{cursor:pointer;font-weight:700;font-size:15.5px;}
+details.tech[open] summary{margin-bottom:10px;}
+details.tech p{color:var(--ink-soft);font-size:14.5px;}
+
+footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:14px;color:var(--ink-soft);}
+
+/* Copié de .theme-toggle sans en partager la classe : theme.js repeint tout
+   élément .theme-toggle (voir labs.html). */
+.lang-toggle{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:34px;height:34px;padding:0 12px;
+  border-radius:999px;border:1.5px solid var(--line);
+  background:var(--card);color:var(--ink);
+  font-family:var(--mono);font-weight:700;font-size:12px;line-height:1;
+  cursor:pointer;
+}
+.lang-toggle:hover{border-color:var(--sea);}
+.lang-toggle:focus-visible{outline:2px solid var(--sea);outline-offset:2px;}
+
+[hidden]{display:none !important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="site">
+  <a href="index.html">🏠 Accueil</a> ·
+  <a href="guide.html">📘 Guide</a> ·
+  <a href="faq.html">❓ FAQ</a> ·
+  <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
+  <a href="corpus.html">📚 Les corpus</a> ·
+  <a href="dossier.html">📄 Dossier</a> ·
+  <a href="nouveautes.html">🎁 Nouveautés</a> ·
+  <a href="newsletter/">📰 Newsletters</a> ·
+  <a href="labs.html"><strong>🔬 Labs</strong></a> ·
+  <a href="comparatif.html">⚖️ Comparatif</a> ·
+  <a href="ambassadeurs.html">📣 Ambassadeurs</a> ·
+  <a href="supports-communication.html">🖨️ Supports de communication</a> ·
+  <a href="privacy/privacy-policy.html">🔒 Confidentialité</a> ·
+  <a href="feedbacks_form.html">💬 Retours</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb/releases/latest">📲 Télécharger</a> ·
+  <a href="https://github.com/famibelle/LuxKeyb">💻 GitHub</a> ·
+  <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
+  <button type="button" class="lang-toggle" id="lang-toggle" aria-label="Switch language / changer de langue">EN</button>
+</nav>
+
+<header class="page">
+  <p class="eyebrow" data-i18n="eyebrow">Lëtzebuergesch Clavier · Labs</p>
+  <nav class="labs-tabs" aria-label="Rubriques de Labs" data-i18n-aria="tabs-aria">
+    <a href="labs.html" data-i18n="tab-dictee">🎙️ Dictée</a>
+    <a href="labs-transcription.html" aria-current="page" data-i18n="tab-transcription">🎧 Transcription</a>
+  </nav>
+  <h1 data-i18n="h1">Qui a dit quoi ? Transcrire un enregistrement 🎧</h1>
+  <p class="lead" data-i18n="lead">
+    Déposez un enregistrement en <strong>luxembourgeois</strong> : une réunion,
+    une interview, un podcast. Le service LuxASR l'écrit et
+    <strong>sépare les voix</strong> : chaque réplique est rattachée à son
+    locuteur et à l'instant où elle est dite. Vous écoutez en lisant, vous
+    nommez les locuteurs, vous emportez le texte ou les sous-titres.
+  </p>
+</header>
+
+<section>
+  <div class="thanks">
+    <p data-i18n="thanks-p">
+      🎓 La transcription et la séparation des voix sont le travail de
+      <a href="https://luxasr.uni.lu/">LuxASR</a>, le service de reconnaissance
+      de la parole luxembourgeoise de l'<strong>Université du Luxembourg</strong>.
+      Cette page envoie le fichier et met en forme ce qui revient. Merci à leur
+      équipe.
+    </p>
+  </div>
+</section>
+
+<section id="outil">
+  <h2 data-i18n="outil-h2">Transcrire</h2>
+
+  <div class="warn">
+    <p data-i18n="warn-p1">
+      <strong>🔊 Votre enregistrement part à l'Université du Luxembourg</strong>,
+      qui le transcrit sur ses serveurs : c'est leur
+      <a href="https://luxasr.uni.lu/">politique de protection des données</a>
+      qui s'applique. Ce site ne reçoit et ne garde rien : la page tourne dans
+      votre navigateur.
+    </p>
+    <p data-i18n="warn-p2">
+      Ne déposez que des enregistrements que vous avez le droit de faire
+      transcrire, avec l'accord des personnes qu'on y entend.
+    </p>
+  </div>
+
+  <div class="card">
+    <label class="drop" id="drop" for="f-audio">
+      <input type="file" id="f-audio" class="sr-only"
+             accept="audio/*,video/mp4,video/webm,video/quicktime,.m4a,.opus,.flac">
+      <span class="big" data-i18n="drop-big">📂 Choisir un enregistrement, ou le glisser ici</span>
+      <span class="small" data-i18n="drop-small">MP3, M4A, WAV, OGG, FLAC, WebM, ou une vidéo MP4 · 100 Mo et 90 minutes au plus</span>
+    </label>
+
+    <div class="fiche" id="fiche" hidden>
+      <span class="nom" id="fiche-nom"></span>
+      <span class="meta" id="fiche-meta"></span>
+    </div>
+
+    <fieldset class="opts" id="opts">
+      <legend class="sr-only" data-i18n="opts-legend">Réglages</legend>
+      <label class="ligne">
+        <input type="checkbox" id="opt-diar" checked>
+        <span><span data-i18n="opt-diar">Séparer les voix</span>
+          <small data-i18n="opt-diar-aide">Décochez pour un enregistrement à une seule voix : le service va plus vite.</small></span>
+      </label>
+      <label class="champ" for="opt-prompt" data-i18n="opt-prompt">Noms propres et mots rares (facultatif)</label>
+      <input type="text" id="opt-prompt" autocomplete="off" spellcheck="false"
+             placeholder="Gemengerot, Schäffen, Esch-Uelzecht" maxlength="400">
+      <p class="aide" data-i18n="opt-prompt-aide">Écrits comme ils doivent l'être, séparés par des virgules : le service s'en sert pour les orthographier dans tout l'enregistrement.</p>
+      <label class="ligne" style="margin-top:14px">
+        <input type="checkbox" id="opt-accord">
+        <span data-i18n="opt-accord">Les personnes enregistrées sont d'accord pour que leur voix soit transcrite par LuxASR.</span>
+      </label>
+    </fieldset>
+
+    <div class="actions">
+      <button type="button" class="btn primary" id="go" disabled data-i18n="go">Transcrire</button>
+      <button type="button" class="btn" id="annuler" hidden data-i18n="annuler">Annuler</button>
+    </div>
+    <p class="note-cors" id="note-cors" hidden data-i18n="note-cors">
+      Lors de votre dernier essai, ce navigateur n'a pas pu lire la réponse du
+      service (voir plus bas). Vous pouvez réessayer, le service l'a peut-être
+      corrigé, ou passer par <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a>
+      et ouvrir le résultat ici.
+    </p>
+
+    <div class="suivi" id="suivi" hidden aria-live="polite">
+      <ol class="etapes">
+        <li data-etape="ENVOI" data-i18n="etape-envoi">Envoi</li>
+        <li data-etape="FILE" data-i18n="etape-file">File d'attente</li>
+        <li data-etape="TRAITEMENT" data-i18n="etape-traitement">Transcription</li>
+      </ol>
+      <progress id="barre" max="1" value="0"></progress>
+      <p class="detail" id="detail"></p>
+    </div>
+
+    <div class="erreur" id="erreur" hidden role="alert"></div>
+  </div>
+
+  <details class="card import" id="import">
+    <summary data-i18n="import-summary">Vous avez déjà un résultat LuxASR ?</summary>
+    <p data-i18n="import-p">
+      Ouvrez ici un fichier produit par LuxASR (JSON, SRT, VTT ou texte), par
+      exemple depuis le formulaire de <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> :
+      vous retrouvez la lecture par locuteur, le renommage et les exports. Le
+      fichier reste dans votre navigateur. Choisissez aussi l'enregistrement
+      ci-dessus pour l'écouter en lisant.
+    </p>
+    <label class="btn" for="f-resultat" data-i18n="import-btn">📄 Ouvrir un résultat</label>
+    <input type="file" id="f-resultat" class="sr-only" accept=".json,.srt,.vtt,.txt,application/json,text/plain,text/vtt">
+  </details>
+</section>
+
+<section id="resultat" hidden>
+  <h2 id="resultat-h2" tabindex="-1" data-i18n="resultat-h2">La transcription</h2>
+  <div class="lecteur" id="lecteur" hidden><audio id="audio" controls preload="metadata"></audio></div>
+  <p class="resume" id="resume"></p>
+  <div class="locuteurs" id="locuteurs"></div>
+  <div class="erreur" id="inconnu" hidden>
+    <p data-i18n="inconnu-p">Le résultat est arrivé, mais sous une forme que cette page ne sait pas encore lire. Le voici tel quel ; il reste téléchargeable avec « Réponse brute ».</p>
+  </div>
+  <pre class="brut" id="brut" hidden></pre>
+  <div class="texte" id="texte"></div>
+  <div class="exports" id="exports">
+    <button type="button" class="btn" data-export="copier" data-i18n="exp-copier">📋 Copier le texte</button>
+    <button type="button" class="btn" data-export="txt">TXT</button>
+    <button type="button" class="btn" data-export="srt" data-i18n-title="exp-srt-title" title="Sous-titres">SRT</button>
+    <button type="button" class="btn" data-export="vtt" data-i18n-title="exp-vtt-title" title="Sous-titres web, avec les locuteurs">VTT</button>
+    <button type="button" class="btn" data-export="json">JSON</button>
+    <button type="button" class="btn" data-export="brut" data-i18n="exp-brut">Réponse brute</button>
+  </div>
+  <p class="muted" data-i18n="resultat-credit">
+    Transcription automatique par LuxASR, Université du Luxembourg. Elle se
+    trompe sur une part des mots : relisez-la avant de la diffuser.
+  </p>
+</section>
+
+<section>
+  <h2 data-i18n="savoir-h2">Bon à savoir</h2>
+  <ul class="facts">
+    <li data-i18n="savoir-1"><strong>Les voix sont séparées, pas reconnues.</strong> Le service regroupe ce qui sonne comme une même voix, sans savoir qui parle : renommez les locuteurs une fois le texte affiché, les exports suivent.</li>
+    <li data-i18n="savoir-2"><strong>Les répliques très courtes et les voix qui se chevauchent</strong> sont mal séparées, c'est une limite connue de la méthode. Une pièce calme et un micro proche de chacun aident beaucoup.</li>
+    <li data-i18n="savoir-3"><strong>Le service est fait pour le luxembourgeois.</strong> Un passage dans une autre langue peut revenir mal transcrit.</li>
+    <li data-i18n="savoir-4"><strong>L'attente dépend surtout de la file</strong> : le service traite les fichiers de tout le monde, les uns après les autres. Gardez la page ouverte jusqu'au résultat.</li>
+    <li data-i18n="savoir-5"><strong>Une vidéo marche aussi</strong> : seule sa piste son est transcrite, mais c'est le fichier entier qui part. Pour un long film, extraire le son d'abord accélère l'envoi.</li>
+  </ul>
+</section>
+
+<section>
+  <details class="card tech" id="curieux">
+    <summary data-i18n="tech-h3">Pour les curieux : comment ça marche</summary>
+    <p data-i18n="tech-p1">
+      La page envoie le fichier tel quel à l'API par lots de LuxASR
+      (<code>POST /asr2</code>, avec <code>diarization=Enabled</code> et
+      <code>outfmt=json</code>), puis demande où en est le travail toutes les
+      deux secondes, puis toutes les cinq au-delà d'une minute, et lit le
+      résultat. Le fichier va directement de votre navigateur au service : il ne
+      passe pas par ce site.
+    </p>
+    <p data-i18n="tech-p2">
+      Le résultat est ramené à une liste de répliques (début, fin, locuteur,
+      texte). Les segments consécutifs d'une même voix forment un tour de
+      parole ; c'est de cette liste que sont tirés les exports TXT, SRT, VTT et
+      JSON. La réponse brute du service reste téléchargeable telle quelle.
+    </p>
+    <p data-i18n="tech-p3">
+      <strong>Pourquoi l'envoi peut échouer d'emblée.</strong> Une page web ne
+      peut lire la réponse d'un autre site que si ce site l'y autorise, par un
+      en-tête « CORS ». Relevé en septembre 2026, le service ne le posait pas
+      encore sur l'accusé de réception d'un envoi. Si c'est toujours le cas, la
+      page vous le dit, sans réessayer à vide, et vous propose de transcrire sur
+      <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> puis d'ouvrir le
+      résultat ici.
+    </p>
+  </details>
+</section>
+
+<section>
+  <h2 data-i18n="feedback-h2">Dites-nous ce que ça donne</h2>
+  <p data-i18n="feedback-p">
+    Labs sert à essayer avant de décider. Le plus utile à nous transmettre :
+    <strong>le type d'enregistrement, sa durée, le nombre de voix, et ce qui a
+    été bien ou mal séparé</strong>.
+  </p>
+  <p>
+    <a class="btn" href="feedbacks_form.html" data-i18n="feedback-form">💬 Formulaire de retour</a>
+    <a class="btn" href="https://github.com/famibelle/LuxKeyb/issues" data-i18n="feedback-gh">🐛 Signaler sur GitHub</a>
+  </p>
+</section>
+
+<footer class="page">
+  <p data-i18n="footer-p1">
+    Une question ? Écrivez à <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>
+    La dictée vocale du clavier est sur la page <a href="labs.html">Labs · Dictée</a>.
+  </p>
+  <p>Lëtzebuergesch Clavier</p>
+</footer>
+
+</div>
+
+<script>
+// Traductions de la page, sur le modèle de labs.html : le français est celui
+// du HTML, l'anglais vit ici. Même clé de mémoire de langue que labs.html,
+// pour que le choix suive d'une rubrique de Labs à l'autre. Un changement de
+// langue émet `labs-langue`, que l'outil écoute pour repeindre ce qu'il a
+// dessiné lui-même.
+(function () {
+  'use strict';
+
+  var EN = {
+    'title': 'Labs · Transcribe a recording',
+    'meta-desc': "Transcribe a Luxembourgish recording and separate the voices: meeting, interview, podcast. Recognition is provided by the University of Luxembourg's LuxASR service.",
+    'eyebrow': 'Lëtzebuergesch Clavier · Labs',
+    'tabs-aria': 'Labs sections',
+    'tab-dictee': '🎙️ Dictation',
+    'tab-transcription': '🎧 Transcription',
+    'h1': 'Who said what? Transcribe a recording 🎧',
+    'lead': 'Drop a recording in <strong>Luxembourgish</strong>: a meeting, an interview, a podcast. The LuxASR service writes it down and <strong>separates the voices</strong>: each line is tied to its speaker and to the moment it is said. You listen while you read, name the speakers, and take away the text or the subtitles.',
+    'thanks-p': '🎓 Transcription and voice separation are the work of <a href="https://luxasr.uni.lu/">LuxASR</a>, the Luxembourgish speech recognition service of the <strong>University of Luxembourg</strong>. This page sends the file and lays out what comes back. Thanks to their team.',
+    'outil-h2': 'Transcribe',
+    'warn-p1': "<strong>🔊 Your recording goes to the University of Luxembourg</strong>, which transcribes it on its servers: their <a href=\"https://luxasr.uni.lu/\">data protection policy</a> applies. This site receives and keeps nothing: the page runs in your browser.",
+    'warn-p2': 'Only upload recordings you are allowed to have transcribed, with the consent of the people heard in them.',
+    'drop-big': '📂 Choose a recording, or drop it here',
+    'drop-small': 'MP3, M4A, WAV, OGG, FLAC, WebM, or an MP4 video · 100 MB and 90 minutes at most',
+    'opts-legend': 'Settings',
+    'opt-diar': 'Separate the voices',
+    'opt-diar-aide': 'Untick for a single-voice recording: the service is faster.',
+    'opt-prompt': 'Proper names and rare words (optional)',
+    'opt-prompt-aide': 'Spelled as they should be, separated by commas: the service uses them to spell those words throughout the recording.',
+    'opt-accord': 'The people recorded agree to have their voices transcribed by LuxASR.',
+    'go': 'Transcribe',
+    'annuler': 'Cancel',
+    'note-cors': 'On your last attempt, this browser could not read the service’s reply (see below). You can try again, the service may have fixed it, or go through <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> and open the result here.',
+    'etape-envoi': 'Upload',
+    'etape-file': 'Queue',
+    'etape-traitement': 'Transcription',
+    'import-summary': 'Already have a LuxASR result?',
+    'import-p': 'Open a file produced by LuxASR here (JSON, SRT, VTT or text), for instance from the form on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a>: you get the speaker view, renaming and exports. The file stays in your browser. Also choose the recording above to listen while you read.',
+    'import-btn': '📄 Open a result',
+    'resultat-h2': 'The transcript',
+    'inconnu-p': 'The result arrived, but in a form this page cannot read yet. Here it is as is; you can still download it with “Raw reply”.',
+    'exp-copier': '📋 Copy the text',
+    'exp-srt-title': 'Subtitles',
+    'exp-vtt-title': 'Web subtitles, with speakers',
+    'exp-brut': 'Raw reply',
+    'resultat-credit': 'Automatic transcription by LuxASR, University of Luxembourg. It gets some of the words wrong: proofread it before sharing.',
+    'savoir-h2': 'Good to know',
+    'savoir-1': '<strong>Voices are separated, not recognised.</strong> The service groups what sounds like the same voice without knowing who is speaking: rename the speakers once the text is shown, and the exports follow.',
+    'savoir-2': '<strong>Very short lines and overlapping voices</strong> are poorly separated: a known limit of the method. A quiet room and a microphone close to each speaker help a lot.',
+    'savoir-3': '<strong>The service is made for Luxembourgish.</strong> A passage in another language may come back poorly transcribed.',
+    'savoir-4': '<strong>The wait depends mostly on the queue</strong>: the service handles everyone’s files, one after another. Keep the page open until the result arrives.',
+    'savoir-5': '<strong>A video works too</strong>: only its sound track is transcribed, but the whole file is sent. For a long film, extracting the sound first speeds up the upload.',
+    'tech-h3': 'For the curious: how it works',
+    'tech-p1': 'The page sends the file as is to LuxASR’s batch API (<code>POST /asr2</code>, with <code>diarization=Enabled</code> and <code>outfmt=json</code>), then asks how the job is doing every two seconds, then every five after a minute, and reads the result. The file goes straight from your browser to the service: it does not go through this site.',
+    'tech-p2': 'The result is turned into a list of lines (start, end, speaker, text). Consecutive segments from the same voice make one turn; the TXT, SRT, VTT and JSON exports are drawn from that list. The service’s raw reply stays downloadable as is.',
+    'tech-p3': '<strong>Why the upload may fail straight away.</strong> A web page can only read another site’s reply if that site allows it, through a “CORS” header. As observed in September 2026, the service did not yet set it on the acknowledgement of an upload. If that is still the case, the page tells you so, without retrying in vain, and suggests transcribing on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> and opening the result here.',
+    'feedback-h2': 'Tell us how it goes',
+    'feedback-p': 'Labs is for trying things before deciding. The most useful thing to send us: <strong>the kind of recording, its length, the number of voices, and what was separated well or badly</strong>.',
+    'feedback-form': '💬 Feedback form',
+    'feedback-gh': '🐛 Report on GitHub',
+    'footer-p1': 'A question? Write to <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>The keyboard’s voice dictation is on the <a href="labs.html">Labs · Dictation</a> page.'
+  };
+
+  var FR = {};
+  var courant = 'fr';
+
+  function noeuds(attr) {
+    return Array.prototype.slice.call(document.querySelectorAll('[' + attr + ']'));
+  }
+
+  function capturerFrancais() {
+    noeuds('data-i18n').forEach(function (el) { FR[el.getAttribute('data-i18n')] = el.innerHTML; });
+    noeuds('data-i18n-title').forEach(function (el) { FR['title:' + el.getAttribute('data-i18n-title')] = el.getAttribute('title'); });
+    noeuds('data-i18n-aria').forEach(function (el) { FR['aria:' + el.getAttribute('data-i18n-aria')] = el.getAttribute('aria-label'); });
+    var meta = document.querySelector('meta[data-i18n-content]');
+    if (meta) FR['meta-desc'] = meta.getAttribute('content');
+    FR['title'] = document.title;
+  }
+
+  function appliquer(langue) {
+    var en = langue === 'en';
+    document.title = en ? EN['title'] : FR['title'];
+    var meta = document.querySelector('meta[data-i18n-content]');
+    if (meta) meta.setAttribute('content', en ? EN['meta-desc'] : FR['meta-desc']);
+    noeuds('data-i18n').forEach(function (el) {
+      var k = el.getAttribute('data-i18n');
+      el.innerHTML = (en ? EN[k] : FR[k]) || FR[k];
+    });
+    noeuds('data-i18n-title').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-title');
+      el.setAttribute('title', (en ? EN[k] : FR['title:' + k]) || FR['title:' + k]);
+    });
+    noeuds('data-i18n-aria').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-aria');
+      el.setAttribute('aria-label', (en ? EN[k] : FR['aria:' + k]) || FR['aria:' + k]);
+    });
+    document.documentElement.lang = langue;
+    courant = langue;
+    window.__labsLang = langue;
+    try { localStorage.setItem('labs-luxasr-lang', langue); } catch (e) {}
+    var bouton = document.getElementById('lang-toggle');
+    if (bouton) {
+      bouton.textContent = en ? 'FR' : 'EN';
+      bouton.setAttribute('lang', en ? 'fr' : 'en');
+    }
+    document.dispatchEvent(new CustomEvent('labs-langue'));
+  }
+
+  function init() {
+    capturerFrancais();
+    var m = /[?&]lang=(en|fr)\b/i.exec(location.search);
+    var enregistree = 'fr';
+    try { enregistree = localStorage.getItem('labs-luxasr-lang') || 'fr'; } catch (e) {}
+    appliquer(((m && m[1].toLowerCase()) || enregistree) === 'en' ? 'en' : 'fr');
+    document.getElementById('lang-toggle').addEventListener('click', function () {
+      appliquer(courant === 'fr' ? 'en' : 'fr');
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+
+<script src="assets/luxasr-transcription.js"></script>
+<script>
+// L'outil : choisir un fichier, l'envoyer, suivre le travail, puis lire la
+// transcription par locuteur en écoutant. Toute la logique de service et de
+// format est dans luxasr-transcription.js ; ici, on ne fait que dessiner.
+(function () {
+  'use strict';
+  var T = window.LuxAsrTranscription;
+  function $(id) { return document.getElementById(id); }
+
+  var MOTS = {
+    fr: {
+      mo: function (n) { return n >= 1048576 ? (n / 1048576).toFixed(1).replace('.', ',') + ' Mo' : Math.max(1, Math.round(n / 1024)) + ' Ko'; },
+      dureeInconnue: 'durée inconnue',
+      envoi: function (f) { return f == null ? 'Envoi du fichier…' : 'Envoi du fichier : ' + Math.round(f * 100) + ' %'; },
+      file: function (p) { return p != null ? 'En file d\'attente, position ' + p : 'En file d\'attente chez LuxASR'; },
+      traitement: 'Transcription en cours',
+      ecoule: function (t) { return ' · ' + t + ' écoulées'; },
+      annule: 'Annulé. Si le fichier était déjà parti, le service finit de le traiter de son côté ; rien n\'est gardé ici.',
+      locuteur: function (n) { return 'Locuteur ' + n; },
+      renommer: function (n) { return 'Nom du locuteur ' + n; },
+      repliques: function (n) { return n + (n > 1 ? ' répliques' : ' réplique'); },
+      resume: function (l, r, d) {
+        return (l ? l + (l > 1 ? ' locuteurs' : ' locuteur') : 'Voix non séparées') + ' · ' + r + (d ? ' · ' + d : '');
+      },
+      copie: '✅ Copié',
+      err: {
+        FORMAT: 'Ce fichier n\'est pas un enregistrement reconnu. Choisissez un fichier audio (MP3, M4A, WAV, OGG, FLAC, WebM) ou une vidéo MP4.',
+        TROP_GROS: function (d) { return 'Ce fichier fait ' + d + ' : la page en accepte 100 Mo au plus. Un MP3 ou un M4A du même enregistrement est bien plus léger.'; },
+        TROP_LONG: function (d) { return 'Cet enregistrement dure ' + d + ' : la page en accepte 90 minutes au plus. Coupez-le en plusieurs parties.'; },
+        CORS: 'Le fichier est bien parti, mais <strong>le service n\'a pas laissé cette page lire sa réponse</strong>. C\'est un réglage de leur serveur (l\'en-tête CORS de l\'accusé de réception), pas un problème de votre fichier : réessayer n\'y changera rien. En attendant, transcrivez-le sur <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> au format JSON, puis ouvrez le résultat ici avec « Vous avez déjà un résultat LuxASR ? ».',
+        RESEAU: 'La liaison avec le service a été coupée, ou il est injoignable. Vérifiez la connexion, puis réessayez.',
+        REFUS: function (d) { return 'Le service a refusé le fichier (erreur ' + d.status + ')' + (d.message ? ' : « ' + d.message + ' »' : '.'); },
+        ECHEC: function (d) { return 'Le service n\'a pas réussi à transcrire ce fichier' + (d ? ' : « ' + d + ' »' : '.'); },
+        DELAI: 'Toujours pas de résultat au bout d\'une heure : la file du service est sans doute saturée. Réessayez plus tard.',
+        SANS_JOB: 'Le service a répondu sans numéro de travail : la réponse est inattendue, impossible de suivre la transcription.',
+        VIDE: 'Le service n\'a rien reconnu dans cet enregistrement. Est-il bien en luxembourgeois, et audible ?',
+        LECTURE: 'Ce fichier n\'a pas pu être lu.'
+      }
+    },
+    en: {
+      mo: function (n) { return n >= 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB'; },
+      dureeInconnue: 'unknown length',
+      envoi: function (f) { return f == null ? 'Uploading the file…' : 'Uploading the file: ' + Math.round(f * 100) + '%'; },
+      file: function (p) { return p != null ? 'In the queue, position ' + p : 'In the LuxASR queue'; },
+      traitement: 'Transcribing',
+      ecoule: function (t) { return ' · ' + t + ' elapsed'; },
+      annule: 'Cancelled. If the file had already left, the service finishes processing it on its side; nothing is kept here.',
+      locuteur: function (n) { return 'Speaker ' + n; },
+      renommer: function (n) { return 'Name of speaker ' + n; },
+      repliques: function (n) { return n + (n > 1 ? ' lines' : ' line'); },
+      resume: function (l, r, d) {
+        return (l ? l + (l > 1 ? ' speakers' : ' speaker') : 'Voices not separated') + ' · ' + r + (d ? ' · ' + d : '');
+      },
+      copie: '✅ Copied',
+      err: {
+        FORMAT: 'This file is not a recognised recording. Choose an audio file (MP3, M4A, WAV, OGG, FLAC, WebM) or an MP4 video.',
+        TROP_GROS: function (d) { return 'This file is ' + d + ': the page accepts 100 MB at most. An MP3 or M4A of the same recording is much lighter.'; },
+        TROP_LONG: function (d) { return 'This recording lasts ' + d + ': the page accepts 90 minutes at most. Split it into several parts.'; },
+        CORS: 'The file did leave, but <strong>the service did not let this page read its reply</strong>. That is a setting on their server (the CORS header on the acknowledgement), not a problem with your file: retrying won’t change it. Meanwhile, transcribe it on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> in JSON format, then open the result here with “Already have a LuxASR result?”.',
+        RESEAU: 'The link to the service was cut, or it cannot be reached. Check the connection, then try again.',
+        REFUS: function (d) { return 'The service refused the file (error ' + d.status + ')' + (d.message ? ': “' + d.message + '”' : '.'); },
+        ECHEC: function (d) { return 'The service could not transcribe this file' + (d ? ': “' + d + '”' : '.'); },
+        DELAI: 'Still no result after an hour: the service’s queue is probably saturated. Try again later.',
+        SANS_JOB: 'The service replied without a job number: unexpected reply, the transcription cannot be followed.',
+        VIDE: 'The service recognised nothing in this recording. Is it in Luxembourgish, and audible?',
+        LECTURE: 'This file could not be read.'
+      }
+    }
+  };
+  function M() { return MOTS[window.__labsLang === 'en' ? 'en' : 'fr']; }
+
+  /* Ce que le service renvoie peut contenir du balisage : on l'échappe avant
+     de le glisser dans un message. */
+  function echapper(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  var CLE_CORS = 'labs-transcription-cors';
+  var audio = null, urlAudio = null, dureeAudio = null, audioValide = false;
+  var tache = null, etape = null, t0 = 0, chrono = null, progres = null, position = null;
+  var doc = null, brut = '', baseNom = 'transcription', noms = {};
+  var derniereErreur = null;
+
+  // --- Choix du fichier -------------------------------------------------
+
+  function choisirAudio(f) {
+    if (!f) return;
+    if (T.estResultat(f)) { importer(f); return; }
+    cacherErreur();
+    audio = f; audioValide = false; dureeAudio = null;
+    baseNom = f.name.replace(/\.[^.]+$/, '') || 'transcription';
+    if (urlAudio) URL.revokeObjectURL(urlAudio);
+    urlAudio = URL.createObjectURL(f);
+    $('fiche').hidden = false;
+    $('fiche-nom').textContent = f.name;
+    majFiche();
+    if (!T.typeAudio(f)) { montrerErreur('FORMAT'); return majBouton(); }
+    if (f.size > T.TAILLE_MAX) { montrerErreur('TROP_GROS', M().mo(f.size)); return majBouton(); }
+
+    // La durée vient des métadonnées : décoder une heure d'audio pour la
+    // connaître coûterait des centaines de Mo de mémoire.
+    var sonde = document.createElement('audio');
+    sonde.preload = 'metadata';
+    sonde.onloadedmetadata = function () {
+      if (audio !== f) return;
+      dureeAudio = isFinite(sonde.duration) ? sonde.duration : null;
+      majFiche();
+      if (dureeAudio && dureeAudio > T.DUREE_MAX_S) { montrerErreur('TROP_LONG', T.horloge(dureeAudio)); return majBouton(); }
+      audioValide = true; majBouton();
+    };
+    sonde.onerror = function () {
+      // Le navigateur ne sait pas lire ce format : le service, lui, le peut
+      // peut-être. On laisse envoyer, sans lecteur.
+      if (audio !== f) return;
+      audioValide = true; majFiche(); majBouton();
+    };
+    sonde.src = urlAudio;
+    if (doc) brancherLecteur();
+  }
+
+  function majFiche() {
+    if (!audio) return;
+    $('fiche-meta').textContent = (dureeAudio ? T.horloge(dureeAudio) : M().dureeInconnue) + ' · ' + M().mo(audio.size);
+  }
+
+  function occupe() { return !!tache; }
+
+  function majBouton() {
+    $('go').disabled = occupe() || !audio || !audioValide || !$('opt-accord').checked;
+  }
+
+  // --- Envoi et suivi ---------------------------------------------------
+
+  function lancer() {
+    if ($('go').disabled) return;
+    cacherErreur();
+    $('resultat').hidden = true;
+    doc = null;
+    etape = 'ENVOI'; progres = 0; position = null; t0 = Date.now();
+    $('suivi').hidden = false;
+    basculer(true);
+    majSuivi();
+    clearInterval(chrono);
+    chrono = setInterval(majSuivi, 1000);
+    tache = T.transcrire(audio, {
+      diarisation: $('opt-diar').checked,
+      prompt: $('opt-prompt').value.trim()
+    }, {
+      onEtat: function (e, info) {
+        etape = e;
+        if (e === 'ENVOI') progres = info;
+        if (e === 'FILE') position = info && info.position != null ? info.position : null;
+        majSuivi();
+      },
+      onResultat: function (texte) {
+        fin();
+        try { localStorage.removeItem(CLE_CORS); } catch (e) {}
+        $('note-cors').hidden = true;
+        afficher(texte, true);
+      },
+      onErreur: function (code, detail) {
+        fin();
+        if (code === 'CORS') {
+          try { localStorage.setItem(CLE_CORS, String(Date.now())); } catch (e) {}
+        }
+        montrerErreur(code, detail);
+      }
+    });
+  }
+
+  function fin() {
+    tache = null;
+    clearInterval(chrono);
+    $('suivi').hidden = true;
+    basculer(false);
+  }
+
+  function annuler() {
+    if (!tache) return;
+    tache.annuler();
+    fin();
+    montrerErreur('ANNULE');
+  }
+
+  function basculer(enCours) {
+    $('annuler').hidden = !enCours;
+    $('f-audio').disabled = enCours;
+    $('opt-diar').disabled = enCours;
+    $('opt-prompt').disabled = enCours;
+    $('f-resultat').disabled = enCours;
+    majBouton();
+  }
+
+  function majSuivi() {
+    var ordre = ['ENVOI', 'FILE', 'TRAITEMENT'];
+    var rang = ordre.indexOf(etape);
+    Array.prototype.forEach.call(document.querySelectorAll('.etapes li'), function (li) {
+      var r = ordre.indexOf(li.getAttribute('data-etape'));
+      li.setAttribute('data-etat', r < rang ? 'fait' : r === rang ? 'courant' : 'a-venir');
+    });
+    var barre = $('barre');
+    if (etape === 'ENVOI' && progres != null) { barre.hidden = false; barre.value = progres; }
+    else if (etape === 'ENVOI') { barre.hidden = false; barre.removeAttribute('value'); }
+    else barre.hidden = true;
+    var texte = etape === 'ENVOI' ? M().envoi(progres)
+              : etape === 'FILE' ? M().file(position) : M().traitement;
+    $('detail').textContent = texte + M().ecoule(T.horloge((Date.now() - t0) / 1000));
+  }
+
+  // --- Erreurs ----------------------------------------------------------
+
+  function montrerErreur(code, detail) {
+    derniereErreur = [code, detail];
+    var m = code === 'ANNULE' ? M().annule : M().err[code];
+    if (typeof m === 'function') m = m(typeof detail === 'string' ? echapper(detail)
+                                       : detail && detail.message ? { status: detail.status, message: echapper(detail.message) }
+                                       : detail);
+    $('erreur').innerHTML = '<p>' + m + '</p>';
+    $('erreur').hidden = false;
+  }
+
+  function cacherErreur() { derniereErreur = null; $('erreur').hidden = true; }
+
+  // --- Import d'un résultat existant ------------------------------------
+
+  function importer(f) {
+    cacherErreur();
+    var lecteur = new FileReader();
+    lecteur.onload = function () {
+      if (!audio) baseNom = f.name.replace(/\.[^.]+$/, '') || 'transcription';
+      afficher(String(lecteur.result), false);
+    };
+    lecteur.onerror = function () { montrerErreur('LECTURE'); };
+    lecteur.readAsText(f);
+  }
+
+  // --- Affichage du résultat --------------------------------------------
+
+  function afficher(texte, depuisService) {
+    brut = texte;
+    doc = T.normaliser(texte);
+    noms = {};
+    if (!doc.segments.length && doc.format !== 'inconnu') {
+      montrerErreur(depuisService ? 'VIDE' : 'LECTURE');
+      return;
+    }
+    $('resultat').hidden = false;
+    $('inconnu').hidden = doc.format !== 'inconnu';
+    $('brut').hidden = doc.format !== 'inconnu';
+    if (doc.format === 'inconnu') $('brut').textContent = texte.slice(0, 20000);
+    brancherLecteur();
+    dessiner();
+    var reduit = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    $('resultat-h2').focus({ preventScroll: true });
+    $('resultat').scrollIntoView({ behavior: reduit ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  function brancherLecteur() {
+    var lecteur = $('audio');
+    var avec = !!(audio && urlAudio && doc && doc.horodate);
+    $('lecteur').hidden = !(audio && urlAudio);
+    if (audio && urlAudio && lecteur.getAttribute('src') !== urlAudio) lecteur.src = urlAudio;
+    $('texte').classList.toggle('avec-audio', avec);
+  }
+
+  function nom(l) {
+    if (noms[l]) return noms[l];
+    return M().locuteur(doc.locuteurs.indexOf(l) + 1);
+  }
+
+  function couleur(l) {
+    var i = doc.locuteurs.indexOf(l);
+    return i < 0 ? null : 'var(--spk-' + (i % 6 + 1) + ')';
+  }
+
+  function el(tag, classe) {
+    var e = document.createElement(tag);
+    if (classe) e.className = classe;
+    return e;
+  }
+
+  function dessiner() {
+    if (!doc) return;
+    var tours = T.tours(doc);
+
+    // Résumé et légende des voix, avec le temps de parole de chacune.
+    var parole = {}, repliques = {};
+    tours.forEach(function (t) {
+      repliques[t.locuteur] = (repliques[t.locuteur] || 0) + 1;
+      t.indices.forEach(function (i) {
+        var s = doc.segments[i];
+        if (s.debut != null && s.fin != null) parole[t.locuteur] = (parole[t.locuteur] || 0) + Math.max(0, s.fin - s.debut);
+      });
+    });
+    var derniere = doc.segments[doc.segments.length - 1];
+    var duree = dureeAudio || (derniere && (derniere.fin || derniere.debut)) || 0;
+    $('resume').textContent = doc.format === 'inconnu' ? '' :
+      M().resume(doc.locuteurs.length, M().repliques(tours.length), duree ? T.horloge(duree) : '');
+
+    var legende = document.createDocumentFragment();
+    doc.locuteurs.forEach(function (l, i) {
+      var carte = el('div', 'spk');
+      carte.style.setProperty('--c', couleur(l));
+      var champ = el('input');
+      champ.type = 'text';
+      champ.value = nom(l);
+      champ.setAttribute('aria-label', M().renommer(i + 1));
+      champ.setAttribute('data-spk', l);
+      champ.maxLength = 60;
+      champ.addEventListener('input', function () {
+        noms[l] = champ.value.trim() || null;
+        Array.prototype.forEach.call(document.querySelectorAll('.qui'), function (q) {
+          if (q.getAttribute('data-spk') === l) q.textContent = nom(l);
+        });
+      });
+      var compte = el('span', 'compte');
+      compte.textContent = M().repliques(repliques[l] || 0) + (parole[l] ? ' · ' + T.horloge(parole[l]) : '');
+      carte.appendChild(champ);
+      carte.appendChild(compte);
+      legende.appendChild(carte);
+    });
+    $('locuteurs').replaceChildren(legende);
+    $('locuteurs').hidden = !doc.locuteurs.length;
+
+    var texte = document.createDocumentFragment();
+    tours.forEach(function (t) {
+      var div = el('div', 'tour');
+      if (t.locuteur) div.style.setProperty('--c', couleur(t.locuteur));
+      var tete = el('div', 'tour-tete');
+      if (doc.horodate && t.debut != null) {
+        var b = el('button', 'ts');
+        b.type = 'button';
+        b.textContent = T.horloge(t.debut);
+        b.setAttribute('data-t', t.debut);
+        tete.appendChild(b);
+      }
+      if (t.locuteur) {
+        var q = el('span', 'qui');
+        q.setAttribute('data-spk', t.locuteur);
+        q.textContent = nom(t.locuteur);
+        tete.appendChild(q);
+      }
+      if (tete.childNodes.length) div.appendChild(tete);
+      var p = el('p', 'tour-texte');
+      t.indices.forEach(function (i, k) {
+        if (k) p.appendChild(document.createTextNode(' '));
+        var s = el('span', 'seg');
+        s.setAttribute('data-i', i);
+        s.textContent = doc.segments[i].texte;
+        p.appendChild(s);
+      });
+      div.appendChild(p);
+      texte.appendChild(div);
+    });
+    $('texte').replaceChildren(texte);
+    actif = -1;
+
+    var horodate = doc.horodate;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-export]'), function (b) {
+      var f = b.getAttribute('data-export');
+      b.hidden = doc.format === 'inconnu' ? f !== 'brut'
+               : (f === 'srt' || f === 'vtt') ? !horodate : false;
+    });
+  }
+
+  // --- Lecture synchronisée ---------------------------------------------
+
+  var actif = -1;
+
+  function aller(t) {
+    var lecteur = $('audio');
+    if ($('lecteur').hidden || t == null) return;
+    lecteur.currentTime = Math.max(0, t - 0.15);
+    var p = lecteur.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+
+  $('texte').addEventListener('click', function (e) {
+    var ts = e.target.closest('.ts');
+    if (ts) { aller(parseFloat(ts.getAttribute('data-t'))); return; }
+    var seg = e.target.closest('.seg');
+    if (seg && $('texte').classList.contains('avec-audio') && !window.getSelection().toString()) {
+      aller(doc.segments[+seg.getAttribute('data-i')].debut);
+    }
+  });
+
+  $('audio').addEventListener('timeupdate', function () {
+    if (!doc || !doc.horodate) return;
+    var t = this.currentTime, trouve = -1;
+    for (var i = 0; i < doc.segments.length; i++) {
+      var s = doc.segments[i];
+      if (s.debut == null || s.debut > t) continue;
+      var suivant = doc.segments[i + 1];
+      var fin = s.fin != null ? s.fin : (suivant && suivant.debut != null ? suivant.debut : Infinity);
+      if (t < fin) { trouve = i; break; }
+    }
+    if (trouve === actif) return;
+    var ancien = actif >= 0 && document.querySelector('.seg[data-i="' + actif + '"]');
+    if (ancien) ancien.classList.remove('on');
+    actif = trouve;
+    var nouveau = trouve >= 0 && document.querySelector('.seg[data-i="' + trouve + '"]');
+    if (nouveau) nouveau.classList.add('on');
+  });
+
+  // --- Exports ----------------------------------------------------------
+
+  function telecharger(contenu, nomFichier, type) {
+    var url = URL.createObjectURL(new Blob([contenu], { type: type + ';charset=utf-8' }));
+    var a = el('a');
+    a.href = url; a.download = nomFichier;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+  }
+
+  $('exports').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-export]');
+    if (!b || !doc) return;
+    var f = b.getAttribute('data-export');
+    if (f === 'copier') {
+      var texte = T.versTexte(doc, nom);
+      var fait = function () {
+        var avant = b.innerHTML;
+        b.textContent = M().copie;
+        setTimeout(function () { b.innerHTML = avant; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(texte).then(fait, function () {});
+      return;
+    }
+    if (f === 'txt') telecharger(T.versTexte(doc, nom), baseNom + '.txt', 'text/plain');
+    if (f === 'srt') telecharger(T.versSrt(doc, nom), baseNom + '.srt', 'application/x-subrip');
+    if (f === 'vtt') telecharger(T.versVtt(doc, nom), baseNom + '.vtt', 'text/vtt');
+    if (f === 'json') telecharger(T.versJson(doc, nom, audio ? audio.name : null), baseNom + '.json', 'application/json');
+    if (f === 'brut') {
+      var json = /^\s*[[{]/.test(brut);
+      telecharger(brut, baseNom + '.luxasr' + (json ? '.json' : '.txt'), json ? 'application/json' : 'text/plain');
+    }
+  });
+
+  // --- Câblage ----------------------------------------------------------
+
+  $('f-audio').addEventListener('change', function () { choisirAudio(this.files[0]); this.value = ''; });
+  $('f-resultat').addEventListener('change', function () { if (this.files[0]) importer(this.files[0]); this.value = ''; });
+  $('opt-accord').addEventListener('change', majBouton);
+  $('go').addEventListener('click', lancer);
+  $('annuler').addEventListener('click', annuler);
+
+  var zone = $('drop');
+  ['dragenter', 'dragover'].forEach(function (n) {
+    zone.addEventListener(n, function (e) { e.preventDefault(); if (!occupe()) zone.classList.add('over'); });
+  });
+  ['dragleave', 'drop'].forEach(function (n) {
+    zone.addEventListener(n, function () { zone.classList.remove('over'); });
+  });
+  zone.addEventListener('drop', function (e) {
+    e.preventDefault();
+    if (!occupe() && e.dataTransfer && e.dataTransfer.files[0]) choisirAudio(e.dataTransfer.files[0]);
+  });
+
+  window.addEventListener('beforeunload', function (e) {
+    if (occupe()) { e.preventDefault(); e.returnValue = ''; }
+  });
+
+  // Un échec CORS récent dans ce navigateur (moins de sept jours) : on le
+  // signale avant le prochain essai, pour ne pas faire travailler le service
+  // à vide sans prévenir.
+  try {
+    var vu = +localStorage.getItem(CLE_CORS);
+    if (vu && Date.now() - vu < 7 * 86400000) $('note-cors').hidden = false;
+  } catch (e) {}
+
+  document.addEventListener('labs-langue', function () {
+    majFiche();
+    if (tache) majSuivi();
+    if (derniereErreur) montrerErreur(derniereErreur[0], derniereErreur[1]);
+    if (doc) dessiner();
+  });
+})();
+</script>
+
+</body>
+</html>
