@@ -1,6 +1,6 @@
 # Essai réel de transcription diarisée, 2026-10-29
 
-Deuxième et dernier travail soumis ce jour-là. Le premier était la sonde CORS (`sonde-cors.txt`).
+Deuxième travail soumis ce jour-là ; le premier était la sonde CORS (`sonde-cors.txt`). Un troisième, avec `num_speakers=2`, est décrit à la fin.
 
 ## Le fichier
 
@@ -104,3 +104,84 @@ Un seul artefact : à 87,4 s, « Wéi ginn. Wéi ginn. » apparaît deux fois, a
 - Le normaliseur de `docs/assets/luxasr-transcription.js` lit ce résultat sans erreur : `format: "json"`, `horodate: true`, `diarise: true`, 1 segment. Les 17 tests synthétiques passent toujours. Le schéma réel est l'un des cas qu'il prévoyait (tableau à la racine, locuteur par mot).
 - Avec un seul locuteur, la page affichera un bloc de 2 min. **L'export SRT donne un seul sous-titre de 2 min** (`00:00:00,031 --> 00:01:59,978`, 2 249 caractères) : il faudrait le découper avec les temps des mots, qui sont là.
 - À essayer, avec l'accord du service, avant de promettre « qui a dit quoi » : refaire ce même extrait avec `num_speakers=2`. Et prévoir dans la page un message quand une seule voix est détectée.
+
+## Avec num_speakers=2
+
+Troisième travail, demandé ensuite par le propriétaire : le **même fichier** (sha256 `d8297786…7dcd`), relancé avec le script de la branche mis à jour (`240a2226`) :
+
+```
+python3 .claude/skills/transcription/luxasr_transcrire.py pattcast20_182-302.mp3 \
+  -o .claude/skills/transcription/releves/2026-10-29/resultat-2voix.json --locuteurs 2
+```
+
+Paramètres envoyés : `language=lb`, `diarization=Enabled`, `outfmt=json`, `num_speakers=2`. Le serveur a accepté le paramètre, et le résultat change : il en tient donc compte, même s'il n'est pas documenté pour l'API.
+
+### Temps
+
+```
+envoi de pattcast20_182-302.mp3 (3.8 Mo, audio/mpeg)
+travail 8065afda-8272-475a-9ead-98f1e2c8a234
+[   2.2 s] processing eta_seconds=10
+[   7.9 s] completed
+écrit : .claude/skills/transcription/releves/2026-10-29/resultat-2voix.json
+temps total 9.96 s
+```
+
+- Soumis à 08:17:44 UTC. Pas de file d'attente.
+- Fini en 7,9 s au plus (6,6 s sans `num_speakers`). L'estimation du serveur disait 10 s.
+- 10,0 s en tout. `resultat-2voix.json` fait 76 735 octets, même schéma que `resultat.json`.
+
+### Segments
+
+**11 segments** au lieu de 1, et 414 mots : 317 en `SPEAKER_00`, 97 en `SPEAKER_01`. Aucun segment ne mélange deux locuteurs dans ses mots. Le locuteur suit le rôle : `SPEAKER_01` pose les questions, `SPEAKER_00` répond.
+
+| # | Locuteur | Début, fin (s) | Début du texte |
+|---|---|---|---|
+| 0 | 01 | 0,03 à 0,98 | « Fréier oder spéider. » |
+| 1 | 00 | 0,98 à 1,03 | « 3. » (probabilité 0,06) |
+| 2 | 01 | 1,03 à 5,03 | « Okay. Gutt, wéi erkennen ech dann, … ? » |
+| 3 | 00 | 5,03 à 5,72 | « Awer iwwerhuelen. » |
+| 4 | 00 | 5,73 à 29,97 | « Ne, de Klassiker, … » |
+| 5 | 01 | 29,97 à 37,04 | « Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat ass. » |
+| 6 | 00 | 37,04 à 48,97 | « Dat ass sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, … » |
+| 7 | 01 | 49,65 à 55,52 | « Soll ech dann direkt reagéieren … ? » |
+| 8 | 00 | 55,52 à 76,96 | « Virbeugen ass dann u sech … » |
+| 9 | 01 | 78,18 à 89,03 | « ofbaut. Wéi ass dat dann beim Déierendokter? … Also mir schwätzen elo mol reng vu medezinneschen hier, … déi et ginn. Dat hänkt elo vu. » |
+| 10 | 00 | 89,03 à 119,98 | « Déierendokter of, de klasseschen Déierendokter, … » |
+
+### Changements de locuteur : 9 trouvés, comparés au tableau
+
+| Attendu (tableau plus haut) | Trouvé | Verdict |
+|---|---|---|
+| vers 5,1 à 5,7 : question, puis réponse | 5,03 | trouvé |
+| 29,8 : aparté de l'animatrice | 29,97 | trouvé (+0,2 s) |
+| vers 33,5 : retour à l'invitée (incertain) | 37,04 | trouvé, ailleurs : LuxASR laisse « Mee d'Strecken … opstinn » à l'animatrice et donne « Dat ass sécher, dat ass ganz gutt » à l'invitée. À la lecture, c'est plus cohérent que mon tableau. La vraie frontière est sans doute à 36,6 s (« Nee, dat ass sécher » est de l'invitée), donc environ 0,4 s de retard. |
+| 49,7 : question | 49,65 | trouvé |
+| 55,2 : réponse | 55,52 | trouvé (+0,3 s) |
+| 78,6 : question | 78,18 | trouvé (−0,4 s : le dernier mot de l'invitée, « ofbaut. », passe à l'animatrice) |
+| 82,1 : réponse | 89,03 | trouvé, plus tard : LuxASR donne à l'animatrice « Also mir schwätzen elo mol reng vu medezineschen hier, … ». C'est vraisemblablement elle qui précise sa question, et mon tableau se trompait. L'invitée commence à « Dat hänkt elo vum Déierendokter of » (88,2 s), et la coupure tombe au milieu de cette phrase (environ 0,8 s de retard). |
+| (aucun) | 0,98 et 1,03 | **faux** : un segment de 50 ms, « 3. » (probabilité 0,06), à la place du « Jo. » du premier essai |
+
+**Bilan** :
+- Les 6 changements sûrs du tableau, plus l'incertain, sont trouvés. Les écarts vont de −0,4 à +0,8 s, et là où LuxASR s'écarte de mon tableau, c'est vraisemblablement mon tableau qui avait tort.
+- Il y a 2 faux changements, tous les deux dans la première seconde.
+- Sans `num_speakers` : 0 changement trouvé. Avec `num_speakers=2` : 7 justes et 2 faux.
+- Je n'ai toujours pas écouté l'extrait : ces verdicts reposent sur la cohérence du texte.
+
+### Le texte, lui, s'est dégradé
+
+Même audio, mais un texte différent. 414 mots au lieu de 375, et une probabilité moyenne de 0,913 au lieu de 0,937.
+
+- **Une boucle de répétition** de 28,3 à 28,9 s : « deen vun » 18 fois de suite (« dat ass esou eent vun deen vun deen vun … v fir Arthros »). Le premier essai donnait « Dat ass esou eent vun deen typeschen Unzeeche fir Arthroos ».
+- « Arthroos » devient « dach d'Ros » (2,1 à 4,6 s).
+- « Jo. » devient « 3. ».
+- Un « Awer iwwerhuelen. » apparaît à 5,0 s (probabilité 0,31 à 0,49).
+- À l'inverse, le faux mot du premier essai (« Wéi ginn. Wéi ginn. » à 87,4 s) a disparu.
+
+C'est une hypothèse, non vérifiable d'ici : le service transcrirait l'audio par tranches de locuteur, et des tranches plus courtes donnent moins de contexte à Whisper.
+
+### Pour la page (aucun fichier modifié)
+
+- Le normaliseur mis à jour sur la branche lit `resultat-2voix.json` : 40 segments (les segments longs sont redécoupés), 10 tours de parole, `diarise: true`. Ses tests passent : 20 sur 20.
+- `num_speakers` est ce qui rend la séparation exploitable sur ce cas. Proposer le nombre de voix dans le formulaire est justifié, et le laisser sur AUTO revient au premier essai.
+- La boucle « deen vun » × 18 passera telle quelle dans la transcription affichée, puisque la page ne touche jamais au texte reconnu.
