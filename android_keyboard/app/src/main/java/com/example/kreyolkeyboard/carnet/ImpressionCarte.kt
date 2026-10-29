@@ -211,7 +211,8 @@ object ImpressionCarte {
         val hauteurCarte = px(HAUTEUR_CARTE_MM)
         val largeurCarte = (hauteurCarte * Ornement.LARGEUR / Ornement.HAUTEUR).roundToInt()
 
-        val carte = CarteCarnet.complete(context, contenu, impression = true) as? CarteOrnee ?: return
+        // Les cartons du théâtre de papier, figés : la même carte que dans l'appli.
+        val carte = (CarteCarnet.complete(context, contenu, impression = true) as? CarteOrnee)?.enTheatre() ?: return
         carte.attendreSaMatiere {
             try {
                 val image = dessiner(carte, contenu.rarete, largeur, hauteur)

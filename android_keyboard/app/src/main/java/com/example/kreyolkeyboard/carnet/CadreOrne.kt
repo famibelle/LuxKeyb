@@ -4339,6 +4339,18 @@ class CarteOrnee(
      * avec l'inclinaison ([Motif.profondeur]). Rien sur une vignette, rien si
      * le téléphone demande des animations réduites.
      */
+    /**
+     * Pour une image figée, la carte imprimée ou l'image partagée : le lieu en
+     * cartons de théâtre de papier, comme sur la carte ouverte, mais immobile,
+     * sans ambiance ni inclinaison (voir [Paysages.plans]). À appeler avant la
+     * mise en page. Une carte de fête garde son paysage à plat, comme dans le
+     * lecteur.
+     */
+    fun enTheatre(): CarteOrnee {
+        motif.profondeur = true
+        return this
+    }
+
     fun avecAmbiance(): CarteOrnee {
         if (vignette || Pochette.animationsReduites(context)) return this
         motif.profondeur = true
@@ -4694,6 +4706,9 @@ private const val GLISSEMENT_NUAGE = 0.031f
 /** Le haut du nuage, en unités du paysage : dans le ciel, au-dessus des crêtes. */
 private const val HAUTEUR_NUAGE = 6f
 
+/** Où est le nuage sur une image figée : à gauche du milieu, loin de la lune et sous l'arche du cadre. */
+private const val PHASE_FIGEE = 0.36f
+
 class Motif(
     mot: String,
     rarete: Rarete,
@@ -4916,7 +4931,9 @@ class Motif(
     private fun peindreNuage(c: Canvas, l: Int, h: Int, regardX: Float, regardY: Float) {
         val b = nuage?.takeIf { !it.isRecycled } ?: Paysages.nuage(heure, l, h)?.also { nuage = it } ?: return
         val k = cadrage[0]
-        val phase = (android.os.SystemClock.uptimeMillis() % PERIODE_NUAGE) / PERIODE_NUAGE.toFloat()
+        // Une image figée (carte imprimée, partage) le pose à une place choisie.
+        val phase = if (!c.isHardwareAccelerated) PHASE_FIGEE
+            else (android.os.SystemClock.uptimeMillis() % PERIODE_NUAGE) / PERIODE_NUAGE.toFloat()
         val xBoite = -Paysages.NUAGE_LARGEUR + phase * (Paysages.LARGEUR + Paysages.NUAGE_LARGEUR)
         val x = visible.left + cadrage[1] + xBoite * k + GLISSEMENT_NUAGE * visible.width() * regardX
         val y = visible.top + cadrage[2] + HAUTEUR_NUAGE * k + GLISSEMENT_NUAGE * visible.height() * regardY
