@@ -51,6 +51,15 @@ code{font-family:var(--mono);font-size:13px;background:var(--stripe);padding:1px
 :root[data-theme="light"]{--spk-1:#0E6E76;--spk-2:#C94A3B;--spk-3:#94600F;--spk-4:#5B4FA8;--spk-5:#2E7D32;--spk-6:#A23B72;}
 
 
+/* L'application Réunion : un GIF du parcours, puis une galerie d'écrans qui
+   passe sur plusieurs lignes au téléphone. */
+.app-gif{margin:16px auto;max-width:320px;text-align:center;}
+.app-gif img,.app-galerie img{width:100%;height:auto;display:block;border:1px solid var(--line);
+  border-radius:10px;background:var(--card);}
+.app-gif figcaption,.app-galerie figcaption{margin-top:6px;font-size:12.5px;color:var(--ink-soft);line-height:1.35;text-align:left;}
+.app-galerie{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;margin:16px 0;}
+.app-galerie figure{margin:0;}
+
 .thanks{border:1px solid var(--line);border-left:4px solid var(--sea);
   background:var(--card);border-radius:10px;padding:16px 18px;}
 .thanks p:last-child{margin-bottom:0;}
@@ -506,6 +515,74 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   </ul>
 </section>
 
+<section id="application">
+  <h2 data-i18n="app-h2">En test : l'application Lëtzebuergesch Réunion 📱</h2>
+  <p data-i18n="app-p1">
+    Pour les réunions en luxembourgeois, nous essayons une application Android
+    qui reprend cette page et va un pas plus loin. Elle s'adresse à la personne
+    qui assiste à la réunion et doit en faire le compte rendu, par exemple une
+    secrétaire de direction.
+  </p>
+  <ul class="facts">
+    <li data-i18n="app-1"><strong>Pendant la réunion</strong>, la traduction en français s'affiche en grand, le luxembourgeois dessous. Sur tablette, les deux sont côte à côte.</li>
+    <li data-i18n="app-2"><strong>À la fin, un seul bouton.</strong> L'enregistrement complet part chez LuxASR, qui sépare les voix, puis le compte rendu se prépare : résumé, points discutés, décisions, actions à mener, et les passages à vérifier, avec leur minutage.</li>
+    <li data-i18n="app-3"><strong>Ensuite, on relit, on corrige et on envoie</strong> le compte rendu par e-mail, sans quitter l'application.</li>
+    <li data-i18n="app-4"><strong>Un enregistrement déjà fait</strong>, audio ou vidéo, se transcrit de la même façon.</li>
+  </ul>
+
+  <figure class="app-gif">
+    <img src="Screenshots/reunion_parcours.gif" width="432" height="1020" loading="lazy"
+         alt="Animation en cinq écrans de l'application Lëtzebuergesch Réunion : 1. l'accueil, avec « Réunion en direct » et « Un enregistrement » ; 2. le fichier choisi, son titre et trois participants ; 3. le suivi, « Transcription de l'enregistrement, encore environ 1 min » ; 4. la transcription, chaque réplique précédée de son minutage et de sa voix (Voix 1, Voix 2, Voix 3) ; 5. le résumé du compte rendu"
+         data-i18n-alt="app-gif-alt">
+    <figcaption data-i18n="app-gif-cap">Le parcours d'un enregistrement, du fichier au compte rendu.</figcaption>
+  </figure>
+
+  <div class="app-galerie">
+    <figure>
+      <img src="Screenshots/reunion_accueil.png" width="432" height="970" loading="lazy"
+           alt="Accueil : deux cartes, « Réunion en direct » avec le bouton « Commencer une réunion », et « Un enregistrement » avec « Choisir un fichier »" data-i18n-alt="app-img1-alt">
+      <figcaption data-i18n="app-img1">Deux façons de commencer.</figcaption>
+    </figure>
+    <figure>
+      <img src="Screenshots/reunion_direct.png" width="432" height="970" loading="lazy"
+           alt="Écran du direct : « J'écoute et je traduis », le chronomètre, les boutons A− et A+ pour la taille du texte, et en bas le bouton rouge « Terminer la réunion »" data-i18n-alt="app-img2-alt">
+      <figcaption data-i18n="app-img2">Le direct : le texte grossit ou rapetisse d'un geste.</figcaption>
+    </figure>
+    <figure>
+      <img src="Screenshots/reunion_suivi.png" width="432" height="970" loading="lazy"
+           alt="Suivi : « Fichier reçu » coché, « Transcription complète (qui a dit quoi) » en cours, encore environ une minute" data-i18n-alt="app-img3-alt">
+      <figcaption data-i18n="app-img3">On suit chaque étape, et on peut fermer l'application en attendant.</figcaption>
+    </figure>
+    <figure>
+      <img src="Screenshots/reunion_voix.png" width="432" height="970" loading="lazy"
+           alt="Transcription en luxembourgeois, chaque réplique précédée de son minutage et de sa voix : Voix 1, Voix 3, Voix 2" data-i18n-alt="app-img4-alt">
+      <figcaption data-i18n="app-img4">Qui a dit quoi, et à quel moment.</figcaption>
+    </figure>
+    <figure>
+      <img src="Screenshots/reunion_compte_rendu.png" width="432" height="970" loading="lazy"
+           alt="Compte rendu en français, sections RÉSUMÉ puis POINTS DISCUTÉS, en texte prêt à coller dans un e-mail" data-i18n-alt="app-img5-alt">
+      <figcaption data-i18n="app-img5">Le compte rendu, à relire et corriger avant de l'envoyer.</figcaption>
+    </figure>
+  </div>
+
+  <p class="muted" data-i18n="app-essai">
+    Ces images viennent d'un essai sur émulateur, le 29 octobre 2026, avec
+    l'épisode 20 du podcast « Pattcast » de RTL Radio Lëtzebuerg
+    (13 minutes, trois voix, © CLT-UFA) : la transcription est revenue en une
+    minute environ, les trois voix séparées. Le compte rendu montré a été rédigé
+    à la main, en suivant les consignes que l'application donne au service de
+    rédaction. La traduction en direct reste à essayer sur un vrai téléphone.
+  </p>
+  <p class="muted" data-i18n="app-donnees">
+    🔒 Le son part à LuxASR, à l'Université du Luxembourg ; le texte de la
+    réunion part au service qui rédige le compte rendu (Claude, d'Anthropic, ou
+    Mistral, au choix de qui installe l'application). Prévenez les participants
+    que la réunion est enregistrée, et demandez l'accord de votre employeur.
+    L'application n'est pas encore à télécharger : elle est en test.
+  </p>
+</section>
+
+
 <section>
   <details class="card tech" id="curieux">
     <summary data-i18n="tech-h3">Pour les curieux : comment ça marche</summary>
@@ -653,6 +730,26 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'tech-p2': 'The result is turned into a list of sentences (start, end, speaker, text), cut using each word’s timing and the size of a subtitle. Consecutive sentences from the same voice make one turn; the TXT, SRT, VTT and JSON exports are drawn from that list. The service’s raw reply stays downloadable as is.',
     'tech-direct': '<strong>Live</strong>, the page talks to the service like the keyboard’s dictation: a WebSocket connection, the sound as 16-bit PCM at 16 kHz as it is captured, and in return the confirmed text and the still-unstable end of the sentence. So that a long session does not weigh on the service, the connection is renewed about every two minutes, during a pause, without cutting the microphone: what is captured during the switch is sent right after. Paragraph timestamps are approximate, to within a second. The translation is requested from the service on the same connection (<code>translation_enabled</code>, target <code>fr</code>); it comes back sentence by sentence and is placed under the paragraph of the translated sentence.',
     'tech-p3': '<strong>Why the upload may fail straight away.</strong> A web page can only read another site’s reply if that site allows it, through a “CORS” header. As observed in September and again on 29 October 2026, the service did not yet set it on the acknowledgement of an upload. So the page first checks with half a second of silence, so as not to make the service work on your file in vain. If that is still the case, the page tells you so, without retrying in vain, and suggests transcribing on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> and opening the result here.',
+    'app-h2': 'In testing: the Lëtzebuergesch Réunion app 📱',
+    'app-p1': 'For meetings held in Luxembourgish, we are trying out an Android app that builds on this page and goes one step further. It is meant for the person who attends the meeting and has to write it up, an executive assistant for instance.',
+    'app-1': '<strong>During the meeting</strong>, the French translation is shown in large type, with the Luxembourgish below it. On a tablet, the two sit side by side.',
+    'app-2': '<strong>At the end, a single button.</strong> The full recording goes to LuxASR, which separates the voices, then the minutes are prepared: summary, points discussed, decisions, actions, and the passages to check, with their timing.',
+    'app-3': '<strong>Then you read, correct and send</strong> the minutes by e-mail, without leaving the app.',
+    'app-4': '<strong>An existing recording</strong>, audio or video, is transcribed the same way.',
+    'app-gif-cap': 'A recording’s journey, from the file to the minutes.',
+    'app-gif-alt': 'Five-screen animation of the Lëtzebuergesch Réunion app: 1. the home screen, with “Réunion en direct” (live meeting) and “Un enregistrement” (a recording); 2. the chosen file, its title and three participants; 3. progress, “transcription, about 1 min left”; 4. the transcript, each line preceded by its timing and its voice (Voix 1, Voix 2, Voix 3); 5. the summary of the minutes',
+    'app-img1': 'Two ways to start.',
+    'app-img1-alt': 'Home screen: two cards, “Réunion en direct” with the “Commencer une réunion” button, and “Un enregistrement” with “Choisir un fichier”',
+    'app-img2': 'Live: make the text bigger or smaller with one tap.',
+    'app-img2-alt': 'Live screen: “J’écoute et je traduis” (listening and translating), the timer, the A− and A+ text-size buttons, and the red “Terminer la réunion” button at the bottom',
+    'app-img3': 'Each step is shown, and you can close the app while you wait.',
+    'app-img3-alt': 'Progress: “Fichier reçu” ticked, full transcription under way, about one minute left',
+    'app-img4': 'Who said what, and when.',
+    'app-img4-alt': 'Luxembourgish transcript, each line preceded by its timing and its voice: Voix 1, Voix 3, Voix 2',
+    'app-img5': 'The minutes, to read and correct before sending.',
+    'app-img5-alt': 'Minutes in French, with SUMMARY then POINTS DISCUSSED sections, as plain text ready to paste into an e-mail',
+    'app-essai': 'These images come from a test on an emulator on 29 October 2026, with episode 20 of RTL Radio Lëtzebuerg’s “Pattcast” podcast (13 minutes, three voices, © CLT-UFA): the transcript came back in about a minute, with the three voices separated. The minutes shown were written by hand, following the instructions the app gives to the writing service. Live translation is still to be tried on a real phone.',
+    'app-donnees': '🔒 The sound goes to LuxASR, at the University of Luxembourg; the text of the meeting goes to the service that writes the minutes (Claude, by Anthropic, or Mistral, as chosen by whoever sets up the app). Tell participants the meeting is being recorded, and ask your employer’s permission. The app cannot be downloaded yet: it is in testing.',
     'feedback-h2': 'Tell us how it goes',
     'feedback-p': 'Labs is for trying things before deciding. The most useful thing to send us: <strong>the kind of recording, its length, the number of voices, and what was separated well or badly</strong>.',
     'feedback-form': '💬 Feedback form',
@@ -671,6 +768,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     noeuds('data-i18n').forEach(function (el) { FR[el.getAttribute('data-i18n')] = el.innerHTML; });
     noeuds('data-i18n-title').forEach(function (el) { FR['title:' + el.getAttribute('data-i18n-title')] = el.getAttribute('title'); });
     noeuds('data-i18n-aria').forEach(function (el) { FR['aria:' + el.getAttribute('data-i18n-aria')] = el.getAttribute('aria-label'); });
+    noeuds('data-i18n-alt').forEach(function (el) { FR['alt:' + el.getAttribute('data-i18n-alt')] = el.getAttribute('alt'); });
     var meta = document.querySelector('meta[data-i18n-content]');
     if (meta) FR['meta-desc'] = meta.getAttribute('content');
     FR['title'] = document.title;
@@ -692,6 +790,10 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     noeuds('data-i18n-aria').forEach(function (el) {
       var k = el.getAttribute('data-i18n-aria');
       el.setAttribute('aria-label', (en ? EN[k] : FR['aria:' + k]) || FR['aria:' + k]);
+    });
+    noeuds('data-i18n-alt').forEach(function (el) {
+      var k = el.getAttribute('data-i18n-alt');
+      el.setAttribute('alt', (en ? EN[k] : FR['alt:' + k]) || FR['alt:' + k]);
     });
     document.documentElement.lang = langue;
     courant = langue;
