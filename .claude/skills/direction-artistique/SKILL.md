@@ -47,7 +47,7 @@ superposés, qui se décalent quand on penche le téléphone.
 
 ### Où on en est
 
-La **mécanique** existe déjà :
+La **mécanique** :
 
 - le lieu est rendu en **trois calques** séparés : le lointain (ciel et crête),
   le milieu (collines, bâti), le premier plan ; le dessin du mot passe devant ;
@@ -59,22 +59,29 @@ La **mécanique** existe déjà :
 - une carte gagnée un **jour de fête** garde un paysage à plat (ses lumières
   éclairent le paysage entier et ne se répartissent pas en calques).
 
-Le **rendu**, lui, est encore celui d'un paysage peint avec du relief, pas
-celui d'un théâtre en carton. Ce qui manque :
+**Le rendu en carton, fait le 2026-10-29** (branche `feat/theatre-papier`,
+`Paysages.rendrePlans`), vu sur l'émulateur, pas encore jugé en main :
 
-1. **L'ombre portée entre les plans.** Chaque carton projette une ombre courte
-   et douce sur celui de derrière. C'est le signal n° 1 du papier découpé : sans
-   elle, les couches ne se touchent pas.
-2. **La tranche et la découpe.** Une silhouette nette, légèrement irrégulière,
-   éventuellement un liseré clair qui figure l'épaisseur du carton.
-3. **La netteté partout.** Au théâtre de papier, tout est net : la profondeur
-   vient de l'empilement, pas du flou. Le flou du lointain (logique d'appareil
-   photo) est à remplacer par une **désaturation et un éclaircissement** du
-   lointain (logique de perspective atmosphérique, compatible avec le carton).
-4. **L'animation propre à chaque plan.** Aujourd'hui, les plans ne bougent
-   qu'avec le geste. Un carton peut aussi vivre seul : un nuage qui passe, un
-   drapeau qui flotte, une barque sur la Sûre, une rangée de vagues sur la
-   Moselle.
+1. **L'ombre entre les plans.** Chaque carton porte une ombre courte et douce
+   sur tous ceux de derrière (plus légère sur le premier calque, la toile de
+   fond). La lumière est celle de la **rampe**, au bas de la scène : les ombres
+   montent au-dessus des crêtes, là où on les voit. Une lumière d'en haut les
+   cacherait derrière le carton même qui les porte.
+2. **La tranche.** Un liseré clair au bord haut de chaque carton, plus discret
+   sur le lointain.
+3. **Plus de flou.** Le lointain s'efface vers la couleur de l'horizon (30 %),
+   le milieu à peine (10 %).
+4. **Les coulisses des rares** : un quatrième carton, deux arbres en silhouette
+   sur les côtés, sous l'arche du cadre, qui glissent à peine (0,3 %).
+5. **Le nuage des très rares** : un nuage de carton qui traverse le ciel en
+   75 s, entre le lointain et le milieu.
+
+Tout est peint une fois au rendu des calques ; seul le nuage se place à chaque
+trame. La vignette de la grille garde son rendu à plat. **Reste à faire** :
+mesurer le coût du rendu sur le Galaxy A21s en build release (budgets dans
+`carnet/CLAUDE.md`), le jugement en main, d'autres éléments qui vivent seuls
+selon le lieu (drapeau, barque sur la Sûre, vagues sur la Moselle) à la place
+du nuage générique, et le cadre en rideau de scène (§ 6).
 
 ## 3. Pourquoi cette direction
 
@@ -108,15 +115,18 @@ celui d'un théâtre en carton. Ce qui manque :
 
 ## 4. Les règles du décor
 
-1. **Trois plans au moins, chacun une silhouette.** Lointain, milieu, premier
-   plan. Un plan qui ne se lit pas en silhouette noire n'est pas un carton.
+1. **Trois plans au moins, pour toutes les cartes, chacun une silhouette.**
+   Lointain, milieu, premier plan. La profondeur ne se lit bien qu'à partir de
+   trois, et les communes sont la majorité du carnet : aucune carte n'en a
+   moins. Un plan qui ne se lit pas en silhouette noire n'est pas un carton.
 2. **Aplats, pas de modelé.** La lumière vient de l'empilement et des ombres
    entre plans, pas des dégradés à l'intérieur d'une forme. Le dégradé reste
    permis pour le ciel, qui est la toile de fond.
 3. **Le lointain s'efface par la couleur, pas par le flou** : plus clair, moins
    saturé, plus proche du ciel.
 4. **Une ombre par plan, courte, douce, toujours du même côté** : la même
-   lumière de scène sur toutes les cartes.
+   lumière de scène sur toutes les cartes, celle de la rampe, qui porte les
+   ombres vers le haut.
 5. **Le mot reste l'acteur.** Le décor ne rivalise jamais avec le dessin du
    mot : pas de détail fort ni de contraste maximal derrière lui.
 6. **Le cadre de scène reste fixe.** Seul le décor bouge ; le cadre orné est la
@@ -124,9 +134,16 @@ celui d'un théâtre en carton. Ce qui manque :
 7. **Le mouvement autonome est lent et rare.** Une seule chose bouge seule par
    décor, en boucle longue. Un décor qui s'agite fatigue et distrait du mot.
 8. **La rareté se voit à la mise en scène, pas à la physique.** Une commune
-   répond au geste comme une rare (règle de `Inclinaison.kt`). Ce qui monte avec
-   la rareté : le nombre de cartons, un élément animé, la lumière. Par exemple :
-   commune deux cartons, rare quatre cartons et un élément animé.
+   répond au geste comme une rare (règle de `Inclinaison.kt`). La mise en scène
+   suit les **quatre paliers qui donnent déjà le métal et l'heure** : ce n'est
+   pas un nouveau code à apprendre, c'est le même palier dit une fois de plus
+   (le double codage de la skill `designer-cartes`).
+
+   | Palier | Décor |
+   |---|---|
+   | Commun, peu commun | Trois cartons, rien ne bouge seul. |
+   | Rare | Quatre cartons : un premier plan en plus, les coulisses (pendrillons) sur les côtés. |
+   | Très rare | Quatre cartons et un seul élément animé (nuage, barque, vagues). |
 
 ## 5. Les points de vigilance
 
@@ -146,7 +163,21 @@ celui d'un théâtre en carton. Ce qui manque :
 - **Les cartes de fête** restent à plat : en faire des théâtres demande de
   répartir feux et lumières par calque, un chantier à part.
 
-## 6. Revue d'un décor
+## 6. L'ordre des travaux
+
+Ce qui coûte peu et se voit le plus d'abord, ce qui engage l'identité en dernier :
+
+1. **La lumière** : l'ombre entre les plans, la tranche des cartons, et le
+   lointain éclairci au lieu de flou. Peints une fois dans les calques au
+   moment du rendu (`Paysages.rendrePlans`), donc aucun coût pendant
+   l'animation, ce qui compte sur le Galaxy A21s.
+2. **Le jugement en main**, sur un vrai téléphone, sur plusieurs lieux et aux
+   quatre heures (la nuit surtout), puis les réglages.
+3. **Les coulisses des rares**, puis **l'élément animé des très rares**.
+4. **Le cadre doré en rideau et avant-scène**, en dernier, quand le décor a
+   trouvé son style, et seulement avec l'accord du propriétaire.
+
+## 7. Revue d'un décor
 
 Avant de valider un nouveau lieu ou une modification de décor :
 
