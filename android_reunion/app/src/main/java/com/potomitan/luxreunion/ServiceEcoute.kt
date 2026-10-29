@@ -15,6 +15,7 @@ import com.potomitan.luxreunion.noyau.FabriqueOkHttp
 import com.potomitan.luxreunion.noyau.Paragraphe
 import com.potomitan.luxreunion.noyau.Reunion
 import java.io.BufferedOutputStream
+import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
@@ -95,7 +96,8 @@ class ServiceEcoute : Service() {
 
         octets = r.fichierPcm.length()
         sortie = BufferedOutputStream(FileOutputStream(r.fichierPcm, true), 64 * 1024)
-        val c = Capture { pcm, niveau ->
+        val essai = if (BuildConfig.DEBUG) File(filesDir, FICHIER_TEST).takeIf { it.exists() } else null
+        val c = Capture(essai) { pcm, niveau ->
             try { sortie?.write(pcm) } catch (_: Exception) {}
             octets += pcm.size
             EtatDirect.niveau = niveau
@@ -217,6 +219,11 @@ class ServiceEcoute : Service() {
 
     companion object {
         private const val NOTIF = 1
+        /**
+         * Builds debug : si ce fichier (PCM 16 kHz mono 16 bits) est déposé dans
+         * filesDir par `adb shell run-as`, le direct le lit à la place du micro.
+         */
+        const val FICHIER_TEST = "essai-direct.pcm"
         private const val ACTION_DEMARRER = "demarrer"
         private const val ACTION_TERMINER = "terminer"
         private const val EXTRA_ID = "id"

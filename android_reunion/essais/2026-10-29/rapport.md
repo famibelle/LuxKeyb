@@ -438,3 +438,57 @@ Problèmes à ajouter à la liste du § 7 :
 20. **En mode fichier, date de l'import au lieu de la date de la réunion, et durée absente**
     (48, 49).
 21. **Le plan imposé par les consignes contient des tirets cadratins** (49).
+
+## 10. Complément : le direct, avec un fichier lu à la place du micro (même soir, 20 h 40)
+
+Le micro de l'émulateur ne transmettant rien sous WSL (§ 5), et l'injection par l'interface
+gRPC de l'émulateur (`injectAudio`) n'ayant rien donné non plus (puis fait planter
+l'émulateur), Medhi a demandé de passer directement par un MP3. J'ai donc ajouté au code une
+source de test **réservée aux builds debug** : si `files/essai-direct.pcm` (PCM 16 kHz mono
+16 bits) existe, `Capture` le lit au rythme réel, par blocs de 160 ms, à la place du micro
+(`Audio.kt`, `ServiceEcoute.FICHIER_TEST`). Tout le reste est le vrai parcours : liaison
+LuxASR, traduction, affichage, enregistrement. Fichier utilisé : 200 s de l'épisode Pattcast à
+partir de 2:58. La transcription complète avait été désactivée dans les réglages d'installation,
+pour ne pas renvoyer l'enregistrement à LuxASR à la fin.
+
+GIF : `direct_traduction.gif`.
+
+**53-direct-traduction.png** : **la traduction française s'affiche en grand, le
+luxembourgeois en italique dessous**, la fin de phrase encore incertaine en gris clair. La
+jauge de niveau bouge. Ce qui était à vérifier au § 5 est vérifié.
+
+**54-revenir-au-direct.png** : en remontant dans le texte, le bouton « ↓ Revenir au direct »
+apparaît en bas. Il marche, avec un temps de réaction de plusieurs secondes sur cet émulateur
+lent.
+
+**55-direct-A-moins.png** : A+ puis A− changent bien la taille du texte.
+
+Le passage des 2 minutes (renouvellement de la liaison) s'est fait sans coupure visible : le
+texte et la traduction ont continué.
+
+**56-direct-sans-reseau.png** : réseau coupé 30 s : « Pas de réseau · j'enregistre quand
+même », pastille rouge.
+
+**57-direct-reprise.png** : réseau revenu : la liaison repart seule, avec la ligne orange
+« Coupure de réseau : un passage manque ici. Il sera dans le compte rendu. », puis un
+nouveau paragraphe (3:24) avec « … » en attendant sa traduction.
+
+**58-traduction-reprend.png** : la traduction revient (« L'acupuncture pour les maux de tête,
+ça aide contre la douleur… »).
+
+**59-onglet-traduction.png** : après « Terminer », la réunion montre « Transcription complète :
+Faite à partir du direct : les voix n'y sont pas séparées. », puis le compte rendu bute sur le
+crédit Mistral (402). L'onglet « Traduction » reprend toute la traduction du direct, horodatée.
+
+Ce qui cloche :
+- **Tout le texte reste dans un seul paragraphe « 0:00 »** pendant plus de trois minutes :
+  le direct ne coupe pas en paragraphes sur une conversation continue. Il ne s'est coupé
+  qu'au retour du réseau. Sur une vraie réunion, la secrétaire aurait un seul bloc géant.
+- **Le paragraphe est collé au bord gauche et coupé** (53 à 58), comme au § 5.
+- La traduction (celle de LuxASR, pas de l'appli) rend « mäi Mop » (mon chien) par « ma
+  taupe ».
+
+Problèmes à ajouter à la liste du § 7 :
+
+22. **Le direct ne découpe pas les paragraphes** sur une parole continue (53 à 57) : un seul
+    bloc de plus de trois minutes. À placer parmi les plus graves pour l'usage en réunion.

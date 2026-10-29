@@ -26,13 +26,22 @@ import kotlin.math.sqrt
  * VOICE_RECOGNITION, réglée pour la reconnaissance et sans le traitement
  * agressif du mode téléphonie, tampon de quatre fois le minimum.
  */
-class Capture(private val surBloc: (pcm: ByteArray, niveau: Float) -> Unit) {
+class Capture(
+    /**
+     * Builds debug seulement : un enregistrement PCM 16 kHz mono 16 bits lu au
+     * rythme réel à la place du micro, pour essayer le direct sur un émulateur
+     * dont le micro ne transmet rien (WSL). Une fois le fichier fini, du silence.
+     */
+    private val fichierTest: File? = null,
+    private val surBloc: (pcm: ByteArray, niveau: Float) -> Unit
+) {
     @Volatile private var actif = false
     private var record: AudioRecord? = null
     private var fil: Thread? = null
 
     @SuppressLint("MissingPermission")
     fun demarrer(): Boolean {
+        fichierTest?.let { return demarrerFichier(it) }
         val min = AudioRecord.getMinBufferSize(RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT)
         if (min <= 0) return false
         val rec = try {
@@ -57,19 +66,53 @@ class Capture(private val surBloc: (pcm: ByteArray, niveau: Float) -> Unit) {
                 }
                 if (lus <= 0) { if (actif) Thread.sleep(20); continue }
                 val pcm = ByteArray(lus * 2)
-                var somme = 0.0
                 for (i in 0 until lus) {
                     val v = s[i].toInt()
                     pcm[2 * i] = (v and 0xFF).toByte()
                     pcm[2 * i + 1] = ((v shr 8) and 0xFF).toByte()
-                    val f = v / 32768.0
-                    somme += f * f
                 }
-                val rms = sqrt(somme / lus)
-                surBloc(pcm, sqrt(min(1.0, rms / NIVEAU_PLEIN)).toFloat())
+                surBloc(pcm, niveau(pcm))
             }
         }
         return true
+    }
+
+    private fun demarrerFichier(f: File): Boolean {
+        actif = true
+        fil = thread(name = "reunion-fichier-test") {
+            BufferedInputStream(FileInputStream(f)).use { entree ->
+                val debut = System.nanoTime()
+                var n = 0L
+                while (actif) {
+                    val pcm = ByteArray(BLOC * 2)
+                    var lus = 0
+                    while (lus < pcm.size) {
+                        val k = entree.read(pcm, lus, pcm.size - lus)
+                        if (k <= 0) break
+                        lus += k
+                    }
+                    // Au rythme réel : un bloc toutes les 160 ms, comme le micro.
+                    val attente = debut + (n + 1) * BLOC * 1_000_000_000L / RATE - System.nanoTime()
+                    if (attente > 0) Thread.sleep(attente / 1_000_000, (attente % 1_000_000).toInt())
+                    n++
+                    if (actif) surBloc(pcm, niveau(pcm))
+                }
+            }
+        }
+        return true
+    }
+
+    private fun niveau(pcm: ByteArray): Float {
+        val lus = pcm.size / 2
+        if (lus == 0) return 0f
+        var somme = 0.0
+        for (i in 0 until lus) {
+            val v = (pcm[2 * i].toInt() and 0xFF) or (pcm[2 * i + 1].toInt() shl 8)
+            val f = v / 32768.0
+            somme += f * f
+        }
+        val rms = sqrt(somme / lus)
+        return sqrt(min(1.0, rms / NIVEAU_PLEIN)).toFloat()
     }
 
     fun arreter() {
