@@ -1,0 +1,86 @@
+10-29 19:04:09.417 D/AndroidRuntime(  445): >>>>>> START com.android.internal.os.ZygoteInit uid 0 <<<<<<
+10-29 19:04:09.431 I/AndroidRuntime(  445): Using default boot image
+10-29 19:04:09.431 I/AndroidRuntime(  445): Leaving lock profiling enabled
+10-29 19:04:31.100 I/AndroidRuntime(  934): VM exiting with result code 0, cleanup skipped.
+10-29 19:05:15.164 D/AndroidRuntime( 2189): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 19:05:15.181 I/AndroidRuntime( 2189): Using default boot image
+10-29 19:05:15.181 I/AndroidRuntime( 2189): Leaving lock profiling enabled
+10-29 19:05:15.930 D/AndroidRuntime( 2189): Calling main entry com.android.commands.monkey.Monkey
+10-29 19:05:17.351 I/AndroidRuntime( 2189): VM exiting with result code 0.
+10-29 19:05:42.426 D/AndroidRuntime( 3203): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 19:05:42.493 I/AndroidRuntime( 3203): Using default boot image
+10-29 19:05:42.494 I/AndroidRuntime( 3203): Leaving lock profiling enabled
+10-29 19:05:43.587 D/AndroidRuntime( 3203): Calling main entry com.android.commands.uiautomator.Launcher
+10-29 19:05:45.235 D/AndroidRuntime( 3203): Shutting down VM
+10-29 19:06:07.709 D/AndroidRuntime( 3894): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 19:06:07.735 I/AndroidRuntime( 3894): Using default boot image
+10-29 19:06:07.735 I/AndroidRuntime( 3894): Leaving lock profiling enabled
+10-29 19:06:08.195 D/AndroidRuntime( 3894): Calling main entry com.android.commands.monkey.Monkey
+10-29 19:06:08.529 I/AndroidRuntime( 3894): VM exiting with result code 0.
+10-29 19:06:39.572 D/AndroidRuntime( 3987): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 19:06:39.578 I/AndroidRuntime( 3987): Using default boot image
+10-29 19:06:39.578 I/AndroidRuntime( 3987): Leaving lock profiling enabled
+10-29 19:06:39.754 D/AndroidRuntime( 3987): Calling main entry com.android.commands.uiautomator.Launcher
+10-29 19:06:40.998 D/AndroidRuntime( 3987): Shutting down VM
+10-29 19:07:38.299 D/AndroidRuntime( 4078): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 19:07:38.305 I/AndroidRuntime( 4078): Using default boot image
+10-29 19:07:38.305 I/AndroidRuntime( 4078): Leaving lock profiling enabled
+10-29 19:07:38.503 D/AndroidRuntime( 4078): Calling main entry com.android.commands.uiautomator.Launcher
+10-29 19:07:39.563 D/AndroidRuntime( 4078): Shutting down VM
+10-29 19:07:59.831 D/AndroidRuntime( 4124): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 19:07:59.843 I/AndroidRuntime( 4124): Using default boot image
+10-29 19:07:59.843 I/AndroidRuntime( 4124): Leaving lock profiling enabled
+10-29 19:08:00.141 D/AndroidRuntime( 4124): Calling main entry com.android.commands.uiautomator.Launcher
+10-29 19:08:01.242 D/AndroidRuntime( 4124): Shutting down VM
+10-29 19:10:58.151 D/AndroidRuntime( 4318): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 19:10:58.197 I/AndroidRuntime( 4318): Using default boot image
+10-29 19:10:58.197 I/AndroidRuntime( 4318): Leaving lock profiling enabled
+10-29 19:10:58.645 D/AndroidRuntime( 4318): Calling main entry com.android.commands.uiautomator.Launcher
+10-29 19:11:00.696 D/AndroidRuntime( 4318): Shutting down VM
+10-29 19:11:54.560 D/AndroidRuntime( 4388): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 19:11:54.578 I/AndroidRuntime( 4388): Using default boot image
+10-29 19:11:54.578 I/AndroidRuntime( 4388): Leaving lock profiling enabled
+10-29 19:11:54.814 D/AndroidRuntime( 4388): Calling main entry com.android.commands.uiautomator.Launcher
+10-29 19:11:55.912 D/AndroidRuntime( 4388): Shutting down VM
+10-29 19:12:50.617 D/AndroidRuntime( 4436): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 19:12:50.627 I/AndroidRuntime( 4436): Using default boot image
+10-29 19:12:50.627 I/AndroidRuntime( 4436): Leaving lock profiling enabled
+10-29 19:12:50.877 D/AndroidRuntime( 4436): Calling main entry com.android.commands.uiautomator.Launcher
+10-29 19:12:51.979 D/AndroidRuntime( 4436): Shutting down VM
+10-29 19:13:10.200 D/AndroidRuntime( 4462): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 19:13:10.211 I/AndroidRuntime( 4462): Using default boot image
+10-29 19:13:10.211 I/AndroidRuntime( 4462): Leaving lock profiling enabled
+10-29 19:13:10.468 D/AndroidRuntime( 4462): Calling main entry com.android.commands.uiautomator.Launcher
+10-29 19:13:11.538 D/AndroidRuntime( 4462): Shutting down VM
+10-29 19:13:49.620 E/ServiceTraitement( 2265): réunion 2026-10-29-190806
+10-29 19:13:49.620 E/ServiceTraitement( 2265): com.potomitan.luxreunion.noyau.LotsLuxAsr$Erreur: Unable to resolve host "luxasr.uni.lu": No address associated with hostname
+10-29 19:13:49.620 E/ServiceTraitement( 2265): 	at com.potomitan.luxreunion.noyau.LotsLuxAsr.soumettre(Lots.kt:71)
+10-29 19:13:49.620 E/ServiceTraitement( 2265): 	at com.potomitan.luxreunion.ServiceTraitement.soumettreAvecReprise(ServiceTraitement.kt:188)
+10-29 19:13:49.620 E/ServiceTraitement( 2265): 	at com.potomitan.luxreunion.ServiceTraitement.transcrire(ServiceTraitement.kt:135)
+10-29 19:13:49.620 E/ServiceTraitement( 2265): 	at com.potomitan.luxreunion.ServiceTraitement.traiter(ServiceTraitement.kt:85)
+10-29 19:13:49.620 E/ServiceTraitement( 2265): 	at com.potomitan.luxreunion.ServiceTraitement.boucle(ServiceTraitement.kt:70)
+10-29 19:13:49.620 E/ServiceTraitement( 2265): 	at com.potomitan.luxreunion.ServiceTraitement.onStartCommand$lambda$3(ServiceTraitement.kt:49)
+10-29 19:13:49.620 E/ServiceTraitement( 2265): 	at com.potomitan.luxreunion.ServiceTraitement$$ExternalSyntheticLambda5.invoke(D8$$SyntheticClass:0)
+10-29 19:13:49.620 E/ServiceTraitement( 2265): 	at kotlin.concurrent.ThreadsKt$thread$thread$1.run(Thread.kt:30)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): traitement
+10-29 19:13:49.623 E/ServiceTraitement( 2265): java.io.FileNotFoundException: /data/user/0/com.potomitan.luxreunion/files/reunions/2026-10-29-190806/meta.json.tmp: open failed: ENOENT (No such file or directory)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at libcore.io.IoBridge.open(IoBridge.java:574)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at java.io.FileOutputStream.<init>(FileOutputStream.java:259)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at java.io.FileOutputStream.<init>(FileOutputStream.java:208)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at kotlin.io.FilesKt__FileReadWriteKt.writeText(FileReadWrite.kt:141)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at kotlin.io.FilesKt__FileReadWriteKt.writeText$default(FileReadWrite.kt:140)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at com.potomitan.luxreunion.noyau.Reunion$Companion.ecrireAtomique(Reunion.kt:155)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at com.potomitan.luxreunion.noyau.Reunion.enregistrer(Reunion.kt:92)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at com.potomitan.luxreunion.ServiceTraitement.traiter(ServiceTraitement.kt:92)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at com.potomitan.luxreunion.ServiceTraitement.boucle(ServiceTraitement.kt:70)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at com.potomitan.luxreunion.ServiceTraitement.onStartCommand$lambda$3(ServiceTraitement.kt:49)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at com.potomitan.luxreunion.ServiceTraitement$$ExternalSyntheticLambda5.invoke(D8$$SyntheticClass:0)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at kotlin.concurrent.ThreadsKt$thread$thread$1.run(Thread.kt:30)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at libcore.io.Linux.open(Native Method)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at libcore.io.ForwardingOs.open(ForwardingOs.java:568)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at libcore.io.BlockGuardOs.open(BlockGuardOs.java:274)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at libcore.io.ForwardingOs.open(ForwardingOs.java:568)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at android.app.ActivityThread$AndroidOs.open(ActivityThread.java:8953)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	at libcore.io.IoBridge.open(IoBridge.java:560)
+10-29 19:13:49.623 E/ServiceTraitement( 2265): 	... 11 more
