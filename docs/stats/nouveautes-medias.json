@@ -515,5 +515,14 @@
         "legende": "La carte dans l'appli, puis l'image qu'on partage : le même théâtre de papier."
       }
     ]
+  },
+  "37.9.2": {
+    "images": [
+      {
+        "image": "Screenshots/lux_theatre_bordure.gif",
+        "alt": "La carte « Mënz », pièce de monnaie, très rare, ouverte dans l'appli et penchée lentement de gauche à droite. La nuit sur la Moselle : les coulisses en silhouette sur les côtés, la colline aux vignes, le village et son clocher, et un nuage qui traverse le ciel étoilé. Chaque carton découpé est cerné d'une bordure blanche, et les cartons glissent à des vitesses différentes.",
+        "legende": "Une carte très rare qu'on penche : chaque carton a sa bordure blanche, même la nuit."
+      }
+    ]
   }
 }

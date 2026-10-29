@@ -711,5 +711,25 @@
         "legende": "The card in the app, then the image you share: the same paper theatre."
       }
     ]
+  },
+  "37.9.2": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Improvements",
+        "points": [
+          {
+            "titre": "The cardboard pieces have their white border",
+            "texte": "On the open card and on the shared image, each cut-out piece is outlined with a white edge, like real paper, even on night cards."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "The card “Mënz”, coin, very rare, open in the app and slowly tilted from left to right. Night on the Moselle: the silhouetted wings on the sides, the vineyard hill, the village and its bell tower, and a cloud crossing the starry sky. Each cut-out piece is outlined with a white border, and the pieces slide at different speeds.",
+        "legende": "A very rare card being tilted: each piece has its white border, even at night."
+      }
+    ]
   }
 }

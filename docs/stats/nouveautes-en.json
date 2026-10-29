@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-10-29",
- "derniere_version": "37.9.1",
+ "derniere_version": "37.9.2",
  "derniere_date": "2026-10-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.9.2",
+   "date": "2026-10-29",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "The cardboard pieces have their white border",
+       "texte": "On the open card and on the shared image, each cut-out piece is outlined with a white edge, like real paper, even on night cards."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_theatre_bordure.gif",
+     "alt": "The card “Mënz”, coin, very rare, open in the app and slowly tilted from left to right. Night on the Moselle: the silhouetted wings on the sides, the vineyard hill, the village and its bell tower, and a cloud crossing the starry sky. Each cut-out piece is outlined with a white border, and the pieces slide at different speeds.",
+     "legende": "A very rare card being tilted: each piece has its white border, even at night."
+    }
+   ],
+   "image": "Screenshots/lux_theatre_bordure.gif",
+   "image_alt": "The card “Mënz”, coin, very rare, open in the app and slowly tilted from left to right. Night on the Moselle: the silhouetted wings on the sides, the vineyard hill, the village and its bell tower, and a cloud crossing the starry sky. Each cut-out piece is outlined with a white border, and the pieces slide at different speeds.",
+   "image_legende": "A very rare card being tilted: each piece has its white border, even at night."
+  },
   {
    "version": "37.9.1",
    "date": "2026-10-29",
@@ -183,39 +212,6 @@
    "image": "Screenshots/lux_visite_gestes.gif",
    "image_alt": "Filmed on a Galaxy A21s: the “The keyboard in three gestures” bubble of the guided tour. At the top, a drawn keyboard. In the field, “Moi”; three red suggestions, Moien, Moie and Moies; a finger taps “Moien”, which is written in full. The finger types “wéi”, then rests on the space bar and slides left: the cursor moves back to just after “Moien”. Two dots, 1 and 3, light up in red as the gestures go by, and the text details them. The screens are in French.",
    "image_legende": "The keyboard gestures, shown: tap a suggested word, slide along the space bar."
-  },
-  {
-   "version": "37.7.7",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "Giving a card, step by step",
-       "texte": "The tour of the cards now details the exchange between two phones in four numbered steps, with a small animation of the two screens side by side."
-      },
-      {
-       "titre": "Receiving a card and the camera, explained",
-       "texte": "Which button to tap, and why the camera is only used to read the code, without the internet."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_echange.gif",
-     "alt": "Filmed on a Galaxy A21s: the “Giving, step by step” bubble of the card tour. At the top, two drawn phones, “You” and “The other person”. The second shows a code, the first aims a blue beam at it and a green tick appears; the card fades from the first phone, which shows a code in turn; the second aims at it, then the card moves from one screen to the other. Below, four numbered dots light up in red as the steps go by, and the text details them. The screens are in French.",
-     "legende": "Giving a card, in four steps: the card tour shows it with two phones side by side."
-    }
-   ],
-   "image": "Screenshots/lux_visite_echange.gif",
-   "image_alt": "Filmed on a Galaxy A21s: the “Giving, step by step” bubble of the card tour. At the top, two drawn phones, “You” and “The other person”. The second shows a code, the first aims a blue beam at it and a green tick appears; the card fades from the first phone, which shows a code in turn; the second aims at it, then the card moves from one screen to the other. Below, four numbered dots light up in red as the steps go by, and the text details them. The screens are in French.",
-   "image_legende": "Giving a card, in four steps: the card tour shows it with two phones side by side."
   }
  ]
 }

@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-10-29",
- "derniere_version": "37.9.1",
+ "derniere_version": "37.9.2",
  "derniere_date": "2026-10-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.9.2",
+   "date": "2026-10-29",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Les cartons ont leur bordure blanche",
+       "texte": "Dans la carte ouverte et sur l'image partagée, chaque carton découpé est cerné d'un bord blanc, comme du vrai papier, même sur les cartes de nuit."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_theatre_bordure.gif",
+     "alt": "La carte « Mënz », pièce de monnaie, très rare, ouverte dans l'appli et penchée lentement de gauche à droite. La nuit sur la Moselle : les coulisses en silhouette sur les côtés, la colline aux vignes, le village et son clocher, et un nuage qui traverse le ciel étoilé. Chaque carton découpé est cerné d'une bordure blanche, et les cartons glissent à des vitesses différentes.",
+     "legende": "Une carte très rare qu'on penche : chaque carton a sa bordure blanche, même la nuit."
+    }
+   ],
+   "image": "Screenshots/lux_theatre_bordure.gif",
+   "image_alt": "La carte « Mënz », pièce de monnaie, très rare, ouverte dans l'appli et penchée lentement de gauche à droite. La nuit sur la Moselle : les coulisses en silhouette sur les côtés, la colline aux vignes, le village et son clocher, et un nuage qui traverse le ciel étoilé. Chaque carton découpé est cerné d'une bordure blanche, et les cartons glissent à des vitesses différentes.",
+   "image_legende": "Une carte très rare qu'on penche : chaque carton a sa bordure blanche, même la nuit."
+  },
   {
    "version": "37.9.1",
    "date": "2026-10-29",
@@ -183,39 +212,6 @@
    "image": "Screenshots/lux_visite_gestes.gif",
    "image_alt": "Filmé sur un Galaxy A21s : la bulle « Le clavier en trois gestes » de la visite guidée. En haut, un clavier dessiné. Dans le champ, « Moi » ; trois suggestions rouges, Moien, Moie et Moies ; un doigt touche « Moien », qui s'écrit en entier. Le doigt tape « wéi », puis se pose sur la barre d'espace et glisse vers la gauche : le curseur recule jusqu'après « Moien ». Deux pastilles, 1 et 3, s'allument en rouge au fil des gestes, et le texte les détaille.",
    "image_legende": "Les gestes du clavier, montrés : toucher un mot proposé, glisser sur la barre d'espace."
-  },
-  {
-   "version": "37.7.7",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Donner une carte, étape par étape",
-       "texte": "La visite des cartes détaille l'échange entre deux téléphones en quatre temps numérotés, avec une petite animation des deux écrans côte à côte."
-      },
-      {
-       "titre": "Recevoir une carte et l'appareil photo, expliqués",
-       "texte": "Quel bouton toucher, et pourquoi l'appareil photo sert seulement à lire le code, sans internet."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_echange.gif",
-     "alt": "Filmé sur un Galaxy A21s : la bulle « Donner, étape par étape » de la visite des cartes. En haut, deux téléphones dessinés, « Vous » et « L'autre personne ». Le second affiche un code, le premier le vise d'un faisceau bleu et une coche verte apparaît ; la carte s'efface du premier, qui affiche à son tour un code ; le second le vise, puis la carte passe d'un écran à l'autre. Dessous, quatre pastilles numérotées s'allument en rouge au fil des temps, et le texte les détaille : 1. La personne qui reçoit touche « Recevoir » en haut de son carnet. 2. Vous touchez « Céder », puis « Scanner son code ». 3. La carte quitte votre carnet, et un code s'affiche sur votre téléphone. 4. L'autre personne touche « Scanner la carte » et vise ce code.",
-     "legende": "Donner une carte, en quatre temps : la visite des cartes le montre avec deux téléphones côte à côte."
-    }
-   ],
-   "image": "Screenshots/lux_visite_echange.gif",
-   "image_alt": "Filmé sur un Galaxy A21s : la bulle « Donner, étape par étape » de la visite des cartes. En haut, deux téléphones dessinés, « Vous » et « L'autre personne ». Le second affiche un code, le premier le vise d'un faisceau bleu et une coche verte apparaît ; la carte s'efface du premier, qui affiche à son tour un code ; le second le vise, puis la carte passe d'un écran à l'autre. Dessous, quatre pastilles numérotées s'allument en rouge au fil des temps, et le texte les détaille : 1. La personne qui reçoit touche « Recevoir » en haut de son carnet. 2. Vous touchez « Céder », puis « Scanner son code ». 3. La carte quitte votre carnet, et un code s'affiche sur votre téléphone. 4. L'autre personne touche « Scanner la carte » et vise ce code.",
-   "image_legende": "Donner une carte, en quatre temps : la visite des cartes le montre avec deux téléphones côte à côte."
   }
  ]
 }

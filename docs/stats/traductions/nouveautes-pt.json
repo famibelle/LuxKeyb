@@ -711,5 +711,25 @@
         "legende": "A carta na aplicação, depois a imagem que se partilha: o mesmo teatro de papel."
       }
     ]
+  },
+  "37.9.2": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Melhorias",
+        "points": [
+          {
+            "titre": "Os cartões têm o seu bordo branco",
+            "texte": "Na carta aberta e na imagem partilhada, cada cartão recortado tem à volta um bordo branco, como papel a sério, mesmo nas cartas de noite."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "A carta «Mënz», moeda, muito rara, aberta na aplicação e inclinada devagar da esquerda para a direita. A noite no Mosela: os bastidores em silhueta dos lados, a colina das vinhas, a aldeia e o seu campanário, e uma nuvem que atravessa o céu estrelado. Cada cartão recortado tem um bordo branco, e os cartões deslizam a velocidades diferentes.",
+        "legende": "Uma carta muito rara a ser inclinada: cada cartão tem o seu bordo branco, mesmo de noite."
+      }
+    ]
   }
 }

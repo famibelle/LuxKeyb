@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-10-29",
- "derniere_version": "37.9.1",
+ "derniere_version": "37.9.2",
  "derniere_date": "2026-10-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.9.2",
+   "date": "2026-10-29",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "Os cartões têm o seu bordo branco",
+       "texte": "Na carta aberta e na imagem partilhada, cada cartão recortado tem à volta um bordo branco, como papel a sério, mesmo nas cartas de noite."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_theatre_bordure.gif",
+     "alt": "A carta «Mënz», moeda, muito rara, aberta na aplicação e inclinada devagar da esquerda para a direita. A noite no Mosela: os bastidores em silhueta dos lados, a colina das vinhas, a aldeia e o seu campanário, e uma nuvem que atravessa o céu estrelado. Cada cartão recortado tem um bordo branco, e os cartões deslizam a velocidades diferentes.",
+     "legende": "Uma carta muito rara a ser inclinada: cada cartão tem o seu bordo branco, mesmo de noite."
+    }
+   ],
+   "image": "Screenshots/lux_theatre_bordure.gif",
+   "image_alt": "A carta «Mënz», moeda, muito rara, aberta na aplicação e inclinada devagar da esquerda para a direita. A noite no Mosela: os bastidores em silhueta dos lados, a colina das vinhas, a aldeia e o seu campanário, e uma nuvem que atravessa o céu estrelado. Cada cartão recortado tem um bordo branco, e os cartões deslizam a velocidades diferentes.",
+   "image_legende": "Uma carta muito rara a ser inclinada: cada cartão tem o seu bordo branco, mesmo de noite."
+  },
   {
    "version": "37.9.1",
    "date": "2026-10-29",
@@ -183,39 +212,6 @@
    "image": "Screenshots/lux_visite_gestes.gif",
    "image_alt": "Filmado num Galaxy A21s: a bolha «O teclado em três gestos» da visita guiada. Em cima, um teclado desenhado. No campo, «Moi»; três sugestões vermelhas, Moien, Moie e Moies; um dedo toca em «Moien», que se escreve por inteiro. O dedo escreve «wéi», depois pousa na barra de espaço e desliza para a esquerda: o cursor recua até depois de «Moien». Duas pastilhas, 1 e 3, acendem-se a vermelho ao longo dos gestos, e o texto explica-os. Os ecrãs estão em francês.",
    "image_legende": "Os gestos do teclado, mostrados: tocar numa palavra sugerida, deslizar na barra de espaço."
-  },
-  {
-   "version": "37.7.7",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "Dar uma carta, passo a passo",
-       "texte": "A visita das cartas explica agora a troca entre dois telemóveis em quatro passos numerados, com uma pequena animação dos dois ecrãs lado a lado."
-      },
-      {
-       "titre": "Receber uma carta e a câmara, explicados",
-       "texte": "Que botão tocar, e porque a câmara serve apenas para ler o código, sem internet."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_echange.gif",
-     "alt": "Filmado num Galaxy A21s: a bolha «Dar, passo a passo» da visita das cartas. Em cima, dois telemóveis desenhados, «Você» e «A outra pessoa». O segundo mostra um código, o primeiro aponta-lhe um feixe azul e aparece um visto verde; a carta desaparece do primeiro, que mostra por sua vez um código; o segundo aponta para ele e a carta passa de um ecrã para o outro. Em baixo, quatro pastilhas numeradas acendem-se a vermelho, e o texto explica-as. Os ecrãs estão em francês.",
-     "legende": "Dar uma carta, em quatro passos: a visita das cartas mostra-o com dois telemóveis lado a lado."
-    }
-   ],
-   "image": "Screenshots/lux_visite_echange.gif",
-   "image_alt": "Filmado num Galaxy A21s: a bolha «Dar, passo a passo» da visita das cartas. Em cima, dois telemóveis desenhados, «Você» e «A outra pessoa». O segundo mostra um código, o primeiro aponta-lhe um feixe azul e aparece um visto verde; a carta desaparece do primeiro, que mostra por sua vez um código; o segundo aponta para ele e a carta passa de um ecrã para o outro. Em baixo, quatro pastilhas numeradas acendem-se a vermelho, e o texto explica-as. Os ecrãs estão em francês.",
-   "image_legende": "Dar uma carta, em quatro passos: a visita das cartas mostra-o com dois telemóveis lado a lado."
   }
  ]
 }

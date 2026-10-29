@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-10-29",
- "derniere_version": "37.9.1",
+ "derniere_version": "37.9.2",
  "derniere_date": "2026-10-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.9.2",
+   "date": "2026-10-29",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Die Kartons haben ihren weißen Rand",
+       "texte": "Auf der geöffneten Karte und auf dem geteilten Bild ist jeder ausgeschnittene Karton von einem weißen Rand umgeben, wie echtes Papier, auch auf den Nachtkarten."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_theatre_bordure.gif",
+     "alt": "Die Karte „Mënz“, Münze, sehr selten, in der App geöffnet und langsam von links nach rechts geneigt. Nacht an der Mosel: die Seitenkulissen als Silhouette, der Weinberg, das Dorf mit seinem Kirchturm und eine Wolke, die über den Sternenhimmel zieht. Jeder ausgeschnittene Karton hat einen weißen Rand, und die Kartons gleiten unterschiedlich schnell.",
+     "legende": "Eine sehr seltene Karte wird geneigt: Jeder Karton hat seinen weißen Rand, auch nachts."
+    }
+   ],
+   "image": "Screenshots/lux_theatre_bordure.gif",
+   "image_alt": "Die Karte „Mënz“, Münze, sehr selten, in der App geöffnet und langsam von links nach rechts geneigt. Nacht an der Mosel: die Seitenkulissen als Silhouette, der Weinberg, das Dorf mit seinem Kirchturm und eine Wolke, die über den Sternenhimmel zieht. Jeder ausgeschnittene Karton hat einen weißen Rand, und die Kartons gleiten unterschiedlich schnell.",
+   "image_legende": "Eine sehr seltene Karte wird geneigt: Jeder Karton hat seinen weißen Rand, auch nachts."
+  },
   {
    "version": "37.9.1",
    "date": "2026-10-29",
@@ -183,39 +212,6 @@
    "image": "Screenshots/lux_visite_gestes.gif",
    "image_alt": "Gefilmt auf einem Galaxy A21s: die Blase „Die Tastatur in drei Gesten“ des Rundgangs. Oben eine gezeichnete Tastatur. Im Feld „Moi“; drei rote Vorschläge, Moien, Moie und Moies; ein Finger tippt „Moien“ an, das ganz geschrieben wird. Der Finger tippt „wéi“, legt sich dann auf die Leertaste und gleitet nach links: Der Cursor wandert zurück bis hinter „Moien“. Zwei Punkte, 1 und 3, leuchten nacheinander rot auf, und der Text erklärt sie. Die Bildschirme sind auf Französisch.",
    "image_legende": "Die Gesten der Tastatur, gezeigt: ein vorgeschlagenes Wort antippen, über die Leertaste gleiten."
-  },
-  {
-   "version": "37.7.7",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Eine Karte abgeben, Schritt für Schritt",
-       "texte": "Der Rundgang durch die Karten erklärt jetzt den Austausch zwischen zwei Telefonen in vier nummerierten Schritten, mit einer kleinen Animation der beiden Bildschirme nebeneinander."
-      },
-      {
-       "titre": "Eine Karte empfangen und die Kamera, erklärt",
-       "texte": "Welche Schaltfläche zu tippen ist, und warum die Kamera nur den Code liest, ohne Internet."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_echange.gif",
-     "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Abgeben, Schritt für Schritt“ des Kartenrundgangs. Oben zwei gezeichnete Telefone, „Sie“ und „Die andere Person“. Das zweite zeigt einen Code, das erste richtet einen blauen Strahl darauf, und ein grünes Häkchen erscheint; die Karte verschwindet vom ersten, das nun selbst einen Code zeigt; das zweite richtet sich darauf, dann wandert die Karte von einem Bildschirm zum anderen. Darunter leuchten vier nummerierte Punkte nacheinander rot auf, und der Text erklärt sie. Die Bildschirme sind auf Französisch.",
-     "legende": "Eine Karte abgeben, in vier Schritten: Der Kartenrundgang zeigt es mit zwei Telefonen nebeneinander."
-    }
-   ],
-   "image": "Screenshots/lux_visite_echange.gif",
-   "image_alt": "Gefilmt auf einem Galaxy A21s: die Blase „Abgeben, Schritt für Schritt“ des Kartenrundgangs. Oben zwei gezeichnete Telefone, „Sie“ und „Die andere Person“. Das zweite zeigt einen Code, das erste richtet einen blauen Strahl darauf, und ein grünes Häkchen erscheint; die Karte verschwindet vom ersten, das nun selbst einen Code zeigt; das zweite richtet sich darauf, dann wandert die Karte von einem Bildschirm zum anderen. Darunter leuchten vier nummerierte Punkte nacheinander rot auf, und der Text erklärt sie. Die Bildschirme sind auf Französisch.",
-   "image_legende": "Eine Karte abgeben, in vier Schritten: Der Kartenrundgang zeigt es mit zwei Telefonen nebeneinander."
   }
  ]
 }

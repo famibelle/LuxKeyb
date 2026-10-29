@@ -711,5 +711,25 @@
         "legende": "Die Karte in der App, dann das geteilte Bild: dasselbe Papiertheater."
       }
     ]
+  },
+  "37.9.2": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Die Kartons haben ihren weißen Rand",
+            "texte": "Auf der geöffneten Karte und auf dem geteilten Bild ist jeder ausgeschnittene Karton von einem weißen Rand umgeben, wie echtes Papier, auch auf den Nachtkarten."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Die Karte „Mënz“, Münze, sehr selten, in der App geöffnet und langsam von links nach rechts geneigt. Nacht an der Mosel: die Seitenkulissen als Silhouette, der Weinberg, das Dorf mit seinem Kirchturm und eine Wolke, die über den Sternenhimmel zieht. Jeder ausgeschnittene Karton hat einen weißen Rand, und die Kartons gleiten unterschiedlich schnell.",
+        "legende": "Eine sehr seltene Karte wird geneigt: Jeder Karton hat seinen weißen Rand, auch nachts."
+      }
+    ]
   }
 }
