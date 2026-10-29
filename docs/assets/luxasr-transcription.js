@@ -61,6 +61,12 @@
   /* Sondages illisibles d'affilée avant de conclure à une coupure. */
   var ECHECS_SONDAGE_MAX = 6;
 
+  /* Une réponse de `/asr2` déjà lue dans ce navigateur, il y a moins de
+     CORS_VU_MS : CORS est un réglage de leur serveur, il ne change pas d'un
+     envoi à l'autre. */
+  var CLE_CORS_VU = 'luxasr-cors-lisible';
+  var CORS_VU_MS = 7 * 86400000;
+
   // --- Type de contenu ----------------------------------------------------
 
   /* Le service veut un `Content-Type: audio/*` ou `video/*` et un vrai
@@ -99,18 +105,62 @@
     return e === 'json' || e === 'srt' || e === 'vtt' || e === 'txt';
   }
 
+  // --- Vérification CORS --------------------------------------------------
+
+  /*
+   * Tant que le 202 de `/asr2` n'a pas d'en-tête CORS, tout envoi depuis une
+   * page échoue, mais seulement après que le service a reçu et traité le
+   * fichier entier. Avant un vrai fichier, on envoie donc une demi-seconde de
+   * silence : si sa réponse est illisible, le fichier ne part pas. Le service
+   * ne fait qu'un travail minuscule au lieu d'une heure d'audio, et le
+   * visiteur ne téléverse pas 100 Mo pour rien. Une fois une réponse lue, ce
+   * navigateur ne vérifie plus pendant CORS_VU_MS.
+   */
+  function corsDejaVu() {
+    try { return Date.now() - (+localStorage.getItem(CLE_CORS_VU) || 0) < CORS_VU_MS; } catch (e) { return false; }
+  }
+  function corsVu() { try { localStorage.setItem(CLE_CORS_VU, String(Date.now())); } catch (e) {} }
+
+  function silenceWav() {
+    var n = RATE_SONDE / 2, buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf);
+    function ecrire(pos, t) { for (var k = 0; k < t.length; k++) v.setUint8(pos + k, t.charCodeAt(k)); }
+    ecrire(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); ecrire(8, 'WAVEfmt ');
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, RATE_SONDE, true); v.setUint32(28, RATE_SONDE * 2, true);
+    v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+    ecrire(36, 'data'); v.setUint32(40, n * 2, true);
+    return buf;
+  }
+  var RATE_SONDE = 16000;
+
+  /** Rend `{ promesse, xhr }` ; la promesse donne `OK`, `CORS` ou `RESEAU`. */
+  function sonderCors() {
+    var xhr = new XMLHttpRequest(), envoye = false;
+    var promesse = new Promise(function (resoudre) {
+      xhr.open('POST', BASE + '/asr2?language=lb&diarization=Disabled&outfmt=text');
+      xhr.setRequestHeader('Content-Type', 'audio/wav');
+      xhr.upload.onload = function () { envoye = true; };
+      // Lisible, quel que soit le code : c'est CORS qu'on vérifie, pas le travail.
+      xhr.onload = function () { corsVu(); resoudre('OK'); };
+      xhr.onerror = function () { resoudre(envoye ? 'CORS' : 'RESEAU'); };
+      xhr.send(silenceWav());
+    });
+    return { promesse: promesse, xhr: xhr };
+  }
+
   // --- Client /asr2 -------------------------------------------------------
 
   /**
    * Soumet [fichier] et suit le travail jusqu'au résultat.
    *
    * [ecouteur] reçoit :
-   * - `onEtat('ENVOI', fraction|null)`, puis `onEtat('FILE', {position, eta})`,
+   * - `onEtat('VERIF')` si CORS doit d'abord être vérifié (voir sonderCors),
+   *   `onEtat('ENVOI', fraction|null)`, puis `onEtat('FILE', {position, eta})`,
    *   `onEtat('TRAITEMENT', {eta})`, et enfin `onResultat(texteBrut, jobId)` ;
    *   `eta` est l'estimation du service en secondes, quand il en donne une ;
-   * - ou `onErreur(code, detail)`, `code` parmi `CORS`, `RESEAU`, `REFUS`
-   *   (détail : `{status, message}`), `ECHEC`, `INTROUVABLE`, `DELAI`,
-   *   `SANS_JOB`.
+   * - ou `onErreur(code, detail)`, `code` parmi `CORS` (détail :
+   *   `{fichierParti}`), `RESEAU`, `REFUS` (détail : `{status, message}`),
+   *   `ECHEC`, `INTROUVABLE`, `DELAI`, `SANS_JOB`.
    *
    * [options] : `diarisation` (vrai par défaut), `locuteurs` (nombre de voix,
    * 1 à 10, sinon automatique), `prompt`.
@@ -144,36 +194,52 @@
     // Au-delà de 900 caractères, le service ignore la suite (documenté).
     if (options.prompt) params.push('prompt=' + encodeURIComponent(options.prompt.slice(0, 900)));
 
-    xhr = new XMLHttpRequest();
-    var envoye = false, dernierProgres = 0;
-    xhr.open('POST', BASE + '/asr2?' + params.join('&'));
-    // Pas de `X-Filename` : le préflight n'autorise que `Content-Type` et
-    // `Authorization`.
-    xhr.setRequestHeader('Content-Type', typeAudio(fichier) || 'audio/wav');
-    xhr.upload.onprogress = function (e) {
-      dernierProgres = e.lengthComputable && e.total ? e.loaded / e.total : dernierProgres;
-      prevenir('onEtat', 'ENVOI', e.lengthComputable ? dernierProgres : null);
-    };
-    xhr.upload.onload = function () { envoye = true; prevenir('onEtat', 'ENVOI', 1); };
-    xhr.onload = function () {
-      if (fini) return;
-      var corps = null;
-      try { corps = JSON.parse(xhr.responseText); } catch (e) {}
-      if (xhr.status !== 200 && xhr.status !== 202) {
-        terminer('onErreur', 'REFUS', { status: xhr.status, message: messageDe(corps, xhr.responseText) });
-        return;
-      }
-      if (!corps || !corps.job_id) { terminer('onErreur', 'SANS_JOB', xhr.responseText.slice(0, 300)); return; }
-      prevenir('onEtat', 'FILE', {});
-      sonder(String(corps.job_id));
-    };
-    xhr.onerror = function () {
-      // Même `status 0` dans les deux cas : seul l'envoi complet distingue
-      // une réponse que CORS rend illisible d'une connexion coupée.
-      terminer('onErreur', envoye || dernierProgres >= 0.999 ? 'CORS' : 'RESEAU');
-    };
-    prevenir('onEtat', 'ENVOI', 0);
-    xhr.send(fichier);
+    if (corsDejaVu()) envoyer();
+    else {
+      prevenir('onEtat', 'VERIF');
+      var sonde = sonderCors();
+      xhr = sonde.xhr;
+      sonde.promesse.then(function (r) {
+        if (fini) return;
+        if (r === 'OK') envoyer();
+        else terminer('onErreur', r, r === 'CORS' ? { fichierParti: false } : undefined);
+      });
+    }
+
+    function envoyer() {
+      xhr = new XMLHttpRequest();
+      var envoye = false, dernierProgres = 0;
+      xhr.open('POST', BASE + '/asr2?' + params.join('&'));
+      // Pas de `X-Filename` : le préflight n'autorise que `Content-Type` et
+      // `Authorization`.
+      xhr.setRequestHeader('Content-Type', typeAudio(fichier) || 'audio/wav');
+      xhr.upload.onprogress = function (e) {
+        dernierProgres = e.lengthComputable && e.total ? e.loaded / e.total : dernierProgres;
+        prevenir('onEtat', 'ENVOI', e.lengthComputable ? dernierProgres : null);
+      };
+      xhr.upload.onload = function () { envoye = true; prevenir('onEtat', 'ENVOI', 1); };
+      xhr.onload = function () {
+        if (fini) return;
+        var corps = null;
+        try { corps = JSON.parse(xhr.responseText); } catch (e) {}
+        if (xhr.status !== 200 && xhr.status !== 202) {
+          terminer('onErreur', 'REFUS', { status: xhr.status, message: messageDe(corps, xhr.responseText) });
+          return;
+        }
+        corsVu();
+        if (!corps || !corps.job_id) { terminer('onErreur', 'SANS_JOB', xhr.responseText.slice(0, 300)); return; }
+        prevenir('onEtat', 'FILE', {});
+        sonder(String(corps.job_id));
+      };
+      xhr.onerror = function () {
+        // Même `status 0` dans les deux cas : seul l'envoi complet distingue
+        // une réponse que CORS rend illisible d'une connexion coupée.
+        if (envoye || dernierProgres >= 0.999) terminer('onErreur', 'CORS', { fichierParti: true });
+        else terminer('onErreur', 'RESEAU');
+      };
+      prevenir('onEtat', 'ENVOI', 0);
+      xhr.send(fichier);
+    }
 
     function sonder(job) {
       if (Date.now() - t0 > ATTENTE_MAX_MS) { terminer('onErreur', 'DELAI'); return; }

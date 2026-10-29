@@ -266,8 +266,10 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       🎓 La transcription et la séparation des voix sont le travail de
       <a href="https://luxasr.uni.lu/">LuxASR</a>, le service de reconnaissance
       de la parole luxembourgeoise de l'<strong>Université du Luxembourg</strong>.
-      Cette page envoie le son et met en forme ce qui revient. Merci à leur
-      équipe.
+      Cette page envoie le son et met en forme ce qui revient ; elle le fait
+      avec leur accord, dans le cadre exploratoire de Labs. Leur service est
+      partagé : gardez-le pour de vrais besoins et des essais raisonnables.
+      Merci à leur équipe.
     </p>
   </div>
 </section>
@@ -487,8 +489,10 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
       <strong>Pourquoi l'envoi peut échouer d'emblée.</strong> Une page web ne
       peut lire la réponse d'un autre site que si ce site l'y autorise, par un
       en-tête « CORS ». Relevé en septembre puis le 29 octobre 2026, le service
-      ne le posait pas encore sur l'accusé de réception d'un envoi. Si c'est toujours le cas, la
-      page vous le dit, sans réessayer à vide, et vous propose de transcrire sur
+      ne le posait pas encore sur l'accusé de réception d'un envoi. La page le
+      vérifie donc d'abord avec une demi-seconde de silence, pour ne pas faire
+      travailler le service sur votre fichier en vain. Si c'est toujours le cas,
+      la page vous le dit, sans réessayer à vide, et vous propose de transcrire sur
       <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> puis d'ouvrir le
       résultat ici.
     </p>
@@ -536,7 +540,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'tab-transcription': '🎧 Transcription',
     'h1': 'Transcribe Luxembourgish, from a file or live 🎧',
     'lead': 'Two ways to put what is said in <strong>Luxembourgish</strong> into writing. <strong>A file</strong>: drop a meeting, an interview, a podcast; the LuxASR service writes it down and separates the voices, each line tied to its speaker and to the moment it is said. <strong>Live</strong>: the text writes itself as people speak around the microphone.',
-    'thanks-p': '🎓 Transcription and voice separation are the work of <a href="https://luxasr.uni.lu/">LuxASR</a>, the Luxembourgish speech recognition service of the <strong>University of Luxembourg</strong>. This page sends the sound and lays out what comes back. Thanks to their team.',
+    'thanks-p': '🎓 Transcription and voice separation are the work of <a href="https://luxasr.uni.lu/">LuxASR</a>, the Luxembourgish speech recognition service of the <strong>University of Luxembourg</strong>. This page sends the sound and lays out what comes back; it does so with their agreement, within the exploratory scope of Labs. Their service is shared: keep it for real needs and reasonable tests. Thanks to their team.',
     'outil-h2': 'Transcribe',
     'warn-p1': "<strong>🔊 The sound goes to the University of Luxembourg</strong>, file or microphone, and it transcribes it on its servers: their <a href=\"https://luxasr.uni.lu/\">data protection policy</a> applies. Processing takes place on a University server in Luxembourg; the audio is deleted as soon as processing ends, the text as soon as it is read, and nothing is used to train their models. This site receives and keeps nothing: the page runs in your browser.",
     'warn-p2': 'Only transcribe what you are allowed to record, with the consent of the people heard in it.',
@@ -589,7 +593,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'tech-p1': 'The page sends the file as is to LuxASR’s batch API (<code>POST /asr2</code>, with <code>diarization=Enabled</code> and <code>outfmt=json</code>), then asks how the job is doing, every two seconds at first and less and less often after that, and reads the result, only once: the service deletes it as soon as it has served it. The file goes straight from your browser to the service: it does not go through this site.',
     'tech-p2': 'The result is turned into a list of sentences (start, end, speaker, text), cut using each word’s timing and the size of a subtitle. Consecutive sentences from the same voice make one turn; the TXT, SRT, VTT and JSON exports are drawn from that list. The service’s raw reply stays downloadable as is.',
     'tech-direct': '<strong>Live</strong>, the page talks to the service like the keyboard’s dictation: a WebSocket connection, the sound as 16-bit PCM at 16 kHz as it is captured, and in return the confirmed text and the still-unstable end of the sentence. So that a long session does not weigh on the service, the connection is renewed about every two minutes, during a pause, without cutting the microphone: what is captured during the switch is sent right after. Paragraph timestamps are approximate, to within a second.',
-    'tech-p3': '<strong>Why the upload may fail straight away.</strong> A web page can only read another site’s reply if that site allows it, through a “CORS” header. As observed in September and again on 29 October 2026, the service did not yet set it on the acknowledgement of an upload. If that is still the case, the page tells you so, without retrying in vain, and suggests transcribing on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> and opening the result here.',
+    'tech-p3': '<strong>Why the upload may fail straight away.</strong> A web page can only read another site’s reply if that site allows it, through a “CORS” header. As observed in September and again on 29 October 2026, the service did not yet set it on the acknowledgement of an upload. So the page first checks with half a second of silence, so as not to make the service work on your file in vain. If that is still the case, the page tells you so, without retrying in vain, and suggests transcribing on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> and opening the result here.',
     'feedback-h2': 'Tell us how it goes',
     'feedback-p': 'Labs is for trying things before deciding. The most useful thing to send us: <strong>the kind of recording, its length, the number of voices, and what was separated well or badly</strong>.',
     'feedback-form': '💬 Feedback form',
@@ -673,6 +677,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     fr: {
       mo: function (n) { return n >= 1048576 ? (n / 1048576).toFixed(1).replace('.', ',') + ' Mo' : Math.max(1, Math.round(n / 1024)) + ' Ko'; },
       dureeInconnue: 'durée inconnue',
+      verif: 'Vérification du service, avant d\'envoyer le fichier…',
       envoi: function (f) { return f == null ? 'Envoi du fichier…' : 'Envoi du fichier : ' + Math.round(f * 100) + ' %'; },
       file: function (p) { return p != null ? 'En file d\'attente, position ' + p : 'En file d\'attente chez LuxASR'; },
       traitement: 'Transcription en cours',
@@ -695,7 +700,12 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         FORMAT: 'Ce fichier n\'est pas un enregistrement reconnu. Choisissez un fichier audio (MP3, M4A, WAV, OGG, FLAC, WebM) ou une vidéo MP4.',
         TROP_GROS: function (d) { return 'Ce fichier fait ' + d + ' : la page en accepte 100 Mo au plus. Un MP3 ou un M4A du même enregistrement est bien plus léger.'; },
         TROP_LONG: function (d) { return 'Cet enregistrement dure ' + d + ' : la page en accepte 90 minutes au plus. Coupez-le en plusieurs parties.'; },
-        CORS: 'Le fichier est bien parti, mais <strong>le service n\'a pas laissé cette page lire sa réponse</strong>. C\'est un réglage de leur serveur (l\'en-tête CORS de l\'accusé de réception), pas un problème de votre fichier : réessayer n\'y changera rien. En attendant, transcrivez-le sur <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> au format JSON, puis ouvrez le résultat ici avec « Vous avez déjà un résultat LuxASR ? ».',
+        CORS: function (d) {
+          return (d && d.fichierParti
+            ? 'Le fichier est bien parti, mais <strong>le service n\'a pas laissé cette page lire sa réponse</strong>.'
+            : '<strong>Votre fichier n\'est pas parti</strong> : le service ne laisse pas encore une page web lire ses réponses, et la page l\'a vérifié avec une demi-seconde de silence avant de rien envoyer.') +
+            ' C\'est un réglage de leur serveur (l\'en-tête CORS de l\'accusé de réception), pas un problème de votre fichier : réessayer n\'y changera rien. En attendant, transcrivez-le sur <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> au format JSON, puis ouvrez le résultat ici avec « Vous avez déjà un résultat LuxASR ? ».';
+        },
         RESEAU: 'La liaison avec le service a été coupée, ou il est injoignable. Vérifiez la connexion, puis réessayez.',
         REFUS: function (d) { return 'Le service a refusé le fichier (erreur ' + d.status + ')' + (d.message ? ' : « ' + d.message + ' »' : '.'); },
         ECHEC: function (d) { return 'Le service n\'a pas réussi à transcrire ce fichier' + (d ? ' : « ' + d + ' »' : '.'); },
@@ -709,6 +719,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     en: {
       mo: function (n) { return n >= 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB'; },
       dureeInconnue: 'unknown length',
+      verif: 'Checking the service before uploading the file…',
       envoi: function (f) { return f == null ? 'Uploading the file…' : 'Uploading the file: ' + Math.round(f * 100) + '%'; },
       file: function (p) { return p != null ? 'In the queue, position ' + p : 'In the LuxASR queue'; },
       traitement: 'Transcribing',
@@ -731,7 +742,12 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         FORMAT: 'This file is not a recognised recording. Choose an audio file (MP3, M4A, WAV, OGG, FLAC, WebM) or an MP4 video.',
         TROP_GROS: function (d) { return 'This file is ' + d + ': the page accepts 100 MB at most. An MP3 or M4A of the same recording is much lighter.'; },
         TROP_LONG: function (d) { return 'This recording lasts ' + d + ': the page accepts 90 minutes at most. Split it into several parts.'; },
-        CORS: 'The file did leave, but <strong>the service did not let this page read its reply</strong>. That is a setting on their server (the CORS header on the acknowledgement), not a problem with your file: retrying won’t change it. Meanwhile, transcribe it on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> in JSON format, then open the result here with “Already have a LuxASR result?”.',
+        CORS: function (d) {
+          return (d && d.fichierParti
+            ? 'The file did leave, but <strong>the service did not let this page read its reply</strong>.'
+            : '<strong>Your file was not sent</strong>: the service does not yet let a web page read its replies, and the page checked this with half a second of silence before sending anything.') +
+            ' That is a setting on their server (the CORS header on the acknowledgement), not a problem with your file: retrying won’t change it. Meanwhile, transcribe it on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> in JSON format, then open the result here with “Already have a LuxASR result?”.';
+        },
         RESEAU: 'The link to the service was cut, or it cannot be reached. Check the connection, then try again.',
         REFUS: function (d) { return 'The service refused the file (error ' + d.status + ')' + (d.message ? ': “' + d.message + '”' : '.'); },
         ECHEC: function (d) { return 'The service could not transcribe this file' + (d ? ': “' + d + '”' : '.'); },
@@ -882,16 +898,17 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 
   function majSuivi() {
     var ordre = ['ENVOI', 'FILE', 'TRAITEMENT'];
-    var rang = ordre.indexOf(etape);
+    var rang = ordre.indexOf(etape === 'VERIF' ? 'ENVOI' : etape);
     Array.prototype.forEach.call(document.querySelectorAll('.etapes li'), function (li) {
       var r = ordre.indexOf(li.getAttribute('data-etape'));
       li.setAttribute('data-etat', r < rang ? 'fait' : r === rang ? 'courant' : 'a-venir');
     });
     var barre = $('barre');
     if (etape === 'ENVOI' && progres != null) { barre.hidden = false; barre.value = progres; }
-    else if (etape === 'ENVOI') { barre.hidden = false; barre.removeAttribute('value'); }
+    else if (etape === 'ENVOI' || etape === 'VERIF') { barre.hidden = false; barre.removeAttribute('value'); }
     else barre.hidden = true;
-    var texte = etape === 'ENVOI' ? M().envoi(progres)
+    var texte = etape === 'VERIF' ? M().verif
+              : etape === 'ENVOI' ? M().envoi(progres)
               : etape === 'FILE' ? M().file(position) : M().traitement;
     var reste = eta != null && etape !== 'ENVOI' ? eta - (Date.now() - etaRecue) / 1000 : null;
     $('detail').textContent = texte + (reste > 0 ? M().reste(T.horloge(reste)) : '') +
