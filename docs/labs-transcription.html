@@ -14,6 +14,7 @@
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<link rel="stylesheet" href="assets/labs.css">
 <script defer src="assets/theme.js"></script>
 <style>
 *{box-sizing:border-box;}
@@ -49,13 +50,6 @@ code{font-family:var(--mono);font-size:13px;background:var(--stripe);padding:1px
 :root[data-theme="dark"]{--spk-1:#5FC7CE;--spk-2:#F0897C;--spk-3:#E3AE5E;--spk-4:#ADA2F2;--spk-5:#7CC47F;--spk-6:#E28AB8;}
 :root[data-theme="light"]{--spk-1:#0E6E76;--spk-2:#C94A3B;--spk-3:#94600F;--spk-4:#5B4FA8;--spk-5:#2E7D32;--spk-6:#A23B72;}
 
-/* Les rubriques de Labs : mêmes pastilles sur labs.html. */
-.labs-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px;}
-.labs-tabs a{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;
-  border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;
-  font-size:14px;text-decoration:none;}
-.labs-tabs a:hover{border-color:var(--sea);}
-.labs-tabs a[aria-current="page"]{background:var(--sea);border-color:var(--sea);color:var(--paper);}
 
 .thanks{border:1px solid var(--line);border-left:4px solid var(--sea);
   background:var(--card);border-radius:10px;padding:16px 18px;}
@@ -174,7 +168,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   font-size:14px;color:var(--ink-soft);}
 
 /* Copié de .theme-toggle sans en partager la classe : theme.js repeint tout
-   élément .theme-toggle (voir labs.html). */
+   élément .theme-toggle (voir labs-dictee.html). */
 .lang-toggle{
   display:inline-flex;align-items:center;justify-content:center;
   min-width:34px;height:34px;padding:0 12px;
@@ -268,7 +262,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 <header class="page">
   <p class="eyebrow" data-i18n="eyebrow">Lëtzebuergesch Clavier · Labs</p>
   <nav class="labs-tabs" aria-label="Rubriques de Labs" data-i18n-aria="tabs-aria">
-    <a href="labs.html" data-i18n="tab-dictee">🎙️ Dictée</a>
+    <a href="labs.html" data-i18n="tab-accueil">🔬 Toutes les expériences</a>
+    <a href="labs-dictee.html" data-i18n="tab-dictee">🎙️ Dictée</a>
     <a href="labs-transcription.html" aria-current="page" data-i18n="tab-transcription">🎧 Transcription</a>
   </nav>
   <h1 data-i18n="h1">Transcrire du luxembourgeois, d'un fichier ou en direct 🎧</h1>
@@ -572,7 +567,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 <footer class="page">
   <p data-i18n="footer-p1">
     Une question ? Écrivez à <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>
-    La dictée vocale du clavier est sur la page <a href="labs.html">Labs · Dictée</a>.
+    La dictée vocale du clavier est sur la page <a href="labs-dictee.html">Labs · Dictée</a>.
   </p>
   <p>Lëtzebuergesch Clavier</p>
 </footer>
@@ -580,8 +575,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
 </div>
 
 <script>
-// Traductions de la page, sur le modèle de labs.html : le français est celui
-// du HTML, l'anglais vit ici. Même clé de mémoire de langue que labs.html,
+// Traductions de la page, sur le modèle de labs-dictee.html : le français est celui
+// du HTML, l'anglais vit ici. Même clé de mémoire de langue que labs-dictee.html,
 // pour que le choix suive d'une rubrique de Labs à l'autre. Un changement de
 // langue émet `labs-langue`, que l'outil écoute pour repeindre ce qu'il a
 // dessiné lui-même.
@@ -593,6 +588,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'meta-desc': "Transcribe a Luxembourgish recording and separate the voices: meeting, interview, podcast. Recognition is provided by the University of Luxembourg's LuxASR service.",
     'eyebrow': 'Lëtzebuergesch Clavier · Labs',
     'tabs-aria': 'Labs sections',
+    'tab-accueil': '🔬 All experiments',
     'tab-dictee': '🎙️ Dictation',
     'tab-transcription': '🎧 Transcription',
     'h1': 'Transcribe Luxembourgish, from a file or live 🎧',
@@ -661,7 +657,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'feedback-p': 'Labs is for trying things before deciding. The most useful thing to send us: <strong>the kind of recording, its length, the number of voices, and what was separated well or badly</strong>.',
     'feedback-form': '💬 Feedback form',
     'feedback-gh': '🐛 Report on GitHub',
-    'footer-p1': 'A question? Write to <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>The keyboard’s voice dictation is on the <a href="labs.html">Labs · Dictation</a> page.'
+    'footer-p1': 'A question? Write to <a href="mailto:medhi.famibelle@gmail.com">medhi.famibelle@gmail.com</a>.<br>The keyboard’s voice dictation is on the <a href="labs-dictee.html">Labs · Dictation</a> page.'
   };
 
   var FR = {};

@@ -1,0 +1,8 @@
+/* Commun aux pages Labs (labs.html, labs-dictee.html, labs-transcription.html).
+   Les rubriques : une pastille par page, la page courante remplie. */
+.labs-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px;}
+.labs-tabs a{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;
+  border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-weight:700;
+  font-size:14px;text-decoration:none;}
+.labs-tabs a:hover{border-color:var(--sea);}
+.labs-tabs a[aria-current="page"]{background:var(--sea);border-color:var(--sea);color:var(--paper);}

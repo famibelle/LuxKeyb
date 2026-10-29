@@ -136,7 +136,7 @@ par canal, pour que les deux dictées ne s'écrasent pas l'une l'autre :
 | Dictée embarquée | `feat/speech-to-text-lb` | `releases/download/labs/LetzebuergeschClavier-Labs.apk` |
 | Démonstration en ligne | `feat/luxasr-online` | `releases/download/labs-luxasr/LetzebuergeschClavier-LuxASR-Demo.apk` |
 
-Pages d'installation, avec flashcode : [labs.html](https://famibelle.github.io/LuxKeyb/labs.html)
+Pages d'installation, avec flashcode : [labs-dictee.html](https://famibelle.github.io/LuxKeyb/labs-dictee.html)
 et [labs-luxasr.html](https://famibelle.github.io/LuxKeyb/labs-luxasr.html).
 Elles vivent sur `main`, seule branche que GitHub Pages publie.
 

@@ -9,7 +9,7 @@
  * Luxembourg qui transcrit, comme dans le clavier publié depuis la 33.0.0.
  * La dictée n'est donc pas branchée par défaut : elle
  * demande `?asr=1` dans l'adresse, et un consentement explicite avant que le
- * micro ne s'ouvre. Cf. `docs/labs.html`, qui la présente.
+ * micro ne s'ouvre. Cf. `docs/labs-dictee.html`, qui la présente.
  *
  * **Un mot s'affiche dès qu'il est engagé**, depuis que le flux est la voie
  * par défaut de `luxasr-client.js` (moteur du 16 septembre 2026) : le champ
