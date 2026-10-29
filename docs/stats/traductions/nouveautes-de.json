@@ -691,5 +691,25 @@
         "legende": "Eine sehr seltene Karte: dazu zieht eine Wolke über den Himmel."
       }
     ]
+  },
+  "37.9.1": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Eine geteilte Karte behält ihr Papiertheater",
+            "texte": "Das Bild, das mit „Teilen“ verschickt wird, zeigt dieselben Kartons wie in der App, mit den Seitenkulissen der seltenen Karten und der Wolke der sehr seltenen."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "1. Die Karte „Kaz“, Katze, sehr selten, in der App geöffnet und von links nach rechts geneigt: die Stadt bei Nacht aus ausgeschnittenen Kartons, mit Seitenkulissen als Silhouette. 2. Das Bild derselben Karte, wie es mit „Teilen“ verschickt wird: dieselben Kartons, die Seitenkulissen und die Wolke am Sternenhimmel.",
+        "legende": "Die Karte in der App, dann das geteilte Bild: dasselbe Papiertheater."
+      }
+    ]
   }
 }

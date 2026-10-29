@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-10-29",
- "derniere_version": "37.9.0",
+ "derniere_version": "37.9.1",
  "derniere_date": "2026-10-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.9.1",
+   "date": "2026-10-29",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Eine geteilte Karte behält ihr Papiertheater",
+       "texte": "Das Bild, das mit „Teilen“ verschickt wird, zeigt dieselben Kartons wie in der App, mit den Seitenkulissen der seltenen Karten und der Wolke der sehr seltenen."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_theatre_partage.gif",
+     "alt": "1. Die Karte „Kaz“, Katze, sehr selten, in der App geöffnet und von links nach rechts geneigt: die Stadt bei Nacht aus ausgeschnittenen Kartons, mit Seitenkulissen als Silhouette. 2. Das Bild derselben Karte, wie es mit „Teilen“ verschickt wird: dieselben Kartons, die Seitenkulissen und die Wolke am Sternenhimmel.",
+     "legende": "Die Karte in der App, dann das geteilte Bild: dasselbe Papiertheater."
+    }
+   ],
+   "image": "Screenshots/lux_theatre_partage.gif",
+   "image_alt": "1. Die Karte „Kaz“, Katze, sehr selten, in der App geöffnet und von links nach rechts geneigt: die Stadt bei Nacht aus ausgeschnittenen Kartons, mit Seitenkulissen als Silhouette. 2. Das Bild derselben Karte, wie es mit „Teilen“ verschickt wird: dieselben Kartons, die Seitenkulissen und die Wolke am Sternenhimmel.",
+   "image_legende": "Die Karte in der App, dann das geteilte Bild: dasselbe Papiertheater."
+  },
   {
    "version": "37.9.0",
    "date": "2026-10-29",
@@ -187,49 +216,6 @@
    "image": "Screenshots/lux_visite_echange.gif",
    "image_alt": "Gefilmt auf einem Galaxy A21s: die Blase „Abgeben, Schritt für Schritt“ des Kartenrundgangs. Oben zwei gezeichnete Telefone, „Sie“ und „Die andere Person“. Das zweite zeigt einen Code, das erste richtet einen blauen Strahl darauf, und ein grünes Häkchen erscheint; die Karte verschwindet vom ersten, das nun selbst einen Code zeigt; das zweite richtet sich darauf, dann wandert die Karte von einem Bildschirm zum anderen. Darunter leuchten vier nummerierte Punkte nacheinander rot auf, und der Text erklärt sie. Die Bildschirme sind auf Französisch.",
    "image_legende": "Eine Karte abgeben, in vier Schritten: Der Kartenrundgang zeigt es mit zwei Telefonen nebeneinander."
-  },
-  {
-   "version": "37.7.6",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Die Anleitung spricht über das Diktieren",
-       "texte": "Wie man diktiert, warum es Internet braucht und wohin Ihre Stimme geht."
-      },
-      {
-       "titre": "Die Anleitung erklärt, wie man eine Karte teilt, abgibt und empfängt",
-       "texte": "Und wie man den Cursor bewegt, indem man über die Leertaste gleitet."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Korrekturen",
-     "points": [
-      {
-       "titre": "Die Anleitung beschreibt die Karte, wie sie ist",
-       "texte": "Bilder neu gemacht mit der Landschaftskarte, mit dem Jahreszeitenstempel und der Seltenheitsstufe."
-      },
-      {
-       "titre": "Die Antwort zu Ihren Daten stimmt",
-       "texte": "Was Sie tippen, verlässt nie das Telefon; nur das Diktieren schickt Ihre Stimme an die Universität Luxemburg, die sie aufschreibt, ohne sie zu speichern."
-      },
-      {
-       "titre": "Die französischen Vorschläge",
-       "texte": "werden als Option in den Tastatureinstellungen vorgestellt."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

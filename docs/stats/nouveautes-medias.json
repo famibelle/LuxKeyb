@@ -506,5 +506,14 @@
         "legende": "Une carte très rare : en plus des coulisses, un nuage traverse le ciel."
       }
     ]
+  },
+  "37.9.1": {
+    "images": [
+      {
+        "image": "Screenshots/lux_theatre_partage.gif",
+        "alt": "1. La carte « Kaz », chat, très rare, ouverte dans l'appli et penchée de gauche à droite : la ville de nuit en cartons découpés, avec les coulisses en silhouette sur les côtés. 2. L'image de la même carte, telle qu'elle part avec « Partager » : les mêmes cartons, les coulisses et le nuage dans le ciel étoilé.",
+        "legende": "La carte dans l'appli, puis l'image qu'on partage : le même théâtre de papier."
+      }
+    ]
   }
 }

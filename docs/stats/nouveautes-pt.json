@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-10-29",
- "derniere_version": "37.9.0",
+ "derniere_version": "37.9.1",
  "derniere_date": "2026-10-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.9.1",
+   "date": "2026-10-29",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "Uma carta partilhada mantém o seu teatro de papel",
+       "texte": "A imagem enviada com «Partilhar» mostra os mesmos cartões que na aplicação, com os bastidores das cartas raras e a nuvem das muito raras."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_theatre_partage.gif",
+     "alt": "1. A carta «Kaz», gato, muito rara, aberta na aplicação e inclinada da esquerda para a direita: a cidade de noite em cartões recortados, com os bastidores em silhueta dos lados. 2. A imagem da mesma carta, tal como é enviada com «Partilhar»: os mesmos cartões, os bastidores e a nuvem no céu estrelado.",
+     "legende": "A carta na aplicação, depois a imagem que se partilha: o mesmo teatro de papel."
+    }
+   ],
+   "image": "Screenshots/lux_theatre_partage.gif",
+   "image_alt": "1. A carta «Kaz», gato, muito rara, aberta na aplicação e inclinada da esquerda para a direita: a cidade de noite em cartões recortados, com os bastidores em silhueta dos lados. 2. A imagem da mesma carta, tal como é enviada com «Partilhar»: os mesmos cartões, os bastidores e a nuvem no céu estrelado.",
+   "image_legende": "A carta na aplicação, depois a imagem que se partilha: o mesmo teatro de papel."
+  },
   {
    "version": "37.9.0",
    "date": "2026-10-29",
@@ -187,49 +216,6 @@
    "image": "Screenshots/lux_visite_echange.gif",
    "image_alt": "Filmado num Galaxy A21s: a bolha «Dar, passo a passo» da visita das cartas. Em cima, dois telemóveis desenhados, «Você» e «A outra pessoa». O segundo mostra um código, o primeiro aponta-lhe um feixe azul e aparece um visto verde; a carta desaparece do primeiro, que mostra por sua vez um código; o segundo aponta para ele e a carta passa de um ecrã para o outro. Em baixo, quatro pastilhas numeradas acendem-se a vermelho, e o texto explica-as. Os ecrãs estão em francês.",
    "image_legende": "Dar uma carta, em quatro passos: a visita das cartas mostra-o com dois telemóveis lado a lado."
-  },
-  {
-   "version": "37.7.6",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "O guia fala do ditado",
-       "texte": "Como ditar, porque é preciso internet e para onde vai a sua voz."
-      },
-      {
-       "titre": "O guia explica como partilhar, dar e receber uma carta",
-       "texte": "E como mover o cursor deslizando na barra de espaço."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Correções",
-     "points": [
-      {
-       "titre": "O guia descreve a carta tal como é",
-       "texte": "Imagens refeitas com a carta de paisagem, com o punção da estação e o nível de raridade."
-      },
-      {
-       "titre": "A resposta sobre os seus dados está correta",
-       "texte": "O que escreve nunca sai do telemóvel; só o ditado envia a sua voz para a Universidade do Luxemburgo, que a escreve sem a guardar."
-      },
-      {
-       "titre": "As sugestões em francês",
-       "texte": "são apresentadas como uma opção das definições do teclado."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

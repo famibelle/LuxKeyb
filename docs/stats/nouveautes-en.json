@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-10-29",
- "derniere_version": "37.9.0",
+ "derniere_version": "37.9.1",
  "derniere_date": "2026-10-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.9.1",
+   "date": "2026-10-29",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "A shared card keeps its paper theatre",
+       "texte": "The image sent with “Share” shows the same cardboard pieces as in the app, with the wings of rare cards and the cloud of very rare ones."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_theatre_partage.gif",
+     "alt": "1. The card “Kaz”, cat, very rare, open in the app and tilted from left to right: the city at night in cut-out cardboard, with silhouetted wings on the sides. 2. The image of the same card as it is sent with “Share”: the same pieces, the wings and the cloud in the starry sky.",
+     "legende": "The card in the app, then the image you share: the same paper theatre."
+    }
+   ],
+   "image": "Screenshots/lux_theatre_partage.gif",
+   "image_alt": "1. The card “Kaz”, cat, very rare, open in the app and tilted from left to right: the city at night in cut-out cardboard, with silhouetted wings on the sides. 2. The image of the same card as it is sent with “Share”: the same pieces, the wings and the cloud in the starry sky.",
+   "image_legende": "The card in the app, then the image you share: the same paper theatre."
+  },
   {
    "version": "37.9.0",
    "date": "2026-10-29",
@@ -187,49 +216,6 @@
    "image": "Screenshots/lux_visite_echange.gif",
    "image_alt": "Filmed on a Galaxy A21s: the “Giving, step by step” bubble of the card tour. At the top, two drawn phones, “You” and “The other person”. The second shows a code, the first aims a blue beam at it and a green tick appears; the card fades from the first phone, which shows a code in turn; the second aims at it, then the card moves from one screen to the other. Below, four numbered dots light up in red as the steps go by, and the text details them. The screens are in French.",
    "image_legende": "Giving a card, in four steps: the card tour shows it with two phones side by side."
-  },
-  {
-   "version": "37.7.6",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "The guide talks about dictation",
-       "texte": "How to dictate, why it needs the internet and where your voice goes."
-      },
-      {
-       "titre": "The guide explains how to share, give and receive a card",
-       "texte": "And how to move the cursor by sliding along the space bar."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Fixes",
-     "points": [
-      {
-       "titre": "The guide describes the card as it is",
-       "texte": "Pictures redone on the card with its landscape, with the season hallmark and the rarity tier."
-      },
-      {
-       "titre": "The answer about your data is accurate",
-       "texte": "What you type never leaves the phone; only dictation sends your voice to the University of Luxembourg, which writes it down without keeping it."
-      },
-      {
-       "titre": "The French suggestions",
-       "texte": "are presented as an option in the keyboard settings."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

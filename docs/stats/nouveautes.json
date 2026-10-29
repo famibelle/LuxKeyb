@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-10-29",
- "derniere_version": "37.9.0",
+ "derniere_version": "37.9.1",
  "derniere_date": "2026-10-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.9.1",
+   "date": "2026-10-29",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Une carte partagée garde son théâtre de papier",
+       "texte": "L'image envoyée avec « Partager » montre les mêmes cartons que dans l'appli, avec les coulisses des cartes rares et le nuage des très rares."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_theatre_partage.gif",
+     "alt": "1. La carte « Kaz », chat, très rare, ouverte dans l'appli et penchée de gauche à droite : la ville de nuit en cartons découpés, avec les coulisses en silhouette sur les côtés. 2. L'image de la même carte, telle qu'elle part avec « Partager » : les mêmes cartons, les coulisses et le nuage dans le ciel étoilé.",
+     "legende": "La carte dans l'appli, puis l'image qu'on partage : le même théâtre de papier."
+    }
+   ],
+   "image": "Screenshots/lux_theatre_partage.gif",
+   "image_alt": "1. La carte « Kaz », chat, très rare, ouverte dans l'appli et penchée de gauche à droite : la ville de nuit en cartons découpés, avec les coulisses en silhouette sur les côtés. 2. L'image de la même carte, telle qu'elle part avec « Partager » : les mêmes cartons, les coulisses et le nuage dans le ciel étoilé.",
+   "image_legende": "La carte dans l'appli, puis l'image qu'on partage : le même théâtre de papier."
+  },
   {
    "version": "37.9.0",
    "date": "2026-10-29",
@@ -187,49 +216,6 @@
    "image": "Screenshots/lux_visite_echange.gif",
    "image_alt": "Filmé sur un Galaxy A21s : la bulle « Donner, étape par étape » de la visite des cartes. En haut, deux téléphones dessinés, « Vous » et « L'autre personne ». Le second affiche un code, le premier le vise d'un faisceau bleu et une coche verte apparaît ; la carte s'efface du premier, qui affiche à son tour un code ; le second le vise, puis la carte passe d'un écran à l'autre. Dessous, quatre pastilles numérotées s'allument en rouge au fil des temps, et le texte les détaille : 1. La personne qui reçoit touche « Recevoir » en haut de son carnet. 2. Vous touchez « Céder », puis « Scanner son code ». 3. La carte quitte votre carnet, et un code s'affiche sur votre téléphone. 4. L'autre personne touche « Scanner la carte » et vise ce code.",
    "image_legende": "Donner une carte, en quatre temps : la visite des cartes le montre avec deux téléphones côte à côte."
-  },
-  {
-   "version": "37.7.6",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Le guide parle de la dictée",
-       "texte": "Comment dicter, pourquoi il faut Internet et où va votre voix."
-      },
-      {
-       "titre": "Le guide explique comment partager, donner et recevoir une carte",
-       "texte": "Et comment déplacer le curseur en glissant sur la barre d'espace."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Le guide décrit la carte telle qu'elle est",
-       "texte": "Images refaites sur la carte à paysage, avec le poinçon de saison et le palier de rareté."
-      },
-      {
-       "titre": "La réponse sur vos données est exacte",
-       "texte": "Ce que vous tapez ne quitte jamais le téléphone ; seule la dictée envoie votre voix à l'Université du Luxembourg, qui l'écrit sans la conserver."
-      },
-      {
-       "titre": "Les propositions en français",
-       "texte": "Sont présentées comme une option des réglages du clavier."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
   }
  ]
 }

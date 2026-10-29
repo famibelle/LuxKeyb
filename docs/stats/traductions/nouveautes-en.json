@@ -691,5 +691,25 @@
         "legende": "A very rare card: besides the wings, a cloud crosses the sky."
       }
     ]
+  },
+  "37.9.1": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Improvements",
+        "points": [
+          {
+            "titre": "A shared card keeps its paper theatre",
+            "texte": "The image sent with “Share” shows the same cardboard pieces as in the app, with the wings of rare cards and the cloud of very rare ones."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "1. The card “Kaz”, cat, very rare, open in the app and tilted from left to right: the city at night in cut-out cardboard, with silhouetted wings on the sides. 2. The image of the same card as it is sent with “Share”: the same pieces, the wings and the cloud in the starry sky.",
+        "legende": "The card in the app, then the image you share: the same paper theatre."
+      }
+    ]
   }
 }

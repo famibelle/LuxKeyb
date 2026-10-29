@@ -691,5 +691,25 @@
         "legende": "Uma carta muito rara: além dos bastidores, uma nuvem atravessa o céu."
       }
     ]
+  },
+  "37.9.1": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Melhorias",
+        "points": [
+          {
+            "titre": "Uma carta partilhada mantém o seu teatro de papel",
+            "texte": "A imagem enviada com «Partilhar» mostra os mesmos cartões que na aplicação, com os bastidores das cartas raras e a nuvem das muito raras."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "1. A carta «Kaz», gato, muito rara, aberta na aplicação e inclinada da esquerda para a direita: a cidade de noite em cartões recortados, com os bastidores em silhueta dos lados. 2. A imagem da mesma carta, tal como é enviada com «Partilhar»: os mesmos cartões, os bastidores e a nuvem no céu estrelado.",
+        "legende": "A carta na aplicação, depois a imagem que se partilha: o mesmo teatro de papel."
+      }
+    ]
   }
 }
