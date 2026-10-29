@@ -492,3 +492,29 @@ Problèmes à ajouter à la liste du § 7 :
 
 22. **Le direct ne découpe pas les paragraphes** sur une parole continue (53 à 57) : un seul
     bloc de plus de trois minutes. À placer parmi les plus graves pour l'usage en réunion.
+
+## 11. Complément : la rédaction du compte rendu, avec un faux service (même soir, 20 h 55)
+
+Aucune clé n'ayant de crédit, j'ai ajouté une seconde aide aux essais, **réservée aux builds
+debug** : si `files/essai-mistral.txt` contient une adresse, la rédaction Mistral passe par
+elle (`Redaction.creer(…, baseMistral)`, lu dans `ServiceTraitement.rediger`). Un petit serveur
+local (`adb reverse tcp:8099`) y répond comme l'API de chat de Mistral, en flux, en renvoyant
+mot à mot le compte rendu rédigé à la main (`compte-rendu-pattcast.txt`). Tout le reste est le
+vrai parcours de l'appli. Le fichier a été retiré après l'essai.
+
+GIF : `compte_rendu_creation.gif` (la création) et `compte_rendu_envoi.gif` (relire, corriger,
+envoyer).
+
+- « Rédiger à nouveau » demande confirmation : « Un nouveau compte rendu va être rédigé. Vos
+  corrections sur celui-ci seront perdues. » Clair.
+- **60-redaction-en-cours.png** : « ⏳ Compte rendu · Rédaction du compte rendu par Mistral… »,
+  et dans l'onglet, « Rédaction en cours… » au-dessus du texte qui s'écrit au fil de la
+  réponse. On voit le compte rendu se construire.
+- **61-compte-rendu-redige.png** : à la fin, « Relisez et corrigez si besoin : vos
+  modifications sont gardées. » et le compte rendu complet. La correction faite au § 9 a bien
+  été remplacée, comme annoncé.
+- La demande reçue par le faux service confirme ce que l'appli envoie : modèle
+  `mistral-large-latest`, en flux, `max_tokens` 16 000, consignes système, puis « Réunion :
+  Pattcast RTL episode 20 · Date : jeudi 29 octobre 2026, 19 h 21 · Rédigé par : Essai Medhi ·
+  Participants annoncés : Animatrice, Coanimatrice, Docteur », et la transcription par voix
+  (15 460 caractères). **Aucune durée n'est transmise** pour un fichier (n° 20 du § 7).

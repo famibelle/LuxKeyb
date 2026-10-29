@@ -205,9 +205,10 @@ object Redaction {
 
     class Erreur(val code: Code, message: String, cause: Throwable? = null) : Exception(message, cause)
 
-    fun creer(fournisseur: Fournisseur, cle: String, modele: String): Redacteur = when (fournisseur) {
+    /** [baseMistral] : builds debug seulement, un faux service local pour les essais (ServiceTraitement). */
+    fun creer(fournisseur: Fournisseur, cle: String, modele: String, baseMistral: String? = null): Redacteur = when (fournisseur) {
         Fournisseur.CLAUDE -> RedacteurClaude(cle, modele)
-        Fournisseur.MISTRAL -> RedacteurMistral(cle, modele)
+        Fournisseur.MISTRAL -> if (baseMistral != null) RedacteurMistral(cle, modele, baseMistral) else RedacteurMistral(cle, modele)
     }
 }
 

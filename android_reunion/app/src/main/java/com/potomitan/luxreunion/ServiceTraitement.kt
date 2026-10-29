@@ -15,6 +15,7 @@ import com.potomitan.luxreunion.noyau.Normaliseur
 import com.potomitan.luxreunion.noyau.Redaction
 import com.potomitan.luxreunion.noyau.Reunion
 import com.potomitan.luxreunion.noyau.TexteTranscription
+import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.concurrent.thread
 
@@ -217,7 +218,10 @@ class ServiceTraitement : Service() {
         val infos = infos(r, reglages)
         publier(r, Progres(Reunion.Etape.REDACTION, "Rédaction du compte rendu par ${reglages.fournisseur.nom}…"))
         var dernier = 0L
-        val cr = Redaction.creer(reglages.fournisseur, cle, reglages.modele).rediger(
+        // Builds debug : files/essai-mistral.txt peut donner l'adresse d'un faux service
+        // Mistral (essais sans crédit, captures). Une version publiée ne le lit jamais.
+        val baseEssai = if (BuildConfig.DEBUG) File(filesDir, "essai-mistral.txt").takeIf { it.exists() }?.readText()?.trim() else null
+        val cr = Redaction.creer(reglages.fournisseur, cle, reglages.modele, baseEssai).rediger(
             ConsignesCompteRendu.systeme(reglages.modeleCompteRendu),
             ConsignesCompteRendu.message(infos, texte, source)) { brouillon ->
             val t = System.currentTimeMillis()
