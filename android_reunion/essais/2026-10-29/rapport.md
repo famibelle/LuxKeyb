@@ -385,3 +385,54 @@ Problèmes à ajouter à la liste du § 7 :
 18. **Erreur Mistral 402 affichée brute, en anglais** (47), sous un « En attente… » et un
     « Rédaction en cours… » contradictoires. À placer juste après le n° 2 par gravité.
 19. **Bouton « Claude (Anthropic) » coupé et mal aligné** dans les réglages d'installation (42).
+
+## 9. Complément : le compte rendu, rédigé à la main (même soir, 19 h 45)
+
+La clé OpenAI fournie ensuite a le même problème que la clé Mistral : elle s'authentifie, mais
+le compte n'a plus de crédit (`insufficient_quota`, `credit_balance_exhausted`). L'appli ne
+gère de toute façon pas OpenAI ; rien n'a été codé. Clé rangée dans `.env`, hors git.
+
+Contournement décidé par Medhi : j'ai rédigé moi-même le compte rendu de l'épisode
+(`compte-rendu-pattcast.txt`), en suivant à la lettre les consignes que l'appli envoie au
+service (`ConsignesCompteRendu.systeme` et `.message` : plan, texte brut, « Voix N » tant
+qu'un nom n'est pas évident, rien d'inventé, section « À VÉRIFIER » avec horodatages), à partir
+des mêmes informations (titre, date, rédacteur « Essai Medhi », trois participants annoncés,
+voix séparées). Puis je l'ai placé dans la réunion comme l'appli le fait après une rédaction
+réussie (`compte-rendu.txt`, étape `PRETE`, erreur effacée), application arrêtée.
+
+**48-accueil-cr-pret.png** : la réunion passe à « Compte rendu prêt ».
+
+**49-compte-rendu.png** : l'onglet « Compte rendu » montre le texte, précédé de « Relisez et
+corrigez si besoin : vos modifications sont gardées. » Les titres en majuscules et les tirets
+rendent bien en texte brut.
+
+**50-correction-en-cours.png** : le texte se corrige directement. Ma correction est tombée au
+mauvais endroit (le texte avait défilé entre deux touchers), mais **elle est bien gardée** :
+après être sorti puis revenu, elle est dans `compte-rendu.txt`.
+
+**51-compte-rendu-bas.png** : en bas, « ✉️ Envoyer le compte rendu », « Copier », « Rédiger à
+nouveau » et « Supprimer cette réunion ». « Rédiger à nouveau » n'a pas été touché : il aurait
+rappelé Mistral, sans crédit.
+
+**52-envoyer-compte-rendu.png** : le partage d'Android reçoit le compte rendu corrigé, qui
+commence par « COMPTE RENDU — Pattcast RTL episode 20 », la date et le rédacteur. Le code
+passe aussi un objet « Compte rendu — Pattcast RTL episode 20 ». (Pas d'appli de messagerie sur
+l'émulateur pour aller jusqu'à l'e-mail.)
+
+Ce que la rédaction a fait ressortir :
+- **En mode fichier, la date du compte rendu est celle de l'import**, pas celle de la réunion :
+  « jeudi 29 octobre 2026, 19 h 21 » pour un podcast publié le 16 décembre 2024. Le champ
+  `dureeS` vaut aussi 0 pour un fichier : la durée n'est pas transmise, alors qu'elle est
+  connue (13 min 34). Il faudrait demander la date de la réunion dans l'écran « Un
+  enregistrement », et passer la durée.
+- **Les consignes imposent le tiret cadratin** (« COMPTE RENDU — titre », « qui — quoi — pour
+  quand »), que le projet évite ailleurs dans ses textes publics.
+- **La séparation des voix se trompe par endroits** : des questions d'animatrice se retrouvent
+  dans les répliques de l'invitée ([2:20], [4:28]), et l'inverse ([7:58]). La section « À
+  VÉRIFIER » est donc indispensable, et c'est elle qui rend le compte rendu utilisable.
+
+Problèmes à ajouter à la liste du § 7 :
+
+20. **En mode fichier, date de l'import au lieu de la date de la réunion, et durée absente**
+    (48, 49).
+21. **Le plan imposé par les consignes contient des tirets cadratins** (49).
