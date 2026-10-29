@@ -1,0 +1,15 @@
+# 2026-10-29T07:07:46Z, depuis la machine de développement (WSL), hors navigateur, branche claude/labs-transcription-luxasr @ 8000862e
+# $ time python3 .claude/skills/transcription/luxasr_transcrire.py --sonde-cors
+# Sortie standard et sortie d'erreur, telles quelles :
+
+OPTIONS /asr2          200  ACAO : *  en-têtes permis : Content-Type, Authorization
+POST /asr2             202  ACAO : — absent —
+GET  jobs/{id}         200  ACAO : *  (completed)
+GET  jobs/{id}/result  200  ACAO : *
+
+Verdict : le 202 n'a pas d'en-tête CORS — la page ne peut pas lire le job_id (SKILL.md § 4).
+
+real	0m1.028s
+user	0m0.411s
+sys	0m0.012s
+code=0

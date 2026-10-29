@@ -1,0 +1,2635 @@
+[
+  {
+    "speaker": "SPEAKER_00",
+    "start": 0.03096875,
+    "end": 119.97846875,
+    "text": "Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mupp ufänkt Arthroos ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer. Wann en Hond opsteet an en, et ass esou wéi eng rasteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech mol, da mécht en esou véier, fënnef Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass. Dat ass esou eent vun deen typeschen Unzeeche fir Arthroos. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen. Ma d'Hënn, déi maachen dat wéi vum selwen, well et hinnen einfach gutt deet. Soll ech dann direkt reagéieren oder mol ofwaarden, wann ech mierken, dass mäin Hond éischt Symptomer huet? Virbeugen ass dann u sech aus schonn besser wéi heelen. Dat heescht, wann ee wierklech ufänkt déi éischt Symptomer ze mierken, och wann dat esou ganz Klengegkeete sinn, da kann een natierlech verhënneren, dass et méi schnell schlëmmer geet. Da kann ee mat verschiddene Saachen, mat Supplementen an der Ernärung, mat Übungen, mat ganz geziilte Saachen dogéint schaffen, dass den Hond méi schnell ofbaut. Wéi ass dat dann beim Déierendokter? Wéi gëtt dat da gewéintlech do behandelt? Also mir schwätzen elo mol reng vu medezineschen hier, net vun den aneren Therapieméissegkeeten, déi et ginn. Wéi ginn. Wéi ginn. Dat hänkt elo vum Déierendokter of, de klasseschen Déierendokter, dee ganz konventionell Medezin mécht. Dee schreift da meeschtens emol vläicht e bëssen anti-inflammatoire op, wann dat elo wierklech dee ganz klasseschen ass. Et ginn awer ëmmer méi Déierendokter, déi och emol soen, hei du kanns emol mat Kraider probéieren oder probéier emol vläicht deen heite Supplement mat Kollagen. Dass déi awer och mat deene Saache scho schaffen, an et sinn och wierklech mëttlerweil vill Déierendokteren, déi soen, géi mol vläicht an den Aquafitness bei iergendeen oder géi eng Séance Osteo maachen.",
+    "words": [
+      {
+        "start": 0.03096875,
+        "end": 0.41096875,
+        "word": " Fréier",
+        "probability": 0.7787272135416666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 0.41096875,
+        "end": 0.55096875,
+        "word": " oder",
+        "probability": 0.990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 0.55096875,
+        "end": 0.93096875,
+        "word": " spéider?",
+        "probability": 0.993408203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 0.99096875,
+        "end": 1.15096875,
+        "word": " Jo.",
+        "probability": 0.98974609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 1.39096875,
+        "end": 1.73096875,
+        "word": " Okay.",
+        "probability": 0.638671875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 1.9109687499999999,
+        "end": 2.23096875,
+        "word": " Gutt,",
+        "probability": 0.91162109375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 2.35096875,
+        "end": 2.43096875,
+        "word": " wéi",
+        "probability": 0.9957682291666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 2.43096875,
+        "end": 2.71096875,
+        "word": " erkennen",
+        "probability": 0.66357421875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 2.71096875,
+        "end": 2.87096875,
+        "word": " ech",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 2.87096875,
+        "end": 2.99096875,
+        "word": " dann,",
+        "probability": 0.982421875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 3.09096875,
+        "end": 3.11096875,
+        "word": " dass",
+        "probability": 0.9921875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 3.11096875,
+        "end": 3.35096875,
+        "word": " mäi",
+        "probability": 0.994384765625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 3.35096875,
+        "end": 3.55096875,
+        "word": " Mupp",
+        "probability": 0.896728515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 3.55096875,
+        "end": 3.95096875,
+        "word": " ufänkt",
+        "probability": 0.98486328125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 3.95096875,
+        "end": 4.470968750000001,
+        "word": " Arthroos",
+        "probability": 0.673736572265625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 4.470968750000001,
+        "end": 4.63096875,
+        "word": " ze",
+        "probability": 0.9951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 4.63096875,
+        "end": 5.0709687500000005,
+        "word": " maachen?",
+        "probability": 0.997802734375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 5.63096875,
+        "end": 5.930968750000001,
+        "word": " Ma,",
+        "probability": 0.357666015625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 6.1509687500000005,
+        "end": 6.230968750000001,
+        "word": " de",
+        "probability": 0.99755859375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 6.230968750000001,
+        "end": 6.83096875,
+        "word": " Klassiker,",
+        "probability": 0.9658203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 6.970968750000001,
+        "end": 7.09096875,
+        "word": " dat",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 7.09096875,
+        "end": 7.270968750000001,
+        "word": " ass",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 7.270968750000001,
+        "end": 7.510968750000001,
+        "word": " wierklech",
+        "probability": 0.998291015625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 7.510968750000001,
+        "end": 7.63096875,
+        "word": " wann",
+        "probability": 0.529296875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 7.63096875,
+        "end": 7.730968750000001,
+        "word": " d'",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 7.730968750000001,
+        "end": 7.91096875,
+        "word": " Leit",
+        "probability": 0.9951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 7.91096875,
+        "end": 8.21096875,
+        "word": " soen,",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 8.27096875,
+        "end": 8.390968749999999,
+        "word": " ah",
+        "probability": 0.75244140625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 8.390968749999999,
+        "end": 8.71096875,
+        "word": " mäi",
+        "probability": 0.967041015625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 8.71096875,
+        "end": 8.91096875,
+        "word": " Mupp,",
+        "probability": 0.99755859375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 9.11096875,
+        "end": 9.19096875,
+        "word": " en",
+        "probability": 0.9970703125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 9.19096875,
+        "end": 9.41096875,
+        "word": " huet",
+        "probability": 0.999755859375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 9.41096875,
+        "end": 10.43096875,
+        "word": " Ulafproblemer.",
+        "probability": 0.98525390625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 10.83096875,
+        "end": 11.230968749999999,
+        "word": " Wann",
+        "probability": 0.983154296875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 11.230968749999999,
+        "end": 11.33096875,
+        "word": " en",
+        "probability": 0.958984375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 11.33096875,
+        "end": 11.51096875,
+        "word": " Hond",
+        "probability": 0.87353515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 11.51096875,
+        "end": 12.05096875,
+        "word": " opsteet",
+        "probability": 0.9964192708333334,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 12.05096875,
+        "end": 12.27096875,
+        "word": " an",
+        "probability": 0.80859375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 12.27096875,
+        "end": 12.470968749999999,
+        "word": " en,",
+        "probability": 0.8095703125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 12.51096875,
+        "end": 12.85096875,
+        "word": " et",
+        "probability": 0.82080078125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 12.85096875,
+        "end": 12.93096875,
+        "word": " ass",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 12.93096875,
+        "end": 13.03096875,
+        "word": " esou",
+        "probability": 0.917236328125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 13.03096875,
+        "end": 13.150968749999999,
+        "word": " wéi",
+        "probability": 0.9949544270833334,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 13.150968749999999,
+        "end": 13.35096875,
+        "word": " eng",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 13.35096875,
+        "end": 13.810968749999999,
+        "word": " rasteg",
+        "probability": 0.66552734375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 13.810968749999999,
+        "end": 14.310968749999999,
+        "word": " Maschinn,",
+        "probability": 0.9850260416666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 14.43096875,
+        "end": 14.890968749999999,
+        "word": " déi",
+        "probability": 0.997314453125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 14.890968749999999,
+        "end": 15.070968749999999,
+        "word": " muss",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 15.070968749999999,
+        "end": 15.71096875,
+        "word": " geuelegt",
+        "probability": 0.89453125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 15.71096875,
+        "end": 16.01096875,
+        "word": " ginn.",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 16.39096875,
+        "end": 16.79096875,
+        "word": " Da",
+        "probability": 0.82373046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 16.79096875,
+        "end": 17.07096875,
+        "word": " soen",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 17.07096875,
+        "end": 17.19096875,
+        "word": " d'",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 17.19096875,
+        "end": 17.45096875,
+        "word": " Leit",
+        "probability": 0.999755859375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 17.45096875,
+        "end": 17.73096875,
+        "word": " oft,",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 17.87096875,
+        "end": 17.99096875,
+        "word": " ah",
+        "probability": 0.888671875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 17.99096875,
+        "end": 18.19096875,
+        "word": " wann",
+        "probability": 0.98291015625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 18.19096875,
+        "end": 18.31096875,
+        "word": " en",
+        "probability": 0.9873046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 18.31096875,
+        "end": 18.75096875,
+        "word": " opsteet,",
+        "probability": 0.9954427083333334,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 18.930968749999998,
+        "end": 19.07096875,
+        "word": " da",
+        "probability": 0.80029296875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 19.07096875,
+        "end": 19.85096875,
+        "word": " streckt",
+        "probability": 0.9921875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 19.85096875,
+        "end": 19.99096875,
+        "word": " en",
+        "probability": 0.9814453125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 19.99096875,
+        "end": 20.270968749999998,
+        "word": " sech",
+        "probability": 0.998291015625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 20.270968749999998,
+        "end": 20.47096875,
+        "word": " mol,",
+        "probability": 0.56689453125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 20.53096875,
+        "end": 20.59096875,
+        "word": " da",
+        "probability": 0.99365234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 20.59096875,
+        "end": 20.83096875,
+        "word": " mécht",
+        "probability": 0.999267578125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 20.83096875,
+        "end": 20.99096875,
+        "word": " en",
+        "probability": 0.99560546875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 20.99096875,
+        "end": 21.21096875,
+        "word": " esou",
+        "probability": 0.916259765625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 21.21096875,
+        "end": 21.53096875,
+        "word": " véier,",
+        "probability": 0.9716796875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 21.65096875,
+        "end": 21.91096875,
+        "word": " fënnef",
+        "probability": 0.98173828125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 21.91096875,
+        "end": 22.19096875,
+        "word": " Schrëtt",
+        "probability": 0.9933268229166666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 22.19096875,
+        "end": 22.430968749999998,
+        "word": " ganz",
+        "probability": 0.9912109375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 22.430968749999998,
+        "end": 22.95096875,
+        "word": " steif",
+        "probability": 0.9970703125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 22.95096875,
+        "end": 23.49096875,
+        "word": " an",
+        "probability": 0.66015625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 23.49096875,
+        "end": 23.65096875,
+        "word": " dann",
+        "probability": 0.98681640625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 23.65096875,
+        "end": 24.07096875,
+        "word": " trëppelt",
+        "probability": 0.9974365234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 24.07096875,
+        "end": 24.23096875,
+        "word": " en",
+        "probability": 0.9677734375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 24.23096875,
+        "end": 24.430968749999998,
+        "word": " op",
+        "probability": 0.9755859375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 24.430968749999998,
+        "end": 24.65096875,
+        "word": " eemol",
+        "probability": 0.9817708333333334,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 24.65096875,
+        "end": 24.79096875,
+        "word": " erëm",
+        "probability": 0.9410807291666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 24.79096875,
+        "end": 25.05096875,
+        "word": " ganz",
+        "probability": 0.990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 25.05096875,
+        "end": 25.430968749999998,
+        "word": " normal,",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 25.610968749999998,
+        "end": 25.67096875,
+        "word": " wann",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 25.67096875,
+        "end": 25.79096875,
+        "word": " e",
+        "probability": 0.9951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 25.79096875,
+        "end": 25.97096875,
+        "word": " bis",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 25.97096875,
+        "end": 26.09096875,
+        "word": " un",
+        "probability": 0.8798828125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 26.09096875,
+        "end": 26.33096875,
+        "word": " ass.",
+        "probability": 0.998046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 26.55096875,
+        "end": 26.95096875,
+        "word": " Dat",
+        "probability": 0.9951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 26.95096875,
+        "end": 27.09096875,
+        "word": " ass",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 27.09096875,
+        "end": 27.19096875,
+        "word": " esou",
+        "probability": 0.9423828125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 27.19096875,
+        "end": 27.41096875,
+        "word": " eent",
+        "probability": 0.903076171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 27.41096875,
+        "end": 27.55096875,
+        "word": " vun",
+        "probability": 0.998779296875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 27.55096875,
+        "end": 27.69096875,
+        "word": " deen",
+        "probability": 0.6988525390625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 27.69096875,
+        "end": 28.31096875,
+        "word": " typeschen",
+        "probability": 0.974609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 28.31096875,
+        "end": 28.91096875,
+        "word": " Unzeeche",
+        "probability": 0.9580078125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 28.91096875,
+        "end": 29.110968749999998,
+        "word": " fir",
+        "probability": 0.99609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 29.110968749999998,
+        "end": 29.75096875,
+        "word": " Arthroos.",
+        "probability": 0.945556640625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 29.75096875,
+        "end": 30.03096875,
+        "word": " Dat",
+        "probability": 0.32373046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 30.03096875,
+        "end": 30.31096875,
+        "word": " kennen",
+        "probability": 0.99462890625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 30.31096875,
+        "end": 30.55096875,
+        "word": " ech",
+        "probability": 0.9970703125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 30.55096875,
+        "end": 30.73096875,
+        "word": " vu",
+        "probability": 0.880859375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 30.73096875,
+        "end": 30.930968749999998,
+        "word": " mir",
+        "probability": 0.99658203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 30.930968749999998,
+        "end": 31.15096875,
+        "word": " aus.",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 31.53096875,
+        "end": 31.89096875,
+        "word": " Dat",
+        "probability": 0.80615234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 31.89096875,
+        "end": 32.55096875,
+        "word": " ass",
+        "probability": 0.99609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 32.55096875,
+        "end": 32.63096875,
+        "word": " en",
+        "probability": 0.70947265625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 32.63096875,
+        "end": 32.85096875,
+        "word": " anert",
+        "probability": 0.976318359375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 32.85096875,
+        "end": 33.13096875,
+        "word": " Theema.",
+        "probability": 0.926513671875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 33.45096875,
+        "end": 33.83096875,
+        "word": " Mee",
+        "probability": 0.916748046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 33.83096875,
+        "end": 33.93096875,
+        "word": " d'",
+        "probability": 0.98486328125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 33.99096875,
+        "end": 34.37096875,
+        "word": " Strecken",
+        "probability": 0.951904296875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 34.37096875,
+        "end": 34.59096875,
+        "word": " u",
+        "probability": 0.89013671875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 34.59096875,
+        "end": 34.85096875,
+        "word": " sech",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 34.85096875,
+        "end": 34.97096875,
+        "word": " ass",
+        "probability": 0.97119140625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 34.97096875,
+        "end": 35.15096875,
+        "word": " awer",
+        "probability": 0.99462890625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 35.15096875,
+        "end": 35.29096875,
+        "word": " net",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 35.29096875,
+        "end": 35.65096875,
+        "word": " schlecht,",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 35.85096875,
+        "end": 35.97096875,
+        "word": " wann",
+        "probability": 0.9970703125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 35.97096875,
+        "end": 36.09096875,
+        "word": " d'",
+        "probability": 0.9873046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 36.09096875,
+        "end": 36.190968749999996,
+        "word": " Hënn",
+        "probability": 0.9772135416666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 36.190968749999996,
+        "end": 36.57096875,
+        "word": " opstinn.",
+        "probability": 0.978515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 36.63096875,
+        "end": 36.85096875,
+        "word": " Nee,",
+        "probability": 0.9189453125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 36.97096875,
+        "end": 37.05096875,
+        "word": " dat",
+        "probability": 0.99462890625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 37.05096875,
+        "end": 37.39096875,
+        "word": " sécher,",
+        "probability": 0.963623046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 37.49096875,
+        "end": 37.59096875,
+        "word": " dat",
+        "probability": 0.99755859375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 37.59096875,
+        "end": 37.81096875,
+        "word": " ass",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 37.81096875,
+        "end": 38.03096875,
+        "word": " ganz",
+        "probability": 0.99267578125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 38.03096875,
+        "end": 38.35096875,
+        "word": " gutt.",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 38.43096875,
+        "end": 38.47096875,
+        "word": " Dat",
+        "probability": 0.79443359375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 38.47096875,
+        "end": 38.53096875,
+        "word": " ass",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 38.53096875,
+        "end": 38.67096875,
+        "word": " wéi",
+        "probability": 0.9855143229166666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 38.67096875,
+        "end": 38.81096875,
+        "word": " bei",
+        "probability": 0.998046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 38.81096875,
+        "end": 39.05096875,
+        "word": " eis",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 39.05096875,
+        "end": 39.47096875,
+        "word": " Mënschen",
+        "probability": 0.993896484375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 39.47096875,
+        "end": 39.67096875,
+        "word": " och,",
+        "probability": 0.99658203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 39.83096875,
+        "end": 39.97096875,
+        "word": " wann",
+        "probability": 0.45654296875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 39.97096875,
+        "end": 40.11096875,
+        "word": " ee",
+        "probability": 0.988037109375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 40.11096875,
+        "end": 40.35096875,
+        "word": " moies",
+        "probability": 0.992919921875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 40.35096875,
+        "end": 40.83096875,
+        "word": " opsteet,",
+        "probability": 0.9558919270833334,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 41.09096875,
+        "end": 41.35096875,
+        "word": " gëtt",
+        "probability": 0.9830729166666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 41.35096875,
+        "end": 41.510968749999996,
+        "word": " jo",
+        "probability": 0.96875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 41.510968749999996,
+        "end": 41.87096875,
+        "word": " gesot,",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 41.89096875,
+        "end": 42.07096875,
+        "word": " soll",
+        "probability": 0.7802734375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 42.07096875,
+        "end": 42.190968749999996,
+        "word": " een",
+        "probability": 0.6689453125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 42.190968749999996,
+        "end": 42.33096875,
+        "word": " sech",
+        "probability": 0.98486328125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 42.33096875,
+        "end": 42.43096875,
+        "word": " eng",
+        "probability": 0.99560546875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 42.43096875,
+        "end": 42.57096875,
+        "word": " Kéier",
+        "probability": 0.9951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 42.57096875,
+        "end": 42.87096875,
+        "word": " gutt",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 42.87096875,
+        "end": 43.59096875,
+        "word": " duerstrecken,",
+        "probability": 0.965576171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 43.79096875,
+        "end": 43.89096875,
+        "word": " eng",
+        "probability": 0.99267578125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 43.89096875,
+        "end": 44.03096875,
+        "word": " Kéier",
+        "probability": 0.9993489583333334,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 44.03096875,
+        "end": 44.29096875,
+        "word": " déif",
+        "probability": 0.991455078125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 44.29096875,
+        "end": 45.05096875,
+        "word": " duerchootmen.",
+        "probability": 0.8111328125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 45.43096875,
+        "end": 45.53096875,
+        "word": " Ma",
+        "probability": 0.95849609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 45.53096875,
+        "end": 45.690968749999996,
+        "word": " d'",
+        "probability": 0.89990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 45.690968749999996,
+        "end": 45.87096875,
+        "word": " Hënn,",
+        "probability": 0.9833984375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 45.91096875,
+        "end": 46.05096875,
+        "word": " déi",
+        "probability": 0.99169921875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 46.05096875,
+        "end": 46.29096875,
+        "word": " maachen",
+        "probability": 0.995361328125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 46.29096875,
+        "end": 46.53096875,
+        "word": " dat",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 46.53096875,
+        "end": 47.21096875,
+        "word": " wéi",
+        "probability": 0.9694010416666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 47.21096875,
+        "end": 47.43096875,
+        "word": " vum",
+        "probability": 0.9970703125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 47.43096875,
+        "end": 47.93096875,
+        "word": " selwen,",
+        "probability": 0.961669921875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 48.05096875,
+        "end": 48.190968749999996,
+        "word": " well",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 48.190968749999996,
+        "end": 48.31096875,
+        "word": " et",
+        "probability": 0.97802734375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 48.31096875,
+        "end": 48.49096875,
+        "word": " hinnen",
+        "probability": 0.9912109375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 48.49096875,
+        "end": 48.85096875,
+        "word": " einfach",
+        "probability": 0.99609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 48.85096875,
+        "end": 49.190968749999996,
+        "word": " gutt",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 49.190968749999996,
+        "end": 49.45096875,
+        "word": " deet.",
+        "probability": 0.9755859375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 49.71096875,
+        "end": 50.13096875,
+        "word": " Soll",
+        "probability": 0.998779296875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 50.13096875,
+        "end": 50.23096875,
+        "word": " ech",
+        "probability": 0.998046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 50.23096875,
+        "end": 50.35096875,
+        "word": " dann",
+        "probability": 0.98193359375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 50.35096875,
+        "end": 50.690968749999996,
+        "word": " direkt",
+        "probability": 0.998046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 50.690968749999996,
+        "end": 51.55096875,
+        "word": " reagéieren",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 51.55096875,
+        "end": 51.89096875,
+        "word": " oder",
+        "probability": 0.96044921875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 51.89096875,
+        "end": 52.11096875,
+        "word": " mol",
+        "probability": 0.97216796875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 52.11096875,
+        "end": 52.63096875,
+        "word": " ofwaarden,",
+        "probability": 0.9689127604166666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 52.75096875,
+        "end": 52.81096875,
+        "word": " wann",
+        "probability": 0.998046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 52.81096875,
+        "end": 52.97096875,
+        "word": " ech",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 52.97096875,
+        "end": 53.33096875,
+        "word": " mierken,",
+        "probability": 0.996826171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 53.53096875,
+        "end": 53.53096875,
+        "word": " dass",
+        "probability": 0.9443359375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 53.53096875,
+        "end": 53.91096875,
+        "word": " mäin",
+        "probability": 0.960205078125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 53.91096875,
+        "end": 54.09096875,
+        "word": " Hond",
+        "probability": 0.5712890625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 54.09096875,
+        "end": 54.37096875,
+        "word": " éischt",
+        "probability": 0.8382161458333334,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 54.37096875,
+        "end": 54.81096875,
+        "word": " Symptomer",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 54.81096875,
+        "end": 55.13096875,
+        "word": " huet?",
+        "probability": 0.993408203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 55.83096875,
+        "end": 56.35096875,
+        "word": " Virbeugen",
+        "probability": 0.6971842447916666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 56.35096875,
+        "end": 56.71096875,
+        "word": " ass",
+        "probability": 0.99267578125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 56.71096875,
+        "end": 56.91096875,
+        "word": " dann",
+        "probability": 0.98046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 56.91096875,
+        "end": 57.03096875,
+        "word": " u",
+        "probability": 0.99365234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 57.03096875,
+        "end": 57.23096875,
+        "word": " sech",
+        "probability": 0.9970703125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 57.23096875,
+        "end": 57.39096875,
+        "word": " aus",
+        "probability": 0.98291015625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 57.39096875,
+        "end": 57.690968749999996,
+        "word": " schonn",
+        "probability": 0.89306640625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 57.690968749999996,
+        "end": 58.07096875,
+        "word": " besser",
+        "probability": 0.986328125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 58.07096875,
+        "end": 58.55096875,
+        "word": " wéi",
+        "probability": 0.9695638020833334,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 58.55096875,
+        "end": 59.05096875,
+        "word": " heelen.",
+        "probability": 0.78466796875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 59.17096875,
+        "end": 59.55096875,
+        "word": " Dat",
+        "probability": 0.9521484375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 59.55096875,
+        "end": 59.81096875,
+        "word": " heescht,",
+        "probability": 0.9991861979166666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 59.91096875,
+        "end": 59.99096875,
+        "word": " wann",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 59.99096875,
+        "end": 60.23096875,
+        "word": " ee",
+        "probability": 0.965087890625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 60.23096875,
+        "end": 60.690968749999996,
+        "word": " wierklech",
+        "probability": 1.0,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 60.690968749999996,
+        "end": 61.03096875,
+        "word": " ufänkt",
+        "probability": 0.99609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 61.03096875,
+        "end": 61.21096875,
+        "word": " déi",
+        "probability": 0.84521484375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 61.21096875,
+        "end": 61.47096875,
+        "word": " éischt",
+        "probability": 0.9947916666666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 61.47096875,
+        "end": 61.93096875,
+        "word": " Symptomer",
+        "probability": 0.9986979166666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 61.93096875,
+        "end": 62.190968749999996,
+        "word": " ze",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 62.190968749999996,
+        "end": 62.61096875,
+        "word": " mierken,",
+        "probability": 0.99658203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 62.75096875,
+        "end": 62.83096875,
+        "word": " och",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 62.83096875,
+        "end": 63.010968749999996,
+        "word": " wann",
+        "probability": 0.998046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 63.010968749999996,
+        "end": 63.21096875,
+        "word": " dat",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 63.21096875,
+        "end": 63.45096875,
+        "word": " esou",
+        "probability": 0.6890869140625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 63.45096875,
+        "end": 63.73096875,
+        "word": " ganz",
+        "probability": 0.9931640625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 63.73096875,
+        "end": 64.53096875,
+        "word": " Klengegkeete",
+        "probability": 0.98056640625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 64.53096875,
+        "end": 64.79096875,
+        "word": " sinn,",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 65.19096875,
+        "end": 65.35096874999999,
+        "word": " da",
+        "probability": 0.99609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 65.35096874999999,
+        "end": 65.55096875,
+        "word": " kann",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 65.55096875,
+        "end": 65.67096875,
+        "word": " een",
+        "probability": 0.81884765625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 65.67096875,
+        "end": 66.19096875,
+        "word": " natierlech",
+        "probability": 0.9993896484375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 66.19096875,
+        "end": 66.75096875,
+        "word": " verhënneren,",
+        "probability": 0.9986979166666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 66.77096875,
+        "end": 66.89096875,
+        "word": " dass",
+        "probability": 0.99658203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 66.89096875,
+        "end": 66.99096875,
+        "word": " et",
+        "probability": 0.99658203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 66.99096875,
+        "end": 67.19096875,
+        "word": " méi",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 67.19096875,
+        "end": 67.43096875,
+        "word": " schnell",
+        "probability": 0.9931640625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 67.43096875,
+        "end": 67.89096875,
+        "word": " schlëmmer",
+        "probability": 0.9896484375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 67.89096875,
+        "end": 68.17096875,
+        "word": " geet.",
+        "probability": 0.99072265625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 68.43096875,
+        "end": 68.63096875,
+        "word": " Da",
+        "probability": 0.99560546875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 68.63096875,
+        "end": 68.83096875,
+        "word": " kann",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 68.83096875,
+        "end": 69.01096875,
+        "word": " ee",
+        "probability": 0.975341796875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 69.01096875,
+        "end": 69.11096875,
+        "word": " mat",
+        "probability": 0.99365234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 69.11096875,
+        "end": 69.63096875,
+        "word": " verschiddene",
+        "probability": 0.9739583333333334,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 69.63096875,
+        "end": 70.01096875,
+        "word": " Saachen,",
+        "probability": 0.891845703125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 70.09096875,
+        "end": 70.23096875,
+        "word": " mat",
+        "probability": 0.994140625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 70.23096875,
+        "end": 70.93096875,
+        "word": " Supplementen",
+        "probability": 0.88671875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 70.93096875,
+        "end": 71.03096875,
+        "word": " an",
+        "probability": 0.99365234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 71.03096875,
+        "end": 71.19096875,
+        "word": " der",
+        "probability": 0.70361328125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 71.19096875,
+        "end": 71.67096875,
+        "word": " Ernärung,",
+        "probability": 0.982421875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 71.77096875,
+        "end": 71.89096875,
+        "word": " mat",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 71.89096875,
+        "end": 72.45096875,
+        "word": " Übungen,",
+        "probability": 0.99560546875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 73.09096875,
+        "end": 73.37096875,
+        "word": " mat",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 73.37096875,
+        "end": 73.67096875,
+        "word": " ganz",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 73.67096875,
+        "end": 74.25096875,
+        "word": " geziilte",
+        "probability": 0.9951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 74.25096875,
+        "end": 74.65096875,
+        "word": " Saachen",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 74.65096875,
+        "end": 75.07096875,
+        "word": " dogéint",
+        "probability": 0.9220377604166666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 75.07096875,
+        "end": 75.49096875,
+        "word": " schaffen,",
+        "probability": 0.99560546875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 75.83096875,
+        "end": 76.01096875,
+        "word": " dass",
+        "probability": 0.99609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 76.01096875,
+        "end": 76.23096875,
+        "word": " den",
+        "probability": 0.99365234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 76.23096875,
+        "end": 76.43096875,
+        "word": " Hond",
+        "probability": 0.9892578125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 76.43096875,
+        "end": 76.65096875,
+        "word": " méi",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 76.65096875,
+        "end": 76.93096875,
+        "word": " schnell",
+        "probability": 0.99365234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 76.93096875,
+        "end": 77.19096875,
+        "word": " ofbaut.",
+        "probability": 0.99609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 78.55096875,
+        "end": 78.91096875,
+        "word": " Wéi",
+        "probability": 0.6696268717447916,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 78.91096875,
+        "end": 78.95096875,
+        "word": " ass",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 78.95096875,
+        "end": 79.07096875,
+        "word": " dat",
+        "probability": 0.98974609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 79.07096875,
+        "end": 79.25096875,
+        "word": " dann",
+        "probability": 0.91015625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 79.25096875,
+        "end": 79.63096875,
+        "word": " beim",
+        "probability": 0.80615234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 79.63096875,
+        "end": 80.23096875,
+        "word": " Déierendokter?",
+        "probability": 0.9927734375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 80.23096875,
+        "end": 80.35096874999999,
+        "word": " Wéi",
+        "probability": 0.9977213541666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 80.35096874999999,
+        "end": 80.49096875,
+        "word": " gëtt",
+        "probability": 0.9986979166666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 80.49096875,
+        "end": 80.59096875,
+        "word": " dat",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 80.59096875,
+        "end": 80.69096875,
+        "word": " da",
+        "probability": 0.98095703125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 80.69096875,
+        "end": 81.27096875,
+        "word": " gewéintlech",
+        "probability": 0.9484375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 81.27096875,
+        "end": 81.39096875,
+        "word": " do",
+        "probability": 0.91552734375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 81.39096875,
+        "end": 81.97096875,
+        "word": " behandelt?",
+        "probability": 0.995361328125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 82.05096875,
+        "end": 82.19096875,
+        "word": " Also",
+        "probability": 0.98828125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 82.19096875,
+        "end": 82.33096875,
+        "word": " mir",
+        "probability": 0.9404296875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 82.33096875,
+        "end": 82.59096875,
+        "word": " schwätzen",
+        "probability": 0.93994140625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 82.59096875,
+        "end": 82.77096875,
+        "word": " elo",
+        "probability": 0.93896484375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 82.77096875,
+        "end": 83.01096875,
+        "word": " mol",
+        "probability": 0.990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 83.01096875,
+        "end": 83.37096875,
+        "word": " reng",
+        "probability": 0.980224609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 83.37096875,
+        "end": 83.49096875,
+        "word": " vu",
+        "probability": 0.80224609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 83.49096875,
+        "end": 84.19096875,
+        "word": " medezineschen",
+        "probability": 0.904296875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 84.19096875,
+        "end": 84.39096875,
+        "word": " hier,",
+        "probability": 0.63037109375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 84.55096875,
+        "end": 84.73096875,
+        "word": " net",
+        "probability": 0.99609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 84.73096875,
+        "end": 84.95096875,
+        "word": " vun",
+        "probability": 0.998779296875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 84.95096875,
+        "end": 85.11096875,
+        "word": " den",
+        "probability": 0.998046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 85.11096875,
+        "end": 85.93096875,
+        "word": " aneren",
+        "probability": 0.99072265625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 85.93096875,
+        "end": 86.91096875,
+        "word": " Therapieméissegkeeten,",
+        "probability": 0.9236188616071429,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 87.01096875,
+        "end": 87.15096875,
+        "word": " déi",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 87.15096875,
+        "end": 87.15096875,
+        "word": " et",
+        "probability": 0.9970703125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 87.15096875,
+        "end": 87.39096875,
+        "word": " ginn.",
+        "probability": 0.996826171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 87.39096875,
+        "end": 87.41096875,
+        "word": " Wéi",
+        "probability": 0.4749774932861328,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 87.41096875,
+        "end": 87.41096875,
+        "word": " ginn.",
+        "probability": 0.1536407470703125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 87.41096875,
+        "end": 87.43096875,
+        "word": " Wéi",
+        "probability": 0.4618290265401204,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 87.43096875,
+        "end": 87.46034375,
+        "word": " ginn.",
+        "probability": 0.1356658935546875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 88.15221875,
+        "end": 88.49221875,
+        "word": "Dat",
+        "probability": 0.93115234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 88.49221875,
+        "end": 88.79221875,
+        "word": " hänkt",
+        "probability": 0.9677734375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 88.79221875,
+        "end": 88.89221875,
+        "word": " elo",
+        "probability": 0.95947265625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 88.89221875,
+        "end": 89.11221875,
+        "word": " vum",
+        "probability": 0.98974609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 89.11221875,
+        "end": 89.71221875,
+        "word": " Déierendokter",
+        "probability": 0.9958984375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 89.71221875,
+        "end": 89.97221875,
+        "word": " of,",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 90.11221875,
+        "end": 90.27221875000001,
+        "word": " de",
+        "probability": 0.9306640625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 90.27221875000001,
+        "end": 90.85221875,
+        "word": " klasseschen",
+        "probability": 0.8080240885416666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 90.85221875,
+        "end": 91.67221875,
+        "word": " Déierendokter,",
+        "probability": 0.99931640625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 91.79221875,
+        "end": 92.03221875,
+        "word": " dee",
+        "probability": 0.96533203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 92.03221875,
+        "end": 92.37221875,
+        "word": " ganz",
+        "probability": 0.994140625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 92.37221875,
+        "end": 93.15221875,
+        "word": " konventionell",
+        "probability": 0.8919270833333334,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 93.15221875,
+        "end": 93.63221875,
+        "word": " Medezin",
+        "probability": 0.9319661458333334,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 93.63221875,
+        "end": 93.95721875000001,
+        "word": " mécht.",
+        "probability": 0.997802734375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 94.46346875,
+        "end": 94.62346875,
+        "word": "Dee",
+        "probability": 0.724365234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 94.62346875,
+        "end": 95.12346875,
+        "word": " schreift",
+        "probability": 0.94189453125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 95.12346875,
+        "end": 95.26346875,
+        "word": " da",
+        "probability": 0.90869140625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 95.26346875,
+        "end": 95.72346875000001,
+        "word": " meeschtens",
+        "probability": 0.997802734375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 95.72346875000001,
+        "end": 95.90346875,
+        "word": " emol",
+        "probability": 0.7476806640625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 95.90346875,
+        "end": 96.14346875000001,
+        "word": " vläicht",
+        "probability": 0.9039713541666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 96.14346875000001,
+        "end": 96.20346875,
+        "word": " e",
+        "probability": 0.91259765625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 96.20346875,
+        "end": 96.38346875,
+        "word": " bëssen",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 96.38346875,
+        "end": 96.66346875,
+        "word": " anti",
+        "probability": 0.89208984375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 96.66346875,
+        "end": 97.34346875,
+        "word": "-inflammatoire",
+        "probability": 0.8916015625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 97.34346875,
+        "end": 97.64346875000001,
+        "word": " op,",
+        "probability": 0.9970703125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 97.82346875,
+        "end": 98.24346875,
+        "word": " wann",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 98.24346875,
+        "end": 98.38346875,
+        "word": " dat",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 98.38346875,
+        "end": 98.52346875,
+        "word": " elo",
+        "probability": 0.70654296875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 98.52346875,
+        "end": 98.78346875,
+        "word": " wierklech",
+        "probability": 0.9993896484375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 98.78346875,
+        "end": 98.96346875,
+        "word": " dee",
+        "probability": 0.991455078125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 98.96346875,
+        "end": 99.18346875,
+        "word": " ganz",
+        "probability": 0.99560546875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 99.18346875,
+        "end": 99.76346875,
+        "word": " klasseschen",
+        "probability": 0.92236328125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 99.76346875,
+        "end": 100.10346875,
+        "word": " ass.",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 100.32346875,
+        "end": 100.50346875000001,
+        "word": " Et",
+        "probability": 0.95849609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 100.50346875000001,
+        "end": 100.70346875,
+        "word": " ginn",
+        "probability": 0.992919921875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 100.70346875,
+        "end": 100.86346875000001,
+        "word": " awer",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 100.86346875000001,
+        "end": 101.06346875,
+        "word": " ëmmer",
+        "probability": 0.99267578125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 101.06346875,
+        "end": 101.30346875000001,
+        "word": " méi",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 101.30346875000001,
+        "end": 101.94346875000001,
+        "word": " Déierendokter,",
+        "probability": 0.99599609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 102.04346875,
+        "end": 102.12346875,
+        "word": " déi",
+        "probability": 0.999267578125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 102.12346875,
+        "end": 102.20346875,
+        "word": " och",
+        "probability": 0.99560546875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 102.20346875,
+        "end": 102.42346875,
+        "word": " emol",
+        "probability": 0.904541015625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 102.42346875,
+        "end": 102.84346875,
+        "word": " soen,",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 103.10346875,
+        "end": 103.36346875000001,
+        "word": " hei",
+        "probability": 0.96484375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 103.36346875000001,
+        "end": 103.42346875000001,
+        "word": " du",
+        "probability": 0.79150390625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 103.42346875000001,
+        "end": 103.70346875,
+        "word": " kanns",
+        "probability": 0.964599609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 103.70346875,
+        "end": 103.80346875000001,
+        "word": " emol",
+        "probability": 0.994140625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 103.80346875000001,
+        "end": 103.98346875,
+        "word": " mat",
+        "probability": 0.9970703125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 103.98346875,
+        "end": 104.34346875,
+        "word": " Kraider",
+        "probability": 0.4453125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 104.34346875,
+        "end": 105.10346875,
+        "word": " probéieren",
+        "probability": 0.9991861979166666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 105.10346875,
+        "end": 105.46346875,
+        "word": " oder",
+        "probability": 0.8662109375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 105.46346875,
+        "end": 105.94346875000001,
+        "word": " probéier",
+        "probability": 0.9654947916666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 105.94346875000001,
+        "end": 106.14346875000001,
+        "word": " emol",
+        "probability": 0.971923828125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 106.14346875000001,
+        "end": 106.42346875000001,
+        "word": " vläicht",
+        "probability": 0.9850260416666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 106.42346875000001,
+        "end": 106.58346875000001,
+        "word": " deen",
+        "probability": 0.926025390625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 106.58346875000001,
+        "end": 106.86346875000001,
+        "word": " heite",
+        "probability": 0.9033203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 106.86346875000001,
+        "end": 107.48346875,
+        "word": " Supplement",
+        "probability": 0.97900390625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 107.48346875,
+        "end": 107.70346875,
+        "word": " mat",
+        "probability": 0.98876953125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 107.70346875,
+        "end": 108.41909375,
+        "word": " Kollagen.",
+        "probability": 0.94921875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 109.17846875000001,
+        "end": 109.41846875,
+        "word": " Dass",
+        "probability": 0.2418212890625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 109.41846875,
+        "end": 109.63846875,
+        "word": " déi",
+        "probability": 0.997802734375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 109.63846875,
+        "end": 109.87846875000001,
+        "word": " awer",
+        "probability": 0.9658203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 109.87846875000001,
+        "end": 109.95846875000001,
+        "word": " och",
+        "probability": 0.98388671875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 109.95846875000001,
+        "end": 110.13846875,
+        "word": " mat",
+        "probability": 0.9931640625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 110.13846875,
+        "end": 110.43846875000001,
+        "word": " deene",
+        "probability": 0.995361328125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 110.43846875000001,
+        "end": 110.79846875000001,
+        "word": " Saache",
+        "probability": 0.97802734375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 110.79846875000001,
+        "end": 111.03846875,
+        "word": " scho",
+        "probability": 0.9921875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 111.03846875,
+        "end": 111.37846875000001,
+        "word": " schaffen,",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 111.61846875,
+        "end": 111.73846875000001,
+        "word": " an",
+        "probability": 0.99365234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 111.73846875000001,
+        "end": 111.87846875000001,
+        "word": " et",
+        "probability": 0.99658203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 111.87846875000001,
+        "end": 112.03846875,
+        "word": " sinn",
+        "probability": 0.9990234375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 112.03846875,
+        "end": 112.19846875,
+        "word": " och",
+        "probability": 0.99658203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 112.19846875,
+        "end": 112.51846875000001,
+        "word": " wierklech",
+        "probability": 0.998046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 112.51846875000001,
+        "end": 112.97846875,
+        "word": " mëttlerweil",
+        "probability": 0.998046875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 112.97846875,
+        "end": 113.17846875000001,
+        "word": " vill",
+        "probability": 0.99951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 113.17846875000001,
+        "end": 113.95846875000001,
+        "word": " Déierendokteren,",
+        "probability": 0.9505208333333334,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 114.03846875,
+        "end": 114.11846875,
+        "word": " déi",
+        "probability": 0.999755859375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 114.11846875,
+        "end": 114.41846875,
+        "word": " soen,",
+        "probability": 0.993408203125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 114.55846875,
+        "end": 114.97846875,
+        "word": " géi",
+        "probability": 0.88525390625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 114.97846875,
+        "end": 115.13846875,
+        "word": " mol",
+        "probability": 0.76025390625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 115.13846875,
+        "end": 115.43846875000001,
+        "word": " vläicht",
+        "probability": 0.9806315104166666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 115.43846875000001,
+        "end": 115.53846875,
+        "word": " an",
+        "probability": 0.994140625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 115.53846875,
+        "end": 115.65846875000001,
+        "word": " den",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 115.65846875000001,
+        "end": 116.47846875,
+        "word": " Aquafitness",
+        "probability": 0.8605143229166666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 116.47846875,
+        "end": 116.79846875000001,
+        "word": " bei",
+        "probability": 0.9951171875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 116.79846875000001,
+        "end": 117.45846875000001,
+        "word": " iergendeen",
+        "probability": 0.97607421875,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 117.45846875000001,
+        "end": 117.63846875000002,
+        "word": " oder",
+        "probability": 0.92578125,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 117.63846875000002,
+        "end": 117.91846875,
+        "word": " géi",
+        "probability": 0.995849609375,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 117.91846875,
+        "end": 118.03846875,
+        "word": " eng",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 118.03846875,
+        "end": 118.41846875,
+        "word": " Séance",
+        "probability": 0.842041015625,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 118.41846875,
+        "end": 118.91846875,
+        "word": " Osteo",
+        "probability": 0.9127604166666666,
+        "speaker": "SPEAKER_00"
+      },
+      {
+        "start": 118.91846875,
+        "end": 119.97846875,
+        "word": " maachen.",
+        "probability": 0.99853515625,
+        "speaker": "SPEAKER_00"
+      }
+    ]
+  }
+]
