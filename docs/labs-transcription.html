@@ -53,7 +53,8 @@ code{font-family:var(--mono);font-size:13px;background:var(--stripe);padding:1px
 
 /* L'application Réunion : un GIF du parcours, puis une galerie d'écrans qui
    passe sur plusieurs lignes au téléphone. */
-.app-gif{margin:16px auto;max-width:320px;text-align:center;}
+.app-gifs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:16px 0;}
+.app-gif{margin:0 auto;max-width:320px;text-align:center;}
 .app-gif img,.app-galerie img{width:100%;height:auto;display:block;border:1px solid var(--line);
   border-radius:10px;background:var(--card);}
 .app-gif figcaption,.app-galerie figcaption{margin-top:6px;font-size:12.5px;color:var(--ink-soft);line-height:1.35;text-align:left;}
@@ -530,12 +531,20 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <li data-i18n="app-4"><strong>Un enregistrement déjà fait</strong>, audio ou vidéo, se transcrit de la même façon.</li>
   </ul>
 
+<div class="app-gifs">
   <figure class="app-gif">
     <img src="Screenshots/reunion_parcours.gif" width="432" height="1020" loading="lazy"
          alt="Animation en cinq écrans de l'application Lëtzebuergesch Réunion : 1. l'accueil, avec « Réunion en direct » et « Un enregistrement » ; 2. le fichier choisi, son titre et trois participants ; 3. le suivi, « Transcription de l'enregistrement, encore environ 1 min » ; 4. la transcription, chaque réplique précédée de son minutage et de sa voix (Voix 1, Voix 2, Voix 3) ; 5. le résumé du compte rendu"
          data-i18n-alt="app-gif-alt">
     <figcaption data-i18n="app-gif-cap">Le parcours d'un enregistrement, du fichier au compte rendu.</figcaption>
   </figure>
+  <figure class="app-gif">
+    <img src="Screenshots/reunion_direct_traduction.gif" width="360" height="850" loading="lazy"
+         alt="Animation de l'écran du direct : la traduction française s'écrit en grand au fil de la parole, le luxembourgeois en italique dessous ; on remonte dans le texte et le bouton « Revenir au direct » apparaît ; le réseau est coupé, le bandeau dit « Pas de réseau · j'enregistre quand même » ; au retour du réseau, la traduction reprend ; après la réunion, l'onglet Traduction"
+         data-i18n-alt="app-gif2-alt">
+    <figcaption data-i18n="app-gif2-cap">Pendant la réunion : la traduction en direct, une coupure de réseau, la reprise.</figcaption>
+  </figure>
+  </div>
 
   <div class="app-galerie">
     <figure>
@@ -545,8 +554,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     </figure>
     <figure>
       <img src="Screenshots/reunion_direct.png" width="432" height="970" loading="lazy"
-           alt="Écran du direct : « J'écoute et je traduis », le chronomètre, les boutons A− et A+ pour la taille du texte, et en bas le bouton rouge « Terminer la réunion »" data-i18n-alt="app-img2-alt">
-      <figcaption data-i18n="app-img2">Le direct : le texte grossit ou rapetisse d'un geste.</figcaption>
+           alt="Écran du direct : « J'écoute et je traduis », le chronomètre et la jauge du son, les boutons A− et A+, puis la traduction française en grand et le luxembourgeois en italique dessous" data-i18n-alt="app-img2-alt">
+      <figcaption data-i18n="app-img2">Le direct : le français en grand, le luxembourgeois dessous.</figcaption>
     </figure>
     <figure>
       <img src="Screenshots/reunion_suivi.png" width="432" height="970" loading="lazy"
@@ -571,7 +580,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     (13 minutes, trois voix, © CLT-UFA) : la transcription est revenue en une
     minute environ, les trois voix séparées. Le compte rendu montré a été rédigé
     à la main, en suivant les consignes que l'application donne au service de
-    rédaction. La traduction en direct reste à essayer sur un vrai téléphone.
+    rédaction. Pour le direct, le micro de l'émulateur ne transmettant pas le son, l'épisode a
+    été lu par l'application à la place du micro ; la liaison avec LuxASR et la traduction
+    sont les vraies.
   </p>
   <p class="muted" data-i18n="app-donnees">
     🔒 Le son part à LuxASR, à l'Université du Luxembourg ; le texte de la
@@ -738,17 +749,19 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'app-4': '<strong>An existing recording</strong>, audio or video, is transcribed the same way.',
     'app-gif-cap': 'A recording’s journey, from the file to the minutes.',
     'app-gif-alt': 'Five-screen animation of the Lëtzebuergesch Réunion app: 1. the home screen, with “Réunion en direct” (live meeting) and “Un enregistrement” (a recording); 2. the chosen file, its title and three participants; 3. progress, “transcription, about 1 min left”; 4. the transcript, each line preceded by its timing and its voice (Voix 1, Voix 2, Voix 3); 5. the summary of the minutes',
+    'app-gif2-cap': 'During the meeting: live translation, a network cut, and the recovery.',
+    'app-gif2-alt': 'Animation of the live screen: the French translation appears in large type as people speak, with the Luxembourgish in italics below; scrolling up shows the “Revenir au direct” (back to live) button; the network is cut and the banner says “Pas de réseau · j’enregistre quand même” (no network, still recording); when the network returns, the translation resumes; after the meeting, the Traduction tab',
     'app-img1': 'Two ways to start.',
     'app-img1-alt': 'Home screen: two cards, “Réunion en direct” with the “Commencer une réunion” button, and “Un enregistrement” with “Choisir un fichier”',
-    'app-img2': 'Live: make the text bigger or smaller with one tap.',
-    'app-img2-alt': 'Live screen: “J’écoute et je traduis” (listening and translating), the timer, the A− and A+ text-size buttons, and the red “Terminer la réunion” button at the bottom',
+    'app-img2': 'Live: French in large type, Luxembourgish below.',
+    'app-img2-alt': 'Live screen: “J’écoute et je traduis” (listening and translating), the timer and sound meter, the A− and A+ buttons, then the French translation in large type with the Luxembourgish in italics below',
     'app-img3': 'Each step is shown, and you can close the app while you wait.',
     'app-img3-alt': 'Progress: “Fichier reçu” ticked, full transcription under way, about one minute left',
     'app-img4': 'Who said what, and when.',
     'app-img4-alt': 'Luxembourgish transcript, each line preceded by its timing and its voice: Voix 1, Voix 3, Voix 2',
     'app-img5': 'The minutes, to read and correct before sending.',
     'app-img5-alt': 'Minutes in French, with SUMMARY then POINTS DISCUSSED sections, as plain text ready to paste into an e-mail',
-    'app-essai': 'These images come from a test on an emulator on 29 October 2026, with episode 20 of RTL Radio Lëtzebuerg’s “Pattcast” podcast (13 minutes, three voices, © CLT-UFA): the transcript came back in about a minute, with the three voices separated. The minutes shown were written by hand, following the instructions the app gives to the writing service. Live translation is still to be tried on a real phone.',
+    'app-essai': 'These images come from a test on an emulator on 29 October 2026, with episode 20 of RTL Radio Lëtzebuerg’s “Pattcast” podcast (13 minutes, three voices, © CLT-UFA): the transcript came back in about a minute, with the three voices separated. The minutes shown were written by hand, following the instructions the app gives to the writing service. For the live part, since the emulator’s microphone does not pass sound through, the app played the episode in place of the microphone; the link to LuxASR and the translation are the real ones.',
     'app-donnees': '🔒 The sound goes to LuxASR, at the University of Luxembourg; the text of the meeting goes to the service that writes the minutes (Claude, by Anthropic, or Mistral, as chosen by whoever sets up the app). Tell participants the meeting is being recorded, and ask your employer’s permission. The app cannot be downloaded yet: it is in testing.',
     'feedback-h2': 'Tell us how it goes',
     'feedback-p': 'Labs is for trying things before deciding. The most useful thing to send us: <strong>the kind of recording, its length, the number of voices, and what was separated well or badly</strong>.',
