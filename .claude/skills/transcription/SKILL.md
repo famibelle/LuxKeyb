@@ -248,11 +248,24 @@ Ce que fait la page en attendant :
   illisible donne `CORS` (`fichierParti: true`), un envoi coupé donne
   `RESEAU` (les deux rendent `status 0`).
 - Sur `CORS`, **aucun nouvel essai** (chaque essai crée un travail inutile
-  chez eux) ; elle renvoie vers le formulaire de <https://luxasr.uni.lu> puis
-  « Ouvrir un résultat ». Un échec CORS de moins de sept jours est rappelé au
-  visiteur avant son essai suivant.
+  chez eux). La page ouvre la carte **« ⌨️ Avec curl, depuis votre
+  ordinateur »** : `commandeCurl()` écrit, pour le fichier et les réglages
+  choisis, une commande à coller dans un terminal (bash/zsh pour macOS et
+  Linux, PowerShell avec le `curl.exe` de Windows 10 et suivants). Elle suit
+  les étapes A, B et C de leur documentation, avec le même sondage que la
+  page, et écrit le résultat en `NOM.luxasr.json` à côté du fichier ; le
+  visiteur l'ouvre ensuite dans la page, qui retrouve voix, lecteur et
+  exports. `curl` n'est pas soumis à CORS, et rien ne passe par un tiers.
+  La variante bash est testée de bout en bout (exécutée contre le faux
+  service, JSON rouvert dans la page) ; **la variante PowerShell n'a été
+  vérifiée que par sa forme**, faute de PowerShell ici : à essayer sur un
+  vrai Windows. Le formulaire de <https://luxasr.uni.lu> reste l'autre
+  recours. Un échec CORS de moins de sept jours est rappelé au visiteur
+  avant son essai suivant.
 - Pas de mandataire maison pour contourner : l'audio passerait par un tiers
-  non déclaré.
+  non déclaré. « Faire le curl depuis GitHub Pages » est impossible : le site
+  n'exécute rien côté serveur, et dans le navigateur seul `fetch` existe,
+  soumis à CORS. D'où la commande à exécuter chez soi.
 
 Vérifier où en est le service (crée un travail d'une demi-seconde de silence) :
 

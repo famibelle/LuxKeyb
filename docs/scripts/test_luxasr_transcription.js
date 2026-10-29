@@ -14,6 +14,7 @@
 'use strict';
 
 const assert = require('assert');
+const { spawnSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -271,6 +272,30 @@ test('Horloge et type de contenu', () => {
   assert.strictEqual(T.typeAudio({ type: 'application/pdf', name: 'a.pdf' }), null);
   assert.ok(T.estResultat({ name: 'resultat.JSON' }));
   assert.ok(!T.estResultat({ name: 'son.wav' }));
+});
+
+test('Commande curl (macOS, Linux) : requête, guillemets, syntaxe bash', () => {
+  const o = { nom: "D'Interview vum 3. Mee!.m4a", type: 'audio/mp4', diarisation: true, locuteurs: '2',
+              prompt: 'Esch-Uelzecht, Lydie Polfer!' };
+  const c = T.commandeCurl(o, 'unix');
+  assert.ok(c.includes("'https://luxasr.uni.lu/asr2?language=lb&diarization=Enabled&outfmt=json&num_speakers=2" +
+                       "&prompt=Esch-Uelzecht%2C%20Lydie%20Polfer%21'"), 'adresse de soumission, prompt encodé, « ! » compris');
+  assert.ok(c.includes("f='D'\\''Interview vum 3. Mee!.m4a'"), 'apostrophe du nom échappée pour bash');
+  assert.ok(c.includes("-o 'D'\\''Interview vum 3. Mee!.luxasr.json'"), 'résultat écrit à côté, en .luxasr.json');
+  assert.ok(c.includes("-H 'Content-Type: audio/mp4'") && c.includes('X-Filename'), 'en-têtes de la documentation');
+  const sans = T.commandeCurl({ nom: 'Réunion.mp3', type: 'audio/mpeg', diarisation: false, locuteurs: '3' }, 'unix');
+  assert.ok(sans.includes('diarization=Disabled') && !sans.includes('num_speakers'), 'pas de nombre de voix sans séparation');
+  assert.ok(!sans.includes('X-Filename'), 'pas de X-Filename pour un nom non ASCII');
+  const r = spawnSync('bash', ['-n', '-c', c]);
+  if (!r.error) assert.strictEqual(r.status, 0, 'bash -n : ' + String(r.stderr));
+});
+
+test('Commande curl (Windows) : PowerShell et curl.exe', () => {
+  const c = T.commandeCurl({ nom: "D'Interview.m4a", type: 'audio/mp4', diarisation: true }, 'windows');
+  assert.ok(c.startsWith("& { $f = 'D''Interview.m4a'"), 'apostrophe doublée pour PowerShell');
+  assert.ok(c.includes('curl.exe -sS -X POST') && c.includes('ConvertFrom-Json'), 'curl.exe de Windows, JSON lu par PowerShell');
+  assert.ok(c.includes("-o 'D''Interview.luxasr.json'"), 'résultat écrit à côté');
+  assert.strictEqual((c.match(/\{/g) || []).length, (c.match(/\}/g) || []).length, 'accolades équilibrées');
 });
 
 let echecs = 0;
