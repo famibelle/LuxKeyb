@@ -77,7 +77,10 @@ Deux voies :
    « Cette carte » ou « La carte Fierkelsmaart ». L'appli dessine le recto
    avec son propre code (`CarteCarnet.complete(…, impression = true)` : écus
    COÛT et TYPE, pouvoir des cartes spéciales, sans médaillon, saison, sceau
-   ni plume), à 600 dpi, 69 × 94 mm fond perdu compris (1630 × 2220 px), et
+   ni plume ; depuis le 2026-10-29, le paysage en cartons du théâtre de
+   papier, figés, par `CarteOrnee.enTheatre()` : coulisses des rares, nuage
+   des très rares, voir la skill `direction-artistique`), à 600 dpi,
+   69 × 94 mm fond perdu compris (1630 × 2220 px), et
    l'envoie par le partage Android. La carte de l'appli (300 × 440) est plus
    étroite que le poker : posée sur 84 mm de haut (à 86, la ligne du bas
    touchait la limite de sécurité), le reste est le métal du palier.
