@@ -314,8 +314,72 @@
     return debuts;
   }
 
+  /*
+   * Boucle de Whisper : un motif de 1 à 4 mots répété au moins BOUCLE_MIN fois
+   * d'affilée. Relevé le 29 octobre 2026 avec num_speakers=2 : « deen vun »
+   * 18 fois en 0,6 s, sur des mots de durée nulle, à la place de « typeschen
+   * Unzeeche ». C'est du texte inventé : on garde la première occurrence,
+   * comme RepetitionTrimmer.kt pour la dictée, on le signale (`doc.boucles`),
+   * et la réponse brute reste intacte. Le seuil est plus haut que celui de la
+   * dictée (3 ou 4 répétitions) : ici la boucle peut tomber au milieu du
+   * texte, où une vraie répétition (« nee, nee, nee ») doit survivre.
+   */
+  var BOUCLE_MIN = 5, BOUCLE_BLOC_MAX = 4;
+
+  function cle(m) { return String(m).toLowerCase().replace(/[^\p{L}\p{N}'’-]/gu, ''); }
+
+  function memeBloc(c, a, b, n) {
+    for (var k = 0; k < n; k++) if (c[a + k] !== c[b + k]) return false;
+    return true;
+  }
+
+  /** Les boucles d'une suite de clés : `[{ i, bloc, fois }]`, `i` au début du motif. */
+  function boucles(cles) {
+    var res = [], i = 0;
+    while (i < cles.length) {
+      var trouve = null;
+      for (var b = 1; b <= BOUCLE_BLOC_MAX && !trouve; b++) {
+        var n = 1;
+        while (i + (n + 1) * b <= cles.length && memeBloc(cles, i, i + n * b, b)) n++;
+        if (n >= BOUCLE_MIN && cles[i]) trouve = { i: i, bloc: b, fois: n };
+      }
+      if (trouve) { res.push(trouve); i += trouve.bloc * trouve.fois; } else i++;
+    }
+    return res;
+  }
+
+  /**
+   * Retire de [texte] les répétitions de chaque boucle, de la fin de la
+   * première occurrence à la fin de la dernière. [jetons] : `{ debut, fin, cle }`,
+   * positions dans le texte. Rend `null` sans boucle, sinon
+   * `{ texte, retires }`, `retires` les indices des jetons ôtés.
+   */
+  function sansBoucles(texte, jetons, journal, temps) {
+    var trouvees = boucles(jetons.map(function (j) { return j.cle; }));
+    if (!trouvees.length) return null;
+    var morceaux = [], pos = 0, retires = {};
+    trouvees.forEach(function (r) {
+      var garde = jetons[r.i + r.bloc - 1], dernier = jetons[r.i + r.bloc * r.fois - 1];
+      morceaux.push(texte.slice(pos, garde.fin));
+      pos = dernier.fin;
+      for (var k = r.i + r.bloc; k < r.i + r.bloc * r.fois; k++) retires[k] = true;
+      journal.push({ debut: temps(r.i), fois: r.fois,
+                     motif: nettoyer(texte.slice(jetons[r.i].debut, garde.fin)) });
+    });
+    morceaux.push(texte.slice(pos));
+    return { texte: nettoyer(morceaux.join('')), retires: retires };
+  }
+
+  /** Les boucles d'un texte sans mots horodatés (segment nu, SRT, VTT, texte). */
+  function reduireTexte(texte, journal, debut) {
+    var jetons = [], re = /[\p{L}\p{N}'’-]+/gu, m;
+    while ((m = re.exec(texte))) jetons.push({ debut: m.index, fin: m.index + m[0].length, cle: cle(m[0]) });
+    var r = sansBoucles(texte, jetons, journal, function () { return debut; });
+    return r ? r.texte : texte;
+  }
+
   /** Un segment brut → un ou plusieurs segments normalisés. */
-  function segmentsDe(el) {
+  function segmentsDe(el, journal) {
     if (typeof el === 'string') el = { text: el };
     if (!el || typeof el !== 'object') return [];
     var loc = libelle(premier(el, ['speaker', 'spk', 'speaker_id', 'speaker_label', 'label']));
@@ -330,7 +394,26 @@
       var p = PREFIXE.exec(texte);
       if (p) { loc = p[1]; texte = texte.slice(p[0].length); }
     }
-    if (!mots.length) return texte ? [{ debut: debut, fin: fin, locuteur: loc, texte: texte }] : [];
+    if (!mots.length) {
+      return texte ? [{ debut: debut, fin: fin, locuteur: loc, texte: reduireTexte(texte, journal, debut) }] : [];
+    }
+
+    // Les mots placés dans le texte ; s'ils ne s'y retrouvent pas, on repart
+    // des mots recollés. Les boucles se retirent ici, avant le découpage en
+    // phrases, qui pourrait couper une boucle en deux.
+    var debuts = aligner(texte, mots);
+    if (!debuts) { texte = recoller(mots); debuts = aligner(texte, mots); }
+    if (debuts) {
+      var sb = sansBoucles(texte, mots.map(function (w, k) {
+        var m = motDe(w);
+        return { debut: debuts[k], fin: debuts[k] + m.length, cle: cle(m) };
+      }), journal, function (k) { return secondes(premier(mots[k], ['start', 'begin'])); });
+      if (sb) {
+        mots = mots.filter(function (w, k) { return !sb.retires[k]; });
+        texte = sb.texte;
+        debuts = aligner(texte, mots);
+      }
+    }
 
     // Les mots portent le locuteur (WhisperX) : un segment peut en couvrir
     // deux. On coupe à chaque changement — un mot sans locuteur suit le
@@ -361,7 +444,6 @@
                 duree >= PHRASE_MAX_S || g.car >= PHRASE_MAX_CAR;
     });
 
-    var debuts = aligner(texte, mots);
     return groupes.map(function (g, n) {
       var dernier = n === groupes.length - 1;
       // Le texte entre deux mots revient au groupe qui précède : rien ne se
@@ -392,17 +474,17 @@
     return null;
   }
 
-  function depuisJson(o) {
+  function depuisJson(o, journal) {
     // Réponse multi-format (`outfmt=json,srt`) : une clé par format.
     if (o && !Array.isArray(o) && typeof o === 'object' && o.json != null) {
       var j = o.json;
       if (typeof j === 'string') { try { j = JSON.parse(j); } catch (e) { return depuisTexteBrut(j); } }
-      return depuisJson(j);
+      return depuisJson(j, journal);
     }
     var liste = trouverListe(o, 0);
     if (liste) {
       var segs = [];
-      liste.forEach(function (el) { segs = segs.concat(segmentsDe(el)); });
+      liste.forEach(function (el) { segs = segs.concat(segmentsDe(el, journal)); });
       return { segments: segs, format: 'json' };
     }
     var texte = o && typeof o === 'object' ? premier(o, ['text', 'transcription', 'transcript']) : null;
@@ -502,21 +584,27 @@
 
   /**
    * N'importe quelle réponse du service (ou fichier qu'il a produit) → un
-   * document : `{ segments, locuteurs, horodate, diarise, format }`.
+   * document : `{ segments, locuteurs, horodate, diarise, format, boucles }`.
    *
    * `locuteurs` liste les libellés bruts dans l'ordre d'apparition : la page
    * les présente « Locuteur 1, 2… » et laisse les renommer.
    */
   function normaliser(brut) {
-    var doc;
+    var doc, journal = [];
     if (brut && typeof brut === 'object') {
-      doc = depuisJson(brut);
+      doc = depuisJson(brut, journal);
     } else {
       var s = String(brut == null ? '' : brut).replace(/^﻿/, '');
       var o, json = false;
       if (/^\s*[[{]/.test(s)) { try { o = JSON.parse(s); json = true; } catch (e) {} }
-      doc = json ? depuisJson(o) : (s.trim() ? depuisTexteBrut(s) : { segments: [], format: 'text' });
+      doc = json ? depuisJson(o, journal) : (s.trim() ? depuisTexteBrut(s) : { segments: [], format: 'text' });
     }
+    // Sous-titres et texte n'ont pas de mots horodatés : leurs boucles se
+    // retirent sur le texte de chaque segment.
+    if (doc.format !== 'json') {
+      doc.segments.forEach(function (sg) { sg.texte = reduireTexte(sg.texte, journal, sg.debut); });
+    }
+    doc.boucles = journal;
     var vus = {}, locuteurs = [];
     doc.segments.forEach(function (sg) {
       if (sg.locuteur && !vus[sg.locuteur]) { vus[sg.locuteur] = true; locuteurs.push(sg.locuteur); }

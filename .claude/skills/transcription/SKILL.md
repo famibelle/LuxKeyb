@@ -75,7 +75,7 @@ Paramètres, en chaîne de requête :
 | `min_silence_duration_ms` | entier (2000) | documenté ; laisser le défaut |
 | `maxlen` | 42 | documenté, pour SRT et VTT du service |
 | `prompt` | texte, **900 caractères au plus** (la suite est ignorée) | documenté : seulement des mots qui peuvent être dans l'audio ; encoder pour l'URL |
-| `num_speakers` | entier 1 à 10, seulement avec `diarization=Enabled` | **non documenté pour l'API** : c'est ce qu'envoie leur propre formulaire au même `/asr2` (`luxasr_main.js`). Envoyé par la page et le script quand on le choisit |
+| `num_speakers` | entier 1 à 10, seulement avec `diarization=Enabled` | **non documenté pour l'API**, mais c'est ce qu'envoie leur propre formulaire au même `/asr2` (`luxasr_main.js`), et **le serveur en tient compte** (essai du 29 octobre 2026, § 3). Envoyé par la page et le script quand on le choisit |
 | `vad_filter`, `origin`, `target_langs`, `speaker_identification` | | envoyés par leur site, non documentés : ne pas les utiliser sans leur accord |
 
 Réponse : **202** `{"job_id": "…", "status": "queued"}`.
@@ -120,21 +120,31 @@ quand le texte du segment porte « d'Leit ».
 
 ## 3. Ce que vaut la diarisation — à dire honnêtement
 
-Essai du 29 octobre 2026 (`releves/2026-10-29/essai.md`) : 2 min d'un podcast
-de RTL, une animatrice et une invitée, voix féminines de hauteur proche,
-questions de 3 à 5 s. Sans `num_speakers` : **une seule voix trouvée**,
-375 mots sur 375 en `SPEAKER_00`, aucun des 6 changements attendus. Leur page
-annonce cette limite (« short turns by speakers or many overlapping speaker
-turns are not segmented correctly ») et conseille de donner le nombre de voix.
-La transcription, elle, est bonne (probabilité moyenne 0,937), à un artefact
-près : « Wéi ginn. Wéi ginn. » en double, de durée nulle et de faible
-probabilité.
+Deux essais du 29 octobre 2026 sur le même fichier (`releves/2026-10-29/essai.md`) :
+2 min d'un podcast de RTL, une animatrice et une invitée, voix féminines de
+hauteur proche, questions de 3 à 5 s, 7 changements de voix attendus.
 
-Conséquences : la page demande le nombre de voix (« à détecter » par défaut),
-et prévient quand la détection automatique n'en a trouvé qu'une. **L'effet de
-`num_speakers` n'est pas encore mesuré** : prochain essai à faire, sur le même
-extrait, avec `--locuteurs 2`, et à consigner dans `releves/`. Ne pas promettre
-« qui a dit quoi » dans un texte public avant ce résultat.
+| | Sans `num_speakers` (`resultat.json`) | `num_speakers=2` (`resultat-2voix.json`) |
+|---|---|---|
+| Voix trouvées | 1 (375 mots sur 375 en `SPEAKER_00`) | 2 (317 et 97 mots), le locuteur suit le rôle |
+| Changements de voix | 0 sur 7 | **7 sur 7**, à −0,4 / +0,8 s près, et 2 faux dans la première seconde (un segment de 50 ms, « 3. ») |
+| Texte | bon, probabilité moyenne 0,937 ; « Wéi ginn. Wéi ginn. » en double | moins bon, 0,913 : « Arthroos » devient « dach d'Ros », et une **boucle « vun deen » × 19** à 0:27 |
+| Temps | 6,6 s au plus | 7,9 s au plus |
+
+Ce qu'on en retient :
+
+- **Le nombre de voix fait la séparation.** Sans lui, des voix proches et des
+  répliques courtes restent sur une seule voix, ce que leur page annonce
+  (« short turns by speakers or many overlapping speaker turns are not
+  segmented correctly »). La page le demande donc, « à détecter » par défaut,
+  et prévient quand la détection automatique n'a trouvé qu'une voix.
+- **Il peut coûter de la justesse au texte**, hypothèse non vérifiable d'ici :
+  le service transcrirait par tranches de locuteur, des tranches plus courtes
+  donnant moins de contexte à Whisper. La page le dit (« au prix parfois d'un
+  peu de justesse »).
+- Les verdicts de l'essai reposent sur la cohérence du texte, pas sur une
+  écoute. Un seul fichier, une seule paire de voix : on peut écrire « sur
+  notre essai », pas une promesse générale de « qui a dit quoi ».
 
 ## 4. Normaliser le résultat : phrases, puis tours de parole
 
@@ -177,8 +187,16 @@ Règles, dans `normaliser()` de `docs/assets/luxasr-transcription.js` :
    parole, coupé en paragraphes à la première fin de phrase passé 45 s (75 s
    au plus), pour garder des horodatages où se repérer. Sans locuteurs, on
    coupe aussi sur les silences de plus de 2 s.
-8. On ne change jamais le texte reconnu : ni correction, ni reponctuation, ni
-   suppression des artefacts.
+8. **Boucles de Whisper** : un motif de 1 à 4 mots répété au moins 5 fois
+   d'affilée est réduit à sa première occurrence, sur les mots avant le
+   découpage en phrases (sinon une boucle serait coupée en deux), sur le texte
+   pour SRT, VTT et texte. C'est la règle de `RepetitionTrimmer.kt` pour la
+   dictée, avec un seuil plus haut (5 au lieu de 3 ou 4) parce que la boucle
+   peut tomber au milieu du texte, où « nee, nee, nee » doit survivre. Chaque
+   boucle est consignée (`doc.boucles` : motif, nombre, instant) et la page
+   l'annonce ; la réponse brute la garde.
+9. À part ces boucles, on ne change jamais le texte reconnu : ni correction,
+   ni reponctuation, ni suppression des faux mots (« 3. », « Wéi ginn. »).
 
 Exports : TXT (`[1:02] Nom : texte`), SRT et VTT (une phrase par sous-titre,
 locuteur en tête ou en `<v Nom>`), JSON normalisé, et la réponse brute du
@@ -258,16 +276,19 @@ jamais simuler une réponse en la présentant comme réelle.
 ## 7. Tester une modification
 
 1. **Normaliseur** (sans réseau) : `node docs/scripts/test_luxasr_transcription.js`.
-   Le premier cas est la vraie réponse du 29 octobre 2026 : fidélité du texte
-   (élisions comprises), une phrase par sous-titre, durées et longueurs
-   bornées. Les autres sont synthétiques et le disent. Tout nouveau relevé réel
-   s'ajoute en tête.
+   Les deux premiers cas sont les vraies réponses du 29 octobre 2026 : avec
+   `num_speakers=2`, deux voix, les 9 changements du service conservés et la
+   boucle réduite sans rien toucher d'autre ; sans, fidélité du texte (élisions
+   comprises), une phrase par sous-titre, durées et longueurs bornées. Les
+   autres sont synthétiques et le disent. Tout nouveau relevé réel s'ajoute en
+   tête.
 2. **Page** : Playwright avec Chromium préinstallé, contre un faux service sur
    une **autre origine locale** (`window.LUXASR_BASE`, posé par
    `addInitScript`), ce qui reproduit CORS au réel. Scénarios : succès
    (202 → `queued` → `processing` → `completed` → JSON au format du § 2),
    CORS (202 sans en-tête), travail en échec, `not_found`, fichier refusé
-   avant envoi, import d'un résultat, une seule voix détectée. Contrôler à
+   avant envoi, import d'un résultat, et les deux vraies réponses rejouées
+   (une seule voix détectée ; deux voix et une boucle réduite). Contrôler à
    360 px (aucun défilement horizontal), en thème sombre et en anglais.
 3. **En vrai**, quand le réseau le permet : un enregistrement court à deux voix,
    une seule soumission, et le relevé consigné dans `releves/`.
