@@ -263,7 +263,7 @@ class ReunionActivity : Activity() {
         }
         val b = ServiceTraitement.progres[id]?.brouillon
         if (r.etape == Reunion.Etape.REDACTION && !r.sansCle) {
-            carte.addView(Charte.texte(this, "Claude rédige…", 14f, Charte.GRIS))
+            carte.addView(Charte.texte(this, "Rédaction en cours…", 14f, Charte.GRIS))
             brouillon = Charte.texte(this, b ?: "", 16f, Charte.TEXTE).also { carte.addView(it) }
         } else {
             carte.addView(Charte.texte(this, if (r.sansCle) "Pas de compte rendu automatique : voir ci-dessus."
@@ -322,7 +322,7 @@ class ReunionActivity : Activity() {
     private fun confirmerNouvelleRedaction() {
         AlertDialog.Builder(this, android.R.style.Theme_Material_Light_Dialog_Alert)
             .setTitle("Rédiger à nouveau ?")
-            .setMessage("Claude rédige un nouveau compte rendu. Vos corrections sur celui-ci seront perdues.")
+            .setMessage("Un nouveau compte rendu va être rédigé. Vos corrections sur celui-ci seront perdues.")
             .setPositiveButton("Rédiger à nouveau") { _, _ ->
                 champCompteRendu = null
                 r.etape = Reunion.Etape.REDACTION

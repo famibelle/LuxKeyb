@@ -11,7 +11,8 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.Switch
 import com.potomitan.luxreunion.Charte.dp
-import com.potomitan.luxreunion.noyau.RedacteurClaude
+import com.potomitan.luxreunion.noyau.Redaction
+import com.potomitan.luxreunion.noyau.Fournisseur
 import kotlin.concurrent.thread
 
 /**
@@ -46,13 +47,13 @@ class ReglagesActivity : Activity() {
             addView(Charte.titre(this@ReglagesActivity, "Vos données", 18f))
             addView(Charte.texte(this@ReglagesActivity,
                 "• Pendant la réunion et après, le son est envoyé à LuxASR (Université du Luxembourg), qui le transcrit et le traduit, puis l'efface.\n" +
-                "• Le texte de la réunion est envoyé à Claude (Anthropic) pour rédiger le compte rendu.\n" +
+                "• Le texte de la réunion est envoyé à ${reglages.fournisseur.nom} pour rédiger le compte rendu.\n" +
                 "• Sur ce téléphone, l'enregistrement est effacé dès que la transcription est faite. Les comptes rendus restent jusqu'à ce que vous supprimiez la réunion.\n" +
                 "• Rien n'est sauvegardé ailleurs, ni transféré vers un nouveau téléphone.",
                 15f).also { Charte.marge(it, haut = 8) })
         })
 
-        if (intent.getBooleanExtra(EXTRA_ADMIN, false)) colonne.addView(administration())
+        colonne.addView(administration())
 
         Charte.page(this, "Réglages", ScrollView(this).apply { addView(colonne) })
     }
@@ -69,37 +70,70 @@ class ReglagesActivity : Activity() {
             addView(champ)
         }
 
-    /** Pour la personne qui installe l'application, pas pour la secrétaire. */
+    /**
+     * Le compte rendu automatique : le service (Claude ou Mistral), sa clé
+     * d'API et son modèle. La clé n'est jamais dans l'APK : on la colle ici,
+     * elle est chiffrée par le Keystore du téléphone et ne s'affiche plus.
+     */
     private fun administration() = Charte.carte(this).apply {
         background = Charte.fond(this@ReglagesActivity, Charte.BLANC, 16, bordure = Charte.ORANGE)
-        addView(Charte.titre(this@ReglagesActivity, "Installation", 18f))
-        addView(Charte.texte(this@ReglagesActivity,
-            "Clé d'API Claude (console.anthropic.com). Elle reste chiffrée sur ce téléphone. " +
-            "Fixez un plafond de dépenses dans la console : un compte rendu coûte environ 0,15 à 0,25 \$ par heure de réunion.",
-            14f, Charte.GRIS).also { Charte.marge(it, haut = 4) })
-        val cle = Charte.champ(this@ReglagesActivity, if (reglages.aUneCle) "•••••• (clé enregistrée)" else "sk-ant-…").apply {
+        addView(Charte.titre(this@ReglagesActivity, "Compte rendu automatique", 18f))
+        val aide = Charte.texte(this@ReglagesActivity, "", 14f, Charte.GRIS).also { Charte.marge(it, haut = 4) }
+        addView(aide)
+
+        // Le service : deux boutons, celui choisi en bleu plein.
+        val choix = LinearLayout(this@ReglagesActivity).apply { orientation = LinearLayout.HORIZONTAL }
+        addView(choix)
+        Charte.marge(choix, haut = 10)
+        val cle = Charte.champ(this@ReglagesActivity, "").apply {
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         }
+        addView(Charte.texte(this@ReglagesActivity, "Clé d'API", 14f, Charte.GRIS).also { Charte.marge(it, haut = 12) })
         addView(cle)
-        val modele = Charte.champ(this@ReglagesActivity, RedacteurClaude.MODELE, valeur = reglages.modeleClaude)
+        val modele = Charte.champ(this@ReglagesActivity, reglages.fournisseur.modele, valeur = reglages.modele)
+        fun afficherFournisseur() {
+            val f = reglages.fournisseur
+            aide.text = "Clé d'API ${f.nom} (${f.console}). Elle reste chiffrée sur ce téléphone. " +
+                "Fixez un plafond de dépenses dans la console du service."
+            cle.hint = if (reglages.aUneCle) "•••••• (clé enregistrée)" else "Collez la clé ici"
+            modele.hint = f.modele
+            modele.setText(reglages.modele)
+            choix.removeAllViews()
+            for (autre in Fournisseur.values()) {
+                val actif = autre == f
+                val b = if (actif) Charte.boutonPrincipal(this@ReglagesActivity, autre.nom) {}
+                        else Charte.boutonSecondaire(this@ReglagesActivity, autre.nom) {}
+                b.setOnClickListener {
+                    if (autre != reglages.fournisseur) {
+                        // Une clé ne vaut que pour son service : changer de service l'efface.
+                        reglages.fournisseur = autre
+                        reglages.cle = null
+                        afficherFournisseur()
+                    }
+                }
+                choix.addView(b, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                    .apply { setMargins(dp(3), 0, dp(3), 0) })
+            }
+        }
+        afficherFournisseur()
         addView(Charte.texte(this@ReglagesActivity, "Modèle", 14f, Charte.GRIS).also { Charte.marge(it, haut = 12) })
         addView(modele)
-        val etat = Charte.texte(this@ReglagesActivity, if (reglages.aUneCle) "Une clé est enregistrée." else "Aucune clé : le compte rendu se fera dans l'application Claude.",
+        val etat = Charte.texte(this@ReglagesActivity, if (reglages.aUneCle) "Une clé est enregistrée." else "Aucune clé : le compte rendu ne se rédige pas tout seul.",
                                 14f, Charte.GRIS).also { Charte.marge(it, haut = 10, bas = 8) }
         addView(etat)
         addView(Charte.boutonPrincipal(this@ReglagesActivity, "Enregistrer et vérifier") {
             val saisie = cle.text.toString().trim()
-            val m = modele.text.toString().trim().ifBlank { RedacteurClaude.MODELE }
-            reglages.modeleClaude = m
+            reglages.modele = modele.text.toString()
+            val m = reglages.modele
             val aVerifier = saisie.ifBlank { reglages.cle ?: "" }
             if (aVerifier.isBlank()) { etat.text = "Saisissez une clé."; return@boutonPrincipal }
             etat.text = "Vérification…"
             etat.setTextColor(Charte.GRIS)
             thread {
                 val resultat = try {
-                    RedacteurClaude(aVerifier, m).verifierCle()
+                    Redaction.creer(reglages.fournisseur, aVerifier, m).verifierCle()
                     null
-                } catch (e: RedacteurClaude.Erreur) { e.message }
+                } catch (e: Redaction.Erreur) { e.message }
                 Ui.main.post {
                     if (resultat == null) {
                         if (saisie.isNotBlank()) reglages.cle = saisie
@@ -119,7 +153,7 @@ class ReglagesActivity : Activity() {
         }.also { Charte.marge(it, haut = 4) })
         addView(Charte.boutonSecondaire(this@ReglagesActivity, "Effacer la clé", Charte.ROUGE) {
             reglages.cle = null
-            cle.hint = "sk-ant-…"
+            cle.hint = "Collez la clé ici"
             etat.text = "Clé effacée."
             etat.setTextColor(Charte.GRIS)
         }.also { Charte.marge(it, haut = 8) })

@@ -187,11 +187,35 @@ object TexteTranscription {
  * d'une réunion de deux heures se rédige en une à deux minutes, et le flux
  * évite qu'une requête aussi longue soit coupée en route.
  */
+/** Qui rédige le compte rendu : Claude ou Mistral, au choix des réglages. */
+interface Redacteur {
+    /** Rend le texte complet ; [surTexte] reçoit le texte déjà écrit, au fil de l'eau. */
+    fun rediger(systeme: String, message: String, surTexte: (String) -> Unit = {}): String
+    /** Vérifie la clé sans rien faire rédiger. */
+    fun verifierCle()
+}
+
+enum class Fournisseur(val nom: String, val modele: String, val console: String) {
+    CLAUDE("Claude (Anthropic)", RedacteurClaude.MODELE, "console.anthropic.com"),
+    MISTRAL("Mistral", RedacteurMistral.MODELE, "console.mistral.ai")
+}
+
+object Redaction {
+    enum class Code { CLE, DROITS, LIMITE, SURCHARGE, RESEAU, REFUS, AUTRE }
+
+    class Erreur(val code: Code, message: String, cause: Throwable? = null) : Exception(message, cause)
+
+    fun creer(fournisseur: Fournisseur, cle: String, modele: String): Redacteur = when (fournisseur) {
+        Fournisseur.CLAUDE -> RedacteurClaude(cle, modele)
+        Fournisseur.MISTRAL -> RedacteurMistral(cle, modele)
+    }
+}
+
 class RedacteurClaude(
     cle: String,
     private val modele: String = MODELE,
     baseUrl: String? = null
-) {
+) : Redacteur {
     private val client: AnthropicClient = AnthropicOkHttpClient.builder()
         .apiKey(cle)
         .apply { if (baseUrl != null) baseUrl(baseUrl) }
@@ -199,12 +223,7 @@ class RedacteurClaude(
         .maxRetries(3)
         .build()
 
-    enum class Code { CLE, DROITS, LIMITE, SURCHARGE, RESEAU, REFUS, AUTRE }
-
-    class Erreur(val code: Code, message: String, cause: Throwable? = null) : Exception(message, cause)
-
-    /** Rend le texte complet ; [surTexte] reçoit le texte déjà écrit, au fil de l'eau. */
-    fun rediger(systeme: String, message: String, surTexte: (String) -> Unit = {}): String {
+    override fun rediger(systeme: String, message: String, surTexte: (String) -> Unit): String {
         val params = MessageCreateParams.builder()
             .model(modele)
             .maxTokens(MAX_TOKENS)
@@ -228,13 +247,13 @@ class RedacteurClaude(
         } catch (e: Exception) {
             throw traduire(e)
         }
-        if (arret == StopReason.REFUSAL) throw Erreur(Code.REFUS, "Claude a refusé de rédiger ce compte rendu.")
+        if (arret == StopReason.REFUSAL) throw Redaction.Erreur(Redaction.Code.REFUS, "Claude a refusé de rédiger ce compte rendu.")
         if (arret == StopReason.MAX_TOKENS) texte.append("\n\n[Compte rendu interrompu : il dépassait la longueur maximale.]")
         return texte.toString().trim()
     }
 
     /** Vérifie la clé sans rien faire rédiger : un comptage de jetons ne coûte rien. */
-    fun verifierCle() {
+    override fun verifierCle() {
         try {
             client.messages().countTokens(MessageCountTokensParams.builder()
                 .model(modele)
@@ -245,17 +264,17 @@ class RedacteurClaude(
         }
     }
 
-    private fun traduire(e: Exception): Erreur = when (e) {
-        is Erreur -> e
+    private fun traduire(e: Exception): Redaction.Erreur = when (e) {
+        is Redaction.Erreur -> e
         is AnthropicServiceException -> when (e.statusCode()) {
-            401 -> Erreur(Code.CLE, "La clé d'API Claude est refusée.", e)
-            403 -> Erreur(Code.DROITS, "La clé d'API Claude n'a pas accès à ce modèle.", e)
-            429 -> Erreur(Code.LIMITE, "La limite d'utilisation de Claude est atteinte.", e)
-            500, 502, 503, 504, 529 -> Erreur(Code.SURCHARGE, "Claude est momentanément surchargé.", e)
-            else -> Erreur(Code.AUTRE, "Claude a répondu une erreur (${e.statusCode()}).", e)
+            401 -> Redaction.Erreur(Redaction.Code.CLE, "La clé d'API Claude est refusée.", e)
+            403 -> Redaction.Erreur(Redaction.Code.DROITS, "La clé d'API Claude n'a pas accès à ce modèle.", e)
+            429 -> Redaction.Erreur(Redaction.Code.LIMITE, "La limite d'utilisation de Claude est atteinte.", e)
+            500, 502, 503, 504, 529 -> Redaction.Erreur(Redaction.Code.SURCHARGE, "Claude est momentanément surchargé.", e)
+            else -> Redaction.Erreur(Redaction.Code.AUTRE, "Claude a répondu une erreur (${e.statusCode()}).", e)
         }
-        is AnthropicIoException -> Erreur(Code.RESEAU, "Pas de connexion avec Claude.", e)
-        else -> Erreur(Code.AUTRE, e.message ?: e.javaClass.simpleName, e)
+        is AnthropicIoException -> Redaction.Erreur(Redaction.Code.RESEAU, "Pas de connexion avec Claude.", e)
+        else -> Redaction.Erreur(Redaction.Code.AUTRE, e.message ?: e.javaClass.simpleName, e)
     }
 
     companion object {

@@ -12,7 +12,7 @@ import com.potomitan.luxreunion.noyau.ConsignesCompteRendu
 import com.potomitan.luxreunion.noyau.InfosReunion
 import com.potomitan.luxreunion.noyau.LotsLuxAsr
 import com.potomitan.luxreunion.noyau.Normaliseur
-import com.potomitan.luxreunion.noyau.RedacteurClaude
+import com.potomitan.luxreunion.noyau.Redaction
 import com.potomitan.luxreunion.noyau.Reunion
 import com.potomitan.luxreunion.noyau.TexteTranscription
 import java.util.concurrent.ConcurrentHashMap
@@ -21,7 +21,7 @@ import kotlin.concurrent.thread
 /**
  * Après la réunion, sans que la secrétaire ait rien à faire : compresser
  * l'enregistrement, l'envoyer à LuxASR, attendre la transcription complète
- * (voix séparées), puis faire rédiger le compte rendu par Claude.
+ * (voix séparées), puis faire rédiger le compte rendu (Claude ou Mistral).
  *
  * Chaque étape est notée dans la réunion (meta.json) avant de passer à la
  * suivante, et le `job_id` de LuxASR dès qu'on le connaît : une application
@@ -215,15 +215,15 @@ class ServiceTraitement : Service() {
         val (texte, source) = sourceDuCompteRendu(r)
         if (texte.isBlank()) throw IllegalStateException("Aucune parole n'a été reconnue : il n'y a rien à résumer.")
         val infos = infos(r, reglages)
-        publier(r, Progres(Reunion.Etape.REDACTION, "Rédaction du compte rendu par Claude…"))
+        publier(r, Progres(Reunion.Etape.REDACTION, "Rédaction du compte rendu par ${reglages.fournisseur.nom}…"))
         var dernier = 0L
-        val cr = RedacteurClaude(cle, reglages.modeleClaude).rediger(
+        val cr = Redaction.creer(reglages.fournisseur, cle, reglages.modele).rediger(
             ConsignesCompteRendu.systeme(reglages.modeleCompteRendu),
             ConsignesCompteRendu.message(infos, texte, source)) { brouillon ->
             val t = System.currentTimeMillis()
             if (t - dernier > 300) {
                 dernier = t
-                publier(r, Progres(Reunion.Etape.REDACTION, "Rédaction du compte rendu par Claude…", brouillon = brouillon))
+                publier(r, Progres(Reunion.Etape.REDACTION, "Rédaction du compte rendu par ${reglages.fournisseur.nom}…", brouillon = brouillon))
             }
         }
         Reunion.ecrireAtomique(r.fichierCompteRendu, cr + "\n")
@@ -273,12 +273,12 @@ class ServiceTraitement : Service() {
 
         /** Une erreur en clair, et ce qu'on peut y faire. */
         fun messageErreur(e: Exception): String = when (e) {
-            is RedacteurClaude.Erreur -> when (e.code) {
-                RedacteurClaude.Code.CLE, RedacteurClaude.Code.DROITS ->
+            is Redaction.Erreur -> when (e.code) {
+                Redaction.Code.CLE, Redaction.Code.DROITS ->
                     e.message + " Demandez à la personne qui a installé l'application de vérifier la clé."
-                RedacteurClaude.Code.RESEAU -> "Pas de connexion internet pour joindre Claude. Réessayez quand le téléphone est connecté."
-                RedacteurClaude.Code.LIMITE, RedacteurClaude.Code.SURCHARGE -> e.message + " Réessayez dans quelques minutes."
-                else -> e.message ?: "Erreur de Claude."
+                Redaction.Code.RESEAU -> "Pas de connexion internet pour joindre le service de rédaction. Réessayez quand le téléphone est connecté."
+                Redaction.Code.LIMITE, Redaction.Code.SURCHARGE -> e.message + " Réessayez dans quelques minutes."
+                else -> e.message ?: "Erreur du service de rédaction."
             }
             is LotsLuxAsr.Erreur -> when (e.code) {
                 LotsLuxAsr.Code.RESEAU -> "Pas de connexion avec LuxASR. Réessayez quand le téléphone est connecté."

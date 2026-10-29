@@ -3,7 +3,7 @@ package com.potomitan.luxreunion
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
-import com.potomitan.luxreunion.noyau.RedacteurClaude
+import com.potomitan.luxreunion.noyau.Fournisseur
 import java.security.KeyStore
 import java.util.Base64
 import javax.crypto.Cipher
@@ -26,14 +26,20 @@ class Reglages(ctx: Context) {
 
     /** Qui signe le compte rendu. */
     var redacteur: String get() = chaine("redacteur"); set(v) = ecrire("redacteur", v)
-    /** Noms propres, sigles, termes maison : pour LuxASR et pour Claude. */
+    /** Noms propres, sigles, termes maison : pour LuxASR et pour le compte rendu. */
     var glossaire: String get() = chaine("glossaire"); set(v) = ecrire("glossaire", v)
     /** Un ancien compte rendu, ou des consignes de mise en forme. */
     var modeleCompteRendu: String get() = chaine("modeleCR"); set(v) = ecrire("modeleCR", v)
 
-    var modeleClaude: String
-        get() = chaine("modeleClaude").ifBlank { RedacteurClaude.MODELE }
-        set(v) = ecrire("modeleClaude", v.trim())
+    /** Qui rédige le compte rendu : Claude ou Mistral. */
+    var fournisseur: Fournisseur
+        get() = runCatching { Fournisseur.valueOf(chaine("fournisseur", Fournisseur.CLAUDE.name)) }.getOrDefault(Fournisseur.CLAUDE)
+        set(v) = ecrire("fournisseur", v.name)
+
+    /** Le modèle du fournisseur choisi ; vide, celui par défaut. */
+    var modele: String
+        get() = chaine("modele_${fournisseur.name}").ifBlank { fournisseur.modele }
+        set(v) = ecrire("modele_${fournisseur.name}", v.trim())
 
     /** La transcription complète (voix séparées) après une réunion en direct. */
     var lotsApresDirect: Boolean

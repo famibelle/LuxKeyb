@@ -65,7 +65,7 @@ class AccueilActivity : Activity() {
         colonne.addView(liste)
 
         colonne.addView(Charte.texte(this,
-            "Transcription et traduction : LuxASR, Université du Luxembourg.\nCompte rendu : Claude (Anthropic).\nVersion ${BuildConfig.VERSION_NAME}",
+            "Transcription et traduction : LuxASR, Université du Luxembourg.\nCompte rendu : Claude (Anthropic) ou Mistral, selon les réglages.\nVersion ${BuildConfig.VERSION_NAME}",
             12f, Charte.GRIS_CLAIR).apply {
             gravity = Gravity.CENTER
             setPadding(dp(24), dp(24), dp(24), dp(8))
@@ -124,7 +124,7 @@ class AccueilActivity : Activity() {
                 addView(Charte.texte(this@AccueilActivity,
                     "• Prévenez les participants que la réunion est enregistrée, et obtenez leur accord.\n" +
                     "• Le son part à l'Université du Luxembourg (LuxASR) pour être transcrit et traduit. Elle l'efface après traitement.\n" +
-                    "• Le texte part chez Anthropic (Claude) pour rédiger le compte rendu.\n" +
+                    "• Le texte part chez Anthropic (Claude) ou Mistral pour rédiger le compte rendu.\n" +
                     "• Sur ce téléphone, l'enregistrement est effacé dès que la transcription est faite.\n" +
                     "• La traduction et le compte rendu peuvent contenir des erreurs : relisez avant de diffuser.",
                     15f).also { Charte.marge(it, haut = 8, bas = 12) })

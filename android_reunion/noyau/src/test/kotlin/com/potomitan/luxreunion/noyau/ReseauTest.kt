@@ -136,7 +136,35 @@ class ReseauTest {
         serveur.enqueue(MockResponse().setResponseCode(401)
             .setBody("""{"type":"error","error":{"type":"authentication_error","message":"invalid x-api-key"}}"""))
         try { RedacteurClaude("mauvaise", baseUrl = base()).verifierCle(); fail() }
-        catch (e: RedacteurClaude.Erreur) { assertEquals(RedacteurClaude.Code.CLE, e.code) }
+        catch (e: Redaction.Erreur) { assertEquals(Redaction.Code.CLE, e.code) }
+    }
+
+    // --- Mistral ------------------------------------------------------------------
+
+    @Test
+    fun `mistral - requete en flux, texte reconstitue, cle refusee`() {
+        val corps = listOf(
+            """{"id":"1","choices":[{"index":0,"delta":{"role":"assistant","content":""},"finish_reason":null}]}""",
+            """{"id":"1","choices":[{"index":0,"delta":{"content":"COMPTE RENDU — "},"finish_reason":null}]}""",
+            """{"id":"1","choices":[{"index":0,"delta":{"content":"Comité"},"finish_reason":"stop"}]}"""
+        ).joinToString("") { "data: $it\n\n" } + "data: [DONE]\n\n"
+        serveur.enqueue(MockResponse().setHeader("Content-Type", "text/event-stream").setBody(corps))
+        val vus = mutableListOf<String>()
+        val texte = RedacteurMistral("cle-test", base = base()).rediger("Système", "Transcription") { vus += it }
+        assertEquals("COMPTE RENDU — Comité", texte)
+        assertEquals(listOf("COMPTE RENDU — ", "COMPTE RENDU — Comité"), vus)
+        val req = serveur.takeRequest()
+        assertEquals("/v1/chat/completions", req.path)
+        assertEquals("Bearer cle-test", req.getHeader("Authorization"))
+        val o = JSONObject(req.body.readUtf8())
+        assertEquals("mistral-large-latest", o.getString("model"))
+        assertTrue(o.getBoolean("stream"))
+        assertEquals("system", o.getJSONArray("messages").getJSONObject(0).getString("role"))
+
+        serveur.enqueue(MockResponse().setResponseCode(401).setBody("""{"message":"Unauthorized"}"""))
+        try { RedacteurMistral("mauvaise", base = base()).verifierCle(); fail() }
+        catch (e: Redaction.Erreur) { assertEquals(Redaction.Code.CLE, e.code) }
+        assertEquals("/v1/models", serveur.takeRequest().path)
     }
 
     // --- Direct sur un vrai WebSocket ---------------------------------------------

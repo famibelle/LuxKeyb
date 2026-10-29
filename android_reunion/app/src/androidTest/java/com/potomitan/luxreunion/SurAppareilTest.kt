@@ -13,6 +13,7 @@ import com.potomitan.luxreunion.noyau.FabriqueOkHttp
 import com.potomitan.luxreunion.noyau.LotsLuxAsr
 import com.potomitan.luxreunion.noyau.Normaliseur
 import com.potomitan.luxreunion.noyau.Paragraphe
+import com.potomitan.luxreunion.noyau.Redaction
 import com.potomitan.luxreunion.noyau.RedacteurClaude
 import com.potomitan.luxreunion.noyau.Reunion
 import com.potomitan.luxreunion.noyau.TexteTranscription
@@ -76,7 +77,7 @@ class SurAppareilTest {
         serveur.enqueue(MockResponse().setResponseCode(401)
             .setBody("""{"type":"error","error":{"type":"authentication_error","message":"invalid x-api-key"}}"""))
         try { RedacteurClaude("x", baseUrl = base()).verifierCle(); fail() }
-        catch (e: RedacteurClaude.Erreur) { assertEquals(RedacteurClaude.Code.CLE, e.code) }
+        catch (e: Redaction.Erreur) { assertEquals(Redaction.Code.CLE, e.code) }
     }
 
     @Test
