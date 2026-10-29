@@ -1,9 +1,52 @@
 {
- "genere_le": "2026-10-27",
- "derniere_version": "37.8.0",
- "derniere_date": "2026-10-27",
+ "genere_le": "2026-10-29",
+ "derniere_version": "37.9.0",
+ "derniere_date": "2026-10-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.9.0",
+   "date": "2026-10-29",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "New",
+     "points": [
+      {
+       "titre": "Cards become a little paper theatre",
+       "texte": "On the open card, the landscape is made of cut-out cardboard pieces placed one in front of the other, each with its shadow and its light edge. Tilt the phone: the pieces slide, each at its own speed, like a theatre set."
+      },
+      {
+       "titre": "The rarer the card, the richer the set",
+       "texte": "Rare cards add wings, two silhouetted trees on each side, and very rare ones a cloud that slowly crosses the sky."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_theatre_papier.gif",
+     "alt": "The card “Auer”, hour, common, open and tilted from left to right. Vianden castle and its hill, the row of houses and the river are three cut-out pieces: each has a light edge and a soft shadow, and they slide at different speeds as the card tilts.",
+     "legende": "A common card: three pieces, each sliding at its own speed."
+    },
+    {
+     "image": "Screenshots/lux_theatre_rare.gif",
+     "alt": "The card “Stall”, stable, rare, in the evening at Esch-sur-Sûre, tilted from left to right. In front of the cliffs and the village, two silhouetted trees frame the scene on each side, like theatre wings; they barely move while the landscape slides behind.",
+     "legende": "A rare card: the wings frame the scene."
+    },
+    {
+     "image": "Screenshots/lux_theatre_tres_rare.gif",
+     "alt": "The card “Mënz”, coin, very rare, at night on the Moselle, tilted from left to right. Besides the wings, a cardboard cloud slowly crosses the starry sky, in front of the hills and behind the village.",
+     "legende": "A very rare card: besides the wings, a cloud crosses the sky."
+    }
+   ],
+   "image": "Screenshots/lux_theatre_papier.gif",
+   "image_alt": "The card “Auer”, hour, common, open and tilted from left to right. Vianden castle and its hill, the row of houses and the river are three cut-out pieces: each has a light edge and a soft shadow, and they slide at different speeds as the card tilts.",
+   "image_legende": "A common card: three pieces, each sliding at its own speed."
+  },
   {
    "version": "37.8.0",
    "date": "2026-10-27",
@@ -187,35 +230,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "37.7.5",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "The card help inside the collection",
-       "texte": "A “?” at the top of Mäi Carnet opens the tour of the cards, whole or on a single topic (reading a card, sharing it, giving one away or receiving one), without going back to the home screen."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_aide_visite.gif",
-     "alt": "Filmed on a Galaxy A21s, in five screens. 1. The last bubble of the tour, “To see it again”, lights the “?” button at the top left. 2. The “?” opens the help: the whole tour, then The keyboard (Typing with the keyboard, Dictating a message), The cards (Reading a card, Sharing a card, Giving or receiving a card), The app (Looking up a word, Playing to learn words, Understanding the home screen, Following your progress, Setting up the keyboard) and the guide to read. 3. “Try it” opens a field with the keyboard: “Moi” has been typed and the bar offers “Moien”. 4. In Mäi Carnet, a “?” at the top opens the card help. 5. “Sharing a card” opens the card “Moien” and lights the Share button. The screens are in French.",
-     "legende": "An always-visible “?” opens the help: the whole tour or a single topic, a try of the keyboard without leaving the tour, and the card help inside the collection."
-    }
-   ],
-   "image": "Screenshots/lux_aide_visite.gif",
-   "image_alt": "Filmed on a Galaxy A21s, in five screens. 1. The last bubble of the tour, “To see it again”, lights the “?” button at the top left. 2. The “?” opens the help: the whole tour, then The keyboard (Typing with the keyboard, Dictating a message), The cards (Reading a card, Sharing a card, Giving or receiving a card), The app (Looking up a word, Playing to learn words, Understanding the home screen, Following your progress, Setting up the keyboard) and the guide to read. 3. “Try it” opens a field with the keyboard: “Moi” has been typed and the bar offers “Moien”. 4. In Mäi Carnet, a “?” at the top opens the card help. 5. “Sharing a card” opens the card “Moien” and lights the Share button. The screens are in French.",
-   "image_legende": "An always-visible “?” opens the help: the whole tour or a single topic, a try of the keyboard without leaving the tour, and the card help inside the collection."
   }
  ]
 }

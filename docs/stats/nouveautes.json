@@ -1,9 +1,52 @@
 {
- "genere_le": "2026-10-27",
- "derniere_version": "37.8.0",
- "derniere_date": "2026-10-27",
+ "genere_le": "2026-10-29",
+ "derniere_version": "37.9.0",
+ "derniere_date": "2026-10-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.9.0",
+   "date": "2026-10-29",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Les cartes deviennent un petit théâtre de papier",
+       "texte": "Dans la carte ouverte, le paysage est fait de cartons découpés posés les uns devant les autres, chacun avec son ombre et son bord clair. Penchez le téléphone : les cartons glissent chacun à leur vitesse, comme un décor de théâtre."
+      },
+      {
+       "titre": "Plus la carte est rare, plus le décor est riche",
+       "texte": "Les cartes rares ajoutent des coulisses, deux arbres en silhouette de chaque côté, et les très rares un nuage qui traverse lentement le ciel."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_theatre_papier.gif",
+     "alt": "La carte « Auer », heure, commune, ouverte et penchée de gauche à droite. Le château de Vianden et sa colline, la rangée de maisons et la rivière sont trois cartons découpés : chacun a un bord clair et une ombre légère, et ils glissent à des vitesses différentes quand la carte penche.",
+     "legende": "Une carte commune : trois cartons qui glissent chacun à leur vitesse."
+    },
+    {
+     "image": "Screenshots/lux_theatre_rare.gif",
+     "alt": "La carte « Stall », étable, rare, le soir à Esch-sur-Sûre, penchée de gauche à droite. Devant les falaises et le bourg, deux arbres en silhouette encadrent la scène de chaque côté, comme les coulisses d'un théâtre ; ils bougent à peine, le paysage glisse derrière.",
+     "legende": "Une carte rare : les coulisses encadrent la scène."
+    },
+    {
+     "image": "Screenshots/lux_theatre_tres_rare.gif",
+     "alt": "La carte « Mënz », pièce de monnaie, très rare, la nuit sur la Moselle, penchée de gauche à droite. En plus des coulisses, un nuage de carton traverse lentement le ciel étoilé, devant les collines et derrière le village.",
+     "legende": "Une carte très rare : en plus des coulisses, un nuage traverse le ciel."
+    }
+   ],
+   "image": "Screenshots/lux_theatre_papier.gif",
+   "image_alt": "La carte « Auer », heure, commune, ouverte et penchée de gauche à droite. Le château de Vianden et sa colline, la rangée de maisons et la rivière sont trois cartons découpés : chacun a un bord clair et une ombre légère, et ils glissent à des vitesses différentes quand la carte penche.",
+   "image_legende": "Une carte commune : trois cartons qui glissent chacun à leur vitesse."
+  },
   {
    "version": "37.8.0",
    "date": "2026-10-27",
@@ -187,35 +230,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "37.7.5",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "L'aide des cartes dans le carnet",
-       "texte": "Un « ? » en haut de Mäi Carnet ouvre la visite des cartes, entière ou sur un seul sujet (lire une carte, la partager, la donner ou en recevoir une), sans repasser par l'accueil."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_aide_visite.gif",
-     "alt": "Filmé sur un Galaxy A21s, en cinq écrans. 1. La dernière bulle de la visite, « Pour la revoir », éclaire le bouton « ? » en haut à gauche et dit : « Toute la visite, ou un seul sujet comme la dictée : touchez le ? en haut de l'écran. » 2. Le « ? » ouvre l'aide : « Toute la visite », puis Le clavier (Écrire avec le clavier, Dicter un message), Les cartes (Lire une carte, Partager une carte, Donner ou recevoir une carte), L'application (Chercher un mot, Jouer pour apprendre des mots, Comprendre l'accueil, Suivre vos progrès, Régler le clavier) et le guide à lire. 3. « Essayer » ouvre un champ avec le clavier : on a tapé « Moi », la barre propose « Moien ». 4. Dans Mäi Carnet, un « ? » en haut ouvre l'aide des cartes. 5. « Partager une carte » ouvre la carte « Moien » et éclaire le bouton Partager.",
-     "legende": "Un « ? » toujours visible ouvre l'aide : la visite entière ou un seul sujet, un essai du clavier sans quitter la visite, et l'aide des cartes dans le carnet."
-    }
-   ],
-   "image": "Screenshots/lux_aide_visite.gif",
-   "image_alt": "Filmé sur un Galaxy A21s, en cinq écrans. 1. La dernière bulle de la visite, « Pour la revoir », éclaire le bouton « ? » en haut à gauche et dit : « Toute la visite, ou un seul sujet comme la dictée : touchez le ? en haut de l'écran. » 2. Le « ? » ouvre l'aide : « Toute la visite », puis Le clavier (Écrire avec le clavier, Dicter un message), Les cartes (Lire une carte, Partager une carte, Donner ou recevoir une carte), L'application (Chercher un mot, Jouer pour apprendre des mots, Comprendre l'accueil, Suivre vos progrès, Régler le clavier) et le guide à lire. 3. « Essayer » ouvre un champ avec le clavier : on a tapé « Moi », la barre propose « Moien ». 4. Dans Mäi Carnet, un « ? » en haut ouvre l'aide des cartes. 5. « Partager une carte » ouvre la carte « Moien » et éclaire le bouton Partager.",
-   "image_legende": "Un « ? » toujours visible ouvre l'aide : la visite entière ou un seul sujet, un essai du clavier sans quitter la visite, et l'aide des cartes dans le carnet."
   }
  ]
 }

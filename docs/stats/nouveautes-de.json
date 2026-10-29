@@ -1,9 +1,52 @@
 {
- "genere_le": "2026-10-27",
- "derniere_version": "37.8.0",
- "derniere_date": "2026-10-27",
+ "genere_le": "2026-10-29",
+ "derniere_version": "37.9.0",
+ "derniere_date": "2026-10-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.9.0",
+   "date": "2026-10-29",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Neu",
+     "points": [
+      {
+       "titre": "Die Karten werden zu einem kleinen Papiertheater",
+       "texte": "Auf der geöffneten Karte besteht die Landschaft aus ausgeschnittenen Kartons, die hintereinander stehen, jeder mit seinem Schatten und seinem hellen Rand. Neigen Sie das Telefon: Die Kartons gleiten jeder in seinem Tempo, wie eine Theaterkulisse."
+      },
+      {
+       "titre": "Je seltener die Karte, desto reicher die Kulisse",
+       "texte": "Seltene Karten bekommen Seitenkulissen, zwei Bäume als Silhouette auf jeder Seite, und sehr seltene eine Wolke, die langsam über den Himmel zieht."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_theatre_papier.gif",
+     "alt": "Die Karte „Auer“, Stunde, häufig, geöffnet und von links nach rechts geneigt. Die Burg Vianden mit ihrem Hügel, die Häuserreihe und der Fluss sind drei ausgeschnittene Kartons: Jeder hat einen hellen Rand und einen leichten Schatten, und sie gleiten unterschiedlich schnell, wenn sich die Karte neigt.",
+     "legende": "Eine häufige Karte: drei Kartons, jeder gleitet in seinem Tempo."
+    },
+    {
+     "image": "Screenshots/lux_theatre_rare.gif",
+     "alt": "Die Karte „Stall“, selten, am Abend in Esch-Sauer, von links nach rechts geneigt. Vor den Felsen und dem Ort rahmen zwei Bäume als Silhouette die Szene auf beiden Seiten ein, wie Seitenkulissen; sie bewegen sich kaum, die Landschaft gleitet dahinter.",
+     "legende": "Eine seltene Karte: Seitenkulissen rahmen die Szene ein."
+    },
+    {
+     "image": "Screenshots/lux_theatre_tres_rare.gif",
+     "alt": "Die Karte „Mënz“, Münze, sehr selten, nachts an der Mosel, von links nach rechts geneigt. Zu den Seitenkulissen kommt eine Wolke aus Karton, die langsam über den Sternenhimmel zieht, vor den Hügeln und hinter dem Dorf.",
+     "legende": "Eine sehr seltene Karte: dazu zieht eine Wolke über den Himmel."
+    }
+   ],
+   "image": "Screenshots/lux_theatre_papier.gif",
+   "image_alt": "Die Karte „Auer“, Stunde, häufig, geöffnet und von links nach rechts geneigt. Die Burg Vianden mit ihrem Hügel, die Häuserreihe und der Fluss sind drei ausgeschnittene Kartons: Jeder hat einen hellen Rand und einen leichten Schatten, und sie gleiten unterschiedlich schnell, wenn sich die Karte neigt.",
+   "image_legende": "Eine häufige Karte: drei Kartons, jeder gleitet in seinem Tempo."
+  },
   {
    "version": "37.8.0",
    "date": "2026-10-27",
@@ -187,35 +230,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "37.7.5",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Die Kartenhilfe in der Sammlung",
-       "texte": "Ein „?“ oben in Mäi Carnet öffnet den Rundgang durch die Karten, ganz oder zu einem einzigen Thema (eine Karte lesen, teilen, abgeben oder empfangen), ohne Umweg über die Startseite."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_aide_visite.gif",
-     "alt": "Gefilmt auf einem Galaxy A21s, in fünf Bildschirmen. 1. Die letzte Sprechblase des Rundgangs, „Um ihn wiederzusehen“, hebt die Schaltfläche „?“ oben links hervor. 2. Das „?“ öffnet die Hilfe: der ganze Rundgang, dann Die Tastatur (Mit der Tastatur schreiben, Eine Nachricht diktieren), Die Karten (Eine Karte lesen, Eine Karte teilen, Eine Karte abgeben oder empfangen), Die App (Ein Wort suchen, Spielend Wörter lernen, Die Startseite verstehen, Ihren Fortschritt verfolgen, Die Tastatur einstellen) und der Leitfaden zum Lesen. 3. „Ausprobieren“ öffnet ein Feld mit der Tastatur: „Moi“ ist getippt, die Leiste schlägt „Moien“ vor. 4. In Mäi Carnet öffnet ein „?“ oben die Kartenhilfe. 5. „Eine Karte teilen“ öffnet die Karte „Moien“ und hebt die Schaltfläche Teilen hervor. Die Bildschirme sind auf Französisch.",
-     "legende": "Ein stets sichtbares „?“ öffnet die Hilfe: der ganze Rundgang oder ein einziges Thema, die Tastatur ausprobieren, ohne den Rundgang zu verlassen, und die Kartenhilfe in der Sammlung."
-    }
-   ],
-   "image": "Screenshots/lux_aide_visite.gif",
-   "image_alt": "Gefilmt auf einem Galaxy A21s, in fünf Bildschirmen. 1. Die letzte Sprechblase des Rundgangs, „Um ihn wiederzusehen“, hebt die Schaltfläche „?“ oben links hervor. 2. Das „?“ öffnet die Hilfe: der ganze Rundgang, dann Die Tastatur (Mit der Tastatur schreiben, Eine Nachricht diktieren), Die Karten (Eine Karte lesen, Eine Karte teilen, Eine Karte abgeben oder empfangen), Die App (Ein Wort suchen, Spielend Wörter lernen, Die Startseite verstehen, Ihren Fortschritt verfolgen, Die Tastatur einstellen) und der Leitfaden zum Lesen. 3. „Ausprobieren“ öffnet ein Feld mit der Tastatur: „Moi“ ist getippt, die Leiste schlägt „Moien“ vor. 4. In Mäi Carnet öffnet ein „?“ oben die Kartenhilfe. 5. „Eine Karte teilen“ öffnet die Karte „Moien“ und hebt die Schaltfläche Teilen hervor. Die Bildschirme sind auf Französisch.",
-   "image_legende": "Ein stets sichtbares „?“ öffnet die Hilfe: der ganze Rundgang oder ein einziges Thema, die Tastatur ausprobieren, ohne den Rundgang zu verlassen, und die Kartenhilfe in der Sammlung."
   }
  ]
 }

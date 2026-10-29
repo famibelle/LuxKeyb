@@ -1,663 +1,695 @@
 {
- "_comment": "Deutsche Übersetzung von nouveautes.html, nach Version. Von Hand gepflegt: generate_nouveautes.py führt sie in stats/nouveautes-de.json zusammen. Jede Version folgt der französischen aus dem CHANGELOG: dieselben Abschnitte, dieselbe Anzahl Punkte, in derselben Reihenfolge; der Titel eines Abschnitts darf fehlen, wenn _sections ihn übersetzt. Eine Version, die hier fehlt oder nicht mehr die französische Form hat, erscheint auf Französisch mit einem Hinweis. Der Text ist HTML: < und & maskieren.",
+  "_comment": "Deutsche Übersetzung von nouveautes.html, nach Version. Von Hand gepflegt: generate_nouveautes.py führt sie in stats/nouveautes-de.json zusammen. Jede Version folgt der französischen aus dem CHANGELOG: dieselben Abschnitte, dieselbe Anzahl Punkte, in derselben Reihenfolge; der Titel eines Abschnitts darf fehlen, wenn _sections ihn übersetzt. Eine Version, die hier fehlt oder nicht mehr die französische Form hat, erscheint auf Französisch mit einem Hinweis. Der Text ist HTML: < und & maskieren.",
   "37.8.0": {
-   "intro": "",
-   "sections": [
-    {
-     "titre": "Verbesserungen",
-     "points": [
+    "intro": "",
+    "sections": [
       {
-       "titre": "Die Lernstufe in sechs Feldern",
-       "texte": "Unten auf jeder Karte füllt sich mit jeder erfolgreichen Wiederholung ein Feld, und alle sechs sind voll, wenn das Wort gelernt ist."
-      },
-      {
-       "titre": "Die Seltenheit in Sternen",
-       "texte": "Eine häufige Karte hat einen Stern, eine sehr seltene vier. Je mehr Sterne, desto seltener die Karte."
-      },
-      {
-       "titre": "Gravierte Wappen",
-       "texte": "Die beiden Wappen unten auf der Karte sind ziseliert wie das Namensschild, und die Zahl, wie oft Sie das Wort gewonnen haben, ist besser lesbar."
-      },
-      {
-       "titre": "Neue Zeichnungen auf den Karten",
-       "texte": "Die Biene, die Ameise, der Elefant, die Banane, der Pfannkuchen und dreizehn weitere Wörter haben jetzt ihre eigene Zeichnung."
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Die Lernstufe in sechs Feldern",
+            "texte": "Unten auf jeder Karte füllt sich mit jeder erfolgreichen Wiederholung ein Feld, und alle sechs sind voll, wenn das Wort gelernt ist."
+          },
+          {
+            "titre": "Die Seltenheit in Sternen",
+            "texte": "Eine häufige Karte hat einen Stern, eine sehr seltene vier. Je mehr Sterne, desto seltener die Karte."
+          },
+          {
+            "titre": "Gravierte Wappen",
+            "texte": "Die beiden Wappen unten auf der Karte sind ziseliert wie das Namensschild, und die Zahl, wie oft Sie das Wort gewonnen haben, ist besser lesbar."
+          },
+          {
+            "titre": "Neue Zeichnungen auf den Karten",
+            "texte": "Die Biene, die Ameise, der Elefant, die Banane, der Pfannkuchen und dreizehn weitere Wörter haben jetzt ihre eigene Zeichnung."
+          }
+        ]
       }
-     ]
-    }
-   ],
-   "images": [
-    {
-     "alt": "Drei Karten aus der Sammlung, so wie die App sie zeigt. 1. „Kaz“, Katze, in Gold: im Wappen STUFE unten rechts ist eines von sechs Feldern gefüllt; die Seltenheit unten rechts zeigt vier von fünf gefüllten Sternen. 2. „Bibliothéik“, Bibliothek, in Silber, mit dem Siegel „Geléiert“ eines gelernten Wortes: alle sechs Felder der STUFE sind voll, die Seltenheit hat drei Sterne. 3. „Elefant“ in Gold, mit seiner neuen Elefantenzeichnung vor der Stadt bei Nacht: drei von sechs Feldern sind gefüllt. Die Wappen GESEHEN und STUFE sind ziseliert, die Zahl bei GESEHEN ist ins Metall graviert. Die Karten sind auf Französisch.",
-     "legende": "Die Lernstufe in sechs Feldern, die Seltenheit in Sternen und die neue Elefantenzeichnung."
-    }
-   ]
+    ],
+    "images": [
+      {
+        "alt": "Drei Karten aus der Sammlung, so wie die App sie zeigt. 1. „Kaz“, Katze, in Gold: im Wappen STUFE unten rechts ist eines von sechs Feldern gefüllt; die Seltenheit unten rechts zeigt vier von fünf gefüllten Sternen. 2. „Bibliothéik“, Bibliothek, in Silber, mit dem Siegel „Geléiert“ eines gelernten Wortes: alle sechs Felder der STUFE sind voll, die Seltenheit hat drei Sterne. 3. „Elefant“ in Gold, mit seiner neuen Elefantenzeichnung vor der Stadt bei Nacht: drei von sechs Feldern sind gefüllt. Die Wappen GESEHEN und STUFE sind ziseliert, die Zahl bei GESEHEN ist ins Metall graviert. Die Karten sind auf Französisch.",
+        "legende": "Die Lernstufe in sechs Feldern, die Seltenheit in Sternen und die neue Elefantenzeichnung."
+      }
+    ]
   },
- "37.7.9": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Das Wörterbuch in Aktion",
-      "texte": "Im Rundgang sucht eine kleine Animation nach „Katze“, öffnet den Eintrag „Kaz“ mit seinem Beispielsatz und sucht dann „Kaz“ in der Gegenrichtung."
-     }
+  "37.7.9": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Das Wörterbuch in Aktion",
+            "texte": "Im Rundgang sucht eine kleine Animation nach „Katze“, öffnet den Eintrag „Kaz“ mit seinem Beispielsatz und sucht dann „Kaz“ in der Gegenrichtung."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Wierderbuch, das Wörterbuch“ des Rundgangs. In einem gezeichneten Suchfeld wird ein Wort Buchstabe für Buchstabe getippt; drei Ergebnisse erscheinen, Kaz zuerst. Ein Finger tippt auf „Kaz“: Sein Eintrag gleitet nach oben, mit seiner Bedeutung und dem Beispielsatz „d'Kaz sëtzt virun der Fënster ze miauen“ samt Übersetzung. Der Eintrag gleitet wieder hinunter, dann wird „Kaz“ getippt und findet seine Bedeutung. Die Bildschirme sind auf Französisch, gesucht wird also „chat“; auf Deutsch ist es „Katze“.",
+        "legende": "Das Wörterbuch, gezeigt: ein Wort suchen, den Eintrag „Kaz“ lesen, in der Gegenrichtung suchen."
+      }
     ]
-   }
-  ],
-  "images": [
-   {
-    "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Wierderbuch, das Wörterbuch“ des Rundgangs. In einem gezeichneten Suchfeld wird ein Wort Buchstabe für Buchstabe getippt; drei Ergebnisse erscheinen, Kaz zuerst. Ein Finger tippt auf „Kaz“: Sein Eintrag gleitet nach oben, mit seiner Bedeutung und dem Beispielsatz „d'Kaz sëtzt virun der Fënster ze miauen“ samt Übersetzung. Der Eintrag gleitet wieder hinunter, dann wird „Kaz“ getippt und findet seine Bedeutung. Die Bildschirme sind auf Französisch, gesucht wird also „chat“; auf Deutsch ist es „Katze“.",
-    "legende": "Das Wörterbuch, gezeigt: ein Wort suchen, den Eintrag „Kaz“ lesen, in der Gegenrichtung suchen."
-   }
-  ]
- },
- "37.7.8": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Die Tastatur in Aktion",
-      "texte": "Im Rundgang zeigt eine kleine Animation, wie der Finger ein vorgeschlagenes Wort antippt und dann über die Leertaste gleitet, um den Cursor zu verschieben."
-     },
-     {
-      "titre": "Das Diktieren in Aktion",
-      "texte": "Man sieht, wie das Mikrofon aufleuchtet, der Satz beim Sprechen geschrieben wird und das Mikrofon wieder ausgeht."
-     }
+  },
+  "37.7.8": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Die Tastatur in Aktion",
+            "texte": "Im Rundgang zeigt eine kleine Animation, wie der Finger ein vorgeschlagenes Wort antippt und dann über die Leertaste gleitet, um den Cursor zu verschieben."
+          },
+          {
+            "titre": "Das Diktieren in Aktion",
+            "texte": "Man sieht, wie das Mikrofon aufleuchtet, der Satz beim Sprechen geschrieben wird und das Mikrofon wieder ausgeht."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Die Tastatur in drei Gesten“ des Rundgangs. Oben eine gezeichnete Tastatur. Im Feld „Moi“; drei rote Vorschläge, Moien, Moie und Moies; ein Finger tippt „Moien“ an, das ganz geschrieben wird. Der Finger tippt „wéi“, legt sich dann auf die Leertaste und gleitet nach links: Der Cursor wandert zurück bis hinter „Moien“. Zwei Punkte, 1 und 3, leuchten nacheinander rot auf, und der Text erklärt sie. Die Bildschirme sind auf Französisch.",
+        "legende": "Die Gesten der Tastatur, gezeigt: ein vorgeschlagenes Wort antippen, über die Leertaste gleiten."
+      },
+      {
+        "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Das Diktieren“ des Rundgangs. Ein Finger tippt auf das Mikrofon oben rechts einer gezeichneten Tastatur; das Mikrofon wird rot, umgeben von einem kreisenden Ring und Lichthöfen, und das Band „LuxASR · Schwätzt…“ ersetzt die Vorschläge. Der Satz „Moien, wéi geet et?“ erscheint Wort für Wort im Feld, dann tippt der Finger erneut auf das Mikrofon, das ausgeht. Die Bildschirme sind auf Französisch.",
+        "legende": "Das Diktieren, gezeigt: Das Mikrofon leuchtet auf, der Satz wird geschrieben, das Mikrofon geht aus."
+      }
     ]
-   }
-  ],
-  "images": [
-   {
-    "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Die Tastatur in drei Gesten“ des Rundgangs. Oben eine gezeichnete Tastatur. Im Feld „Moi“; drei rote Vorschläge, Moien, Moie und Moies; ein Finger tippt „Moien“ an, das ganz geschrieben wird. Der Finger tippt „wéi“, legt sich dann auf die Leertaste und gleitet nach links: Der Cursor wandert zurück bis hinter „Moien“. Zwei Punkte, 1 und 3, leuchten nacheinander rot auf, und der Text erklärt sie. Die Bildschirme sind auf Französisch.",
-    "legende": "Die Gesten der Tastatur, gezeigt: ein vorgeschlagenes Wort antippen, über die Leertaste gleiten."
-   },
-   {
-    "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Das Diktieren“ des Rundgangs. Ein Finger tippt auf das Mikrofon oben rechts einer gezeichneten Tastatur; das Mikrofon wird rot, umgeben von einem kreisenden Ring und Lichthöfen, und das Band „LuxASR · Schwätzt…“ ersetzt die Vorschläge. Der Satz „Moien, wéi geet et?“ erscheint Wort für Wort im Feld, dann tippt der Finger erneut auf das Mikrofon, das ausgeht. Die Bildschirme sind auf Französisch.",
-    "legende": "Das Diktieren, gezeigt: Das Mikrofon leuchtet auf, der Satz wird geschrieben, das Mikrofon geht aus."
-   }
-  ]
- },
- "_sections": {
-  "Nouveautés": "Neu",
-  "Corrections": "Korrekturen",
-  "Changements": "Änderungen",
-  "Rapidité": "Geschwindigkeit"
- },
- "37.7.7": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Eine Karte abgeben, Schritt für Schritt",
-      "texte": "Der Rundgang durch die Karten erklärt jetzt den Austausch zwischen zwei Telefonen in vier nummerierten Schritten, mit einer kleinen Animation der beiden Bildschirme nebeneinander."
-     },
-     {
-      "titre": "Eine Karte empfangen und die Kamera, erklärt",
-      "texte": "Welche Schaltfläche zu tippen ist, und warum die Kamera nur den Code liest, ohne Internet."
-     }
+  },
+  "_sections": {
+    "Nouveautés": "Neu",
+    "Corrections": "Korrekturen",
+    "Changements": "Änderungen",
+    "Rapidité": "Geschwindigkeit"
+  },
+  "37.7.7": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Eine Karte abgeben, Schritt für Schritt",
+            "texte": "Der Rundgang durch die Karten erklärt jetzt den Austausch zwischen zwei Telefonen in vier nummerierten Schritten, mit einer kleinen Animation der beiden Bildschirme nebeneinander."
+          },
+          {
+            "titre": "Eine Karte empfangen und die Kamera, erklärt",
+            "texte": "Welche Schaltfläche zu tippen ist, und warum die Kamera nur den Code liest, ohne Internet."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Abgeben, Schritt für Schritt“ des Kartenrundgangs. Oben zwei gezeichnete Telefone, „Sie“ und „Die andere Person“. Das zweite zeigt einen Code, das erste richtet einen blauen Strahl darauf, und ein grünes Häkchen erscheint; die Karte verschwindet vom ersten, das nun selbst einen Code zeigt; das zweite richtet sich darauf, dann wandert die Karte von einem Bildschirm zum anderen. Darunter leuchten vier nummerierte Punkte nacheinander rot auf, und der Text erklärt sie. Die Bildschirme sind auf Französisch.",
+        "legende": "Eine Karte abgeben, in vier Schritten: Der Kartenrundgang zeigt es mit zwei Telefonen nebeneinander."
+      }
     ]
-   }
-  ],
-  "images": [
-   {
-    "alt": "Gefilmt auf einem Galaxy A21s: die Blase „Abgeben, Schritt für Schritt“ des Kartenrundgangs. Oben zwei gezeichnete Telefone, „Sie“ und „Die andere Person“. Das zweite zeigt einen Code, das erste richtet einen blauen Strahl darauf, und ein grünes Häkchen erscheint; die Karte verschwindet vom ersten, das nun selbst einen Code zeigt; das zweite richtet sich darauf, dann wandert die Karte von einem Bildschirm zum anderen. Darunter leuchten vier nummerierte Punkte nacheinander rot auf, und der Text erklärt sie. Die Bildschirme sind auf Französisch.",
-    "legende": "Eine Karte abgeben, in vier Schritten: Der Kartenrundgang zeigt es mit zwei Telefonen nebeneinander."
-   }
-  ]
- },
- "37.7.6": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Die Anleitung spricht über das Diktieren",
-      "texte": "Wie man diktiert, warum es Internet braucht und wohin Ihre Stimme geht."
-     },
-     {
-      "titre": "Die Anleitung erklärt, wie man eine Karte teilt, abgibt und empfängt",
-      "texte": "Und wie man den Cursor bewegt, indem man über die Leertaste gleitet."
-     }
+  },
+  "37.7.6": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Die Anleitung spricht über das Diktieren",
+            "texte": "Wie man diktiert, warum es Internet braucht und wohin Ihre Stimme geht."
+          },
+          {
+            "titre": "Die Anleitung erklärt, wie man eine Karte teilt, abgibt und empfängt",
+            "texte": "Und wie man den Cursor bewegt, indem man über die Leertaste gleitet."
+          }
+        ]
+      },
+      {
+        "titre": "Korrekturen",
+        "points": [
+          {
+            "titre": "Die Anleitung beschreibt die Karte, wie sie ist",
+            "texte": "Bilder neu gemacht mit der Landschaftskarte, mit dem Jahreszeitenstempel und der Seltenheitsstufe."
+          },
+          {
+            "titre": "Die Antwort zu Ihren Daten stimmt",
+            "texte": "Was Sie tippen, verlässt nie das Telefon; nur das Diktieren schickt Ihre Stimme an die Universität Luxemburg, die sie aufschreibt, ohne sie zu speichern."
+          },
+          {
+            "titre": "Die französischen Vorschläge",
+            "texte": "werden als Option in den Tastatureinstellungen vorgestellt."
+          }
+        ]
+      }
     ]
-   },
-   {
-    "titre": "Korrekturen",
-    "points": [
-     {
-      "titre": "Die Anleitung beschreibt die Karte, wie sie ist",
-      "texte": "Bilder neu gemacht mit der Landschaftskarte, mit dem Jahreszeitenstempel und der Seltenheitsstufe."
-     },
-     {
-      "titre": "Die Antwort zu Ihren Daten stimmt",
-      "texte": "Was Sie tippen, verlässt nie das Telefon; nur das Diktieren schickt Ihre Stimme an die Universität Luxemburg, die sie aufschreibt, ohne sie zu speichern."
-     },
-     {
-      "titre": "Die französischen Vorschläge",
-      "texte": "werden als Option in den Tastatureinstellungen vorgestellt."
-     }
+  },
+  "37.7.5": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Die Kartenhilfe in der Sammlung",
+            "texte": "Ein „?“ oben in Mäi Carnet öffnet den Rundgang durch die Karten, ganz oder zu einem einzigen Thema (eine Karte lesen, teilen, abgeben oder empfangen), ohne Umweg über die Startseite."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Gefilmt auf einem Galaxy A21s, in fünf Bildschirmen. 1. Die letzte Sprechblase des Rundgangs, „Um ihn wiederzusehen“, hebt die Schaltfläche „?“ oben links hervor. 2. Das „?“ öffnet die Hilfe: der ganze Rundgang, dann Die Tastatur (Mit der Tastatur schreiben, Eine Nachricht diktieren), Die Karten (Eine Karte lesen, Eine Karte teilen, Eine Karte abgeben oder empfangen), Die App (Ein Wort suchen, Spielend Wörter lernen, Die Startseite verstehen, Ihren Fortschritt verfolgen, Die Tastatur einstellen) und der Leitfaden zum Lesen. 3. „Ausprobieren“ öffnet ein Feld mit der Tastatur: „Moi“ ist getippt, die Leiste schlägt „Moien“ vor. 4. In Mäi Carnet öffnet ein „?“ oben die Kartenhilfe. 5. „Eine Karte teilen“ öffnet die Karte „Moien“ und hebt die Schaltfläche Teilen hervor. Die Bildschirme sind auf Französisch.",
+        "legende": "Ein stets sichtbares „?“ öffnet die Hilfe: der ganze Rundgang oder ein einziges Thema, die Tastatur ausprobieren, ohne den Rundgang zu verlassen, und die Kartenhilfe in der Sammlung."
+      }
     ]
-   }
-  ]
- },
- "37.7.5": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Die Kartenhilfe in der Sammlung",
-      "texte": "Ein „?“ oben in Mäi Carnet öffnet den Rundgang durch die Karten, ganz oder zu einem einzigen Thema (eine Karte lesen, teilen, abgeben oder empfangen), ohne Umweg über die Startseite."
-     }
+  },
+  "37.7.4": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Die Tastatur während des Rundgangs ausprobieren",
+            "texte": "Die Sprechblasen zu den Gesten und zur Spracheingabe haben eine Schaltfläche „Ausprobieren“, die ein kleines Feld mit der Tastatur öffnet. Tippen Sie „Moi“ und dann „Moien“, oder tippen Sie auf das Mikrofon und sprechen Sie, ohne den Rundgang zu verlassen."
+          }
+        ]
+      }
     ]
-   }
-  ],
-  "images": [
-   {
-    "alt": "Gefilmt auf einem Galaxy A21s, in fünf Bildschirmen. 1. Die letzte Sprechblase des Rundgangs, „Um ihn wiederzusehen“, hebt die Schaltfläche „?“ oben links hervor. 2. Das „?“ öffnet die Hilfe: der ganze Rundgang, dann Die Tastatur (Mit der Tastatur schreiben, Eine Nachricht diktieren), Die Karten (Eine Karte lesen, Eine Karte teilen, Eine Karte abgeben oder empfangen), Die App (Ein Wort suchen, Spielend Wörter lernen, Die Startseite verstehen, Ihren Fortschritt verfolgen, Die Tastatur einstellen) und der Leitfaden zum Lesen. 3. „Ausprobieren“ öffnet ein Feld mit der Tastatur: „Moi“ ist getippt, die Leiste schlägt „Moien“ vor. 4. In Mäi Carnet öffnet ein „?“ oben die Kartenhilfe. 5. „Eine Karte teilen“ öffnet die Karte „Moien“ und hebt die Schaltfläche Teilen hervor. Die Bildschirme sind auf Französisch.",
-    "legende": "Ein stets sichtbares „?“ öffnet die Hilfe: der ganze Rundgang oder ein einziges Thema, die Tastatur ausprobieren, ohne den Rundgang zu verlassen, und die Kartenhilfe in der Sammlung."
-   }
-  ]
- },
- "37.7.4": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Die Tastatur während des Rundgangs ausprobieren",
-      "texte": "Die Sprechblasen zu den Gesten und zur Spracheingabe haben eine Schaltfläche „Ausprobieren“, die ein kleines Feld mit der Tastatur öffnet. Tippen Sie „Moi“ und dann „Moien“, oder tippen Sie auf das Mikrofon und sprechen Sie, ohne den Rundgang zu verlassen."
-     }
+  },
+  "37.7.3": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Eine einzige Tür zur Hilfe",
+            "texte": "Eine Schaltfläche „?“ oben auf dem Bildschirm, von jedem Tab aus sichtbar, öffnet die Hilfe. Dort finden Sie den Rundgang, Thema für Thema, und den ganzen Leitfaden zum Lesen. Unten auf der Startseite ersetzt die Zeile „Hilfe“ die Zeilen „Bedienungsanleitung“ und „Rundgang“."
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "37.7.3": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Eine einzige Tür zur Hilfe",
-      "texte": "Eine Schaltfläche „?“ oben auf dem Bildschirm, von jedem Tab aus sichtbar, öffnet die Hilfe. Dort finden Sie den Rundgang, Thema für Thema, und den ganzen Leitfaden zum Lesen. Unten auf der Startseite ersetzt die Zeile „Hilfe“ die Zeilen „Bedienungsanleitung“ und „Rundgang“."
-     }
+  },
+  "37.7.2": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Der Rundgang beginnt mit der Tastatur",
+            "texte": "Zuerst die drei Gesten und die Spracheingabe, dann die Karten, das Wörterbuch, die Spiele und der Rest."
+          },
+          {
+            "titre": "Man weiß, wo man ihn wiederfindet",
+            "texte": "Die letzte Sprechblase zeigt die Zeile „Rundgang“ unten auf der Startseite, und „Überspringen“ führt dorthin, bevor er sich schließt."
+          },
+          {
+            "titre": "Die Themen sagen, was man tun möchte",
+            "texte": "„Eine Nachricht diktieren“, „Ein Wort suchen“, „Eine Karte teilen“…"
+          },
+          {
+            "titre": "Der Rundgang durch die Karten ist kürzer",
+            "texte": "Vier Sprechblasen statt neun; die Karte stellt sich auf einmal vor."
+          }
+        ]
+      },
+      {
+        "titre": "Korrekturen",
+        "points": [
+          {
+            "titre": "Die Sprechblase bleibt auf dem Bildschirm, wenn der gezeigte Bereich groß ist",
+            "texte": "Bei einer geöffneten Karte rutschte die Schaltfläche „Weiter“ auf manchen Telefonen aus dem Bildschirm."
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "37.7.2": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Der Rundgang beginnt mit der Tastatur",
-      "texte": "Zuerst die drei Gesten und die Spracheingabe, dann die Karten, das Wörterbuch, die Spiele und der Rest."
-     },
-     {
-      "titre": "Man weiß, wo man ihn wiederfindet",
-      "texte": "Die letzte Sprechblase zeigt die Zeile „Rundgang“ unten auf der Startseite, und „Überspringen“ führt dorthin, bevor er sich schließt."
-     },
-     {
-      "titre": "Die Themen sagen, was man tun möchte",
-      "texte": "„Eine Nachricht diktieren“, „Ein Wort suchen“, „Eine Karte teilen“…"
-     },
-     {
-      "titre": "Der Rundgang durch die Karten ist kürzer",
-      "texte": "Vier Sprechblasen statt neun; die Karte stellt sich auf einmal vor."
-     }
+  },
+  "37.7.1": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Ein einzelnes Thema des Rundgangs wiedersehen",
+            "texte": "Die Zeile „Rundgang“ unten auf der Startseite öffnet eine Themenliste. Man wählt den ganzen Rundgang oder ein einziges Thema: die Spracheingabe, eine Karte teilen, die Gesten der Tastatur, das Wörterbuch…"
+          }
+        ]
+      },
+      {
+        "titre": "Korrekturen",
+        "points": [
+          {
+            "titre": "Der Rundgang öffnet sich nicht mehr unter einem anderen Fenster",
+            "texte": "Er wartet, bis die Willkommensnachricht oder eine andere Anfrage der App geschlossen ist."
+          }
+        ]
+      }
     ]
-   },
-   {
-    "titre": "Korrekturen",
-    "points": [
-     {
-      "titre": "Die Sprechblase bleibt auf dem Bildschirm, wenn der gezeigte Bereich groß ist",
-      "texte": "Bei einer geöffneten Karte rutschte die Schaltfläche „Weiter“ auf manchen Telefonen aus dem Bildschirm."
-     }
+  },
+  "37.7.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Neu",
+        "points": [
+          {
+            "titre": "Ein Rundgang durch die App",
+            "texte": "Beim ersten Öffnen stellt eine Sprechblase jeden Tab vor (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), die Tastatureinstellungen, Ihre Kartensammlung, die drei Gesten der Tastatur und die Spracheingabe. Ein Tippen führt weiter, Sie können ihn jederzeit überspringen, und die Zeile „Rundgang“ unten auf der Startseite startet ihn erneut."
+          },
+          {
+            "titre": "Ein Rundgang durch die Karten",
+            "texte": "Beim ersten Öffnen von Mäi Carnet öffnet sich eine Karte und stellt sich Bereich für Bereich vor (die Landschaft, das Wort, seine Bedeutung, seine Zähler, seine Nummer), danach die Schaltflächen Teilen, Abgeben und Empfangen."
+          }
+        ]
+      },
+      {
+        "titre": "Korrekturen",
+        "points": [
+          {
+            "titre": "Auf dem Tablet bleibt eine geöffnete Karte offen, wenn man den Bildschirm dreht",
+            "texte": ""
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Der Rundgang durch die App, Schritt für Schritt, im Emulator. Ein dunkler Schleier deckt den Bildschirm ab, und eine weiße Sprechblase stellt vor, was ein gelber Rahmen hervorhebt: 1. der Tab Haut, die Startseite des Tages; 2. das Zahnrad der Tastatureinstellungen; 3. der Tab Spiller und seine Spiele; 4. das Banner Mäi Carnet; 5. der Tab Wierderbuch; 6. der Tab Mäi Lëtzebuergesch und die Stufen, von Ufänger bis Sproochemeeschter; 7. die Tastatur in drei Gesten (ein vorgeschlagenes Wort antippen, lange drücken für Akzente, über die Leertaste gleiten, um den Cursor zu bewegen); 8. die Spracheingabe, mit dem roten Mikrofonsymbol: oben rechts auf der Tastatur das Mikrofon antippen, Luxemburgisch sprechen, zum Beenden noch einmal tippen. Die Bildschirme sind auf Französisch.",
+        "legende": "Der Rundgang durch die App in acht Schritten: die vier Tabs, die Einstellungen, die Kartensammlung, die Gesten der Tastatur und die Spracheingabe."
+      },
+      {
+        "alt": "Der Rundgang durch die Kartensammlung, mit der Karte „Waasser“ (Wasser). 1. die Karte wird im Raster der Sammlung hervorgehoben; dann öffnet sie sich groß, und jeder Bereich leuchtet nacheinander auf: 2. die Landschaft, deren Tageszeit die Seltenheit zeigt; 3. das Wort auf seiner Plakette und das Abzeichen mit der Anzahl der Buchstaben; 4. seine Bedeutung, „Neutrum“, und ein Satz aus dem offiziellen Wörterbuch mit seiner Übersetzung; 5. die Wappen GESEHEN und STUFE und das Medaillon des Spiels; 6. die Kartennummer und ihr Rang; 7. die Schaltfläche Teilen; 8. die Schaltfläche Abgeben; 9. Karte geschlossen, die Schaltfläche Empfangen oben in der Sammlung. Die Bildschirme sind auf Französisch.",
+        "legende": "Der Rundgang durch die Karten: jeder Bereich der Karte erklärt, dann wie man sie teilt, abgibt oder eine empfängt."
+      }
     ]
-   }
-  ]
- },
- "37.7.1": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Ein einzelnes Thema des Rundgangs wiedersehen",
-      "texte": "Die Zeile „Rundgang“ unten auf der Startseite öffnet eine Themenliste. Man wählt den ganzen Rundgang oder ein einziges Thema: die Spracheingabe, eine Karte teilen, die Gesten der Tastatur, das Wörterbuch…"
-     }
+  },
+  "37.6.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Neu",
+        "points": [
+          {
+            "titre": "Das Wierderbuch versteht Zahlen in Ziffern",
+            "texte": "Wer „11“ eingibt, sieht „11 wird ‚eelef‘ geschrieben“ und die Übersetzung, von 0 bis 100. Darüber erinnert die App, wie bei Jahreszahlen, daran, dass man sie in Ziffern schreibt, wie im offiziellen Wörterbuch."
+          }
+        ]
+      },
+      {
+        "titre": "Korrekturen",
+        "points": [
+          {
+            "titre": "Namen der Stufen korrigiert",
+            "texte": "Von einer Luxemburgischlehrkraft: Ufänger, Sproochekënner und Sproochemeeschter. Ihr Fortschritt ändert sich nicht."
+          }
+        ]
+      }
     ]
-   },
-   {
-    "titre": "Korrekturen",
-    "points": [
-     {
-      "titre": "Der Rundgang öffnet sich nicht mehr unter einem anderen Fenster",
-      "texte": "Er wartet, bis die Willkommensnachricht oder eine andere Anfrage der App geschlossen ist."
-     }
+  },
+  "37.5.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Neu",
+        "points": [
+          {
+            "titre": "Geöffnete Karten fangen das Licht ein",
+            "texte": "Das Landschaftsfenster liegt hinter Glas, mit einem dezenten Spiegelbild, das gleitet, wenn man das Telefon neigt. Der Rahmen glänzt je nach Metall, vom Zinn der gewöhnlichen Karten bis zum Gold der sehr seltenen, und das Licht wandert beim Neigen von einem erhabenen Teil zum nächsten (Plakette, Medaillon, Wappen)."
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "37.7.0": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Neu",
-    "points": [
-     {
-      "titre": "Ein Rundgang durch die App",
-      "texte": "Beim ersten Öffnen stellt eine Sprechblase jeden Tab vor (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), die Tastatureinstellungen, Ihre Kartensammlung, die drei Gesten der Tastatur und die Spracheingabe. Ein Tippen führt weiter, Sie können ihn jederzeit überspringen, und die Zeile „Rundgang“ unten auf der Startseite startet ihn erneut."
-     },
-     {
-      "titre": "Ein Rundgang durch die Karten",
-      "texte": "Beim ersten Öffnen von Mäi Carnet öffnet sich eine Karte und stellt sich Bereich für Bereich vor (die Landschaft, das Wort, seine Bedeutung, seine Zähler, seine Nummer), danach die Schaltflächen Teilen, Abgeben und Empfangen."
-     }
+  },
+  "37.4.10": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Winter- und Sommerkarten erscheinen schneller",
+            "texte": "Auf einem Galaxy A21s wird die Winterlandschaft einer geöffneten Karte in 33 ms statt 49 gezeichnet, die Sommerlandschaft in 21 ms statt 35; der Herbst geht von 47 auf 43 ms. Die Bilder ändern sich nicht."
+          }
+        ]
+      }
     ]
-   },
-   {
-    "titre": "Korrekturen",
-    "points": [
-     {
-      "titre": "Auf dem Tablet bleibt eine geöffnete Karte offen, wenn man den Bildschirm dreht",
-      "texte": ""
-     }
+  },
+  "37.4.9": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Herbstkarten erscheinen schneller",
+            "texte": "Die Herbstlandschaft einer geöffneten Karte wird auf einem Galaxy A21s in 43 ms statt 71 gezeichnet, die einer Miniatur in 21 ms statt 30; auch der Frühling wird etwas schneller. Die Bilder ändern sich nicht."
+          }
+        ]
+      }
     ]
-   }
-  ],
-  "images": [
-   {
-    "alt": "Der Rundgang durch die App, Schritt für Schritt, im Emulator. Ein dunkler Schleier deckt den Bildschirm ab, und eine weiße Sprechblase stellt vor, was ein gelber Rahmen hervorhebt: 1. der Tab Haut, die Startseite des Tages; 2. das Zahnrad der Tastatureinstellungen; 3. der Tab Spiller und seine Spiele; 4. das Banner Mäi Carnet; 5. der Tab Wierderbuch; 6. der Tab Mäi Lëtzebuergesch und die Stufen, von Ufänger bis Sproochemeeschter; 7. die Tastatur in drei Gesten (ein vorgeschlagenes Wort antippen, lange drücken für Akzente, über die Leertaste gleiten, um den Cursor zu bewegen); 8. die Spracheingabe, mit dem roten Mikrofonsymbol: oben rechts auf der Tastatur das Mikrofon antippen, Luxemburgisch sprechen, zum Beenden noch einmal tippen. Die Bildschirme sind auf Französisch.",
-    "legende": "Der Rundgang durch die App in acht Schritten: die vier Tabs, die Einstellungen, die Kartensammlung, die Gesten der Tastatur und die Spracheingabe."
-   },
-   {
-    "alt": "Der Rundgang durch die Kartensammlung, mit der Karte „Waasser“ (Wasser). 1. die Karte wird im Raster der Sammlung hervorgehoben; dann öffnet sie sich groß, und jeder Bereich leuchtet nacheinander auf: 2. die Landschaft, deren Tageszeit die Seltenheit zeigt; 3. das Wort auf seiner Plakette und das Abzeichen mit der Anzahl der Buchstaben; 4. seine Bedeutung, „Neutrum“, und ein Satz aus dem offiziellen Wörterbuch mit seiner Übersetzung; 5. die Wappen GESEHEN und STUFE und das Medaillon des Spiels; 6. die Kartennummer und ihr Rang; 7. die Schaltfläche Teilen; 8. die Schaltfläche Abgeben; 9. Karte geschlossen, die Schaltfläche Empfangen oben in der Sammlung. Die Bildschirme sind auf Französisch.",
-    "legende": "Der Rundgang durch die Karten: jeder Bereich der Karte erklärt, dann wie man sie teilt, abgibt oder eine empfängt."
-   }
-  ]
- },
- "37.6.0": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Neu",
-    "points": [
-     {
-      "titre": "Das Wierderbuch versteht Zahlen in Ziffern",
-      "texte": "Wer „11“ eingibt, sieht „11 wird ‚eelef‘ geschrieben“ und die Übersetzung, von 0 bis 100. Darüber erinnert die App, wie bei Jahreszahlen, daran, dass man sie in Ziffern schreibt, wie im offiziellen Wörterbuch."
-     }
+  },
+  "37.4.8": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Korrekturen",
+        "points": [
+          {
+            "titre": "Eine sehr seltene Karte bleibt nicht mehr verdeckt",
+            "texte": "Auf einem langsamen Telefon konnte der Blitz vor der sehr seltenen Karte ihr Umdrehen abbrechen, und die Karte blieb auf dem Rücken liegen."
+          },
+          {
+            "titre": "Das erste Kartenpäckchen stockt nicht mehr",
+            "texte": "Nach einer Installation oder einem Update hielt die Karte beim Umdrehen eine halbe Sekunde an. Die Grafikarbeit wird jetzt im Voraus erledigt, ohne dass man etwas sieht."
+          }
+        ]
+      },
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Die Legende der Sammlung filtert",
+            "texte": "Ein Tippen auf „✦ 5 sehr selten“ zeigt nur noch die sehr seltenen Karten; ein zweites Tippen zeigt die ganze Sammlung."
+          },
+          {
+            "titre": "Die geöffnete Karte nennt ihre Stufe",
+            "texte": "Unten rechts „✦ Sehr selten · 9769.“ statt nur des Rangs."
+          }
+        ]
+      }
     ]
-   },
-   {
-    "titre": "Korrekturen",
-    "points": [
-     {
-      "titre": "Namen der Stufen korrigiert",
-      "texte": "Von einer Luxemburgischlehrkraft: Ufänger, Sproochekënner und Sproochemeeschter. Ihr Fortschritt ändert sich nicht."
-     }
+  },
+  "37.4.7": {
+    "intro": "Die erste seltene und die erste sehr seltene Karte bekommen ihre Zeremonie.",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Die erste seltene und die erste sehr seltene Karte bekommen ihre Zeremonie",
+            "texte": "Die erste seltene Karte zittert ein zweites Mal, stärker, die erste sehr seltene steigt langsamer auf; beide bekommen ein zweites Feuerwerk und einen Satz, der sagt, woran man ihre Stufe erkennt (Abendhimmel und silberner Rahmen, Sternennacht und goldener Rahmen). Nur einmal pro Stufe."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Gefilmt auf einem Galaxy A21s. Ein Kartenpäckchen am Spielende: Nacht senkt sich über den Bildschirm, die Kartenrückseite steigt drehend auf, ein violetter Blitz, dann dreht sich die Karte um. Es ist „Kran“, golden, in einer Sternennacht. Darüber erscheinen zwei Abzeichen: „Neue Karte“ und „Sehr seltene Karte“. Unter der Karte steht: „Ihre erste sehr seltene Karte! Sie erkennen sie am Sternenhimmel und am goldenen Rahmen.“",
+        "legende": "Die allererste sehr seltene Karte bekommt ihre Zeremonie und einen Satz, der sagt, woran man sie künftig erkennt."
+      }
     ]
-   }
-  ]
- },
- "37.5.0": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Neu",
-    "points": [
-     {
-      "titre": "Geöffnete Karten fangen das Licht ein",
-      "texte": "Das Landschaftsfenster liegt hinter Glas, mit einem dezenten Spiegelbild, das gleitet, wenn man das Telefon neigt. Der Rahmen glänzt je nach Metall, vom Zinn der gewöhnlichen Karten bis zum Gold der sehr seltenen, und das Licht wandert beim Neigen von einem erhabenen Teil zum nächsten (Plakette, Medaillon, Wappen)."
-     }
+  },
+  "37.4.6": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Die Seltenheit wird ausgeschrieben",
+            "texte": "Oben in der Sammlung trägt jede Stufe ihren Namen („✦ 5 sehr selten ★ 11 selten…“) statt bloßer Symbole; im Kartenpäckchen kündigt sich eine seltene oder sehr seltene Karte an, sobald sie liegt."
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "37.4.10": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Winter- und Sommerkarten erscheinen schneller",
-      "texte": "Auf einem Galaxy A21s wird die Winterlandschaft einer geöffneten Karte in 33 ms statt 49 gezeichnet, die Sommerlandschaft in 21 ms statt 35; der Herbst geht von 47 auf 43 ms. Die Bilder ändern sich nicht."
-     }
+  },
+  "37.4.5": {
+    "intro": "",
+    "sections": [
+      {
+        "points": [
+          {
+            "titre": "Die Karten in der Leitner-Box zeigen ihre Landschaft",
+            "texte": "In den Fächern zeigten die gestapelten Karten nur den Himmel; jetzt zeigen sie ihren Ort, ihre Jahreszeit und ihr Fest, wie in der Sammlung."
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "37.4.9": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Herbstkarten erscheinen schneller",
-      "texte": "Die Herbstlandschaft einer geöffneten Karte wird auf einem Galaxy A21s in 43 ms statt 71 gezeichnet, die einer Miniatur in 21 ms statt 30; auch der Frühling wird etwas schneller. Die Bilder ändern sich nicht."
-     }
+  },
+  "37.4.4": {
+    "intro": "",
+    "sections": [
+      {
+        "points": [
+          {
+            "titre": "Die Sommervögel fliegen im Kartenfenster",
+            "texte": "Auf der geöffneten Karte und im Kartenpäckchen schlagen sie sanft mit den Flügeln und gleiten, kaum treibend. Vorher standen sie starr in der Landschaft."
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "37.4.8": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Korrekturen",
-    "points": [
-     {
-      "titre": "Eine sehr seltene Karte bleibt nicht mehr verdeckt",
-      "texte": "Auf einem langsamen Telefon konnte der Blitz vor der sehr seltenen Karte ihr Umdrehen abbrechen, und die Karte blieb auf dem Rücken liegen."
-     },
-     {
-      "titre": "Das erste Kartenpäckchen stockt nicht mehr",
-      "texte": "Nach einer Installation oder einem Update hielt die Karte beim Umdrehen eine halbe Sekunde an. Die Grafikarbeit wird jetzt im Voraus erledigt, ohne dass man etwas sieht."
-     }
+  },
+  "37.4.3": {
+    "intro": "",
+    "sections": [
+      {
+        "points": [
+          {
+            "titre": "Die Tastatur trägt ihren Namen in der Tastaturauswahl",
+            "texte": "Auf Samsung-Telefonen erschien sie als „Clavier luxembourgeois Luxembourg“; jetzt heißt sie überall „🇱🇺 Lëtzebuergesch Clavier“."
+          }
+        ]
+      }
     ]
-   },
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Die Legende der Sammlung filtert",
-      "texte": "Ein Tippen auf „✦ 5 sehr selten“ zeigt nur noch die sehr seltenen Karten; ein zweites Tippen zeigt die ganze Sammlung."
-     },
-     {
-      "titre": "Die geöffnete Karte nennt ihre Stufe",
-      "texte": "Unten rechts „✦ Sehr selten · 9769.“ statt nur des Rangs."
-     }
+  },
+  "37.4.2": {
+    "intro": "",
+    "sections": [
+      {
+        "points": [
+          {
+            "titre": "Kein heller Streifen mehr am Fensterrand, wenn man die Karte neigt",
+            "texte": "Die Ebenen der Landschaft ragen jetzt über das Fenster hinaus, ihr Rand ist beim Gleiten nicht mehr zu sehen."
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "37.4.7": {
-  "intro": "Die erste seltene und die erste sehr seltene Karte bekommen ihre Zeremonie.",
-  "sections": [
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Die erste seltene und die erste sehr seltene Karte bekommen ihre Zeremonie",
-      "texte": "Die erste seltene Karte zittert ein zweites Mal, stärker, die erste sehr seltene steigt langsamer auf; beide bekommen ein zweites Feuerwerk und einen Satz, der sagt, woran man ihre Stufe erkennt (Abendhimmel und silberner Rahmen, Sternennacht und goldener Rahmen). Nur einmal pro Stufe."
-     }
+  },
+  "37.4.1": {
+    "intro": "",
+    "sections": [
+      {
+        "points": [
+          {
+            "titre": "Gewonnene Karten lassen das Telefon je nach Seltenheit vibrieren",
+            "texte": "Ein leichtes Ticken für eine ungewöhnliche Karte, drei Zitterer und dann der Schlag des Stempels für eine seltene, und für eine sehr seltene ein Anschwellen während des Vorspiels, ein voller Schlag beim Aufblitzen und das Knistern des Feuerwerks. Diese Vibrationen gab es schon, sie blieben aber auf manchen Telefonen stumm, darunter das Galaxy A21s; jetzt laufen sie über denselben Weg wie das Relief der Sammelkarten. Sie folgen der Einstellung „Vibration beim Tippen“ in den Tastatureinstellungen."
+          }
+        ]
+      }
     ]
-   }
-  ],
-  "images": [
-   {
-    "alt": "Gefilmt auf einem Galaxy A21s. Ein Kartenpäckchen am Spielende: Nacht senkt sich über den Bildschirm, die Kartenrückseite steigt drehend auf, ein violetter Blitz, dann dreht sich die Karte um. Es ist „Kran“, golden, in einer Sternennacht. Darüber erscheinen zwei Abzeichen: „Neue Karte“ und „Sehr seltene Karte“. Unter der Karte steht: „Ihre erste sehr seltene Karte! Sie erkennen sie am Sternenhimmel und am goldenen Rahmen.“",
-    "legende": "Die allererste sehr seltene Karte bekommt ihre Zeremonie und einen Satz, der sagt, woran man sie künftig erkennt."
-   }
-  ]
- },
- "37.4.6": {
-  "intro": "",
-  "sections": [
-   {
-    "titre": "Verbesserungen",
-    "points": [
-     {
-      "titre": "Die Seltenheit wird ausgeschrieben",
-      "texte": "Oben in der Sammlung trägt jede Stufe ihren Namen („✦ 5 sehr selten ★ 11 selten…“) statt bloßer Symbole; im Kartenpäckchen kündigt sich eine seltene oder sehr seltene Karte an, sobald sie liegt."
-     }
+  },
+  "37.3.0": {
+    "intro": "Die Tastatur fängt einen nur einmal getippten Doppelbuchstaben ab.",
+    "sections": [
+      {
+        "points": [
+          {
+            "titre": "Ein vergessener Doppelbuchstabe wird korrigiert",
+            "texte": "„Kafi“ ergibt „Kaffi“, „ales“ ergibt „alles“, „ener“ ergibt „ënner“ statt „Energie“. Das Luxemburgische verdoppelt viele Buchstaben, und der eilige Daumen tippt oft nur einen."
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "37.4.5": {
-  "intro": "",
-  "sections": [
-   {
-    "points": [
-     {
-      "titre": "Die Karten in der Leitner-Box zeigen ihre Landschaft",
-      "texte": "In den Fächern zeigten die gestapelten Karten nur den Himmel; jetzt zeigen sie ihren Ort, ihre Jahreszeit und ihr Fest, wie in der Sammlung."
-     }
+  },
+  "37.2.0": {
+    "intro": "Die Tastatur fängt Tippfehler besser ab.",
+    "sections": [
+      {
+        "points": [
+          {
+            "titre": "Zwei ohne Leerzeichen getippte Wörter werden getrennt",
+            "texte": "Für „echhunn“ schlägt die Leiste „ech hunn“ vor. Zusammengesetzte luxemburgische Wörter („ausbruecht“, „Schoulbus“) werden nicht zerlegt."
+          },
+          {
+            "titre": "Ein Finger, der auf der Nachbartaste landet, wird erkannt",
+            "texte": "Für „haud“ schlägt die Leiste zuerst „Haus“ vor, weil das s neben dem d liegt, und erst dann „haut“."
+          },
+          {
+            "titre": "Zwei vertauschte Buchstaben zählen als ein einziger Fehler",
+            "texte": "„ehc“ ergibt „ech“, „mioen“ ergibt „Moien“."
+          },
+          {
+            "titre": "Ein Tippfehler, der wie der Anfang eines anderen Wortes aussieht, wird trotzdem korrigiert",
+            "texte": "„gir“ ergibt „fir“, „vul“ ergibt „vun“."
+          }
+        ]
+      },
+      {
+        "points": [
+          {
+            "titre": "Einige Tippfehler aus den Texten, mit denen das Wörterbuch aufgebaut wurde, sind daraus entfernt",
+            "texte": "„hunnn“, „dobai“, „tescht“… Sie wurden so akzeptiert, und „hunnn“ wurde sogar unter „hunn“ vorgeschlagen."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Die Tastatur in einem Nachrichtenverlauf. „echhunn“ wird ohne Leerzeichen getippt: Die Leiste schlägt „Ech hunn“ vor, das angetippt wird. Dann „geschter“ ohne Akzent: Die Leiste schlägt „gëschter“ vor. Dann „an der“ ohne Fehler, dann „schiul“, der Finger auf dem i neben dem o: Die Leiste schlägt „Schoul“ vor. Schließlich „gescahfft“ mit zwei vertauschten Buchstaben: Die Leiste schlägt „geschafft“ vor. Der fertige Satz lautet „Ech hunn gëschter an der Schoul geschafft“. Ein blauer Punkt zeigt jedes Antippen.",
+        "legende": "Zusammengeschriebene Wörter, vergessener Akzent, Nachbartaste, vertauschte Buchstaben: Man tippt schnell, die Leiste schlägt das richtige Wort vor, ein Antippen genügt."
+      }
     ]
-   }
-  ]
- },
- "37.4.4": {
-  "intro": "",
-  "sections": [
-   {
-    "points": [
-     {
-      "titre": "Die Sommervögel fliegen im Kartenfenster",
-      "texte": "Auf der geöffneten Karte und im Kartenpäckchen schlagen sie sanft mit den Flügeln und gleiten, kaum treibend. Vorher standen sie starr in der Landschaft."
-     }
+  },
+  "37.1.3": {
+    "intro": "Die Karten bleiben auf dem Bildschirm, wenn man das Handy dreht.",
+    "sections": [
+      {
+        "points": [
+          {
+            "titre": "Eine in der Sammlung geöffnete Karte schließt sich nicht mehr",
+            "texte": "Wenn sich das Handy dreht, und ein geöffnetes Fach der Lernkartei auch nicht."
+          },
+          {
+            "titre": "Beim Wiederholen bleibt die gerade umgedrehte Karte umgedreht",
+            "texte": ""
+          },
+          {
+            "titre": null,
+            "texte": "Solange eine Karte zu sehen ist, bewegt das Neigen des Handys die Karte, statt den Bildschirm zu drehen."
+          }
+        ]
+      },
+      {
+        "points": [
+          {
+            "titre": "Auf dem Handy wird die App jetzt immer im Hochformat angezeigt",
+            "texte": "Quer gehalten ließ das Handy zu wenig Platz: Beim Wiederholen schrumpfte die Karte auf ein Symbol. Tablets behalten beide Ausrichtungen."
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "37.4.3": {
-  "intro": "",
-  "sections": [
-   {
-    "points": [
-     {
-      "titre": "Die Tastatur trägt ihren Namen in der Tastaturauswahl",
-      "texte": "Auf Samsung-Telefonen erschien sie als „Clavier luxembourgeois Luxembourg“; jetzt heißt sie überall „🇱🇺 Lëtzebuergesch Clavier“."
-     }
+  },
+  "37.1.2": {
+    "intro": "Das Kartenpäckchen am Ende eines Spiels hält, wenn man das Handy dreht.",
+    "sections": [
+      {
+        "points": [
+          {
+            "titre": "Das Drehen des Handys lässt das Kartenpäckchen nicht mehr verschwinden",
+            "texte": "Der Bildschirm behält seine Ausrichtung, solange es geöffnet ist, und dreht sich wieder, sobald man es schließt. So kann man das Handy neigen, um mit der Karte zu spielen, ohne sie zu verlieren."
+          },
+          {
+            "titre": "Im Querformat erscheinen die gewonnenen Karten endlich",
+            "texte": "Die Rückseite dreht sich um, die Karte erscheint mit ihren Seltenheitseffekten und folgt der Neigung des Handys."
+          },
+          {
+            "titre": "Der Titel des Kartenpäckchens rutscht nicht mehr unter Uhrzeit und Symbole",
+            "texte": "Und „Überspringen“ nicht mehr unter die Navigationsleiste."
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "37.4.2": {
-  "intro": "",
-  "sections": [
-   {
-    "points": [
-     {
-      "titre": "Kein heller Streifen mehr am Fensterrand, wenn man die Karte neigt",
-      "texte": "Die Ebenen der Landschaft ragen jetzt über das Fenster hinaus, ihr Rand ist beim Gleiten nicht mehr zu sehen."
-     }
+  },
+  "37.1.1": {
+    "intro": "Die Sammlung und die Lernkartei reagieren ohne Ruckeln.",
+    "sections": [
+      {
+        "points": [
+          {
+            "titre": "Das Ändern der Sortierung oder der Wechsel zum Regal lässt die Sammlung nicht mehr einfrieren",
+            "texte": "Die schon angezeigten Karten werden wiederverwendet, statt neu gezeichnet zu werden."
+          },
+          {
+            "titre": "Die Sammlung öffnet sich schneller",
+            "texte": "Und ihr Raster lässt sich scrollen, sobald es erscheint."
+          },
+          {
+            "titre": "Die erste geöffnete Karte dreht sich so schnell um wie die folgenden",
+            "texte": "In einer einzigen Bewegung."
+          },
+          {
+            "titre": "Das Öffnen eines Fachs der Lernkartei blockiert den Bildschirm nicht mehr",
+            "texte": "Der Kartenfächer breitet sich aus, sobald seine Karten bereit sind."
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "37.4.1": {
-  "intro": "",
-  "sections": [
-   {
-    "points": [
-     {
-      "titre": "Gewonnene Karten lassen das Telefon je nach Seltenheit vibrieren",
-      "texte": "Ein leichtes Ticken für eine ungewöhnliche Karte, drei Zitterer und dann der Schlag des Stempels für eine seltene, und für eine sehr seltene ein Anschwellen während des Vorspiels, ein voller Schlag beim Aufblitzen und das Knistern des Feuerwerks. Diese Vibrationen gab es schon, sie blieben aber auf manchen Telefonen stumm, darunter das Galaxy A21s; jetzt laufen sie über denselben Weg wie das Relief der Sammelkarten. Sie folgen der Einstellung „Vibration beim Tippen“ in den Tastatureinstellungen."
-     }
+  },
+  "37.1.0": {
+    "intro": "Jede seltene Karte hat jetzt ihren eigenen Auftritt.",
+    "sections": [
+      {
+        "points": [
+          {
+            "titre": "Eine ungewöhnliche Karte ◆◆",
+            "texte": "Landet mit einem Lichtschimmer, der über sie hinwegzieht."
+          },
+          {
+            "titre": "Eine seltene Karte ★★★",
+            "texte": "Kündigt sich an, bevor sie erscheint: Die Rückseite zittert dreimal im Päckchen, das Handy vibriert, und sobald die Karte umgedreht ist, wird ihr Stempel mit einer Welle aufgeprägt."
+          },
+          {
+            "titre": "Eine sehr seltene Karte ✦✦✦✦",
+            "texte": "Verwandelt die ganze Szene: Die Nacht bricht herein, die Karte steigt kreisend auf, ein erster violetter Blitz, dann enthüllt sie sich langsam unter Lichtstrahlen."
+          },
+          {
+            "titre": null,
+            "texte": "Die Vibrationen folgen der Einstellung des Handys, und alles bleibt schlicht, wenn das Handy weniger Animationen verlangt."
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "37.3.0": {
-  "intro": "Die Tastatur fängt einen nur einmal getippten Doppelbuchstaben ab.",
-  "sections": [
-   {
-    "points": [
-     {
-      "titre": "Ein vergessener Doppelbuchstabe wird korrigiert",
-      "texte": "„Kafi“ ergibt „Kaffi“, „ales“ ergibt „alles“, „ener“ ergibt „ënner“ statt „Energie“. Das Luxemburgische verdoppelt viele Buchstaben, und der eilige Daumen tippt oft nur einen."
-     }
+  },
+  "37.0.1": {
+    "intro": "Flüssigere Karten in der Lernkartei und am Ende eines Spiels.",
+    "sections": [
+      {
+        "points": [
+          {
+            "titre": "Die Karten der Lernkartei bekommen ihre Landschaft zurück",
+            "texte": "Beim Öffnen eines Fachs zeigten die ausgebreiteten Karten nur noch den Himmel."
+          }
+        ]
+      },
+      {
+        "points": [
+          {
+            "titre": "Die Wiederholung dreht ihre Karten ohne Ruckeln um",
+            "texte": "Die Karte wird vorbereitet, während Sie die Frage lesen, statt den Bildschirm mitten in der Geste einzufrieren."
+          },
+          {
+            "titre": "Das Kartenpäckchen am Ende eines Spiels ebenso",
+            "texte": "Jede gewonnene Karte dreht sich in einer einzigen Bewegung um."
+          }
+        ]
+      }
     ]
-   }
-  ]
- },
- "37.2.0": {
-  "intro": "Die Tastatur fängt Tippfehler besser ab.",
-  "sections": [
-   {
-    "points": [
-     {
-      "titre": "Zwei ohne Leerzeichen getippte Wörter werden getrennt",
-      "texte": "Für „echhunn“ schlägt die Leiste „ech hunn“ vor. Zusammengesetzte luxemburgische Wörter („ausbruecht“, „Schoulbus“) werden nicht zerlegt."
-     },
-     {
-      "titre": "Ein Finger, der auf der Nachbartaste landet, wird erkannt",
-      "texte": "Für „haud“ schlägt die Leiste zuerst „Haus“ vor, weil das s neben dem d liegt, und erst dann „haut“."
-     },
-     {
-      "titre": "Zwei vertauschte Buchstaben zählen als ein einziger Fehler",
-      "texte": "„ehc“ ergibt „ech“, „mioen“ ergibt „Moien“."
-     },
-     {
-      "titre": "Ein Tippfehler, der wie der Anfang eines anderen Wortes aussieht, wird trotzdem korrigiert",
-      "texte": "„gir“ ergibt „fir“, „vul“ ergibt „vun“."
-     }
+  },
+  "37.9.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Neu",
+        "points": [
+          {
+            "titre": "Die Karten werden zu einem kleinen Papiertheater",
+            "texte": "Auf der geöffneten Karte besteht die Landschaft aus ausgeschnittenen Kartons, die hintereinander stehen, jeder mit seinem Schatten und seinem hellen Rand. Neigen Sie das Telefon: Die Kartons gleiten jeder in seinem Tempo, wie eine Theaterkulisse."
+          },
+          {
+            "titre": "Je seltener die Karte, desto reicher die Kulisse",
+            "texte": "Seltene Karten bekommen Seitenkulissen, zwei Bäume als Silhouette auf jeder Seite, und sehr seltene eine Wolke, die langsam über den Himmel zieht."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Die Karte „Auer“, Stunde, häufig, geöffnet und von links nach rechts geneigt. Die Burg Vianden mit ihrem Hügel, die Häuserreihe und der Fluss sind drei ausgeschnittene Kartons: Jeder hat einen hellen Rand und einen leichten Schatten, und sie gleiten unterschiedlich schnell, wenn sich die Karte neigt.",
+        "legende": "Eine häufige Karte: drei Kartons, jeder gleitet in seinem Tempo."
+      },
+      {
+        "alt": "Die Karte „Stall“, selten, am Abend in Esch-Sauer, von links nach rechts geneigt. Vor den Felsen und dem Ort rahmen zwei Bäume als Silhouette die Szene auf beiden Seiten ein, wie Seitenkulissen; sie bewegen sich kaum, die Landschaft gleitet dahinter.",
+        "legende": "Eine seltene Karte: Seitenkulissen rahmen die Szene ein."
+      },
+      {
+        "alt": "Die Karte „Mënz“, Münze, sehr selten, nachts an der Mosel, von links nach rechts geneigt. Zu den Seitenkulissen kommt eine Wolke aus Karton, die langsam über den Sternenhimmel zieht, vor den Hügeln und hinter dem Dorf.",
+        "legende": "Eine sehr seltene Karte: dazu zieht eine Wolke über den Himmel."
+      }
     ]
-   },
-   {
-    "points": [
-     {
-      "titre": "Einige Tippfehler aus den Texten, mit denen das Wörterbuch aufgebaut wurde, sind daraus entfernt",
-      "texte": "„hunnn“, „dobai“, „tescht“… Sie wurden so akzeptiert, und „hunnn“ wurde sogar unter „hunn“ vorgeschlagen."
-     }
-    ]
-   }
-  ],
-  "images": [
-   {
-    "alt": "Die Tastatur in einem Nachrichtenverlauf. „echhunn“ wird ohne Leerzeichen getippt: Die Leiste schlägt „Ech hunn“ vor, das angetippt wird. Dann „geschter“ ohne Akzent: Die Leiste schlägt „gëschter“ vor. Dann „an der“ ohne Fehler, dann „schiul“, der Finger auf dem i neben dem o: Die Leiste schlägt „Schoul“ vor. Schließlich „gescahfft“ mit zwei vertauschten Buchstaben: Die Leiste schlägt „geschafft“ vor. Der fertige Satz lautet „Ech hunn gëschter an der Schoul geschafft“. Ein blauer Punkt zeigt jedes Antippen.",
-    "legende": "Zusammengeschriebene Wörter, vergessener Akzent, Nachbartaste, vertauschte Buchstaben: Man tippt schnell, die Leiste schlägt das richtige Wort vor, ein Antippen genügt."
-   }
-  ]
- },
- "37.1.3": {
-  "intro": "Die Karten bleiben auf dem Bildschirm, wenn man das Handy dreht.",
-  "sections": [
-   {
-    "points": [
-     {
-      "titre": "Eine in der Sammlung geöffnete Karte schließt sich nicht mehr",
-      "texte": "Wenn sich das Handy dreht, und ein geöffnetes Fach der Lernkartei auch nicht."
-     },
-     {
-      "titre": "Beim Wiederholen bleibt die gerade umgedrehte Karte umgedreht",
-      "texte": ""
-     },
-     {
-      "titre": null,
-      "texte": "Solange eine Karte zu sehen ist, bewegt das Neigen des Handys die Karte, statt den Bildschirm zu drehen."
-     }
-    ]
-   },
-   {
-    "points": [
-     {
-      "titre": "Auf dem Handy wird die App jetzt immer im Hochformat angezeigt",
-      "texte": "Quer gehalten ließ das Handy zu wenig Platz: Beim Wiederholen schrumpfte die Karte auf ein Symbol. Tablets behalten beide Ausrichtungen."
-     }
-    ]
-   }
-  ]
- },
- "37.1.2": {
-  "intro": "Das Kartenpäckchen am Ende eines Spiels hält, wenn man das Handy dreht.",
-  "sections": [
-   {
-    "points": [
-     {
-      "titre": "Das Drehen des Handys lässt das Kartenpäckchen nicht mehr verschwinden",
-      "texte": "Der Bildschirm behält seine Ausrichtung, solange es geöffnet ist, und dreht sich wieder, sobald man es schließt. So kann man das Handy neigen, um mit der Karte zu spielen, ohne sie zu verlieren."
-     },
-     {
-      "titre": "Im Querformat erscheinen die gewonnenen Karten endlich",
-      "texte": "Die Rückseite dreht sich um, die Karte erscheint mit ihren Seltenheitseffekten und folgt der Neigung des Handys."
-     },
-     {
-      "titre": "Der Titel des Kartenpäckchens rutscht nicht mehr unter Uhrzeit und Symbole",
-      "texte": "Und „Überspringen“ nicht mehr unter die Navigationsleiste."
-     }
-    ]
-   }
-  ]
- },
- "37.1.1": {
-  "intro": "Die Sammlung und die Lernkartei reagieren ohne Ruckeln.",
-  "sections": [
-   {
-    "points": [
-     {
-      "titre": "Das Ändern der Sortierung oder der Wechsel zum Regal lässt die Sammlung nicht mehr einfrieren",
-      "texte": "Die schon angezeigten Karten werden wiederverwendet, statt neu gezeichnet zu werden."
-     },
-     {
-      "titre": "Die Sammlung öffnet sich schneller",
-      "texte": "Und ihr Raster lässt sich scrollen, sobald es erscheint."
-     },
-     {
-      "titre": "Die erste geöffnete Karte dreht sich so schnell um wie die folgenden",
-      "texte": "In einer einzigen Bewegung."
-     },
-     {
-      "titre": "Das Öffnen eines Fachs der Lernkartei blockiert den Bildschirm nicht mehr",
-      "texte": "Der Kartenfächer breitet sich aus, sobald seine Karten bereit sind."
-     }
-    ]
-   }
-  ]
- },
- "37.1.0": {
-  "intro": "Jede seltene Karte hat jetzt ihren eigenen Auftritt.",
-  "sections": [
-   {
-    "points": [
-     {
-      "titre": "Eine ungewöhnliche Karte ◆◆",
-      "texte": "Landet mit einem Lichtschimmer, der über sie hinwegzieht."
-     },
-     {
-      "titre": "Eine seltene Karte ★★★",
-      "texte": "Kündigt sich an, bevor sie erscheint: Die Rückseite zittert dreimal im Päckchen, das Handy vibriert, und sobald die Karte umgedreht ist, wird ihr Stempel mit einer Welle aufgeprägt."
-     },
-     {
-      "titre": "Eine sehr seltene Karte ✦✦✦✦",
-      "texte": "Verwandelt die ganze Szene: Die Nacht bricht herein, die Karte steigt kreisend auf, ein erster violetter Blitz, dann enthüllt sie sich langsam unter Lichtstrahlen."
-     },
-     {
-      "titre": null,
-      "texte": "Die Vibrationen folgen der Einstellung des Handys, und alles bleibt schlicht, wenn das Handy weniger Animationen verlangt."
-     }
-    ]
-   }
-  ]
- },
- "37.0.1": {
-  "intro": "Flüssigere Karten in der Lernkartei und am Ende eines Spiels.",
-  "sections": [
-   {
-    "points": [
-     {
-      "titre": "Die Karten der Lernkartei bekommen ihre Landschaft zurück",
-      "texte": "Beim Öffnen eines Fachs zeigten die ausgebreiteten Karten nur noch den Himmel."
-     }
-    ]
-   },
-   {
-    "points": [
-     {
-      "titre": "Die Wiederholung dreht ihre Karten ohne Ruckeln um",
-      "texte": "Die Karte wird vorbereitet, während Sie die Frage lesen, statt den Bildschirm mitten in der Geste einzufrieren."
-     },
-     {
-      "titre": "Das Kartenpäckchen am Ende eines Spiels ebenso",
-      "texte": "Jede gewonnene Karte dreht sich in einer einzigen Bewegung um."
-     }
-    ]
-   }
-  ]
- }
+  }
 }

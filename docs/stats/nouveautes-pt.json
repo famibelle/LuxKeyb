@@ -1,9 +1,52 @@
 {
- "genere_le": "2026-10-27",
- "derniere_version": "37.8.0",
- "derniere_date": "2026-10-27",
+ "genere_le": "2026-10-29",
+ "derniere_version": "37.9.0",
+ "derniere_date": "2026-10-29",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.9.0",
+   "date": "2026-10-29",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Novidades",
+     "points": [
+      {
+       "titre": "As cartas tornam-se um pequeno teatro de papel",
+       "texte": "Na carta aberta, a paisagem é feita de cartões recortados postos uns à frente dos outros, cada um com a sua sombra e o seu bordo claro. Incline o telemóvel: os cartões deslizam cada um à sua velocidade, como um cenário de teatro."
+      },
+      {
+       "titre": "Quanto mais rara a carta, mais rico o cenário",
+       "texte": "As cartas raras ganham bastidores, duas árvores em silhueta de cada lado, e as muito raras uma nuvem que atravessa devagar o céu."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_theatre_papier.gif",
+     "alt": "A carta «Auer», hora, comum, aberta e inclinada da esquerda para a direita. O castelo de Vianden e a sua colina, a fila de casas e o rio são três cartões recortados: cada um tem um bordo claro e uma sombra leve, e deslizam a velocidades diferentes quando a carta se inclina.",
+     "legende": "Uma carta comum: três cartões que deslizam cada um à sua velocidade."
+    },
+    {
+     "image": "Screenshots/lux_theatre_rare.gif",
+     "alt": "A carta «Stall», estábulo, rara, ao fim da tarde em Esch-sur-Sûre, inclinada da esquerda para a direita. À frente das falésias e da vila, duas árvores em silhueta enquadram a cena de cada lado, como os bastidores de um teatro; quase não se mexem, e a paisagem desliza atrás.",
+     "legende": "Uma carta rara: os bastidores enquadram a cena."
+    },
+    {
+     "image": "Screenshots/lux_theatre_tres_rare.gif",
+     "alt": "A carta «Mënz», moeda, muito rara, de noite no Mosela, inclinada da esquerda para a direita. Além dos bastidores, uma nuvem de cartão atravessa devagar o céu estrelado, à frente das colinas e atrás da aldeia.",
+     "legende": "Uma carta muito rara: além dos bastidores, uma nuvem atravessa o céu."
+    }
+   ],
+   "image": "Screenshots/lux_theatre_papier.gif",
+   "image_alt": "A carta «Auer», hora, comum, aberta e inclinada da esquerda para a direita. O castelo de Vianden e a sua colina, a fila de casas e o rio são três cartões recortados: cada um tem um bordo claro e uma sombra leve, e deslizam a velocidades diferentes quando a carta se inclina.",
+   "image_legende": "Uma carta comum: três cartões que deslizam cada um à sua velocidade."
+  },
   {
    "version": "37.8.0",
    "date": "2026-10-27",
@@ -187,35 +230,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "37.7.5",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "A ajuda das cartas na coleção",
-       "texte": "Um «?» no topo de Mäi Carnet abre a visita às cartas, completa ou sobre um só tema (ler uma carta, partilhá-la, cedê-la ou receber uma), sem voltar ao início."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_aide_visite.gif",
-     "alt": "Filmado num Galaxy A21s, em cinco ecrãs. 1. O último balão da visita, «Para a rever», destaca o botão «?» no canto superior esquerdo. 2. O «?» abre a ajuda: a visita completa, depois O teclado (Escrever com o teclado, Ditar uma mensagem), As cartas (Ler uma carta, Partilhar uma carta, Ceder ou receber uma carta), A aplicação (Procurar uma palavra, Jogar para aprender palavras, Compreender o início, Acompanhar o seu progresso, Configurar o teclado) e o guia para ler. 3. «Experimentar» abre um campo com o teclado: escreveu-se «Moi» e a barra propõe «Moien». 4. Em Mäi Carnet, um «?» no topo abre a ajuda das cartas. 5. «Partilhar uma carta» abre a carta «Moien» e destaca o botão Partilhar. Os ecrãs estão em francês.",
-     "legende": "Um «?» sempre visível abre a ajuda: a visita completa ou um só tema, experimentar o teclado sem sair da visita, e a ajuda das cartas na coleção."
-    }
-   ],
-   "image": "Screenshots/lux_aide_visite.gif",
-   "image_alt": "Filmado num Galaxy A21s, em cinco ecrãs. 1. O último balão da visita, «Para a rever», destaca o botão «?» no canto superior esquerdo. 2. O «?» abre a ajuda: a visita completa, depois O teclado (Escrever com o teclado, Ditar uma mensagem), As cartas (Ler uma carta, Partilhar uma carta, Ceder ou receber uma carta), A aplicação (Procurar uma palavra, Jogar para aprender palavras, Compreender o início, Acompanhar o seu progresso, Configurar o teclado) e o guia para ler. 3. «Experimentar» abre um campo com o teclado: escreveu-se «Moi» e a barra propõe «Moien». 4. Em Mäi Carnet, um «?» no topo abre a ajuda das cartas. 5. «Partilhar uma carta» abre a carta «Moien» e destaca o botão Partilhar. Os ecrãs estão em francês.",
-   "image_legende": "Um «?» sempre visível abre a ajuda: a visita completa ou um só tema, experimentar o teclado sem sair da visita, e a ajuda das cartas na coleção."
   }
  ]
 }
