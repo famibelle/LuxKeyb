@@ -67,8 +67,12 @@ La **mécanique** :
    fond). La lumière est celle de la **rampe**, au bas de la scène : les ombres
    montent au-dessus des crêtes, là où on les voit. Une lumière d'en haut les
    cacherait derrière le carton même qui les porte.
-2. **La tranche.** Un liseré clair au bord haut de chaque carton, plus discret
-   sur le lointain.
+2. **La bordure blanche**, la signature du théâtre de papier : l'âme du
+   papier, tout autour de chaque découpe, blanche même la nuit (à peine
+   teintée par le ciel). Rien de ce qui est trop fin pour une paire de
+   ciseaux (rayons d'une roue, haubans) n'en a : bordé, il devenait un trait
+   blanc. Celle du lointain est plus pâle, tirée vers l'horizon. Le liseré
+   au seul bord haut des premières versions ne se voyait pas la nuit.
 3. **Plus de flou.** Le lointain s'efface vers la couleur de l'horizon (30 %),
    le milieu à peine (10 %).
 4. **Les coulisses des rares** : un quatrième carton, deux arbres en silhouette
