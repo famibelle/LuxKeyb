@@ -341,3 +341,47 @@ réunion. LuxASR n'a reçu qu'une seconde de son et a renvoyé un seul mot : « 
 Non vérifié, faute de son sur l'émulateur : la traduction en direct, le renouvellement de la
 liaison après 2 min, « Revenir au direct », la reprise après coupure, le compte rendu d'une
 réunion en direct, le côte à côte sur tablette. À refaire sur un vrai appareil.
+
+## 8. Complément : compte rendu par Mistral (même soir, 19 h 30)
+
+Medhi a fourni une clé Mistral de test, valable 4 h, rangée dans `.env` à la racine du dépôt
+(fichier ignoré par git, jamais dans l'APK ni dans ce dossier). J'ai installé la version de
+`main` qui gère Mistral (`306416d9`) par-dessus la précédente : les deux réunions transcrites
+sont restées.
+
+**42-reglages-installation-mistral.png** : la carte s'appelle « Compte rendu automatique »,
+avec un choix « Claude (Anthropic) » / « Mistral ». **Le bouton « Claude (Anthropic) » passe
+sur deux lignes, est coupé en bas, et n'est pas aligné avec « Mistral ».**
+
+**43-mistral-choisi.png** : Mistral choisi, le texte d'aide et le modèle (`mistral-large-latest`)
+suivent. Bien.
+
+**44-cle-mistral-verifiee.png** : premier essai « ✗ La clé d'API Mistral est refusée. ». C'était
+**ma saisie** : `adb input text` avait perdu des caractères en tapant 45 caractères d'un coup.
+La même clé répond 200 sur `/v1/models` en direct. Le message de l'appli était donc juste.
+
+**45-cle-mistral-verifiee-2.png** : clé retapée par morceaux : « ✓ Clé valide et enregistrée. »
+
+**46-accueil-redaction.png** : à l'enregistrement de la clé, l'appli relance seule la rédaction
+des deux réunions restées « sans clé » (les deux en même temps). Elles passent à « À reprendre ».
+
+**47-reunion-a-reprendre.png** : « **Mistral a répondu une erreur (402) : API budget
+exhausted.** » avec un bouton « Réessayer ». Les deux appels ont été refusés en moins d'une
+seconde, et un appel minuscule fait à la main (5 jetons, `mistral-small-latest`) reçoit la
+même réponse (`billing_api_budget_exhausted`) : **la clé s'authentifie, mais son budget est à
+zéro**. Aucun compte rendu n'a donc pu être rédigé, et l'appli n'a rien consommé.
+
+Ce qui cloche sur cet écran :
+- le message est **brut et en anglais**, avec un code HTTP : une secrétaire ne comprend pas
+  « API budget exhausted ». Il faudrait « Le crédit du compte Mistral est épuisé : prévenez la
+  personne qui a installé l'application. » ;
+- l'écran se contredit : « ⏳ Compte rendu · En attente… » et « Rédaction en cours… » restent
+  affichés sous l'erreur ;
+- « Réessayer » relancera la même erreur tant que le crédit n'est pas rechargé, sans le dire ;
+- à l'accueil, « À reprendre » ne dit pas pourquoi.
+
+Problèmes à ajouter à la liste du § 7 :
+
+18. **Erreur Mistral 402 affichée brute, en anglais** (47), sous un « En attente… » et un
+    « Rédaction en cours… » contradictoires. À placer juste après le n° 2 par gravité.
+19. **Bouton « Claude (Anthropic) » coupé et mal aligné** dans les réglages d'installation (42).
