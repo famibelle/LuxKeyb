@@ -287,7 +287,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
           <option>2</option><option>3</option><option>4</option><option>5</option>
           <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
         </select>
-        <small class="aide" style="margin:0" data-i18n="opt-voix-aide">Le donner aide beaucoup quand les voix se ressemblent.</small>
+        <small class="aide" style="margin:0" data-i18n="opt-voix-aide">Indiquez-le si vous le connaissez : sur notre essai à deux voix proches, la détection automatique n'en séparait aucune, le nombre donné les a séparées.</small>
       </div>
       <label class="champ" for="opt-prompt" data-i18n="opt-prompt">Noms propres et mots rares (facultatif)</label>
       <input type="text" id="opt-prompt" autocomplete="off" spellcheck="false"
@@ -351,6 +351,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     </p>
   </div>
   <div class="locuteurs" id="locuteurs"></div>
+  <div class="info" id="boucles" hidden></div>
   <div class="erreur" id="inconnu" hidden>
     <p data-i18n="inconnu-p">Le résultat est arrivé, mais sous une forme que cette page ne sait pas encore lire. Le voici tel quel ; il reste téléchargeable avec « Réponse brute ».</p>
   </div>
@@ -374,7 +375,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   <h2 data-i18n="savoir-h2">Bon à savoir</h2>
   <ul class="facts">
     <li data-i18n="savoir-1"><strong>Les voix sont séparées, pas reconnues.</strong> Le service regroupe ce qui sonne comme une même voix, sans savoir qui parle : renommez les locuteurs une fois le texte affiché, les exports suivent.</li>
-    <li data-i18n="savoir-2"><strong>Les répliques très courtes, les voix proches et celles qui se chevauchent</strong> sont mal séparées, c'est une limite connue de la méthode. Indiquer le nombre de voix aide ; une pièce calme et un micro proche de chacun aussi.</li>
+    <li data-i18n="savoir-2"><strong>Les répliques très courtes, les voix proches et celles qui se chevauchent</strong> sont mal séparées, c'est une limite connue de la méthode. Indiquer le nombre de voix aide nettement, au prix parfois d'un peu de justesse du texte ; une pièce calme et un micro proche de chacun aident aussi.</li>
     <li data-i18n="savoir-3"><strong>Le service est fait pour le luxembourgeois.</strong> Un passage dans une autre langue peut revenir mal transcrit.</li>
     <li data-i18n="savoir-4"><strong>L'attente dépend surtout de la file</strong> : le service traite les fichiers de tout le monde, les uns après les autres. Gardez la page ouverte jusqu'au résultat.</li>
     <li data-i18n="savoir-5"><strong>Une vidéo marche aussi</strong> : seule sa piste son est transcrite, mais c'est le fichier entier qui part. Pour un long film, extraire le son d'abord accélère l'envoi.</li>
@@ -463,7 +464,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'opt-diar-aide': 'Untick for a single-voice recording: the service is faster.',
     'opt-voix': 'Number of voices',
     'opt-voix-auto': 'detect',
-    'opt-voix-aide': 'Giving it helps a lot when the voices sound alike.',
+    'opt-voix-aide': 'Give it if you know it: in our test with two similar voices, automatic detection separated none of them, the given number separated them.',
     'opt-prompt': 'Proper names and rare words (optional)',
     'opt-prompt-aide': 'Spelled as they should be, separated by commas: the service uses them to spell those words throughout the recording.',
     'opt-accord': 'The people recorded agree to have their voices transcribed by LuxASR.',
@@ -486,7 +487,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'resultat-credit': 'Automatic transcription by LuxASR, University of Luxembourg. It gets some of the words wrong: proofread it before sharing.',
     'savoir-h2': 'Good to know',
     'savoir-1': '<strong>Voices are separated, not recognised.</strong> The service groups what sounds like the same voice without knowing who is speaking: rename the speakers once the text is shown, and the exports follow.',
-    'savoir-2': '<strong>Very short lines, similar voices and overlapping voices</strong> are poorly separated: a known limit of the method. Giving the number of voices helps; so do a quiet room and a microphone close to each speaker.',
+    'savoir-2': '<strong>Very short lines, similar voices and overlapping voices</strong> are poorly separated: a known limit of the method. Giving the number of voices helps a lot, sometimes at the cost of some accuracy in the text; a quiet room and a microphone close to each speaker help too.',
     'savoir-3': '<strong>The service is made for Luxembourgish.</strong> A passage in another language may come back poorly transcribed.',
     'savoir-4': '<strong>The wait depends mostly on the queue</strong>: the service handles everyone’s files, one after another. Keep the page open until the result arrives.',
     'savoir-5': '<strong>A video works too</strong>: only its sound track is transcribed, but the whole file is sent. For a long film, extracting the sound first speeds up the upload.',
@@ -589,6 +590,11 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         return (l ? l + (l > 1 ? ' locuteurs' : ' locuteur') : 'Voix non séparées') + ' · ' + r + (d ? ' · ' + d : '');
       },
       copie: '✅ Copié',
+      boucle: function (m, n, t) { return '« ' + m + ' » répété ' + n + ' fois' + (t ? ' à ' + t : ''); },
+      boucles: function (liste, reste) {
+        return '<strong>La reconnaissance a bégayé</strong> : ' + liste + (reste ? ', et ' + reste + ' autre' + (reste > 1 ? 's' : '') : '') +
+               '. La page n\'en garde que la première occurrence ; la réponse brute du service reste intacte.';
+      },
       err: {
         FORMAT: 'Ce fichier n\'est pas un enregistrement reconnu. Choisissez un fichier audio (MP3, M4A, WAV, OGG, FLAC, WebM) ou une vidéo MP4.',
         TROP_GROS: function (d) { return 'Ce fichier fait ' + d + ' : la page en accepte 100 Mo au plus. Un MP3 ou un M4A du même enregistrement est bien plus léger.'; },
@@ -620,6 +626,11 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
         return (l ? l + (l > 1 ? ' speakers' : ' speaker') : 'Voices not separated') + ' · ' + r + (d ? ' · ' + d : '');
       },
       copie: '✅ Copied',
+      boucle: function (m, n, t) { return '“' + m + '” repeated ' + n + ' times' + (t ? ' at ' + t : ''); },
+      boucles: function (liste, reste) {
+        return '<strong>The recognition stuttered</strong>: ' + liste + (reste ? ', and ' + reste + ' more' : '') +
+               '. The page keeps only the first occurrence; the service’s raw reply stays intact.';
+      },
       err: {
         FORMAT: 'This file is not a recognised recording. Choose an audio file (MP3, M4A, WAV, OGG, FLAC, WebM) or an MP4 video.',
         TROP_GROS: function (d) { return 'This file is ' + d + ': the page accepts 100 MB at most. An MP3 or M4A of the same recording is much lighter.'; },
@@ -908,6 +919,15 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     });
     $('locuteurs').replaceChildren(legende);
     $('locuteurs').hidden = !doc.locuteurs.length;
+
+    // Les boucles de Whisper réduites par le normaliseur : on le dit.
+    var bcl = doc.boucles || [];
+    $('boucles').hidden = !bcl.length;
+    if (bcl.length) {
+      $('boucles').innerHTML = '<p>' + M().boucles(bcl.slice(0, 3).map(function (x) {
+        return M().boucle(echapper(x.motif), x.fois, x.debut != null ? T.horloge(x.debut) : null);
+      }).join(' ; '), Math.max(0, bcl.length - 3)) + '</p>';
+    }
 
     var texte = document.createDocumentFragment();
     tours.forEach(function (t) {

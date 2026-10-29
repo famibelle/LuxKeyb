@@ -24,8 +24,30 @@ const cas = [];
 function test(nom, f) { cas.push([nom, f]); }
 
 const nom = (l) => ({ SPEAKER_00: 'Anna', SPEAKER_01: 'Jos' })[l] || l;
-const RELEVE = path.join(__dirname, '..', '..', '.claude', 'skills', 'transcription',
-                         'releves', '2026-10-29', 'resultat.json');
+const RELEVES = path.join(__dirname, '..', '..', '.claude', 'skills', 'transcription',
+                          'releves', '2026-10-29');
+const RELEVE = path.join(RELEVES, 'resultat.json');
+const mots = (t) => t.split(/\s+/).filter(Boolean).length;
+
+test('Réel (29/10/2026, num_speakers=2) : deux voix, et la boucle « deen vun » réduite', () => {
+  const brut = fs.readFileSync(path.join(RELEVES, 'resultat-2voix.json'), 'utf8');
+  const source = JSON.parse(brut);
+  const d = T.normaliser(brut);
+  assert.deepStrictEqual(d.locuteurs, ['SPEAKER_01', 'SPEAKER_00']);
+  assert.strictEqual(d.boucles.length, 1, JSON.stringify(d.boucles));
+  const b = d.boucles[0];
+  assert.ok(/^(deen vun|vun deen)$/.test(b.motif) && b.fois >= 15, JSON.stringify(b));
+  assert.ok(b.debut > 27 && b.debut < 29, 'la boucle est située dans le temps : ' + b.debut);
+  const sortie = d.segments.map((s) => s.texte).join(' ');
+  assert.ok(!/(deen vun ){3}/.test(sortie), 'plus de boucle à l\'affichage');
+  assert.ok(sortie.includes('eent vun deen v fir Arthros.'), 'la première occurrence est gardée');
+  // Rien d'autre n'a bougé : seuls les mots de la boucle manquent.
+  assert.strictEqual(mots(source.map((s) => s.text).join(' ')) - mots(sortie), (b.fois - 1) * mots(b.motif));
+  // Les 9 changements de voix du service sont tous là (11 segments, dont deux
+  // consécutifs de SPEAKER_00) : le découpage en phrases n'en crée ni n'en perd.
+  const changements = d.segments.filter((s, i) => i && s.locuteur !== d.segments[i - 1].locuteur).length;
+  assert.strictEqual(changements, 9);
+});
 
 test('Réel (29/10/2026) : tableau à la racine, un segment de 2 min coupé en phrases', () => {
   const brut = fs.readFileSync(RELEVE, 'utf8');
@@ -47,6 +69,19 @@ test('Réel (29/10/2026) : tableau à la racine, un segment de 2 min coupé en p
   const tours = T.tours(d);
   assert.ok(tours.length >= 3, 'deux minutes d\'une voix font plusieurs paragraphes');
   assert.ok(T.versSrt(d, nom).split('\n\n').length === d.segments.length, 'un sous-titre par phrase');
+  assert.deepStrictEqual(d.boucles, [], '« Wéi ginn. Wéi ginn. » n\'est pas une boucle');
+});
+
+test('Boucles : cinq répétitions au moins, la première gardée, la vraie répétition intacte', () => {
+  let d = T.normaliser('Nee, nee, nee, nee. Gutt.');
+  assert.strictEqual(d.segments[0].texte, 'Nee, nee, nee, nee. Gutt.', 'quatre fois, c\'est de la parole');
+  assert.deepStrictEqual(d.boucles, []);
+  d = T.normaliser('1\n00:00:01,000 --> 00:00:04,000\nMir hunn et gesot gesot gesot gesot gesot gesot, merci.\n');
+  assert.strictEqual(d.segments[0].texte, 'Mir hunn et gesot, merci.');
+  assert.deepStrictEqual(d.boucles, [{ debut: 1, fois: 6, motif: 'gesot' }]);
+  d = T.normaliser([{ start: 0, end: 3, speaker: 'A', text: 'an der an der an der an der an der Stad' }]);
+  assert.strictEqual(d.segments[0].texte, 'an der Stad');
+  assert.strictEqual(d.boucles[0].motif, 'an der');
 });
 
 test('WhisperX : segments, temps et locuteurs', () => {
@@ -91,7 +126,7 @@ test('Phrases : point après 2 s, virgule après 4 s, coupe franche après 8 s',
   const dire = (w) => { mots.push({ word: ' ' + w, start: t, end: t + 0.4, speaker: 'A' }); t += 0.5; };
   'Jo. Nee.'.split(' ').forEach(dire);                           // trop court pour fermer
   'Dat ass eng laang Iwwerleeung iwwer de Wieder.'.split(' ').forEach(dire);
-  for (let i = 0; i < 30; i++) dire('bla');                      // ni point ni virgule
+  for (let i = 0; i < 30; i++) dire('wuert' + i);                // ni point ni virgule
   const texte = mots.map((m) => m.word).join('').trim();
   const d = T.normaliser([{ start: 0, end: t, text: texte, speaker: 'A', words: mots }]);
   assert.strictEqual(d.segments[0].texte, 'Jo. Nee. Dat ass eng laang Iwwerleeung iwwer de Wieder.');
