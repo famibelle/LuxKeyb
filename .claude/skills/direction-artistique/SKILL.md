@@ -59,8 +59,9 @@ La **mécanique** :
 - un **dixième lieu, le Breedewee** (2026-10-30), est celui des cartes venues
   du jeu imprimé (`CartesPapier.corriger`), hors de l'album : une porte de
   pierre en **cadre de scène dans la fenêtre**, la ruelle derrière, la ville
-  haute au loin, la chaussée pavée qui entre sous l'arche. Ses coulisses de
-  rare sont deux piliers de pierre, pas des arbres. Il a été mis au point sur
+  haute au loin, posées sur le plancher de la scène (la chaussée pavée des
+  débuts a disparu le 2026-10-30). Ses coulisses de rare sont deux piliers de
+  pierre et deux pignons de maison, pas des arbres. Il a été mis au point sur
   une maquette qui reprend les outils de tracé de `Paysages.kt` en JavaScript
   (`maquette/`, à côté de cette skill : `node capture.js` rend les quatre
   heures, les plans penchés, les silhouettes et la vignette ; `vegetal.py` dit
@@ -72,11 +73,14 @@ La **mécanique** :
 **Le rendu en carton, fait le 2026-10-29** (branche `feat/theatre-papier`,
 `Paysages.rendrePlans`), vu sur l'émulateur, pas encore jugé en main :
 
-1. **L'ombre entre les plans.** Chaque carton porte une ombre courte et douce
+1. **L'ombre entre les plans.** Chaque carton porte une ombre nette et marquée
    sur tous ceux de derrière (plus légère sur le premier calque, la toile de
-   fond). La lumière est celle de la **rampe**, au bas de la scène : les ombres
-   montent au-dessus des crêtes, là où on les voit. Une lumière d'en haut les
-   cacherait derrière le carton même qui les porte.
+   fond). La lumière est celle de la **rampe**, au bas de la scène et un peu à
+   gauche : les ombres montent au-dessus des crêtes et longent le bord droit
+   des cartons, là où on les voit. Une lumière d'en haut les cacherait derrière
+   le carton même qui les porte. Courte et douce jusqu'au 2026-10-30, elle ne
+   séparait pas les cartons : la fenêtre se lisait comme une seule image à
+   liseré blanc (jugement du propriétaire, maquette à l'appui).
 2. **La bordure blanche**, la signature du théâtre de papier : l'âme du
    papier, tout autour de chaque découpe, blanche même la nuit (à peine
    teintée par le ciel). Rien de ce qui est trop fin pour une paire de
@@ -86,9 +90,21 @@ La **mécanique** :
 3. **Plus de flou.** Le lointain s'efface vers la couleur de l'horizon (30 %),
    le milieu à peine (10 %).
 4. **Les coulisses des rares** : un quatrième carton, deux arbres en silhouette
-   sur les côtés, sous l'arche du cadre, qui glissent à peine (0,3 %).
+   sur les côtés, sous l'arche du cadre, qui glissent à peine (0,3 %), et
+   depuis le 2026-10-30 une **seconde rangée** un pas en retrait (un arbre plus
+   petit et plus clair, collé au carton du proche) : deux châssis étagés font
+   une boîte de théâtre, un seul faisait un cadre.
 5. **Le nuage des très rares** : un nuage de carton qui traverse le ciel en
    75 s, entre le lointain et le milieu.
+6. **Le plancher** (2026-10-30) : chaque lieu se pose sur des lames de bois au
+   lieu de descendre jusqu'au bas de la fenêtre. Le carton du proche s'arrête
+   net dans la rainure du devant de la scène (`DEVANT`, 58,5 unités, juste
+   au-dessus du bandeau du nom, qui cache tout ce qui est plus bas sur la
+   carte ouverte) ; la ruelle du Breedewee et les rives de la Sûre et de la
+   Moselle ont leur propre rainure plus haut. Les rivières sont des rangées de
+   vagues découpées (`riviere`), pas une eau qui descend jusqu'au bord. Le
+   plancher est peint par bandes, une par carton, et reçoit les ombres sans
+   en porter ni avoir de bordure.
 
 Tout est peint une fois au rendu des calques ; seul le nuage se place à chaque
 trame. La vignette de la grille garde son rendu à plat. **Reste à faire** :
@@ -138,9 +154,13 @@ du nuage générique, et le cadre en rideau de scène (§ 6).
    permis pour le ciel, qui est la toile de fond.
 3. **Le lointain s'efface par la couleur, pas par le flou** : plus clair, moins
    saturé, plus proche du ciel.
-4. **Une ombre par plan, courte, douce, toujours du même côté** : la même
-   lumière de scène sur toutes les cartes, celle de la rampe, qui porte les
-   ombres vers le haut.
+4. **Une ombre par plan, nette, toujours du même côté** : la même lumière de
+   scène sur toutes les cartes, celle de la rampe, qui porte les ombres vers
+   le haut et un peu à droite. C'est le vide qu'on voit derrière chaque
+   découpe qui fait le théâtre de papier.
+4 bis. **Chaque carton est posé.** Il s'arrête net sur le plancher, dans sa
+   rainure ; rien ne descend jusqu'au bas de la fenêtre. Un carton qui se
+   perd sous le cadre est une affiche, pas un décor.
 5. **Le mot reste l'acteur.** Le décor ne rivalise jamais avec le dessin du
    mot : pas de détail fort ni de contraste maximal derrière lui.
 6. **Le cadre de scène reste fixe.** Seul le décor bouge ; le cadre orné est la
@@ -198,8 +218,9 @@ Avant de valider un nouveau lieu ou une modification de décor :
 - [ ] Chaque plan se lit en silhouette noire.
 - [ ] Penché sur un vrai téléphone, on voit les cartons se décaler sans
       chercher.
-- [ ] L'ombre entre les plans est présente, courte, du même côté que les autres
+- [ ] L'ombre entre les plans est présente, nette, du même côté que les autres
       cartes.
+- [ ] Chaque carton s'arrête net sur le plancher, au-dessus du bandeau du nom.
 - [ ] Le lointain s'efface par la couleur ; rien n'est flou.
 - [ ] Le dessin du mot reste ce qu'on voit en premier.
 - [ ] En vignette dans la grille, le décor est calme et lisible.
