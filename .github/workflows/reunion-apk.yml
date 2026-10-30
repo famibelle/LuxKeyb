@@ -162,7 +162,8 @@ jobs:
       - name: Publication
         run: |
           set -euo pipefail
-          SOURCE=$(ls sortie/release/*.apk sortie/*.apk 2>/dev/null | head -1)
+          SOURCE=$(find sortie -name "*.apk" | head -1)
+          test -n "$SOURCE"
           cp "$SOURCE" "$APK"
           ls -l "$APK"
           cat > notes.md <<'NOTES'
