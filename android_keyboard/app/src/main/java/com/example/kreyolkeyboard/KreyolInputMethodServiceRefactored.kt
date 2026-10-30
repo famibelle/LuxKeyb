@@ -2341,7 +2341,8 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
             background = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = dpToPx(16).toFloat()
-                setColor(Color.parseColor("#FF8A00"))
+                // Orange foncé : le blanc sur #FF8A00 ne faisait que 2,3:1.
+                setColor(Color.parseColor(Encres.ORANGE))
             }
             // Même réserve verticale et même garde-fou que les puces de suggestion :
             // cette puce partage leur rangée, elle doit tenir dans la même hauteur.

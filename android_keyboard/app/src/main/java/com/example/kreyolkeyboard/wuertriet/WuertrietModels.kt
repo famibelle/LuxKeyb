@@ -2,6 +2,7 @@ package com.example.kreyolkeyboard.wuertriet
 
 import android.content.Context
 import android.graphics.Color
+import com.example.kreyolkeyboard.Encres
 import com.example.kreyolkeyboard.TranslationDictionary
 import org.json.JSONArray
 import java.io.BufferedReader
@@ -16,7 +17,7 @@ enum class LetterState {
 }
 
 fun LetterState.color(): Int = when (this) {
-    LetterState.CORRECT -> Color.parseColor("#4CAF50")
+    LetterState.CORRECT -> Color.parseColor(Encres.VERT)
     LetterState.PRESENT -> Color.parseColor("#FFC107")
     LetterState.ABSENT -> Color.parseColor("#9E9E9E")
     LetterState.EMPTY -> Color.parseColor("#E0E0E0")

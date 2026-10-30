@@ -152,6 +152,23 @@ object CartesPapier {
         return sortie.toByteArray()
     }
 
+    /**
+     * Le contenu de [contenu], posé au Breedewee s'il est venu d'une carte en
+     * papier : la ruelle pavée sous sa porte de pierre est le lieu du jeu
+     * imprimé, qu'aucun jeu de l'appli ne donne (voir [Lieu.BREEDEWEE]).
+     *
+     * La provenance suffit : une carte gagnée en jouant puis scannée passe au
+     * Breedewee, le papier l'emporte. Une carte cédée arrive en cadeau et
+     * reprend chez l'autre le lieu de son champ. La Fierkelsmaart, qui se
+     * donne aussi par un code, garde sa foire ([CarteFierkelsmaart]).
+     *
+     * Sans `Context`, comme le reste de la partie texte : testable sur la JVM.
+     */
+    fun corriger(contenu: ContenuCarte): ContenuCarte =
+        if (JeuCarte.PAPIER in contenu.carte.jeux && !CarteFierkelsmaart.est(contenu.carte.forme)) {
+            contenu.copy(blason = contenu.blason.copy(lieu = Lieu.BREEDEWEE))
+        } else contenu
+
     // ---------------------------------------------------------- l'appareil
 
     @Volatile

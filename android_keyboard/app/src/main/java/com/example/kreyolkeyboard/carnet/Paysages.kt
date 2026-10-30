@@ -9,6 +9,7 @@ import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.RadialGradient
+import android.graphics.RectF
 import android.graphics.Shader
 import android.os.Handler
 import android.os.Looper
@@ -36,6 +37,11 @@ import kotlin.math.sin
  *
  * Les noms sont ceux du pays, en luxembourgeois. Ils restent à faire relire
  * par quelqu'un qui parle la langue ; ils n'apparaissent pour l'instant qu'ici.
+ *
+ * Le dernier, [BREEDEWEE], n'est la fenêtre d'aucun champ : c'est le lieu des
+ * cartes venues du jeu imprimé (voir [CartesPapier.corriger]), qui le portent
+ * à la place de celui de leur champ. Il reste hors de l'album des paysages
+ * ([ALBUM]) : l'album ne propose pas une case qu'aucun jeu ne remplit.
  */
 enum class Lieu(val nom: String) {
     ROUT_BRECK("Rout Bréck"),
@@ -46,12 +52,19 @@ enum class Lieu(val nom: String) {
     GELLE_FRA("Gëlle Fra"),
     FOUER("Schueberfouer"),
     MELLERDALL("Mëllerdall"),
-    STAD("Stad");
+    STAD("Stad"),
+    BREEDEWEE("Breedewee");
 
-    /** Le champ dont ce lieu est la fenêtre, `null` pour la ville des mots sans champ. */
+    /** Le champ dont ce lieu est la fenêtre, `null` pour la ville des mots sans champ et le Breedewee. */
     fun champ(): Champ? = Champ.values().firstOrNull { de(it) == this }
 
     companion object {
+        /** Les neuf lieux des champs, ceux de l'album des paysages. */
+        val ALBUM: List<Lieu> = values().filter { it != BREEDEWEE }
+
+        /** Le lieu d'une carte : celui qu'elle impose, sinon celui de son champ. */
+        fun de(blason: Blasonnement): Lieu = blason.lieu ?: de(blason.champ)
+
         fun de(champ: Champ?): Lieu = when (champ) {
             Champ.MOUVEMENT -> ROUT_BRECK
             Champ.TEMPS -> VEIANEN
@@ -172,7 +185,7 @@ class Heure private constructor(
 }
 
 /**
- * Les neuf lieux, dessinés par le code dans une boîte de 100 × 66 unités.
+ * Les dix lieux, dessinés par le code dans une boîte de 100 × 66 unités.
  *
  * Aucun fichier image : chaque lieu est une suite de plans (crête lointaine,
  * colline, bâti, eau, premier plan) et la même suite se repeint aux quatre
@@ -448,13 +461,14 @@ object Paysages {
         eclaircir(fond, formes[0], heure.cielBas, ESTOMPE[0])
         eclaircir(couches[1], formes[1], heure.cielBas, ESTOMPE[1])
         // Les coulisses des rares, posées après la saison : ce sont des
-        // châssis de théâtre, pas des arbres du lieu.
+        // châssis de théâtre, pas des arbres du lieu. Au Breedewee, deux
+        // piliers de pierre : des arbres n'auraient rien à faire dans la ruelle.
         val plans = if (n < 4) couches else {
             val b = Bitmap.createBitmap(tailles[3][0], tailles[3][1], Bitmap.Config.ARGB_8888)
             val c = Canvas(b)
             c.translate(ks[3][1], ks[3][2])
             c.scale(ks[3][0], ks[3][0])
-            Peintre(c, heure).coulisses()
+            if (lieu == Lieu.BREEDEWEE) Peintre(c, heure).piliers() else Peintre(c, heure).coulisses()
             arrayOf(*couches, b)
         }
         val silhouettes = if (n < 4) formes else arrayOf(*formes, plans[3].extractAlpha())
@@ -659,6 +673,7 @@ object Paysages {
             Lieu.FOUER -> p.fouer()
             Lieu.MELLERDALL -> p.mellerdall()
             Lieu.STAD -> p.stad()
+            Lieu.BREEDEWEE -> p.breedewee()
         }
     }
 
@@ -944,6 +959,43 @@ object Paysages {
             rond(17.5f, 4.9f, 3.8f, col)
             rond(22.6f, 6.4f, 2.9f, col)
             rect(5f, 6.2f, 19.5f, 3.2f, col)
+        }
+
+        /**
+         * Les coulisses du Breedewee : deux piliers de pierre à contre-jour, une
+         * lanterne tournée vers la scène. Le même emplacement que le feuillage
+         * des [coulisses], sous l'arche du cadre des rares.
+         */
+        fun piliers() {
+            val pierre = mix(P.pierre, 0xFF000000.toInt(), if (P.nuit) 0.3f else 0.45f)
+            val joint = mix(pierre, 0xFF000000.toInt(), 0.3f)
+            val fer = mix(pierre, 0xFF000000.toInt(), 0.35f)
+            for (droite in booleanArrayOf(false, true)) {
+                fun x(v: Float) = if (droite) LARGEUR - v else v
+                forme("M${x(-1f)} 66L${x(-1f)} 24L${x(7.2f)} 24L${x(7.2f)} 26.2L${x(6.4f)} 26.2L${x(6.4f)} 66Z", pierre)
+                rect(min(x(-1f), x(8f)), 22.4f, 9f, 1.8f, pierre)
+                var y = 29.6f
+                while (y < BAS) { ligne(x(-1f), y, x(6.4f), y, joint, 0.4f); y += 3.4f }
+                if (P.allume) rond(x(9.8f), 33.5f, 2.8f, P.fenetre, 0.25f)
+                ligne(x(6.4f), 31f, x(10f), 31f, fer, 0.6f)
+                forme("M${x(9f)} 32L${x(10.6f)} 32L${x(10.3f)} 35L${x(9.3f)} 35Z", if (P.allume) P.fenetre else joint)
+            }
+        }
+
+        /**
+         * Une lanterne sur sa potence, scellée en ([x], [y]) dans le flanc d'un
+         * pilier et tournée vers la droite ou vers la gauche. Allumée le soir.
+         */
+        fun lanterne(x: Float, y: Float, versDroite: Boolean) {
+            val s = if (versDroite) 1f else -1f
+            val fer = mix(P.toit, 0xFF000000.toInt(), 0.45f)
+            ligne(x, y, x + 3.6f * s, y, fer, 0.55f)
+            trait("M$x ${y + 2.2f}Q${x + 1.6f * s} ${y + 2f} ${x + 2.6f * s} $y", fer, 0.4f)
+            if (P.allume) rond(x + 3.6f * s, y + 2.3f, 2.6f, P.fenetre, 0.25f)
+            ligne(x + 3.6f * s, y, x + 3.6f * s, y + 0.9f, fer, 0.4f)
+            forme("M${x + 2.8f * s} ${y + 0.9f}L${x + 4.4f * s} ${y + 0.9f}L${x + 4.1f * s} ${y + 3.6f}L${x + 3.1f * s} ${y + 3.6f}Z",
+                if (P.allume) P.fenetre else mix(P.pierre, P.pres, 0.55f))
+            rect(x + 2.6f * s - (if (versDroite) 0f else 2f), y + 0.5f, 2f, 0.5f, fer)
         }
 
         // ------------------------------------------------------ les lieux
@@ -1267,6 +1319,152 @@ object Paysages {
             x = 6f
             while (x < 96f) { maison(x, 60f, 4.4f, 3.2f + r() * 1.5f, r); x += 6.2f }
             eau(61.5f, 41, 10f, 30f, 52f, 71f)
+        }
+
+        /**
+         * Le Breedewee : une porte de pierre, la ruelle derrière, la ville haute
+         * au loin, et la chaussée pavée qui entre sous l'arche.
+         *
+         * La porte est un cadre de scène dans la fenêtre : ce qu'on voit à
+         * travers glisse contre ses bords quand on penche la carte, la
+         * parallaxe la plus lisible qui soit. Le chemin pavé mène l'œil au
+         * milieu, là où se tient le dessin du mot ; derrière lui, dans l'axe,
+         * la ruelle n'a pas de fenêtre, seulement une porte basse.
+         *
+         * Les couleurs tiennent compte de la végétation de [Habillage], qui se
+         * reconnaît à sa couleur : la porte est en [Heure.pierre] et les
+         * façades en enduit, la pierre tirée vers l'horizon, ce qui ne passe
+         * pour de la verdure à aucune heure. Les pavés, plus sombres, le
+         * peuvent, et l'automne y pose alors ses feuilles mortes.
+         */
+        fun breedewee() {
+            val r = Alea(12)
+            val pierre = P.pierre
+            val joint = mix(pierre, P.pres, 0.42f)
+            val pave = mix(pierre, P.toit, 0.55f)
+
+            // La ville haute, au-dessus de la ruelle : des pignons, et l'église
+            // dans leur creux, dont le clocher passe derrière la clé de la porte.
+            val pignons = floatArrayOf(0f, 7f, 9f, 6f, 9f, 12f, 15f, 8f, 8f, 23f, 7f, 10f, 30f, 9f, 8f, 39f, 6f, 11f,
+                45f, 10f, 9f, 66f, 8f, 11f, 74f, 9f, 8f, 83f, 7f, 10f, 90f, 10f, 9f)
+            var i = 0
+            while (i < pignons.size) {
+                val x = pignons[i]; val w = pignons[i + 1]; val h = pignons[i + 2]
+                rect(x, 33f - h, w, h + 33f, pierre)
+                triangle(x - 0.3f, 33f - h, x + w / 2f, 33f - h - w * 0.45f, x + w + 0.3f, 33f - h, P.toit)
+                if (P.allume) {
+                    var y = 35f - h
+                    while (y < 31f) { if (r() < 0.45f) rect(x + w * 0.4f, y, 0.9f, 1.3f, P.fenetre, 0.8f); y += 3f }
+                }
+                i += 3
+            }
+            rect(55f, 22f, 11f, 44f, pierre)
+            triangle(54.6f, 22f, 60.5f, 17.5f, 66.4f, 22f, P.toit)
+            rect(57.5f, 12f, 4f, 10f, pierre)
+            triangle(57.1f, 12f, 59.5f, 4f, 61.9f, 12f, P.toit)
+
+            // La ruelle derrière la porte : des façades enduites, plus claires
+            // que la pierre de la porte, qui s'en détache.
+            plan(1)
+            val facades = floatArrayOf(-1f, 12f, 16f, 11f, 11f, 14f, 22f, 12f, 17f, 34f, 12f, 15f, 46f, 10f, 18f,
+                56f, 12f, 14f, 68f, 11f, 17f, 79f, 11f, 15f, 90f, 11f, 16f)
+            i = 0
+            while (i < facades.size) {
+                val x = facades[i]; val w = facades[i + 1]; val h = facades[i + 2]
+                val enduit = mix(pierre, P.cielBas, if ((i / 3) % 2 == 0) 0.3f else 0.42f)
+                rect(x, 50f - h, w, h + 16f, enduit)
+                triangle(x - 0.4f, 50f - h, x + w / 2f, 50f - h - w * 0.3f, x + w + 0.4f, 50f - h, P.toit)
+                // Dans l'axe, derrière le mot, pas de fenêtre (règle 5 de la
+                // skill `direction-artistique` : le mot reste l'acteur).
+                if (x + w <= 42f || x >= 58f) {
+                    var fy = 53.5f - h
+                    while (fy < 45f) {
+                        var fx = x + 2.4f
+                        while (fx < x + w - 2.6f) { fenetre(fx, fy, 1.5f, 2.4f, r); fx += 4f }
+                        fy += 5f
+                    }
+                }
+                i += 3
+            }
+            forme("M48.4 50L48.4 45.2Q51 42.6 53.6 45.2L53.6 50Z",
+                if (P.allume) mix(P.fenetre, P.toit, 0.35f) else mix(pierre, P.pres, 0.55f))
+            val place = mix(pierre, pave, 0.4f)
+            rect(-1f, 49.5f, 102f, 17f, place)
+            forme("M41 66C43 59 46 53 48.6 50L53.4 50C56 53 58 59 60 66Z", pave)
+
+            // La porte et la place pavée, devant. La chaussée s'évase vers le
+            // bas, comme un chemin qui vient au-devant de qui regarde.
+            plan(2)
+            val cx = 50f
+            val naissance = 30f
+            val ri = 13.5f
+            val re = 19.5f
+            val seuil = 55f
+            rect(-1f, seuil, 102f, 12f, place)
+            forme("M36.5 55L63.5 55C67.5 59 82 62 98 66L4 66C18 62 34.5 59 36.5 55Z", pave)
+            // Les rangs de pavés : quelques arcs à peine plus clairs, pas une
+            // texture, qui ferait du bruit en vignette et sous le mot.
+            val rangs = mix(pave, pierre, 0.18f)
+            p.pathEffect = android.graphics.DashPathEffect(floatArrayOf(1.1f, 0.55f), 0f)
+            for (k in 0 until 5) {
+                val t = (k + 0.6f) / 5f
+                val y = seuil + 1f + t * 9.4f
+                val x0 = (cx - ri) + (4f - (cx - ri)) * t * t * 0.95f + 1.5f
+                val x1 = (cx + ri) + (98f - (cx + ri)) * t * t * 0.95f - 1.5f
+                trait("M$x0 ${y}Q$cx ${y + 1.2f + t} $x1 $y", rangs, 0.45f)
+            }
+            p.pathEffect = null
+            // La porte : deux piliers et l'arc plein cintre, d'un seul carton.
+            val porte = Path()
+            porte.moveTo(cx - re, seuil)
+            porte.lineTo(cx - re, naissance)
+            porte.arcTo(RectF(cx - re, naissance - re, cx + re, naissance + re), 180f, 180f)
+            porte.lineTo(cx + re, seuil)
+            porte.lineTo(cx + ri, seuil)
+            porte.lineTo(cx + ri, naissance)
+            porte.arcTo(RectF(cx - ri, naissance - ri, cx + ri, naissance + ri), 0f, -180f)
+            porte.lineTo(cx - ri, seuil)
+            porte.close()
+            forme(porte, pierre)
+            // Les tailloirs, qui débordent : ils font la silhouette de la porte.
+            rect(cx - re - 1f, naissance - 0.2f, re - ri + 2f, 1.7f, pierre)
+            rect(cx + ri - 1f, naissance - 0.2f, re - ri + 2f, 1.7f, pierre)
+            // Les claveaux, et la clé qui dépasse de l'arc.
+            val n = 9
+            val pi = PI.toFloat()
+            for (k in 1 until n) {
+                val a = pi + k * pi / n
+                ligne(cx + ri * cos(a), naissance + ri * sin(a), cx + re * cos(a), naissance + re * sin(a), joint, 0.4f)
+            }
+            val demi = pi / n / 2f
+            val haut = 1.5f * pi
+            fun px(rr: Float, a: Float) = cx + rr * cos(a)
+            fun py(rr: Float, a: Float) = naissance + rr * sin(a)
+            val angles = floatArrayOf(haut - demi * 0.9f, haut - demi * 1.15f, haut + demi * 1.15f, haut + demi * 0.9f)
+            val rayons = floatArrayOf(ri - 0.6f, re + 1.4f, re + 1.4f, ri - 0.6f)
+            val cle = Path()
+            cle.moveTo(px(rayons[0], angles[0]), py(rayons[0], angles[0]))
+            for (q in 1..3) cle.lineTo(px(rayons[q], angles[q]), py(rayons[q], angles[q]))
+            cle.close()
+            forme(cle, pierre)
+            ligne(px(rayons[0], angles[0]), py(rayons[0], angles[0]), px(rayons[1], angles[1]), py(rayons[1], angles[1]), joint, 0.4f)
+            ligne(px(rayons[3], angles[3]), py(rayons[3], angles[3]), px(rayons[2], angles[2]), py(rayons[2], angles[2]), joint, 0.4f)
+            // Les assises des piliers, joints croisés.
+            for (gauche in booleanArrayOf(true, false)) {
+                val xa = if (gauche) cx - re else cx + ri
+                val w = re - ri
+                var decale = gauche
+                var y = naissance + 1.5f + 3.4f
+                while (y < seuil) {
+                    ligne(xa, y, xa + w, y, joint, 0.4f)
+                    val xj = xa + w * (if (decale) 0.38f else 0.62f)
+                    ligne(xj, y - 3.4f, xj, y, joint, 0.4f)
+                    decale = !decale
+                    y += 3.4f
+                }
+            }
+            lanterne(cx + re, naissance + 6f, true)
+            lanterne(cx - re, naissance + 6f, false)
         }
     }
 }

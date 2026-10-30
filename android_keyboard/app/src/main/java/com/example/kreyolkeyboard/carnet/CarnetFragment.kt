@@ -595,7 +595,7 @@ class CarnetFragment : DialogFragment() {
             val actif = jeu == filtre
             // Chaque filtre prend la couleur de son jeu : c'est la même que
             // celle de la carte du hub et que celle du mot sur la vignette.
-            val couleur = jeu?.couleur ?: accent
+            val couleur = jeu?.encre ?: accent
             vue.setTextColor(if (actif) Color.WHITE else couleur)
             vue.background = GradientDrawable().apply {
                 cornerRadius = 20f * d

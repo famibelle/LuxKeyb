@@ -89,8 +89,9 @@ object Series {
     /**
      * Les trente-six cases de l'album des paysages, rangées lieu par lieu, du
      * matin à la nuit : la grille du carnet en fait neuf rangées de quatre.
+     * Le Breedewee n'y est pas : aucun jeu ne le donne (voir [Lieu.ALBUM]).
      */
-    val PAYSAGES: List<String> = Lieu.values().flatMap { l -> Rarete.values().map { r -> cleDePaysage(l, r) } }
+    val PAYSAGES: List<String> = Lieu.ALBUM.flatMap { l -> Rarete.values().map { r -> cleDePaysage(l, r) } }
 
     fun cleDePaysage(lieu: Lieu, rarete: Rarete): String = "${lieu.name}:${rarete.ordinal}"
 
@@ -102,7 +103,13 @@ object Series {
         return lieu to rarete
     }
 
-    /** La case d'une carte : le lieu de son champ, à l'heure de sa rareté. */
+    /**
+     * La case d'une carte : le lieu de son champ, à l'heure de sa rareté.
+     *
+     * Le champ, et non le lieu que la carte montre : une carte venue du jeu
+     * imprimé montre le Breedewee mais remplit toujours la case de son champ.
+     * Scanner une carte en papier n'a pas à faire perdre une case gagnée.
+     */
     fun paysage(contenu: ContenuCarte): String =
         cleDePaysage(Lieu.de(contenu.blason.champ), contenu.rarete)
 

@@ -1308,7 +1308,7 @@ class SettingsActivity : AppCompatActivity() {
                 ellipsize = android.text.TextUtils.TruncateAt.END
                 setTextColor(
                     if (tabIndex == currentTab) 
-                        Color.parseColor("#FF8C00") 
+                        Color.parseColor(Encres.ORANGE) 
                     else 
                         Color.GRAY
                 )
@@ -1665,7 +1665,7 @@ class SettingsActivity : AppCompatActivity() {
             val tipTitle = TextView(this).apply {
                 text = getString(R.string.sa_astuce_de_la_semaine)
                 textSize = 16f
-                setTextColor(Color.parseColor("#F57C00"))
+                setTextColor(Color.parseColor(Encres.ORANGE))
                 setTypeface(null, Typeface.BOLD)
             }
             
@@ -1922,7 +1922,7 @@ class SettingsActivity : AppCompatActivity() {
         val tvMot = texteAccueil("…", 30f, encre, gras = true)
         val tvGlose = texteAccueil("", 16f, gris).apply { visibility = View.GONE }
         val carteMot = carteAccueil(Color.WHITE).apply {
-            addView(texteAccueil(getString(R.string.sa_mot_du_jour), 12f, Color.parseColor("#FF8C00"), gras = true).apply {
+            addView(texteAccueil(getString(R.string.sa_mot_du_jour), 12f, Color.parseColor(Encres.ORANGE), gras = true).apply {
                 letterSpacing = 0.1f
                 setPadding(0, 0, 0, enDp(4))
             })
@@ -2247,7 +2247,7 @@ class SettingsActivity : AppCompatActivity() {
             super.onDraw(canvas)
             val marge = piste.strokeWidth / 2f
             val cadre = android.graphics.RectF(marge, marge, width - marge, height - marge)
-            val couleur = Color.parseColor(if (done >= total) "#4CAF50" else "#0080FF")
+            val couleur = Color.parseColor(if (done >= total) Encres.VERT else "#0080FF")
             arc.color = couleur
             encre.color = couleur
             canvas.drawArc(cadre, 0f, 360f, false, piste)
@@ -2265,7 +2265,7 @@ class SettingsActivity : AppCompatActivity() {
      * anneau qui affiche 2/3 ferait dire deux choses différentes au même écran.
      */
     private fun createReadyBanner(aDejaEcrit: Boolean): LinearLayout {
-        val banner = createRoundedCard("#4CAF50").apply {
+        val banner = createRoundedCard(Encres.VERT).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
         }
@@ -2787,7 +2787,7 @@ class SettingsActivity : AppCompatActivity() {
             background = GradientDrawable().apply {
                 shape = GradientDrawable.OVAL
                 setColor(Color.parseColor(when {
-                    faite -> "#4CAF50"
+                    faite -> Encres.VERT
                     verrouillee -> "#F0F0F0"
                     else -> "#E3F2FD"
                 }))
@@ -2849,7 +2849,7 @@ class SettingsActivity : AppCompatActivity() {
         val pastille = ligne.findViewWithTag<TextView>("pastille_etape") ?: return
         pastille.text = "✓"
         pastille.setTextColor(Color.WHITE)
-        (pastille.background as? GradientDrawable)?.setColor(Color.parseColor("#4CAF50"))
+        (pastille.background as? GradientDrawable)?.setColor(Color.parseColor(Encres.VERT))
     }
 
     // Fonction pour créer une card d'étape
@@ -2955,7 +2955,7 @@ class SettingsActivity : AppCompatActivity() {
         val badgeView = TextView(this).apply {
             text = "✚"
             textSize = 20f
-            setTextColor(Color.parseColor(if (estActif) "#4CAF50" else "#0080FF"))
+            setTextColor(Color.parseColor(if (estActif) Encres.VERT else "#0080FF"))
             setTypeface(null, Typeface.BOLD)
             setPadding(12, 8, 12, 8)
             setBackgroundColor(Color.parseColor(if (estActif) "#E8F5E9" else "#E3F2FD"))
@@ -2982,7 +2982,7 @@ class SettingsActivity : AppCompatActivity() {
         val marqueur = TextView(this).apply {
             text = if (estActif) "✓" else "›"
             textSize = if (estActif) 24f else 34f
-            setTextColor(Color.parseColor(if (estActif) "#4CAF50" else "#757575"))
+            setTextColor(Color.parseColor(if (estActif) Encres.VERT else "#757575"))
             setTypeface(null, Typeface.BOLD)
             setPadding(12, 0, 4, 0)
         }
@@ -3087,7 +3087,7 @@ class SettingsActivity : AppCompatActivity() {
             setTextColor(
                 when {
                     isLocked -> Color.parseColor("#999999")
-                    isCompleted -> Color.parseColor("#4CAF50")
+                    isCompleted -> Color.parseColor(Encres.VERT)
                     else -> Color.parseColor("#0080FF")
                 }
             )
@@ -3124,7 +3124,7 @@ class SettingsActivity : AppCompatActivity() {
             val checkIcon = TextView(this).apply {
                 text = "✓"
                 textSize = 24f
-                setTextColor(Color.parseColor("#4CAF50"))
+                setTextColor(Color.parseColor(Encres.VERT))
                 setTypeface(null, Typeface.BOLD)
             }
             header.addView(badgeView)
@@ -4388,7 +4388,7 @@ class SettingsActivity : AppCompatActivity() {
         val wordLabel = TextView(this).apply {
             text = getString(R.string.sa_mot_du_jour)
             textSize = 12f
-            setTextColor(Color.parseColor("#FF8C00"))
+            setTextColor(Color.parseColor(Encres.ORANGE))
             setTypeface(null, Typeface.BOLD)
             gravity = Gravity.CENTER
             letterSpacing = 0.1f
@@ -4468,7 +4468,7 @@ class SettingsActivity : AppCompatActivity() {
             val rank = TextView(this).apply {
                 text = "${index + 1}."
                 textSize = 20f
-                setTextColor(Color.parseColor("#FF8C00"))
+                setTextColor(Color.parseColor(Encres.ORANGE))
                 setTypeface(null, Typeface.BOLD)
                 setPadding(0, 0, 16, 0)
             }
@@ -4545,7 +4545,7 @@ class SettingsActivity : AppCompatActivity() {
         val discoveredWordsContainer = createWordListSection(
             getString(R.string.sa_mots_decouverts, stats.discoveredWordsList.size),
             stats.discoveredWordsList,
-            "#4CAF50"
+            Encres.VERT
         )
         
         // Assembler
@@ -4678,7 +4678,9 @@ class SettingsActivity : AppCompatActivity() {
                         textSize = 19.5f  // Augmenté de 1.5x (13f * 1.5)
                         setTextColor(Color.parseColor(accentColor))
                         setPadding(15, 7, 15, 7)  // Augmenté de 1.5x (10, 5, 10, 5)
-                        setBackgroundColor(avecOpacite(accentColor, 0x20))
+                        // 8 % et non 12 % : sous le vert des mots découverts,
+                        // le fond plus soutenu ramenait le mot à 4,35:1.
+                        setBackgroundColor(avecOpacite(accentColor, 0x14))
                         setSingleLine(true)
                         // Filet de sécurité : un mot composé suivi de sa glose
                         // peut dépasser la largeur de l'écran, et le calcul de
@@ -5679,7 +5681,7 @@ class SettingsActivity : AppCompatActivity() {
                         tvScore = TextView(activity).apply {
                             text = "⭐ 0"
                             textSize = 16f
-                            setTextColor(Color.parseColor("#FF9800"))
+                            setTextColor(Color.parseColor(Encres.ORANGE))
                             setTypeface(null, Typeface.BOLD)
                             gravity = Gravity.END
                         }
@@ -5919,7 +5921,7 @@ class SettingsActivity : AppCompatActivity() {
                     text = ligne
                     textSize = 14f
                     setPadding(12, 8, 12, 8)
-                    setTextColor(if (word.isFound) Color.parseColor("#4CAF50") else Color.parseColor("#333333"))
+                    setTextColor(if (word.isFound) Color.parseColor(Encres.VERT) else Color.parseColor("#333333"))
                     setTypeface(null, if (word.isFound) Typeface.BOLD else Typeface.NORMAL)
                 }
                 wordsListContainer.addView(wordView)
@@ -6117,7 +6119,7 @@ class SettingsActivity : AppCompatActivity() {
                             textSize = 24f
                             setTypeface(null, Typeface.BOLD)
                             gravity = Gravity.CENTER
-                            setTextColor(Color.parseColor("#4CAF50"))
+                            setTextColor(Color.parseColor(Encres.VERT))
                         }
                         addView(tvScore)
 
@@ -6269,7 +6271,7 @@ class SettingsActivity : AppCompatActivity() {
                                 1f
                             ).apply { setMargins(8, 0, 8, 0) }
                             text = getString(R.string.sa_effacer)
-                            setBackgroundColor(Color.parseColor("#FF9800"))
+                            setBackgroundColor(Color.parseColor(Encres.ORANGE))
                             setTextColor(Color.WHITE)
                             setOnClickListener { clearAnswer() }
                         }
@@ -6306,7 +6308,7 @@ class SettingsActivity : AppCompatActivity() {
                                 1f
                             ).apply { setMargins(8, 0, 8, 0) }
                             text = getString(R.string.sa_valider)
-                            setBackgroundColor(Color.parseColor("#4CAF50"))
+                            setBackgroundColor(Color.parseColor(Encres.VERT))
                             setTextColor(Color.WHITE)
                             setTypeface(null, Typeface.BOLD)
                             isEnabled = false
@@ -6696,7 +6698,7 @@ class SettingsActivity : AppCompatActivity() {
 
                         boutonCarnet = Pochette.bouton(
                             this@WuertrietFragment,
-                            Color.parseColor("#4CAF50"),
+                            Color.parseColor(Encres.VERT),
                             petit = true
                         ).apply {
                             layoutParams = LinearLayout.LayoutParams(
@@ -6829,7 +6831,7 @@ class SettingsActivity : AppCompatActivity() {
                                 LinearLayout.LayoutParams.MATCH_PARENT
                             )
                             text = getString(R.string.sa_valider)
-                            setBackgroundColor(Color.parseColor("#4CAF50"))
+                            setBackgroundColor(Color.parseColor(Encres.VERT))
                             setTextColor(Color.WHITE)
                             setTypeface(null, Typeface.BOLD)
                             setOnClickListener { submitGuess() }
@@ -7177,7 +7179,7 @@ class SettingsActivity : AppCompatActivity() {
         private var pochette: View? = null
 
         private val couleurNeutre = Color.parseColor("#1976D2")
-        private val couleurJuste = Color.parseColor("#4CAF50")
+        private val couleurJuste = Color.parseColor(Encres.VERT)
         private val couleurFausse = Color.parseColor("#E53935")
         private val couleurInerte = Color.parseColor("#BDBDBD")
 
@@ -7226,7 +7228,7 @@ class SettingsActivity : AppCompatActivity() {
 
                         boutonCarnet = Pochette.bouton(
                             this@ClozeFragment,
-                            Color.parseColor("#FF8C00"),
+                            Color.parseColor(Encres.ORANGE),
                             petit = true
                         ).apply {
                             layoutParams = LinearLayout.LayoutParams(
@@ -7785,7 +7787,7 @@ class SettingsActivity : AppCompatActivity() {
         private var pochette: View? = null
 
         private val couleurNeutre = Color.parseColor("#00897B")
-        private val couleurJuste = Color.parseColor("#4CAF50")
+        private val couleurJuste = Color.parseColor(Encres.VERT)
         private val couleurFausse = Color.parseColor("#E53935")
         private val couleurInerte = Color.parseColor("#BDBDBD")
 
@@ -8354,7 +8356,7 @@ class SettingsActivity : AppCompatActivity() {
             set(valeur) { memoire.solutionMontree = valeur }
 
         private val couleurNeutre = Color.parseColor("#1976D2")
-        private val couleurJuste = Color.parseColor("#4CAF50")
+        private val couleurJuste = Color.parseColor(Encres.VERT)
         private val couleurFausse = Color.parseColor("#E53935")
         private val couleurInerte = Color.parseColor("#BDBDBD")
         private val fondCase = Color.WHITE
@@ -9330,7 +9332,7 @@ class SettingsActivity : AppCompatActivity() {
         private val cartesNeuves get() = memoire.cartesNeuves
 
         private val couleurNeutre = Color.parseColor("#00796B")
-        private val couleurJuste = Color.parseColor("#4CAF50")
+        private val couleurJuste = Color.parseColor(Encres.VERT)
         private val couleurFausse = Color.parseColor("#E53935")
         private val couleurInerte = Color.parseColor("#BDBDBD")
         private val fondCase = Color.WHITE
@@ -11248,9 +11250,9 @@ class SettingsActivity : AppCompatActivity() {
             Jeu("🔤", "Wuertmix", R.string.sa_remettez_les_lettres_dans_ordre,
                 "#1976D2") { WordScrambleFragment() },
             Jeu("🟩", "Wuertriet", R.string.sa_devinez_le_mot_de_lettres,
-                "#4CAF50") { WuertrietFragment() },
+                Encres.VERT) { WuertrietFragment() },
             Jeu("📝", "Wuertlück", R.string.sa_completez_la_phrase_laquelle_il,
-                "#FF8C00") { ClozeFragment() },
+                Encres.ORANGE) { ClozeFragment() },
             Jeu("🔢", "Zuelwuert", R.string.sa_ecrivez_en_lettres_le_resultat,
                 "#00897B") { ZuelenFragment() },
             Jeu("🧩", "Kräizwuert", R.string.sa_ecrivez_les_mots_dans_la,

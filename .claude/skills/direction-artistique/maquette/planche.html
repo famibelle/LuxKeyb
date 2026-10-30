@@ -1,0 +1,94 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Breedewee</title>
+<style>
+body{margin:0;padding:16px;background:#ddd;font:13px system-ui}
+.ligne{display:flex;gap:10px;margin-bottom:12px;align-items:flex-start}
+figure{margin:0}figcaption{font-size:11px;color:#333}
+canvas{display:block}
+</style></head><body>
+<script src="moteur.js"></script>
+<script src="breedewee.js"></script>
+<script>
+const U = 5; // pixels par unité
+const NOMS = ['matin (commune)', 'après-midi (peu commune)', 'soir (rare)', 'nuit (très rare)'];
+const W = L * U, HH = H * U;
+
+function toile(w = W, h = HH) { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+function calque(P, seul, ciel, lieu, coulisses = false) {
+  const t = toile(), c = t.getContext('2d'); c.scale(U, U);
+  const p = new Peintre(c, P, seul);
+  if (ciel) p.ciel();
+  if (coulisses) p.coulissesBreedewee();
+  else if (lieu) p.breedewee();
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  return t;
+}
+function silhouette(src, col = '#000') {
+  const t = toile(), c = t.getContext('2d');
+  c.drawImage(src, 0, 0); c.globalCompositeOperation = 'source-in'; c.fillStyle = col; c.fillRect(0, 0, W, HH); return t;
+}
+function eclaircir(b, forme, vers, t) {
+  const c = b.getContext('2d'); const s = silhouette(forme, css(vers, t));
+  c.globalCompositeOperation = 'source-atop'; c.drawImage(s, 0, 0); c.globalCompositeOperation = 'source-over';
+}
+function ombrer(derriere, forme, P, ecart, force) {
+  const o = toile(), oc = o.getContext('2d');
+  oc.filter = `blur(${1.1 * U * ecart * 0.6}px)`; oc.drawImage(silhouette(forme, '#0B1020'), 0, -0.55 * U * ecart);
+  const c = derriere.getContext('2d'); c.globalAlpha = (P.nuit ? 0.55 : 0.38) * force;
+  c.globalCompositeOperation = 'source-atop'; c.drawImage(o, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+}
+function trancher(b, forme, P, force = 1) {
+  const col = melange(P.cielBas, 0xFFFFFFFF, P.nuit ? 0.3 : 0.6);
+  const c = b.getContext('2d'); c.globalAlpha = (P.nuit ? 0.45 : 0.7) * force; c.globalCompositeOperation = 'destination-over';
+  c.drawImage(silhouette(forme, css(col)), 0, -Math.max(1, 0.3 * U)); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+}
+function plans(P) {
+  const n = P.rang >= 2 ? 4 : 3;
+  const fond = calque(P, 0, true, false), loin = calque(P, 0, false, true);
+  const couches = [fond, calque(P, 1, false, true), calque(P, 2, false, true)];
+  const formes = [loin, couches[1], couches[2]];
+  ombrer(fond, loin, P, 1, 0.35); trancher(loin, loin, P, 0.6); fond.getContext('2d').drawImage(loin, 0, 0);
+  eclaircir(fond, loin, P.cielBas, 0.30); eclaircir(couches[1], couches[1], P.cielBas, 0.10);
+  const pl = n < 4 ? couches : [...couches, calque(P, -1, false, false, true)];
+  const sil = n < 4 ? formes : [...formes, pl[3]];
+  const silCopies = sil.map(s => silhouette(s));
+  for (let d = 1; d < pl.length; d++) {
+    for (let b = 0; b < d; b++) ombrer(pl[b], silCopies[d], P, d - b, b === 0 ? 0.6 : 1);
+    trancher(pl[d], silCopies[d], P);
+  }
+  return pl;
+}
+function composer(pl, dx = 0) {
+  const t = toile(), c = t.getContext('2d');
+  const g = [0.04, 0.022, 0.008, 0.003];
+  pl.forEach((b, i) => c.drawImage(b, dx * g[i] * W, 0));
+  return t;
+}
+function fig(el, cap, w) { const f = document.createElement('figure'); if (w) { el.style.width = w + 'px'; } f.append(el); const fc = document.createElement('figcaption'); fc.textContent = cap; f.append(fc); return f; }
+
+for (const P of BASE) {
+  const row = document.createElement('div'); row.className = 'ligne';
+  const pl = plans(P);
+  row.append(fig(composer(pl, 0), NOMS[P.rang], 500));
+  row.append(fig(composer(pl, -1), 'penchée à gauche', 250));
+  row.append(fig(composer(pl, 1), 'penchée à droite', 250));
+  // vignette : 248×186 dans la boîte, rognée sur les côtés
+  const v = toile(186 * 1.3, 186), vc = v.getContext('2d');
+  const e = Math.max(v.width / L, v.height / H) / U;
+  vc.drawImage(composer(pl, 0), (v.width - W * e) / 2, (v.height - HH * e) / 2, W * e, HH * e);
+  row.append(fig(v, 'vignette (rognée)', 125));
+  document.body.append(row);
+  if (P.rang === 0) {
+    const sr = document.createElement('div'); sr.className = 'ligne';
+    ['lointain', 'milieu', 'proche'].forEach((nom, i) => {
+      const s = calque(P, i, false, true); const fond = toile(); const fc = fond.getContext('2d');
+      fc.fillStyle = '#fff'; fc.fillRect(0, 0, W, HH); fc.drawImage(silhouette(s), 0, 0);
+      sr.append(fig(fond, 'silhouette : ' + nom, 250));
+    });
+    document.body.append(sr);
+  }
+}
+window.COULEURS_PAR_HEURE = BASE.map(P => { COULEURS.length = 0; const t = toile(); const p = new Peintre(t.getContext('2d'), P); p.breedewee(); return [...COULEURS]; });
+window.PRET = true;
+</script>
+</body></html>

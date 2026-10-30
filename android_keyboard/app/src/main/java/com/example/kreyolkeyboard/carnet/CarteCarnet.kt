@@ -111,7 +111,7 @@ object CarteCarnet {
         // Un numéral n'a pas de fiche au dictionnaire : sa leçon est sa
         // décomposition, qui est exactement ce que Zuelwuert enseigne.
         carte.nombre?.let { valeur ->
-            return ContenuCarte(
+            return CartesPapier.corriger(ContenuCarte(
                 carte = carte,
                 rarete = Rarete.pourNombre(valeur),
                 rang = null,
@@ -124,11 +124,11 @@ object CarteCarnet {
                 // couleur, au lieu du semis aléatoire qu'elles étaient.
                 blason = Blasonnement(champ = Champ.TEMPS, nature = Nature.AUTRE),
                 plume = PreuveDeFrappe.aLaPlume(context, carte.forme)
-            )
+            ))
         }
         val fiche = TranslationDictionary.fiche(context, carte.forme)
         val exemple = TranslationDictionary.exemplesTraduits(context, fiche).firstOrNull()
-        return CarteFierkelsmaart.corriger(context, CarteAccueil.corriger(context, ContenuCarte(
+        return CartesPapier.corriger(CarteFierkelsmaart.corriger(context, CarteAccueil.corriger(context, ContenuCarte(
             carte = carte,
             rarete = Carnet.rarete(context, carte),
             rang = Carnet.rang(context, carte.forme),
@@ -144,7 +144,7 @@ object CarteCarnet {
             traductionExemple = exemple?.traduction,
             categorie = TranslationDictionary.categorie(context, fiche.mot),
             plume = PreuveDeFrappe.aLaPlume(context, carte.forme)
-        )))
+        ))))
     }
 
     /**

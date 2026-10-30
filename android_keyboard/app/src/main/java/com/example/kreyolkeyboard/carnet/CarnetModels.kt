@@ -58,6 +58,19 @@ enum class JeuCarte(
         else -> nom
     }
 
+    /**
+     * La couleur du jeu quand elle porte du texte : écrite sur blanc, ou sous
+     * un libellé blanc. C'est [couleur] pour tous, sauf les deux trop clairs
+     * pour cela (2,78:1 et 2,33:1 contre le blanc), qui prennent la version
+     * foncée de [com.example.kreyolkeyboard.Encres], la même que dans le hub.
+     * Le décor des cartes et des pochettes garde [couleur].
+     */
+    val encre: Int get() = when (this) {
+        WUERTRIET -> 0xFF2E7D32.toInt()
+        WUERTLUECK -> 0xFFAD5600.toInt()
+        else -> couleur
+    }
+
     companion object {
         private val PAR_ID = values().associateBy { it.id }
         fun parId(id: String): JeuCarte? = PAR_ID[id]

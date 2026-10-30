@@ -75,7 +75,15 @@ class SeriesPaysagesAssetTest {
 
     @Test
     fun chaqueLieuSaitDeQuelChampIlEstLaFenetre() {
-        Lieu.values().forEach { assertEquals(it, Lieu.de(it.champ())) }
+        Lieu.ALBUM.forEach { assertEquals(it, Lieu.de(it.champ())) }
+    }
+
+    /** Aucun champ ne mène au Breedewee : sa case ne se remplirait jamais. */
+    @Test
+    fun leBreedeweeEstHorsDeLAlbum() {
+        assertTrue(Lieu.BREEDEWEE !in Lieu.ALBUM)
+        assertTrue((Champ.values().toList() + null).none { Lieu.de(it) == Lieu.BREEDEWEE })
+        assertTrue(Series.PAYSAGES.none { it.startsWith(Lieu.BREEDEWEE.name) })
     }
 
     @Test
