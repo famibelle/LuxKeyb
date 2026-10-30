@@ -6,9 +6,14 @@ name: 🎙️ Lëtzebuergesch Réunion — APK
 # puis l'APK, signé avec la clé du clavier pour que chaque version s'installe
 # par-dessus la précédente.
 #
-# L'APK reste un artefact du workflow, réservé à qui a accès au dépôt : il
-# n'est pas publié en Release. LuxASR ouvre son API « for limited access » et
-# demande qu'on le contacte avant de l'intégrer dans une application.
+# Depuis le 30 octobre 2026 (décision du propriétaire), l'APK signé est aussi
+# publié sur la page Labs : un push sur main, une fois les tests du noyau et de
+# l'émulateur passés, remplace la préversion au tag roulant `reunion-labs`, sous
+# un nom fixe, pour que le lien et le flashcode du site ne changent jamais :
+#   https://github.com/famibelle/LuxKeyb/releases/download/reunion-labs/LetzebuergeschReunion-Labs.apk
+# Toujours `--prerelease` et `--latest=false` : le site lie le clavier par
+# releases/latest, et cette application ne doit jamais prendre sa place.
+# Les pull requests et les builds sans clé ne publient rien.
 
 permissions:
   contents: read
@@ -87,6 +92,8 @@ jobs:
     name: 📦 APK
     runs-on: ubuntu-latest
     needs: noyau
+    outputs:
+      type: ${{ steps.cle.outputs.type }}
     env:
       KEYSTORE_FILE: potomitan-keystore.jks
       STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
@@ -135,3 +142,44 @@ jobs:
           name: letzebuergesch-reunion-${{ steps.cle.outputs.type }}-apk
           path: android_reunion/app/build/outputs/apk/*/*.apk
           retention-days: 30
+
+  publier:
+    name: 🚀 Préversion Labs
+    runs-on: ubuntu-latest
+    needs: [apk, appareil]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && needs.apk.outputs.type == 'release'
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TAG: reunion-labs
+      APK: LetzebuergeschReunion-Labs.apk
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          name: letzebuergesch-reunion-release-apk
+          path: sortie
+      - name: Publication
+        run: |
+          set -euo pipefail
+          SOURCE=$(ls sortie/release/*.apk sortie/*.apk 2>/dev/null | head -1)
+          cp "$SOURCE" "$APK"
+          ls -l "$APK"
+          cat > notes.md <<'NOTES'
+          **Lëtzebuergesch Réunion**, préversion de test (Labs).
+
+          Pendant une réunion en luxembourgeois, ce qui se dit s'affiche en sous-titres avec la traduction en français ; à la fin, la transcription avec les locuteurs séparés, puis le compte rendu, à relire et envoyer.
+
+          - Android 8 ou plus récent.
+          - Le son part à LuxASR (Université du Luxembourg) ; le texte de la réunion part au service qui rédige le compte rendu (Claude ou Mistral, avec une clé saisie sur le téléphone). Prévenez les participants que la réunion est enregistrée.
+          - Présentation : https://famibelle.github.io/LuxKeyb/labs-transcription.html#application
+          NOTES
+          sed -i 's/^          //' notes.md
+          # Le tag est roulant : GitHub ne déplace pas un tag existant, d'où la
+          # suppression de la préversion ET de son tag avant de la recréer.
+          gh release delete "$TAG" --repo "${{ github.repository }}" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$TAG" --repo "${{ github.repository }}" \
+            --title "Lëtzebuergesch Réunion · Labs (${{ github.sha }})" \
+            --notes-file notes.md --prerelease --latest=false \
+            --target "${{ github.sha }}" "$APK"
+          echo "Lien stable : https://github.com/${{ github.repository }}/releases/download/$TAG/$APK" >> "$GITHUB_STEP_SUMMARY"
