@@ -518,3 +518,17 @@ envoyer).
   Pattcast RTL episode 20 · Date : jeudi 29 octobre 2026, 19 h 21 · Rédigé par : Essai Medhi ·
   Participants annoncés : Animatrice, Coanimatrice, Docteur », et la transcription par voix
   (15 460 caractères). **Aucune durée n'est transmise** pour un fichier (n° 20 du § 7).
+
+## 12. Après l'essai : la transcription en majeur dans le direct (30 octobre)
+
+Demande de Medhi : pendant le direct, mettre la transcription en avant et la traduction au
+second plan. C'est fait dans `DirectActivity` : le luxembourgeois s'affiche en grand (21 sp,
+23 sur tablette), la traduction française dessous en petit et en italique (15 sp, 18 sur
+tablette) ; sur tablette, la colonne luxembourgeoise est à gauche et la plus large. Les textes
+suivent : « J'écoute et j'écris », « Le texte s'affichera ici dès que quelqu'un parlera, avec sa
+traduction en dessous », et l'accueil « J'écris ce qui se dit pendant la réunion, avec la
+traduction en français ». Au passage, **la marge intérieure des paragraphes est corrigée**
+(problème n° 4 du § 7) : le fond posé après la marge la remplaçait par la sienne, négative.
+
+**62-direct-transcription-en-majeur.png** : le résultat, avec le même fichier de test qu'au § 10.
+GIF : `direct_transcription.gif`.

@@ -25,8 +25,8 @@ import com.potomitan.luxreunion.noyau.Normaliseur
 import com.potomitan.luxreunion.noyau.Paragraphe
 
 /**
- * Pendant la réunion : le français en grand, le luxembourgeois en petit
- * dessous ; sur tablette, côte à côte. L'écran reste allumé, le texte défile
+ * Pendant la réunion : ce qui se dit, en luxembourgeois, en grand ; sa
+ * traduction en français en petit dessous ; sur tablette, côte à côte. L'écran reste allumé, le texte défile
  * seul tant qu'on ne remonte pas le lire, et un seul bouton termine.
  *
  * L'écran ne fait que montrer : c'est le service d'écoute qui tient la
@@ -72,7 +72,7 @@ class DirectActivity : Activity() {
                 }
             }
         }
-        vide = Charte.texte(this, "Je vous écoute.\nLa traduction s'affichera ici dès que quelqu'un parlera.", 18f, Charte.GRIS_CLAIR).apply {
+        vide = Charte.texte(this, "Je vous écoute.\nLe texte s'affichera ici dès que quelqu'un parlera, avec sa traduction en dessous.", 18f, Charte.GRIS_CLAIR).apply {
             gravity = Gravity.CENTER
             setPadding(dp(32), dp(48), dp(32), dp(48))
         }
@@ -138,10 +138,10 @@ class DirectActivity : Activity() {
     private fun entetesColonnes(): View = LinearLayout(this).apply {
         orientation = LinearLayout.HORIZONTAL
         setPadding(dp(24), dp(12), dp(24), dp(4))
-        addView(Charte.texte(this@DirectActivity, "LËTZEBUERGESCH", 13f, Charte.GRIS, gras = true).apply { letterSpacing = 0.08f },
-                LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
-        addView(Charte.texte(this@DirectActivity, "FRANÇAIS", 13f, Charte.BLEU, gras = true).apply { letterSpacing = 0.08f },
-                LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.3f).apply { leftMargin = dp(24) })
+        addView(Charte.texte(this@DirectActivity, "LËTZEBUERGESCH", 13f, Charte.BLEU, gras = true).apply { letterSpacing = 0.08f },
+                LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.3f))
+        addView(Charte.texte(this@DirectActivity, "FRANÇAIS", 13f, Charte.GRIS, gras = true).apply { letterSpacing = 0.08f },
+                LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply { leftMargin = dp(24) })
     }
 
     override fun onResume() {
@@ -183,7 +183,7 @@ class DirectActivity : Activity() {
             EtatDirect.etat == DirectLuxAsr.Etat.CONNEXION -> Charte.ORANGE to "Connexion à LuxASR…"
             EtatDirect.etat == DirectLuxAsr.Etat.ARRET -> Charte.GRIS to "Fin de la réunion…"
             EtatDirect.retard > 0 -> Charte.ORANGE to "Réseau lent · la traduction prend du retard"
-            else -> Charte.VERT to "J'écoute et je traduis"
+            else -> Charte.VERT to "J'écoute et j'écris"
         }
         point.setTextColor(couleur)
         etat.text = texte
@@ -217,7 +217,7 @@ class DirectActivity : Activity() {
 
     private fun descendre() = defilement.post { defilement.smoothScrollTo(0, liste.height) }
 
-    /** Un paragraphe : l'heure, le français, le luxembourgeois. */
+    /** Un paragraphe : l'heure, le luxembourgeois, puis sa traduction en français. */
     private inner class VueParagraphe : LinearLayout(this@DirectActivity) {
         private val heure = Charte.texte(context, "", 13f, Charte.GRIS_CLAIR)
         private val lacune = Charte.texte(context, "⋯  Coupure de réseau : un passage manque ici. Il sera dans le compte rendu.",
@@ -227,27 +227,29 @@ class DirectActivity : Activity() {
 
         init {
             orientation = VERTICAL
-            setPadding(dp(20), dp(14), dp(20), dp(14))
             addView(lacune)
             addView(heure)
-            fr.setTextColor(Charte.ENCRE)
-            fr.setLineSpacing(0f, 1.15f)
-            lb.setTextColor(Charte.GRIS)
+            lb.setTextColor(Charte.ENCRE)
             lb.setLineSpacing(0f, 1.15f)
+            fr.setTextColor(Charte.GRIS)
+            fr.setLineSpacing(0f, 1.15f)
             if (large()) {
-                // Tablette : deux colonnes, l'original à gauche, la traduction à droite.
+                // Tablette : deux colonnes, l'original à gauche (la plus large), la traduction à droite.
                 val rangee = LinearLayout(context).apply { orientation = HORIZONTAL }
-                rangee.addView(lb, LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
-                rangee.addView(fr, LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.3f).apply { leftMargin = dp(24) })
+                rangee.addView(lb, LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.3f))
+                rangee.addView(fr, LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply { leftMargin = dp(24) })
                 addView(rangee)
             } else {
-                addView(fr)
-                addView(lb, LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(4) })
+                addView(lb)
+                addView(fr, LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = dp(4) })
             }
             background = android.graphics.drawable.InsetDrawable(
                 android.graphics.drawable.GradientDrawable().apply {
                     setColor(Charte.BLANC); setStroke(dp(1), Charte.TRAIT)
                 }, -dp(2), -dp(2), -dp(2), 0)
+            // Après le fond : un fond remplace la marge intérieure par la sienne
+            // (ici négative), et le texte se retrouvait collé au bord de l'écran.
+            setPadding(dp(20), dp(14), dp(20), dp(14))
         }
 
         var recent = true
@@ -259,16 +261,16 @@ class DirectActivity : Activity() {
             val tablette = large()
             lacune.visibility = if (p.lacune) View.VISIBLE else View.GONE
             heure.text = Normaliseur.horloge(p.debut)
-            fr.setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 23f else 21f) * e)
-            lb.setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 18f else 15f) * e)
-            lb.setTypeface(null, if (tablette) Typeface.NORMAL else Typeface.ITALIC)
+            lb.setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 23f else 21f) * e)
+            fr.setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 18f else 15f) * e)
+            fr.setTypeface(null, if (tablette) Typeface.NORMAL else Typeface.ITALIC)
             val traduction = p.traduction
             if (traduction.isNullOrBlank()) {
                 fr.text = if (recent) "…" else "(pas de traduction pour ce passage)"
                 fr.setTextColor(Charte.GRIS_CLAIR)
             } else {
                 fr.text = traduction
-                fr.setTextColor(Charte.ENCRE)
+                fr.setTextColor(Charte.GRIS)
             }
             val t = SpannableStringBuilder(p.texte)
             val partiel = p.partiel

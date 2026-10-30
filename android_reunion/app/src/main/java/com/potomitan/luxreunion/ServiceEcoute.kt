@@ -67,7 +67,7 @@ class ServiceEcoute : Service() {
     }
 
     private fun demarrer(id: String?) {
-        val notif = notifier("J'écoute et je traduis.")
+        val notif = notifier("J'écoute et j'écris.")
         if (Build.VERSION.SDK_INT >= 29) startForeground(NOTIF, notif, ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
         else startForeground(NOTIF, notif)
         val r = id?.let { ReunionApp.instance.registre.lire(it) }
@@ -119,7 +119,7 @@ class ServiceEcoute : Service() {
             EtatDirect.etat = etat
             Ui.signaler()
             val texte = when (etat) {
-                DirectLuxAsr.Etat.ECOUTE -> "J'écoute et je traduis."
+                DirectLuxAsr.Etat.ECOUTE -> "J'écoute et j'écris."
                 DirectLuxAsr.Etat.HORS_LIGNE -> "Pas de réseau : la traduction reprendra seule. L'enregistrement continue."
                 DirectLuxAsr.Etat.CONNEXION -> "Connexion à LuxASR…"
                 else -> return

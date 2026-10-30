@@ -3,8 +3,9 @@
 Une application Android pour une secrétaire de direction qui assiste à des
 réunions en luxembourgeois (souvent mêlé de français) :
 
-1. **pendant la réunion**, la traduction en français s'affiche en direct,
-   en grand. Le luxembourgeois est dessous, ou côte à côte sur tablette ;
+1. **pendant la réunion**, ce qui se dit s'écrit en direct, en grand, en
+   luxembourgeois. La traduction en français est dessous, en plus petit, ou
+   côte à côte sur tablette ;
 2. **à la fin**, un seul bouton. L'application envoie l'enregistrement
    complet à LuxASR pour une transcription où les voix sont séparées (« qui a dit
    quoi »), puis fait rédiger le compte rendu par Claude ;

@@ -41,7 +41,7 @@ class AccueilActivity : Activity() {
         colonne.addView(Charte.carte(this).apply {
             addView(Charte.titre(this@AccueilActivity, "🎙️  Réunion en direct", 22f))
             addView(Charte.texte(this@AccueilActivity,
-                "Je traduis en français pendant la réunion. À la fin, je prépare le compte rendu.", 16f, Charte.GRIS)
+                "J'écris ce qui se dit pendant la réunion, avec la traduction en français. À la fin, je prépare le compte rendu.", 16f, Charte.GRIS)
                 .also { Charte.marge(it, haut = 6, bas = 14) })
             addView(Charte.boutonPrincipal(this@AccueilActivity, "Commencer une réunion") {
                 if (EtatDirect.enCours) ouvrirDirect()
