@@ -16,7 +16,7 @@ import java.io.File
  *     source.<ext>         le fichier choisi, en mode « un enregistrement »
  *     partie-<n>.m4a       l'enregistrement compressé, envoyé à LuxASR
  *     lots-<n>.json        la réponse de LuxASR pour cette partie
- *     transcription.txt    la transcription complète, voix séparées
+ *     transcription.txt    la transcription complète, locuteurs séparés
  *     compte-rendu.txt     le compte rendu, tel que la secrétaire l'a corrigé
  *
  * Les fichiers audio sont effacés dès que la transcription complète est

@@ -25,9 +25,13 @@ import com.potomitan.luxreunion.noyau.Normaliseur
 import com.potomitan.luxreunion.noyau.Paragraphe
 
 /**
- * Pendant la réunion : ce qui se dit, en luxembourgeois, en grand ; sa
- * traduction en français en petit dessous ; sur tablette, côte à côte. L'écran reste allumé, le texte défile
- * seul tant qu'on ne remonte pas le lire, et un seul bouton termine.
+ * Pendant la réunion, en sous-titres : ce qui vient de se dire, en
+ * luxembourgeois, en grand ; sa traduction en français en petit dessous ; sur
+ * tablette, côte à côte. Seules les dernières lignes restent à l'écran, comme
+ * la page LuxASR Live : le texte provisoire s'écrit mot à mot, et la phrase
+ * qui vient d'être traduite ressort. « Voir tout le texte » donne le texte
+ * complet, par paragraphes, à qui a raté une phrase. L'écran reste allumé,
+ * et un seul bouton termine.
  *
  * L'écran ne fait que montrer : c'est le service d'écoute qui tient la
  * réunion. Quitter cet écran ne l'arrête pas.
@@ -35,10 +39,9 @@ import com.potomitan.luxreunion.noyau.Paragraphe
 class DirectActivity : Activity() {
 
     private val reglages get() = ReunionApp.instance.reglages
-    private lateinit var point: TextView
+    private lateinit var micro: MicroPulsant
     private lateinit var etat: TextView
     private lateinit var chrono: TextView
-    private lateinit var niveau: View
     private lateinit var liste: LinearLayout
     private lateinit var defilement: ScrollView
     private lateinit var vide: TextView
@@ -47,6 +50,18 @@ class DirectActivity : Activity() {
     private val vues = mutableListOf<VueParagraphe>()
     private val donnees = mutableListOf<Paragraphe>()
     private var suivre = true
+    /** Sous-titres (par défaut) ou texte complet. */
+    private var sousTitres = true
+    private lateinit var vueSousTitres: LinearLayout
+    private lateinit var stLb: TextView
+    private lateinit var stFr: TextView
+    private lateinit var boiteLb: FrameLayout
+    private lateinit var boiteFr: FrameLayout
+    private lateinit var bascule: TextView
+    /** La traduction affichée au dernier passage : ce qui s'y ajoute ressort. */
+    private var entetes: View? = null
+    private var frVu = ""
+    private var frRecent = 0
     private var fin = false
     private val rafraichir = { maj() }
 
@@ -56,7 +71,7 @@ class DirectActivity : Activity() {
 
         val contenu = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         contenu.addView(bandeauEtat())
-        if (large()) contenu.addView(entetesColonnes())
+        if (large()) contenu.addView(entetesColonnes().also { entetes = it })
 
         liste = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -83,12 +98,23 @@ class DirectActivity : Activity() {
             visibility = View.GONE
             setOnClickListener { suivre = true; visibility = View.GONE; descendre() }
         }
+        vueSousTitres = sousTitresVue()
+        bascule = Charte.pastille(this, "", Charte.BLEU, Charte.BLANC).apply {
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
+            setPadding(dp(18), dp(10), dp(18), dp(10))
+            elevation = dp(4f)
+            setOnClickListener { basculer() }
+        }
         val cadre = FrameLayout(this).apply {
             addView(defilement, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+            addView(vueSousTitres, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
             addView(vide, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP))
             addView(retourDirect, FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                          Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL).apply { bottomMargin = dp(16) })
+                                                          Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL).apply { bottomMargin = dp(72) })
+            addView(bascule, FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                     Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL).apply { bottomMargin = dp(16) })
         }
+        appliquerMode()
         contenu.addView(cadre, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
 
         terminer = Charte.boutonPrincipal(this, "■  Terminer la réunion", Charte.ROUGE) { confirmerFin() }
@@ -101,22 +127,16 @@ class DirectActivity : Activity() {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
             setBackgroundColor(Charte.BLANC)
-            setPadding(dp(16), dp(10), dp(8), dp(10))
+            setPadding(dp(8), dp(6), dp(8), dp(6))
             elevation = dp(2f)
         }
-        point = Charte.texte(this, "●", 18f, Charte.ORANGE)
-        b.addView(point)
+        micro = MicroPulsant(this)
+        b.addView(micro)
         val textes = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(8), 0, 0, 0) }
         etat = Charte.texte(this, "Connexion…", 15f, Charte.ENCRE, gras = true)
         textes.addView(etat)
-        val ligne = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
         chrono = Charte.texte(this, "0:00", 14f, Charte.GRIS)
-        ligne.addView(chrono)
-        val jauge = FrameLayout(this).apply { background = Charte.fond(this@DirectActivity, Charte.TRAIT, 3) }
-        niveau = View(this).apply { background = Charte.fond(this@DirectActivity, Charte.VERT, 3) }
-        jauge.addView(niveau, FrameLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT))
-        ligne.addView(jauge, LinearLayout.LayoutParams(dp(80), dp(6)).apply { leftMargin = dp(10) })
-        textes.addView(ligne)
+        textes.addView(chrono)
         b.addView(textes, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
         b.addView(boutonTaille("A−", -1))
         b.addView(boutonTaille("A+", +1))
@@ -131,6 +151,8 @@ class DirectActivity : Activity() {
             val i = (ECHELLES.indexOfFirst { it >= reglages.echelle - 0.01f }.takeIf { it >= 0 } ?: 1) + sens
             reglages.echelle = ECHELLES[i.coerceIn(0, ECHELLES.size - 1)]
             vues.forEachIndexed { k, v -> v.lier(donnees[k], v.recent) }
+            tailleSousTitres()
+            majSousTitres(EtatDirect.paragraphes)
         }
         layoutParams = LinearLayout.LayoutParams(dp(48), dp(44)).apply { leftMargin = dp(6) }
     }
@@ -185,14 +207,17 @@ class DirectActivity : Activity() {
             EtatDirect.retard > 0 -> Charte.ORANGE to "Réseau lent · la traduction prend du retard"
             else -> Charte.VERT to "J'écoute et j'écris"
         }
-        point.setTextColor(couleur)
+        etat.setTextColor(if (couleur == Charte.VERT) Charte.ENCRE else couleur)
         etat.text = texte
         chrono.text = Normaliseur.horloge(EtatDirect.secondes)
-        (niveau.layoutParams as FrameLayout.LayoutParams).width = (dp(80) * EtatDirect.niveau).toInt()
-        niveau.requestLayout()
+        // Le micro pulse tant que ça enregistre, réseau ou pas.
+        micro.actif = !EtatDirect.microEnPanne && EtatDirect.etat != DirectLuxAsr.Etat.ARRET
+        micro.niveau = EtatDirect.niveau
 
         val ps = EtatDirect.paragraphes
         vide.visibility = if (ps.isEmpty()) View.VISIBLE else View.GONE
+        bascule.visibility = if (ps.isEmpty()) View.GONE else View.VISIBLE
+        if (sousTitres) { majSousTitres(ps); return }
         while (vues.size > ps.size) { liste.removeView(vues.removeAt(vues.size - 1)); donnees.removeAt(donnees.size - 1) }
         var change = false
         ps.forEachIndexed { i, p ->
@@ -216,6 +241,127 @@ class DirectActivity : Activity() {
     }
 
     private fun descendre() = defilement.post { defilement.smoothScrollTo(0, liste.height) }
+
+    // --- Sous-titres ------------------------------------------------------------
+
+    private fun sousTitresVue(): LinearLayout {
+        stLb = TextView(this).apply { setTextColor(Charte.ENCRE); setLineSpacing(0f, 1.12f) }
+        stFr = TextView(this).apply { setTextColor(Charte.GRIS); setLineSpacing(0f, 1.12f) }
+        boiteLb = boite(stLb)
+        boiteFr = boite(stFr)
+        return LinearLayout(this).apply {
+            gravity = Gravity.CENTER
+            setPadding(dp(20), dp(16), dp(20), dp(72))
+            if (large()) {
+                orientation = LinearLayout.HORIZONTAL
+                addView(boiteLb, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.3f))
+                addView(boiteFr, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply { leftMargin = dp(28) })
+            } else {
+                orientation = LinearLayout.VERTICAL
+                addView(boiteLb, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+                addView(boiteFr, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                    .apply { topMargin = dp(18) })
+            }
+        }.also { tailleSousTitres() }
+    }
+
+    /**
+     * Une boîte de hauteur fixe (quelques lignes), le texte calé en bas : les
+     * lignes les plus anciennes sortent par le haut, sous un dégradé.
+     */
+    private fun boite(t: TextView): FrameLayout = BoiteBas().apply {
+        addView(t, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM))
+        addView(View(context).apply {
+            background = android.graphics.drawable.GradientDrawable(
+                android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(Charte.FOND, 0x00F5F5F5))
+        }, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(28), Gravity.TOP))
+    }
+
+    /**
+     * Un FrameLayout mesure un enfant « wrap_content » sans dépasser sa propre
+     * hauteur : le texte aurait gardé ses premières lignes et perdu les
+     * dernières. Ici le texte se mesure en entier et se cale en bas.
+     */
+    private inner class BoiteBas : FrameLayout(this@DirectActivity) {
+        override fun onMeasure(largeur: Int, hauteur: Int) {
+            super.onMeasure(largeur, hauteur)
+            val l = MeasureSpec.makeMeasureSpec(measuredWidth - paddingLeft - paddingRight, MeasureSpec.EXACTLY)
+            getChildAt(0)?.measure(l, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED))
+        }
+
+        override fun onLayout(change: Boolean, g: Int, h: Int, d: Int, b: Int) {
+            super.onLayout(change, g, h, d, b)
+            val t = getChildAt(0) ?: return
+            val bas = b - h - paddingBottom
+            t.layout(paddingLeft, bas - t.measuredHeight, paddingLeft + t.measuredWidth, bas)
+        }
+    }
+
+    private fun tailleSousTitres() {
+        val e = reglages.echelle
+        val tablette = large()
+        stLb.setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 28f else 25f) * e)
+        stFr.setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 21f else 18f) * e)
+        stFr.setTypeface(null, Typeface.ITALIC)
+        (boiteLb.layoutParams ?: return).height = stLb.lineHeight * LIGNES_LB
+        boiteFr.layoutParams.height = stFr.lineHeight * LIGNES_FR
+        boiteLb.requestLayout(); boiteFr.requestLayout()
+    }
+
+    private fun majSousTitres(ps: List<Paragraphe>) {
+        if (ps.isEmpty()) { stLb.text = ""; stFr.text = ""; frVu = ""; return }
+        // Le luxembourgeois : la fin de tout ce qui s'est dit, la queue encore instable en gris.
+        val confirme = ps.joinToString(" ") { it.texte }.trim()
+        val partiel = ps.last().partiel?.trim().orEmpty()
+        val lb = SpannableStringBuilder(fin(confirme, if (partiel.isEmpty()) MAX_CARS else MAX_CARS / 2))
+        if (partiel.isNotEmpty()) {
+            val d = lb.length
+            lb.append(if (lb.isEmpty()) partiel else " $partiel")
+            lb.setSpan(ForegroundColorSpan(Charte.GRIS_CLAIR), d, lb.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        stLb.text = lb
+
+        // Le français : ce qui vient d'arriver en noir, le reste en gris, et « … » tant
+        // que la dernière phrase attend sa traduction.
+        val fr = ps.mapNotNull { it.traduction?.trim()?.takeIf { t -> t.isNotEmpty() } }.joinToString(" ")
+        if (fr != frVu) {
+            frRecent = if (fr.startsWith(frVu) && frVu.isNotEmpty()) fr.length - frVu.length else fr.length
+            frVu = fr
+        }
+        val enAttente = ps.last().traduction.isNullOrBlank() || partiel.isNotEmpty()
+        val vu = fin(fr, MAX_CARS)
+        val recent = minOf(frRecent, vu.length)
+        val t = SpannableStringBuilder(vu)
+        if (recent > 0) t.setSpan(ForegroundColorSpan(Charte.ENCRE), vu.length - recent, vu.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        if (enAttente) {
+            val d = t.length
+            t.append(if (t.isEmpty()) "…" else " …")
+            t.setSpan(ForegroundColorSpan(Charte.GRIS_CLAIR), d, t.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        stFr.text = t
+    }
+
+    /** Les derniers caractères d'un texte, coupés à un espace. */
+    private fun fin(t: String, max: Int): String {
+        if (t.length <= max) return t
+        val coupe = t.indexOf(' ', t.length - max)
+        return if (coupe < 0) t.takeLast(max) else t.substring(coupe + 1)
+    }
+
+    private fun basculer() {
+        sousTitres = !sousTitres
+        appliquerMode()
+        maj()
+        if (!sousTitres) { suivre = true; retourDirect.visibility = View.GONE; descendre() }
+    }
+
+    private fun appliquerMode() {
+        vueSousTitres.visibility = if (sousTitres) View.VISIBLE else View.GONE
+        defilement.visibility = if (sousTitres) View.GONE else View.VISIBLE
+        entetes?.visibility = if (sousTitres) View.GONE else View.VISIBLE
+        if (sousTitres) retourDirect.visibility = View.GONE
+        bascule.text = if (sousTitres) "☰  Voir tout le texte" else "▭  Revenir aux sous-titres"
+    }
 
     /** Un paragraphe : l'heure, le luxembourgeois, puis sa traduction en français. */
     private inner class VueParagraphe : LinearLayout(this@DirectActivity) {
@@ -285,5 +431,10 @@ class DirectActivity : Activity() {
 
     companion object {
         private val ECHELLES = floatArrayOf(0.85f, 1f, 1.2f, 1.4f, 1.7f, 2f)
+        /** Les lignes gardées à l'écran en sous-titres. */
+        private const val LIGNES_LB = 4
+        private const val LIGNES_FR = 4
+        /** Assez pour remplir la boîte, sans mettre en page tout le texte de la réunion. */
+        private const val MAX_CARS = 420
     }
 }

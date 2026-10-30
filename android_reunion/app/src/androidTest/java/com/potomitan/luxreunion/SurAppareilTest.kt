@@ -58,7 +58,7 @@ class SurAppareilTest {
         assertEquals(listOf("SPEAKER_01", "SPEAKER_00"), d.locuteurs)
         assertEquals(1, d.boucles.size)
         val (texte, _) = TexteTranscription.depuisLots(listOf(d to 0.0))
-        assertTrue(texte, texte.startsWith("[0:00] Voix 1 : "))
+        assertTrue(texte, texte.startsWith("[0:00] Locuteur 1 : "))
     }
 
     @Test
@@ -184,7 +184,7 @@ class SurAppareilTest {
             enregistrer()
             enregistrerDirect(listOf(Paragraphe(0.0, "Moien.", traduction = "Bonjour.")))
             Reunion.ecrireAtomique(fichierCompteRendu, "COMPTE RENDU — Comité de direction\n")
-            Reunion.ecrireAtomique(fichierTranscription, "[0:00] Voix 1 : Moien.\n")
+            Reunion.ecrireAtomique(fichierTranscription, "[0:00] Locuteur 1 : Moien.\n")
         }
         try {
             ActivityScenario.launch<ReunionActivity>(Intent(ctx, ReunionActivity::class.java)

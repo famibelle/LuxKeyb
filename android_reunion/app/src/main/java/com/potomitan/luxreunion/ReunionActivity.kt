@@ -143,7 +143,7 @@ class ReunionActivity : Activity() {
         val transcrite = e == Reunion.Etape.REDACTION || e == Reunion.Etape.PRETE
         when {
             r.depuisDirect -> addView(ligneEtape(null, "Transcription complète",
-                "Faite à partir du direct : les voix n'y sont pas séparées."))
+                "Faite à partir du direct : les locuteurs n'y sont pas séparés."))
             transcrite -> addView(ligneEtape(true, "Transcription complète (qui a dit quoi)", null))
             else -> addView(ligneEtape(false, "Transcription complète (qui a dit quoi)",
                 if (enCours && progres!!.etape != Reunion.Etape.REDACTION) avecPourcentage(progres) else "En attente…"))

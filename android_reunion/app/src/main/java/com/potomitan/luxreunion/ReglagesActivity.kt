@@ -164,7 +164,7 @@ class ReglagesActivity : Activity() {
             setPadding(0, dp(16), 0, 0)
         }
         ligne.addView(Charte.texte(this@ReglagesActivity,
-            "Après une réunion en direct, faire la transcription complète (voix séparées). Désactivé, le compte rendu part du direct.",
+            "Après une réunion en direct, faire la transcription complète (locuteurs séparés). Désactivé, le compte rendu part du direct.",
             14f), LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
         ligne.addView(Switch(this@ReglagesActivity).apply {
             isChecked = reglages.lotsApresDirect

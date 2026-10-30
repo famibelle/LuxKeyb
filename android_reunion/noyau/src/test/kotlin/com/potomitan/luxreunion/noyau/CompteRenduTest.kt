@@ -37,11 +37,11 @@ class CompteRenduTest {
         val infos = InfosReunion("Comité de direction", "jeudi 29 octobre 2026, 14 h 05", 4980.0,
                                  listOf("Anne Wagner", "Jos Weber"), "1. Budget\n2. Divers",
                                  glossaire = "BCEE\nKirchberg", redacteur = "Marie")
-        val m = ConsignesCompteRendu.message(infos, "[0:00] Voix 1 : Moien.", ConsignesCompteRendu.Source.VOIX)
+        val m = ConsignesCompteRendu.message(infos, "[0:00] Locuteur 1 : Moien.", ConsignesCompteRendu.Source.VOIX)
         assertTrue(m.contains("Durée : 1 h 23"))
         assertTrue(m.contains("Participants annoncés : Anne Wagner, Jos Weber"))
         assertTrue(m.contains("Mots et noms propres à bien orthographier : BCEE, Kirchberg"))
-        assertTrue(m.contains("--- Début de la transcription ---\n[0:00] Voix 1 : Moien.\n--- Fin"))
+        assertTrue(m.contains("--- Début de la transcription ---\n[0:00] Locuteur 1 : Moien.\n--- Fin"))
         assertEquals("45 min", ConsignesCompteRendu.duree(2700.0))
     }
 

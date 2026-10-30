@@ -41,11 +41,11 @@ data class InfosReunion(
 object ConsignesCompteRendu {
 
     enum class Source {
-        /** Transcription complète par lots, voix séparées. */
+        /** Transcription complète par lots, locuteurs séparés. */
         VOIX,
-        /** Transcription complète, une seule voix reconnue ou pas de séparation. */
+        /** Transcription complète, un seul locuteur reconnu ou pas de séparation. */
         SANS_VOIX,
-        /** Le texte du direct, faute de mieux : ni voix, ni garantie d'exhaustivité. */
+        /** Le texte du direct, faute de mieux : ni locuteurs, ni garantie d'exhaustivité. */
         DIRECT
     }
 
@@ -56,7 +56,7 @@ object ConsignesCompteRendu {
             Ce qu'il faut savoir de la transcription :
             - Elle est produite par LuxASR, la reconnaissance vocale de l'Université du Luxembourg, réglée sur le luxembourgeois. Elle contient des erreurs : mots mal reconnus, noms propres déformés, ponctuation approximative.
             - Les réunions mêlent souvent le luxembourgeois et le français, parfois l'allemand ou l'anglais. Les passages qui ne sont pas en luxembourgeois sont mal transcrits : ils peuvent apparaître déformés, écrits phonétiquement ou à moitié traduits. Reconstitue leur sens quand il est clair ; sinon, signale-les.
-            - Quand les voix sont séparées, elles sont numérotées (Voix 1, Voix 2…) et la séparation peut se tromper. N'attribue un nom à une voix que si la transcription le rend évident (la personne se présente, on l'appelle par son nom, elle préside…). Sinon, garde « Voix N » ou écris « un participant ».
+            - Quand les locuteurs sont séparés, ils sont numérotés (Locuteur 1, Locuteur 2…) et la séparation peut se tromper. N'attribue un nom à un locuteur que si la transcription le rend évident (la personne se présente, on l'appelle par son nom, elle préside…). Sinon, garde « Locuteur N » ou écris « un participant ».
 
             Règles :
             - N'invente rien. Si une information manque (une échéance, un responsable, un chiffre), écris « non précisé ».
@@ -98,9 +98,9 @@ object ConsignesCompteRendu {
             b.append("Mots et noms propres à bien orthographier : ").append(listeMots(infos.glossaire).joinToString(", ")).append('\n')
         }
         b.append('\n').append(when (source) {
-            Source.VOIX -> "Transcription complète. Chaque réplique commence par son horodatage entre crochets et la voix qui parle."
-            Source.SANS_VOIX -> "Transcription complète. Les voix n'y sont pas séparées ; chaque paragraphe commence par son horodatage entre crochets."
-            Source.DIRECT -> "Transcription faite en direct pendant la réunion : les voix n'y sont pas séparées, et des passages peuvent manquer (coupures de réseau). Chaque paragraphe commence par son horodatage entre crochets."
+            Source.VOIX -> "Transcription complète. Chaque réplique commence par son horodatage entre crochets et le locuteur qui parle."
+            Source.SANS_VOIX -> "Transcription complète. Les locuteurs n'y sont pas séparés ; chaque paragraphe commence par son horodatage entre crochets."
+            Source.DIRECT -> "Transcription faite en direct pendant la réunion : les locuteurs n'y sont pas séparés, et des passages peuvent manquer (coupures de réseau). Chaque paragraphe commence par son horodatage entre crochets."
         }).append('\n')
         b.append("--- Début de la transcription ---\n")
         b.append(transcription.trim()).append('\n')
@@ -140,7 +140,7 @@ object TexteTranscription {
 
     /**
      * Les parties d'une réunion (une par travail LuxASR), recollées dans le
-     * temps. Les voix sont numérotées dans l'ordre où elles parlent ; d'une
+     * temps. Les locuteurs sont numérotés dans l'ordre où ils parlent ; d'une
      * partie à l'autre, LuxASR ne sait pas que c'est la même personne, d'où la
      * mention de la partie quand il y en a plusieurs.
      */
@@ -159,10 +159,10 @@ object TexteTranscription {
         val nom: (String) -> String = { l ->
             val partie = l.substringBefore('|').toInt()
             val n = numeros.getOrPut(l) { ((parPartie[partie] ?: 0) + 1).also { parPartie[partie] = it } }
-            if (plusieurs) "Voix $n (partie $partie)" else "Voix $n"
+            if (plusieurs) "Locuteur $n (partie $partie)" else "Locuteur $n"
         }
         val source = if (doc.locuteurs.size > 1) ConsignesCompteRendu.Source.VOIX else ConsignesCompteRendu.Source.SANS_VOIX
-        // Une seule voix reconnue : la nommer n'apprendrait rien et gênerait la lecture.
+        // Un seul locuteur reconnu : le nommer n'apprendrait rien et gênerait la lecture.
         val texte = if (source == ConsignesCompteRendu.Source.VOIX) Normaliseur.versTexte(doc, nom)
                     else Normaliseur.versTexte(Document(segments.map { it.copy(locuteur = null) }, "json", emptyList())) { it }
         return texte to source

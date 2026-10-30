@@ -7,7 +7,7 @@ réunions en luxembourgeois (souvent mêlé de français) :
    luxembourgeois. La traduction en français est dessous, en plus petit, ou
    côte à côte sur tablette ;
 2. **à la fin**, un seul bouton. L'application envoie l'enregistrement
-   complet à LuxASR pour une transcription où les voix sont séparées (« qui a dit
+   complet à LuxASR pour une transcription où les locuteurs sont séparés (« qui a dit
    quoi »), puis fait rédiger le compte rendu par Claude ;
 3. elle **relit, corrige, envoie** le compte rendu par e-mail.
 

@@ -532,3 +532,34 @@ traduction en français ». Au passage, **la marge intérieure des paragraphes e
 
 **62-direct-transcription-en-majeur.png** : le résultat, avec le même fichier de test qu'au § 10.
 GIF : `direct_transcription.gif`.
+
+## 13. Après l'essai : micro qui pulse, sous-titres, « locuteur » (30 octobre)
+
+Remarques de Medhi sur le direct : on ne voyait pas le micro pulser, et les phrases
+s'accumulaient au lieu de s'afficher comme des sous-titres de traducteur instantané.
+
+- **Le micro qui pulse** (`MicroPulsant.kt`) remplace la pastille verte et la jauge : un rond
+  rouge et deux halos qui s'élargissent, plus amples quand on parle. Il pulse aussi sans
+  réseau (l'enregistrement continue), et ne s'éteint qu'en cas de panne du micro ou à la fin.
+- **Les sous-titres**, par défaut : seules les dernières lignes restent à l'écran (quatre en
+  luxembourgeois, en grand ; quatre en français, en petit et en italique), calées en bas de
+  leur boîte, les plus anciennes s'effaçant sous un dégradé. La fin encore provisoire est en
+  gris clair ; la dernière phrase traduite ressort en noir, suivie de « … » tant que la
+  suivante attend sa traduction. « Voir tout le texte » donne l'affichage par paragraphes,
+  « Revenir aux sous-titres » y ramène. C'est le modèle de la page LuxASR Live de
+  l'Université.
+- **Vérification de leur client** (`luxasr.uni.lu/live`, `scriptrt_stream.js` « live-12 ») : le
+  service ne traduit qu'une phrase complète (« Translation is emitted independently once a
+  full sentence is ready ») ; l'impression de temps réel tient à l'affichage du texte
+  provisoire, mot à mot, dans un bandeau de deux lignes. Le service a aussi un nouveau moteur
+  de flux et renvoie maintenant la latence de la traduction : nos 0,7 à 2,2 s de septembre
+  sont à remesurer.
+- **« Locuteur » au lieu de « voix »** partout où le mot désigne une personne : les étiquettes
+  de la transcription (« Locuteur 1 »), les consignes du compte rendu, les textes de l'appli,
+  le README, les tests.
+
+Vérifié sur l'émulateur avec le fichier de test du direct, filmé cette fois par
+`adb shell screenrecord` (13 images/s) : **63-direct-sous-titres.png**, `direct_sous_titres.gif`.
+**64-transcription-locuteurs.png** : la transcription de l'épisode, remise sur l'émulateur
+après les tests (qui effacent l'appli), avec les étiquettes au nouveau format. Tests : 23 sur
+23 pour le noyau, 7 sur 7 sur l'appareil.

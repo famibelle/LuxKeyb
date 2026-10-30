@@ -31,7 +31,7 @@ import kotlin.concurrent.thread
  *
  * Les participants servent deux fois : leurs noms partent à LuxASR pour être
  * bien orthographiés (paramètre `prompt`), et leur nombre l'aide à séparer
- * les voix (`num_speakers`), ce qui change tout quand les voix se ressemblent
+ * les locuteurs (`num_speakers`), ce qui change tout quand les voix se ressemblent
  * (skill transcription, § 3).
  */
 class PreparationActivity : Activity() {
@@ -73,7 +73,7 @@ class PreparationActivity : Activity() {
         colonne.addView(Charte.carte(this).apply {
             addView(Charte.titre(this@PreparationActivity, "Participants", 18f))
             addView(Charte.texte(this@PreparationActivity,
-                "Facultatif. Un nom par ligne. Les noms aident à les écrire correctement et à distinguer les voix.",
+                "Facultatif. Un nom par ligne. Les noms aident à les écrire correctement et à distinguer les locuteurs.",
                 14f, Charte.GRIS).also { Charte.marge(it, haut = 4) })
             participants = Charte.champ(this@PreparationActivity, "Anne Wagner\nJos Weber", lignes = 3)
             addView(participants)

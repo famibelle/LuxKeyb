@@ -22,7 +22,7 @@ import kotlin.concurrent.thread
 /**
  * Après la réunion, sans que la secrétaire ait rien à faire : compresser
  * l'enregistrement, l'envoyer à LuxASR, attendre la transcription complète
- * (voix séparées), puis faire rédiger le compte rendu (Claude ou Mistral).
+ * (locuteurs séparés), puis faire rédiger le compte rendu (Claude ou Mistral).
  *
  * Chaque étape est notée dans la réunion (meta.json) avant de passer à la
  * suivante, et le `job_id` de LuxASR dès qu'on le connaît : une application

@@ -41,7 +41,7 @@ class Reglages(ctx: Context) {
         get() = chaine("modele_${fournisseur.name}").ifBlank { fournisseur.modele }
         set(v) = ecrire("modele_${fournisseur.name}", v.trim())
 
-    /** La transcription complète (voix séparées) après une réunion en direct. */
+    /** La transcription complète (locuteurs séparés) après une réunion en direct. */
     var lotsApresDirect: Boolean
         get() = p.getBoolean("lotsApresDirect", true)
         set(v) = p.edit().putBoolean("lotsApresDirect", v).apply()

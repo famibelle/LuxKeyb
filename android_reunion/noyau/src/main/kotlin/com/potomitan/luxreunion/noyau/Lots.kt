@@ -33,7 +33,7 @@ class LotsLuxAsr(
 ) {
     data class Options(
         val diarisation: Boolean = true,
-        /** Nombre de voix, 1 à 10 ; sinon le service les compte lui-même. */
+        /** Nombre de locuteurs, 1 à 10 ; sinon le service les compte lui-même. */
         val locuteurs: Int? = null,
         /** Noms propres et jargon à bien orthographier (900 caractères au plus). */
         val prompt: String? = null

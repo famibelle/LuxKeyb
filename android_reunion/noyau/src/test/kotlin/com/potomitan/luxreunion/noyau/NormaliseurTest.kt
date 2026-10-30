@@ -88,20 +88,20 @@ class NormaliseurTest {
     }
 
     @Test
-    fun `texte pour Claude - voix numérotées, parties décalées dans le temps`() {
+    fun `texte pour Claude - locuteurs numérotés, parties décalées dans le temps`() {
         val un = Normaliseur.normaliser(releve("resultat-2voix.json"))
         val (texte, source) = TexteTranscription.depuisLots(listOf(un to 0.0))
         assertEquals(ConsignesCompteRendu.Source.VOIX, source)
-        assertTrue(texte.startsWith("[0:00] Voix 1 : "))
-        assertTrue(texte.contains("] Voix 2 : "))
+        assertTrue(texte.startsWith("[0:00] Locuteur 1 : "))
+        assertTrue(texte.contains("] Locuteur 2 : "))
         assertFalse(texte.contains("SPEAKER"))
 
         val (deux, _) = TexteTranscription.depuisLots(listOf(un to 0.0, un to 5400.0))
-        assertTrue(deux.contains("[1:30:00] Voix 1 (partie 2) : "))
+        assertTrue(deux.contains("[1:30:00] Locuteur 1 (partie 2) : "))
 
         val seul = Normaliseur.normaliser(releve("resultat.json"))
         val (texteSeul, sourceSeul) = TexteTranscription.depuisLots(listOf(seul to 0.0))
         assertEquals(ConsignesCompteRendu.Source.SANS_VOIX, sourceSeul)
-        assertFalse(texteSeul.contains("Voix"))
+        assertFalse(texteSeul.contains("Locuteur"))
     }
 }
