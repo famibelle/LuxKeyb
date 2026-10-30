@@ -4709,7 +4709,7 @@ class Motif(
 ) {
 
     private val teinteChamp: Float? = blason.champ?.hue
-    private val lieu = Lieu.de(blason.champ)
+    private val lieu = Lieu.de(blason)
     private val heure = Heure.de(rarete, teinteChamp)
     /**
      * La part de la fenêtre qu'on voit vraiment. Sur la carte ouverte, la

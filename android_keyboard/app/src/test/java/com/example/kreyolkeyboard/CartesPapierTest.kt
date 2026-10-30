@@ -1,7 +1,16 @@
 package com.example.kreyolkeyboard
 
+import com.example.kreyolkeyboard.carnet.Blasonnement
+import com.example.kreyolkeyboard.carnet.CarteFierkelsmaart
+import com.example.kreyolkeyboard.carnet.CarteMot
 import com.example.kreyolkeyboard.carnet.CartesPapier
 import com.example.kreyolkeyboard.carnet.CartesPapier.CarteImprimee
+import com.example.kreyolkeyboard.carnet.Champ
+import com.example.kreyolkeyboard.carnet.ContenuCarte
+import com.example.kreyolkeyboard.carnet.JeuCarte
+import com.example.kreyolkeyboard.carnet.Lieu
+import com.example.kreyolkeyboard.carnet.Rarete
+import com.example.kreyolkeyboard.carnet.Series
 import org.json.JSONObject
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
@@ -127,5 +136,48 @@ class CartesPapierTest {
             assertTrue("$id est vide", cartes.isNotEmpty())
             for (c in cartes) assertFalse("$id : « $c » ne passe pas dans un code", ':' in c || ',' in c)
         }
+    }
+
+    private fun contenu(forme: String, jeux: Set<JeuCarte>, champ: Champ? = Champ.VIE) = ContenuCarte(
+        carte = CarteMot(forme = forme, premiereFois = 0L, rencontres = 1, numero = 1, jeux = jeux),
+        rarete = Rarete.COMMUN,
+        rang = 100,
+        glose = "",
+        autresFormes = emptyList(),
+        exemple = null,
+        blason = Blasonnement(champ = champ)
+    )
+
+    /** Le Breedewee est le lieu du papier, et le papier l'emporte sur les jeux. */
+    @Test
+    fun uneCarteVenueDuPapierMontreLeBreedewee() {
+        for (jeux in listOf(setOf(JeuCarte.PAPIER), setOf(JeuCarte.WUERTSICH, JeuCarte.PAPIER))) {
+            val c = CartesPapier.corriger(contenu("Kaz", jeux))
+            assertEquals(Lieu.BREEDEWEE, Lieu.de(c.blason))
+            assertEquals(Champ.VIE, c.blason.champ)
+        }
+    }
+
+    @Test
+    fun uneCarteGagneeOuOfferteGardeLeLieuDeSonChamp() {
+        for (jeu in JeuCarte.values().filter { it != JeuCarte.PAPIER }) {
+            val c = CartesPapier.corriger(contenu("Kaz", setOf(jeu)))
+            assertEquals(Lieu.MELLERDALL, Lieu.de(c.blason))
+        }
+    }
+
+    /** Scanner une carte ne déplace pas sa case dans l'album : c'est celle de son champ. */
+    @Test
+    fun laCaseDeLAlbumResteCelleDuChamp() {
+        val c = CartesPapier.corriger(contenu("Kaz", setOf(JeuCarte.PAPIER)))
+        assertEquals(Series.cleDePaysage(Lieu.MELLERDALL, Rarete.COMMUN), Series.paysage(c))
+    }
+
+    @Test
+    fun laFierkelsmaartGardeSaFoire() {
+        val c = CartesPapier.corriger(
+            CarteFierkelsmaart.corriger(contenu(CarteFierkelsmaart.FORME, setOf(JeuCarte.PAPIER)), "g", "t")
+        )
+        assertEquals(Lieu.FOUER, Lieu.de(c.blason))
     }
 }

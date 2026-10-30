@@ -53,9 +53,19 @@ La **mécanique** :
   le milieu (collines, bâti), le premier plan ; le dessin du mot passe devant ;
 - chaque calque **glisse à sa vitesse** avec l'inclinaison (4 %, 2,2 %, 0,8 %
   de la fenêtre), et déborde de la fenêtre pour ne jamais découvrir son bord ;
-- les **neuf lieux** (Rout Bréck, Veianen, Esch-Sauer, Musel, Neimënster,
-  Gëlle Fra, Schueberfouer, Mëllerdall, Stad) × **quatre heures** sont dessinés
-  par le code, sans fichier image ;
+- les **neuf lieux** des champs (Rout Bréck, Veianen, Esch-Sauer, Musel,
+  Neimënster, Gëlle Fra, Schueberfouer, Mëllerdall, Stad) × **quatre heures**
+  sont dessinés par le code, sans fichier image ;
+- un **dixième lieu, le Breedewee** (2026-10-30), est celui des cartes venues
+  du jeu imprimé (`CartesPapier.corriger`), hors de l'album : une porte de
+  pierre en **cadre de scène dans la fenêtre**, la ruelle derrière, la ville
+  haute au loin, la chaussée pavée qui entre sous l'arche. Ses coulisses de
+  rare sont deux piliers de pierre, pas des arbres. Il a été mis au point sur
+  une maquette qui reprend les outils de tracé de `Paysages.kt` en JavaScript
+  (`maquette/`, à côté de cette skill : `node capture.js` rend les quatre
+  heures, les plans penchés, les silhouettes et la vignette ; `vegetal.py` dit
+  quelles couleurs `Habillage` prendrait pour de la verdure), faute
+  d'appareil : la voie à reprendre pour un prochain lieu ;
 - une carte gagnée un **jour de fête** garde un paysage à plat (ses lumières
   éclairent le paysage entier et ne se répartissent pas en calques).
 

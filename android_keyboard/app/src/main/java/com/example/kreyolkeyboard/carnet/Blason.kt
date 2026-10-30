@@ -81,11 +81,17 @@ enum class Nature { NOM, VERBE, AUTRE }
  *
  * [nature] n'est pas lue dans l'actif — elle se calcule sur la forme, ce qui
  * la rend disponible même pour les mots que le classement ne connaît pas.
+ *
+ * [lieu] n'est pas lu dans l'actif non plus : c'est le paysage qu'une carte
+ * spéciale impose à sa fenêtre à la place de celui de son champ (voir
+ * [Lieu.de]). Le champ reste, et avec lui la teinte du ciel et la case de
+ * l'album.
  */
 data class Blasonnement(
     val champ: Champ? = null,
     val meuble: String? = null,
-    val nature: Nature = Nature.AUTRE
+    val nature: Nature = Nature.AUTRE,
+    val lieu: Lieu? = null
 ) {
     companion object {
         val AUCUN = Blasonnement()
