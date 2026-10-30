@@ -534,7 +534,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     secrétaire de direction.
   </p>
   <ul class="facts">
-    <li data-i18n="app-1"><strong>Pendant la réunion</strong>, ce qui se dit s'affiche en sous-titres : les dernières phrases en grand, en luxembourgeois, au fil de la parole, et leur traduction en français en plus petit, dessous. Le texte complet reste à portée d'un bouton.</li>
+    <li data-i18n="app-1"><strong>Pendant la réunion</strong>, ce qui se dit s'affiche en sous-titres : chaque phrase en grand, en luxembourgeois, avec sa traduction en français dessous, les deux ensemble. Un bandeau « En direct » montre les mots au moment où ils sont dits. Le texte complet reste à portée d'un bouton.</li>
     <li data-i18n="app-2"><strong>À la fin, un seul bouton.</strong> L'enregistrement complet part chez LuxASR, qui sépare les locuteurs, puis le compte rendu se prépare : résumé, points discutés, décisions, actions à mener, et les passages à vérifier, avec leur minutage.</li>
     <li data-i18n="app-3"><strong>Ensuite, on relit, on corrige et on envoie</strong> le compte rendu par e-mail, sans quitter l'application.</li>
     <li data-i18n="app-4"><strong>Un enregistrement déjà fait</strong>, audio ou vidéo, se transcrit de la même façon.</li>
@@ -567,9 +567,9 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
   </figure>
   <figure class="app-gif">
     <img src="Screenshots/reunion_sous_titres.gif" width="360" height="850" loading="lazy"
-         alt="Animation de l'écran du direct en sous-titres : un micro rouge pulse avec la voix ; au centre, les dernières phrases en luxembourgeois en grand, la fin encore provisoire en gris clair, et dessous leur traduction française en petit, la dernière phrase traduite en noir ; puis « Voir tout le texte » affiche le texte complet, et on revient aux sous-titres"
+         alt="Animation de l'écran du direct en sous-titres : un micro rouge pulse avec la voix ; au centre, chaque phrase luxembourgeoise en grand et sa traduction française en petit dessous apparaissent ensemble, la plus récente en noir ; en bas, un bandeau « En direct » où les mots s'écrivent au moment où ils sont dits"
          data-i18n-alt="app-gif2-alt">
-    <figcaption data-i18n="app-gif2-cap">Pendant la réunion : des sous-titres, le luxembourgeois en grand, la traduction dessous.</figcaption>
+    <figcaption data-i18n="app-gif2-cap">Pendant la réunion : chaque phrase avec sa traduction, et les mots en direct en bas.</figcaption>
   </figure>
   <figure class="app-gif">
     <img src="Screenshots/reunion_compte_rendu_creation.gif" width="360" height="850" loading="lazy"
@@ -587,8 +587,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     </figure>
     <figure>
       <img src="Screenshots/reunion_direct.png" width="432" height="970" loading="lazy"
-           alt="Écran du direct : le micro rouge, « J'écoute et j'écris », le chronomètre, les boutons A− et A+, puis en sous-titres les dernières phrases en luxembourgeois en grand et leur traduction française en petit dessous, et le bouton « Voir tout le texte »" data-i18n-alt="app-img2-alt">
-      <figcaption data-i18n="app-img2">Le direct : le luxembourgeois en grand, la traduction dessous.</figcaption>
+           alt="Écran du direct : le micro rouge, « J'écoute et j'écris », le chronomètre, les boutons A− et A+, puis une phrase luxembourgeoise en grand avec sa traduction française dessous, le bandeau « En direct » et le bouton « Voir tout le texte »" data-i18n-alt="app-img2-alt">
+      <figcaption data-i18n="app-img2">Le direct : la phrase et sa traduction, ensemble.</figcaption>
     </figure>
     <figure>
       <img src="Screenshots/reunion_suivi.png" width="432" height="970" loading="lazy"
@@ -775,14 +775,14 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'tech-p3': '<strong>Why the upload may fail straight away.</strong> A web page can only read another site’s reply if that site allows it, through a “CORS” header. As observed in September and again on 29 October 2026, the service did not yet set it on the acknowledgement of an upload. So the page first checks with half a second of silence, so as not to make the service work on your file in vain. If that is still the case, the page tells you so, without retrying in vain, and suggests transcribing on <a href="https://luxasr.uni.lu/">luxasr.uni.lu</a> and opening the result here.',
     'app-h2': 'In testing: the Lëtzebuergesch Réunion app 📱',
     'app-p1': 'For meetings held in Luxembourgish, we are trying out an Android app that builds on this page and goes one step further. It is meant for the person who attends the meeting and has to write it up, an executive assistant for instance.',
-    'app-1': '<strong>During the meeting</strong>, what is said appears as subtitles: the latest sentences in large type, in Luxembourgish, as people speak, with their French translation in smaller type below. The full text is one button away.',
+    'app-1': '<strong>During the meeting</strong>, what is said appears as subtitles: each sentence in large type, in Luxembourgish, with its French translation below, both together. A “live” strip shows the words as they are spoken. The full text is one button away.',
     'app-2': '<strong>At the end, a single button.</strong> The full recording goes to LuxASR, which separates the speakers, then the minutes are prepared: summary, points discussed, decisions, actions, and the passages to check, with their timing.',
     'app-3': '<strong>Then you read, correct and send</strong> the minutes by e-mail, without leaving the app.',
     'app-4': '<strong>An existing recording</strong>, audio or video, is transcribed the same way.',
     'app-gif-cap': 'A recording’s journey, from the file to the minutes.',
     'app-gif-alt': 'Five-screen animation of the Lëtzebuergesch Réunion app: 1. the home screen, with “Réunion en direct” (live meeting) and “Un enregistrement” (a recording); 2. the chosen file, its title and three participants; 3. progress, “transcription, about 1 min left”; 4. the transcript, each line preceded by its timing and its speaker (Locuteur 1, 2, 3); 5. the summary of the minutes',
-    'app-gif2-cap': 'During the meeting: subtitles, Luxembourgish in large type, the translation below.',
-    'app-gif2-alt': 'Animation of the live screen in subtitle mode: a red microphone pulses with the voice; in the middle, the latest sentences in Luxembourgish in large type, the still-provisional end in light grey, with their French translation in small type below, the latest translated sentence in black; then “Voir tout le texte” (see all the text) shows the full text, and back to subtitles',
+    'app-gif2-cap': 'During the meeting: each sentence with its translation, and the live words at the bottom.',
+    'app-gif2-alt': 'Animation of the live screen in subtitle mode: a red microphone pulses with the voice; in the middle, each Luxembourgish sentence in large type and its French translation in small type below appear together, the latest in black; at the bottom, a “live” strip where words are written as they are spoken',
     'app-gif3-cap': 'At the end: the minutes write themselves before your eyes.',
     'app-gif3-alt': 'Animation of the minutes being written: “Rédaction du compte rendu…” (writing the minutes), then the text appears section by section (summary, points discussed) until the minutes are ready to read',
     'app-qr-alt': 'QR code leading to the download of the Lëtzebuergesch Réunion app',
@@ -795,8 +795,8 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'app-dl-note': 'This is a test pre-release, updated with each improvement: to update it, download it again here. Tell us what you think with the form at the bottom of the page.',
     'app-img1': 'Two ways to start.',
     'app-img1-alt': 'Home screen: two cards, “Réunion en direct” with the “Commencer une réunion” button, and “Un enregistrement” with “Choisir un fichier”',
-    'app-img2': 'Live: Luxembourgish in large type, the translation below.',
-    'app-img2-alt': 'Live screen: the red microphone, “J’écoute et j’écris” (listening and writing), the timer, the A− and A+ buttons, then as subtitles the latest sentences in Luxembourgish in large type with their French translation in small type below, and the “Voir tout le texte” (see all the text) button',
+    'app-img2': 'Live: the sentence and its translation, together.',
+    'app-img2-alt': 'Live screen: the red microphone, “J’écoute et j’écris” (listening and writing), the timer, the A− and A+ buttons, then a Luxembourgish sentence in large type with its French translation below, the “En direct” (live) strip and the “Voir tout le texte” (see all the text) button',
     'app-img3': 'Each step is shown, and you can close the app while you wait.',
     'app-img3-alt': 'Progress: “Fichier reçu” ticked, full transcription under way, about one minute left',
     'app-img4': 'Who said what, and when.',
