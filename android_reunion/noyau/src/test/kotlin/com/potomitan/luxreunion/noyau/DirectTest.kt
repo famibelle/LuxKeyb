@@ -51,14 +51,16 @@ class DirectTest {
         fun transcription(acc: String, partiel: String = "", commit: Boolean = false) =
             recevoir(JSONObject().put("type", "transcription").put("accumulated_text", acc).put("partial_text", partiel)
                 .put("send_reason", if (commit) "silence_commit" else "update"))
-        fun traduction(acc: String) =
-            recevoir(JSONObject().put("type", "translation").put("success", true).put("accumulated_translation", acc))
+        fun traduction(acc: String, source: String? = null) =
+            recevoir(JSONObject().put("type", "translation").put("success", true).put("accumulated_translation", acc)
+                .apply { if (source != null) put("source_text", source) })
     }
 
     private lateinit var horloge: HorlogeSimulee
     private val liaisons = mutableListOf<FausseLiaison>()
     private val etats = mutableListOf<DirectLuxAsr.Etat>()
     private var dernier: List<Paragraphe> = emptyList()
+    private val phrases = mutableListOf<Pair<String, String>>()
     private var fin: List<Paragraphe>? = null
     private var raison: DirectLuxAsr.Raison? = null
     private lateinit var direct: DirectLuxAsr
@@ -69,6 +71,7 @@ class DirectTest {
         direct = DirectLuxAsr(object : DirectLuxAsr.Ecouteur {
             override fun surEtat(etat: DirectLuxAsr.Etat) { etats += etat }
             override fun surTexte(paragraphes: List<Paragraphe>) { dernier = paragraphes }
+            override fun surPhrase(texte: String, traduction: String) { phrases += texte to traduction }
             override fun surFin(paragraphes: List<Paragraphe>, raison: DirectLuxAsr.Raison?) {
                 fin = paragraphes; this@DirectTest.raison = raison
             }
@@ -112,6 +115,23 @@ class DirectTest {
         assertEquals(DirectLuxAsr.Etat.REPOS, direct.etat)
         assertEquals("Bonjour, comment ça va ?", fin!!.single().traduction)
         assertNull(raison)
+    }
+
+    @Test
+    fun `chaque traduction arrive avec sa phrase, pour les sous-titres`() {
+        direct.start()
+        val l = liaisons.single()
+        l.ouvrir()
+        parler(2.0)
+        l.transcription("Éischte Saz. Zweete", commit = true)
+        l.traduction("Première phrase.", source = "Éischte Saz.")
+        l.transcription("Éischte Saz. Zweete Saz.", commit = true)
+        l.traduction("Première phrase. Deuxième phrase.", source = "Zweete Saz.")
+        assertEquals(listOf("Éischte Saz." to "Première phrase.", "Zweete Saz." to "Deuxième phrase."), phrases)
+        // Sans source_text (ancien service), pas de paire, mais la traduction reste rangée.
+        l.traduction("Première phrase. Deuxième phrase. Troisième.")
+        assertEquals(2, phrases.size)
+        assertEquals("Première phrase. Deuxième phrase. Troisième.", dernier.last().traduction)
     }
 
     @Test

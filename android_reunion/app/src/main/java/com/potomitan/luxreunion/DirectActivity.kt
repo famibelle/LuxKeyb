@@ -28,8 +28,10 @@ import com.potomitan.luxreunion.noyau.Paragraphe
  * Pendant la réunion, en sous-titres : ce qui vient de se dire, en
  * luxembourgeois, en grand ; sa traduction en français en petit dessous ; sur
  * tablette, côte à côte. Seules les dernières lignes restent à l'écran, comme
- * la page LuxASR Live : le texte provisoire s'écrit mot à mot, et la phrase
- * qui vient d'être traduite ressort. « Voir tout le texte » donne le texte
+ * la page LuxASR Live : en grand, chaque phrase avec sa traduction, affichées
+ * ensemble dès que le service a traduit la phrase (il ne traduit qu'une phrase
+ * complète) ; en bas, un bandeau « En direct » où ce qui se dit s'écrit mot à
+ * mot, en attendant. « Voir tout le texte » donne le texte
  * complet, par paragraphes, à qui a raté une phrase. L'écran reste allumé,
  * et un seul bouton termine.
  *
@@ -60,8 +62,8 @@ class DirectActivity : Activity() {
     private lateinit var bascule: TextView
     /** La traduction affichée au dernier passage : ce qui s'y ajoute ressort. */
     private var entetes: View? = null
-    private var frVu = ""
-    private var frRecent = 0
+    private lateinit var stDirect: TextView
+    private lateinit var boiteDirect: FrameLayout
     private var fin = false
     private val rafraichir = { maj() }
 
@@ -247,11 +249,12 @@ class DirectActivity : Activity() {
     private fun sousTitresVue(): LinearLayout {
         stLb = TextView(this).apply { setTextColor(Charte.ENCRE); setLineSpacing(0f, 1.12f) }
         stFr = TextView(this).apply { setTextColor(Charte.GRIS); setLineSpacing(0f, 1.12f) }
+        stDirect = TextView(this).apply { setTextColor(Charte.GRIS); setLineSpacing(0f, 1.1f) }
         boiteLb = boite(stLb)
         boiteFr = boite(stFr)
-        return LinearLayout(this).apply {
-            gravity = Gravity.CENTER
-            setPadding(dp(20), dp(16), dp(20), dp(72))
+        boiteDirect = boite(stDirect, Charte.BLANC)
+        // La phrase et sa traduction, ensemble : côte à côte sur tablette, l'une sous l'autre sinon.
+        val paire = LinearLayout(this).apply {
             if (large()) {
                 orientation = LinearLayout.HORIZONTAL
                 addView(boiteLb, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.3f))
@@ -260,8 +263,25 @@ class DirectActivity : Activity() {
                 orientation = LinearLayout.VERTICAL
                 addView(boiteLb, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
                 addView(boiteFr, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                    .apply { topMargin = dp(18) })
+                    .apply { topMargin = dp(14) })
             }
+        }
+        // Le bandeau du direct : ce qui se dit en ce moment, mot à mot, pas encore traduit.
+        val bandeau = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            background = Charte.fond(this@DirectActivity, Charte.BLANC, 12, Charte.TRAIT)
+            setPadding(dp(14), dp(8), dp(14), dp(10))
+            addView(Charte.texte(this@DirectActivity, "●  EN DIRECT", 11f, Charte.ROUGE, gras = true).apply { letterSpacing = 0.08f })
+            addView(boiteDirect, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                .apply { topMargin = dp(2) })
+        }
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(20), dp(12), dp(20), dp(72))
+            addView(View(context), LinearLayout.LayoutParams(1, 0, 1f))
+            addView(paire, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+            addView(View(context), LinearLayout.LayoutParams(1, 0, 1f))
+            addView(bandeau, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         }.also { tailleSousTitres() }
     }
 
@@ -269,12 +289,12 @@ class DirectActivity : Activity() {
      * Une boîte de hauteur fixe (quelques lignes), le texte calé en bas : les
      * lignes les plus anciennes sortent par le haut, sous un dégradé.
      */
-    private fun boite(t: TextView): FrameLayout = BoiteBas().apply {
+    private fun boite(t: TextView, fond: Int = Charte.FOND): FrameLayout = BoiteBas().apply {
         addView(t, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM))
         addView(View(context).apply {
             background = android.graphics.drawable.GradientDrawable(
-                android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(Charte.FOND, 0x00F5F5F5))
-        }, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(28), Gravity.TOP))
+                android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(fond, fond and 0x00FFFFFF))
+        }, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(22), Gravity.TOP))
     }
 
     /**
@@ -303,42 +323,63 @@ class DirectActivity : Activity() {
         stLb.setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 28f else 25f) * e)
         stFr.setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 21f else 18f) * e)
         stFr.setTypeface(null, Typeface.ITALIC)
+        stDirect.setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 18f else 16f) * e)
         (boiteLb.layoutParams ?: return).height = stLb.lineHeight * LIGNES_LB
         boiteFr.layoutParams.height = stFr.lineHeight * LIGNES_FR
-        boiteLb.requestLayout(); boiteFr.requestLayout()
+        (boiteDirect.layoutParams ?: return).height = stDirect.lineHeight * LIGNES_DIRECT
+        boiteLb.requestLayout(); boiteFr.requestLayout(); boiteDirect.requestLayout()
     }
 
     private fun majSousTitres(ps: List<Paragraphe>) {
-        if (ps.isEmpty()) { stLb.text = ""; stFr.text = ""; frVu = ""; return }
-        // Le luxembourgeois : la fin de tout ce qui s'est dit, la queue encore instable en gris.
-        val confirme = ps.joinToString(" ") { it.texte }.trim()
-        val partiel = ps.last().partiel?.trim().orEmpty()
-        val lb = SpannableStringBuilder(fin(confirme, if (partiel.isEmpty()) MAX_CARS else MAX_CARS / 2))
-        if (partiel.isNotEmpty()) {
-            val d = lb.length
-            lb.append(if (lb.isEmpty()) partiel else " $partiel")
-            lb.setSpan(ForegroundColorSpan(Charte.GRIS_CLAIR), d, lb.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        // En grand : les dernières phrases traduites, chacune avec sa traduction,
+        // telles que le service les a associées. La plus récente en noir.
+        val phrases = EtatDirect.phrases
+        val lb = SpannableStringBuilder()
+        val fr = SpannableStringBuilder()
+        var taille = 0
+        val gardees = phrases.asReversed().takeWhile { (t, _) -> (taille < MAX_CARS).also { taille += t.length + 1 } }.asReversed()
+        gardees.forEachIndexed { k, (t, tr) ->
+            val recente = k == gardees.size - 1
+            ajouter(lb, t, if (recente) Charte.ENCRE else Charte.GRIS_CLAIR)
+            ajouter(fr, tr, if (recente) Charte.ENCRE else Charte.GRIS)
         }
         stLb.text = lb
+        stFr.text = fr
 
-        // Le français : ce qui vient d'arriver en noir, le reste en gris, et « … » tant
-        // que la dernière phrase attend sa traduction.
-        val fr = ps.mapNotNull { it.traduction?.trim()?.takeIf { t -> t.isNotEmpty() } }.joinToString(" ")
-        if (fr != frVu) {
-            frRecent = if (fr.startsWith(frVu) && frVu.isNotEmpty()) fr.length - frVu.length else fr.length
-            frVu = fr
+        // En bas : ce qui s'est dit depuis la dernière phrase traduite, puis la fin
+        // encore provisoire, mot à mot.
+        val confirme = ps.joinToString(" ") { it.texte }.trim()
+        val partiel = ps.lastOrNull()?.partiel?.trim().orEmpty()
+        val derniere = phrases.lastOrNull()?.first
+        val reste = if (derniere == null) confirme else {
+            val k = finDe(confirme, derniere)
+            if (k >= 0) confirme.substring(k).trim() else ""
         }
-        val enAttente = ps.last().traduction.isNullOrBlank() || partiel.isNotEmpty()
-        val vu = fin(fr, MAX_CARS)
-        val recent = minOf(frRecent, vu.length)
-        val t = SpannableStringBuilder(vu)
-        if (recent > 0) t.setSpan(ForegroundColorSpan(Charte.ENCRE), vu.length - recent, vu.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        if (enAttente) {
-            val d = t.length
-            t.append(if (t.isEmpty()) "…" else " …")
-            t.setSpan(ForegroundColorSpan(Charte.GRIS_CLAIR), d, t.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        }
-        stFr.text = t
+        val direct = SpannableStringBuilder()
+        ajouter(direct, fin(reste, MAX_CARS_DIRECT), Charte.GRIS)
+        ajouter(direct, partiel, Charte.GRIS_CLAIR)
+        if (direct.isEmpty() && !ps.isEmpty()) ajouter(direct, "…", Charte.GRIS_CLAIR)
+        stDirect.text = direct
+    }
+
+    private fun ajouter(b: SpannableStringBuilder, t: String, couleur: Int) {
+        if (t.isBlank()) return
+        if (b.isNotEmpty()) b.append(' ')
+        val d = b.length
+        b.append(t)
+        b.setSpan(ForegroundColorSpan(couleur), d, b.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
+
+    /**
+     * Où finit, dans le texte confirmé, la dernière phrase traduite : la phrase
+     * entière, sinon sa fin (les espaces peuvent différer), sinon -1.
+     */
+    private fun finDe(texte: String, phrase: String): Int {
+        var i = texte.lastIndexOf(phrase)
+        if (i >= 0) return i + phrase.length
+        val bout = phrase.takeLast(24)
+        i = texte.lastIndexOf(bout)
+        return if (i >= 0) i + bout.length else -1
     }
 
     /** Les derniers caractères d'un texte, coupés à un espace. */
@@ -434,6 +475,8 @@ class DirectActivity : Activity() {
         /** Les lignes gardées à l'écran en sous-titres. */
         private const val LIGNES_LB = 4
         private const val LIGNES_FR = 4
+        private const val LIGNES_DIRECT = 2
+        private const val MAX_CARS_DIRECT = 220
         /** Assez pour remplir la boîte, sans mettre en page tout le texte de la réunion. */
         private const val MAX_CARS = 420
     }

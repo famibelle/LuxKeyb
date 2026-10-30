@@ -581,3 +581,17 @@ message (`mesure-latence-traduction.json`, 87 messages, moteur annoncé
 Le serveur traduit vite ; l'attente vient surtout de la règle « une phrase complète d'abord » :
 une longue phrase (Whisper en fait de 36 à 40 mots sur une parole continue) se lit en
 luxembourgeois pendant dix secondes avant que son français arrive d'un bloc.
+
+## 15. Sous-titres par phrase (30 octobre)
+
+Suite au § 14 : on ne peut pas faire traduire le service plus tôt, mais on peut afficher
+ensemble ce qui va ensemble. Le service renvoie avec chaque traduction la phrase traduite
+(`source_text`), que l'appli ignorait. Le noyau la transmet maintenant (`Ecouteur.surPhrase`,
+couvert par `DirectTest`), et les sous-titres affichent en grand **chaque phrase avec sa
+traduction**, la plus récente en noir. En bas, un bandeau « ● EN DIRECT » montre ce qui s'est
+dit depuis la dernière phrase traduite, puis la fin provisoire, mot à mot. Le luxembourgeois en
+grand prend donc le même retard que le français, mais les deux avancent ensemble, comme des
+sous-titres ; le bandeau montre que l'appli écoute en direct.
+
+**65-sous-titres-par-phrase.png** (« Soll ech dann direkt reagéieren… » avec « Est-ce que je
+dois réagir tout de suite… »), `direct_sous_titres.gif`. Tests : noyau 24/24.

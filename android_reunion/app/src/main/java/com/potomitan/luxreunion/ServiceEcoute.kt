@@ -130,6 +130,10 @@ class ServiceEcoute : Service() {
             }
         }
 
+        override fun surPhrase(texte: String, traduction: String) {
+            EtatDirect.phrases = (EtatDirect.phrases + (texte to traduction)).takeLast(12)
+        }
+
         override fun surTexte(paragraphes: List<Paragraphe>) {
             EtatDirect.paragraphes = paragraphes
             Ui.signaler()

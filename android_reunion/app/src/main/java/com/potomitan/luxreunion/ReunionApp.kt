@@ -120,6 +120,8 @@ object EtatDirect {
     @Volatile var reunionId: String? = null
     @Volatile var etat: DirectLuxAsr.Etat = DirectLuxAsr.Etat.REPOS
     @Volatile var paragraphes: List<Paragraphe> = emptyList()
+    /** Les phrases traduites, chacune avec sa traduction, pour les sous-titres (les dernières seulement). */
+    @Volatile var phrases: List<Pair<String, String>> = emptyList()
     @Volatile var secondes = 0.0
     @Volatile var niveau = 0f
     @Volatile var retard = 0.0
@@ -137,7 +139,7 @@ object EtatDirect {
      * réunion précédente, terminée.
      */
     fun commencer(id: String) {
-        reunionId = id; etat = DirectLuxAsr.Etat.CONNEXION; paragraphes = emptyList()
+        reunionId = id; etat = DirectLuxAsr.Etat.CONNEXION; paragraphes = emptyList(); phrases = emptyList()
         secondes = 0.0; niveau = 0f; retard = 0.0; termine = false; microEnPanne = false
     }
 }

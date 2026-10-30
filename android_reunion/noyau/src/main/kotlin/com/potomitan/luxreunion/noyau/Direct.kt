@@ -82,6 +82,12 @@ class DirectLuxAsr(
         fun surTexte(paragraphes: List<Paragraphe>)
         /** Audio en souffrance au-delà du seuil d'alerte (`retard` en s), puis 0 au retour. */
         fun surRetard(retard: Double) {}
+        /**
+         * Une phrase et sa traduction, telles que le service les associe
+         * (`source_text` et la part nouvelle de `accumulated_translation`) :
+         * de quoi afficher les deux ensemble, en sous-titres.
+         */
+        fun surPhrase(texte: String, traduction: String) {}
         fun surFin(paragraphes: List<Paragraphe>, raison: Raison?)
     }
 
@@ -422,6 +428,8 @@ class DirectLuxAsr(
         l.tradAttendue = false
         val i = l.indexCommit ?: -1
         if (ajout.isNotEmpty() && i >= 0) traductions[i] = ((traductions[i] ?: "") + " " + ajout).trim()
+        val source = chaine(m, "source_text")?.trim()
+        if (ajout.isNotEmpty() && !source.isNullOrEmpty()) ecouteur.surPhrase(source, ajout)
         ecouteur.surTexte(paragraphes())
         if (l.finie && l in enGrace) { fermer(l); verifierFin() }
     }
