@@ -1,0 +1,2994 @@
+[
+ [
+  0.0008619331056252122,
+  {
+   "type": "connected",
+   "session_id": "stream_1793364251472",
+   "version": "3.0.0-stream",
+   "engine": "whisperlive_buffer",
+   "config": {
+    "sample_rate": 16000,
+    "language": "lb",
+    "supported_languages": [
+     "lb",
+     "en",
+     "fr",
+     "de",
+     "es",
+     "pt"
+    ],
+    "context_management": {
+     "enabled": true,
+     "max_tokens": 80
+    },
+    "translation": {
+     "available": true,
+     "target_languages": [
+      "en",
+      "fr",
+      "de",
+      "lb",
+      "pt",
+      "es"
+     ],
+     "unit": "sentence",
+     "flush_silence": 2.5,
+     "max_pending_words": 80
+    },
+    "stream": {
+     "min_decode_duration": 1.0,
+     "min_decode_interval": 0.55,
+     "commit_silence": 0.8,
+     "short_utterance_commit_silence": 1.6,
+     "agreement_n": 3,
+     "commit_keep_s": 4.0,
+     "min_right_context_s": 1.8
+    }
+   }
+  }
+ ],
+ [
+  0.021050031064078212,
+  {
+   "type": "config",
+   "language": "lb",
+   "translation_enabled": true,
+   "translation_target": "fr"
+  }
+ ],
+ [
+  1.1394252290483564,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "Prost, dat trëfft déi",
+   "accumulated_text": "",
+   "is_final": false,
+   "language": "lb",
+   "segment": 0,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 1.12,
+    "decoded_audio_duration": 1.12,
+    "processing_time": 0.11036396026611328,
+    "inference_time": 0.11036396026611328,
+    "response_time": 0.11076164245605469,
+    "queue_time": 0.0003299713134765625,
+    "rtf": 0.09853925023760113,
+    "decode_rtf": 0.09853925023760113,
+    "compute_rtf": 0.09853925023760113,
+    "effective_rtf": 0.09853925023760113,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 0
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  1.765546793001704,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "Prost, dat trëfft déi Grouss, déi",
+   "accumulated_text": "",
+   "is_final": false,
+   "language": "lb",
+   "segment": 0,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 1.76,
+    "decoded_audio_duration": 1.76,
+    "processing_time": 0.11094403266906738,
+    "inference_time": 0.11094403266906738,
+    "response_time": 0.11117982864379883,
+    "queue_time": 0.00015401840209960938,
+    "rtf": 0.06303638219833374,
+    "decode_rtf": 0.06303638219833374,
+    "compute_rtf": 0.07684305310249329,
+    "effective_rtf": 0.12574317780407993,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 0
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  2.3956763660535216,
+  {
+   "type": "transcription",
+   "text": "Prost,",
+   "translation_source_text": "Prost,",
+   "partial_text": "dat trëfft déi Grouss, déi Kleng.",
+   "accumulated_text": "Prost,",
+   "is_final": true,
+   "language": "lb",
+   "segment": 1,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 2.4,
+    "decoded_audio_duration": 2.4,
+    "processing_time": 0.09723114967346191,
+    "inference_time": 0.09723114967346191,
+    "response_time": 0.09752058982849121,
+    "queue_time": 0.0001747608184814453,
+    "rtf": 0.04051297903060913,
+    "decode_rtf": 0.04051297903060913,
+    "compute_rtf": 0.06032938306981868,
+    "effective_rtf": 0.13272464275360107,
+    "commit_latency": 2.237520589828491,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 6
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  3.1070583841064945,
+  {
+   "type": "transcription",
+   "text": "dat trëfft déi",
+   "translation_source_text": "dat trëfft déi",
+   "partial_text": "grouss, déi kleng, jo jiddwer.",
+   "accumulated_text": "Prost, dat trëfft déi",
+   "is_final": true,
+   "language": "lb",
+   "segment": 2,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 3.04,
+    "decoded_audio_duration": 3.04,
+    "processing_time": 0.13116788864135742,
+    "inference_time": 0.13116788864135742,
+    "response_time": 0.13172650337219238,
+    "queue_time": 0.00032973289489746094,
+    "rtf": 0.0431473317899202,
+    "decode_rtf": 0.0431473317899202,
+    "compute_rtf": 0.05405132587139423,
+    "effective_rtf": 0.14053344726562497,
+    "commit_latency": 1.9917265033721925,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": true,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 21
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Prost,"
+   }
+  }
+ ],
+ [
+  3.9283749730093405,
+  {
+   "type": "transcription",
+   "text": "Grouss, déi",
+   "translation_source_text": "Grouss, déi",
+   "partial_text": "Kleng, jo jiddwereen u sech aus.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi",
+   "is_final": true,
+   "language": "lb",
+   "segment": 3,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 3.84,
+    "decoded_audio_duration": 3.84,
+    "processing_time": 0.14400625228881836,
+    "inference_time": 0.14400625228881836,
+    "response_time": 0.14436960220336914,
+    "queue_time": 0.0002315044403076172,
+    "rtf": 0.03750162820021312,
+    "decode_rtf": 0.03750162820021312,
+    "compute_rtf": 0.04882510555417914,
+    "effective_rtf": 0.14842832088470456,
+    "commit_latency": 2.244369602203369,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 33
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Prost, dat trëfft déi"
+   }
+  }
+ ],
+ [
+  4.726194136077538,
+  {
+   "type": "transcription",
+   "text": "Kleng, jo",
+   "translation_source_text": "Kleng, jo",
+   "partial_text": "jiddwereen u sech aus, fréi oder scho.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo",
+   "is_final": true,
+   "language": "lb",
+   "segment": 4,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 4.64,
+    "decoded_audio_duration": 4.64,
+    "processing_time": 0.1356346607208252,
+    "inference_time": 0.1356346607208252,
+    "response_time": 0.13607263565063477,
+    "queue_time": 0.00029468536376953125,
+    "rtf": 0.02923160791397095,
+    "decode_rtf": 0.02923160791397095,
+    "compute_rtf": 0.043413568110693065,
+    "effective_rtf": 0.1519474883874257,
+    "commit_latency": 2.1560726356506343,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 43
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Prost, dat trëfft déi Grouss, déi"
+   }
+  }
+ ],
+ [
+  5.574564712005667,
+  {
+   "type": "transcription",
+   "text": "jiddwereen u sech",
+   "translation_source_text": "jiddwereen u sech",
+   "partial_text": "aus. Fréier oder spéider? Jo.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech",
+   "is_final": true,
+   "language": "lb",
+   "segment": 5,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 5.44,
+    "decoded_audio_duration": 5.44,
+    "processing_time": 0.17267417907714844,
+    "inference_time": 0.17267417907714844,
+    "response_time": 0.17322516441345215,
+    "queue_time": 0.00040912628173828125,
+    "rtf": 0.03174157703624052,
+    "decode_rtf": 0.03174157703624052,
+    "compute_rtf": 0.040558548711186686,
+    "effective_rtf": 0.1610753791672842,
+    "commit_latency": 2.0332251644134525,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 61
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Prost, dat trëfft déi Grouss, déi Kleng, jo"
+   }
+  }
+ ],
+ [
+  6.38911403703969,
+  {
+   "type": "transcription",
+   "text": "aus. Fréier oder spéider? Jo.",
+   "translation_source_text": "aus. Fréier oder spéider? Jo.",
+   "partial_text": "Okay.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo.",
+   "is_final": true,
+   "language": "lb",
+   "segment": 6,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 6.24,
+    "decoded_audio_duration": 6.24,
+    "processing_time": 0.17672204971313477,
+    "inference_time": 0.17672204971313477,
+    "response_time": 0.17705631256103516,
+    "queue_time": 0.00018095970153808594,
+    "rtf": 0.02832084130018185,
+    "decode_rtf": 0.02832084130018185,
+    "compute_rtf": 0.03787725326720248,
+    "effective_rtf": 0.16855377703905097,
+    "commit_latency": 1.2170563125610352,
+    "silence_before": 0.15935087203979492
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 91
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech"
+   }
+  }
+ ],
+ [
+  7.180250550038181,
+  {
+   "type": "transcription",
+   "text": "Okay.",
+   "translation_source_text": "Okay.",
+   "partial_text": "Gutt, wéi erkennen ech der?",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay.",
+   "is_final": true,
+   "language": "lb",
+   "segment": 7,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 5.84,
+    "decoded_audio_duration": 5.84,
+    "processing_time": 0.17667055130004883,
+    "inference_time": 0.17667055130004883,
+    "response_time": 0.17695927619934082,
+    "queue_time": 0.0001690387725830078,
+    "rtf": 0.030251806729460415,
+    "decode_rtf": 0.030251806729460415,
+    "compute_rtf": 0.036579683110430514,
+    "effective_rtf": 0.17436315615971873,
+    "commit_latency": 1.4369592761993406,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 97
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  7.971081966068596,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "Gutt, wéi erkennen ech dann, dass mäi Mop uf.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay.",
+   "is_final": false,
+   "language": "lb",
+   "segment": 7,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 6.06,
+    "decoded_audio_duration": 6.06,
+    "processing_time": 0.19516682624816895,
+    "inference_time": 0.19516682624816895,
+    "response_time": 0.1954817771911621,
+    "queue_time": 0.0002238750457763672,
+    "rtf": 0.03220574690563844,
+    "decode_rtf": 0.03220574690563844,
+    "compute_rtf": 0.03592326772159842,
+    "effective_rtf": 0.18132269382476798,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 97
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  8.795477078063414,
+  {
+   "type": "transcription",
+   "text": "Gutt, wéi erkennen",
+   "translation_source_text": "Gutt, wéi erkennen",
+   "partial_text": "ech dann, dass mäi Mop ufänkt dach d'Rooss ze ginn?",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen",
+   "is_final": true,
+   "language": "lb",
+   "segment": 8,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 6.86,
+    "decoded_audio_duration": 6.86,
+    "processing_time": 0.20403051376342773,
+    "inference_time": 0.20403051376342773,
+    "response_time": 0.20439434051513672,
+    "queue_time": 0.0002129077911376953,
+    "rtf": 0.029742057399916578,
+    "decode_rtf": 0.029742057399916578,
+    "compute_rtf": 0.03502565758597739,
+    "effective_rtf": 0.18802409822290586,
+    "commit_latency": 2.064394340515137,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 116
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  9.58859768009279,
+  {
+   "type": "transcription",
+   "text": "ech dann, dass mäi Mop",
+   "translation_source_text": "ech dann, dass mäi Mop",
+   "partial_text": "ufänkt dach d'Ros ze maachen?",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop",
+   "is_final": true,
+   "language": "lb",
+   "segment": 9,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 6.66,
+    "decoded_audio_duration": 6.66,
+    "processing_time": 0.16780877113342285,
+    "inference_time": 0.16780877113342285,
+    "response_time": 0.16834378242492676,
+    "queue_time": 0.0003604888916015625,
+    "rtf": 0.025196512182195624,
+    "decode_rtf": 0.025196512182195624,
+    "compute_rtf": 0.033811147226252225,
+    "effective_rtf": 0.1898355036973952,
+    "commit_latency": 1.988343782424927,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 139
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Gutt, wéi erkennen"
+   }
+  }
+ ],
+ [
+  10.395671803038567,
+  {
+   "type": "transcription",
+   "text": "ufänkt dach d'Ros ze maachen?",
+   "translation_source_text": "ufänkt dach d'Ros ze maachen?",
+   "partial_text": "Ma.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen?",
+   "is_final": true,
+   "language": "lb",
+   "segment": 10,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 6.6200625,
+    "decoded_audio_duration": 6.6200625,
+    "processing_time": 0.18122315406799316,
+    "inference_time": 0.18122315406799316,
+    "response_time": 0.18171930313110352,
+    "queue_time": 0.0003190040588378906,
+    "rtf": 0.027374840353545475,
+    "decode_rtf": 0.027374840353545475,
+    "compute_rtf": 0.03310710377344683,
+    "effective_rtf": 0.192658075919518,
+    "commit_latency": 1.2417818031311043,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 169
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Gutt, wéi erkennen ech dann, dass mäi Mop"
+   }
+  }
+ ],
+ [
+  11.166040956042707,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "Ma, de Klassiker.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen?",
+   "is_final": false,
+   "language": "lb",
+   "segment": 10,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 5.860125,
+    "decoded_audio_duration": 5.860125,
+    "processing_time": 0.18845629692077637,
+    "inference_time": 0.18845629692077637,
+    "response_time": 0.18885064125061035,
+    "queue_time": 0.0003216266632080078,
+    "rtf": 0.03215909164408206,
+    "decode_rtf": 0.03215909164408206,
+    "compute_rtf": 0.03302341209090084,
+    "effective_rtf": 0.19572323986462173,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 169
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  11.953949073096737,
+  {
+   "type": "translation",
+   "text": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait.",
+   "source_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus.",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait.",
+   "target_lang": "fr",
+   "processing_time": 5.565461874008179,
+   "commit_latency": 6.783064842224121,
+   "success": true
+  }
+ ],
+ [
+  12.099438030039892,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "Ma, de Klassiker, dat ass wierklech, wann d'Leit",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen?",
+   "is_final": false,
+   "language": "lb",
+   "segment": 10,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 6.660125,
+    "decoded_audio_duration": 6.660125,
+    "processing_time": 0.2881019115447998,
+    "inference_time": 0.2881019115447998,
+    "response_time": 0.28860902786254883,
+    "queue_time": 0.0003345012664794922,
+    "rtf": 0.04325773338260165,
+    "decode_rtf": 0.04325773338260165,
+    "compute_rtf": 0.0339566208459002,
+    "effective_rtf": 0.20396399654840155,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 169
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  12.462225996074267,
+  {
+   "type": "translation",
+   "text": "Tôt ou tard ?",
+   "source_text": "Fréier oder spéider?",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ?",
+   "target_lang": "fr",
+   "processing_time": 0.5074684619903564,
+   "commit_latency": 7.291057109832764,
+   "success": true
+  }
+ ],
+ [
+  12.85842187399976,
+  {
+   "type": "translation",
+   "text": "Oui.",
+   "source_text": "Jo.",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui.",
+   "target_lang": "fr",
+   "processing_time": 0.394744873046875,
+   "commit_latency": 7.686359405517578,
+   "success": true
+  }
+ ],
+ [
+  13.02143927605357,
+  {
+   "type": "transcription",
+   "text": "Ma, de",
+   "translation_source_text": "Ma, de",
+   "partial_text": "Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mop.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de",
+   "is_final": true,
+   "language": "lb",
+   "segment": 11,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.620125,
+    "decoded_audio_duration": 7.620125,
+    "processing_time": 0.23934364318847656,
+    "inference_time": 0.23934364318847656,
+    "response_time": 0.2397904396057129,
+    "queue_time": 0.0002605915069580078,
+    "rtf": 0.03140941168136698,
+    "decode_rtf": 0.03140941168136698,
+    "compute_rtf": 0.033715981781242396,
+    "effective_rtf": 0.2072824574098353,
+    "commit_latency": 2.7399154396057126,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 176
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  13.273844535113312,
+  {
+   "type": "translation",
+   "text": "D'accord.",
+   "source_text": "Okay.",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui. D'accord.",
+   "target_lang": "fr",
+   "processing_time": 0.414778470993042,
+   "commit_latency": 7.530761241912842,
+   "success": true
+  }
+ ],
+ [
+  14.301139607094228,
+  {
+   "type": "translation",
+   "text": "D'accord, comment puis-je savoir si mon chien commence à faire la mue ?",
+   "source_text": "Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen?",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui. D'accord. D'accord, comment puis-je savoir si mon chien commence à faire la mue ?",
+   "target_lang": "fr",
+   "processing_time": 1.0271286964416504,
+   "commit_latency": 5.148068189620972,
+   "success": true
+  }
+ ],
+ [
+  14.379458989016712,
+  {
+   "type": "transcription",
+   "text": "Klassiker, dat ass wierklech wann",
+   "translation_source_text": "Klassiker, dat ass wierklech wann",
+   "partial_text": "d'Leit soen, ah mäi Mupp, en huet Ula...",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann",
+   "is_final": true,
+   "language": "lb",
+   "segment": 12,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.460125,
+    "decoded_audio_duration": 7.460125,
+    "processing_time": 0.6661148071289062,
+    "inference_time": 0.6661148071289062,
+    "response_time": 0.6669130325317383,
+    "queue_time": 0.0004353523254394531,
+    "rtf": 0.08929003295908665,
+    "decode_rtf": 0.08929003295908665,
+    "compute_rtf": 0.03842077889988443,
+    "effective_rtf": 0.23511532280180175,
+    "commit_latency": 2.7270380325317376,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 210
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Ma, de"
+   }
+  }
+ ],
+ [
+  15.239383914042264,
+  {
+   "type": "transcription",
+   "text": "d'Leit soen, ah mäi",
+   "translation_source_text": "d'Leit soen, ah mäi",
+   "partial_text": "Mupp, en huet Ulafproblemer.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi",
+   "is_final": true,
+   "language": "lb",
+   "segment": 13,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.340125,
+    "decoded_audio_duration": 7.340125,
+    "processing_time": 0.20229673385620117,
+    "inference_time": 0.20229673385620117,
+    "response_time": 0.2027878761291504,
+    "queue_time": 0.0003287792205810547,
+    "rtf": 0.02756039357043663,
+    "decode_rtf": 0.02756039357043663,
+    "compute_rtf": 0.03758570649517005,
+    "effective_rtf": 0.23359097540378554,
+    "commit_latency": 2.46291287612915,
+    "silence_before": 0.15979242324829102
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 230
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Ma, de Klassiker, dat ass wierklech wann"
+   }
+  }
+ ],
+ [
+  16.132972338004038,
+  {
+   "type": "transcription",
+   "text": "Mupp, en huet",
+   "translation_source_text": "Mupp, en huet",
+   "partial_text": "Ulafproblemer, ne. Wann en Hond opsteet.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet",
+   "is_final": true,
+   "language": "lb",
+   "segment": 14,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.220125,
+    "decoded_audio_duration": 7.220125,
+    "processing_time": 0.15473413467407227,
+    "inference_time": 0.15473413467407227,
+    "response_time": 0.15517473220825195,
+    "queue_time": 0.00030112266540527344,
+    "rtf": 0.02143094955753152,
+    "decode_rtf": 0.02143094955753152,
+    "compute_rtf": 0.03644976530426481,
+    "effective_rtf": 0.23160219782649866,
+    "commit_latency": 2.6952997322082526,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 244
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi"
+   }
+  }
+ ],
+ [
+  16.978156621102244,
+  {
+   "type": "transcription",
+   "text": "Ulafproblemer, ne.",
+   "translation_source_text": "Ulafproblemer, ne.",
+   "partial_text": "Wann en Hond opsteet an en.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne.",
+   "is_final": true,
+   "language": "lb",
+   "segment": 15,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.3401875,
+    "decoded_audio_duration": 7.3401875,
+    "processing_time": 0.19375133514404297,
+    "inference_time": 0.19375133514404297,
+    "response_time": 0.19418740272521973,
+    "queue_time": 0.00030517578125,
+    "rtf": 0.026395965381544133,
+    "decode_rtf": 0.026395965381544133,
+    "compute_rtf": 0.03577901357032079,
+    "effective_rtf": 0.23210158325591163,
+    "commit_latency": 2.27437490272522,
+    "silence_before": 0.1592121124267578
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 263
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet"
+   }
+  }
+ ],
+ [
+  18.3626344751101,
+  {
+   "type": "translation",
+   "text": "Mais le classique, c'est vraiment quand les gens disent : « Ah, mon chat a des problèmes de comportement, non ? »",
+   "source_text": "Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne.",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui. D'accord. D'accord, comment puis-je savoir si mon chien commence à faire la mue ? Mais le classique, c'est vraiment quand les gens disent : « Ah, mon chat a des problèmes de comportement, non ? »",
+   "target_lang": "fr",
+   "processing_time": 1.3829829692840576,
+   "commit_latency": 3.6577844619750977,
+   "success": true
+  }
+ ],
+ [
+  18.414475225028582,
+  {
+   "type": "transcription",
+   "text": "Wann en Hond",
+   "translation_source_text": "Wann en Hond",
+   "partial_text": "opsteet an en, et ass esou wéi eng Rasch",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond",
+   "is_final": true,
+   "language": "lb",
+   "segment": 16,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 6.88025,
+    "decoded_audio_duration": 6.88025,
+    "processing_time": 0.8637967109680176,
+    "inference_time": 0.8637967109680176,
+    "response_time": 0.8643910884857178,
+    "queue_time": 0.00028514862060546875,
+    "rtf": 0.1255472854864311,
+    "decode_rtf": 0.1255472854864311,
+    "compute_rtf": 0.04106234589440473,
+    "effective_rtf": 0.2608825849450151,
+    "commit_latency": 2.8846410884857177,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 276
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  19.202302625053562,
+  {
+   "type": "transcription",
+   "text": "opsteet an",
+   "translation_source_text": "opsteet an",
+   "partial_text": "en, et ass esou wéi eng rachteg Maschinn, déi muss.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an",
+   "is_final": true,
+   "language": "lb",
+   "segment": 17,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.46025,
+    "decoded_audio_duration": 7.46025,
+    "processing_time": 0.18230867385864258,
+    "inference_time": 0.18230867385864258,
+    "response_time": 0.18279099464416504,
+    "queue_time": 0.0003027915954589844,
+    "rtf": 0.024437341088923637,
+    "decode_rtf": 0.024437341088923637,
+    "compute_rtf": 0.0400650381094384,
+    "effective_rtf": 0.25950772066911043,
+    "commit_latency": 2.8830409946441655,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 287
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Wann en Hond"
+   }
+  }
+ ],
+ [
+  19.987895581056364,
+  {
+   "type": "transcription",
+   "text": "en, et ass esou wéi eng",
+   "translation_source_text": "en, et ass esou wéi eng",
+   "partial_text": "rachteg Maschinn, déi muss geuelegt.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng",
+   "is_final": true,
+   "language": "lb",
+   "segment": 18,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.5003125,
+    "decoded_audio_duration": 7.5003125,
+    "processing_time": 0.16810393333435059,
+    "inference_time": 0.16810393333435059,
+    "response_time": 0.16877198219299316,
+    "queue_time": 0.0003085136413574219,
+    "rtf": 0.022412923906083994,
+    "decode_rtf": 0.022412923906083994,
+    "compute_rtf": 0.03906098416614191,
+    "effective_rtf": 0.25753260850906357,
+    "commit_latency": 2.6090844821929933,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 311
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Wann en Hond opsteet an"
+   }
+  }
+ ],
+ [
+  20.801567900110967,
+  {
+   "type": "transcription",
+   "text": "rachteg Maschinn,",
+   "translation_source_text": "rachteg Maschinn,",
+   "partial_text": "déi muss geuelegt ginn.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn,",
+   "is_final": true,
+   "language": "lb",
+   "segment": 19,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.240375,
+    "decoded_audio_duration": 7.240375,
+    "processing_time": 0.1840214729309082,
+    "inference_time": 0.1840214729309082,
+    "response_time": 0.1845247745513916,
+    "queue_time": 0.0003292560577392578,
+    "rtf": 0.025416014078125538,
+    "decode_rtf": 0.025416014078125538,
+    "compute_rtf": 0.038350753061393676,
+    "effective_rtf": 0.2564746943803932,
+    "commit_latency": 2.4448997745513914,
+    "silence_before": 0.16150951385498047
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 329
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Wann en Hond opsteet an en, et ass esou wéi eng"
+   }
+  }
+ ],
+ [
+  21.61094992607832,
+  {
+   "type": "transcription",
+   "text": "déi muss",
+   "translation_source_text": "déi muss",
+   "partial_text": "geuelegt ginn, da soen d'Leit.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss",
+   "is_final": true,
+   "language": "lb",
+   "segment": 20,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.060375,
+    "decoded_audio_duration": 7.060375,
+    "processing_time": 0.18048715591430664,
+    "inference_time": 0.18048715591430664,
+    "response_time": 0.18098807334899902,
+    "queue_time": 0.00032067298889160156,
+    "rtf": 0.02556339513330477,
+    "decode_rtf": 0.02556339513330477,
+    "compute_rtf": 0.03773306039996725,
+    "effective_rtf": 0.25533151847344837,
+    "commit_latency": 2.481363073348999,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 338
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn,"
+   }
+  }
+ ],
+ [
+  22.396764726028778,
+  {
+   "type": "transcription",
+   "text": "geuelegt",
+   "translation_source_text": "geuelegt",
+   "partial_text": "ginn, ne, da soen d'Leit oft, ah wann.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt",
+   "is_final": true,
+   "language": "lb",
+   "segment": 21,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.1004375,
+    "decoded_audio_duration": 7.1004375,
+    "processing_time": 0.1803605556488037,
+    "inference_time": 0.1803605556488037,
+    "response_time": 0.18078041076660156,
+    "queue_time": 0.00022912025451660156,
+    "rtf": 0.025401329939007802,
+    "decode_rtf": 0.025401329939007802,
+    "compute_rtf": 0.03716175042035777,
+    "effective_rtf": 0.25426434619086113,
+    "commit_latency": 2.6612179107666014,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 347
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss"
+   }
+  }
+ ],
+ [
+  23.171543198055588,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "ginn. Da soen d'Leit oft, ah wann en opsteet, dann.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt",
+   "is_final": false,
+   "language": "lb",
+   "segment": 21,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 7.2804375,
+    "decoded_audio_duration": 7.2804375,
+    "processing_time": 0.18168258666992188,
+    "inference_time": 0.18168258666992188,
+    "response_time": 0.18217754364013672,
+    "queue_time": 0.00035643577575683594,
+    "rtf": 0.024954899574362376,
+    "decode_rtf": 0.024954899574362376,
+    "compute_rtf": 0.036608185503348364,
+    "effective_rtf": 0.253327756092466,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 347
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt"
+   }
+  }
+ ],
+ [
+  24.0231314440025,
+  {
+   "type": "transcription",
+   "text": "ginn.",
+   "translation_source_text": "ginn.",
+   "partial_text": "Da soen d'Leit oft, wann en opsteet, da streck.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn.",
+   "is_final": true,
+   "language": "lb",
+   "segment": 22,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 8.0804375,
+    "decoded_audio_duration": 8.0804375,
+    "processing_time": 0.19550585746765137,
+    "inference_time": 0.19550585746765137,
+    "response_time": 0.19601106643676758,
+    "queue_time": 0.0003151893615722656,
+    "rtf": 0.024194959427339343,
+    "decode_rtf": 0.024194959427339343,
+    "compute_rtf": 0.03601334507828661,
+    "effective_rtf": 0.2530295749505359,
+    "commit_latency": 3.936448566436768,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 353
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt"
+   }
+  }
+ ],
+ [
+  25.157393895089626,
+  {
+   "type": "translation",
+   "text": "Quand un chien se lève et qu'il est comme une vraie machine, il faut l'allumer.",
+   "source_text": "Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn.",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui. D'accord. D'accord, comment puis-je savoir si mon chien commence à faire la mue ? Mais le classique, c'est vraiment quand les gens disent : « Ah, mon chat a des problèmes de comportement, non ? » Quand un chien se lève et qu'il est comme une vraie machine, il faut l'allumer.",
+   "target_lang": "fr",
+   "processing_time": 1.1345133781433105,
+   "commit_latency": 5.0714311599731445,
+   "success": true
+  }
+ ],
+ [
+  25.239756057038903,
+  {
+   "type": "transcription",
+   "text": "Da soen d'Leit oft,",
+   "translation_source_text": "Da soen d'Leit oft,",
+   "partial_text": "ah wann en opsteet, da streckt en sech emol der.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft,",
+   "is_final": true,
+   "language": "lb",
+   "segment": 23,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 8.5405,
+    "decoded_audio_duration": 8.5405,
+    "processing_time": 0.6075053215026855,
+    "inference_time": 0.6075053215026855,
+    "response_time": 0.6080796718597412,
+    "queue_time": 0.00032448768615722656,
+    "rtf": 0.07113228985453844,
+    "decode_rtf": 0.07113228985453844,
+    "compute_rtf": 0.03770631155566999,
+    "effective_rtf": 0.2642490158352669,
+    "commit_latency": 3.448579671859741,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 373
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  26.06511375203263,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënnef.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft,",
+   "is_final": false,
+   "language": "lb",
+   "segment": 23,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 8.1205,
+    "decoded_audio_duration": 8.1205,
+    "processing_time": 0.165114164352417,
+    "inference_time": 0.165114164352417,
+    "response_time": 0.1656200885772705,
+    "queue_time": 0.0003635883331298828,
+    "rtf": 0.020333004661340682,
+    "decode_rtf": 0.020333004661340682,
+    "compute_rtf": 0.036944889779416526,
+    "effective_rtf": 0.2624742823875753,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 373
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Da soen d'Leit oft,"
+   }
+  }
+ ],
+ [
+  26.92348052910529,
+  {
+   "type": "transcription",
+   "text": "ah wann en opsteet, da streckt en sech emol,",
+   "translation_source_text": "ah wann en opsteet, da streckt en sech emol,",
+   "partial_text": "da mécht en esou véier, fënnef Schrëtt ganz streck.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol,",
+   "is_final": true,
+   "language": "lb",
+   "segment": 24,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 8.9205,
+    "decoded_audio_duration": 8.9205,
+    "processing_time": 0.20914006233215332,
+    "inference_time": 0.20914006233215332,
+    "response_time": 0.20971107482910156,
+    "queue_time": 0.00034499168395996094,
+    "rtf": 0.023444881153764172,
+    "decode_rtf": 0.023444881153764172,
+    "compute_rtf": 0.03632478939885223,
+    "effective_rtf": 0.26089013857248955,
+    "commit_latency": 2.390211074829102,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 418
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Da soen d'Leit oft,"
+   }
+  }
+ ],
+ [
+  27.83028663904406,
+  {
+   "type": "transcription",
+   "text": "da mécht en esou véier,",
+   "translation_source_text": "da mécht en esou véier,",
+   "partial_text": "fënneg Schrëtt ganz steif an da.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier,",
+   "is_final": true,
+   "language": "lb",
+   "segment": 25,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.1405,
+    "decoded_audio_duration": 7.1405,
+    "processing_time": 0.170792818069458,
+    "inference_time": 0.170792818069458,
+    "response_time": 0.17125225067138672,
+    "queue_time": 0.00022745132446289062,
+    "rtf": 0.023918887762685807,
+    "decode_rtf": 0.023918887762685807,
+    "compute_rtf": 0.03588482835851283,
+    "effective_rtf": 0.259528095009683,
+    "commit_latency": 2.231752250671387,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 442
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol,"
+   }
+  }
+ ],
+ [
+  28.634283362072892,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "fënnef Schrëtt ganz steif an dann trëppelt en.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier,",
+   "is_final": false,
+   "language": "lb",
+   "segment": 25,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 6.8605,
+    "decoded_audio_duration": 6.8605,
+    "processing_time": 0.17689895629882812,
+    "inference_time": 0.17689895629882812,
+    "response_time": 0.17738056182861328,
+    "queue_time": 0.000347137451171875,
+    "rtf": 0.02578514048521655,
+    "decode_rtf": 0.02578514048521655,
+    "compute_rtf": 0.03555203879501004,
+    "effective_rtf": 0.2584553464164945,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 442
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier,"
+   }
+  }
+ ],
+ [
+  29.419679609010927,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "fënnef Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz no.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier,",
+   "is_final": false,
+   "language": "lb",
+   "segment": 25,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 7.6605,
+    "decoded_audio_duration": 7.6605,
+    "processing_time": 0.18607473373413086,
+    "inference_time": 0.18607473373413086,
+    "response_time": 0.18655967712402344,
+    "queue_time": 0.0003268718719482422,
+    "rtf": 0.0242901551770943,
+    "decode_rtf": 0.0242901551770943,
+    "compute_rtf": 0.03515238665081216,
+    "effective_rtf": 0.25775257659995016,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 442
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier,"
+   }
+  }
+ ],
+ [
+  30.297994989086874,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis u.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier,",
+   "is_final": false,
+   "language": "lb",
+   "segment": 25,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 8.4605,
+    "decoded_audio_duration": 8.4605,
+    "processing_time": 0.22641420364379883,
+    "inference_time": 0.22641420364379883,
+    "response_time": 0.22689294815063477,
+    "queue_time": 0.0003199577331542969,
+    "rtf": 0.026761326593439966,
+    "decode_rtf": 0.026761326593439966,
+    "compute_rtf": 0.03483591808064592,
+    "effective_rtf": 0.257060857195603,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 442
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier,"
+   }
+  }
+ ],
+ [
+  31.199295440106653,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass, dann.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier,",
+   "is_final": false,
+   "language": "lb",
+   "segment": 25,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 9.4205,
+    "decoded_audio_duration": 9.4205,
+    "processing_time": 0.18484807014465332,
+    "inference_time": 0.18484807014465332,
+    "response_time": 0.1853172779083252,
+    "queue_time": 0.00028228759765625,
+    "rtf": 0.019621895880755087,
+    "decode_rtf": 0.019621895880755087,
+    "compute_rtf": 0.03422276300433102,
+    "effective_rtf": 0.256394170797788,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 442
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier,"
+   }
+  }
+ ],
+ [
+  32.087012193049304,
+  {
+   "type": "transcription",
+   "text": "fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis",
+   "translation_source_text": "fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis",
+   "partial_text": "un ass. Dat ass esou eent vun deenen.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis",
+   "is_final": true,
+   "language": "lb",
+   "segment": 26,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 10.2205,
+    "decoded_audio_duration": 10.2205,
+    "processing_time": 0.23575067520141602,
+    "inference_time": 0.23575067520141602,
+    "response_time": 0.23634982109069824,
+    "queue_time": 0.0003230571746826172,
+    "rtf": 0.023066452248071623,
+    "decode_rtf": 0.023066452248071623,
+    "compute_rtf": 0.03375539474775125,
+    "effective_rtf": 0.25607116928148016,
+    "commit_latency": 2.0568498210906974,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 526
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier,"
+   }
+  }
+ ],
+ [
+  32.93410844600294,
+  {
+   "type": "transcription",
+   "text": "un ass.",
+   "translation_source_text": "un ass.",
+   "partial_text": "Dat ass esou eent vun deenen typeschen Unzielen.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass.",
+   "is_final": true,
+   "language": "lb",
+   "segment": 27,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 6.7805,
+    "decoded_audio_duration": 6.7805,
+    "processing_time": 0.15720152854919434,
+    "inference_time": 0.15720152854919434,
+    "response_time": 0.15775370597839355,
+    "queue_time": 0.00032448768615722656,
+    "rtf": 0.02318435639690205,
+    "decode_rtf": 0.02318435639690205,
+    "compute_rtf": 0.033469543313570604,
+    "effective_rtf": 0.25462531349033984,
+    "commit_latency": 2.5582537059783936,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 534
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis"
+   }
+  }
+ ],
+ [
+  34.38338345603552,
+  {
+   "type": "transcription",
+   "text": "dat ass esou eent vun",
+   "translation_source_text": "dat ass esou eent vun",
+   "partial_text": "deeneen typeschen Unzeeche fir Arthro.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun",
+   "is_final": true,
+   "language": "lb",
+   "segment": 28,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.2005625,
+    "decoded_audio_duration": 7.2005625,
+    "processing_time": 0.8218841552734375,
+    "inference_time": 0.8218841552734375,
+    "response_time": 0.8225052356719971,
+    "queue_time": 0.0003445148468017578,
+    "rtf": 0.11414165980413857,
+    "decode_rtf": 0.11414165980413857,
+    "compute_rtf": 0.035721475407036074,
+    "effective_rtf": 0.26785856069520486,
+    "commit_latency": 2.8030677356719975,
+    "silence_before": 0.32124996185302734
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 556
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  35.05445602606051,
+  {
+   "type": "translation",
+   "text": "Les gens disent souvent : « Ah, quand il se lève, il s'étire un peu, puis il fait quatre ou cinq pas très raides, et puis tout à coup, il trottine normalement une fois qu'il est lancé. »",
+   "source_text": "Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass.",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui. D'accord. D'accord, comment puis-je savoir si mon chien commence à faire la mue ? Mais le classique, c'est vraiment quand les gens disent : « Ah, mon chat a des problèmes de comportement, non ? » Quand un chien se lève et qu'il est comme une vraie machine, il faut l'allumer. Les gens disent souvent : « Ah, quand il se lève, il s'étire un peu, puis il fait quatre ou cinq pas très raides, et puis tout à coup, il trottine normalement une fois qu'il est lancé. »",
+   "target_lang": "fr",
+   "processing_time": 2.119434118270874,
+   "commit_latency": 4.678224325180054,
+   "success": true
+  }
+ ],
+ [
+  35.22992640407756,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun",
+   "is_final": false,
+   "language": "lb",
+   "segment": 28,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 7.420625,
+    "decoded_audio_duration": 7.420625,
+    "processing_time": 0.21340417861938477,
+    "inference_time": 0.21340417861938477,
+    "response_time": 0.21406245231628418,
+    "queue_time": 0.000484466552734375,
+    "rtf": 0.02875824861374679,
+    "decode_rtf": 0.02875824861374679,
+    "compute_rtf": 0.035526760546074884,
+    "effective_rtf": 0.2678334848447283,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 556
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "dat ass esou eent vun"
+   }
+  }
+ ],
+ [
+  36.069138265098445,
+  {
+   "type": "transcription",
+   "text": "deenen typeschen Unzeeche fir Arthros.",
+   "translation_source_text": "deenen typeschen Unzeeche fir Arthros.",
+   "partial_text": "Dat kennen ech vu mir aus, wéi bon.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros.",
+   "is_final": true,
+   "language": "lb",
+   "segment": 29,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 8.220625,
+    "decoded_audio_duration": 8.220625,
+    "processing_time": 0.2535879611968994,
+    "inference_time": 0.2535879611968994,
+    "response_time": 0.2542707920074463,
+    "queue_time": 0.000469207763671875,
+    "rtf": 0.030847771452523307,
+    "decode_rtf": 0.030847771452523307,
+    "compute_rtf": 0.035386170180705896,
+    "effective_rtf": 0.26773580275805703,
+    "commit_latency": 2.3348957920074467,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 595
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "dat ass esou eent vun"
+   }
+  }
+ ],
+ [
+  36.99802275409456,
+  {
+   "type": "translation",
+   "text": "C'est l'un des signes typiques de l'arthrose.",
+   "source_text": "dat ass esou eent vun deenen typeschen Unzeeche fir Arthros.",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui. D'accord. D'accord, comment puis-je savoir si mon chien commence à faire la mue ? Mais le classique, c'est vraiment quand les gens disent : « Ah, mon chat a des problèmes de comportement, non ? » Quand un chien se lève et qu'il est comme une vraie machine, il faut l'allumer. Les gens disent souvent : « Ah, quand il se lève, il s'étire un peu, puis il fait quatre ou cinq pas très raides, et puis tout à coup, il trottine normalement une fois qu'il est lancé. » C'est l'un des signes typiques de l'arthrose.",
+   "target_lang": "fr",
+   "processing_time": 0.9301908016204834,
+   "commit_latency": 3.2656068801879883,
+   "success": true
+  }
+ ],
+ [
+  37.07641067809891,
+  {
+   "type": "transcription",
+   "text": "Dat kennen ech vu",
+   "translation_source_text": "Dat kennen ech vu",
+   "partial_text": "mir aus.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu",
+   "is_final": true,
+   "language": "lb",
+   "segment": 30,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.0406875,
+    "decoded_audio_duration": 7.0406875,
+    "processing_time": 0.3285655975341797,
+    "inference_time": 0.3285655975341797,
+    "response_time": 0.329150915145874,
+    "queue_time": 0.0003209114074707031,
+    "rtf": 0.046666692355566086,
+    "decode_rtf": 0.046666692355566086,
+    "compute_rtf": 0.03566918426446617,
+    "effective_rtf": 0.2696630448616791,
+    "commit_latency": 2.3298384151458738,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 613
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  37.909173270105384,
+  {
+   "type": "transcription",
+   "text": "mir",
+   "translation_source_text": "mir",
+   "partial_text": "aus, mee bon, dat ass en anert Theema.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir",
+   "is_final": true,
+   "language": "lb",
+   "segment": 31,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 6.9606875,
+    "decoded_audio_duration": 6.9606875,
+    "processing_time": 0.18330097198486328,
+    "inference_time": 0.18330097198486328,
+    "response_time": 0.18374347686767578,
+    "queue_time": 0.0002899169921875,
+    "rtf": 0.026333745335480625,
+    "decode_rtf": 0.026333745335480625,
+    "compute_rtf": 0.035443235493505205,
+    "effective_rtf": 0.2688078374802319,
+    "commit_latency": 2.9644309768676758,
+    "silence_before": 0.3214259147644043
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 617
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat kennen ech vu"
+   }
+  }
+ ],
+ [
+  38.77509282005485,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "aus. Dat ass en anert Theema. Mee d'Strecken.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir",
+   "is_final": false,
+   "language": "lb",
+   "segment": 31,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 7.58075,
+    "decoded_audio_duration": 7.58075,
+    "processing_time": 0.22139310836791992,
+    "inference_time": 0.22139310836791992,
+    "response_time": 0.2218620777130127,
+    "queue_time": 0.00032138824462890625,
+    "rtf": 0.029204644443876913,
+    "decode_rtf": 0.029204644443876913,
+    "compute_rtf": 0.0352830134232579,
+    "effective_rtf": 0.26786487411569754,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 617
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat kennen ech vu mir"
+   }
+  }
+ ],
+ [
+  39.74196844303515,
+  {
+   "type": "transcription",
+   "text": "aus. Dat ass en anert Theema.",
+   "translation_source_text": "aus. Dat ass en anert Theema.",
+   "partial_text": "Mee d'Strecken u sech ass awer net schläf.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema.",
+   "is_final": true,
+   "language": "lb",
+   "segment": 32,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 8.54075,
+    "decoded_audio_duration": 8.54075,
+    "processing_time": 0.22841358184814453,
+    "inference_time": 0.22841358184814453,
+    "response_time": 0.22889447212219238,
+    "queue_time": 0.0002808570861816406,
+    "rtf": 0.02674397234998619,
+    "decode_rtf": 0.02674397234998619,
+    "compute_rtf": 0.03504288646137241,
+    "effective_rtf": 0.26714357147255197,
+    "commit_latency": 2.5296444721221913,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 647
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat kennen ech vu mir"
+   }
+  }
+ ],
+ [
+  40.248662341036834,
+  {
+   "type": "translation",
+   "text": "Je connais ça pour moi.",
+   "source_text": "Dat kennen ech vu mir aus.",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui. D'accord. D'accord, comment puis-je savoir si mon chien commence à faire la mue ? Mais le classique, c'est vraiment quand les gens disent : « Ah, mon chat a des problèmes de comportement, non ? » Quand un chien se lève et qu'il est comme une vraie machine, il faut l'allumer. Les gens disent souvent : « Ah, quand il se lève, il s'étire un peu, puis il fait quatre ou cinq pas très raides, et puis tout à coup, il trottine normalement une fois qu'il est lancé. » C'est l'un des signes typiques de l'arthrose. Je connais ça pour moi.",
+   "target_lang": "fr",
+   "processing_time": 0.507117509841919,
+   "commit_latency": 3.0374300479888916,
+   "success": true
+  }
+ ],
+ [
+  40.873169193044305,
+  {
+   "type": "translation",
+   "text": "C'est un autre sujet.",
+   "source_text": "Dat ass en anert Theema.",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui. D'accord. D'accord, comment puis-je savoir si mon chien commence à faire la mue ? Mais le classique, c'est vraiment quand les gens disent : « Ah, mon chat a des problèmes de comportement, non ? » Quand un chien se lève et qu'il est comme une vraie machine, il faut l'allumer. Les gens disent souvent : « Ah, quand il se lève, il s'étire un peu, puis il fait quatre ou cinq pas très raides, et puis tout à coup, il trottine normalement une fois qu'il est lancé. » C'est l'un des signes typiques de l'arthrose. Je connais ça pour moi. C'est un autre sujet.",
+   "target_lang": "fr",
+   "processing_time": 0.6230485439300537,
+   "commit_latency": 3.6610424518585205,
+   "success": true
+  }
+ ],
+ [
+  40.963580711046234,
+  {
+   "type": "transcription",
+   "text": "Mee",
+   "translation_source_text": "Mee",
+   "partial_text": "d'Strecken u sech ass awer net schlecht, wann d'Hënn op d'Stéck",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee",
+   "is_final": true,
+   "language": "lb",
+   "segment": 33,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.26075,
+    "decoded_audio_duration": 7.26075,
+    "processing_time": 0.51116943359375,
+    "inference_time": 0.51116943359375,
+    "response_time": 0.5116658210754395,
+    "queue_time": 0.0003170967102050781,
+    "rtf": 0.0704017399846779,
+    "decode_rtf": 0.0704017399846779,
+    "compute_rtf": 0.03586845881702908,
+    "effective_rtf": 0.2723185869399469,
+    "commit_latency": 3.072415821075439,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 651
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  41.781165192020126,
+  {
+   "type": "transcription",
+   "text": "d'Strecken u sech ass awer net",
+   "translation_source_text": "d'Strecken u sech ass awer net",
+   "partial_text": "schlecht, wann d'Hënn opstinn. Nee, dat sécher.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net",
+   "is_final": true,
+   "language": "lb",
+   "segment": 34,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.68075,
+    "decoded_audio_duration": 7.68075,
+    "processing_time": 0.19680523872375488,
+    "inference_time": 0.19680523872375488,
+    "response_time": 0.19731998443603516,
+    "queue_time": 0.0003211498260498047,
+    "rtf": 0.025623179861830537,
+    "decode_rtf": 0.025623179861830537,
+    "compute_rtf": 0.03562151020206666,
+    "effective_rtf": 0.27181452489904184,
+    "commit_latency": 2.458069984436035,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 682
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Mee"
+   }
+  }
+ ],
+ [
+  42.563138080062345,
+  {
+   "type": "transcription",
+   "text": "schlecht, wann d'Hënn opstinn.",
+   "translation_source_text": "schlecht, wann d'Hënn opstinn.",
+   "partial_text": "Nee, dat sécher, dat ass ganz gutt.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn.",
+   "is_final": true,
+   "language": "lb",
+   "segment": 35,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.06075,
+    "decoded_audio_duration": 7.06075,
+    "processing_time": 0.18700361251831055,
+    "inference_time": 0.18700361251831055,
+    "response_time": 0.18752574920654297,
+    "queue_time": 0.00028324127197265625,
+    "rtf": 0.026484950255753363,
+    "decode_rtf": 0.026484950255753363,
+    "compute_rtf": 0.03542345114823754,
+    "effective_rtf": 0.27109911119131347,
+    "commit_latency": 1.9282757492065423,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 713
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Mee d'Strecken u sech ass awer net"
+   }
+  }
+ ],
+ [
+  43.540306613082066,
+  {
+   "type": "translation",
+   "text": "Mais le parcours en soi n'est pas mauvais, si les chiens se lèvent.",
+   "source_text": "Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn.",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui. D'accord. D'accord, comment puis-je savoir si mon chien commence à faire la mue ? Mais le classique, c'est vraiment quand les gens disent : « Ah, mon chat a des problèmes de comportement, non ? » Quand un chien se lève et qu'il est comme une vraie machine, il faut l'allumer. Les gens disent souvent : « Ah, quand il se lève, il s'étire un peu, puis il fait quatre ou cinq pas très raides, et puis tout à coup, il trottine normalement une fois qu'il est lancé. » C'est l'un des signes typiques de l'arthrose. Je connais ça pour moi. C'est un autre sujet. Mais le parcours en soi n'est pas mauvais, si les chiens se lèvent.",
+   "target_lang": "fr",
+   "processing_time": 0.9761393070220947,
+   "commit_latency": 2.9049155712127686,
+   "success": true
+  }
+ ],
+ [
+  43.63586335105356,
+  {
+   "type": "transcription",
+   "text": "Nee, dat sécher, dat ass ganz gutt.",
+   "translation_source_text": "Nee, dat sécher, dat ass ganz gutt.",
+   "partial_text": "Dat ass wéi bei eis.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt.",
+   "is_final": true,
+   "language": "lb",
+   "segment": 36,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 6.54075,
+    "decoded_audio_duration": 6.54075,
+    "processing_time": 0.48043346405029297,
+    "inference_time": 0.48043346405029297,
+    "response_time": 0.4810307025909424,
+    "queue_time": 0.0003681182861328125,
+    "rtf": 0.07345235088488215,
+    "decode_rtf": 0.07345235088488215,
+    "compute_rtf": 0.036172082037815405,
+    "effective_rtf": 0.2751467865465339,
+    "commit_latency": 1.2817807025909422,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 749
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  44.29224146110937,
+  {
+   "type": "translation",
+   "text": "Non, bien sûr, c'est très bien.",
+   "source_text": "Nee, dat sécher, dat ass ganz gutt.",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui. D'accord. D'accord, comment puis-je savoir si mon chien commence à faire la mue ? Mais le classique, c'est vraiment quand les gens disent : « Ah, mon chat a des problèmes de comportement, non ? » Quand un chien se lève et qu'il est comme une vraie machine, il faut l'allumer. Les gens disent souvent : « Ah, quand il se lève, il s'étire un peu, puis il fait quatre ou cinq pas très raides, et puis tout à coup, il trottine normalement une fois qu'il est lancé. » C'est l'un des signes typiques de l'arthrose. Je connais ça pour moi. C'est un autre sujet. Mais le parcours en soi n'est pas mauvais, si les chiens se lèvent. Non, bien sûr, c'est très bien.",
+   "target_lang": "fr",
+   "processing_time": 0.6537606716156006,
+   "commit_latency": 1.9359679222106934,
+   "success": true
+  }
+ ],
+ [
+  44.47534519608598,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "Dat ass wéi bei eis Mënschen och, ne, wann ee moie",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt.",
+   "is_final": false,
+   "language": "lb",
+   "segment": 36,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 5.92075,
+    "decoded_audio_duration": 5.92075,
+    "processing_time": 0.18860411643981934,
+    "inference_time": 0.18860411643981934,
+    "response_time": 0.1890575885772705,
+    "queue_time": 0.00028586387634277344,
+    "rtf": 0.03185476779796805,
+    "decode_rtf": 0.03185476779796805,
+    "compute_rtf": 0.036096495245500425,
+    "effective_rtf": 0.2744383037947937,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 749
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  45.28821222099941,
+  {
+   "type": "transcription",
+   "text": "Dat ass wéi bei",
+   "translation_source_text": "Dat ass wéi bei",
+   "partial_text": "eis Mënschen och, ne, wann ee moies opsteet.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei",
+   "is_final": true,
+   "language": "lb",
+   "segment": 37,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 6.72075,
+    "decoded_audio_duration": 6.72075,
+    "processing_time": 0.20183014869689941,
+    "inference_time": 0.20183014869689941,
+    "response_time": 0.20258378982543945,
+    "queue_time": 0.00038552284240722656,
+    "rtf": 0.030030896655417836,
+    "decode_rtf": 0.030030896655417836,
+    "compute_rtf": 0.035978299824427865,
+    "effective_rtf": 0.27404695012123076,
+    "commit_latency": 2.4633337898254393,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 765
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  46.093431335058995,
+  {
+   "type": "transcription",
+   "text": "eis Mënschen och, ne, wann",
+   "translation_source_text": "eis Mënschen och, ne, wann",
+   "partial_text": "ee moies opsteet, gëtt jo gesot.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann",
+   "is_final": true,
+   "language": "lb",
+   "segment": 38,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.0608125,
+    "decoded_audio_duration": 7.0608125,
+    "processing_time": 0.1943354606628418,
+    "inference_time": 0.1943354606628418,
+    "response_time": 0.19519686698913574,
+    "queue_time": 0.0004096031188964844,
+    "rtf": 0.02752310171992838,
+    "decode_rtf": 0.02752310171992838,
+    "compute_rtf": 0.035808676119197455,
+    "effective_rtf": 0.27350653997726077,
+    "commit_latency": 2.076009366989136,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 792
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat ass wéi bei"
+   }
+  }
+ ],
+ [
+  46.87819602701347,
+  {
+   "type": "transcription",
+   "text": "ee moies",
+   "translation_source_text": "ee moies",
+   "partial_text": "opsteet, gëtt jo gesot, soll ee sech eng Kéier",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies",
+   "is_final": true,
+   "language": "lb",
+   "segment": 39,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 6.680875,
+    "decoded_audio_duration": 6.680875,
+    "processing_time": 0.1853022575378418,
+    "inference_time": 0.1853022575378418,
+    "response_time": 0.18585658073425293,
+    "queue_time": 0.00033354759216308594,
+    "rtf": 0.027736225799441207,
+    "decode_rtf": 0.027736225799441207,
+    "compute_rtf": 0.03565829950441897,
+    "effective_rtf": 0.272791886085538,
+    "commit_latency": 2.4867315807342534,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 801
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat ass wéi bei eis Mënschen och, ne, wann"
+   }
+  }
+ ],
+ [
+  47.68841176002752,
+  {
+   "type": "transcription",
+   "text": "opsteet, gëtt jo",
+   "translation_source_text": "opsteet, gëtt jo",
+   "partial_text": "gesot, soll een sech eng Kéier gutt duerstrecken.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo",
+   "is_final": true,
+   "language": "lb",
+   "segment": 40,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.1009375,
+    "decoded_audio_duration": 7.1009375,
+    "processing_time": 0.18609952926635742,
+    "inference_time": 0.18609952926635742,
+    "response_time": 0.1867063045501709,
+    "queue_time": 0.00037980079650878906,
+    "rtf": 0.026207740775969008,
+    "decode_rtf": 0.026207740775969008,
+    "compute_rtf": 0.035474814786518115,
+    "effective_rtf": 0.2721179351710651,
+    "commit_latency": 2.1276438045501704,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 818
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat ass wéi bei eis Mënschen och, ne, wann ee moies"
+   }
+  }
+ ],
+ [
+  48.485033804085106,
+  {
+   "type": "transcription",
+   "text": "gesot, soll",
+   "translation_source_text": "gesot, soll",
+   "partial_text": "ee sech eng Kéier gutt duerstrecken, eng Kéier déi.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll",
+   "is_final": true,
+   "language": "lb",
+   "segment": 41,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 6.7409375,
+    "decoded_audio_duration": 6.7409375,
+    "processing_time": 0.18973469734191895,
+    "inference_time": 0.18973469734191895,
+    "response_time": 0.19029521942138672,
+    "queue_time": 0.00033473968505859375,
+    "rtf": 0.02814663351231471,
+    "decode_rtf": 0.02814663351231471,
+    "compute_rtf": 0.035342193984195115,
+    "effective_rtf": 0.2715412097008727,
+    "commit_latency": 2.3712327194213874,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 830
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo"
+   }
+  }
+ ],
+ [
+  49.290314242010936,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll",
+   "is_final": false,
+   "language": "lb",
+   "segment": 41,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 6.981,
+    "decoded_audio_duration": 6.981,
+    "processing_time": 0.19341206550598145,
+    "inference_time": 0.19341206550598145,
+    "response_time": 0.19387078285217285,
+    "queue_time": 0.0003294944763183594,
+    "rtf": 0.02770549570347822,
+    "decode_rtf": 0.02770549570347822,
+    "compute_rtf": 0.03520170112090539,
+    "effective_rtf": 0.2710578310025222,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 830
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll"
+   }
+  }
+ ],
+ [
+  50.11709992703982,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen, mat hëntgen.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll",
+   "is_final": false,
+   "language": "lb",
+   "segment": 41,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 7.781,
+    "decoded_audio_duration": 7.781,
+    "processing_time": 0.20956087112426758,
+    "inference_time": 0.20956087112426758,
+    "response_time": 0.21271824836730957,
+    "queue_time": 0.0030362606048583984,
+    "rtf": 0.026932382871644723,
+    "decode_rtf": 0.026932382871644723,
+    "compute_rtf": 0.03503554327828759,
+    "effective_rtf": 0.27004957768568005,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 830
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll"
+   }
+  }
+ ],
+ [
+  51.0681770730298,
+  {
+   "type": "transcription",
+   "text": "een sech eng Kéier gutt duerstrecken, eng Kéier déif",
+   "translation_source_text": "een sech eng Kéier gutt duerstrecken, eng Kéier déif",
+   "partial_text": "duerchootmen, ma d'Hënn, déi maachen dat.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif",
+   "is_final": true,
+   "language": "lb",
+   "segment": 42,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 8.741,
+    "decoded_audio_duration": 8.741,
+    "processing_time": 0.19413161277770996,
+    "inference_time": 0.19413161277770996,
+    "response_time": 0.19471979141235352,
+    "queue_time": 0.00035262107849121094,
+    "rtf": 0.022209313897461384,
+    "decode_rtf": 0.022209313897461384,
+    "compute_rtf": 0.03475241594470033,
+    "effective_rtf": 0.2696203447434616,
+    "commit_latency": 2.7157197914123534,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 883
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll"
+   }
+  }
+ ],
+ [
+  51.83541699300986,
+  {
+   "type": "transcription",
+   "text": "duerchootmen,",
+   "translation_source_text": "duerchootmen,",
+   "partial_text": "ma d'Hënn, déi maachen dat wéi vum Saach.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen,",
+   "is_final": true,
+   "language": "lb",
+   "segment": 43,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.3210625,
+    "decoded_audio_duration": 7.3210625,
+    "processing_time": 0.17285919189453125,
+    "inference_time": 0.17285919189453125,
+    "response_time": 0.1736142635345459,
+    "queue_time": 0.00031256675720214844,
+    "rtf": 0.023611216526908663,
+    "decode_rtf": 0.023611216526908663,
+    "compute_rtf": 0.03455017377507406,
+    "effective_rtf": 0.2687940121064972,
+    "commit_latency": 2.734676763534546,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 897
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif"
+   }
+  }
+ ],
+ [
+  53.147618197021075,
+  {
+   "type": "transcription",
+   "text": "Ma d'Hënn, déi maachen",
+   "translation_source_text": "Ma d'Hënn, déi maachen",
+   "partial_text": "dat wéi vum selwen, well d'Hënn.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen, Ma d'Hënn, déi maachen",
+   "is_final": true,
+   "language": "lb",
+   "segment": 44,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.361125,
+    "decoded_audio_duration": 7.361125,
+    "processing_time": 0.6879675388336182,
+    "inference_time": 0.6879675388336182,
+    "response_time": 0.6884934902191162,
+    "queue_time": 0.0002932548522949219,
+    "rtf": 0.0934595647857655,
+    "decode_rtf": 0.0934595647857655,
+    "compute_rtf": 0.03560611347534769,
+    "effective_rtf": 0.275268244097034,
+    "commit_latency": 2.789618490219117,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 920
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen,"
+   }
+  }
+ ],
+ [
+  53.86610372806899,
+  {
+   "type": "transcription",
+   "text": "dat wéi vum",
+   "translation_source_text": "dat wéi vum",
+   "partial_text": "selwen, well et hinnen einfach gutt deet.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen, Ma d'Hënn, déi maachen dat wéi vum",
+   "is_final": true,
+   "language": "lb",
+   "segment": 45,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.3811875,
+    "decoded_audio_duration": 7.3811875,
+    "processing_time": 0.15771484375,
+    "inference_time": 0.15771484375,
+    "response_time": 0.1582176685333252,
+    "queue_time": 0.00028443336486816406,
+    "rtf": 0.021367136893623146,
+    "decode_rtf": 0.021367136893623146,
+    "compute_rtf": 0.03535470560840939,
+    "effective_rtf": 0.2741091240761211,
+    "commit_latency": 2.439405168533326,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 932
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen, Ma d'Hënn, déi maachen"
+   }
+  }
+ ],
+ [
+  54.71522166009527,
+  {
+   "type": "transcription",
+   "text": "selwen, well et hinnen einfach gutt deet.",
+   "translation_source_text": "selwen, well et hinnen einfach gutt deet.",
+   "partial_text": "Soll ech dann déi.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen, Ma d'Hënn, déi maachen dat wéi vum selwen, well et hinnen einfach gutt deet.",
+   "is_final": true,
+   "language": "lb",
+   "segment": 46,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.08125,
+    "decoded_audio_duration": 7.08125,
+    "processing_time": 0.17870783805847168,
+    "inference_time": 0.17870783805847168,
+    "response_time": 0.17916202545166016,
+    "queue_time": 0.0002295970916748047,
+    "rtf": 0.02523676442131992,
+    "decode_rtf": 0.02523676442131992,
+    "compute_rtf": 0.035186174106445985,
+    "effective_rtf": 0.2733675403553166,
+    "commit_latency": 1.22041202545166,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 974
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen, Ma d'Hënn, déi maachen dat wéi vum"
+   }
+  }
+ ],
+ [
+  56.044801868032664,
+  {
+   "type": "transcription",
+   "text": "",
+   "translation_source_text": "",
+   "partial_text": "Soll ech dann direkt reagéieren?",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen, Ma d'Hënn, déi maachen dat wéi vum selwen, well et hinnen einfach gutt deet.",
+   "is_final": false,
+   "language": "lb",
+   "segment": 46,
+   "send_reason": "partial",
+   "metrics": {
+    "audio_duration": 5.84125,
+    "decoded_audio_duration": 5.84125,
+    "processing_time": 0.7194423675537109,
+    "inference_time": 0.7194423675537109,
+    "response_time": 0.7199134826660156,
+    "queue_time": 0.00029850006103515625,
+    "rtf": 0.12316582367707443,
+    "decode_rtf": 0.12316582367707443,
+    "compute_rtf": 0.036378624930932656,
+    "effective_rtf": 0.27916869971147873,
+    "commit_latency": null,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 974
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  56.99510234000627,
+  {
+   "type": "translation",
+   "text": "C'est la même chose pour nous, les humains : on dit qu'au réveil, il faut bien s'étirer et prendre une grande inspiration. Mais les chiens, eux, le font d'eux-mêmes, tout simplement parce que ça leur fait du bien.",
+   "source_text": "Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen, Ma d'Hënn, déi maachen dat wéi vum selwen, well et hinnen einfach gutt deet.",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui. D'accord. D'accord, comment puis-je savoir si mon chien commence à faire la mue ? Mais le classique, c'est vraiment quand les gens disent : « Ah, mon chat a des problèmes de comportement, non ? » Quand un chien se lève et qu'il est comme une vraie machine, il faut l'allumer. Les gens disent souvent : « Ah, quand il se lève, il s'étire un peu, puis il fait quatre ou cinq pas très raides, et puis tout à coup, il trottine normalement une fois qu'il est lancé. » C'est l'un des signes typiques de l'arthrose. Je connais ça pour moi. C'est un autre sujet. Mais le parcours en soi n'est pas mauvais, si les chiens se lèvent. Non, bien sûr, c'est très bien. C'est la même chose pour nous, les humains : on dit qu'au réveil, il faut bien s'étirer et prendre une grande inspiration. Mais les chiens, eux, le font d'eux-mêmes, tout simplement parce que ça leur fait du bien.",
+   "target_lang": "fr",
+   "processing_time": 2.280763864517212,
+   "commit_latency": 3.501657009124756,
+   "success": true
+  }
+ ],
+ [
+  57.09924423205666,
+  {
+   "type": "transcription",
+   "text": "Soll ech dann",
+   "translation_source_text": "Soll ech dann",
+   "partial_text": "direkt reagéieren oder mol ofwaarden?",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen, Ma d'Hënn, déi maachen dat wéi vum selwen, well et hinnen einfach gutt deet. Soll ech dann",
+   "is_final": true,
+   "language": "lb",
+   "segment": 47,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.28125,
+    "decoded_audio_duration": 7.28125,
+    "processing_time": 0.31902289390563965,
+    "inference_time": 0.31902289390563965,
+    "response_time": 0.3195476531982422,
+    "queue_time": 0.0003075599670410156,
+    "rtf": 0.043814303025667245,
+    "decode_rtf": 0.043814303025667245,
+    "compute_rtf": 0.03650216358451998,
+    "effective_rtf": 0.2800619234891858,
+    "commit_latency": 2.700797653198242,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 988
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": ""
+   }
+  }
+ ],
+ [
+  57.91568697209004,
+  {
+   "type": "transcription",
+   "text": "direkt",
+   "translation_source_text": "direkt",
+   "partial_text": "reagéieren oder mol ofwaarden, wann ech mierken, dass.",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen, Ma d'Hënn, déi maachen dat wéi vum selwen, well et hinnen einfach gutt deet. Soll ech dann direkt",
+   "is_final": true,
+   "language": "lb",
+   "segment": 48,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.34125,
+    "decoded_audio_duration": 7.34125,
+    "processing_time": 0.17474102973937988,
+    "inference_time": 0.17474102973937988,
+    "response_time": 0.17531442642211914,
+    "queue_time": 0.00034737586975097656,
+    "rtf": 0.023802626220245857,
+    "decode_rtf": 0.023802626220245857,
+    "compute_rtf": 0.036292935704648706,
+    "effective_rtf": 0.27921060254560903,
+    "commit_latency": 3.176564426422119,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 995
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Soll ech dann"
+   }
+  }
+ ],
+ [
+  58.736517065088265,
+  {
+   "type": "transcription",
+   "text": "reagéieren oder mol",
+   "translation_source_text": "reagéieren oder mol",
+   "partial_text": "ofwaarden, wann ech mierken, dass mäin Hond éischz",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen, Ma d'Hënn, déi maachen dat wéi vum selwen, well et hinnen einfach gutt deet. Soll ech dann direkt reagéieren oder mol",
+   "is_final": true,
+   "language": "lb",
+   "segment": 49,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.8013125,
+    "decoded_audio_duration": 7.8013125,
+    "processing_time": 0.19141221046447754,
+    "inference_time": 0.19141221046447754,
+    "response_time": 0.1918792724609375,
+    "queue_time": 0.0002372264862060547,
+    "rtf": 0.024535898345884433,
+    "decode_rtf": 0.024535898345884433,
+    "compute_rtf": 0.036090638675371586,
+    "effective_rtf": 0.2786663881114809,
+    "commit_latency": 2.5731917724609374,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 1015
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Soll ech dann direkt"
+   }
+  }
+ ],
+ [
+  59.47545341704972,
+  {
+   "type": "transcription",
+   "text": "ofwaarden, wann ech mierken,",
+   "translation_source_text": "ofwaarden, wann ech mierken,",
+   "partial_text": "dass mäin Hond éischt Symptomer huet?",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen, Ma d'Hënn, déi maachen dat wéi vum selwen, well et hinnen einfach gutt deet. Soll ech dann direkt reagéieren oder mol ofwaarden, wann ech mierken,",
+   "is_final": true,
+   "language": "lb",
+   "segment": 50,
+   "send_reason": "local_agreement",
+   "metrics": {
+    "audio_duration": 7.1813125,
+    "decoded_audio_duration": 7.1813125,
+    "processing_time": 0.16851115226745605,
+    "inference_time": 0.16851115226745605,
+    "response_time": 0.16902804374694824,
+    "queue_time": 0.00028014183044433594,
+    "rtf": 0.023465230383367394,
+    "decode_rtf": 0.023465230383367394,
+    "compute_rtf": 0.035893782833543275,
+    "effective_rtf": 0.27775204069512127,
+    "commit_latency": 2.1303405437469483,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 1044
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Soll ech dann direkt reagéieren oder mol"
+   }
+  }
+ ],
+ [
+  60.04680663708132,
+  {
+   "type": "transcription",
+   "text": "dass mäin Hond éischt Symptomer huet? Fir.",
+   "translation_source_text": "dass mäin Hond éischt Symptomer huet? Fir.",
+   "partial_text": "",
+   "accumulated_text": "Prost, dat trëfft déi Grouss, déi Kleng, jo jiddwereen u sech aus. Fréier oder spéider? Jo. Okay. Gutt, wéi erkennen ech dann, dass mäi Mop ufänkt dach d'Ros ze maachen? Ma, de Klassiker, dat ass wierklech wann d'Leit soen, ah mäi Mupp, en huet Ulafproblemer, ne. Wann en Hond opsteet an en, et ass esou wéi eng rachteg Maschinn, déi muss geuelegt ginn. Da soen d'Leit oft, ah wann en opsteet, da streckt en sech emol, da mécht en esou véier, fënneg Schrëtt ganz steif an dann trëppelt en op eemol erëm ganz normal, wann e bis un ass dat ass esou eent vun deenen typeschen Unzeeche fir Arthros. Dat kennen ech vu mir aus. Dat ass en anert Theema. Mee d'Strecken u sech ass awer net schlecht, wann d'Hënn opstinn. Nee, dat sécher, dat ass ganz gutt. Dat ass wéi bei eis Mënschen och, ne, wann ee moies opsteet, gëtt jo gesot, soll een sech eng Kéier gutt duerstrecken, eng Kéier déif duerchootmen, Ma d'Hënn, déi maachen dat wéi vum selwen, well et hinnen einfach gutt deet. Soll ech dann direkt reagéieren oder mol ofwaarden, wann ech mierken, dass mäin Hond éischt Symptomer huet? Fir.",
+   "is_final": true,
+   "language": "lb",
+   "segment": 51,
+   "send_reason": "finalize",
+   "metrics": {
+    "audio_duration": 6.601375,
+    "decoded_audio_duration": 6.601375,
+    "processing_time": 0.16521000862121582,
+    "inference_time": 0.16521000862121582,
+    "response_time": 0.16573548316955566,
+    "queue_time": 0.00031375885009765625,
+    "rtf": 0.02502660561189386,
+    "decode_rtf": 0.02502660561189386,
+    "compute_rtf": 0.035740225804769245,
+    "effective_rtf": 0.2782835245132473,
+    "commit_latency": 0.32711048316955527,
+    "silence_before": 0.0
+   },
+   "context": {
+    "used_prompt": false,
+    "context_reset": false,
+    "reset_reason": "",
+    "context_length": 1087
+   },
+   "engine": "whisperlive_buffer",
+   "translation": {
+    "enabled": true,
+    "target_lang": "fr",
+    "pending_source": "Soll ech dann direkt reagéieren oder mol ofwaarden, wann ech mierken,"
+   }
+  }
+ ],
+ [
+  60.9642340320861,
+  {
+   "type": "translation",
+   "text": "Dois-je réagir immédiatement ou attendre si je remarque que mon chien présente des premiers symptômes ?",
+   "source_text": "Soll ech dann direkt reagéieren oder mol ofwaarden, wann ech mierken, dass mäin Hond éischt Symptomer huet?",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui. D'accord. D'accord, comment puis-je savoir si mon chien commence à faire la mue ? Mais le classique, c'est vraiment quand les gens disent : « Ah, mon chat a des problèmes de comportement, non ? » Quand un chien se lève et qu'il est comme une vraie machine, il faut l'allumer. Les gens disent souvent : « Ah, quand il se lève, il s'étire un peu, puis il fait quatre ou cinq pas très raides, et puis tout à coup, il trottine normalement une fois qu'il est lancé. » C'est l'un des signes typiques de l'arthrose. Je connais ça pour moi. C'est un autre sujet. Mais le parcours en soi n'est pas mauvais, si les chiens se lèvent. Non, bien sûr, c'est très bien. C'est la même chose pour nous, les humains : on dit qu'au réveil, il faut bien s'étirer et prendre une grande inspiration. Mais les chiens, eux, le font d'eux-mêmes, tout simplement parce que ça leur fait du bien. Dois-je réagir immédiatement ou attendre si je remarque que mon chien présente des premiers symptômes ?",
+   "target_lang": "fr",
+   "processing_time": 0.917252779006958,
+   "commit_latency": 1.244849443435669,
+   "success": true
+  }
+ ],
+ [
+  61.33450654800981,
+  {
+   "type": "translation",
+   "text": "Pour.",
+   "source_text": "Fir.",
+   "accumulated_translation": "Santé, cela concerne les grands, les petits, oui, tout le monde en fait. Tôt ou tard ? Oui. D'accord. D'accord, comment puis-je savoir si mon chien commence à faire la mue ? Mais le classique, c'est vraiment quand les gens disent : « Ah, mon chat a des problèmes de comportement, non ? » Quand un chien se lève et qu'il est comme une vraie machine, il faut l'allumer. Les gens disent souvent : « Ah, quand il se lève, il s'étire un peu, puis il fait quatre ou cinq pas très raides, et puis tout à coup, il trottine normalement une fois qu'il est lancé. » C'est l'un des signes typiques de l'arthrose. Je connais ça pour moi. C'est un autre sujet. Mais le parcours en soi n'est pas mauvais, si les chiens se lèvent. Non, bien sûr, c'est très bien. C'est la même chose pour nous, les humains : on dit qu'au réveil, il faut bien s'étirer et prendre une grande inspiration. Mais les chiens, eux, le font d'eux-mêmes, tout simplement parce que ça leur fait du bien. Dois-je réagir immédiatement ou attendre si je remarque que mon chien présente des premiers symptômes ? Pour.",
+   "target_lang": "fr",
+   "processing_time": 0.3698608875274658,
+   "commit_latency": 1.615360975265503,
+   "success": true
+  }
+ ],
+ [
+  61.585159713053145,
+  {
+   "type": "recording_stopped",
+   "message": "Recording stopped, ready for new recording"
+  }
+ ]
+]

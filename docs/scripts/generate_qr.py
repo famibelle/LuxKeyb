@@ -97,6 +97,17 @@ CODES = {
         # ce qui demande une lecture attentive, et distincte des trois autres.
         "#C97F1E",
     ),
+    "qr-reunion-labs.png": (
+        # L'application Lëtzebuergesch Réunion, en préversion de test (page
+        # Labs Transcription), directement sur l'APK. Tag roulant et nom fixés
+        # par .github/workflows/reunion-apk.yml (job « publier ») : les changer
+        # oblige à repasser ici avec --force qr-reunion-labs.png.
+        "https://github.com/famibelle/LuxKeyb/releases/download/reunion-labs/"
+        "LetzebuergeschReunion-Labs.apk",
+        # Le bleu de l'application, assombri pour la lecture optique (7:1
+        # avec le blanc, contre 3,9:1 pour #0080FF).
+        "#0057B0",
+    ),
 }
 
 

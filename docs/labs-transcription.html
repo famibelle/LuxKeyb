@@ -53,6 +53,15 @@ code{font-family:var(--mono);font-size:13px;background:var(--stripe);padding:1px
 
 /* L'application Réunion : un GIF du parcours, puis une galerie d'écrans qui
    passe sur plusieurs lignes au téléphone. */
+/* Le téléchargement de l'application : le flashcode à côté du bouton et des
+   étapes, au-dessus sur téléphone. */
+.app-dl{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;}
+.app-dl .qr{margin:0;text-align:center;flex:0 0 auto;}
+.app-dl .qr img{display:block;width:160px;height:160px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px;}
+.app-dl .qr figcaption{margin-top:6px;font-size:12.5px;color:var(--ink-soft);max-width:172px;line-height:1.35;}
+.app-dl .dl-etapes{flex:1 1 260px;min-width:0;}
+.app-dl ol{margin:10px 0 0;padding-left:20px;color:var(--ink-soft);font-size:15px;}
+.app-dl ol li{margin-bottom:6px;}
 .app-gifs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:16px 0;}
 .app-gif{margin:0 auto;max-width:320px;text-align:center;}
 .app-gif img,.app-galerie img{width:100%;height:auto;display:block;border:1px solid var(--line);
@@ -531,6 +540,24 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     <li data-i18n="app-4"><strong>Un enregistrement déjà fait</strong>, audio ou vidéo, se transcrit de la même façon.</li>
   </ul>
 
+  <div class="card app-dl" id="telecharger">
+    <figure class="qr">
+      <img src="assets/qr-reunion-labs.png" width="160" height="160" loading="lazy"
+           alt="Flashcode qui mène au téléchargement de l'application Lëtzebuergesch Réunion" data-i18n-alt="app-qr-alt">
+      <figcaption data-i18n="app-qr-cap">Scannez-le avec l'appareil photo du téléphone.</figcaption>
+    </figure>
+    <div class="dl-etapes">
+      <h3 data-i18n="app-dl-h3">L'installer sur un téléphone ou une tablette Android</h3>
+      <p><a class="btn" href="https://github.com/famibelle/LuxKeyb/releases/download/reunion-labs/LetzebuergeschReunion-Labs.apk" data-i18n="app-dl-btn">📲 Télécharger l'application (Android 8 ou plus)</a></p>
+      <ol>
+        <li data-i18n="app-dl-1">Ouvrez le fichier téléchargé. Si Android le demande, autorisez l'installation depuis votre navigateur.</li>
+        <li data-i18n="app-dl-2">Au premier lancement, l'application demande l'accès au micro et aux notifications.</li>
+        <li data-i18n="app-dl-3">Pour le compte rendu automatique, la personne qui installe l'application colle une clé d'API Claude ou Mistral dans ses réglages d'installation (appui long sur le petit texte gris en bas de l'accueil). Sans clé, tout le reste fonctionne, et le compte rendu se fait dans l'application Claude.</li>
+      </ol>
+      <p class="muted" data-i18n="app-dl-note">C'est une préversion de test, mise à jour à chaque amélioration : pour la mettre à jour, retéléchargez-la ici. Dites-nous ce que vous en pensez avec le formulaire en bas de page.</p>
+    </div>
+  </div>
+
 <div class="app-gifs">
   <figure class="app-gif">
     <img src="Screenshots/reunion_parcours.gif" width="432" height="1020" loading="lazy"
@@ -595,7 +622,6 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     réunion part au service qui rédige le compte rendu (Claude, d'Anthropic, ou
     Mistral, au choix de qui installe l'application). Prévenez les participants
     que la réunion est enregistrée, et demandez l'accord de votre employeur.
-    L'application n'est pas encore à télécharger : elle est en test.
   </p>
 </section>
 
@@ -759,6 +785,14 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'app-gif2-alt': 'Animation of the live screen in subtitle mode: a red microphone pulses with the voice; in the middle, the latest sentences in Luxembourgish in large type, the still-provisional end in light grey, with their French translation in small type below, the latest translated sentence in black; then “Voir tout le texte” (see all the text) shows the full text, and back to subtitles',
     'app-gif3-cap': 'At the end: the minutes write themselves before your eyes.',
     'app-gif3-alt': 'Animation of the minutes being written: “Rédaction du compte rendu…” (writing the minutes), then the text appears section by section (summary, points discussed) until the minutes are ready to read',
+    'app-qr-alt': 'QR code leading to the download of the Lëtzebuergesch Réunion app',
+    'app-qr-cap': 'Scan it with your phone’s camera.',
+    'app-dl-h3': 'Installing it on an Android phone or tablet',
+    'app-dl-btn': '📲 Download the app (Android 8 or later)',
+    'app-dl-1': 'Open the downloaded file. If Android asks, allow installing from your browser.',
+    'app-dl-2': 'On first launch, the app asks for access to the microphone and to notifications.',
+    'app-dl-3': 'For automatic minutes, whoever sets up the app pastes a Claude or Mistral API key into its setup settings (long press on the small grey text at the bottom of the home screen). Without a key, everything else works, and the minutes are written in the Claude app.',
+    'app-dl-note': 'This is a test pre-release, updated with each improvement: to update it, download it again here. Tell us what you think with the form at the bottom of the page.',
     'app-img1': 'Two ways to start.',
     'app-img1-alt': 'Home screen: two cards, “Réunion en direct” with the “Commencer une réunion” button, and “Un enregistrement” with “Choisir un fichier”',
     'app-img2': 'Live: Luxembourgish in large type, the translation below.',
@@ -770,7 +804,7 @@ footer.page{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
     'app-img5': 'The minutes, to read and correct before sending.',
     'app-img5-alt': 'Minutes in French, with SUMMARY then POINTS DISCUSSED sections, as plain text ready to paste into an e-mail',
     'app-essai': 'These images come from a test on an emulator on 29 October 2026, with episode 20 of RTL Radio Lëtzebuerg’s “Pattcast” podcast (13 minutes, three speakers, © CLT-UFA): the transcript came back in about a minute, with the three speakers separated. The minutes shown were written by hand, following the instructions the app gives to the writing service, then sent back to the app by a stand-in service, as the test keys had no credit left. For the live part, since the emulator’s microphone does not pass sound through, the app played the episode in place of the microphone; the link to LuxASR and the translation are the real ones.',
-    'app-donnees': '🔒 The sound goes to LuxASR, at the University of Luxembourg; the text of the meeting goes to the service that writes the minutes (Claude, by Anthropic, or Mistral, as chosen by whoever sets up the app). Tell participants the meeting is being recorded, and ask your employer’s permission. The app cannot be downloaded yet: it is in testing.',
+    'app-donnees': '🔒 The sound goes to LuxASR, at the University of Luxembourg; the text of the meeting goes to the service that writes the minutes (Claude, by Anthropic, or Mistral, as chosen by whoever sets up the app). Tell participants the meeting is being recorded, and ask your employer’s permission.',
     'feedback-h2': 'Tell us how it goes',
     'feedback-p': 'Labs is for trying things before deciding. The most useful thing to send us: <strong>the kind of recording, its length, the number of voices, and what was separated well or badly</strong>.',
     'feedback-form': '💬 Feedback form',

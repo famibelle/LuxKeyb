@@ -563,3 +563,21 @@ Vérifié sur l'émulateur avec le fichier de test du direct, filmé cette fois 
 **64-transcription-locuteurs.png** : la transcription de l'épisode, remise sur l'émulateur
 après les tests (qui effacent l'appli), avec les étiquettes au nouveau format. Tests : 23 sur
 23 pour le noyau, 7 sur 7 sur l'appareil.
+
+## 14. Le décalage de la traduction, mesuré (30 octobre)
+
+Question de Medhi en regardant le GIF : la traduction n'arrive pas en même temps que la
+transcription. Mesure sur le vrai flux : 60 s du fichier de test rejouées au rythme réel vers
+`wss://luxasr.uni.lu/prod/ws/transcribe`, configuration de l'appli, heure d'arrivée de chaque
+message (`mesure-latence-traduction.json`, 87 messages, moteur annoncé
+`whisperlive_buffer` 3.0.0-stream).
+
+| | Médiane | Maximum |
+|---|---|---|
+| Traduction après le **dernier** mot de sa phrase affiché | 3,0 s | 8,0 s (la première, moteur à froid) |
+| Traduction après le **premier** mot de sa phrase affiché | 6,6 s | 13,4 s (phrases de 36 à 40 mots) |
+| Temps de traduction côté serveur (`processing_time`) | 0,9 s | 5,6 s (la première) |
+
+Le serveur traduit vite ; l'attente vient surtout de la règle « une phrase complète d'abord » :
+une longue phrase (Whisper en fait de 36 à 40 mots sur une parole continue) se lit en
+luxembourgeois pendant dix secondes avant que son français arrive d'un bloc.
