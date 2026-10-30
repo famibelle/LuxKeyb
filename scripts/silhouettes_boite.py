@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Les silhouettes des noms de la boîte de départ qui n'en avaient pas.
+"""Les silhouettes des noms du Wuertduell qui n'en avaient pas : la boîte de
+départ (2026-10-26), puis l'extension Schoul et Natur (2026-10-28).
 
 Chaque silhouette suit les règles de `carnet/Meubles.kt` : un carré de cent
 unités centré sur l'origine, y vers le bas, remplissage pair-impair. Une forme
@@ -12,7 +13,7 @@ Ce fichier est la source des nouveaux meubles : il écrit leur code Kotlin
 (à recopier dans Meubles.kt) et leur chemin SVG (lu par
 scripts/illustrations_regle.py pour les schémas et la planche de la boîte).
 
-    python3 scripts/silhouettes_boite.py kotlin    # le bloc pour Meubles.kt
+    python3 scripts/silhouettes_boite.py kotlin [boite|extension]   # le bloc pour Meubles.kt
     python3 scripts/silhouettes_boite.py apercu x.svg
 """
 import math
@@ -107,14 +108,139 @@ def symetrique(t, *v):
     return t
 
 
+# ---------------------------------------------- l'outillage de l'extension
+# Tout ce qui suit s'écrit avec les primitives de Trace : un arc, un trait ou
+# une rotation ne sont que des polygones et des courbes calculés ici.
+
+def arc(cx, cy, r, a0, a1, n=24):
+    """Les points d'un arc de cercle, de a0 à a1 degrés (y vers le bas)."""
+    return [(cx + r * math.cos(math.radians(a0 + (a1 - a0) * k / n)),
+             cy + r * math.sin(math.radians(a0 + (a1 - a0) * k / n))) for k in range(n + 1)]
+
+
+def trait(t, pts, w):
+    """Un trait d'épaisseur w le long d'une ligne brisée, en un seul polygone :
+    la tige, la jambe du compas, le point d'interrogation."""
+    g, d = [], []
+    for i, (x, y) in enumerate(pts):
+        a, b = pts[max(i - 1, 0)], pts[min(i + 1, len(pts) - 1)]
+        dx, dy = b[0] - a[0], b[1] - a[1]
+        n = math.hypot(dx, dy)
+        nx, ny = -dy / n * w / 2, dx / n * w / 2
+        g.append((x + nx, y + ny))
+        d.append((x - nx, y - ny))
+    return t.pol(*[c for p in g + d[::-1] for c in p])
+
+
+class Tourne:
+    """Les primitives, tournées de `angle` degrés autour de l'origine puis
+    posées en (tx, ty) : le crayon et le tube couchés en biais."""
+
+    def __init__(self, t, angle, tx=0, ty=0):
+        self.t, self.tx, self.ty = t, tx, ty
+        self.c, self.s = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+
+    def p(self, x, y):
+        return x * self.c - y * self.s + self.tx, x * self.s + y * self.c + self.ty
+
+    def pol(self, *v):
+        self.t.pol(*[c for i in range(0, len(v), 2) for c in self.p(v[i], v[i + 1])])
+        return self
+
+    def M(self, x, y):
+        self.t.M(*self.p(x, y))
+        return self
+
+    def L(self, x, y):
+        self.t.L(*self.p(x, y))
+        return self
+
+    def C(self, x1, y1, x2, y2, x, y):
+        self.t.C(*self.p(x1, y1), *self.p(x2, y2), *self.p(x, y))
+        return self
+
+    def Z(self):
+        self.t.Z()
+        return self
+
+    def arrondi(self, l, t, r, b, k):
+        """Le rectangle arrondi, en courbes : addRoundRect ne tourne pas."""
+        q = k * 0.4477
+        return self.M(l + k, t).L(r - k, t).C(r - q, t, r, t + q, r, t + k).L(r, b - k) \
+            .C(r, b - q, r - q, b, r - k, b).L(l + k, b).C(l + q, b, l, b - q, l, b - k) \
+            .L(l, t + k).C(l, t + q, l + q, t, l + k, t).Z()
+
+    def note(self, commentaire):
+        self.t.note(commentaire)
+        return self
+
+
+def croix(t, cx, cy, l, e, angle=0):
+    """Une croix d'un seul tenant (le plus, le fois) : deux barres posées
+    l'une sur l'autre se creuseraient au croisement."""
+    pts = [(-e, -l), (e, -l), (e, -e), (l, -e), (l, e), (e, e), (e, l), (-e, l), (-e, e), (-l, e), (-l, -e), (-e, -e)]
+    c, s = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+    t.pol(*[v for x, y in pts for v in (cx + x * c - y * s, cy + x * s + y * c)])
+
+
+def lettre_A(t, cx, cy):
+    t.pol(cx - 13, cy + 13, cx - 3.5, cy - 13, cx + 3.5, cy - 13, cx + 13, cy + 13, cx + 6.6, cy + 13,
+          cx + 4.7, cy + 7.5, cx - 4.7, cy + 7.5, cx - 6.6, cy + 13)
+    t.pol(cx - 2.9, cy + 2, cx, cy - 6.5, cx + 2.9, cy + 2)
+
+
+def lettre_B(t, cx, cy):
+    t.M(cx - 11, cy - 13).L(cx + 2, cy - 13).C(cx + 9, cy - 13, cx + 11.5, cy - 9.5, cx + 11.5, cy - 6.5) \
+        .C(cx + 11.5, cy - 3.5, cx + 10, cy - 1.5, cx + 8, cy - 0.5) \
+        .C(cx + 11, cy + 0.5, cx + 13, cy + 3, cx + 13, cy + 6.5) \
+        .C(cx + 13, cy + 10.5, cx + 9.5, cy + 13, cx + 3, cy + 13).L(cx - 11, cy + 13).Z()
+    t.M(cx - 4.6, cy - 7.8).L(cx + 1.5, cy - 7.8).C(cx + 4.4, cy - 7.8, cx + 5.6, cy - 6.6, cx + 5.6, cy - 5) \
+        .C(cx + 5.6, cy - 3.3, cx + 4.4, cy - 2.4, cx + 1.5, cy - 2.4).L(cx - 4.6, cy - 2.4).Z()
+    t.M(cx - 4.6, cy + 2.6).L(cx + 2.5, cy + 2.6).C(cx + 5.4, cy + 2.6, cx + 6.8, cy + 4, cx + 6.8, cy + 5.4) \
+        .C(cx + 6.8, cy + 6.8, cx + 5.4, cy + 7.9, cx + 2.5, cy + 7.9).L(cx - 4.6, cy + 7.9).Z()
+
+
+def lettre_C(t, cx, cy):
+    exterieur, interieur = arc(cx, cy, 13.5, 40, 320, 28), arc(cx, cy, 7.4, 320, 40, 28)
+    t.pol(*[c for p in exterieur + interieur for c in p])
+
+
+def inter(p1, p2, p3, p4):
+    """Le point où la droite p1p2 coupe la droite p3p4."""
+    (x1, y1), (x2, y2), (x3, y3), (x4, y4) = p1, p2, p3, p4
+    d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+    a, b = x1 * y2 - y1 * x2, x3 * y4 - y3 * x4
+    return (a * (x3 - x4) - (x1 - x2) * b) / d, (a * (y3 - y4) - (y1 - y2) * b) / d
+
+
+def sur(p, q, y):
+    """Le point du segment pq à la hauteur y."""
+    return p[0] + (q[0] - p[0]) * (y - p[1]) / (q[1] - p[1]), y
+
+
+def union_disques(cx, cy, centres, rayon, n=96):
+    """Le contour de plusieurs disques fondus en un seul (les pétales) : pour
+    chaque direction, le plus lointain des bords."""
+    pts = []
+    for k in range(n):
+        a = 2 * math.pi * k / n
+        ux, uy = math.cos(a), math.sin(a)
+        r = max(px * ux + py * uy + math.sqrt(max(0.0, rayon ** 2 - (px * px + py * py) + (px * ux + py * uy) ** 2))
+                for px, py in centres)
+        pts += [cx + r * ux, cy + r * uy]
+    return pts
+
+
 SILHOUETTES = {}
+JEUX = {}
 
 
-def silhouette(nom, mot):
+def silhouette(nom, mot, jeu='boite'):
     def enregistrer(fonction):
         t = Trace()
         fonction(t)
         SILHOUETTES[nom] = (mot, t)
+        JEUX[nom] = jeu
         return fonction
     return enregistrer
 
@@ -356,6 +482,229 @@ def _(t):
     t.M(-14, 4).C(-10, -2, -4, -4, 2, -3).C(-4, 0, -9, 3, -12, 8).Z().note('le reflet')
 
 
+# ---------------------------------------------- l'extension : Schoul
+
+@silhouette('question', 'Fro', 'extension')
+def _(t):
+    # Une question se pose à voix haute : la bulle, et le point
+    # d'interrogation creusé dedans.
+    t.M(-30, -40).L(30, -40).C(38, -40, 44, -34, 44, -26).L(44, 10).C(44, 18, 38, 24, 30, 24) \
+        .L(-6, 24).L(-30, 44).L(-22, 24).L(-30, 24).C(-38, 24, -44, 18, -44, 10).L(-44, -26) \
+        .C(-44, -34, -38, -40, -30, -40).Z().note('la bulle')
+    trait(t, arc(0, -18, 10, 200, 420, 20) + [(0, -1), (0, 4)], 8).note("le point d'interrogation, en réserve")
+    t.disque(0, 13, 4.6)
+
+
+@silhouette('cahier', 'Heft', 'extension')
+def _(t):
+    # Fermé, à spirale : le livre ouvert de Meubles.kt est déjà « Buch ».
+    t.arrondi(-24, -44, 40, 44, 5).note('la couverture')
+    t.arrondi(-10, -30, 30, -6, 3).note("l'étiquette, en réserve")
+    t.arrondi(-4, -22, 24, -19.5, 1.2).note('ses lignes')
+    t.arrondi(-4, -16, 16, -13.5, 1.2)
+    for y in (-34, -20, -6, 8, 22, 36):
+        t.arrondi(-38, y - 3, -16, y + 3, 3)
+    t.note('la spirale, qui passe dans la couverture')
+
+
+@silhouette('colle', 'Koll', 'extension')
+def _(t):
+    # Le tube couché en biais, bec en bas à droite, et la goutte qui en tombe :
+    # sans la goutte, c'était du dentifrice.
+    r = Tourne(t, 30, 0, -4)
+    r.pol(-44, -15, -35, -15, -37, -10, -35, -5, -37, 0, -35, 5, -37, 10, -35, 15, -44, 15).note('le pli du tube')
+    r.M(-33, -16).L(8, -16).C(16, -16, 20, -7, 26, -6).L(34, -5).L(34, 5).L(26, 6).C(20, 7, 16, 16, 8, 16) \
+        .L(-33, 16).Z().note('le tube et son bec')
+    r.arrondi(-26, -7, 4, 7, 2.5).note("l'étiquette")
+    t.M(36, 26).C(41, 33, 44, 37, 44, 41).C(44, 45.5, 40.5, 48, 36, 48).C(31.5, 48, 28, 45.5, 28, 41) \
+        .C(28, 37, 31, 33, 36, 26).Z().note('la goutte')
+
+
+@silhouette('calcul', 'Calcul', 'extension')
+def _(t):
+    # Les quatre opérations sur quatre touches, dans l'ordre de la calculette.
+    for cx in (-22, 22):
+        for cy in (-22, 22):
+            t.arrondi(cx - 20, cy - 20, cx + 20, cy + 20, 7)
+    t.note('les quatre touches')
+    croix(t, -22, -22, 11, 3.5)
+    t.note('plus, moins, fois, divisé, en réserve')
+    t.arrondi(11, -25.5, 33, -18.5, 2)
+    croix(t, -22, 22, 12, 3.5, 45)
+    t.arrondi(11, 19, 33, 25, 2)
+    t.disque(22, 13, 3.4)
+    t.disque(22, 31, 3.4)
+
+
+@silhouette('crayon', 'Crayong', 'extension')
+def _(t):
+    # Couché à 45°, la mine en bas : chaque pièce séparée de la suivante par
+    # un jour, à la manière d'un pochoir.
+    r = Tourne(t, -45)
+    r.pol(-56, 0, -47, -3.6, -47, 3.6).note('la mine')
+    r.pol(-45, -4.4, -31, -9, -31, 9, -45, 4.4).note('le bois taillé')
+    r.pol(-29, -9, 31, -9, 31, 9, -29, 9).note('le corps')
+    r.pol(-25, -3.8, 27, -3.8, 27, -2.2, -25, -2.2).note('ses pans')
+    r.pol(-25, 2.2, 27, 2.2, 27, 3.8, -25, 3.8)
+    r.pol(33, -9.5, 43, -9.5, 43, 9.5, 33, 9.5).note('la virole')
+    r.pol(37, -6, 39, -6, 39, 6, 37, 6)
+    r.arrondi(45, -9, 56, 9, 3.5).note('la gomme')
+
+
+@silhouette('alphabet', 'Alphabet', 'extension')
+def _(t):
+    # Les cubes de la classe des petits, A sur B et C.
+    t.arrondi(-20, -44, 20, -4, 4).note('les trois cubes')
+    t.arrondi(-44, 2, -4, 42, 4)
+    t.arrondi(4, 2, 44, 42, 4)
+    lettre_A(t, 0, -24)
+    t.note('A, B, C, en réserve')
+    lettre_B(t, -24, 22)
+    lettre_C(t, 24, 22)
+
+
+@silhouette('cartable', 'Schoulsak', 'extension')
+def _(t):
+    # De face : la poignée, le rabat et ses deux fermoirs.
+    trait(t, arc(0, -36, 12, 180, 360, 16), 5).note('la poignée')
+    t.arrondi(-34, -32, 34, 46, 10).note('le sac')
+    trait(t, [(-26, -32), (-26, 2)] + arc(-16, 2, 10, 180, 90, 8) + arc(16, 2, 10, 90, 0, 8) + [(26, -32)],
+          2.6).note('le bord du rabat, en réserve')
+    for x in (-15, 15):
+        t.arrondi(x - 5, 16, x + 5, 26, 1.5)
+        t.arrondi(x - 2, 19, x + 2, 23, .8)
+    t.note('les fermoirs')
+
+
+@silhouette('mathematiques', 'Mathematik', 'extension')
+def _(t):
+    # L'équerre et le compas : « Calcul » a déjà les opérations.
+    t.pol(-46, 44, -46, -28, 26, 44).note("l'équerre")
+    t.pol(-38, 36, -38, -8, 6, 36).note('son jour')
+    for i in range(1, 6):
+        y = -28 + i * 12
+        t.pol(-46, y, -40, y, -40, y + 1.6, -46, y + 1.6)
+    t.note('ses graduations')
+    t.disque(30, -38, 6.5).note('la tête du compas')
+    t.disque(30, -38, 2.4)
+    t.pol(28, -50, 32, -50, 32, -45.5, 28, -45.5).note('sa poignée')
+    trait(t, [(27, -32), (16, 14)], 6.2).note('la jambe à la pointe')
+    t.pol(14.2, 16.8, 18.2, 17.8, 13.4, 28).note('la pointe')
+    trait(t, [(33, -32), (42, 6)], 6.2).note('la jambe au crayon')
+    t.pol(39.4, 9, 45, 8, 44.4, 20).note('sa mine')
+
+
+# ----------------------------------------------- l'extension : Natur
+
+@silhouette('hetre', 'Bich', 'extension')
+def _(t):
+    # Le hêtre isolé : une large couronne ovale posée haut sur un fût lisse,
+    # et ses maîtresses branches qui montent dedans. « arbre » a une couronne
+    # en nuage et pas de branches ; plus plate, celle-ci faisait un champignon.
+    t.M(0, -46).C(30, -46, 48, -30, 48, -10).C(48, 8, 32, 18, 14, 18).L(6, 18).L(6, 14) \
+        .L(-6, 14).L(-6, 18).L(-14, 18).C(-32, 18, -48, 8, -48, -10).C(-48, -30, -30, -46, 0, -46).Z() \
+        .note('la couronne')
+    t.pol(-3.5, 14, -3, -2, -22, -18, -19, -22, 0, -7, 19, -22, 22, -18, 3, -2, 3.5, 14).note('les branches, en réserve')
+    t.pol(-2, -10, -1.5, -28, 1.5, -28, 2, -10)
+    t.M(-6, 20).L(6, 20).L(7, 34).C(8, 40, 14, 42, 22, 44).L(-22, 44).C(-14, 42, -8, 40, -7, 34).Z() \
+        .note('le fût et ses racines')
+
+
+@silhouette('orage', 'Donner', 'extension')
+def _(t):
+    # Le nuage et l'éclair : la pluie de Meubles.kt a des gouttes.
+    t.M(-38, 6).C(-50, 6, -50, -14, -37, -15).C(-37, -30, -20, -36, -10, -26).C(-4, -44, 22, -44, 25, -24) \
+        .C(38, -30, 50, -14, 41, -2).C(46, 4, 44, 6, 38, 6).Z().note('le nuage')
+    t.pol(-4, 10, 14, 10, 4, 24, 15, 24, -10, 49, -2, 31, -13, 31).note("l'éclair")
+
+
+@silhouette('verger', 'Bongert', 'extension')
+def _(t):
+    # Deux pommiers en couronne de feuillage, et leurs pommes en réserve. En
+    # disques lisses, c'étaient des sucettes.
+    def couronne(cx, cy, k):
+        t.M(cx - 22 * k, cy + 6 * k).C(cx - 30 * k, cy + 2 * k, cx - 28 * k, cy - 14 * k, cx - 17 * k, cy - 14 * k) \
+            .C(cx - 16 * k, cy - 26 * k, cx + 2 * k, cy - 30 * k, cx + 8 * k, cy - 20 * k) \
+            .C(cx + 20 * k, cy - 26 * k, cx + 32 * k, cy - 12 * k, cx + 24 * k, cy - 2 * k) \
+            .C(cx + 32 * k, cy + 6 * k, cx + 24 * k, cy + 18 * k, cx + 12 * k, cy + 14 * k) \
+            .C(cx + 6 * k, cy + 20 * k, cx - 8 * k, cy + 20 * k, cx - 12 * k, cy + 14 * k) \
+            .C(cx - 22 * k, cy + 18 * k, cx - 28 * k, cy + 12 * k, cx - 22 * k, cy + 6 * k).Z()
+    couronne(-20, -12, 1)
+    t.note('les deux pommiers')
+    couronne(26, 0, .72)
+    for x, y in ((-28, -16), (-12, -24), (-22, 2), (-4, -8), (20, -4), (32, -8), (27, 8)):
+        t.disque(x, y, 3.8)
+    t.note('les pommes, en réserve')
+    t.pol(-24, 9, -16, 9, -16, 36, -24, 36).note('les troncs')
+    t.pol(23, 14, 29, 14, 29, 36, 23, 36)
+    t.arrondi(-48, 38, 48, 46, 4).note("l'herbe")
+
+
+@silhouette('automne', 'Hierscht', 'extension')
+def _(t):
+    # La feuille d'érable, et deux feuilles qui tombent.
+    t.pol(0, -46, 6, -32, 15, -36, 12, -21, 30, -27, 25, -15, 33, -11, 22, -2, 26, 6, 10, 4, 3, 10,
+          2, 22, -2, 22, -3, 10, -10, 4, -26, 6, -22, -2, -33, -11, -25, -15, -30, -27, -12, -21, -15, -36, -6, -32) \
+        .note("la feuille d'érable")
+    t.pol(-1, 2, 0, -30, 1, 2).note('sa nervure')
+    Tourne(t, 35, 30, 34).M(-12, 0).C(-6, -7, 6, -7, 12, 0).C(6, 7, -6, 7, -12, 0).Z().note('les feuilles qui tombent')
+    Tourne(t, -20, -32, 30).M(-9, 0).C(-4, -5, 4, -5, 9, 0).C(4, 5, -4, 5, -9, 0).Z()
+
+
+@silhouette('printemps', 'Fréijoer', 'extension')
+def _(t):
+    # La pousse qui sort de terre : la fleur est déjà « Feierblumm ».
+    t.M(-42, 46).L(-42, 40).C(-30, 30, -12, 26, 0, 26).C(12, 26, 30, 30, 42, 40).L(42, 46).Z().note('la terre')
+    trait(t, [(0, 23), (-1, 10), (0, -2)], 6).note('la tige')
+    t.M(-4, -6).C(-12, -26, -30, -34, -44, -30).C(-40, -16, -24, -4, -4, -6).Z().note('les deux feuilles')
+    t.M(4, -6).C(10, -32, 30, -44, 46, -40).C(44, -20, 26, -4, 4, -6).Z()
+    trait(t, [(-10, -11), (-24, -21), (-36, -27)], 1.8).note('leurs nervures')
+    trait(t, [(10, -12), (24, -26), (38, -35)], 1.8)
+
+
+@silhouette('glacier', 'Gletscher', 'extension')
+def _(t):
+    # Deux sommets inégaux sous leur glace, séparée de la roche par un jour qui
+    # se lit sans couleur. Un seul triangle symétrique se lisait comme une tente.
+    j = 3.2
+    A, g, d = (10, -46), (-34, 42), (48, 42)            # le grand sommet
+    a, g2, d2 = (-27, -8), (-48, 42), (-6, 42)          # le petit, devant
+    vg = [sur(A, g, -16), (-4, -10), (2, -18), (8, -2), (14, -16), (22, -8), sur(A, d, -18)]
+    t.pol(*A, *[c for p in vg[::-1] for c in p]).note('la glace du grand sommet')
+    roche = [(x, y + j) for x, y in vg]
+    roche[0], roche[-1] = sur(A, g, vg[0][1] + j), sur(A, d, vg[-1][1] + j)
+    a_d, d2_d = (a[0] + j * 1.6, a[1]), (d2[0] + j * 1.6, d2[1])   # le flanc droit du petit, décalé
+    t.pol(*[c for p in roche + [d, d2_d, inter(A, g, a_d, d2_d)] for c in p]).note('sa roche, rognée par le petit')
+    vp = [sur(a, g2, 8), (-32, 14), (-27, 6), (-22, 14), sur(a, d2, 8)]
+    t.pol(*a, *[c for p in vp[::-1] for c in p]).note('la glace du petit')
+    rp = [(x, y + j) for x, y in vp]
+    rp[0], rp[-1] = sur(a, g2, vp[0][1] + j), sur(a, d2, vp[-1][1] + j)
+    t.pol(*[c for p in rp + [d2, g2] for c in p]).note('sa roche')
+
+
+@silhouette('coquelicot', 'Feierblumm', 'extension')
+def _(t):
+    # De face : quatre pétales ronds qui se chevauchent, le grand cœur sombre
+    # (sa capsule, ses étamines), et le bouton qui penche sur sa tige : c'est
+    # lui qui fait le coquelicot. De profil, la coupe se lisait comme un bol.
+    cx, cy = 10, -20
+    centres = [(-8, -8), (8, -8), (8, 8), (-8, 8)]
+    t.pol(*union_disques(cx, cy, centres, 17)).note('les quatre pétales')
+    for (px, py), a0 in zip(centres, (200, 290, 20, 110)):
+        trait(t, arc(cx + px, cy + py, 17 - 1.4, a0, a0 + 46, 8), 1.8)
+    t.note('leurs recouvrements')
+    t.disque(cx, cy, 11.5).note('le cœur, en réserve')
+    t.disque(cx, cy, 5).note('la capsule')
+    for k in range(8):
+        a = 2 * math.pi * k / 8
+        t.disque(cx + 8.6 * math.cos(a), cy + 8.6 * math.sin(a), 1.8)
+    t.note('les étamines')
+    trait(t, [(cx, cy + 27), (cx - 1, 30), (cx - 4, 40), (cx - 6, 47)], 4.6).note('la tige')
+    trait(t, [(-18, 47), (-21, 24), (-26, 6), (-33, 0), (-39, 2)], 4).note('la tige du bouton')
+    t.M(-42, 4).C(-36, 4, -33, 12, -35, 20).C(-37, 26, -45, 26, -47, 20).C(-49, 12, -48, 4, -42, 4).Z() \
+        .note('le bouton, penché')
+
+
 # ------------------------------------------------- recopiés de Meubles.kt
 
 def recopies():
@@ -375,9 +724,15 @@ def recopies():
 
 # ------------------------------------------------------------- sorties
 
-def kotlin():
-    l = ['        // ---- la boîte de départ du Wuertduell (scripts/silhouettes_boite.py) ----']
+TITRES = {'boite': 'la boîte de départ du Wuertduell',
+          'extension': "l'extension du Wuertduell, Schoul et Natur"}
+
+
+def kotlin(jeu='boite'):
+    l = [f'        // ---- {TITRES[jeu]} (scripts/silhouettes_boite.py) ----']
     for nom, (mot, t) in SILHOUETTES.items():
+        if JEUX[nom] != jeu:
+            continue
         l.append(f'        "{nom}" to {{ p ->                                   // {mot}'.rstrip())
         l += ['            ' + x for x in t.kt]
         l.append('        },')
@@ -403,7 +758,7 @@ def apercu():
 
 if __name__ == '__main__':
     if sys.argv[1:2] == ['kotlin']:
-        print(kotlin())
+        print(kotlin(*sys.argv[2:3]))
     elif sys.argv[1:2] == ['apercu']:
         open(sys.argv[2], 'w').write(apercu())
     else:

@@ -1,13 +1,17 @@
-# Cartes imprimées : la boîte et les extensions
+# Cartes imprimées : la boîte et l'extension
 
 Proposition produite par `scripts/candidats_cartes.py` à partir du LOD (CC0).
 **À relire avant impression**, idéalement par un enseignant : le LOD ne dit
 pas si un mot convient à un enfant, et le thème est lu sur le premier sens.
 Pour remplacer une carte, prendre un mot de même coût dans `candidats.csv`.
 
-Vivier : 341 mots à thème, verbes et adjectifs d'enfant, dont 43 déjà dessinés dans l'application.
+Vivier : 365 mots à thème, verbes et adjectifs d'enfant, dont 58 déjà dessinés dans l'application.
 
 **Équilibre de la boîte** (simulation, `scripts/simulation_wuertduell.py`) : Déieren gagne 49% des parties contre Iessen ; 6 tours en médiane, 9 pour 90 % des parties.
+
+**Équilibre de l'extension** : Schoul gagne 48% des parties contre Natur ; 6 tours en médiane, 9 pour 90 % des parties.
+
+**L'extension contre la boîte** : Schoul gagne 48% contre Déieren, Schoul gagne 49% contre Iessen, Natur gagne 50% contre Déieren, Natur gagne 50% contre Iessen.
 
 # La boîte de départ : 2 paquets de 26 (52 cartes) + 2 cartes de règle
 
@@ -73,63 +77,67 @@ Vivier : 341 mots à thème, verbes et adjectifs d'enfant, dont 43 déjà dessin
 | **fënnef** | nombre | gratuit | — | 5 | — | — |  |
 | **sechs** | nombre | gratuit | — | 6 | — | — |  |
 
-# Les extensions
+# L'extension : 2 paquets de 26 (52 cartes) + 2 cartes de règle
 
-## Extension Schoul (24 cartes)
+## Paquet Schoul (26 cartes)
 
 | Mot | Nature | Coût | Force | Sens | Paysage | Dessin | Phrase d'exemple |
 |---|---|---|---|---|---|---|---|
+| **Fro** | nom f. | ● | 3 | question | Neimënster | question | *mat där Fro hat ech net gerechent!* — je ne m'attendais pas à cette question ! |
 | **Buch** | nom n. | ● | 4 | livre | Neimënster | livre | *et ass sécher net einfach, e gutt Buch ze schreiwen* — écrire un bon livre n’est certainement pas facile |
-| **Heft** | nom n. | ● | 4 | cahier | Stad | — | *haut de Moien huet de Schoulmeeschter d'Hefter kontrolléiert* |
-| **Koll** | nom m. | ● | 4 | colle | Stad | — | *ech hunn d'Poppenhaus mat engem extrae Koll gepecht* |
-| **Lidd** | nom n. | ● | 4 | chanson | Neimënster | — | *d'Scouten hu beim Lagerfeier flott Lidder gesongen* |
+| **Heft** | nom n. | ● | 4 | cahier | Stad | cahier | *haut de Moien huet de Schoulmeeschter d'Hefter kontrolléiert* |
+| **Koll** | nom m. | ● | 4 | colle | Stad | colle | *ech hunn d'Poppenhaus mat engem extrae Koll gepecht* |
 | **Bréif** | nom m. | ◆◆ | 5 | lettre | Neimënster | lettre | *ech hu vergiess, en Timber op de Bréif ze pechen* — j’ai oublié de coller un timbre sur la lettre |
 | **Dësch** | nom m. | ◆◆ | 5 | table | Esch-Sauer | table | *iwwer Dësch gëtt net geschwat!* |
-| **Schoul** | nom f. | ◆◆ | 6 | école | Esch-Sauer | ecole | *mir sinn zesummen an d'Schoul gaangen* |
 | **Musek** | nom f. | ◆◆ | 5 | musique | Stad | note | *am Hannergrond leeft eng agreabel Musek* |
-| **Calcul** | nom m. | ◆◆ | 6 | calcul | Stad | — | *hien handelt net aus Guttmiddegkeet, mee aus puerem Calcul* — il n’agit pas par bonté, mais par pur calcul |
-| **Crayong** | nom m. | ◆◆ | 7 | crayon | Stad | — | *et soll een ni mam Crayong ënnerschreiwen* — il ne faut jamais signer au crayon |
-| **Examen** | nom m. | ◆◆ | 6 | examen | Neimënster | — | *d'Studentin huet sech gutt op hiren Exame virbereet* — l’étudiante a bien préparé son examen |
-| **Trousse** | nom f. | ◆◆ | 7 | trousse | Stad | — | *hues de keng kleng Schéier an denger Trousse?* — tu n'as pas de petits ciseaux dans ta trousse ? |
+| **Calcul** | nom m. | ◆◆ | 6 | calcul | Stad | calcul | *hien handelt net aus Guttmiddegkeet, mee aus puerem Calcul* — il n’agit pas par bonté, mais par pur calcul |
+| **Schoul** | nom f. | ◆◆ | 6 | école | Esch-Sauer | ecole | *mir sinn zesummen an d'Schoul gaangen* |
+| **Crayong** | nom m. | ◆◆ | 7 | crayon | Stad | crayon | *et soll een ni mam Crayong ënnerschreiwen* — il ne faut jamais signer au crayon |
+| **Alphabet** | nom n. | ★★★ | 8 | alphabet | Stad | alphabet | *den S kënnt am Alphabet virum T* — la lettre S vient avant la lettre T dans l’alphabet |
 | **Computer** | nom m. | ★★★ | 8 | ordinateur | Neimënster | ordinateur | *d'Computere ginn ëmmer méi bëlleg* |
-| **Alphabet** | nom n. | ★★★ | 8 | alphabet | Stad | — | *den S kënnt am Alphabet virum T* — la lettre S vient avant la lettre T dans l’alphabet |
-| **Schoulsak** | nom m. | ★★★ | 9 | cartable | Stad | — | *e schwéiere Schoulsak ass eng Belaaschtung fir de Kanner hire Réck* |
-| **Standauer** | nom f. | ★★★ | 9 | horloge | Stad | — | *de Pendel vun der Standauer ass stoe bliwwen* |
-| **Lektioun** | nom f. | ★★★ | 8 | leçon | Stad | — | *hie wousst seng Lektioun auswenneg* |
-| **Bibliothéik** | nom f. | ✦✦✦✦ | 11 | bibliothèque | Neimënster | — | *ech hu mir an der Bibliothéik e flott Buch geléint* — j'ai emprunté un chouette livre à la bibliothèque |
-| **Schouljoffer** | nom f. | ✦✦✦✦ | 12 | institutrice | Stad | — | *déi nei Schouljoffer huet ganz innovativ Unterrechtsmethoden* |
-| **Rechemaschinn** | nom f. | ✦✦✦✦ | 13 | calculatrice | Stad | — | *den Ticket aus der Rechemaschinn geet mer duer als Quittung* |
+| **Schoulsak** | nom m. | ★★★ | 9 | cartable | Stad | cartable | *e schwéiere Schoulsak ass eng Belaaschtung fir de Kanner hire Réck* |
+| **Mathematik** | nom f. | ★★★ | 10 | mathématiques | Stad | mathematiques | *d'Arithmeetik ass e wichtegen Deel vun der Mathematik* — l’arithmétique est une partie fondamentale des mathématiques |
 | **liesen** | verbe | ◆◆ | 6 | lire | Neimënster | — | *hien huet vu Klengem un e Brëll gebraucht fir ze liesen* — depuis qu'il est petit, il a besoin de lunettes pour lire |
-| **schreiwen** | verbe | ★★★ | 9 | écrire | Neimënster | — | *den Expediteur hat vergiess, seng Adress op de Pak ze schreiwen* — l’expéditeur avait oublié d’écrire son adresse sur le colis |
 | **molen** | verbe | ◆◆ | 5 | dessiner | Stad | — | *komm, ech probéieren emol, dech ze molen!* |
 | **laachen** | verbe | ◆◆ | 7 | rire | Stad | — | *de ganze Sall huet iwwer de Witz gelaacht* |
+| **sichen** | verbe | ◆◆ | 6 | chercher | Rout Bréck | — | *fir dëse Poste gëtt en Akadeemiker gesicht* — un diplômé d’université est recherché pour ce poste |
+| **schreiwen** | verbe | ★★★ | 9 | écrire | Neimënster | — | *den Expediteur hat vergiess, seng Adress op de Pak ze schreiwen* — l’expéditeur avait oublié d’écrire son adresse sur le colis |
+| **rout** | adjectif | ● | 4 | rouge | Stad | — | *firwat gëss de esou rout (am Gesiicht)?* — pourquoi rougis-tu autant ? |
+| **giel** | adjectif | ● | 4 | jaune | Stad | — | *den Dueder vum Ee ass giel* |
+| **wäiss** | adjectif | ◆◆ | 5 | blanc | Stad | — | *mengt der, et gëtt dëst Joer e wäisse Chrëschtdag?* — pensez-vous qu'il y aura un Noël blanc cette année ? |
+| **schwaarz** | adjectif | ★★★ | 8 | noir | Stad | — | *op engem schwaarze Paltong gesäit een all Fisem* — sur un manteau noir on peut voir toutes les peluches |
+| **siwen** | nombre | gratuit | — | 7 | — | — |  |
+| **aacht** | nombre | gratuit | — | 8 | — | — |  |
+| **néng** | nombre | gratuit | — | 9 | — | — |  |
 
-## Extension Natur (24 cartes)
+## Paquet Natur (26 cartes)
 
 | Mot | Nature | Coût | Force | Sens | Paysage | Dessin | Phrase d'exemple |
 |---|---|---|---|---|---|---|---|
 | **Bam** | nom m. | ● | 3 | arbre | Mëllerdall | arbre | *dëse Bam ass méi ewéi honnert Joer al* — cet arbre a plus de cent ans |
+| **Bich** | nom f. | ● | 4 | hêtre | Stad | hetre | *hanner der Kierch stinn dräi grouss Bichen* — trois grands hêtres se trouvent derrière l’église |
 | **Reen** | nom m. | ● | 4 | pluie | Esch-Sauer | pluie | *huel e Prabbeli mat, et gëtt Reen!* |
 | **Sonn** | nom f. | ● | 4 | soleil | Esch-Sauer | soleil | *wéi vill Sonne gëtt et an eisem Universum?* |
-| **Bich** | nom f. | ● | 4 | hêtre | Stad | — | *hanner der Kierch stinn dräi grouss Bichen* — trois grands hêtres se trouvent derrière l’église |
-| **Wanter** | nom m. | ◆◆ | 6 | hiver | Veianen | flocon | *mat engem Tank Mazout komme mer gutt iwwer de Wanter* — un plein de fioul nous permet de passer l’hiver |
 | **Bësch** | nom m. | ◆◆ | 5 | forêt | Esch-Sauer | foret | *mir ginn all Sonndeg an de Bësch spadséieren* |
 | **Insel** | nom f. | ◆◆ | 5 | île | Esch-Sauer | ile | *an der Vakanz si mir vun Insel zu Insel geseegelt* |
 | **Mound** | nom m. | ◆◆ | 5 | lune | Esch-Sauer | lune | *um Mound ass nach kee Liewe fonnt ginn* |
-| **Bierk** | nom f. | ◆◆ | 5 | bouleau | Stad | — | *d'Gemengegäertner hu Bierke laanscht de Wee geplanzt* — les jardiniers communaux ont planté des bouleaux le long du chemin |
-| **Donner** | nom m. | ◆◆ | 6 | tonnerre | Stad | — | *ech hat als Kand Angscht virum Blëtz a virum Donner* — enfant, j'avais peur de la foudre et du tonnerre |
-| **Eclair** | nom f. | ◆◆ | 6 | éclair | Stad | — | *de Pâtissier an eiser Strooss mécht déi bescht Eclaire wäit a breet* — le pâtissier dans notre rue fait les meilleurs éclairs à des kilomètres à la ronde |
-| **Hiwwel** | nom m. | ◆◆ | 6 | colline | Stad | — | *uewen um Hiwwel steet eng ural Eech* — un chêne très ancien se trouve en haut de la colline |
-| **Hierscht** | nom m. | ★★★ | 8 | automne | Veianen | — | *am Hierscht falen d'Blieder vun de Beem* — en automne, les feuilles tombent des arbres |
-| **Fréijoer** | nom n. | ★★★ | 8 | printemps | Veianen | — | *dëst Fréijoer stinn d'Beem fréi an der Bléi* |
-| **Donnerwieder** | nom n. | ✦✦✦✦ | 12 | orage | Stad | — |  |
-| **Pilz** | nom m. | ● | 4 | champignon | Stad | — | *well d'Haus fiicht ass, ass Pilz op de Maueren* — comme la maison est humide, il y a de la moisissure sur les murs |
-| **Sand** | nom m. | ● | 4 | sable | Esch-Sauer | — | *Speis mécht een, andeem ee Sand, Zement a Waasser mëscht* — on fait du mortier en mélangeant du sable, du ciment et de l’eau |
-| **Summer** | nom m. | ◆◆ | 6 | été | Veianen | — | *dëst Joer hate mer en dréchene Summer* — cette année, l'été a été très sec |
-| **Séi** | nom m. | ● | 3 | lac | Esch-Sauer | — | *no där äiseger Wanternuecht war de Séi zougefruer* — après cette nuit d'hiver glaciale, le lac était gelé |
-| **Tulp** | nom f. | ● | 4 | tulipe | Stad | — | *d'Pianistin krut nom Concert e Bouquet Tulpen iwwerreecht* — la pianiste a reçu un bouquet de tulipes après le concert |
-| **rout** | adjectif | ● | 4 | rouge | Stad | — | *firwat gëss de esou rout (am Gesiicht)?* — pourquoi rougis-tu autant ? |
+| **Donner** | nom m. | ◆◆ | 6 | tonnerre | Stad | orage | *ech hat als Kand Angscht virum Blëtz a virum Donner* — enfant, j'avais peur de la foudre et du tonnerre |
+| **Wanter** | nom m. | ◆◆ | 6 | hiver | Veianen | flocon | *mat engem Tank Mazout komme mer gutt iwwer de Wanter* — un plein de fioul nous permet de passer l’hiver |
+| **Bongert** | nom m. | ◆◆ | 7 | verger | Stad | verger | *eisen Noper huet a sengem Bongert Mirabellebeem geplanzt* — notre voisin a planté des mirabelliers dans son verger |
+| **Hierscht** | nom m. | ★★★ | 8 | automne | Veianen | automne | *am Hierscht falen d'Blieder vun de Beem* — en automne, les feuilles tombent des arbres |
+| **Fréijoer** | nom n. | ★★★ | 8 | printemps | Veianen | printemps | *dëst Fréijoer stinn d'Beem fréi an der Bléi* |
+| **Gletscher** | nom m. | ★★★ | 9 | glacier | Stad | glacier | *d'Gletscher glënneren an der Mëttessonn* |
+| **Feierblumm** | nom f. | ★★★ | 10 | coquelicot | Stad | coquelicot | *um Bord vun de Felder gesäit een nees méi Feierblummen a Karblummen* — en bordure des champs, on retrouve à nouveau des coquelicots et des bleuets |
+| **klammen** | verbe | ◆◆ | 7 | grimper | Rout Bréck | — | *hie klëmmt op d'Leeder, fir eng nei Bier anzedréien* — il monte sur l’échelle pour visser une nouvelle ampoule |
+| **falen** | verbe | ◆◆ | 5 | tomber | Rout Bréck | — | *hënt ass Schnéi gefall* |
+| **fannen** | verbe | ◆◆ | 6 | trouver | Stad | — | *ech hunn am Bësch eng Auer fonnt* |
+| **kachen** | verbe | ◆◆ | 6 | cuire | Stad | — | *ech kache Waasser, fir mer en Téi ze maachen* |
+| **kräischen** | verbe | ★★★ | 9 | pleurer | Stad | — | *de klenge Bouf huet haart gekrasch, well e vun der Klunsch gefall war* — le petit garçon a beaucoup pleuré parce qu'il était tombé de la balançoire |
 | **blo** | adjectif | ● | 3 | bleu | Stad | — | *de Bouf huet e schéine bloe Vëlo geschenkt kritt* — le garçon a reçu un beau vélo bleu en cadeau |
+| **kal** | adjectif | ● | 3 | froid | Stad | — | *iess deng Zopp, ier se kal ass!* — mange ta soupe avant qu’elle refroidisse ! |
 | **gréng** | adjectif | ◆◆ | 5 | vert | Stad | — | *du däerfs eréischt iwwer d'Strooss goen, wann et gréng gëtt!* — tu ne peux traverser la rue que quand le feu passe au vert ! |
-| **giel** | adjectif | ● | 4 | jaune | Stad | — | *den Dueder vum Ee ass giel* |
+| **waarm** | adjectif | ◆◆ | 5 | chaud | Stad | — | *ech si kal a waarm gewinnt* — je ne me fais plus de bile pour rien ! |
+| **zéng** | nombre | gratuit | — | 10 | — | — |  |
+| **eelef** | nombre | gratuit | — | 11 | — | — |  |
+| **zwielef** | nombre | gratuit | — | 12 | — | — |  |
 

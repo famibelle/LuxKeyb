@@ -711,6 +711,23 @@ MEUBLES = {
     'Hammbier':       'framboise',       # framboise, framboises
     'Bréitchen':      'petit_pain',      # petit pain
     'Hieselnoss':     'noisette',        # noisette
+    # l'extension du Wuertduell, Schoul et Natur : chacun de ses noms porte
+    # un dessin aussi (scripts/silhouettes_boite.py, 2026-10-28)
+    'Fro':            'question',        # question
+    'Heft':           'cahier',          # cahier
+    'Koll':           'colle',           # colle
+    'Calcul':         'calcul',          # calcul
+    'Crayong':        'crayon',          # crayon
+    'Alphabet':       'alphabet',        # alphabet
+    'Schoulsak':      'cartable',        # cartable
+    'Mathematik':     'mathematiques',   # mathématiques
+    'Bich':           'hetre',           # hêtre
+    'Donner':         'orage',           # tonnerre
+    'Bongert':        'verger',          # verger
+    'Hierscht':       'automne',         # automne
+    'Fréijoer':       'printemps',       # printemps
+    'Gletscher':      'glacier',         # glacier
+    'Feierblumm':     'coquelicot',      # coquelicot
 }
 
 

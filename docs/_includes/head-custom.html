@@ -6,3 +6,6 @@
 <link rel="stylesheet" href="{{ '/assets/theme.css' | relative_url }}">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="{{ '/assets/theme.js' | relative_url }}"></script>
+
+<!-- Pages de service (retour de paiement…) : hors des moteurs de recherche -->
+{% if page.noindex %}<meta name="robots" content="noindex">{% endif %}

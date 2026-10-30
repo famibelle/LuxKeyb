@@ -204,6 +204,7 @@ automates, et les deux paquets font **les 52 cartes d'un jeu classique**
 | Produit | Contenu | Rôle | Prix public indicatif |
 |---|---|---|---|
 | **Boîte de départ** (produit principal) | 54 cartes : 52 à jouer (2 paquets de 26 prêts à jouer) + 2 cartes de règle à la place des jokers | Jouer à deux dès l'ouverture ; sert aussi à la Bataille des mots | 12–15 € |
+| Extension Schoul et Natur | 54 cartes comme la boîte : 2 paquets de 26 (Schoul, Natur) + 2 cartes de règle, ensemble `@E1` | Se joue seule ou avec la boîte ; composer son paquet | comme la boîte |
 | Paquet de 6 (complément) | 3 C / 2 PC / 1 R ou mieux, voir plus bas | Faire évoluer son paquet, collectionner, échanger | 4 € |
 | Coffret complet | toutes les cartes | Écoles, collectionneurs | 35–45 € |
 
@@ -227,7 +228,9 @@ section 4) : c'est le format le moins cher à produire en qualité.
 
 **Les mots viennent du LOD** (2026-10-23) : `scripts/candidats_cartes.py`
 compose la boîte (Déieren contre Iessen, noms jumelés par longueur : 50 % de
-victoires de chaque côté en simulation) et deux extensions (Schoul, Natur),
+victoires de chaque côté en simulation) et l'extension (Schoul contre Natur,
+54 cartes faites comme la boîte, 2026-10-28 : même courbe de Force, 48–52 %
+contre ses paquets comme contre ceux de la boîte, aucun mot en commun),
 dans `Dictionnaires/cartes/` : `selection.md` à relire, `selection.csv` pour
 les fichiers, `candidats.csv` pour remplacer un mot. Verbes et adjectifs
 choisis à la main (listes du script), sens et phrases pris au LOD. La famille
@@ -362,7 +365,30 @@ fichiers et prototypes décembre–janvier, BAT et série en février.
   guichet.lu ou la Chambre de commerce, ne jamais les présenter comme
   certaines.
 
-## 9. Comment répondre
+## 9. Vente en ligne (décisions du 2026-10-28)
+
+Tout est dans `BOUTIQUE-CARTES.md` ; l'essentiel :
+
+- **Impression à la demande, envoi direct** par l'imprimeur chez le client,
+  paiement par **Stripe Payment Links**, livraison **LU, BE, FR, DE**.
+- **Imprimeur de l'UE obligatoire** pour l'envoi direct : depuis Hong Kong
+  (MakePlayingCards), le client paie à la livraison TVA, 3 € de douane par
+  article (depuis le 1er juillet 2026) et frais de dédouanement. À défaut,
+  impression à la demande **par lots** livrés au Luxembourg, puis POST.
+- **Prix** : à l'unité, la boîte livrée coûte ~18–30 € ; les 12–15 € du § 7
+  supposent l'offset. Prix fixé après devis.
+- **Carte code par e-mail** (`scripts/commandes.py`, réserve
+  `impression/codes/B1-boutique`) : la carte de règle d'une boîte imprimée à
+  la demande ne porte **aucun** code signé.
+- En ligne : la boîte et l'extension *Schoul* et *Natur* (54 cartes chacune,
+  codes `@B1` et `@E1`), un lien Stripe par produit avec l'autre en article
+  optionnel ; plus tard le coffret. **Pas les paquets de
+  6** (hasard et pochette scellée impossibles à la demande).
+- Avant d'ouvrir : statut, TVA de l'envoi depuis un autre pays (AED),
+  conditions de vente, mentions légales, **marquage CE et EN 71** (jouet dès
+  6 ans), notice des données de la boutique.
+
+## 10. Comment répondre
 
 - Toujours demander ou supposer explicitement : quel ensemble de cartes,
   combien d'exemplaires, boîte ou non.

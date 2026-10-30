@@ -136,8 +136,9 @@ quand même : c'est un cadeau.
 
 Le jeu de cartes imprimé (`docs/regle-du-jeu.md`) verse ses cartes dans le
 carnet par une **carte code** : un QR imprimé sur une carte de règle de la
-boîte, sur une carte de chaque paquet, ou remis au stand pour la
-Fierkelsmaart. « Recevoir » propose « D'un autre téléphone » ou « Le code
+boîte, sur une carte de chaque paquet, remis au stand pour la
+Fierkelsmaart, ou envoyé par e-mail pour une boîte commandée en ligne
+([`BOUTIQUE-CARTES.md`](BOUTIQUE-CARTES.md) § 7). « Recevoir » propose « D'un autre téléphone » ou « Le code
 d'une carte en papier » ; le scanner lit les deux.
 
 ```

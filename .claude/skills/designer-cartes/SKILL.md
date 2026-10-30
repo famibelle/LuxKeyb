@@ -316,5 +316,13 @@ Pour un paquet à thème prêt à jouer (26 cartes) : 14 noms, 5 verbes,
 4 adjectifs, 3 nombres comme la boîte, choisis par
 `scripts/candidats_cartes.py` puis relus à la main (sens premier, mot connu
 d'un enfant, rien de vulgaire ni d'effrayant), et équilibrés contre les deux
-paquets de la boîte. Les extensions Schoul et Natur du script (24 cartes) sont
-des réserves où l'on pioche pour composer son paquet de 26.
+paquets de la boîte. L'extension (`@E1`, 2026-10-28) est faite ainsi :
+Schoul contre Natur, 54 cartes comme la boîte, noms sur la courbe de Force de
+la boîte, 48–52 % contre tous les paquets en simulation (`selection.md`).
+Chacun de ses 28 noms a son dessin : 15 silhouettes nouvelles (question,
+cahier, colle, calcul, crayon, alphabet, cartable, mathématiques, hêtre,
+orage, verger, automne, printemps, glacier, coquelicot) dans
+`scripts/silhouettes_boite.py`, section « l'extension », recopiées dans
+`Meubles.kt`. Une silhouette nouvelle passe le test du pouce (vignette à 25 %,
+clair sur sombre et sombre sur clair) à côté des meubles voisins : le hêtre
+ne doit pas se lire comme « arbre », ni l'orage comme « pluie ».
