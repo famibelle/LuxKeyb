@@ -595,3 +595,22 @@ sous-titres ; le bandeau montre que l'appli écoute en direct.
 
 **65-sous-titres-par-phrase.png** (« Soll ech dann direkt reagéieren… » avec « Est-ce que je
 dois réagir tout de suite… »), `direct_sous_titres.gif`. Tests : noyau 24/24.
+
+## 16. La hiérarchie du direct (30 octobre)
+
+Recommandation validée par Medhi, appliquée dans `DirectActivity` :
+
+1. **État** en haut : micro qui pulse, « J'écoute et j'écris », chrono, A− et A+.
+2. **Zone de lecture** : **un bloc par phrase**, le luxembourgeois en grand (25 sp, 28 sur
+   tablette), sa traduction juste dessous en italique (18 sp, 21 sur tablette) ; côte à côte sur
+   tablette, à la même hauteur. Le plus récent en noir, les anciens grisés, calés en bas et
+   sortant par le haut sous un dégradé : une phrase trop longue garde sa fin. Elle ne change
+   qu'une fois par phrase, on peut la lire posément.
+3. **Encadré « ● EN DIRECT »** en bas : les mots au moment où ils sont dits, en petit.
+4. **Une seule action principale** : « Terminer la réunion » ; « Voir tout le texte » en second.
+
+Au début, tant qu'aucune phrase n'est traduite (8 à 12 s), la zone de lecture dit « Les phrases
+s'afficheront ici avec leur traduction, dès la fin de la première ».
+
+**66-un-bloc-par-phrase.png**, **67-attente-premiere-phrase.png**, `direct_sous_titres.gif`.
+Non vérifié : la tablette en paysage.

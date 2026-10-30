@@ -55,10 +55,11 @@ class DirectActivity : Activity() {
     /** Sous-titres (par défaut) ou texte complet. */
     private var sousTitres = true
     private lateinit var vueSousTitres: LinearLayout
-    private lateinit var stLb: TextView
-    private lateinit var stFr: TextView
-    private lateinit var boiteLb: FrameLayout
-    private lateinit var boiteFr: FrameLayout
+    /** Les blocs « phrase + traduction », du plus ancien au plus récent. */
+    private lateinit var blocs: LinearLayout
+    private lateinit var attente: TextView
+    private var phrasesVues: List<Pair<String, String>>? = null
+    private var echelleVue = 0f
     private lateinit var bascule: TextView
     /** La traduction affichée au dernier passage : ce qui s'y ajoute ressort. */
     private var entetes: View? = null
@@ -217,7 +218,7 @@ class DirectActivity : Activity() {
         micro.niveau = EtatDirect.niveau
 
         val ps = EtatDirect.paragraphes
-        vide.visibility = if (ps.isEmpty()) View.VISIBLE else View.GONE
+        vide.visibility = if (ps.isEmpty() && !sousTitres) View.VISIBLE else View.GONE
         bascule.visibility = if (ps.isEmpty()) View.GONE else View.VISIBLE
         if (sousTitres) { majSousTitres(ps); return }
         while (vues.size > ps.size) { liste.removeView(vues.removeAt(vues.size - 1)); donnees.removeAt(donnees.size - 1) }
@@ -247,24 +248,22 @@ class DirectActivity : Activity() {
     // --- Sous-titres ------------------------------------------------------------
 
     private fun sousTitresVue(): LinearLayout {
-        stLb = TextView(this).apply { setTextColor(Charte.ENCRE); setLineSpacing(0f, 1.12f) }
-        stFr = TextView(this).apply { setTextColor(Charte.GRIS); setLineSpacing(0f, 1.12f) }
         stDirect = TextView(this).apply { setTextColor(Charte.GRIS); setLineSpacing(0f, 1.1f) }
-        boiteLb = boite(stLb)
-        boiteFr = boite(stFr)
         boiteDirect = boite(stDirect, Charte.BLANC)
-        // La phrase et sa traduction, ensemble : côte à côte sur tablette, l'une sous l'autre sinon.
-        val paire = LinearLayout(this).apply {
-            if (large()) {
-                orientation = LinearLayout.HORIZONTAL
-                addView(boiteLb, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.3f))
-                addView(boiteFr, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply { leftMargin = dp(28) })
-            } else {
-                orientation = LinearLayout.VERTICAL
-                addView(boiteLb, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
-                addView(boiteFr, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                    .apply { topMargin = dp(14) })
-            }
+        // La zone de lecture : un bloc par phrase, calés en bas, les plus anciens
+        // sortant par le haut sous un dégradé. Une phrase trop longue garde sa fin.
+        blocs = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        attente = Charte.texte(this, "", 17f, Charte.GRIS_CLAIR).apply {
+            gravity = Gravity.CENTER
+            setPadding(dp(12), 0, dp(12), 0)
+        }
+        val lecture = BoiteBas().apply {
+            addView(blocs, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM))
+            addView(View(context).apply {
+                background = android.graphics.drawable.GradientDrawable(
+                    android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(Charte.FOND, Charte.FOND and 0x00FFFFFF))
+            }, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(48), Gravity.TOP))
+            addView(attente, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER))
         }
         // Le bandeau du direct : ce qui se dit en ce moment, mot à mot, pas encore traduit.
         val bandeau = LinearLayout(this).apply {
@@ -277,12 +276,46 @@ class DirectActivity : Activity() {
         }
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(dp(20), dp(12), dp(20), dp(72))
-            addView(View(context), LinearLayout.LayoutParams(1, 0, 1f))
-            addView(paire, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
-            addView(View(context), LinearLayout.LayoutParams(1, 0, 1f))
-            addView(bandeau, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+            setPadding(dp(20), dp(4), dp(20), dp(72))
+            addView(lecture, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
+            addView(bandeau, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                .apply { topMargin = dp(16) })
         }.also { tailleSousTitres() }
+    }
+
+    /**
+     * Une phrase et sa traduction, en un bloc : le luxembourgeois en grand, le
+     * français dessous en plus petit ; côte à côte sur tablette, à la même hauteur.
+     */
+    private fun bloc(texte: String, traduction: String, recente: Boolean): View {
+        val e = reglages.echelle
+        val tablette = large()
+        val lb = TextView(this).apply {
+            text = texte
+            setTextColor(if (recente) Charte.ENCRE else Charte.GRIS_CLAIR)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 28f else 25f) * e)
+            setLineSpacing(0f, 1.1f)
+        }
+        val fr = TextView(this).apply {
+            text = traduction
+            setTextColor(if (recente) Charte.TEXTE else Charte.GRIS_CLAIR)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 21f else 18f) * e)
+            setTypeface(null, Typeface.ITALIC)
+            setLineSpacing(0f, 1.1f)
+        }
+        return LinearLayout(this).apply {
+            setPadding(0, dp(14), 0, dp(14))
+            if (tablette) {
+                orientation = LinearLayout.HORIZONTAL
+                addView(lb, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.3f))
+                addView(fr, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply { leftMargin = dp(28) })
+            } else {
+                orientation = LinearLayout.VERTICAL
+                addView(lb)
+                addView(fr, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                    .apply { topMargin = dp(6) })
+            }
+        }
     }
 
     /**
@@ -320,31 +353,27 @@ class DirectActivity : Activity() {
     private fun tailleSousTitres() {
         val e = reglages.echelle
         val tablette = large()
-        stLb.setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 28f else 25f) * e)
-        stFr.setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 21f else 18f) * e)
-        stFr.setTypeface(null, Typeface.ITALIC)
         stDirect.setTextSize(TypedValue.COMPLEX_UNIT_SP, (if (tablette) 18f else 16f) * e)
-        (boiteLb.layoutParams ?: return).height = stLb.lineHeight * LIGNES_LB
-        boiteFr.layoutParams.height = stFr.lineHeight * LIGNES_FR
         (boiteDirect.layoutParams ?: return).height = stDirect.lineHeight * LIGNES_DIRECT
-        boiteLb.requestLayout(); boiteFr.requestLayout(); boiteDirect.requestLayout()
+        boiteDirect.requestLayout()
+        phrasesVues = null    // les blocs se refont à la nouvelle taille
     }
 
     private fun majSousTitres(ps: List<Paragraphe>) {
         // En grand : les dernières phrases traduites, chacune avec sa traduction,
         // telles que le service les a associées. La plus récente en noir.
         val phrases = EtatDirect.phrases
-        val lb = SpannableStringBuilder()
-        val fr = SpannableStringBuilder()
-        var taille = 0
-        val gardees = phrases.asReversed().takeWhile { (t, _) -> (taille < MAX_CARS).also { taille += t.length + 1 } }.asReversed()
-        gardees.forEachIndexed { k, (t, tr) ->
-            val recente = k == gardees.size - 1
-            ajouter(lb, t, if (recente) Charte.ENCRE else Charte.GRIS_CLAIR)
-            ajouter(fr, tr, if (recente) Charte.ENCRE else Charte.GRIS)
+        if (phrases !== phrasesVues || reglages.echelle != echelleVue) {
+            phrasesVues = phrases
+            echelleVue = reglages.echelle
+            blocs.removeAllViews()
+            val gardees = phrases.takeLast(BLOCS_MAX)
+            gardees.forEachIndexed { k, (t, tr) -> blocs.addView(bloc(t, tr, k == gardees.size - 1)) }
         }
-        stLb.text = lb
-        stFr.text = fr
+        // En attendant la première traduction (8 à 12 s au début d'une réunion).
+        attente.visibility = if (phrases.isEmpty()) View.VISIBLE else View.GONE
+        attente.text = if (ps.isEmpty()) "Je vous écoute.\nLes phrases s'afficheront ici, chacune avec sa traduction."
+                       else "Les phrases s'afficheront ici avec leur traduction, dès la fin de la première."
 
         // En bas : ce qui s'est dit depuis la dernière phrase traduite, puis la fin
         // encore provisoire, mot à mot.
@@ -473,11 +502,9 @@ class DirectActivity : Activity() {
     companion object {
         private val ECHELLES = floatArrayOf(0.85f, 1f, 1.2f, 1.4f, 1.7f, 2f)
         /** Les lignes gardées à l'écran en sous-titres. */
-        private const val LIGNES_LB = 4
-        private const val LIGNES_FR = 4
         private const val LIGNES_DIRECT = 2
+        /** Les blocs gardés : assez pour remplir l'écran d'une tablette. */
+        private const val BLOCS_MAX = 6
         private const val MAX_CARS_DIRECT = 220
-        /** Assez pour remplir la boîte, sans mettre en page tout le texte de la réunion. */
-        private const val MAX_CARS = 420
     }
 }
