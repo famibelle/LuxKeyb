@@ -728,6 +728,152 @@ MEUBLES = {
     'Fréijoer':       'printemps',       # printemps
     'Gletscher':      'glacier',         # glacier
     'Feierblumm':     'coquelicot',      # coquelicot
+    # les essentiels (Dictionnaires/generate_essentiels.py, 2026-10-31) : le
+    # vocabulaire de base que le carnet doit contenir. Les dessins viennent
+    # du domaine public (scripts/meubles_domaine.py). Pas de dessin pour un
+    # mot à plusieurs sens (jo, Land, Wand, Box, liesen, schaffen), un
+    # abstrait, une couleur, un nombre ou un lien de parenté que la
+    # silhouette ne dit pas (Brudder, Monni, Frënd…), ni pour Aarm, Mantel,
+    # Pullover et Schal, faute d'une silhouette libre qui les dise.
+    'Moien':          'lever_soleil',    # bonjour, matin
+    'Gudde Moien':    'lever_soleil',    # bonjour
+    'Gudden Owend':   'coucher_soleil',  # bonsoir
+    'Gutt Nuecht':    'lune',            # bonne nuit
+    'Äddi':           'salut_main',      # au revoir, salut
+    'Bis geschwënn':  'salut_main',      # à bientôt
+    'Nee':            'pouce_bas',       # non
+    'Numm':           'badge',           # nom
+    'Virnumm':        'badge',           # prénom
+    'Adress':         'boite_lettres',   # adresse, adresse Internet, adresse électronique
+    'Telefonsnummer': 'telephone',       # numéro de téléphone
+    'Nationalitéit':  'passeport',       # nationalité
+    'Alter':          'sablier',         # âge, tranche d'âge, vieillesse
+    'Sprooch':        'bulle',           # langue, parole
+    'bestuet':        'alliances',       # marié, marier, épouser
+    'Famill':         'famille',         # famille
+    'Elteren':        'couple',          # parents
+    'Papp':           'pere',            # père, Dieu le Père
+    'Mamm':           'mere',            # mère
+    'Jong':           'garcon',          # garçon, fils, gars
+    'Duechter':       'fille',           # fille
+    'Kand':           'enfants',         # enfants
+    'Bopa':           'grand_pere',      # papi
+    'Bomi':           'grand_mere',      # mamie
+    'Mann':           'homme',           # homme, mari
+    'Fra':            'femme',           # femme, Gëlle Fra
+    'Dag':            'calendrier',      # jour, journée, (jour) anniversaire
+    'Woch':           'calendrier',      # semaine
+    'Mount':          'calendrier',      # mois
+    'Joer':           'calendrier',      # an
+    'Mëtteg':         'soleil',          # midi, (heure de) midi, après-midi
+    'Owend':          'coucher_soleil',  # soir, soirée
+    'Stonn':          'horloge',         # heure, cours, kilomètre à l'heure
+    'Minutt':         'horloge',         # minute
+    'Méindeg':        'calendrier',      # lundi
+    'Dënschdeg':      'calendrier',      # mardi
+    'Mëttwoch':       'calendrier',      # mercredi
+    'Donneschdeg':    'calendrier',      # jeudi
+    'Freideg':        'calendrier',      # vendredi
+    'Samschdeg':      'calendrier',      # samedi
+    'Sonndeg':        'calendrier',      # dimanche
+    'Januar':         'calendrier',      # janvier
+    'Februar':        'calendrier',      # février
+    'Mäerz':          'calendrier',      # mars
+    'Abrëll':         'calendrier',      # avril
+    'Mee':            'calendrier',      # mai
+    'Juni':           'calendrier',      # juin
+    'Juli':           'calendrier',      # juillet
+    'August':         'calendrier',      # août
+    'September':      'calendrier',      # septembre
+    'Oktober':        'calendrier',      # octobre
+    'November':       'calendrier',      # novembre
+    'Dezember':       'calendrier',      # décembre
+    'Wieder':         'meteo',           # temps, orage, météo
+    'Schnéi':         'flocon',          # neige, (blancs montés en) neige
+    'Summer':         'soleil',          # été
+    'Wunneng':        'batiment',        # appartement, logement, domicile
+    'Kichen':         'casserole',       # cuisine
+    'Stuff':          'canape',          # séjour
+    'Schlofzëmmer':   'lit',             # chambre à coucher
+    'Buedzëmmer':     'baignoire',       # salle de bain
+    'Gaart':          'arrosoir',        # jardin
+    'Stull':          'chaise',          # chaise, selles, Saint-Siège
+    'Schaf':          'armoire',         # armoire
+    'Aarbecht':       'mallette',        # travail
+    'Büro':           'bureau',          # bureau
+    'Pai':            'billets',         # salaire
+    'Vakanz':         'parasol',         # vacances
+    'Arrêt':          'arret_bus',       # arrêt
+    'zu Fouss':       'pieton',          # à pied
+    'Fleesch':        'viande',          # viande, chair
+    'Geméis':         'legumes',         # légumes
+    'Apel':           'pomme',           # pomme
+    'Gromper':        'pomme_de_terre',  # pomme de terre, montre (tape-à-l'œil)
+    'Ee':             'oeuf',            # œuf
+    'Zopp':           'soupe',           # soupe
+    'Téi':            'the',             # thé, (tasse de) thé, thé dansant
+    'Béier':          'biere',           # bière, (verre de) bière, verrat
+    'Buttek':         'boutique',        # magasin, fatras, dispute
+    'Supermarché':    'caddie',          # supermarché
+    'Bäckerei':       'pain',            # boulangerie
+    'Präis':          'etiquette_prix',  # prix
+    'kafen':          'sac_courses',     # acheter
+    'bezuelen':       'carte',           # payer
+    'Wéi vill kascht dat?': 'etiquette_prix',  # combien ça coûte ?
+    'A':              'oeil',            # œil
+    'Ae':             'oeil',            # yeux
+    'Nues':           'nez',             # nez, flair
+    'Mond':           'bouche',          # bouche
+    'Ouer':           'oreille',         # oreille
+    'Been':           'jambe',           # jambe, pied
+    'Dokter':         'stethoscope',     # médecin
+    'Apdikt':         'pharmacie',       # pharmacie
+    'Medikament':     'medicament',      # médicament
+    'Rack':           'robe',            # robe
+    'Hiem':           'chemise',         # chemise
+    'Jackett':        'veste',           # veste
+    'Kap':            'casquette',       # casquette, contrefort
+    'Sport':          'sport',           # sport
+    'schwammen':      'nageur',          # nager
+    'danzen':         'danseurs',        # danser
+    'spadséiere goen': 'pieton',          # aller se promener
+    'reesen':         'valise',          # aller (en voyage), (devoir) aller
+    'kachen':         'casserole',       # (faire) cuire, cuisiner, faire bouillir
+    'Fest':           'ballons',         # fête
+    'Gebuertsdag':    'gateau',          # anniversaire
+    'Hochzäit':       'alliances',       # mariage
+    'Kaddo':          'cadeau',          # cadeau
+    'Chrëschtdag':    'sapin_noel',      # (jour de) Noël
+    'Ouschteren':     'oeuf_paques',     # (dimanche de) Pâques, fêtes de Pâques
+    'Nationalfeierdag': 'feux_artifice',   # fête nationale
+    'feieren':        'ballons',         # fêter, faire la fête
+    'invitéieren':    'lettre',          # inviter
+    'wunnen':         'maison',          # habiter
+    'schwätzen':      'bulle',           # parler, dire, prononcer
+    'iessen':         'restaurant',      # manger, finir
+    'drénken':        'verre',           # boire, vider
+    'schlofen':       'lit',             # dormir, coucher
+    'fueren':         'voiture',         # circuler, conduire, aller
+    'spillen':        'des',             # jouer à, jouer, jouer de
+    'gesinn':         'oeil',            # voir
+    'héieren':        'oreille',         # entendre, entendre dire
+    'schreiwen':      'crayon',          # écrire, écrire à, s'appeler
+    'sichen':         'loupe',           # chercher, (aller) chercher
+    'gutt':           'pouce_haut',      # bon, en bonne santé, facilement
+    'schlecht':       'pouce_bas',       # mauvais, malade, nauséeux
+    'uewen':          'fleche_haut',     # en haut
+    'ënnen':          'fleche_bas',      # en bas
+    'lénks':          'fleche_gauche',   # gauche, de gauche, gay
+    'riets':          'fleche_droite',   # droit, de droite, (à) droite
+    'an der Mëtt':    'centre',          # au milieu
+    'wien':           'qui',             # qui (est-ce qui), qui (est-ce que), (celui) qui
+    'wat':            'question',        # qu'est-ce qui, (qu'est-ce) que, quoi
+    'wou':            'repere',          # où, comment, ... quoi
+    'vu wou':         'repere',          # d’où
+    'wéini':          'horloge',         # quand, dans quel cas
+    'wéi':            'question',        # comment, combien
+    'firwat':         'question',        # pourquoi
+    'wéi vill':       'question',        # combien (de)
 }
 
 
@@ -771,20 +917,25 @@ def charger_corpus():
 
 
 def meubles_declares():
-    """Les silhouettes que Meubles.kt sait tracer, lues dans le Kotlin.
+    """Les silhouettes que l'appli sait tracer, lues dans le Kotlin :
+    celles du domaine public (MeublesDomaine.kt, généré par
+    scripts/meubles_domaine.py) et les quelques-unes dessinées à la main
+    (Meubles.kt).
 
-    Le script et le fichier de dessins doivent tomber d'accord, et le seul
+    Le script et les fichiers de dessins doivent tomber d'accord, et le seul
     accord qui tienne dans le temps est celui qu'on vérifie. Un meuble
     attribué ici mais jamais dessiné produirait une carte muette.
     """
-    chemin = os.path.join(RACINE, 'android_keyboard', 'app', 'src', 'main',
-                          'java', 'com', 'example', 'kreyolkeyboard', 'carnet',
-                          'Meubles.kt')
-    if not os.path.exists(chemin):
-        return None
-    with open(chemin, encoding='utf-8') as f:
-        source = f.read()
-    return set(re.findall(r'^\s*"([a-z_]+)" to ', source, re.M))
+    dossier = os.path.join(RACINE, 'android_keyboard', 'app', 'src', 'main',
+                           'java', 'com', 'example', 'kreyolkeyboard', 'carnet')
+    noms = set()
+    for fichier in ('Meubles.kt', 'MeublesDomaine.kt'):
+        chemin = os.path.join(dossier, fichier)
+        if not os.path.exists(chemin):
+            return None
+        with open(chemin, encoding='utf-8') as f:
+            noms |= set(re.findall(r'^\s*"([a-z_]+)" to ', f.read(), re.M))
+    return noms
 
 
 def main():
@@ -816,7 +967,11 @@ def main():
     # remet dans une grille, il retrouve sa tour Eiffel.
     with open(os.path.join(ACTIFS, 'luxemburgish_translations.json'), encoding='utf-8') as f:
         noms_propres = set(json.load(f).get('noms_propres', []))
-    injouables = {m for m in absents if m in noms_propres}
+    # Un essentiel sort toujours d'un jeu, nom propre ou non : les jeux font
+    # passer devant ceux qui manquent au carnet (carnet/Essentiels.kt).
+    with open(os.path.join(ACTIFS, 'luxemburgish_essentiels.json'), encoding='utf-8') as f:
+        essentiels = {m for t in json.load(f)['themes'] for m in t['mots']}
+    injouables = {m for m in absents if m in noms_propres and m not in essentiels}
     if injouables:
         print('meuble retiré, nom propre hors des grilles : ' + ', '.join(sorted(injouables)))
 

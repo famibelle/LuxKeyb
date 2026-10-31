@@ -160,7 +160,11 @@ class BlasonsAssetTest {
     @Test
     fun `tout meuble attribué peut réellement sortir d'un jeu`() {
         val blasons = blasons()
-        val jouables = lemmesJouables(avecTirages = true) + motsImprimes()
+        // Les essentiels se gagnent toujours : les jeux les poussent, et
+        // EssentielsAssetTest prouve que chacun a un jeu qui le donne.
+        val essentiels = com.example.kreyolkeyboard.carnet.Essentiels
+            .lire(File("src/main/assets/luxemburgish_essentiels.json").readText()).mots
+        val jouables = lemmesJouables(avecTirages = true) + motsImprimes() + essentiels
         for (lemme in blasons.keys()) {
             if (blasons.getJSONObject(lemme).optString("m").isEmpty()) continue
             assertTrue(

@@ -91,8 +91,8 @@ object Booster {
         contenus: List<ContenuCarte>,
         nouvelles: Set<String>,
         animations: Boolean,
-        /** Les séries que ces cartes viennent de compléter : voir [Series.aFeter]. */
-        seriesCompletees: List<Serie> = emptyList(),
+        /** Les titres des séries que ces cartes viennent de compléter : voir [Series.aFeter]. */
+        seriesCompletees: List<String> = emptyList(),
         /** Le palier de collection que cette pochette franchit : voir [Etapes]. */
         etape: Int? = null,
         surCarnet: () -> Unit,
@@ -414,7 +414,7 @@ object Booster {
                 // chacun n'arrive qu'une fois.
                 text = (listOfNotNull(etape?.let { "🎉 " + ctx.getString(R.string.etape_atteinte, it) }) +
                     seriesCompletees.map {
-                        "🏆 " + ctx.getString(R.string.serie_complete, ctx.getString(it.titre))
+                        "🏆 " + ctx.getString(R.string.serie_complete, it)
                     } + ctx.getString(
                     if (neuves > 0) R.string.pochette_bilan_neuves
                     else R.string.pochette_bilan_deja

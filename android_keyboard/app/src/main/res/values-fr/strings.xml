@@ -70,6 +70,7 @@
     <string name="cat_pronom">Pronom</string>
     <string name="cat_adverbe_pronominal">Adverbe pronominal</string>
     <string name="cat_interjection">Interjection</string>
+    <string name="cat_expression">Expression</string>
     <string name="cat_preposition">Préposition</string>
     <string name="cat_conjonction">Conjonction</string>
     <string name="cat_particule_verbale">Particule verbale</string>
@@ -160,6 +161,8 @@
     <string name="tri_series">Séries</string>
     <string name="serie_nombres">Les nombres</string>
     <string name="serie_enluminures">Les illustrations</string>
+    <string name="serie_essentiels">Les essentiels</string>
+    <string name="serie_essentiels_theme">Les essentiels · %1$s</string>
     <string name="serie_jeux">Les sept jeux</string>
     <string name="serie_paysages">Les paysages</string>
     <string name="series_resume">%1$d emplacements remplis sur %2$d. Une série est complète quand chaque emplacement porte sa carte.</string>
@@ -170,6 +173,7 @@
     <string name="emplacement_nombre">Carte manquante : le nombre %1$s</string>
     <string name="emplacement_jeu">Carte manquante : un mot gagné à %1$s</string>
     <string name="emplacement_dessin">Carte manquante : un mot illustré</string>
+    <string name="emplacement_essentiel">Carte manquante : un mot qui veut dire « %1$s »</string>
     <string name="emplacement_paysage">Carte manquante : %1$s, %2$s</string>
     <string name="heure_0">le matin</string>
     <string name="heure_1">l\'après-midi</string>
@@ -672,6 +676,8 @@
     <string name="carte_ecu_cout">COÛT</string>
     <string name="carte_ecu_type">TYPE</string>
     <string name="langue_traductions">fr</string>
+    <!-- La langue de l'interface, pour les titres des essentiels (Essentiels.langue). -->
+    <string name="code_langue">fr</string>
     <string name="accueil_glose">bonjour</string>
     <string name="accueil_traduction">Bonjour, comment ça va ?</string>
     <string name="fierkelsmaart_glose">marché aux porcelets</string>

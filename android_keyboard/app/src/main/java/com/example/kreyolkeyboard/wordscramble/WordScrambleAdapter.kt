@@ -107,7 +107,10 @@ class AnswerLettersAdapter(
         }
         
         val letter = letters[position]
-        if (letter != null) {
+        if (letter == ' ') {
+            // Le blanc qui finit la rangée d'un mot court, dans une expression.
+            tvLetter.text = ""
+        } else if (letter != null) {
             tvLetter.text = letter.toString().uppercase()
             tvLetter.setBackgroundColor(Color.parseColor("#2196F3"))
             tvLetter.setTextColor(Color.WHITE)

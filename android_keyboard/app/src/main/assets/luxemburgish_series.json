@@ -1,55 +1,106 @@
 {
  "enluminures": [
+  "abeille",
+  "alliances",
   "ambulance",
   "antenne",
   "arbre",
+  "armoire",
+  "arret_bus",
+  "arrosoir",
+  "automne",
   "avion",
+  "badge",
+  "baignoire",
   "balance",
+  "ballons",
   "banc",
   "banque",
   "bateau",
   "batiment",
+  "beurre",
+  "biere",
+  "billets",
   "boeuf",
+  "boite_lettres",
+  "bouche",
   "bouteille",
+  "boutique",
+  "bulle",
+  "bureau",
   "bus",
+  "caddie",
+  "cadeau",
   "cafe",
+  "cahier",
+  "calendrier",
   "camera",
   "camion",
+  "canape",
   "carte",
   "casque",
+  "casquette",
+  "casserole",
+  "centre",
+  "chaise",
   "chat",
   "chaussure",
+  "chemise",
   "cheval",
   "chevreuil",
   "chien",
   "cigarette",
   "coeur",
+  "coucher_soleil",
+  "couple",
   "couteau",
+  "crayon",
+  "danseurs",
   "dent",
+  "des",
   "document",
   "dossier",
   "drapeau",
   "eau",
   "ecole",
+  "elephant",
+  "enfants",
+  "etiquette_prix",
   "europe",
+  "famille",
+  "femme",
   "fenetre",
+  "feux_artifice",
+  "fille",
   "film",
+  "fleche_bas",
+  "fleche_droite",
+  "fleche_gauche",
+  "fleche_haut",
   "flocon",
   "foret",
+  "fourmi",
   "fromage",
   "fruits",
+  "garcon",
   "gare",
   "gateau",
   "globe",
+  "grand_mere",
+  "grand_pere",
   "helicoptere",
+  "homme",
   "hopital",
   "horloge",
   "ile",
+  "jambe",
   "jean",
   "journal",
   "lait",
   "lampe",
+  "legumes",
   "lettre",
+  "lever_soleil",
   "lion",
   "lit",
   "livre",
@@ -58,47 +109,86 @@
   "lunettes",
   "main",
   "maison",
+  "mallette",
   "marteau",
+  "medicament",
+  "mere",
   "merle",
+  "meteo",
   "micro",
   "miroir",
   "moto",
   "moulin",
   "mur",
+  "nageur",
+  "nez",
   "note",
+  "oeil",
+  "oeuf",
+  "oeuf_paques",
+  "oignon",
   "ordinateur",
+  "oreille",
   "pain",
   "panneau_danger",
+  "parasol",
   "parking",
+  "passeport",
+  "pere",
+  "pharmacie",
   "photo",
   "piece",
   "pied",
+  "pieton",
   "pilier",
   "pizza",
   "pluie",
   "poisson",
+  "pomme",
+  "pomme_de_terre",
   "pompe_essence",
   "porte",
   "poteau",
+  "pouce_bas",
+  "pouce_haut",
+  "printemps",
   "prison",
+  "question",
+  "qui",
   "quille",
   "regle",
+  "repere",
+  "restaurant",
   "robe",
   "robinet",
   "rue",
+  "sablier",
+  "sac_courses",
+  "salut_main",
+  "sapin_noel",
   "seringue",
   "soleil",
+  "soupe",
+  "sport",
+  "stethoscope",
   "table",
   "telephone",
   "tente",
   "tete",
+  "the",
   "ticket",
   "tiroir",
+  "tomate",
   "train",
   "tram",
   "tunnel",
   "valise",
+  "veau",
   "velo",
+  "verger",
+  "verre",
+  "veste",
+  "viande",
   "village",
   "ville",
   "vin",
@@ -106,8 +196,36 @@
   "voiture"
  ],
  "exclus": {
+  "alphabet": {
+   "Alphabet": [
+    "fr",
+    "de",
+    "en"
+   ]
+  },
   "ange": {
    "Engel": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "banane": {
+   "Banann": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "calcul": {
+   "Calcul": [
+    "fr"
+   ]
+  },
+  "cartable": {
+   "Schoulsak": [
     "fr",
     "de",
     "en",
@@ -119,8 +237,61 @@
     "de"
    ]
   },
+  "colle": {
+   "Koll": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "coquelicot": {
+   "Feierblumm": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "crepe": {
+   "Paangech": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "crocodile": {
+   "Krokodil": [
+    "de"
+   ]
+  },
+  "dauphin": {
+   "Delfin": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
   "eglise": {
    "Kierch": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "framboise": {
+   "Hammbier": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "glacier": {
+   "Gletscher": [
     "fr",
     "de",
     "en",
@@ -132,19 +303,82 @@
     "de"
    ]
   },
+  "guepe": {
+   "Harespel": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "hetre": {
+   "Bich": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "hirondelle": {
+   "Schmuewel": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "lapin": {
+   "Kanéngchen": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "mathematiques": {
+   "Mathematik": [
+    "de"
+   ]
+  },
+  "noisette": {
+   "Hieselnoss": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
   "or": {
    "Gold": [
     "de"
    ]
   },
-  "restaurant": {
-   "Restaurant": [
+  "orage": {
+   "Donner": [
+    "fr",
     "de",
-    "en"
+    "en",
+    "pt"
+   ]
+  },
+  "petit_pain": {
+   "Bréitchen": [
+    "fr",
+    "de",
+    "en",
+    "pt"
+   ]
+  },
+  "prune": {
+   "Promm": [
+    "fr",
+    "de",
+    "en",
+    "pt"
    ]
   }
  },
- "generated": "2026-10-13",
+ "generated": "2026-10-31",
  "langues": [
   "fr",
   "de",

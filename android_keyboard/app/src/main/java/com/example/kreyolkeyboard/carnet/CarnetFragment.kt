@@ -1251,6 +1251,10 @@ class CarnetFragment : DialogFragment() {
         // quatre cases de 600 px étalaient l'album sur neuf écrans).
         val colonnesSerie = when {
             serie == Serie.PAYSAGES -> if (colonnes >= 8) 8 else 4
+            // Les essentiels montrent un sens écrit, pas un dessin : quatre
+            // colonnes suffisent à le lire, et 271 cases tiennent en moins
+            // de rangées.
+            serie == Serie.ESSENTIELS -> maxOf(colonnes, 4)
             serie != Serie.NOMBRES -> colonnes
             colonnes >= 10 -> 10
             else -> 5
@@ -1275,7 +1279,22 @@ class CarnetFragment : DialogFragment() {
 
         // Chaque titre et chaque rangée est une étape : voir [poserParEtapes].
         val etapes = mutableListOf<Pair<Int, () -> Unit>>()
+        val premierEssentiel = series.firstOrNull { it.serie == Serie.ESSENTIELS }
         series.forEach { a ->
+            // Les essentiels sont une série en plusieurs pages : un en-tête
+            // les annonce une fois, chaque thème garde ensuite son titre.
+            if (a === premierEssentiel) {
+                etapes += (48 * d).toInt() to { conteneurGrille.addView(TextView(ctx).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { setMargins(0, (24 * d).toInt(), 0, 0) }
+                    text = getString(R.string.serie_essentiels)
+                    textSize = 18f
+                    setTypeface(null, Typeface.BOLD)
+                    setTextColor(accent)
+                }) }
+            }
             etapes += (40 * d).toInt() to { conteneurGrille.addView(LinearLayout(ctx).apply {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.BOTTOM
@@ -1285,7 +1304,7 @@ class CarnetFragment : DialogFragment() {
                 ).apply { setMargins(0, (16 * d).toInt(), 0, (10 * d).toInt()) }
                 addView(TextView(ctx).apply {
                     layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-                    text = getString(a.serie.titre)
+                    text = a.titre(ctx)
                     textSize = 15f
                     setTypeface(null, Typeface.BOLD)
                     setTextColor(accent)

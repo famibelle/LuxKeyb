@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard.wordsearch
 
 import android.content.Context
+import com.example.kreyolkeyboard.carnet.Essentiels
 import kotlin.random.Random
 
 /**
@@ -36,8 +37,11 @@ object WordSearchGenerator {
             WordSearchDifficulty.EXPERT -> 8
         }
         
-        // Sélectionner des mots aléatoires qui rentrent dans la grille
-        val selectedWords = selectWordsForGrid(availableWords, actualGridSize, wordCount)
+        // Sélectionner des mots aléatoires qui rentrent dans la grille, les
+        // essentiels qui manquent au carnet d'abord : deux au plus, pour que
+        // la grille reste une partie et non une leçon. Voir [Essentiels].
+        val prioritaires = Essentiels.manquantsPour(context, 2) { it.length <= minOf(actualGridSize - 1, 7) && Essentiels.pourWuertsich(it) }
+        val selectedWords = selectWordsForGrid(availableWords, actualGridSize, wordCount, prioritaires)
         
         // Créer la grille vide
         val grid = Array(actualGridSize) { CharArray(actualGridSize) { ' ' } }
@@ -57,14 +61,21 @@ object WordSearchGenerator {
         )
     }
     
-    private fun selectWordsForGrid(words: List<String>, gridSize: Int, count: Int): List<String> {
+    private fun selectWordsForGrid(
+        words: List<String>,
+        gridSize: Int,
+        count: Int,
+        prioritaires: List<String> = emptyList()
+    ): List<String> {
         // Filtrer les mots qui peuvent rentrer dans la grille (pour 8x8, mots de 3-7 lettres max)
         val fittingWords = words.filter { 
             it.length >= 3 && it.length <= minOf(gridSize - 1, 7) 
         }
         
-        // Mélanger et prendre le nombre demandé
-        return fittingWords.shuffled(random).take(count)
+        // Les prioritaires d'abord, puis le hasard pour compléter
+        val devant = prioritaires.take(count)
+        val dejaPris = devant.mapTo(HashSet()) { it.lowercase() }
+        return devant + fittingWords.filterNot { it.lowercase() in dejaPris }.shuffled(random).take(count - devant.size)
     }
     
     private fun placeWordsInGrid(

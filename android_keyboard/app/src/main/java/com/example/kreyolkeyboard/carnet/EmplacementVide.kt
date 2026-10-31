@@ -19,7 +19,7 @@ import android.view.View
  * Elle a la taille et l'arrondi d'une vignette, pour que la page d'album se
  * lise comme une grille dont on n'a pas encore tout collé, et elle porte un
  * **indice** : le nombre en chiffres, la silhouette du dessin, l'emblème du
- * jeu. Jamais le mot : c'est lui qu'on gagne.
+ * jeu, le sens d'un essentiel. Jamais le mot : c'est lui qu'on gagne.
  *
  * Elle est dessinée et non composée de vues, parce qu'une page des
  * enluminures en pose une centaine.
@@ -41,6 +41,14 @@ class EmplacementVide(
     private val jeu: JeuCarte? = if (serie == Serie.JEUX) JeuCarte.parId(cle) else null
     private val paysage: Pair<Lieu, Rarete>? = if (serie == Serie.PAYSAGES) Series.paysageDe(cle) else null
 
+    /** Le sens d'un essentiel, dans la langue des gloses : « lundi », « bonjour ». */
+    private val sens: String? = if (serie == Serie.ESSENTIELS) {
+        com.example.kreyolkeyboard.TranslationDictionary.traduire(context, cle)
+    } else null
+    private var lignesSens: List<String> = emptyList()
+    private var corpsSens = 0f
+    private var sensPour = -1
+
     /** Le lieu en grisé : on reconnaît l'endroit et l'heure, pas la carte. */
     private val gris = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG).apply {
         colorFilter = ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0f) })
@@ -61,6 +69,9 @@ class EmplacementVide(
                 com.example.kreyolkeyboard.R.string.emplacement_paysage,
                 paysage?.first?.nom ?: cle,
                 paysage?.let { heure(it.second) } ?: ""
+            )
+            Serie.ESSENTIELS -> context.getString(
+                com.example.kreyolkeyboard.R.string.emplacement_essentiel, sens ?: ""
             )
         }
     }
@@ -108,7 +119,46 @@ class EmplacementVide(
                 texte(canvas, jeu?.emoji ?: "?", l * 0.26f, l * 0.46f, gras = false, opaque = true)
                 texte(canvas, jeu?.libelle(context) ?: cle, l * 0.09f, l * 0.74f, gras = true)
             }
+            Serie.ESSENTIELS -> dessinerSens(canvas, l)
         }
+    }
+
+    /**
+     * Le sens, sur trois lignes au plus : le plus grand corps qui tienne dans
+     * la case, entre 13 et 8 % de son côté.
+     */
+    private fun dessinerSens(c: Canvas, l: Float) {
+        val glose = sens ?: return texte(c, "?", l * 0.3f, l / 2f, gras = true)
+        if (sensPour != width) {
+            sensPour = width
+            pinceau.typeface = Typeface.DEFAULT_BOLD
+            val largeur = l * 0.84f
+            var corps = l * 0.13f
+            var lignes = couper(glose, largeur, corps)
+            while ((lignes.size > 3 || lignes.any { pinceau.measureText(it) > largeur }) && corps > l * 0.08f) {
+                corps *= 0.92f
+                lignes = couper(glose, largeur, corps)
+            }
+            lignesSens = lignes.take(3)
+            corpsSens = corps
+        }
+        val pas = corpsSens * 1.2f
+        val haut = l / 2f - pas * (lignesSens.size - 1) / 2f
+        lignesSens.forEachIndexed { i, ligne -> texte(c, ligne, corpsSens, haut + i * pas, gras = true) }
+    }
+
+    /** Coupe [phrase] en lignes de [largeur] au plus, mot à mot, au corps [corps]. */
+    private fun couper(phrase: String, largeur: Float, corps: Float): List<String> {
+        pinceau.textSize = corps
+        val lignes = mutableListOf<String>()
+        var ligne = ""
+        for (mot in phrase.split(' ')) {
+            val essai = if (ligne.isEmpty()) mot else "$ligne $mot"
+            if (pinceau.measureText(essai) <= largeur || ligne.isEmpty()) ligne = essai
+            else { lignes += ligne; ligne = mot }
+        }
+        if (ligne.isNotEmpty()) lignes += ligne
+        return lignes
     }
 
     private fun texte(

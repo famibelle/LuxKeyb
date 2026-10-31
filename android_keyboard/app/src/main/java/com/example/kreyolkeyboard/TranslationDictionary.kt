@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard
 
 import android.content.Context
+import com.example.kreyolkeyboard.carnet.Essentiels
 import androidx.annotation.StringRes
 import android.util.Log
 import org.json.JSONObject
@@ -216,6 +217,15 @@ object TranslationDictionary {
                 // la casse (« Froen » / « froen ») c'est la forme la plus
                 // courante qui sert de repli.
                 // (putIfAbsent est API 24, minSdk vaut 21)
+                val cle = forme.lowercase()
+                if (!minuscules.containsKey(cle)) minuscules[cle] = glose
+            }
+
+            // Les sens des essentiels passent avant ceux de la table : « Mee »
+            // est le mois de mai, « Moien » salue avant de dire le matin. Voir
+            // [Essentiels] et Dictionnaires/generate_essentiels.py.
+            Essentiels.donnees(context).gloses[langue]?.forEach { (forme, glose) ->
+                exactes[forme] = glose
                 val cle = forme.lowercase()
                 if (!minuscules.containsKey(cle)) minuscules[cle] = glose
             }
@@ -515,6 +525,7 @@ object TranslationDictionary {
      */
     @StringRes
     fun categorie(context: Context, mot: String): Int? {
+        Essentiels.donnees(context).categories[mot]?.let { return libelleCategorie(it) }
         chargerCategories(context)
         return categoriesLod[mot]?.let { libelleCategorie(it) }
     }
@@ -546,6 +557,8 @@ object TranslationDictionary {
             "VRBPART" -> R.string.cat_particule_verbale
             "PART" -> R.string.cat_particule
             "ART" -> R.string.cat_article
+            // Pas un code du LOD : celui des expressions des essentiels.
+            "EXPR" -> R.string.cat_expression
             else -> null
         }
     }
@@ -762,6 +775,11 @@ object TranslationDictionary {
      */
     fun fiche(context: Context, mot: String): Resultat {
         charger(context)
+        // Un homographe des essentiels (« Mee », mai) ne prend ni la famille
+        // ni les phrases du mot qu'il n'est pas (« mee », mais).
+        if (mot in Essentiels.donnees(context).isoles) {
+            return Resultat(mot, traductions[mot] ?: "", emptyList())
+        }
         chargerFamilles(context)
         val representant = representantDe[mot]
             ?: representantDe[mot.lowercase()]

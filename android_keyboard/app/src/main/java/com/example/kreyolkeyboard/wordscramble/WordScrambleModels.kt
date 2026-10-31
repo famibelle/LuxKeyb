@@ -2,6 +2,7 @@ package com.example.kreyolkeyboard.wordscramble
 
 import android.content.Context
 import com.example.kreyolkeyboard.TranslationDictionary
+import com.example.kreyolkeyboard.carnet.Essentiels
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -93,9 +94,16 @@ object WordScrambleData {
         difficulty: ScrambleDifficulty
     ): List<String> {
         val candidates = filterByDifficulty(words, difficulty)
-        return TranslationDictionary.filtrerMotsTraduits(context, candidates)
+        // Les essentiels qui manquent au carnet passent devant : une
+        // expression (c'est le seul jeu qui les donne) et deux mots au plus.
+        val manquants = Essentiels.manquants(context).filter { Essentiels.pourWuertmix(it, difficulty.ordinal) }
+        val prioritaires = manquants.filter { Essentiels.estExpression(it) }.take(1) +
+            manquants.filterNot { Essentiels.estExpression(it) }.take(2)
+        val reste = TranslationDictionary.filtrerMotsTraduits(context, candidates)
+            .filterNot { it in prioritaires }
             .shuffled()
-            .take(10)
+            .take(10 - prioritaires.size)
+        return (prioritaires + reste).shuffled()
     }
     
     private fun isValidForDifficulty(word: String, difficulty: ScrambleDifficulty): Boolean {

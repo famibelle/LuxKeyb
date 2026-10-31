@@ -74,6 +74,7 @@
     <string name="cat_pronom">Pronoun</string>
     <string name="cat_adverbe_pronominal">Pronominal adverb</string>
     <string name="cat_interjection">Interjection</string>
+    <string name="cat_expression">Expression</string>
     <string name="cat_preposition">Preposition</string>
     <string name="cat_conjonction">Conjunction</string>
     <string name="cat_particule_verbale">Verbal particle</string>
@@ -164,6 +165,8 @@
     <string name="tri_series">Series</string>
     <string name="serie_nombres">Numbers</string>
     <string name="serie_enluminures">Illustrations</string>
+    <string name="serie_essentiels">The essentials</string>
+    <string name="serie_essentiels_theme">The essentials · %1$s</string>
     <string name="serie_jeux">The seven games</string>
     <string name="serie_paysages">The landscapes</string>
     <string name="series_resume">%1$d of %2$d places filled. Each series is complete when every place holds a card.</string>
@@ -174,6 +177,7 @@
     <string name="emplacement_nombre">Missing card: the number %1$s</string>
     <string name="emplacement_jeu">Missing card: a word won at %1$s</string>
     <string name="emplacement_dessin">Missing card: an illustrated word</string>
+    <string name="emplacement_essentiel">Missing card: a word that means “%1$s”</string>
     <string name="emplacement_paysage">Missing card: %1$s, %2$s</string>
     <string name="heure_0">morning</string>
     <string name="heure_1">afternoon</string>
@@ -676,6 +680,8 @@
     <string name="carte_ecu_cout">COST</string>
     <string name="carte_ecu_type">TYPE</string>
     <string name="langue_traductions">en</string>
+    <!-- La langue de l'interface, pour les titres des essentiels (Essentiels.langue). -->
+    <string name="code_langue">en</string>
     <string name="accueil_glose">hello</string>
     <string name="accueil_traduction">Hello, how are you?</string>
     <string name="fierkelsmaart_glose">piglet market</string>

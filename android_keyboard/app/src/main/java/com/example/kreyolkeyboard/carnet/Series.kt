@@ -15,7 +15,7 @@ import org.json.JSONObject
  * terminer, et une collection sans emplacement vide n'a pas de « encore
  * trois ». Voir `GAMIFICATION-CARNET.md` à la racine du dépôt.
  *
- * Trois séries, toutes connues d'avance et **prouvées complétables** :
+ * Cinq séries, toutes connues d'avance et **prouvées complétables** :
  *
  * - [NOMBRES] : les cent un nombres de 0 à 100, ceux que Zuelwuert sait
  *   écrire (de 35.0.0 à 36.x, seulement les dix-huit produits composés des
@@ -28,7 +28,10 @@ import org.json.JSONObject
  * - [PAYSAGES] : chaque lieu des cartes à chacune de ses quatre heures, soit
  *   neuf lieux par quatre raretés. Les grilles de Wuertplaz suffisent à la
  *   remplir dans les quatre langues de glose : `SeriesPaysagesAssetTest`
- *   compte, case par case, les mots qui y mènent.
+ *   compte, case par case, les mots qui y mènent ;
+ * - [ESSENTIELS] : le vocabulaire de base, une page par thème (voir
+ *   [Essentiels]). Les jeux font passer devant les mots qui y manquent, et
+ *   `EssentielsAssetTest` vérifie que chacun a un jeu qui le donne.
  *
  * Deux règles, qui valent pour toutes :
  *
@@ -36,8 +39,8 @@ import org.json.JSONObject
  *   téléphone est porté par `Handy`, `Telefon` et `Smartphone` : gagner l'un
  *   remplit l'emplacement, les deux autres n'en ouvrent pas de nouveaux.
  * - **Un emplacement vide est un indice, jamais la réponse** : le nombre en
- *   chiffres, la silhouette du dessin, l'emblème du jeu, le lieu en grisé.
- *   Jamais le mot.
+ *   chiffres, la silhouette du dessin, l'emblème du jeu, le lieu en grisé, le
+ *   sens d'un essentiel. Jamais le mot.
  *
  * Le calcul ([avancement]) n'a pas de `Context`, pour être testé sur la JVM
  * comme [Widderhuelen].
@@ -54,6 +57,12 @@ enum class Serie(val id: String, @StringRes val titre: Int) {
      * chaque case vide montre déjà un morceau de l'image.
      */
     PAYSAGES("paysages", R.string.serie_paysages),
+
+    /**
+     * Le vocabulaire de base, une page par thème : voir [Essentiels]. Juste
+     * après les paysages, parce que c'est la page qu'un débutant doit trouver.
+     */
+    ESSENTIELS("essentiels", R.string.serie_essentiels),
     NOMBRES("nombres_101", R.string.serie_nombres),
     ENLUMINURES("enluminures", R.string.serie_enluminures),
     JEUX("jeux", R.string.serie_jeux)
@@ -68,10 +77,27 @@ data class Emplacement<C>(val cle: String, val cartes: List<C>) {
     val rempli: Boolean get() = cartes.isNotEmpty()
 }
 
-data class Avancement<C>(val serie: Serie, val emplacements: List<Emplacement<C>>) {
+data class Avancement<C>(
+    val serie: Serie,
+    val emplacements: List<Emplacement<C>>,
+    /** Le thème d'une page des essentiels ; `null` pour les autres séries. */
+    val theme: Essentiels.Theme? = null
+) {
     val remplis: Int get() = emplacements.count { it.rempli }
     val total: Int get() = emplacements.size
     val complete: Boolean get() = total > 0 && remplis == total
+
+    /** Le titre de la page : le thème pour les essentiels, le nom de la série sinon. */
+    fun titre(context: Context): String =
+        theme?.titre(Essentiels.langue(context)) ?: context.getString(serie.titre)
+
+    /** Le titre complet, pour la fête : « Les essentiels · Famille ». */
+    fun titreComplet(context: Context): String = theme?.let {
+        context.getString(R.string.serie_essentiels_theme, it.titre(Essentiels.langue(context)))
+    } ?: context.getString(serie.titre)
+
+    /** L'identifiant qui marque la série comme fêtée, un par thème pour les essentiels. */
+    val idFete: String get() = theme?.let { "${serie.id}:${it.id}" } ?: serie.id
 }
 
 object Series {
@@ -150,7 +176,9 @@ object Series {
         carte: (C) -> CarteMot,
         meuble: (C) -> String?,
         enluminures: List<String>,
-        paysage: (C) -> String? = { null }
+        paysage: (C) -> String? = { null },
+        /** Les mots d'une page des essentiels, quand [serie] vaut [Serie.ESSENTIELS]. */
+        essentiels: List<String> = emptyList()
     ): Avancement<C> {
         val ordonnees = collection.sortedBy { carte(it).numero }
         val emplacements = when (serie) {
@@ -166,6 +194,11 @@ object Series {
             Serie.PAYSAGES -> {
                 val cles = ordonnees.map { paysage(it) }
                 PAYSAGES.map { k -> Emplacement(k, ordonnees.filterIndexed { i, _ -> cles[i] == k }) }
+            }
+            // La forme exacte : la carte « mee » (mais) ne remplit pas la case
+            // « Mee » (mai).
+            Serie.ESSENTIELS -> essentiels.map { m ->
+                Emplacement(m, ordonnees.filter { carte(it).forme == m })
             }
         }
         return Avancement(serie, emplacements)
@@ -185,7 +218,7 @@ object Series {
      * Lit la fiche de chaque carte pour les enluminures : **hors du fil
      * principal**, comme l'assemblage de la pochette qui l'appelle.
      */
-    fun aFeter(context: Context, neuves: Collection<CarteMot>): List<Serie> {
+    fun aFeter(context: Context, neuves: Collection<CarteMot>): List<String> {
         if (neuves.isEmpty()) return emptyList()
         val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val fetees = prefs.getStringSet(CLE_FETEES, emptySet()).orEmpty()
@@ -208,19 +241,28 @@ object Series {
                 Serie.NOMBRES -> neuves.any { it.nombre in NOMBRES }
                 Serie.JEUX, Serie.PAYSAGES -> true
                 Serie.ENLUMINURES -> dessins.isNotEmpty() && neuves.any { meuble(it) in dessins }
+                Serie.ESSENTIELS -> false     // page par page, ci-dessous
             }
         }
-        if (concernees.isEmpty()) return emptyList()
+        // Les essentiels se fêtent thème par thème : seulement ceux où une
+        // carte neuve vient de tomber.
+        val formesNeuves = neuves.mapTo(HashSet()) { it.forme }
+        val themes = Essentiels.donnees(context).themes.filter { t ->
+            "${Serie.ESSENTIELS.id}:${t.id}" !in fetees && t.mots.any { it in formesNeuves }
+        }
+        if (concernees.isEmpty() && themes.isEmpty()) return emptyList()
 
         val collection = Carnet.cartes(context)
-        val completes = concernees.filter { s ->
+        val completes = concernees.map { s ->
             val paysageDe: (CarteMot) -> String? = if (s == Serie.PAYSAGES) { c -> paysage(c) } else { _ -> null }
-            avancement(s, collection, { it }, { meuble(it) }, dessins, paysageDe).complete
-        }
+            avancement(s, collection, { it }, { meuble(it) }, dessins, paysageDe)
+        }.filter { it.complete } + themes.map { t ->
+            avancement(Serie.ESSENTIELS, collection, { it }, { null }, dessins, essentiels = t.mots).copy(theme = t)
+        }.filter { it.complete }
         if (completes.isNotEmpty()) {
-            prefs.edit().putStringSet(CLE_FETEES, fetees + completes.map { it.id }).apply()
+            prefs.edit().putStringSet(CLE_FETEES, fetees + completes.map { it.idFete }).apply()
         }
-        return completes
+        return completes.map { it.titreComplet(context) }
     }
 
     private const val PREFS = "carnet_series"
@@ -231,8 +273,15 @@ object Series {
         val dessins = enluminures(context)
         return Serie.values()
             .filter { it != Serie.ENLUMINURES || dessins.isNotEmpty() }
-            .map {
-                avancement(it, contenus, { c -> c.carte }, { c -> c.blason.meuble }, dessins, { c -> paysage(c) })
+            .flatMap { s ->
+                if (s == Serie.ESSENTIELS) {
+                    // Une page par thème ; un actif illisible n'en donne aucune.
+                    Essentiels.donnees(context).themes.map { t ->
+                        avancement(s, contenus, { c -> c.carte }, { null }, dessins, essentiels = t.mots).copy(theme = t)
+                    }
+                } else listOf(
+                    avancement(s, contenus, { c -> c.carte }, { c -> c.blason.meuble }, dessins, { c -> paysage(c) })
+                )
             }
     }
 }

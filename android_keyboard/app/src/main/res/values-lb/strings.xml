@@ -70,6 +70,7 @@
     <string name="cat_pronom">Pronomen</string>
     <string name="cat_adverbe_pronominal">Pronominaladverb</string>
     <string name="cat_interjection">Interjektioun</string>
+    <string name="cat_expression">Ausdrock</string>
     <string name="cat_preposition">Preposition</string>
     <string name="cat_conjonction">Konjunktioun</string>
     <string name="cat_particule_verbale">Verbpartikel</string>
@@ -160,6 +161,8 @@
     <string name="tri_series">Serien</string>
     <string name="serie_nombres">D\'Zuelen</string>
     <string name="serie_enluminures">D\'Illustratiounen</string>
+    <string name="serie_essentiels">Dat Wichtegst</string>
+    <string name="serie_essentiels_theme">Dat Wichtegst · %1$s</string>
     <string name="serie_jeux">Déi siwe Spiller</string>
     <string name="serie_paysages">D\'Landschaften</string>
     <string name="series_resume">%1$d vun %2$d Plaze besat. Eng Serie ass komplett, wann all Plaz hir Kaart huet.</string>
@@ -170,6 +173,7 @@
     <string name="emplacement_nombre">Kaart feelt: d\'Zuel %1$s</string>
     <string name="emplacement_jeu">Kaart feelt: e Wuert aus %1$s</string>
     <string name="emplacement_dessin">Kaart feelt: en illustréiert Wuert</string>
+    <string name="emplacement_essentiel">Kaart feelt: e Wuert, dat „%1$s“ heescht</string>
     <string name="emplacement_paysage">Kaart feelt: %1$s, %2$s</string>
     <string name="heure_0">moies</string>
     <string name="heure_1">nomëttes</string>
@@ -672,6 +676,8 @@
     <string name="carte_ecu_cout">PRÄIS</string>
     <string name="carte_ecu_type">TYP</string>
     <string name="langue_traductions">fr</string>
+    <!-- La langue de l'interface, pour les titres des essentiels (Essentiels.langue). -->
+    <string name="code_langue">lb</string>
     <string name="accueil_glose">bonjour</string>
     <string name="accueil_traduction">Bonjour, comment ça va ?</string>
     <string name="fierkelsmaart_glose">marché aux porcelets</string>

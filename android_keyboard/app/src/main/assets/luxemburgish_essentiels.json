@@ -1,0 +1,690 @@
+{
+ "version": 1,
+ "generated": "2026-10-31",
+ "description": "Les essentiels du carnet : le vocabulaire de base par thème, et les sens propres à cette liste.",
+ "source": "Liste du propriétaire ; sens du LOD (data.public.lu, CC0) ou écrits à la main (voir generate_essentiels.py).",
+ "themes": [
+  {
+   "id": "salutations",
+   "titres": {
+    "fr": "Salutations",
+    "en": "Greetings",
+    "de": "Begrüßung",
+    "lb": "Begréissung",
+    "pt": "Saudações"
+   },
+   "mots": [
+    "Moien",
+    "Gudde Moien",
+    "Gudden Owend",
+    "Gutt Nuecht",
+    "Äddi",
+    "Bis geschwënn",
+    "Merci",
+    "Wann ech gelift",
+    "Pardon",
+    "jo",
+    "Nee"
+   ]
+  },
+  {
+   "id": "identite",
+   "titres": {
+    "fr": "Identité",
+    "en": "Identity",
+    "de": "Angaben zur Person",
+    "lb": "Identitéit",
+    "pt": "Identidade"
+   },
+   "mots": [
+    "Numm",
+    "Virnumm",
+    "Adress",
+    "Telefonsnummer",
+    "Nationalitéit",
+    "Alter",
+    "Land",
+    "Sprooch",
+    "bestuet",
+    "ledeg",
+    "gescheet"
+   ]
+  },
+  {
+   "id": "famille",
+   "titres": {
+    "fr": "Famille",
+    "en": "Family",
+    "de": "Familie",
+    "lb": "Famill",
+    "pt": "Família"
+   },
+   "mots": [
+    "Famill",
+    "Elteren",
+    "Papp",
+    "Mamm",
+    "Brudder",
+    "Schwëster",
+    "Jong",
+    "Duechter",
+    "Kanner",
+    "Bopa",
+    "Bomi",
+    "Mann",
+    "Fra",
+    "Monni",
+    "Tatta",
+    "Frënd",
+    "Frëndin"
+   ]
+  },
+  {
+   "id": "nombres",
+   "titres": {
+    "fr": "Nombres",
+    "en": "Numbers",
+    "de": "Zahlen",
+    "lb": "Zuelen",
+    "pt": "Números"
+   },
+   "mots": [
+    "eent",
+    "zwee",
+    "dräi",
+    "véier",
+    "fënnef",
+    "sechs",
+    "siwen",
+    "aacht",
+    "néng",
+    "zéng",
+    "eelef",
+    "zwielef",
+    "zwanzeg",
+    "drësseg",
+    "honnert",
+    "dausend"
+   ]
+  },
+  {
+   "id": "temps",
+   "titres": {
+    "fr": "Temps",
+    "en": "Time",
+    "de": "Zeit",
+    "lb": "Zäit",
+    "pt": "Tempo"
+   },
+   "mots": [
+    "Dag",
+    "Woch",
+    "Mount",
+    "Joer",
+    "haut",
+    "muer",
+    "gëschter",
+    "Moien",
+    "Mëtteg",
+    "Owend",
+    "Nuecht",
+    "Auer",
+    "Stonn",
+    "Minutt",
+    "fréi",
+    "spéit"
+   ]
+  },
+  {
+   "id": "jours",
+   "titres": {
+    "fr": "Jours",
+    "en": "Days",
+    "de": "Wochentage",
+    "lb": "Deeg",
+    "pt": "Dias da semana"
+   },
+   "mots": [
+    "Méindeg",
+    "Dënschdeg",
+    "Mëttwoch",
+    "Donneschdeg",
+    "Freideg",
+    "Samschdeg",
+    "Sonndeg"
+   ]
+  },
+  {
+   "id": "mois",
+   "titres": {
+    "fr": "Mois",
+    "en": "Months",
+    "de": "Monate",
+    "lb": "Méint",
+    "pt": "Meses"
+   },
+   "mots": [
+    "Januar",
+    "Februar",
+    "Mäerz",
+    "Abrëll",
+    "Mee",
+    "Juni",
+    "Juli",
+    "August",
+    "September",
+    "Oktober",
+    "November",
+    "Dezember"
+   ]
+  },
+  {
+   "id": "meteo",
+   "titres": {
+    "fr": "Météo et saisons",
+    "en": "Weather and seasons",
+    "de": "Wetter und Jahreszeiten",
+    "lb": "Wieder a Joreszäiten",
+    "pt": "Tempo e estações"
+   },
+   "mots": [
+    "Wieder",
+    "Sonn",
+    "Reen",
+    "Schnéi",
+    "Wand",
+    "kal",
+    "waarm",
+    "Fréijoer",
+    "Summer",
+    "Hierscht",
+    "Wanter"
+   ]
+  },
+  {
+   "id": "couleurs",
+   "titres": {
+    "fr": "Couleurs",
+    "en": "Colours",
+    "de": "Farben",
+    "lb": "Faarwen",
+    "pt": "Cores"
+   },
+   "mots": [
+    "rout",
+    "blo",
+    "giel",
+    "gréng",
+    "schwaarz",
+    "wäiss",
+    "gro",
+    "brong",
+    "rosa",
+    "orange"
+   ]
+  },
+  {
+   "id": "logement",
+   "titres": {
+    "fr": "Logement",
+    "en": "Home",
+    "de": "Wohnen",
+    "lb": "Wunnen",
+    "pt": "Habitação"
+   },
+   "mots": [
+    "Haus",
+    "Wunneng",
+    "Zëmmer",
+    "Kichen",
+    "Stuff",
+    "Schlofzëmmer",
+    "Buedzëmmer",
+    "Gaart",
+    "Balcon",
+    "Dier",
+    "Fënster",
+    "Dësch",
+    "Stull",
+    "Bett",
+    "Schaf",
+    "Loyer",
+    "Noper"
+   ]
+  },
+  {
+   "id": "travail",
+   "titres": {
+    "fr": "Travail",
+    "en": "Work",
+    "de": "Arbeit",
+    "lb": "Aarbecht",
+    "pt": "Trabalho"
+   },
+   "mots": [
+    "Aarbecht",
+    "Beruff",
+    "Chef",
+    "Kolleg",
+    "Büro",
+    "Firma",
+    "Paus",
+    "Pai",
+    "Vakanz",
+    "schaffen"
+   ]
+  },
+  {
+   "id": "transports",
+   "titres": {
+    "fr": "Transports",
+    "en": "Transport",
+    "de": "Verkehr",
+    "lb": "Transport",
+    "pt": "Transportes"
+   },
+   "mots": [
+    "Auto",
+    "Bus",
+    "Zuch",
+    "Tram",
+    "Vëlo",
+    "Fliger",
+    "Gare",
+    "Arrêt",
+    "Ticket",
+    "zu Fouss"
+   ]
+  },
+  {
+   "id": "nourriture",
+   "titres": {
+    "fr": "Nourriture",
+    "en": "Food",
+    "de": "Essen und Trinken",
+    "lb": "Iessen an Drénken",
+    "pt": "Comida"
+   },
+   "mots": [
+    "Brout",
+    "Botter",
+    "Kéis",
+    "Fleesch",
+    "Fësch",
+    "Geméis",
+    "Uebst",
+    "Apel",
+    "Gromper",
+    "Ee",
+    "Zopp",
+    "Kuch",
+    "Kaffi",
+    "Téi",
+    "Waasser",
+    "Mëllech",
+    "Wäin",
+    "Béier"
+   ]
+  },
+  {
+   "id": "courses",
+   "titres": {
+    "fr": "Courses",
+    "en": "Shopping",
+    "de": "Einkaufen",
+    "lb": "Akafen",
+    "pt": "Compras"
+   },
+   "mots": [
+    "Buttek",
+    "Supermarché",
+    "Bäckerei",
+    "Präis",
+    "deier",
+    "bëlleg",
+    "kafen",
+    "bezuelen",
+    "Wéi vill kascht dat?"
+   ]
+  },
+  {
+   "id": "corps",
+   "titres": {
+    "fr": "Corps et santé",
+    "en": "Body and health",
+    "de": "Körper und Gesundheit",
+    "lb": "Kierper a Gesondheet",
+    "pt": "Corpo e saúde"
+   },
+   "mots": [
+    "Kapp",
+    "A",
+    "Aen",
+    "Nues",
+    "Mond",
+    "Ouer",
+    "Aarm",
+    "Hand",
+    "Been",
+    "Fouss",
+    "Bauch",
+    "Réck",
+    "Dokter",
+    "Apdikt",
+    "Medikament",
+    "krank",
+    "gesond"
+   ]
+  },
+  {
+   "id": "vetements",
+   "titres": {
+    "fr": "Vêtements",
+    "en": "Clothes",
+    "de": "Kleidung",
+    "lb": "Kleeder",
+    "pt": "Roupa"
+   },
+   "mots": [
+    "Kleeder",
+    "Box",
+    "Rack",
+    "Hiem",
+    "Pullover",
+    "Jackett",
+    "Mantel",
+    "Schong",
+    "Kap",
+    "Schal"
+   ]
+  },
+  {
+   "id": "loisirs",
+   "titres": {
+    "fr": "Loisirs",
+    "en": "Leisure",
+    "de": "Freizeit",
+    "lb": "Fräizäit",
+    "pt": "Lazer"
+   },
+   "mots": [
+    "Sport",
+    "Musek",
+    "Film",
+    "Buch",
+    "schwammen",
+    "danzen",
+    "spadséiere goen",
+    "reesen",
+    "kachen",
+    "liesen"
+   ]
+  },
+  {
+   "id": "fetes",
+   "titres": {
+    "fr": "Fêtes",
+    "en": "Celebrations",
+    "de": "Feste",
+    "lb": "Fester",
+    "pt": "Festas"
+   },
+   "mots": [
+    "Fest",
+    "Gebuertsdag",
+    "Hochzäit",
+    "Kaddo",
+    "Chrëschtdag",
+    "Ouschteren",
+    "Nationalfeierdag",
+    "feieren",
+    "invitéieren"
+   ]
+  },
+  {
+   "id": "verbes",
+   "titres": {
+    "fr": "Verbes courants",
+    "en": "Common verbs",
+    "de": "Häufige Verben",
+    "lb": "Heefeg Verben",
+    "pt": "Verbos comuns"
+   },
+   "mots": [
+    "sinn",
+    "hunn",
+    "ginn",
+    "kommen",
+    "heeschen",
+    "wunnen",
+    "schwätzen",
+    "maachen",
+    "iessen",
+    "drénken",
+    "schlofen",
+    "fueren",
+    "spillen",
+    "gesinn",
+    "héieren",
+    "schreiwen",
+    "sichen",
+    "wëllen",
+    "kënnen",
+    "mussen"
+   ]
+  },
+  {
+   "id": "adjectifs",
+   "titres": {
+    "fr": "Adjectifs",
+    "en": "Adjectives",
+    "de": "Adjektive",
+    "lb": "Adjektiver",
+    "pt": "Adjetivos"
+   },
+   "mots": [
+    "grouss",
+    "kleng",
+    "al",
+    "jonk",
+    "nei",
+    "schéin",
+    "gutt",
+    "schlecht",
+    "laang",
+    "kuerz",
+    "déck",
+    "schlank",
+    "frëndlech"
+   ]
+  },
+  {
+   "id": "image",
+   "titres": {
+    "fr": "Décrire une image",
+    "en": "Describing a picture",
+    "de": "Ein Bild beschreiben",
+    "lb": "E Bild beschreiwen",
+    "pt": "Descrever uma imagem"
+   },
+   "mots": [
+    "uewen",
+    "ënnen",
+    "lénks",
+    "riets",
+    "an der Mëtt",
+    "vir",
+    "hannen",
+    "niewent",
+    "tëscht"
+   ]
+  },
+  {
+   "id": "questions",
+   "titres": {
+    "fr": "Mots interrogatifs",
+    "en": "Question words",
+    "de": "Fragewörter",
+    "lb": "Froewierder",
+    "pt": "Palavras interrogativas"
+   },
+   "mots": [
+    "wien",
+    "wat",
+    "wou",
+    "vu wou",
+    "wéini",
+    "wéi",
+    "firwat",
+    "wéi vill"
+   ]
+  }
+ ],
+ "gloses": {
+  "fr": {
+   "Moien": "bonjour, matin",
+   "Merci": "merci, remerciement",
+   "Äddi": "au revoir, salut",
+   "ledeg": "célibataire",
+   "gescheet": "divorcé",
+   "tëscht": "entre",
+   "Mee": "mai",
+   "Ee": "œuf",
+   "A": "œil",
+   "Fest": "fête",
+   "orange": "orange (couleur)",
+   "Aen": "yeux",
+   "Kanner": "enfants",
+   "Sprooch": "langue, parole",
+   "wéi": "comment, combien",
+   "Gudde Moien": "bonjour",
+   "Gudden Owend": "bonsoir",
+   "Gutt Nuecht": "bonne nuit",
+   "Bis geschwënn": "à bientôt",
+   "Wann ech gelift": "s’il vous plaît",
+   "zu Fouss": "à pied",
+   "Wéi vill kascht dat?": "combien ça coûte ?",
+   "spadséiere goen": "aller se promener",
+   "an der Mëtt": "au milieu",
+   "vu wou": "d’où",
+   "wéi vill": "combien (de)"
+  },
+  "de": {
+   "Moien": "guten Morgen, Morgen",
+   "Merci": "danke, Dank",
+   "Äddi": "tschüss, auf Wiedersehen",
+   "ledeg": "ledig",
+   "gescheet": "geschieden",
+   "tëscht": "zwischen",
+   "Mee": "Mai",
+   "Ee": "Ei",
+   "A": "Auge",
+   "Fest": "Fest",
+   "orange": "orange",
+   "Aen": "Augen",
+   "Kanner": "Kinder",
+   "Sprooch": "Sprache",
+   "wéi": "wie",
+   "Gudde Moien": "guten Morgen",
+   "Gudden Owend": "guten Abend",
+   "Gutt Nuecht": "gute Nacht",
+   "Bis geschwënn": "bis bald",
+   "Wann ech gelift": "bitte",
+   "zu Fouss": "zu Fuß",
+   "Wéi vill kascht dat?": "Wie viel kostet das?",
+   "spadséiere goen": "spazieren gehen",
+   "an der Mëtt": "in der Mitte",
+   "vu wou": "woher",
+   "wéi vill": "wie viel"
+  },
+  "en": {
+   "Moien": "hello, morning",
+   "Merci": "thank you",
+   "Äddi": "goodbye, bye",
+   "ledeg": "single",
+   "gescheet": "divorced",
+   "tëscht": "between",
+   "Mee": "May",
+   "Ee": "egg",
+   "A": "eye",
+   "Fest": "party",
+   "orange": "orange (colour)",
+   "Aen": "eyes",
+   "Kanner": "children",
+   "Sprooch": "language, speech",
+   "wéi": "how",
+   "Gudde Moien": "good morning",
+   "Gudden Owend": "good evening",
+   "Gutt Nuecht": "good night",
+   "Bis geschwënn": "see you soon",
+   "Wann ech gelift": "please",
+   "zu Fouss": "on foot",
+   "Wéi vill kascht dat?": "How much does it cost?",
+   "spadséiere goen": "to go for a walk",
+   "an der Mëtt": "in the middle",
+   "vu wou": "where from",
+   "wéi vill": "how much, how many"
+  },
+  "pt": {
+   "Moien": "bom dia, manhã",
+   "Merci": "obrigado, agradecimento",
+   "Äddi": "adeus, tchau",
+   "ledeg": "solteiro",
+   "gescheet": "divorciado",
+   "tëscht": "entre",
+   "Mee": "maio",
+   "Ee": "ovo",
+   "A": "olho",
+   "Fest": "festa",
+   "orange": "cor de laranja",
+   "Aen": "olhos",
+   "Kanner": "crianças",
+   "Sprooch": "língua, fala",
+   "wéi": "como",
+   "Gudde Moien": "bom dia",
+   "Gudden Owend": "boa noite",
+   "Gutt Nuecht": "boa noite (ao deitar)",
+   "Bis geschwënn": "até breve",
+   "Wann ech gelift": "por favor",
+   "zu Fouss": "a pé",
+   "Wéi vill kascht dat?": "Quanto custa?",
+   "spadséiere goen": "ir passear",
+   "an der Mëtt": "no meio",
+   "vu wou": "de onde",
+   "wéi vill": "quanto(s)"
+  }
+ },
+ "categories": {
+  "A": "SUBST N",
+  "Aen": "SUBST",
+  "Bis geschwënn": "EXPR",
+  "Ee": "SUBST N",
+  "Fest": "SUBST N",
+  "Gudde Moien": "EXPR",
+  "Gudden Owend": "EXPR",
+  "Gutt Nuecht": "EXPR",
+  "Kanner": "SUBST",
+  "Kleeder": "SUBST",
+  "Kolleg": "SUBST M",
+  "Mee": "SUBST M",
+  "Wann ech gelift": "EXPR",
+  "Wéi vill kascht dat?": "EXPR",
+  "an der Mëtt": "EXPR",
+  "gescheet": "ADJ",
+  "ledeg": "ADJ",
+  "orange": "ADJ",
+  "spadséiere goen": "EXPR",
+  "tëscht": "PREP",
+  "vu wou": "EXPR",
+  "wéi vill": "EXPR",
+  "zu Fouss": "EXPR",
+  "Äddi": "INTERJ"
+ },
+ "isoles": [
+  "Mee",
+  "Ee",
+  "A",
+  "Fest",
+  "orange"
+ ]
+}

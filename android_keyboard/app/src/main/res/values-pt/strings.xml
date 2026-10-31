@@ -70,6 +70,7 @@
     <string name="cat_pronom">Pronome</string>
     <string name="cat_adverbe_pronominal">Advérbio pronominal</string>
     <string name="cat_interjection">Interjeição</string>
+    <string name="cat_expression">Expressão</string>
     <string name="cat_preposition">Preposição</string>
     <string name="cat_conjonction">Conjunção</string>
     <string name="cat_particule_verbale">Partícula verbal</string>
@@ -160,6 +161,8 @@
     <string name="tri_series">Séries</string>
     <string name="serie_nombres">Os números</string>
     <string name="serie_enluminures">As ilustrações</string>
+    <string name="serie_essentiels">O essencial</string>
+    <string name="serie_essentiels_theme">O essencial · %1$s</string>
     <string name="serie_jeux">Os sete jogos</string>
     <string name="serie_paysages">As paisagens</string>
     <string name="series_resume">%1$d de %2$d lugares preenchidos. Uma série fica completa quando cada lugar tem a sua carta.</string>
@@ -170,6 +173,7 @@
     <string name="emplacement_nombre">Carta em falta: o número %1$s</string>
     <string name="emplacement_jeu">Carta em falta: uma palavra ganha em %1$s</string>
     <string name="emplacement_dessin">Carta em falta: uma palavra ilustrada</string>
+    <string name="emplacement_essentiel">Carta em falta: uma palavra que significa « %1$s »</string>
     <string name="emplacement_paysage">Carta em falta: %1$s, %2$s</string>
     <string name="heure_0">de manhã</string>
     <string name="heure_1">à tarde</string>
@@ -672,6 +676,8 @@
     <string name="carte_ecu_cout">CUSTO</string>
     <string name="carte_ecu_type">TIPO</string>
     <string name="langue_traductions">pt</string>
+    <!-- La langue de l'interface, pour les titres des essentiels (Essentiels.langue). -->
+    <string name="code_langue">pt</string>
     <string name="accueil_glose">olá</string>
     <string name="accueil_traduction">Olá, como está?</string>
     <string name="fierkelsmaart_glose">feira dos leitões</string>

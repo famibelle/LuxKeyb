@@ -120,4 +120,22 @@ class SeriesTest {
         assertEquals(250, com.example.kreyolkeyboard.carnet.Etapes.franchi(300, 0))
         assertEquals(null, com.example.kreyolkeyboard.carnet.Etapes.franchi(300, 250))
     }
+
+    /**
+     * Une page des essentiels se remplit à la forme exacte : la carte « mee »
+     * (mais) ne remplit pas la case « Mee » (mai), une expression remplit la
+     * sienne.
+     */
+    @Test
+    fun unEssentielSeRemplitALaFormeExacte() {
+        val cartes = listOf(carte("mee", 1), carte("Januar", 2), carte("Gudde Moien", 3, setOf(JeuCarte.WUERTMIX)))
+        val mois = Series.avancement(Serie.ESSENTIELS, cartes, { it }, { null }, emptyList(),
+            essentiels = listOf("Januar", "Mee"))
+        assertEquals(2, mois.total)
+        assertEquals(1, mois.remplis)
+        assertFalse(mois.emplacements.first { it.cle == "Mee" }.rempli)
+        val salut = Series.avancement(Serie.ESSENTIELS, cartes, { it }, { null }, emptyList(),
+            essentiels = listOf("Gudde Moien"))
+        assertTrue(salut.complete)
+    }
 }

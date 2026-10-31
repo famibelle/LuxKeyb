@@ -6249,7 +6249,8 @@ class SettingsActivity : AppCompatActivity() {
                         (layoutParams as LinearLayout.LayoutParams).bottomMargin = 48
                         
                         setOnItemClickListener { _, _, position, _ ->
-                            removeLetterFromAnswer(position)
+                            val index = caractereSous(position)
+                            if (index >= 0) removeLetterFromAnswer(index)
                         }
                     }
                     addView(gridAnswer)
@@ -6382,54 +6383,37 @@ class SettingsActivity : AppCompatActivity() {
             }
             
             currentWord = gameWords[currentWordIndex]
-            var allScrambledLetters = com.example.kreyolkeyboard.wordscramble.WordScrambleData.scrambleWord(currentWord)
-            
+
+            // Les cases données d'avance (la première et la dernière lettre,
+            // l'espace et la ponctuation d'une expression) sont posées ; le
+            // reste des lettres est mélangé. Voir [MiseEnPage].
+            val fixes = com.example.kreyolkeyboard.wordscramble.MiseEnPage.fixes(currentWord)
             currentAnswer.clear()
             selectedPositions.clear()
-            repeat(currentWord.length) { currentAnswer.add(null) }
-            
-            // Pré-remplir la première et la dernière lettre
-            if (currentWord.isNotEmpty()) {
-                currentAnswer[0] = currentWord[0]
-                if (currentWord.length > 1) {
-                    currentAnswer[currentWord.length - 1] = currentWord[currentWord.length - 1]
-                }
-                
-                // Retirer la première et dernière lettre des lettres mélangées
-                val lettersToRemove = mutableListOf<Char>()
-                lettersToRemove.add(currentWord[0])
-                if (currentWord.length > 1) {
-                    lettersToRemove.add(currentWord[currentWord.length - 1])
-                }
-                
-                scrambledLetters = allScrambledLetters.toMutableList().apply {
-                    lettersToRemove.forEach { letter ->
-                        remove(letter)
-                    }
-                }
-            } else {
-                scrambledLetters = allScrambledLetters
-            }
-            
+            currentWord.forEachIndexed { i, c -> currentAnswer.add(if (i in fixes) c else null) }
+            val aMelanger = currentWord.filterIndexed { i, _ -> i !in fixes }
+            scrambledLetters = com.example.kreyolkeyboard.wordscramble.WordScrambleData.scrambleWord(aMelanger)
+
             afficherMot()
         }
 
         /** Montre le mot en cours dans l'état où il est. */
         private fun afficherMot() {
             scrambledAdapter = com.example.kreyolkeyboard.wordscramble.ScrambledLettersAdapter(requireContext(), scrambledLetters)
-            answerAdapter = com.example.kreyolkeyboard.wordscramble.AnswerLettersAdapter(requireContext(), currentAnswer)
+            val (cases, colonnes) = com.example.kreyolkeyboard.wordscramble.MiseEnPage.cases(currentWord)
+            answerAdapter = com.example.kreyolkeyboard.wordscramble.AnswerLettersAdapter(requireContext(), reponseAffichee())
             
             gridScrambled.adapter = scrambledAdapter
             gridAnswer.adapter = answerAdapter
             selectedPositions.forEach { scrambledAdapter?.markAsSelected(it) }
             btnValidate.isEnabled = currentAnswer.all { it != null }
             
-            gridScrambled.numColumns = minOf(scrambledLetters.size, 5)
-            gridAnswer.numColumns = minOf(currentWord.length, 5)
+            gridScrambled.numColumns = minOf(scrambledLetters.size, 5).coerceAtLeast(1)
+            gridAnswer.numColumns = colonnes
             
             // Ajuster la hauteur des grilles
             val numRowsScrambled = (scrambledLetters.size + 4) / 5
-            val numRowsAnswer = (currentWord.length + 4) / 5
+            val numRowsAnswer = (cases.size + colonnes - 1) / colonnes
             gridScrambled.layoutParams.height = numRowsScrambled * 136 // 120 + 16 spacing
             gridAnswer.layoutParams.height = numRowsAnswer * 136
             
@@ -6449,6 +6433,19 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         
+        /**
+         * La réponse telle que la grille la montre : une case par caractère
+         * affiché, un blanc pour finir la rangée d'un mot court. L'espace d'une
+         * expression n'a pas de case : le mot suivant commence une rangée.
+         */
+        private fun reponseAffichee(): List<Char?> =
+            com.example.kreyolkeyboard.wordscramble.MiseEnPage.cases(currentWord).first
+                .map { i -> if (i < 0) ' ' else currentAnswer[i] }
+
+        /** Le caractère du mot sous la case [position] de la grille, ou -1. */
+        private fun caractereSous(position: Int): Int =
+            com.example.kreyolkeyboard.wordscramble.MiseEnPage.cases(currentWord).first.getOrElse(position) { -1 }
+
         private fun addLetterToAnswer(position: Int) {
             val emptyIndex = currentAnswer.indexOfFirst { it == null }
             if (emptyIndex != -1) {
@@ -6456,7 +6453,7 @@ class SettingsActivity : AppCompatActivity() {
                 selectedPositions.add(position)
                 
                 scrambledAdapter?.markAsSelected(position)
-                answerAdapter?.updateLetters(currentAnswer)
+                answerAdapter?.updateLetters(reponseAffichee())
                 
                 if (currentAnswer.all { it != null }) {
                     btnValidate.isEnabled = true
@@ -6464,29 +6461,27 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
         
-        private fun removeLetterFromAnswer(position: Int) {
-            if (position < currentAnswer.size && currentAnswer[position] != null) {
-                currentAnswer[position] = null
-                
-                if (position < selectedPositions.size) {
-                    selectedPositions.removeAt(position)
-                }
-                
-                val nonNullLetters = currentAnswer.filterNotNull().toMutableList()
-                currentAnswer.clear()
-                currentAnswer.addAll(nonNullLetters)
-                repeat(currentWord.length - nonNullLetters.size) { currentAnswer.add(null) }
-                
-                scrambledAdapter?.clearSelections()
-                selectedPositions.forEachIndexed { index, pos ->
-                    if (index < selectedPositions.size) {
-                        scrambledAdapter?.markAsSelected(pos)
-                    }
-                }
-                
-                answerAdapter?.updateLetters(currentAnswer)
-                btnValidate.isEnabled = false
-            }
+        /**
+         * Retire la lettre posée au caractère [index] du mot. Les lettres
+         * posées après elle avancent d'une case libre ; les cases données
+         * d'avance ne bougent pas. Avant 2026-10-31 la réponse entière se
+         * tassait, dernière lettre d'avance comprise, et le retrait renvoyait
+         * au mélange une autre lettre que celle touchée.
+         */
+        private fun removeLetterFromAnswer(index: Int) {
+            val fixes = com.example.kreyolkeyboard.wordscramble.MiseEnPage.fixes(currentWord)
+            if (index !in currentAnswer.indices || index in fixes || currentAnswer[index] == null) return
+            val libres = currentAnswer.indices.filter { it !in fixes }
+            val rang = libres.indexOf(index)
+            val posees = libres.mapNotNull { currentAnswer[it] }.toMutableList()
+            posees.removeAt(rang)
+            if (rang < selectedPositions.size) selectedPositions.removeAt(rang)
+            libres.forEachIndexed { k, i -> currentAnswer[i] = posees.getOrNull(k) }
+
+            scrambledAdapter?.clearSelections()
+            selectedPositions.forEach { scrambledAdapter?.markAsSelected(it) }
+            answerAdapter?.updateLetters(reponseAffichee())
+            btnValidate.isEnabled = false
         }
         
         private fun validateAnswer() {
@@ -6521,9 +6516,9 @@ class SettingsActivity : AppCompatActivity() {
             if (firstEmpty != -1) {
                 val correctLetter = currentWord[firstEmpty]
                 
-                val posInScrambled = scrambledLetters.indexOfFirst { 
-                    it == correctLetter && !selectedPositions.contains(scrambledLetters.indexOf(it))
-                }
+                val posInScrambled = scrambledLetters.indices.firstOrNull { i ->
+                    scrambledLetters[i] == correctLetter && i !in selectedPositions
+                } ?: -1
                 
                 if (posInScrambled != -1) {
                     addLetterToAnswer(posInScrambled)
@@ -6535,20 +6530,13 @@ class SettingsActivity : AppCompatActivity() {
         }
         
         private fun clearAnswer() {
+            val fixes = com.example.kreyolkeyboard.wordscramble.MiseEnPage.fixes(currentWord)
             currentAnswer.clear()
             selectedPositions.clear()
-            repeat(currentWord.length) { currentAnswer.add(null) }
-            
-            // Re-pré-remplir la première et dernière lettre
-            if (currentWord.isNotEmpty()) {
-                currentAnswer[0] = currentWord[0]
-                if (currentWord.length > 1) {
-                    currentAnswer[currentWord.length - 1] = currentWord[currentWord.length - 1]
-                }
-            }
+            currentWord.forEachIndexed { i, c -> currentAnswer.add(if (i in fixes) c else null) }
             
             scrambledAdapter?.clearSelections()
-            answerAdapter?.updateLetters(currentAnswer)
+            answerAdapter?.updateLetters(reponseAffichee())
             btnValidate.isEnabled = false
         }
         

@@ -22,7 +22,8 @@ Un mot se gagne quand une forme de sa famille est :
 - une réponse de Wuertlück ;
 - ou dans la réserve de tirage de Wuertsich (3 à 8 lettres), Wuertmix (4 à 10)
   ou Wuertriet (5) : forme du dictionnaire, glose instructive dans la langue,
-  ni nom propre, ni fragment, ni mot écarté par `MotsEcartes.kt`.
+  ni nom propre, ni fragment, ni mot écarté par `MotsEcartes.kt` ;
+- ou un essentiel (`luxemburgish_essentiels.json`), que les jeux poussent.
 
 C'est la règle de `TranslationDictionary.proposables`, relue ici. La glose
 change avec la langue de l'interface, et la grille aussi : un dessin
@@ -122,6 +123,11 @@ def jeux_par_langue(langue, dico, ecartes, reponses_cloze):
             continue
         if glose_instructive(forme, glose):
             gagnables.add(forme)
+    # Les essentiels se gagnent toujours : les jeux font passer devant ceux
+    # qui manquent au carnet, et EssentielsAssetTest prouve que chacun a un
+    # jeu qui le donne (carnet/Essentiels.kt).
+    for theme in actif('luxemburgish_essentiels.json')['themes']:
+        gagnables.update(theme['mots'])
     # Les grilles et Wuertlück passent déjà le filtre de neutralité au
     # chargement : un mot écarté n'en sort jamais, d'où qu'il vienne.
     return {f for f in gagnables if plier(f) not in ecartes}

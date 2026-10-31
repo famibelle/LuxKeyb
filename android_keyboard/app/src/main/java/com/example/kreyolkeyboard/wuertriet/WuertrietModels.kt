@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import com.example.kreyolkeyboard.Encres
 import com.example.kreyolkeyboard.TranslationDictionary
+import com.example.kreyolkeyboard.carnet.Essentiels
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -84,6 +85,12 @@ object WuertrietData {
      * même si le LOD ne la glose pas.
      */
     fun pickRandomWord(context: Context): String {
+        // Une partie sur deux, un essentiel de cinq lettres que le carnet n'a
+        // pas encore, s'il en reste un que le jeu accepte. Voir [Essentiels].
+        if (kotlin.random.Random.nextBoolean()) {
+            Essentiels.manquantsPour(context, 1) { Essentiels.pourWuertriet(it) && isValidWord(context, it) }
+                .firstOrNull()?.let { return it.lowercase() }
+        }
         val words = TranslationDictionary.filtrerMotsTraduits(context, loadWords(context))
         return words.random()
     }
