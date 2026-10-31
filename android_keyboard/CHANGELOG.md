@@ -9,6 +9,21 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.10.0] - 2026-10-31
+
+### ✨ Nouveautés
+
+- **Les cartes ont de nouveaux dessins** : le chat, le lion, le cheval, la maison, le vélo et plus de cent autres dessins ont été refaits, plus fins et plus faciles à reconnaître. Les animaux et les véhicules regardent tous vers la droite.
+- **Les essentiels, une nouvelle page du carnet** : les mots de tous les jours (saluer, la famille, les jours, les mois, les couleurs, la maison, les courses…) rangés par thème. Chaque case vide montre le sens du mot à trouver, et chaque thème complété se fête.
+- **Les jeux vous aident à les trouver** : Wuertsich, Wuertmix et Wuertriet glissent dans leurs parties les mots essentiels qui manquent encore à votre carnet.
+- **Des expressions à remettre dans l'ordre** : Wuertmix propose aussi des expressions comme « Gudde Moien » ou « Wéi vill kascht dat? », un mot par ligne.
+- **Près de 140 mots de plus ont leur dessin** : la famille, le corps, les vêtements, la cuisine, les fêtes…
+
+### 🐛 Corrections
+
+- **Le bon sens pour quelques mots** : « Mee » se traduit maintenant par « mai », « Ee » par « œuf », « A » par « œil » et « Fest » par « fête ».
+- **Wuertmix** : retirer une lettre de la réponse ne déplace plus les lettres données d'avance.
+
 ## [37.9.2] - 2026-10-29
 
 ### ✨ Améliorations
