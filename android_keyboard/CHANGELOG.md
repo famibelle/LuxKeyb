@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.11.0] - 2026-10-31
+
+### ✨ Nouveautés
+
+- **Les cartes de nombre montrent leur nombre** : la carte « zweeavéierzeg » affiche un grand 42 au milieu de son paysage, en nacre comme les autres dessins. On reconnaît chaque nombre d'un coup d'œil dans le carnet, et sur la carte imprimée aussi.
+
 ## [37.10.1] - 2026-10-31
 
 ### ✨ Améliorations
