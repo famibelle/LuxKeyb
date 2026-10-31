@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.10.1] - 2026-10-31
+
+### ✨ Améliorations
+
+- **Le guide montre les nouveaux dessins** : les images qui expliquent une carte, dans l'aide, ont été refaites avec les dessins de la 37.10.0.
+
 ## [37.10.0] - 2026-10-31
 
 ### ✨ Nouveautés
