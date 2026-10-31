@@ -1,735 +1,808 @@
 {
-  "_comment": "English translation of nouveautes.html, by version. Hand-maintained: generate_nouveautes.py merges it into stats/nouveautes-en.json. Each version mirrors the French one from the CHANGELOG: same sections, same number of points, in the same order; a section's title can be left out when _sections translates it. A version that is missing here, or no longer has the French shape, is shown in French with a notice. Text is HTML: escape < and &.",
-  "37.8.0": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "The review level as six squares",
-            "texte": "At the bottom of each card, a square fills up with each successful review, and all six are full when the word is learnt."
-          },
-          {
-            "titre": "Rarity in stars",
-            "texte": "A common card has one star, a very rare one has four. The more stars, the rarer the card."
-          },
-          {
-            "titre": "Engraved shields",
-            "texte": "The two shields at the bottom of the card are chased like the name plate, and the number of times you won the word is easier to read."
-          },
-          {
-            "titre": "New drawings on the cards",
-            "texte": "The bee, the ant, the elephant, the banana, the pancake and thirteen other words now have their own drawing."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "Three cards from the collection, as the app shows them. 1. “Kaz”, cat, in gold: in the LEVEL shield at the bottom right, one square filled out of six; the rarity at the bottom right, four filled stars out of five. 2. “Bibliothéik”, library, in silver, with the “Geléiert” seal of a learnt word: all six LEVEL squares are full, and the rarity has three stars. 3. “Elefant”, elephant, in gold, with its new elephant drawing in front of the city at night: three squares filled out of six. The SEEN and LEVEL shields are chased, and the SEEN number is engraved in the metal. The cards are in French.",
-        "legende": "The review level as six squares, rarity in stars, and the new elephant drawing."
-      }
+ "_comment": "English translation of nouveautes.html, by version. Hand-maintained: generate_nouveautes.py merges it into stats/nouveautes-en.json. Each version mirrors the French one from the CHANGELOG: same sections, same number of points, in the same order; a section's title can be left out when _sections translates it. A version that is missing here, or no longer has the French shape, is shown in French with a notice. Text is HTML: escape < and &.",
+ "37.10.1": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The guide shows the new drawings",
+      "texte": "The pictures in the help that explain a card have been redone with the drawings of 37.10.0."
+     }
     ]
-  },
-  "37.7.9": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "The dictionary, shown in action",
-            "texte": "In the guided tour, a small animation searches for “cat”, opens the entry for “Kaz” with its example sentence, then searches for “Kaz” the other way round."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "Filmed on a Galaxy A21s: the “Wierderbuch, the dictionary” bubble of the guided tour. In a drawn search field, a word is typed letter by letter; three results appear, with Kaz first. A finger taps “Kaz”: its entry slides up, with its meaning and the example sentence “d'Kaz sëtzt virun der Fënster ze miauen” and its translation. The entry slides down, then “Kaz” is typed in turn and finds its meaning. The screens are in French, so the search is for “chat”; in English it is for “cat”.",
-        "legende": "The dictionary, shown: search for a word, read the entry for “Kaz”, search the other way round."
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Guide plate: the top of the “Waasser” card, a water drop in front of the valley, with four numbered markers: 1 the word, 2 the length, 3 the landscape, 4 the frame. The plate is in French.",
+    "legende": "The help guide shows the card with its new drawing."
+   }
+  ]
+ },
+ "37.10.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "New",
+    "points": [
+     {
+      "titre": "The cards have new drawings",
+      "texte": "The cat, the lion, the horse, the house, the bike and more than a hundred other drawings have been redone, finer and easier to recognise. Animals and vehicles all face right."
+     },
+     {
+      "titre": "The essentials, a new page in the collection",
+      "texte": "Everyday words (greetings, family, days, months, colours, home, shopping…) grouped by theme. Each empty slot shows the meaning of the word to find, and each completed theme is celebrated."
+     },
+     {
+      "titre": "The games help you find them",
+      "texte": "Wuertsich, Wuertmix and Wuertriet slip into their rounds the essential words still missing from your collection."
+     },
+     {
+      "titre": "Expressions to put back in order",
+      "texte": "Wuertmix also offers expressions such as “Gudde Moien” or “Wéi vill kascht dat?”, one word per line."
+     },
+     {
+      "titre": "Nearly 140 more words have their drawing",
+      "texte": "Family, body, clothes, cooking, celebrations…"
+     }
     ]
-  },
-  "37.7.8": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "The keyboard, shown in action",
-            "texte": "In the guided tour, a small animation shows the finger tapping a suggested word, then sliding along the space bar to move the cursor."
-          },
-          {
-            "titre": "Dictation, shown in action",
-            "texte": "You see the microphone light up, the sentence being written as you speak, then the microphone switch off."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "Filmed on a Galaxy A21s: the “The keyboard in three gestures” bubble of the guided tour. At the top, a drawn keyboard. In the field, “Moi”; three red suggestions, Moien, Moie and Moies; a finger taps “Moien”, which is written in full. The finger types “wéi”, then rests on the space bar and slides left: the cursor moves back to just after “Moien”. Two dots, 1 and 3, light up in red as the gestures go by, and the text details them. The screens are in French.",
-        "legende": "The keyboard gestures, shown: tap a suggested word, slide along the space bar."
-      },
-      {
-        "alt": "Filmed on a Galaxy A21s: the “Dictation” bubble of the guided tour. A finger taps the microphone at the top right of a drawn keyboard; the microphone turns red, circled by a spinning ring and halos, and the “LuxASR · Schwätzt…” banner replaces the suggestions. The sentence “Moien, wéi geet et?” is written word by word in the field, then the finger taps the microphone again and it switches off. The screens are in French.",
-        "legende": "Dictation, shown: the microphone lights up, the sentence is written, the microphone switches off."
-      }
+   },
+   {
+    "titre": "Fixes",
+    "points": [
+     {
+      "titre": "The right meaning for a few words",
+      "texte": "“Mee” now translates as “May”, “Ee” as “egg”, “A” as “eye” and “Fest” as “party”."
+     },
+     {
+      "titre": "Wuertmix",
+      "texte": "removing a letter from the answer no longer moves the letters given in advance."
+     }
     ]
-  },
-  "_sections": {
-    "Nouveautés": "New",
-    "Corrections": "Fixes",
-    "Changements": "Changes",
-    "Rapidité": "Speed"
-  },
-  "37.7.7": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "Giving a card, step by step",
-            "texte": "The tour of the cards now details the exchange between two phones in four numbered steps, with a small animation of the two screens side by side."
-          },
-          {
-            "titre": "Receiving a card and the camera, explained",
-            "texte": "Which button to tap, and why the camera is only used to read the code, without the internet."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "Filmed on a Galaxy A21s: the “Giving, step by step” bubble of the card tour. At the top, two drawn phones, “You” and “The other person”. The second shows a code, the first aims a blue beam at it and a green tick appears; the card fades from the first phone, which shows a code in turn; the second aims at it, then the card moves from one screen to the other. Below, four numbered dots light up in red as the steps go by, and the text details them. The screens are in French.",
-        "legende": "Giving a card, in four steps: the card tour shows it with two phones side by side."
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Animation in Mäi Carnet. 1. The collection grid: Kaz, a walking cat, Léiw, a lion, Moien, a rising sun, Famill, a family, Kaddo, a present, Apel, an apple. 2 to 6. The cards open full size one after another: “Kaz” in gold in front of the city at night, “Léiw” in silver, “Famill” in front of the Schueberfouer big wheel, “Kaddo” and “Apel” in gold. 7. Back to the grid. The cards are in French.",
+    "legende": "The new drawings on the cards, from animals to everyday words."
+   },
+   {
+    "alt": "Animation. 1. In Mäi Carnet, Series view, the “Numbers” page of the essentials: six cards won, eent to sechs, and empty slots showing the meaning to find. 2. The “Time” and “Days” pages, empty slots marked week, tomorrow, Monday, Tuesday… 3. In Wuertmix, the hint “good night”: the answer is laid out on two lines, G _ _ _ then _ _ _ _ _ T. 4. The letters are placed: GUTT NUECHT. 5. Validated, the score goes up to 100. The screens are in French.",
+    "legende": "The essentials page in the collection, and an expression to put back in order in Wuertmix."
+   }
+  ]
+ },
+ "37.8.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The review level as six squares",
+      "texte": "At the bottom of each card, a square fills up with each successful review, and all six are full when the word is learnt."
+     },
+     {
+      "titre": "Rarity in stars",
+      "texte": "A common card has one star, a very rare one has four. The more stars, the rarer the card."
+     },
+     {
+      "titre": "Engraved shields",
+      "texte": "The two shields at the bottom of the card are chased like the name plate, and the number of times you won the word is easier to read."
+     },
+     {
+      "titre": "New drawings on the cards",
+      "texte": "The bee, the ant, the elephant, the banana, the pancake and thirteen other words now have their own drawing."
+     }
     ]
-  },
-  "37.7.6": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "The guide talks about dictation",
-            "texte": "How to dictate, why it needs the internet and where your voice goes."
-          },
-          {
-            "titre": "The guide explains how to share, give and receive a card",
-            "texte": "And how to move the cursor by sliding along the space bar."
-          }
-        ]
-      },
-      {
-        "titre": "Fixes",
-        "points": [
-          {
-            "titre": "The guide describes the card as it is",
-            "texte": "Pictures redone on the card with its landscape, with the season hallmark and the rarity tier."
-          },
-          {
-            "titre": "The answer about your data is accurate",
-            "texte": "What you type never leaves the phone; only dictation sends your voice to the University of Luxembourg, which writes it down without keeping it."
-          },
-          {
-            "titre": "The French suggestions",
-            "texte": "are presented as an option in the keyboard settings."
-          }
-        ]
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Three cards from the collection, as the app shows them. 1. “Kaz”, cat, in gold: in the LEVEL shield at the bottom right, one square filled out of six; the rarity at the bottom right, four filled stars out of five. 2. “Bibliothéik”, library, in silver, with the “Geléiert” seal of a learnt word: all six LEVEL squares are full, and the rarity has three stars. 3. “Elefant”, elephant, in gold, with its new elephant drawing in front of the city at night: three squares filled out of six. The SEEN and LEVEL shields are chased, and the SEEN number is engraved in the metal. The cards are in French.",
+    "legende": "The review level as six squares, rarity in stars, and the new elephant drawing."
+   }
+  ]
+ },
+ "37.7.9": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The dictionary, shown in action",
+      "texte": "In the guided tour, a small animation searches for “cat”, opens the entry for “Kaz” with its example sentence, then searches for “Kaz” the other way round."
+     }
     ]
-  },
-  "37.7.5": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "The card help inside the collection",
-            "texte": "A “?” at the top of Mäi Carnet opens the tour of the cards, whole or on a single topic (reading a card, sharing it, giving one away or receiving one), without going back to the home screen."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "Filmed on a Galaxy A21s, in five screens. 1. The last bubble of the tour, “To see it again”, lights the “?” button at the top left. 2. The “?” opens the help: the whole tour, then The keyboard (Typing with the keyboard, Dictating a message), The cards (Reading a card, Sharing a card, Giving or receiving a card), The app (Looking up a word, Playing to learn words, Understanding the home screen, Following your progress, Setting up the keyboard) and the guide to read. 3. “Try it” opens a field with the keyboard: “Moi” has been typed and the bar offers “Moien”. 4. In Mäi Carnet, a “?” at the top opens the card help. 5. “Sharing a card” opens the card “Moien” and lights the Share button. The screens are in French.",
-        "legende": "An always-visible “?” opens the help: the whole tour or a single topic, a try of the keyboard without leaving the tour, and the card help inside the collection."
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmed on a Galaxy A21s: the “Wierderbuch, the dictionary” bubble of the guided tour. In a drawn search field, a word is typed letter by letter; three results appear, with Kaz first. A finger taps “Kaz”: its entry slides up, with its meaning and the example sentence “d'Kaz sëtzt virun der Fënster ze miauen” and its translation. The entry slides down, then “Kaz” is typed in turn and finds its meaning. The screens are in French, so the search is for “chat”; in English it is for “cat”.",
+    "legende": "The dictionary, shown: search for a word, read the entry for “Kaz”, search the other way round."
+   }
+  ]
+ },
+ "37.7.8": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The keyboard, shown in action",
+      "texte": "In the guided tour, a small animation shows the finger tapping a suggested word, then sliding along the space bar to move the cursor."
+     },
+     {
+      "titre": "Dictation, shown in action",
+      "texte": "You see the microphone light up, the sentence being written as you speak, then the microphone switch off."
+     }
     ]
-  },
-  "37.7.4": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "Trying the keyboard during the tour",
-            "texte": "The gestures and voice typing bubbles have a “Try it” button that opens a small field with the keyboard. Type “Moi” and tap “Moien”, or tap the microphone and speak, without leaving the tour."
-          }
-        ]
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmed on a Galaxy A21s: the “The keyboard in three gestures” bubble of the guided tour. At the top, a drawn keyboard. In the field, “Moi”; three red suggestions, Moien, Moie and Moies; a finger taps “Moien”, which is written in full. The finger types “wéi”, then rests on the space bar and slides left: the cursor moves back to just after “Moien”. Two dots, 1 and 3, light up in red as the gestures go by, and the text details them. The screens are in French.",
+    "legende": "The keyboard gestures, shown: tap a suggested word, slide along the space bar."
+   },
+   {
+    "alt": "Filmed on a Galaxy A21s: the “Dictation” bubble of the guided tour. A finger taps the microphone at the top right of a drawn keyboard; the microphone turns red, circled by a spinning ring and halos, and the “LuxASR · Schwätzt…” banner replaces the suggestions. The sentence “Moien, wéi geet et?” is written word by word in the field, then the finger taps the microphone again and it switches off. The screens are in French.",
+    "legende": "Dictation, shown: the microphone lights up, the sentence is written, the microphone switches off."
+   }
+  ]
+ },
+ "_sections": {
+  "Nouveautés": "New",
+  "Corrections": "Fixes",
+  "Changements": "Changes",
+  "Rapidité": "Speed"
+ },
+ "37.7.7": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "Giving a card, step by step",
+      "texte": "The tour of the cards now details the exchange between two phones in four numbered steps, with a small animation of the two screens side by side."
+     },
+     {
+      "titre": "Receiving a card and the camera, explained",
+      "texte": "Which button to tap, and why the camera is only used to read the code, without the internet."
+     }
     ]
-  },
-  "37.7.3": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "One door for help",
-            "texte": "A “?” button at the top of the screen, visible from every tab, opens the help. It holds the guided tour, topic by topic, and the full guide to read. At the bottom of the home screen, the “Help” line replaces “User guide” and “Guided tour”."
-          }
-        ]
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmed on a Galaxy A21s: the “Giving, step by step” bubble of the card tour. At the top, two drawn phones, “You” and “The other person”. The second shows a code, the first aims a blue beam at it and a green tick appears; the card fades from the first phone, which shows a code in turn; the second aims at it, then the card moves from one screen to the other. Below, four numbered dots light up in red as the steps go by, and the text details them. The screens are in French.",
+    "legende": "Giving a card, in four steps: the card tour shows it with two phones side by side."
+   }
+  ]
+ },
+ "37.7.6": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The guide talks about dictation",
+      "texte": "How to dictate, why it needs the internet and where your voice goes."
+     },
+     {
+      "titre": "The guide explains how to share, give and receive a card",
+      "texte": "And how to move the cursor by sliding along the space bar."
+     }
     ]
-  },
-  "37.7.2": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "The guided tour starts with the keyboard",
-            "texte": "The three gestures and voice typing first, then the cards, the dictionary, the games and the rest."
-          },
-          {
-            "titre": "You know where to find it again",
-            "texte": "The last bubble shows the “Guided tour” line at the bottom of the home screen, and “Skip” leads there before closing."
-          },
-          {
-            "titre": "The topics say what you want to do",
-            "texte": "“Dictating a message”, “Looking up a word”, “Sharing a card”…"
-          },
-          {
-            "titre": "The tour of the cards is shorter",
-            "texte": "Four bubbles instead of nine; the card presents itself in one go."
-          }
-        ]
-      },
-      {
-        "titre": "Fixes",
-        "points": [
-          {
-            "titre": "The bubble stays on screen when the area shown is large",
-            "texte": "On an open card, the “Next” button went off the screen on some phones."
-          }
-        ]
-      }
+   },
+   {
+    "titre": "Fixes",
+    "points": [
+     {
+      "titre": "The guide describes the card as it is",
+      "texte": "Pictures redone on the card with its landscape, with the season hallmark and the rarity tier."
+     },
+     {
+      "titre": "The answer about your data is accurate",
+      "texte": "What you type never leaves the phone; only dictation sends your voice to the University of Luxembourg, which writes it down without keeping it."
+     },
+     {
+      "titre": "The French suggestions",
+      "texte": "are presented as an option in the keyboard settings."
+     }
     ]
-  },
-  "37.7.1": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "Seeing a single topic of the guided tour again",
-            "texte": "The “Guided tour” line, at the bottom of the home screen, opens a list of topics. You choose the whole tour, or a single topic: voice typing, sharing a card, the keyboard gestures, the dictionary…"
-          }
-        ]
-      },
-      {
-        "titre": "Fixes",
-        "points": [
-          {
-            "titre": "The guided tour no longer opens under another window",
-            "texte": "It waits until the welcome message, or another request from the app, has been closed."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.7.5": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The card help inside the collection",
+      "texte": "A “?” at the top of Mäi Carnet opens the tour of the cards, whole or on a single topic (reading a card, sharing it, giving one away or receiving one), without going back to the home screen."
+     }
     ]
-  },
-  "37.7.0": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "New",
-        "points": [
-          {
-            "titre": "A guided tour of the app",
-            "texte": "The first time you open it, a bubble presents each tab (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), the keyboard settings, your card collection, the three keyboard gestures and voice typing. One tap moves on, you can skip it whenever you like, and the “Guided tour” line at the bottom of the home screen starts it again."
-          },
-          {
-            "titre": "A guided tour of the cards",
-            "texte": "The first time you open Mäi Carnet, a card opens and presents itself area by area (the landscape, the word, its meaning, its counters, its number), then the Share, Give and Receive buttons."
-          }
-        ]
-      },
-      {
-        "titre": "Fixes",
-        "points": [
-          {
-            "titre": "On a tablet, an open card stays open when you turn the screen",
-            "texte": ""
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "The guided tour of the app, step by step, on the emulator. A dark veil covers the screen and a white bubble presents what is lit by a yellow frame: 1. the Haut tab, the daily home; 2. the gear of the keyboard settings; 3. the Spiller tab and its games; 4. the Mäi Carnet banner; 5. the Wierderbuch tab; 6. the Mäi Lëtzebuergesch tab and the levels, from Ufänger to Sproochemeeschter; 7. the keyboard in three gestures (tap a suggested word, long press for accents, slide on the space bar to move the cursor); 8. voice typing, with the red microphone icon: tap the microphone at the top right of the keyboard, speak Luxembourgish, tap again to finish. The screens are in French.",
-        "legende": "The tour of the app, in eight steps: the four tabs, the settings, the card collection, the keyboard gestures and voice typing."
-      },
-      {
-        "alt": "The guided tour of the card collection, with the card “Waasser” (water). 1. the card is lit in the collection grid; then it opens full size and each area lights up in turn: 2. the landscape, whose time of day tells the rarity; 3. the word on its plate and the badge with the number of letters; 4. its meaning, “Neuter noun”, and a sentence from the official dictionary with its translation; 5. the SEEN and LEVEL shields and the game medallion; 6. the card number and its rank; 7. the Share button; 8. the Give button; 9. card closed, the Receive button at the top of the collection. The screens are in French.",
-        "legende": "The tour of the cards: each area of the card explained, then how to share it, give it away or receive one."
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmed on a Galaxy A21s, in five screens. 1. The last bubble of the tour, “To see it again”, lights the “?” button at the top left. 2. The “?” opens the help: the whole tour, then The keyboard (Typing with the keyboard, Dictating a message), The cards (Reading a card, Sharing a card, Giving or receiving a card), The app (Looking up a word, Playing to learn words, Understanding the home screen, Following your progress, Setting up the keyboard) and the guide to read. 3. “Try it” opens a field with the keyboard: “Moi” has been typed and the bar offers “Moien”. 4. In Mäi Carnet, a “?” at the top opens the card help. 5. “Sharing a card” opens the card “Moien” and lights the Share button. The screens are in French.",
+    "legende": "An always-visible “?” opens the help: the whole tour or a single topic, a try of the keyboard without leaving the tour, and the card help inside the collection."
+   }
+  ]
+ },
+ "37.7.4": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "Trying the keyboard during the tour",
+      "texte": "The gestures and voice typing bubbles have a “Try it” button that opens a small field with the keyboard. Type “Moi” and tap “Moien”, or tap the microphone and speak, without leaving the tour."
+     }
     ]
-  },
-  "37.6.0": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "New",
-        "points": [
-          {
-            "titre": "The Wierderbuch understands numbers written in digits",
-            "texte": "Typing “11” shows “11 is written ‘eelef’” and its translation, from 0 to 100. Beyond that, as for years, the app reminds you that they are written in digits, like in the official dictionary."
-          }
-        ]
-      },
-      {
-        "titre": "Fixes",
-        "points": [
-          {
-            "titre": "Level names corrected",
-            "texte": "By a Luxembourgish teacher: Ufänger, Sproochekënner and Sproochemeeschter. Your progress does not change."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.7.3": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "One door for help",
+      "texte": "A “?” button at the top of the screen, visible from every tab, opens the help. It holds the guided tour, topic by topic, and the full guide to read. At the bottom of the home screen, the “Help” line replaces “User guide” and “Guided tour”."
+     }
     ]
-  },
-  "37.5.0": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "New",
-        "points": [
-          {
-            "titre": "Open cards catch the light",
-            "texte": "The landscape window is behind glass, with a discreet reflection that glides when you tilt the phone. The frame shines according to its metal, from the pewter of common cards to the gold of very rare ones, and the light runs from one raised piece to the next (plate, medallion, shields) as you tilt."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.7.2": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The guided tour starts with the keyboard",
+      "texte": "The three gestures and voice typing first, then the cards, the dictionary, the games and the rest."
+     },
+     {
+      "titre": "You know where to find it again",
+      "texte": "The last bubble shows the “Guided tour” line at the bottom of the home screen, and “Skip” leads there before closing."
+     },
+     {
+      "titre": "The topics say what you want to do",
+      "texte": "“Dictating a message”, “Looking up a word”, “Sharing a card”…"
+     },
+     {
+      "titre": "The tour of the cards is shorter",
+      "texte": "Four bubbles instead of nine; the card presents itself in one go."
+     }
     ]
-  },
-  "37.4.10": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "Winter and summer cards appear faster",
-            "texte": "On a Galaxy A21s, the winter landscape of an open card is drawn in 33 ms instead of 49, the summer one in 21 ms instead of 35; autumn goes from 47 to 43 ms. The pictures do not change."
-          }
-        ]
-      }
+   },
+   {
+    "titre": "Fixes",
+    "points": [
+     {
+      "titre": "The bubble stays on screen when the area shown is large",
+      "texte": "On an open card, the “Next” button went off the screen on some phones."
+     }
     ]
-  },
-  "37.4.9": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "Autumn cards appear faster",
-            "texte": "The autumn landscape of an open card is drawn in 43 ms instead of 71 on a Galaxy A21s, that of a thumbnail in 21 ms instead of 30; spring gains a little too. The pictures do not change."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.7.1": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "Seeing a single topic of the guided tour again",
+      "texte": "The “Guided tour” line, at the bottom of the home screen, opens a list of topics. You choose the whole tour, or a single topic: voice typing, sharing a card, the keyboard gestures, the dictionary…"
+     }
     ]
-  },
-  "37.4.8": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Fixes",
-        "points": [
-          {
-            "titre": "A very rare card no longer stays face down",
-            "texte": "On a slow phone, the flash before a very rare card could cancel its turn, and the card stayed on its back."
-          },
-          {
-            "titre": "The first card pack no longer freezes",
-            "texte": "After an install or an update, the card paused for half a second while turning over. The graphics work is now done in advance, without anything showing."
-          }
-        ]
-      },
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "The collection legend filters",
-            "texte": "Tapping “✦ 5 very rare” now shows only the very rare cards; a second tap shows the whole collection."
-          },
-          {
-            "titre": "The open card names its tier",
-            "texte": "At the bottom right, “✦ Very rare · 9769th” instead of the rank alone."
-          }
-        ]
-      }
+   },
+   {
+    "titre": "Fixes",
+    "points": [
+     {
+      "titre": "The guided tour no longer opens under another window",
+      "texte": "It waits until the welcome message, or another request from the app, has been closed."
+     }
     ]
-  },
-  "37.4.7": {
-    "intro": "The first rare and very rare cards get their ceremony.",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "The first rare card and the first very rare card get their ceremony",
-            "texte": "The first rare card quivers a second time, harder, and the first very rare card rises more slowly; both get a second burst of fireworks and a sentence that tells how to recognise their tier (evening sky and silver frame, starry night and gold frame). Only once per tier."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "Filmed on a Galaxy A21s. An end-of-game card pack: night falls on the screen, the back of the card rises while spinning, a purple flash passes, then the card turns over. It is “Kran” (crane), golden, in a starry night. Two badges appear above it: “New card” and “Very rare card”. Under the card, a sentence reads: “Your first very rare card! You can tell by its starry night and its gold frame.”",
-        "legende": "The very first very rare card gets its ceremony, and a sentence that tells how to recognise it from then on."
-      }
+   }
+  ]
+ },
+ "37.7.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "New",
+    "points": [
+     {
+      "titre": "A guided tour of the app",
+      "texte": "The first time you open it, a bubble presents each tab (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), the keyboard settings, your card collection, the three keyboard gestures and voice typing. One tap moves on, you can skip it whenever you like, and the “Guided tour” line at the bottom of the home screen starts it again."
+     },
+     {
+      "titre": "A guided tour of the cards",
+      "texte": "The first time you open Mäi Carnet, a card opens and presents itself area by area (the landscape, the word, its meaning, its counters, its number), then the Share, Give and Receive buttons."
+     }
     ]
-  },
-  "37.4.6": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "Rarity is spelled out",
-            "texte": "At the top of the collection, each tier is named (“✦ 5 very rare ★ 11 rare…”) instead of bare symbols; in the card pack, a rare or very rare card announces itself as it lands."
-          }
-        ]
-      }
+   },
+   {
+    "titre": "Fixes",
+    "points": [
+     {
+      "titre": "On a tablet, an open card stays open when you turn the screen",
+      "texte": ""
+     }
     ]
-  },
-  "37.4.5": {
-    "intro": "",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "The cards in the Leitner box show their landscape",
-            "texte": "In the compartments, stacked cards only showed the sky; they now show their place, season and festival, as in the collection."
-          }
-        ]
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "The guided tour of the app, step by step, on the emulator. A dark veil covers the screen and a white bubble presents what is lit by a yellow frame: 1. the Haut tab, the daily home; 2. the gear of the keyboard settings; 3. the Spiller tab and its games; 4. the Mäi Carnet banner; 5. the Wierderbuch tab; 6. the Mäi Lëtzebuergesch tab and the levels, from Ufänger to Sproochemeeschter; 7. the keyboard in three gestures (tap a suggested word, long press for accents, slide on the space bar to move the cursor); 8. voice typing, with the red microphone icon: tap the microphone at the top right of the keyboard, speak Luxembourgish, tap again to finish. The screens are in French.",
+    "legende": "The tour of the app, in eight steps: the four tabs, the settings, the card collection, the keyboard gestures and voice typing."
+   },
+   {
+    "alt": "The guided tour of the card collection, with the card “Waasser” (water). 1. the card is lit in the collection grid; then it opens full size and each area lights up in turn: 2. the landscape, whose time of day tells the rarity; 3. the word on its plate and the badge with the number of letters; 4. its meaning, “Neuter noun”, and a sentence from the official dictionary with its translation; 5. the SEEN and LEVEL shields and the game medallion; 6. the card number and its rank; 7. the Share button; 8. the Give button; 9. card closed, the Receive button at the top of the collection. The screens are in French.",
+    "legende": "The tour of the cards: each area of the card explained, then how to share it, give it away or receive one."
+   }
+  ]
+ },
+ "37.6.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "New",
+    "points": [
+     {
+      "titre": "The Wierderbuch understands numbers written in digits",
+      "texte": "Typing “11” shows “11 is written ‘eelef’” and its translation, from 0 to 100. Beyond that, as for years, the app reminds you that they are written in digits, like in the official dictionary."
+     }
     ]
-  },
-  "37.4.4": {
-    "intro": "",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "Summer birds fly in the card window",
-            "texte": "On the open card and in the card pack, they gently flap their wings and glide, drifting only slightly. They used to be frozen in the landscape."
-          }
-        ]
-      }
+   },
+   {
+    "titre": "Fixes",
+    "points": [
+     {
+      "titre": "Level names corrected",
+      "texte": "By a Luxembourgish teacher: Ufänger, Sproochekënner and Sproochemeeschter. Your progress does not change."
+     }
     ]
-  },
-  "37.4.3": {
-    "intro": "",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "The keyboard has its own name in the keyboard picker",
-            "texte": "On Samsung phones it appeared as “Clavier luxembourgeois Luxembourg”; it is now called “🇱🇺 Lëtzebuergesch Clavier” everywhere."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.5.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "New",
+    "points": [
+     {
+      "titre": "Open cards catch the light",
+      "texte": "The landscape window is behind glass, with a discreet reflection that glides when you tilt the phone. The frame shines according to its metal, from the pewter of common cards to the gold of very rare ones, and the light runs from one raised piece to the next (plate, medallion, shields) as you tilt."
+     }
     ]
-  },
-  "37.4.2": {
-    "intro": "",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "No more light strip at the edge of the window when you tilt the card",
-            "texte": "The landscape layers now overflow the window, and their edge no longer shows as they slide."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.10": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "Winter and summer cards appear faster",
+      "texte": "On a Galaxy A21s, the winter landscape of an open card is drawn in 33 ms instead of 49, the summer one in 21 ms instead of 35; autumn goes from 47 to 43 ms. The pictures do not change."
+     }
     ]
-  },
-  "37.4.1": {
-    "intro": "",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "Cards you win make the phone vibrate, by rarity",
-            "texte": "A light tick for an uncommon card, three quivers then the stamp’s knock for a rare one, and for a very rare one a build-up during the prelude, a full knock at the flash and the crackle of fireworks. These vibrations existed but stayed silent on some phones, including the Galaxy A21s; they now go through the same path as the relief of the collection cards. They follow the “Vibrate on keypress” setting in the keyboard settings."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.9": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "Autumn cards appear faster",
+      "texte": "The autumn landscape of an open card is drawn in 43 ms instead of 71 on a Galaxy A21s, that of a thumbnail in 21 ms instead of 30; spring gains a little too. The pictures do not change."
+     }
     ]
-  },
-  "37.3.0": {
-    "intro": "The keyboard catches a double letter typed only once.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "A forgotten double letter is corrected",
-            "texte": "“Kafi” gives “Kaffi”, “ales” gives “alles”, “ener” gives “ënner” rather than “Energie”. Luxembourgish doubles a lot of letters, and a hurried thumb often types only one."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.8": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Fixes",
+    "points": [
+     {
+      "titre": "A very rare card no longer stays face down",
+      "texte": "On a slow phone, the flash before a very rare card could cancel its turn, and the card stayed on its back."
+     },
+     {
+      "titre": "The first card pack no longer freezes",
+      "texte": "After an install or an update, the card paused for half a second while turning over. The graphics work is now done in advance, without anything showing."
+     }
     ]
-  },
-  "37.2.0": {
-    "intro": "The keyboard is better at catching typos.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "Two words typed without a space are split",
-            "texte": "For “echhunn”, the bar suggests “ech hunn”. Luxembourgish compound words (“ausbruecht”, “Schoulbus”) are not split."
-          },
-          {
-            "titre": "A finger that lands on the next key is recognised",
-            "texte": "For “haud”, the bar suggests “Haus” first, because the s is next to the d, before “haut”."
-          },
-          {
-            "titre": "Two swapped letters count as a single mistake",
-            "texte": "“ehc” gives “ech”, “mioen” gives “Moien”."
-          },
-          {
-            "titre": "A typo that looks like the start of another word is still corrected",
-            "texte": "“gir” gives “fir”, “vul” gives “vun”."
-          }
-        ]
-      },
-      {
-        "points": [
-          {
-            "titre": "A few typos that came from the texts used to build the dictionary have been removed from it",
-            "texte": "“hunnn”, “dobai”, “tescht”… They were accepted as they were, and “hunnn” was even suggested under “hunn”."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "The keyboard in a messaging conversation. “echhunn” is typed without a space: the bar suggests “Ech hunn”, which is tapped. Then “geschter” without its accent: the bar suggests “gëschter”. Then “an der” with no mistake, then “schiul”, the finger having landed on the i next to the o: the bar suggests “Schoul”. Finally “gescahfft”, with two swapped letters: the bar suggests “geschafft”. The final sentence is “Ech hunn gëschter an der Schoul geschafft”. A blue dot shows each tap.",
-        "legende": "Words run together, a missing accent, the key next door, swapped letters: you type fast, the bar suggests the right word, one tap is enough."
-      }
+   },
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The collection legend filters",
+      "texte": "Tapping “✦ 5 very rare” now shows only the very rare cards; a second tap shows the whole collection."
+     },
+     {
+      "titre": "The open card names its tier",
+      "texte": "At the bottom right, “✦ Very rare · 9769th” instead of the rank alone."
+     }
     ]
-  },
-  "37.1.3": {
-    "intro": "Cards stay on screen when you rotate the phone.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "A card opened in the collection no longer closes",
-            "texte": "When the phone rotates, and neither does an open compartment of the Leitner box."
-          },
-          {
-            "titre": "In review, the card you have just turned over stays turned over",
-            "texte": ""
-          },
-          {
-            "titre": null,
-            "texte": "While a card is on screen, tilting the phone moves the card instead of rotating the screen."
-          }
-        ]
-      },
-      {
-        "points": [
-          {
-            "titre": "On phones, the app is now always shown upright",
-            "texte": "Held sideways, the phone left too little room: in review, the card shrank to an icon. Tablets keep both orientations."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.7": {
+  "intro": "The first rare and very rare cards get their ceremony.",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The first rare card and the first very rare card get their ceremony",
+      "texte": "The first rare card quivers a second time, harder, and the first very rare card rises more slowly; both get a second burst of fireworks and a sentence that tells how to recognise their tier (evening sky and silver frame, starry night and gold frame). Only once per tier."
+     }
     ]
-  },
-  "37.1.2": {
-    "intro": "The end-of-game card pack holds firm when you rotate the phone.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "Rotating the phone no longer makes the card pack disappear",
-            "texte": "The screen keeps its orientation while the pack is open, and rotates again as soon as you close it. So you can tilt the phone to play with the card without losing it."
-          },
-          {
-            "titre": "In landscape, the cards you won finally appear",
-            "texte": "The back turns over, the card shows up with its rarity effects and follows the tilt of the phone."
-          },
-          {
-            "titre": "The card pack’s title no longer slips under the clock and icons",
-            "texte": "Nor does “Skip” slip under the navigation bar."
-          }
-        ]
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmed on a Galaxy A21s. An end-of-game card pack: night falls on the screen, the back of the card rises while spinning, a purple flash passes, then the card turns over. It is “Kran” (crane), golden, in a starry night. Two badges appear above it: “New card” and “Very rare card”. Under the card, a sentence reads: “Your first very rare card! You can tell by its starry night and its gold frame.”",
+    "legende": "The very first very rare card gets its ceremony, and a sentence that tells how to recognise it from then on."
+   }
+  ]
+ },
+ "37.4.6": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "Rarity is spelled out",
+      "texte": "At the top of the collection, each tier is named (“✦ 5 very rare ★ 11 rare…”) instead of bare symbols; in the card pack, a rare or very rare card announces itself as it lands."
+     }
     ]
-  },
-  "37.1.1": {
-    "intro": "The collection and the Leitner box respond without stuttering.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "Changing the sort order or switching to the Shelf no longer freezes the collection",
-            "texte": "The cards already on screen are reused instead of being redrawn."
-          },
-          {
-            "titre": "The collection opens faster",
-            "texte": "And its grid can be scrolled as soon as it appears."
-          },
-          {
-            "titre": "The first card you open turns over as quickly as the next ones",
-            "texte": "In one smooth movement."
-          },
-          {
-            "titre": "Opening a compartment of the Leitner box no longer blocks the screen",
-            "texte": "The fan of cards opens as soon as its cards are ready."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.5": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "The cards in the Leitner box show their landscape",
+      "texte": "In the compartments, stacked cards only showed the sky; they now show their place, season and festival, as in the collection."
+     }
     ]
-  },
-  "37.1.0": {
-    "intro": "Each rare card now has its own way of arriving.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "An uncommon card ◆◆",
-            "texte": "Lands with a gleam of light sweeping across it."
-          },
-          {
-            "titre": "A rare card ★★★",
-            "texte": "Can be sensed before it appears: the back quivers three times in the pack, the phone vibrates, then, once the card is turned over, its hallmark is stamped with a ripple."
-          },
-          {
-            "titre": "A very rare card ✦✦✦✦",
-            "texte": "Changes the whole scene: night falls, the card rises as it spins, a first purple flash, then it is slowly revealed under rays of light."
-          },
-          {
-            "titre": null,
-            "texte": "Vibrations follow the phone’s settings, and everything stays understated when the phone asks for fewer animations."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.4": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Summer birds fly in the card window",
+      "texte": "On the open card and in the card pack, they gently flap their wings and glide, drifting only slightly. They used to be frozen in the landscape."
+     }
     ]
-  },
-  "37.0.1": {
-    "intro": "Smoother cards in the Leitner box and at the end of a game.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "The cards of the Leitner box get their landscape back",
-            "texte": "When you opened a compartment, the cards spread out showed nothing but sky."
-          }
-        ]
-      },
-      {
-        "points": [
-          {
-            "titre": "Review turns its cards over without stuttering",
-            "texte": "The card gets ready while you read the question, instead of freezing the screen in the middle of the gesture."
-          },
-          {
-            "titre": "So does the end-of-game card pack",
-            "texte": "Each card you win turns over in one smooth movement."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.3": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "The keyboard has its own name in the keyboard picker",
+      "texte": "On Samsung phones it appeared as “Clavier luxembourgeois Luxembourg”; it is now called “🇱🇺 Lëtzebuergesch Clavier” everywhere."
+     }
     ]
-  },
-  "37.9.0": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "New",
-        "points": [
-          {
-            "titre": "Cards become a little paper theatre",
-            "texte": "On the open card, the landscape is made of cut-out cardboard pieces placed one in front of the other, each with its shadow and its light edge. Tilt the phone: the pieces slide, each at its own speed, like a theatre set."
-          },
-          {
-            "titre": "The rarer the card, the richer the set",
-            "texte": "Rare cards add wings, two silhouetted trees on each side, and very rare ones a cloud that slowly crosses the sky."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "The card “Auer”, hour, common, open and tilted from left to right. Vianden castle and its hill, the row of houses and the river are three cut-out pieces: each has a light edge and a soft shadow, and they slide at different speeds as the card tilts.",
-        "legende": "A common card: three pieces, each sliding at its own speed."
-      },
-      {
-        "alt": "The card “Stall”, stable, rare, in the evening at Esch-sur-Sûre, tilted from left to right. In front of the cliffs and the village, two silhouetted trees frame the scene on each side, like theatre wings; they barely move while the landscape slides behind.",
-        "legende": "A rare card: the wings frame the scene."
-      },
-      {
-        "alt": "The card “Mënz”, coin, very rare, at night on the Moselle, tilted from left to right. Besides the wings, a cardboard cloud slowly crosses the starry sky, in front of the hills and behind the village.",
-        "legende": "A very rare card: besides the wings, a cloud crosses the sky."
-      }
+   }
+  ]
+ },
+ "37.4.2": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "No more light strip at the edge of the window when you tilt the card",
+      "texte": "The landscape layers now overflow the window, and their edge no longer shows as they slide."
+     }
     ]
-  },
-  "37.9.1": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "A shared card keeps its paper theatre",
-            "texte": "The image sent with “Share” shows the same cardboard pieces as in the app, with the wings of rare cards and the cloud of very rare ones."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "1. The card “Kaz”, cat, very rare, open in the app and tilted from left to right: the city at night in cut-out cardboard, with silhouetted wings on the sides. 2. The image of the same card as it is sent with “Share”: the same pieces, the wings and the cloud in the starry sky.",
-        "legende": "The card in the app, then the image you share: the same paper theatre."
-      }
+   }
+  ]
+ },
+ "37.4.1": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Cards you win make the phone vibrate, by rarity",
+      "texte": "A light tick for an uncommon card, three quivers then the stamp’s knock for a rare one, and for a very rare one a build-up during the prelude, a full knock at the flash and the crackle of fireworks. These vibrations existed but stayed silent on some phones, including the Galaxy A21s; they now go through the same path as the relief of the collection cards. They follow the “Vibrate on keypress” setting in the keyboard settings."
+     }
     ]
-  },
-  "37.9.2": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Improvements",
-        "points": [
-          {
-            "titre": "The cardboard pieces have their white border",
-            "texte": "On the open card and on the shared image, each cut-out piece is outlined with a white edge, like real paper, even on night cards."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "The card “Mënz”, coin, very rare, open in the app and slowly tilted from left to right. Night on the Moselle: the silhouetted wings on the sides, the vineyard hill, the village and its bell tower, and a cloud crossing the starry sky. Each cut-out piece is outlined with a white border, and the pieces slide at different speeds.",
-        "legende": "A very rare card being tilted: each piece has its white border, even at night."
-      }
+   }
+  ]
+ },
+ "37.3.0": {
+  "intro": "The keyboard catches a double letter typed only once.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "A forgotten double letter is corrected",
+      "texte": "“Kafi” gives “Kaffi”, “ales” gives “alles”, “ener” gives “ënner” rather than “Energie”. Luxembourgish doubles a lot of letters, and a hurried thumb often types only one."
+     }
     ]
-  }
+   }
+  ]
+ },
+ "37.2.0": {
+  "intro": "The keyboard is better at catching typos.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Two words typed without a space are split",
+      "texte": "For “echhunn”, the bar suggests “ech hunn”. Luxembourgish compound words (“ausbruecht”, “Schoulbus”) are not split."
+     },
+     {
+      "titre": "A finger that lands on the next key is recognised",
+      "texte": "For “haud”, the bar suggests “Haus” first, because the s is next to the d, before “haut”."
+     },
+     {
+      "titre": "Two swapped letters count as a single mistake",
+      "texte": "“ehc” gives “ech”, “mioen” gives “Moien”."
+     },
+     {
+      "titre": "A typo that looks like the start of another word is still corrected",
+      "texte": "“gir” gives “fir”, “vul” gives “vun”."
+     }
+    ]
+   },
+   {
+    "points": [
+     {
+      "titre": "A few typos that came from the texts used to build the dictionary have been removed from it",
+      "texte": "“hunnn”, “dobai”, “tescht”… They were accepted as they were, and “hunnn” was even suggested under “hunn”."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "The keyboard in a messaging conversation. “echhunn” is typed without a space: the bar suggests “Ech hunn”, which is tapped. Then “geschter” without its accent: the bar suggests “gëschter”. Then “an der” with no mistake, then “schiul”, the finger having landed on the i next to the o: the bar suggests “Schoul”. Finally “gescahfft”, with two swapped letters: the bar suggests “geschafft”. The final sentence is “Ech hunn gëschter an der Schoul geschafft”. A blue dot shows each tap.",
+    "legende": "Words run together, a missing accent, the key next door, swapped letters: you type fast, the bar suggests the right word, one tap is enough."
+   }
+  ]
+ },
+ "37.1.3": {
+  "intro": "Cards stay on screen when you rotate the phone.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "A card opened in the collection no longer closes",
+      "texte": "When the phone rotates, and neither does an open compartment of the Leitner box."
+     },
+     {
+      "titre": "In review, the card you have just turned over stays turned over",
+      "texte": ""
+     },
+     {
+      "titre": null,
+      "texte": "While a card is on screen, tilting the phone moves the card instead of rotating the screen."
+     }
+    ]
+   },
+   {
+    "points": [
+     {
+      "titre": "On phones, the app is now always shown upright",
+      "texte": "Held sideways, the phone left too little room: in review, the card shrank to an icon. Tablets keep both orientations."
+     }
+    ]
+   }
+  ]
+ },
+ "37.1.2": {
+  "intro": "The end-of-game card pack holds firm when you rotate the phone.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Rotating the phone no longer makes the card pack disappear",
+      "texte": "The screen keeps its orientation while the pack is open, and rotates again as soon as you close it. So you can tilt the phone to play with the card without losing it."
+     },
+     {
+      "titre": "In landscape, the cards you won finally appear",
+      "texte": "The back turns over, the card shows up with its rarity effects and follows the tilt of the phone."
+     },
+     {
+      "titre": "The card pack’s title no longer slips under the clock and icons",
+      "texte": "Nor does “Skip” slip under the navigation bar."
+     }
+    ]
+   }
+  ]
+ },
+ "37.1.1": {
+  "intro": "The collection and the Leitner box respond without stuttering.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Changing the sort order or switching to the Shelf no longer freezes the collection",
+      "texte": "The cards already on screen are reused instead of being redrawn."
+     },
+     {
+      "titre": "The collection opens faster",
+      "texte": "And its grid can be scrolled as soon as it appears."
+     },
+     {
+      "titre": "The first card you open turns over as quickly as the next ones",
+      "texte": "In one smooth movement."
+     },
+     {
+      "titre": "Opening a compartment of the Leitner box no longer blocks the screen",
+      "texte": "The fan of cards opens as soon as its cards are ready."
+     }
+    ]
+   }
+  ]
+ },
+ "37.1.0": {
+  "intro": "Each rare card now has its own way of arriving.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "An uncommon card ◆◆",
+      "texte": "Lands with a gleam of light sweeping across it."
+     },
+     {
+      "titre": "A rare card ★★★",
+      "texte": "Can be sensed before it appears: the back quivers three times in the pack, the phone vibrates, then, once the card is turned over, its hallmark is stamped with a ripple."
+     },
+     {
+      "titre": "A very rare card ✦✦✦✦",
+      "texte": "Changes the whole scene: night falls, the card rises as it spins, a first purple flash, then it is slowly revealed under rays of light."
+     },
+     {
+      "titre": null,
+      "texte": "Vibrations follow the phone’s settings, and everything stays understated when the phone asks for fewer animations."
+     }
+    ]
+   }
+  ]
+ },
+ "37.0.1": {
+  "intro": "Smoother cards in the Leitner box and at the end of a game.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "The cards of the Leitner box get their landscape back",
+      "texte": "When you opened a compartment, the cards spread out showed nothing but sky."
+     }
+    ]
+   },
+   {
+    "points": [
+     {
+      "titre": "Review turns its cards over without stuttering",
+      "texte": "The card gets ready while you read the question, instead of freezing the screen in the middle of the gesture."
+     },
+     {
+      "titre": "So does the end-of-game card pack",
+      "texte": "Each card you win turns over in one smooth movement."
+     }
+    ]
+   }
+  ]
+ },
+ "37.9.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "New",
+    "points": [
+     {
+      "titre": "Cards become a little paper theatre",
+      "texte": "On the open card, the landscape is made of cut-out cardboard pieces placed one in front of the other, each with its shadow and its light edge. Tilt the phone: the pieces slide, each at its own speed, like a theatre set."
+     },
+     {
+      "titre": "The rarer the card, the richer the set",
+      "texte": "Rare cards add wings, two silhouetted trees on each side, and very rare ones a cloud that slowly crosses the sky."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "The card “Auer”, hour, common, open and tilted from left to right. Vianden castle and its hill, the row of houses and the river are three cut-out pieces: each has a light edge and a soft shadow, and they slide at different speeds as the card tilts.",
+    "legende": "A common card: three pieces, each sliding at its own speed."
+   },
+   {
+    "alt": "The card “Stall”, stable, rare, in the evening at Esch-sur-Sûre, tilted from left to right. In front of the cliffs and the village, two silhouetted trees frame the scene on each side, like theatre wings; they barely move while the landscape slides behind.",
+    "legende": "A rare card: the wings frame the scene."
+   },
+   {
+    "alt": "The card “Mënz”, coin, very rare, at night on the Moselle, tilted from left to right. Besides the wings, a cardboard cloud slowly crosses the starry sky, in front of the hills and behind the village.",
+    "legende": "A very rare card: besides the wings, a cloud crosses the sky."
+   }
+  ]
+ },
+ "37.9.1": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "A shared card keeps its paper theatre",
+      "texte": "The image sent with “Share” shows the same cardboard pieces as in the app, with the wings of rare cards and the cloud of very rare ones."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "1. The card “Kaz”, cat, very rare, open in the app and tilted from left to right: the city at night in cut-out cardboard, with silhouetted wings on the sides. 2. The image of the same card as it is sent with “Share”: the same pieces, the wings and the cloud in the starry sky.",
+    "legende": "The card in the app, then the image you share: the same paper theatre."
+   }
+  ]
+ },
+ "37.9.2": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Improvements",
+    "points": [
+     {
+      "titre": "The cardboard pieces have their white border",
+      "texte": "On the open card and on the shared image, each cut-out piece is outlined with a white edge, like real paper, even on night cards."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "The card “Mënz”, coin, very rare, open in the app and slowly tilted from left to right. Night on the Moselle: the silhouetted wings on the sides, the vineyard hill, the village and its bell tower, and a cloud crossing the starry sky. Each cut-out piece is outlined with a white border, and the pieces slide at different speeds.",
+    "legende": "A very rare card being tilted: each piece has its white border, even at night."
+   }
+  ]
+ }
 }

@@ -1,9 +1,104 @@
 {
- "genere_le": "2026-10-29",
- "derniere_version": "37.9.2",
- "derniere_date": "2026-10-29",
+ "genere_le": "2026-10-31",
+ "derniere_version": "37.10.1",
+ "derniere_date": "2026-10-31",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.10.1",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le guide montre les nouveaux dessins",
+       "texte": "Les images qui expliquent une carte, dans l'aide, ont été refaites avec les dessins de la 37.10.0."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_guide_carte_haut.png",
+     "alt": "Planche du guide : le haut de la carte « Waasser », une goutte d'eau devant la vallée, avec quatre repères numérotés : 1 le mot, 2 la longueur, 3 le paysage, 4 le cadre.",
+     "legende": "Le guide de l'aide montre la carte avec son nouveau dessin."
+    }
+   ],
+   "image": "Screenshots/lux_guide_carte_haut.png",
+   "image_alt": "Planche du guide : le haut de la carte « Waasser », une goutte d'eau devant la vallée, avec quatre repères numérotés : 1 le mot, 2 la longueur, 3 le paysage, 4 le cadre.",
+   "image_legende": "Le guide de l'aide montre la carte avec son nouveau dessin."
+  },
+  {
+   "version": "37.10.0",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Les cartes ont de nouveaux dessins",
+       "texte": "Le chat, le lion, le cheval, la maison, le vélo et plus de cent autres dessins ont été refaits, plus fins et plus faciles à reconnaître. Les animaux et les véhicules regardent tous vers la droite."
+      },
+      {
+       "titre": "Les essentiels, une nouvelle page du carnet",
+       "texte": "Les mots de tous les jours (saluer, la famille, les jours, les mois, les couleurs, la maison, les courses…) rangés par thème. Chaque case vide montre le sens du mot à trouver, et chaque thème complété se fête."
+      },
+      {
+       "titre": "Les jeux vous aident à les trouver",
+       "texte": "Wuertsich, Wuertmix et Wuertriet glissent dans leurs parties les mots essentiels qui manquent encore à votre carnet."
+      },
+      {
+       "titre": "Des expressions à remettre dans l'ordre",
+       "texte": "Wuertmix propose aussi des expressions comme « Gudde Moien » ou « Wéi vill kascht dat? », un mot par ligne."
+      },
+      {
+       "titre": "Près de 140 mots de plus ont leur dessin",
+       "texte": "La famille, le corps, les vêtements, la cuisine, les fêtes…"
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "Le bon sens pour quelques mots",
+       "texte": "« Mee » se traduit maintenant par « mai », « Ee » par « œuf », « A » par « œil » et « Fest » par « fête »."
+      },
+      {
+       "titre": "Wuertmix",
+       "texte": "Retirer une lettre de la réponse ne déplace plus les lettres données d'avance."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
+     "alt": "Animation dans Mäi Carnet. 1. La grille du carnet : Kaz, un chat qui marche, Léiw, un lion, Moien, un soleil qui se lève, Famill, une famille, Kaddo, un cadeau, Apel, une pomme. 2. à 6. Les cartes s'ouvrent l'une après l'autre en grand : « Kaz » en or devant la ville de nuit, « Léiw » en argent, « Famill » devant la grande roue de la Schueberfouer, « Kaddo » et « Apel » en or. 7. Retour à la grille.",
+     "legende": "Les nouveaux dessins sur les cartes, des animaux aux mots de tous les jours."
+    },
+    {
+     "image": "Screenshots/lux_essentiels.gif",
+     "alt": "Animation. 1. Dans Mäi Carnet, vue Séries, la page « Nombres » des essentiels : six cartes gagnées, eent à sechs, et des cases vides qui montrent le sens à trouver (sept, neuf, dix, vingt, cent, mille). 2. Les pages « Temps » et « Jours », cases vides marquées semaine, demain, lundi, mardi… 3. Dans Wuertmix, l'indice « bonne nuit » : la réponse se pose sur deux lignes, G _ _ _ puis _ _ _ _ _ T. 4. Les lettres sont placées : GUTT NUECHT. 5. Validé, le score passe à 100.",
+     "legende": "La page des essentiels dans le carnet, et une expression à remettre dans l'ordre dans Wuertmix."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
+   "image_alt": "Animation dans Mäi Carnet. 1. La grille du carnet : Kaz, un chat qui marche, Léiw, un lion, Moien, un soleil qui se lève, Famill, une famille, Kaddo, un cadeau, Apel, une pomme. 2. à 6. Les cartes s'ouvrent l'une après l'autre en grand : « Kaz » en or devant la ville de nuit, « Léiw » en argent, « Famill » devant la grande roue de la Schueberfouer, « Kaddo » et « Apel » en or. 7. Retour à la grille.",
+   "image_legende": "Les nouveaux dessins sur les cartes, des animaux aux mots de tous les jours."
+  },
   {
    "version": "37.9.2",
    "date": "2026-10-29",
@@ -145,73 +240,6 @@
    "image": "Screenshots/lux_cartes_jauges.png",
    "image_alt": "Trois cartes du carnet, telles que l'appli les affiche. 1. « Kaz », chat, en or : dans l'écu NIVEAU en bas à droite, une case pleine sur six ; la rareté en bas à droite, quatre étoiles pleines sur cinq. 2. « Bibliothéik », bibliothèque, en argent, avec le sceau « Geléiert » d'un mot acquis : les six cases du NIVEAU sont pleines, et la rareté a trois étoiles. 3. « Elefant », éléphant, en or, avec son nouveau dessin d'éléphant devant la ville de nuit : trois cases pleines sur six. Les écus VUES et NIVEAU sont ciselés, le nombre de VUES gravé dans le métal.",
    "image_legende": "Le niveau de révision en six cases, la rareté en étoiles, et le nouveau dessin de l'éléphant."
-  },
-  {
-   "version": "37.7.9",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Le dictionnaire, montré en action",
-       "texte": "Dans la visite guidée, une petite animation cherche « chat », ouvre la fiche de « Kaz » avec sa phrase d'exemple, puis cherche « Kaz » dans l'autre sens."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_dictionnaire.gif",
-     "alt": "Filmé sur un Galaxy A21s : la bulle « Wierderbuch, le dictionnaire » de la visite guidée. Dans un champ dessiné, « chat » se tape lettre à lettre ; trois résultats apparaissent, Kaz (chat, chatte, chat sauvage), Chat et chatt. Un doigt touche « Kaz » : sa fiche monte, avec son sens et la phrase d'exemple « d'Kaz sëtzt virun der Fënster ze miauen », traduite « le chat est assis devant la fenêtre et miaule ». La fiche redescend, « Kaz » se tape à son tour et retrouve son sens.",
-     "legende": "Le dictionnaire, montré : chercher « chat », lire la fiche de « Kaz », chercher dans l'autre sens."
-    }
-   ],
-   "image": "Screenshots/lux_visite_dictionnaire.gif",
-   "image_alt": "Filmé sur un Galaxy A21s : la bulle « Wierderbuch, le dictionnaire » de la visite guidée. Dans un champ dessiné, « chat » se tape lettre à lettre ; trois résultats apparaissent, Kaz (chat, chatte, chat sauvage), Chat et chatt. Un doigt touche « Kaz » : sa fiche monte, avec son sens et la phrase d'exemple « d'Kaz sëtzt virun der Fënster ze miauen », traduite « le chat est assis devant la fenêtre et miaule ». La fiche redescend, « Kaz » se tape à son tour et retrouve son sens.",
-   "image_legende": "Le dictionnaire, montré : chercher « chat », lire la fiche de « Kaz », chercher dans l'autre sens."
-  },
-  {
-   "version": "37.7.8",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Le clavier, montré en action",
-       "texte": "Dans la visite guidée, une petite animation montre le doigt qui touche un mot proposé, puis qui glisse sur la barre d'espace pour déplacer le curseur."
-      },
-      {
-       "titre": "La dictée, montrée en action",
-       "texte": "On voit le micro s'allumer, la phrase s'écrire pendant qu'on parle, puis le micro s'éteindre."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_gestes.gif",
-     "alt": "Filmé sur un Galaxy A21s : la bulle « Le clavier en trois gestes » de la visite guidée. En haut, un clavier dessiné. Dans le champ, « Moi » ; trois suggestions rouges, Moien, Moie et Moies ; un doigt touche « Moien », qui s'écrit en entier. Le doigt tape « wéi », puis se pose sur la barre d'espace et glisse vers la gauche : le curseur recule jusqu'après « Moien ». Deux pastilles, 1 et 3, s'allument en rouge au fil des gestes, et le texte les détaille.",
-     "legende": "Les gestes du clavier, montrés : toucher un mot proposé, glisser sur la barre d'espace."
-    },
-    {
-     "image": "Screenshots/lux_visite_dictee.gif",
-     "alt": "Filmé sur un Galaxy A21s : la bulle « La dictée » de la visite guidée. Un doigt touche le micro en haut à droite d'un clavier dessiné ; le micro passe au rouge, entouré d'un anneau qui tourne et de halos, et le bandeau « LuxASR · Schwätzt… » remplace les suggestions. La phrase « Moien, wéi geet et? » s'écrit mot à mot dans le champ, puis le doigt touche de nouveau le micro, qui s'éteint.",
-     "legende": "La dictée, montrée : le micro s'allume, la phrase s'écrit, le micro s'éteint."
-    }
-   ],
-   "image": "Screenshots/lux_visite_gestes.gif",
-   "image_alt": "Filmé sur un Galaxy A21s : la bulle « Le clavier en trois gestes » de la visite guidée. En haut, un clavier dessiné. Dans le champ, « Moi » ; trois suggestions rouges, Moien, Moie et Moies ; un doigt touche « Moien », qui s'écrit en entier. Le doigt tape « wéi », puis se pose sur la barre d'espace et glisse vers la gauche : le curseur recule jusqu'après « Moien ». Deux pastilles, 1 et 3, s'allument en rouge au fil des gestes, et le texte les détaille.",
-   "image_legende": "Les gestes du clavier, montrés : toucher un mot proposé, glisser sur la barre d'espace."
   }
  ]
 }

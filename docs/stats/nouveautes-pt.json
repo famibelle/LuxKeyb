@@ -1,9 +1,104 @@
 {
- "genere_le": "2026-10-29",
- "derniere_version": "37.9.2",
- "derniere_date": "2026-10-29",
+ "genere_le": "2026-10-31",
+ "derniere_version": "37.10.1",
+ "derniere_date": "2026-10-31",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.10.1",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "O guia mostra os novos desenhos",
+       "texte": "As imagens da ajuda que explicam uma carta foram refeitas com os desenhos da 37.10.0."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_guide_carte_haut.png",
+     "alt": "Prancha do guia: a parte de cima da carta «Waasser», uma gota de água diante do vale, com quatro marcas numeradas: 1 a palavra, 2 o comprimento, 3 a paisagem, 4 a moldura. A prancha está em francês.",
+     "legende": "O guia da ajuda mostra a carta com o seu novo desenho."
+    }
+   ],
+   "image": "Screenshots/lux_guide_carte_haut.png",
+   "image_alt": "Prancha do guia: a parte de cima da carta «Waasser», uma gota de água diante do vale, com quatro marcas numeradas: 1 a palavra, 2 o comprimento, 3 a paisagem, 4 a moldura. A prancha está em francês.",
+   "image_legende": "O guia da ajuda mostra a carta com o seu novo desenho."
+  },
+  {
+   "version": "37.10.0",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Novidades",
+     "points": [
+      {
+       "titre": "As cartas têm desenhos novos",
+       "texte": "O gato, o leão, o cavalo, a casa, a bicicleta e mais de cem outros desenhos foram refeitos, mais finos e mais fáceis de reconhecer. Os animais e os veículos olham todos para a direita."
+      },
+      {
+       "titre": "O essencial, uma nova página da coleção",
+       "texte": "As palavras do dia a dia (cumprimentar, a família, os dias, os meses, as cores, a casa, as compras…) arrumadas por tema. Cada espaço vazio mostra o sentido da palavra a encontrar, e cada tema completo é festejado."
+      },
+      {
+       "titre": "Os jogos ajudam a encontrá-las",
+       "texte": "Wuertsich, Wuertmix e Wuertriet incluem nas suas partidas as palavras essenciais que ainda faltam na sua coleção."
+      },
+      {
+       "titre": "Expressões para pôr por ordem",
+       "texte": "O Wuertmix propõe também expressões como «Gudde Moien» ou «Wéi vill kascht dat?», uma palavra por linha."
+      },
+      {
+       "titre": "Quase mais 140 palavras têm o seu desenho",
+       "texte": "A família, o corpo, a roupa, a cozinha, as festas…"
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Correções",
+     "points": [
+      {
+       "titre": "O sentido certo para algumas palavras",
+       "texte": "«Mee» traduz-se agora por «maio», «Ee» por «ovo», «A» por «olho» e «Fest» por «festa»."
+      },
+      {
+       "titre": "Wuertmix",
+       "texte": "tirar uma letra da resposta já não desloca as letras dadas de antemão."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
+     "alt": "Animação em Mäi Carnet. 1. A grelha da coleção: Kaz, um gato a andar, Léiw, um leão, Moien, um sol a nascer, Famill, uma família, Kaddo, um presente, Apel, uma maçã. 2 a 6. As cartas abrem-se em grande uma após a outra: «Kaz» em ouro diante da cidade à noite, «Léiw» em prata, «Famill» diante da roda gigante da Schueberfouer, «Kaddo» e «Apel» em ouro. 7. Regresso à grelha. As cartas estão em francês.",
+     "legende": "Os novos desenhos nas cartas, dos animais às palavras do dia a dia."
+    },
+    {
+     "image": "Screenshots/lux_essentiels.gif",
+     "alt": "Animação. 1. Em Mäi Carnet, vista Séries, a página «Números» do essencial: seis cartas ganhas, eent a sechs, e espaços vazios que mostram o sentido a encontrar. 2. As páginas «Tempo» e «Dias», espaços vazios marcados semana, amanhã, segunda, terça… 3. No Wuertmix, a pista «bonne nuit»: a resposta fica em duas linhas, G _ _ _ e depois _ _ _ _ _ T. 4. As letras estão colocadas: GUTT NUECHT. 5. Validado, a pontuação sobe para 100. Os ecrãs estão em francês.",
+     "legende": "A página do essencial na coleção, e uma expressão para pôr por ordem no Wuertmix."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
+   "image_alt": "Animação em Mäi Carnet. 1. A grelha da coleção: Kaz, um gato a andar, Léiw, um leão, Moien, um sol a nascer, Famill, uma família, Kaddo, um presente, Apel, uma maçã. 2 a 6. As cartas abrem-se em grande uma após a outra: «Kaz» em ouro diante da cidade à noite, «Léiw» em prata, «Famill» diante da roda gigante da Schueberfouer, «Kaddo» e «Apel» em ouro. 7. Regresso à grelha. As cartas estão em francês.",
+   "image_legende": "Os novos desenhos nas cartas, dos animais às palavras do dia a dia."
+  },
   {
    "version": "37.9.2",
    "date": "2026-10-29",
@@ -145,73 +240,6 @@
    "image": "Screenshots/lux_cartes_jauges.png",
    "image_alt": "Três cartas da coleção, tal como a aplicação as mostra. 1. «Kaz», gato, em ouro: no escudo NÍVEL, em baixo à direita, uma casa cheia em seis; a raridade, em baixo à direita, tem quatro estrelas cheias em cinco. 2. «Bibliothéik», biblioteca, em prata, com o selo «Geléiert» de uma palavra aprendida: as seis casas do NÍVEL estão cheias, e a raridade tem três estrelas. 3. «Elefant», elefante, em ouro, com o seu novo desenho de elefante diante da cidade à noite: três casas cheias em seis. Os escudos VISTA e NÍVEL são cinzelados, e o número de VISTA está gravado no metal. As cartas estão em francês.",
    "image_legende": "O nível de revisão em seis casas, a raridade em estrelas e o novo desenho do elefante."
-  },
-  {
-   "version": "37.7.9",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "O dicionário, em ação",
-       "texte": "Na visita guiada, uma pequena animação procura «gato», abre a ficha de «Kaz» com a sua frase de exemplo e depois procura «Kaz» no sentido inverso."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_dictionnaire.gif",
-     "alt": "Filmado num Galaxy A21s: a bolha «Wierderbuch, o dicionário» da visita guiada. Num campo de pesquisa desenhado, escreve-se uma palavra letra a letra; aparecem três resultados, com Kaz em primeiro. Um dedo toca em «Kaz»: a sua ficha sobe, com o significado e a frase de exemplo «d'Kaz sëtzt virun der Fënster ze miauen» e a sua tradução. A ficha desce, depois escreve-se «Kaz», que encontra o seu significado. Os ecrãs estão em francês, por isso procura-se «chat»; em português, «gato».",
-     "legende": "O dicionário, mostrado: procurar uma palavra, ler a ficha de «Kaz», procurar no sentido inverso."
-    }
-   ],
-   "image": "Screenshots/lux_visite_dictionnaire.gif",
-   "image_alt": "Filmado num Galaxy A21s: a bolha «Wierderbuch, o dicionário» da visita guiada. Num campo de pesquisa desenhado, escreve-se uma palavra letra a letra; aparecem três resultados, com Kaz em primeiro. Um dedo toca em «Kaz»: a sua ficha sobe, com o significado e a frase de exemplo «d'Kaz sëtzt virun der Fënster ze miauen» e a sua tradução. A ficha desce, depois escreve-se «Kaz», que encontra o seu significado. Os ecrãs estão em francês, por isso procura-se «chat»; em português, «gato».",
-   "image_legende": "O dicionário, mostrado: procurar uma palavra, ler a ficha de «Kaz», procurar no sentido inverso."
-  },
-  {
-   "version": "37.7.8",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "O teclado, em ação",
-       "texte": "Na visita guiada, uma pequena animação mostra o dedo a tocar numa palavra sugerida e depois a deslizar na barra de espaço para mover o cursor."
-      },
-      {
-       "titre": "O ditado, em ação",
-       "texte": "Vê-se o microfone a acender, a frase a escrever-se enquanto se fala e o microfone a apagar-se."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_gestes.gif",
-     "alt": "Filmado num Galaxy A21s: a bolha «O teclado em três gestos» da visita guiada. Em cima, um teclado desenhado. No campo, «Moi»; três sugestões vermelhas, Moien, Moie e Moies; um dedo toca em «Moien», que se escreve por inteiro. O dedo escreve «wéi», depois pousa na barra de espaço e desliza para a esquerda: o cursor recua até depois de «Moien». Duas pastilhas, 1 e 3, acendem-se a vermelho ao longo dos gestos, e o texto explica-os. Os ecrãs estão em francês.",
-     "legende": "Os gestos do teclado, mostrados: tocar numa palavra sugerida, deslizar na barra de espaço."
-    },
-    {
-     "image": "Screenshots/lux_visite_dictee.gif",
-     "alt": "Filmado num Galaxy A21s: a bolha «O ditado» da visita guiada. Um dedo toca no microfone, em cima à direita de um teclado desenhado; o microfone fica vermelho, rodeado por um anel que gira e por halos, e a faixa «LuxASR · Schwätzt…» substitui as sugestões. A frase «Moien, wéi geet et?» escreve-se palavra a palavra no campo, depois o dedo toca de novo no microfone, que se apaga. Os ecrãs estão em francês.",
-     "legende": "O ditado, mostrado: o microfone acende, a frase escreve-se, o microfone apaga-se."
-    }
-   ],
-   "image": "Screenshots/lux_visite_gestes.gif",
-   "image_alt": "Filmado num Galaxy A21s: a bolha «O teclado em três gestos» da visita guiada. Em cima, um teclado desenhado. No campo, «Moi»; três sugestões vermelhas, Moien, Moie e Moies; um dedo toca em «Moien», que se escreve por inteiro. O dedo escreve «wéi», depois pousa na barra de espaço e desliza para a esquerda: o cursor recua até depois de «Moien». Duas pastilhas, 1 e 3, acendem-se a vermelho ao longo dos gestos, e o texto explica-os. Os ecrãs estão em francês.",
-   "image_legende": "Os gestos do teclado, mostrados: tocar numa palavra sugerida, deslizar na barra de espaço."
   }
  ]
 }

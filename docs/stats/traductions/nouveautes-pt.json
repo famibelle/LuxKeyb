@@ -1,735 +1,808 @@
 {
-  "_comment": "Tradução portuguesa de nouveautes.html, por versão. Mantida à mão: generate_nouveautes.py junta-a em stats/nouveautes-pt.json. Cada versão segue a francesa do CHANGELOG: as mesmas secções, o mesmo número de pontos, pela mesma ordem; o título de uma secção pode faltar quando _sections o traduz. Uma versão que falte aqui, ou que já não tenha a forma da francesa, aparece em francês com um aviso. O texto é HTML: escapar < e &.",
-  "37.8.0": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "O nível de revisão em seis casas",
-            "texte": "No fundo de cada carta, uma casa enche-se a cada revisão certa, e as seis ficam cheias quando a palavra está aprendida."
-          },
-          {
-            "titre": "A raridade em estrelas",
-            "texte": "Uma carta comum tem uma estrela, uma muito rara tem quatro. Quantas mais estrelas, mais rara é a carta."
-          },
-          {
-            "titre": "Escudos gravados",
-            "texte": "Os dois escudos no fundo da carta são cinzelados como a placa do nome, e o número de vezes que ganhou a palavra lê-se melhor."
-          },
-          {
-            "titre": "Novos desenhos nas cartas",
-            "texte": "A abelha, a formiga, o elefante, a banana, o crepe e mais treze palavras têm agora o seu desenho."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "Três cartas da coleção, tal como a aplicação as mostra. 1. «Kaz», gato, em ouro: no escudo NÍVEL, em baixo à direita, uma casa cheia em seis; a raridade, em baixo à direita, tem quatro estrelas cheias em cinco. 2. «Bibliothéik», biblioteca, em prata, com o selo «Geléiert» de uma palavra aprendida: as seis casas do NÍVEL estão cheias, e a raridade tem três estrelas. 3. «Elefant», elefante, em ouro, com o seu novo desenho de elefante diante da cidade à noite: três casas cheias em seis. Os escudos VISTA e NÍVEL são cinzelados, e o número de VISTA está gravado no metal. As cartas estão em francês.",
-        "legende": "O nível de revisão em seis casas, a raridade em estrelas e o novo desenho do elefante."
-      }
+ "_comment": "Tradução portuguesa de nouveautes.html, por versão. Mantida à mão: generate_nouveautes.py junta-a em stats/nouveautes-pt.json. Cada versão segue a francesa do CHANGELOG: as mesmas secções, o mesmo número de pontos, pela mesma ordem; o título de uma secção pode faltar quando _sections o traduz. Uma versão que falte aqui, ou que já não tenha a forma da francesa, aparece em francês com um aviso. O texto é HTML: escapar < e &.",
+ "37.10.1": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "O guia mostra os novos desenhos",
+      "texte": "As imagens da ajuda que explicam uma carta foram refeitas com os desenhos da 37.10.0."
+     }
     ]
-  },
-  "37.7.9": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "O dicionário, em ação",
-            "texte": "Na visita guiada, uma pequena animação procura «gato», abre a ficha de «Kaz» com a sua frase de exemplo e depois procura «Kaz» no sentido inverso."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "Filmado num Galaxy A21s: a bolha «Wierderbuch, o dicionário» da visita guiada. Num campo de pesquisa desenhado, escreve-se uma palavra letra a letra; aparecem três resultados, com Kaz em primeiro. Um dedo toca em «Kaz»: a sua ficha sobe, com o significado e a frase de exemplo «d'Kaz sëtzt virun der Fënster ze miauen» e a sua tradução. A ficha desce, depois escreve-se «Kaz», que encontra o seu significado. Os ecrãs estão em francês, por isso procura-se «chat»; em português, «gato».",
-        "legende": "O dicionário, mostrado: procurar uma palavra, ler a ficha de «Kaz», procurar no sentido inverso."
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Prancha do guia: a parte de cima da carta «Waasser», uma gota de água diante do vale, com quatro marcas numeradas: 1 a palavra, 2 o comprimento, 3 a paisagem, 4 a moldura. A prancha está em francês.",
+    "legende": "O guia da ajuda mostra a carta com o seu novo desenho."
+   }
+  ]
+ },
+ "37.10.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Novidades",
+    "points": [
+     {
+      "titre": "As cartas têm desenhos novos",
+      "texte": "O gato, o leão, o cavalo, a casa, a bicicleta e mais de cem outros desenhos foram refeitos, mais finos e mais fáceis de reconhecer. Os animais e os veículos olham todos para a direita."
+     },
+     {
+      "titre": "O essencial, uma nova página da coleção",
+      "texte": "As palavras do dia a dia (cumprimentar, a família, os dias, os meses, as cores, a casa, as compras…) arrumadas por tema. Cada espaço vazio mostra o sentido da palavra a encontrar, e cada tema completo é festejado."
+     },
+     {
+      "titre": "Os jogos ajudam a encontrá-las",
+      "texte": "Wuertsich, Wuertmix e Wuertriet incluem nas suas partidas as palavras essenciais que ainda faltam na sua coleção."
+     },
+     {
+      "titre": "Expressões para pôr por ordem",
+      "texte": "O Wuertmix propõe também expressões como «Gudde Moien» ou «Wéi vill kascht dat?», uma palavra por linha."
+     },
+     {
+      "titre": "Quase mais 140 palavras têm o seu desenho",
+      "texte": "A família, o corpo, a roupa, a cozinha, as festas…"
+     }
     ]
-  },
-  "37.7.8": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "O teclado, em ação",
-            "texte": "Na visita guiada, uma pequena animação mostra o dedo a tocar numa palavra sugerida e depois a deslizar na barra de espaço para mover o cursor."
-          },
-          {
-            "titre": "O ditado, em ação",
-            "texte": "Vê-se o microfone a acender, a frase a escrever-se enquanto se fala e o microfone a apagar-se."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "Filmado num Galaxy A21s: a bolha «O teclado em três gestos» da visita guiada. Em cima, um teclado desenhado. No campo, «Moi»; três sugestões vermelhas, Moien, Moie e Moies; um dedo toca em «Moien», que se escreve por inteiro. O dedo escreve «wéi», depois pousa na barra de espaço e desliza para a esquerda: o cursor recua até depois de «Moien». Duas pastilhas, 1 e 3, acendem-se a vermelho ao longo dos gestos, e o texto explica-os. Os ecrãs estão em francês.",
-        "legende": "Os gestos do teclado, mostrados: tocar numa palavra sugerida, deslizar na barra de espaço."
-      },
-      {
-        "alt": "Filmado num Galaxy A21s: a bolha «O ditado» da visita guiada. Um dedo toca no microfone, em cima à direita de um teclado desenhado; o microfone fica vermelho, rodeado por um anel que gira e por halos, e a faixa «LuxASR · Schwätzt…» substitui as sugestões. A frase «Moien, wéi geet et?» escreve-se palavra a palavra no campo, depois o dedo toca de novo no microfone, que se apaga. Os ecrãs estão em francês.",
-        "legende": "O ditado, mostrado: o microfone acende, a frase escreve-se, o microfone apaga-se."
-      }
+   },
+   {
+    "titre": "Correções",
+    "points": [
+     {
+      "titre": "O sentido certo para algumas palavras",
+      "texte": "«Mee» traduz-se agora por «maio», «Ee» por «ovo», «A» por «olho» e «Fest» por «festa»."
+     },
+     {
+      "titre": "Wuertmix",
+      "texte": "tirar uma letra da resposta já não desloca as letras dadas de antemão."
+     }
     ]
-  },
-  "_sections": {
-    "Nouveautés": "Novidades",
-    "Corrections": "Correções",
-    "Changements": "Alterações",
-    "Rapidité": "Rapidez"
-  },
-  "37.7.7": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "Dar uma carta, passo a passo",
-            "texte": "A visita das cartas explica agora a troca entre dois telemóveis em quatro passos numerados, com uma pequena animação dos dois ecrãs lado a lado."
-          },
-          {
-            "titre": "Receber uma carta e a câmara, explicados",
-            "texte": "Que botão tocar, e porque a câmara serve apenas para ler o código, sem internet."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "Filmado num Galaxy A21s: a bolha «Dar, passo a passo» da visita das cartas. Em cima, dois telemóveis desenhados, «Você» e «A outra pessoa». O segundo mostra um código, o primeiro aponta-lhe um feixe azul e aparece um visto verde; a carta desaparece do primeiro, que mostra por sua vez um código; o segundo aponta para ele e a carta passa de um ecrã para o outro. Em baixo, quatro pastilhas numeradas acendem-se a vermelho, e o texto explica-as. Os ecrãs estão em francês.",
-        "legende": "Dar uma carta, em quatro passos: a visita das cartas mostra-o com dois telemóveis lado a lado."
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Animação em Mäi Carnet. 1. A grelha da coleção: Kaz, um gato a andar, Léiw, um leão, Moien, um sol a nascer, Famill, uma família, Kaddo, um presente, Apel, uma maçã. 2 a 6. As cartas abrem-se em grande uma após a outra: «Kaz» em ouro diante da cidade à noite, «Léiw» em prata, «Famill» diante da roda gigante da Schueberfouer, «Kaddo» e «Apel» em ouro. 7. Regresso à grelha. As cartas estão em francês.",
+    "legende": "Os novos desenhos nas cartas, dos animais às palavras do dia a dia."
+   },
+   {
+    "alt": "Animação. 1. Em Mäi Carnet, vista Séries, a página «Números» do essencial: seis cartas ganhas, eent a sechs, e espaços vazios que mostram o sentido a encontrar. 2. As páginas «Tempo» e «Dias», espaços vazios marcados semana, amanhã, segunda, terça… 3. No Wuertmix, a pista «bonne nuit»: a resposta fica em duas linhas, G _ _ _ e depois _ _ _ _ _ T. 4. As letras estão colocadas: GUTT NUECHT. 5. Validado, a pontuação sobe para 100. Os ecrãs estão em francês.",
+    "legende": "A página do essencial na coleção, e uma expressão para pôr por ordem no Wuertmix."
+   }
+  ]
+ },
+ "37.8.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "O nível de revisão em seis casas",
+      "texte": "No fundo de cada carta, uma casa enche-se a cada revisão certa, e as seis ficam cheias quando a palavra está aprendida."
+     },
+     {
+      "titre": "A raridade em estrelas",
+      "texte": "Uma carta comum tem uma estrela, uma muito rara tem quatro. Quantas mais estrelas, mais rara é a carta."
+     },
+     {
+      "titre": "Escudos gravados",
+      "texte": "Os dois escudos no fundo da carta são cinzelados como a placa do nome, e o número de vezes que ganhou a palavra lê-se melhor."
+     },
+     {
+      "titre": "Novos desenhos nas cartas",
+      "texte": "A abelha, a formiga, o elefante, a banana, o crepe e mais treze palavras têm agora o seu desenho."
+     }
     ]
-  },
-  "37.7.6": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "O guia fala do ditado",
-            "texte": "Como ditar, porque é preciso internet e para onde vai a sua voz."
-          },
-          {
-            "titre": "O guia explica como partilhar, dar e receber uma carta",
-            "texte": "E como mover o cursor deslizando na barra de espaço."
-          }
-        ]
-      },
-      {
-        "titre": "Correções",
-        "points": [
-          {
-            "titre": "O guia descreve a carta tal como é",
-            "texte": "Imagens refeitas com a carta de paisagem, com o punção da estação e o nível de raridade."
-          },
-          {
-            "titre": "A resposta sobre os seus dados está correta",
-            "texte": "O que escreve nunca sai do telemóvel; só o ditado envia a sua voz para a Universidade do Luxemburgo, que a escreve sem a guardar."
-          },
-          {
-            "titre": "As sugestões em francês",
-            "texte": "são apresentadas como uma opção das definições do teclado."
-          }
-        ]
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Três cartas da coleção, tal como a aplicação as mostra. 1. «Kaz», gato, em ouro: no escudo NÍVEL, em baixo à direita, uma casa cheia em seis; a raridade, em baixo à direita, tem quatro estrelas cheias em cinco. 2. «Bibliothéik», biblioteca, em prata, com o selo «Geléiert» de uma palavra aprendida: as seis casas do NÍVEL estão cheias, e a raridade tem três estrelas. 3. «Elefant», elefante, em ouro, com o seu novo desenho de elefante diante da cidade à noite: três casas cheias em seis. Os escudos VISTA e NÍVEL são cinzelados, e o número de VISTA está gravado no metal. As cartas estão em francês.",
+    "legende": "O nível de revisão em seis casas, a raridade em estrelas e o novo desenho do elefante."
+   }
+  ]
+ },
+ "37.7.9": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "O dicionário, em ação",
+      "texte": "Na visita guiada, uma pequena animação procura «gato», abre a ficha de «Kaz» com a sua frase de exemplo e depois procura «Kaz» no sentido inverso."
+     }
     ]
-  },
-  "37.7.5": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "A ajuda das cartas na coleção",
-            "texte": "Um «?» no topo de Mäi Carnet abre a visita às cartas, completa ou sobre um só tema (ler uma carta, partilhá-la, cedê-la ou receber uma), sem voltar ao início."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "Filmado num Galaxy A21s, em cinco ecrãs. 1. O último balão da visita, «Para a rever», destaca o botão «?» no canto superior esquerdo. 2. O «?» abre a ajuda: a visita completa, depois O teclado (Escrever com o teclado, Ditar uma mensagem), As cartas (Ler uma carta, Partilhar uma carta, Ceder ou receber uma carta), A aplicação (Procurar uma palavra, Jogar para aprender palavras, Compreender o início, Acompanhar o seu progresso, Configurar o teclado) e o guia para ler. 3. «Experimentar» abre um campo com o teclado: escreveu-se «Moi» e a barra propõe «Moien». 4. Em Mäi Carnet, um «?» no topo abre a ajuda das cartas. 5. «Partilhar uma carta» abre a carta «Moien» e destaca o botão Partilhar. Os ecrãs estão em francês.",
-        "legende": "Um «?» sempre visível abre a ajuda: a visita completa ou um só tema, experimentar o teclado sem sair da visita, e a ajuda das cartas na coleção."
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmado num Galaxy A21s: a bolha «Wierderbuch, o dicionário» da visita guiada. Num campo de pesquisa desenhado, escreve-se uma palavra letra a letra; aparecem três resultados, com Kaz em primeiro. Um dedo toca em «Kaz»: a sua ficha sobe, com o significado e a frase de exemplo «d'Kaz sëtzt virun der Fënster ze miauen» e a sua tradução. A ficha desce, depois escreve-se «Kaz», que encontra o seu significado. Os ecrãs estão em francês, por isso procura-se «chat»; em português, «gato».",
+    "legende": "O dicionário, mostrado: procurar uma palavra, ler a ficha de «Kaz», procurar no sentido inverso."
+   }
+  ]
+ },
+ "37.7.8": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "O teclado, em ação",
+      "texte": "Na visita guiada, uma pequena animação mostra o dedo a tocar numa palavra sugerida e depois a deslizar na barra de espaço para mover o cursor."
+     },
+     {
+      "titre": "O ditado, em ação",
+      "texte": "Vê-se o microfone a acender, a frase a escrever-se enquanto se fala e o microfone a apagar-se."
+     }
     ]
-  },
-  "37.7.4": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "Experimentar o teclado durante a visita",
-            "texte": "Os balões dos gestos e do ditado têm um botão «Experimentar», que abre um pequeno campo com o teclado. Escreva «Moi» e toque em «Moien», ou toque no microfone e fale, sem sair da visita."
-          }
-        ]
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmado num Galaxy A21s: a bolha «O teclado em três gestos» da visita guiada. Em cima, um teclado desenhado. No campo, «Moi»; três sugestões vermelhas, Moien, Moie e Moies; um dedo toca em «Moien», que se escreve por inteiro. O dedo escreve «wéi», depois pousa na barra de espaço e desliza para a esquerda: o cursor recua até depois de «Moien». Duas pastilhas, 1 e 3, acendem-se a vermelho ao longo dos gestos, e o texto explica-os. Os ecrãs estão em francês.",
+    "legende": "Os gestos do teclado, mostrados: tocar numa palavra sugerida, deslizar na barra de espaço."
+   },
+   {
+    "alt": "Filmado num Galaxy A21s: a bolha «O ditado» da visita guiada. Um dedo toca no microfone, em cima à direita de um teclado desenhado; o microfone fica vermelho, rodeado por um anel que gira e por halos, e a faixa «LuxASR · Schwätzt…» substitui as sugestões. A frase «Moien, wéi geet et?» escreve-se palavra a palavra no campo, depois o dedo toca de novo no microfone, que se apaga. Os ecrãs estão em francês.",
+    "legende": "O ditado, mostrado: o microfone acende, a frase escreve-se, o microfone apaga-se."
+   }
+  ]
+ },
+ "_sections": {
+  "Nouveautés": "Novidades",
+  "Corrections": "Correções",
+  "Changements": "Alterações",
+  "Rapidité": "Rapidez"
+ },
+ "37.7.7": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "Dar uma carta, passo a passo",
+      "texte": "A visita das cartas explica agora a troca entre dois telemóveis em quatro passos numerados, com uma pequena animação dos dois ecrãs lado a lado."
+     },
+     {
+      "titre": "Receber uma carta e a câmara, explicados",
+      "texte": "Que botão tocar, e porque a câmara serve apenas para ler o código, sem internet."
+     }
     ]
-  },
-  "37.7.3": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "Uma só porta para a ajuda",
-            "texte": "Um botão «?» no topo do ecrã, visível em todos os separadores, abre a ajuda. Lá encontra a visita guiada, tema a tema, e o guia completo para ler. No fundo do início, a linha «Ajuda» substitui «Guia de utilização» e «Visita guiada»."
-          }
-        ]
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmado num Galaxy A21s: a bolha «Dar, passo a passo» da visita das cartas. Em cima, dois telemóveis desenhados, «Você» e «A outra pessoa». O segundo mostra um código, o primeiro aponta-lhe um feixe azul e aparece um visto verde; a carta desaparece do primeiro, que mostra por sua vez um código; o segundo aponta para ele e a carta passa de um ecrã para o outro. Em baixo, quatro pastilhas numeradas acendem-se a vermelho, e o texto explica-as. Os ecrãs estão em francês.",
+    "legende": "Dar uma carta, em quatro passos: a visita das cartas mostra-o com dois telemóveis lado a lado."
+   }
+  ]
+ },
+ "37.7.6": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "O guia fala do ditado",
+      "texte": "Como ditar, porque é preciso internet e para onde vai a sua voz."
+     },
+     {
+      "titre": "O guia explica como partilhar, dar e receber uma carta",
+      "texte": "E como mover o cursor deslizando na barra de espaço."
+     }
     ]
-  },
-  "37.7.2": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "A visita guiada começa pelo teclado",
-            "texte": "Primeiro os três gestos e o ditado, depois as cartas, o dicionário, os jogos e o resto."
-          },
-          {
-            "titre": "Sabe-se onde a reencontrar",
-            "texte": "O último balão mostra a linha «Visita guiada» no fundo do início, e «Saltar» leva até lá antes de fechar."
-          },
-          {
-            "titre": "Os temas dizem o que se quer fazer",
-            "texte": "«Ditar uma mensagem», «Procurar uma palavra», «Partilhar uma carta»…"
-          },
-          {
-            "titre": "A visita às cartas é mais curta",
-            "texte": "Quatro balões em vez de nove; a carta apresenta-se de uma vez."
-          }
-        ]
-      },
-      {
-        "titre": "Correções",
-        "points": [
-          {
-            "titre": "O balão fica no ecrã quando a zona mostrada é grande",
-            "texte": "Numa carta aberta, o botão «Seguinte» saía do ecrã em alguns telemóveis."
-          }
-        ]
-      }
+   },
+   {
+    "titre": "Correções",
+    "points": [
+     {
+      "titre": "O guia descreve a carta tal como é",
+      "texte": "Imagens refeitas com a carta de paisagem, com o punção da estação e o nível de raridade."
+     },
+     {
+      "titre": "A resposta sobre os seus dados está correta",
+      "texte": "O que escreve nunca sai do telemóvel; só o ditado envia a sua voz para a Universidade do Luxemburgo, que a escreve sem a guardar."
+     },
+     {
+      "titre": "As sugestões em francês",
+      "texte": "são apresentadas como uma opção das definições do teclado."
+     }
     ]
-  },
-  "37.7.1": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "Rever um só tema da visita guiada",
-            "texte": "A linha «Visita guiada», no fundo do início, abre uma lista de temas. Escolhe-se a visita completa, ou um só tema: o ditado, partilhar uma carta, os gestos do teclado, o dicionário…"
-          }
-        ]
-      },
-      {
-        "titre": "Correções",
-        "points": [
-          {
-            "titre": "A visita guiada já não se abre por baixo de outra janela",
-            "texte": "Espera que a mensagem de boas-vindas, ou outro pedido da aplicação, seja fechada."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.7.5": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "A ajuda das cartas na coleção",
+      "texte": "Um «?» no topo de Mäi Carnet abre a visita às cartas, completa ou sobre um só tema (ler uma carta, partilhá-la, cedê-la ou receber uma), sem voltar ao início."
+     }
     ]
-  },
-  "37.7.0": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Novidades",
-        "points": [
-          {
-            "titre": "Uma visita guiada à aplicação",
-            "texte": "Na primeira abertura, um balão apresenta cada separador (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), as definições do teclado, a sua coleção de cartas, os três gestos do teclado e o ditado por voz. Um toque avança, pode saltá-la quando quiser, e a linha «Visita guiada», no fundo do início, volta a lançá-la."
-          },
-          {
-            "titre": "Uma visita guiada às cartas",
-            "texte": "Na primeira abertura de Mäi Carnet, uma carta abre-se e apresenta-se zona a zona (a paisagem, a palavra, o seu sentido, os seus contadores, o seu número), e depois os botões Partilhar, Ceder e Receber."
-          }
-        ]
-      },
-      {
-        "titre": "Correções",
-        "points": [
-          {
-            "titre": "Num tablet, uma carta aberta continua aberta quando se roda o ecrã",
-            "texte": ""
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "A visita guiada à aplicação, passo a passo, no emulador. Um véu escuro cobre o ecrã e um balão branco apresenta o que é destacado por uma moldura amarela: 1. o separador Haut, o início do dia; 2. a roda dentada das definições do teclado; 3. o separador Spiller e os seus jogos; 4. a faixa Mäi Carnet; 5. o separador Wierderbuch; 6. o separador Mäi Lëtzebuergesch e os níveis, de Ufänger a Sproochemeeschter; 7. o teclado em três gestos (tocar numa palavra proposta, premir longamente para os acentos, deslizar na barra de espaço para mover o cursor); 8. o ditado, com o ícone vermelho do microfone: tocar no microfone no canto superior direito do teclado, falar luxemburguês, tocar outra vez para terminar. Os ecrãs estão em francês.",
-        "legende": "A visita à aplicação, em oito passos: os quatro separadores, as definições, a coleção de cartas, os gestos do teclado e o ditado por voz."
-      },
-      {
-        "alt": "A visita guiada à coleção de cartas, com a carta «Waasser» (água). 1. a carta é destacada na grelha da coleção; depois abre-se em grande e cada zona acende-se por sua vez: 2. a paisagem, cuja hora do dia indica a raridade; 3. a palavra na sua placa e o distintivo com o número de letras; 4. o seu sentido, «Substantivo neutro», e uma frase do dicionário oficial com a sua tradução; 5. os escudos VISTA e NÍVEL e o medalhão do jogo; 6. o número da carta e a sua posição; 7. o botão Partilhar; 8. o botão Ceder; 9. carta fechada, o botão Receber no topo da coleção. Os ecrãs estão em francês.",
-        "legende": "A visita às cartas: cada zona da carta explicada, e depois como partilhá-la, cedê-la ou receber uma."
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmado num Galaxy A21s, em cinco ecrãs. 1. O último balão da visita, «Para a rever», destaca o botão «?» no canto superior esquerdo. 2. O «?» abre a ajuda: a visita completa, depois O teclado (Escrever com o teclado, Ditar uma mensagem), As cartas (Ler uma carta, Partilhar uma carta, Ceder ou receber uma carta), A aplicação (Procurar uma palavra, Jogar para aprender palavras, Compreender o início, Acompanhar o seu progresso, Configurar o teclado) e o guia para ler. 3. «Experimentar» abre um campo com o teclado: escreveu-se «Moi» e a barra propõe «Moien». 4. Em Mäi Carnet, um «?» no topo abre a ajuda das cartas. 5. «Partilhar uma carta» abre a carta «Moien» e destaca o botão Partilhar. Os ecrãs estão em francês.",
+    "legende": "Um «?» sempre visível abre a ajuda: a visita completa ou um só tema, experimentar o teclado sem sair da visita, e a ajuda das cartas na coleção."
+   }
+  ]
+ },
+ "37.7.4": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "Experimentar o teclado durante a visita",
+      "texte": "Os balões dos gestos e do ditado têm um botão «Experimentar», que abre um pequeno campo com o teclado. Escreva «Moi» e toque em «Moien», ou toque no microfone e fale, sem sair da visita."
+     }
     ]
-  },
-  "37.6.0": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Novidades",
-        "points": [
-          {
-            "titre": "O Wierderbuch entende os números escritos em algarismos",
-            "texte": "Escrever «11» mostra «11 escreve-se ‹eelef›» e a sua tradução, de 0 a 100. Acima disso, como para os anos, a aplicação lembra que se escrevem em algarismos, como no dicionário oficial."
-          }
-        ]
-      },
-      {
-        "titre": "Correções",
-        "points": [
-          {
-            "titre": "Nomes dos níveis corrigidos",
-            "texte": "Por um professor de luxemburguês: Ufänger, Sproochekënner e Sproochemeeschter. O seu progresso não muda."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.7.3": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "Uma só porta para a ajuda",
+      "texte": "Um botão «?» no topo do ecrã, visível em todos os separadores, abre a ajuda. Lá encontra a visita guiada, tema a tema, e o guia completo para ler. No fundo do início, a linha «Ajuda» substitui «Guia de utilização» e «Visita guiada»."
+     }
     ]
-  },
-  "37.5.0": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Novidades",
-        "points": [
-          {
-            "titre": "As cartas abertas apanham a luz",
-            "texte": "A janela da paisagem está atrás de um vidro, com um reflexo discreto que desliza quando se inclina o telemóvel. A moldura brilha conforme o seu metal, do estanho das cartas comuns ao ouro das muito raras, e a luz corre de uma peça em relevo para a outra (placa, medalhão, escudos) à medida que se inclina."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.7.2": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "A visita guiada começa pelo teclado",
+      "texte": "Primeiro os três gestos e o ditado, depois as cartas, o dicionário, os jogos e o resto."
+     },
+     {
+      "titre": "Sabe-se onde a reencontrar",
+      "texte": "O último balão mostra a linha «Visita guiada» no fundo do início, e «Saltar» leva até lá antes de fechar."
+     },
+     {
+      "titre": "Os temas dizem o que se quer fazer",
+      "texte": "«Ditar uma mensagem», «Procurar uma palavra», «Partilhar uma carta»…"
+     },
+     {
+      "titre": "A visita às cartas é mais curta",
+      "texte": "Quatro balões em vez de nove; a carta apresenta-se de uma vez."
+     }
     ]
-  },
-  "37.4.10": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "As cartas de inverno e de verão aparecem mais depressa",
-            "texte": "Num Galaxy A21s, a paisagem de inverno de uma carta aberta desenha-se em 33 ms em vez de 49, a de verão em 21 ms em vez de 35; o outono passa de 47 para 43 ms. As imagens não mudam."
-          }
-        ]
-      }
+   },
+   {
+    "titre": "Correções",
+    "points": [
+     {
+      "titre": "O balão fica no ecrã quando a zona mostrada é grande",
+      "texte": "Numa carta aberta, o botão «Seguinte» saía do ecrã em alguns telemóveis."
+     }
     ]
-  },
-  "37.4.9": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "As cartas de outono aparecem mais depressa",
-            "texte": "A paisagem de outono de uma carta aberta desenha-se em 43 ms em vez de 71 num Galaxy A21s, a de uma miniatura em 21 ms em vez de 30; a primavera também ganha um pouco. As imagens não mudam."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.7.1": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "Rever um só tema da visita guiada",
+      "texte": "A linha «Visita guiada», no fundo do início, abre uma lista de temas. Escolhe-se a visita completa, ou um só tema: o ditado, partilhar uma carta, os gestos do teclado, o dicionário…"
+     }
     ]
-  },
-  "37.4.8": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Correções",
-        "points": [
-          {
-            "titre": "Uma carta muito rara já não fica virada para baixo",
-            "texte": "Num telemóvel lento, o relâmpago que precede a carta muito rara podia anular a sua viragem, e a carta ficava de costas."
-          },
-          {
-            "titre": "O primeiro envelope já não bloqueia",
-            "texte": "Depois de uma instalação ou de uma atualização, a carta parava meio segundo ao virar-se. O trabalho gráfico é agora feito antecipadamente, sem que nada se veja."
-          }
-        ]
-      },
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "A legenda da coleção filtra",
-            "texte": "Tocar em «✦ 5 muito raras» mostra apenas as muito raras; um segundo toque mostra toda a coleção."
-          },
-          {
-            "titre": "A carta aberta indica o seu nível",
-            "texte": "No canto inferior direito, «✦ Muito rara · 9769.º» em vez de apenas a posição."
-          }
-        ]
-      }
+   },
+   {
+    "titre": "Correções",
+    "points": [
+     {
+      "titre": "A visita guiada já não se abre por baixo de outra janela",
+      "texte": "Espera que a mensagem de boas-vindas, ou outro pedido da aplicação, seja fechada."
+     }
     ]
-  },
-  "37.4.7": {
-    "intro": "A primeira carta rara e a primeira muito rara têm a sua cerimónia.",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "A primeira carta rara e a primeira muito rara têm a sua cerimónia",
-            "texte": "A primeira rara estremece uma segunda vez, com mais força, e a primeira muito rara sobe mais devagar; ambas têm um segundo fogo de artifício e uma frase que diz como reconhecer o seu nível (céu de fim de tarde e moldura de prata, noite estrelada e moldura de ouro). Uma só vez por nível."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "Filmado num Galaxy A21s. Um pacote de cartas no fim do jogo: cai a noite no ecrã, o verso da carta sobe a rodar, passa um relâmpago violeta e a carta vira-se. É «Kran» (grua), dourada, numa noite estrelada. Aparecem dois selos por cima: «Nova carta» e «Carta muito rara». Por baixo da carta, uma frase diz: «A sua primeira carta muito rara! Reconhece-se pela noite estrelada e pela moldura de ouro.»",
-        "legende": "A primeiríssima carta muito rara tem direito à sua cerimónia e a uma frase que diz como reconhecê-la daí em diante."
-      }
+   }
+  ]
+ },
+ "37.7.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Novidades",
+    "points": [
+     {
+      "titre": "Uma visita guiada à aplicação",
+      "texte": "Na primeira abertura, um balão apresenta cada separador (Haut, Spiller, Wierderbuch, Mäi Lëtzebuergesch), as definições do teclado, a sua coleção de cartas, os três gestos do teclado e o ditado por voz. Um toque avança, pode saltá-la quando quiser, e a linha «Visita guiada», no fundo do início, volta a lançá-la."
+     },
+     {
+      "titre": "Uma visita guiada às cartas",
+      "texte": "Na primeira abertura de Mäi Carnet, uma carta abre-se e apresenta-se zona a zona (a paisagem, a palavra, o seu sentido, os seus contadores, o seu número), e depois os botões Partilhar, Ceder e Receber."
+     }
     ]
-  },
-  "37.4.6": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "A raridade diz-se por extenso",
-            "texte": "No topo da coleção, cada nível tem o seu nome («✦ 5 muito raras ★ 11 raras…») em vez de símbolos sozinhos; no pacote de cartas, uma carta rara ou muito rara anuncia-se quando pousa."
-          }
-        ]
-      }
+   },
+   {
+    "titre": "Correções",
+    "points": [
+     {
+      "titre": "Num tablet, uma carta aberta continua aberta quando se roda o ecrã",
+      "texte": ""
+     }
     ]
-  },
-  "37.4.5": {
-    "intro": "",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "As cartas da caixa de Leitner mostram a sua paisagem",
-            "texte": "Nos compartimentos, as cartas empilhadas só mostravam o céu; agora mostram o seu lugar, a sua estação e a sua festa, como na coleção."
-          }
-        ]
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "A visita guiada à aplicação, passo a passo, no emulador. Um véu escuro cobre o ecrã e um balão branco apresenta o que é destacado por uma moldura amarela: 1. o separador Haut, o início do dia; 2. a roda dentada das definições do teclado; 3. o separador Spiller e os seus jogos; 4. a faixa Mäi Carnet; 5. o separador Wierderbuch; 6. o separador Mäi Lëtzebuergesch e os níveis, de Ufänger a Sproochemeeschter; 7. o teclado em três gestos (tocar numa palavra proposta, premir longamente para os acentos, deslizar na barra de espaço para mover o cursor); 8. o ditado, com o ícone vermelho do microfone: tocar no microfone no canto superior direito do teclado, falar luxemburguês, tocar outra vez para terminar. Os ecrãs estão em francês.",
+    "legende": "A visita à aplicação, em oito passos: os quatro separadores, as definições, a coleção de cartas, os gestos do teclado e o ditado por voz."
+   },
+   {
+    "alt": "A visita guiada à coleção de cartas, com a carta «Waasser» (água). 1. a carta é destacada na grelha da coleção; depois abre-se em grande e cada zona acende-se por sua vez: 2. a paisagem, cuja hora do dia indica a raridade; 3. a palavra na sua placa e o distintivo com o número de letras; 4. o seu sentido, «Substantivo neutro», e uma frase do dicionário oficial com a sua tradução; 5. os escudos VISTA e NÍVEL e o medalhão do jogo; 6. o número da carta e a sua posição; 7. o botão Partilhar; 8. o botão Ceder; 9. carta fechada, o botão Receber no topo da coleção. Os ecrãs estão em francês.",
+    "legende": "A visita às cartas: cada zona da carta explicada, e depois como partilhá-la, cedê-la ou receber uma."
+   }
+  ]
+ },
+ "37.6.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Novidades",
+    "points": [
+     {
+      "titre": "O Wierderbuch entende os números escritos em algarismos",
+      "texte": "Escrever «11» mostra «11 escreve-se ‹eelef›» e a sua tradução, de 0 a 100. Acima disso, como para os anos, a aplicação lembra que se escrevem em algarismos, como no dicionário oficial."
+     }
     ]
-  },
-  "37.4.4": {
-    "intro": "",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "Os pássaros de verão voam na janela da carta",
-            "texte": "Na carta aberta e no pacote de cartas, batem suavemente as asas e planam, quase sem derivar. Antes estavam imóveis na paisagem."
-          }
-        ]
-      }
+   },
+   {
+    "titre": "Correções",
+    "points": [
+     {
+      "titre": "Nomes dos níveis corrigidos",
+      "texte": "Por um professor de luxemburguês: Ufänger, Sproochekënner e Sproochemeeschter. O seu progresso não muda."
+     }
     ]
-  },
-  "37.4.3": {
-    "intro": "",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "O teclado tem o seu nome no seletor de teclados",
-            "texte": "Nos telemóveis Samsung aparecia como «Clavier luxembourgeois Luxembourg»; agora chama-se em todo o lado «🇱🇺 Lëtzebuergesch Clavier»."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.5.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Novidades",
+    "points": [
+     {
+      "titre": "As cartas abertas apanham a luz",
+      "texte": "A janela da paisagem está atrás de um vidro, com um reflexo discreto que desliza quando se inclina o telemóvel. A moldura brilha conforme o seu metal, do estanho das cartas comuns ao ouro das muito raras, e a luz corre de uma peça em relevo para a outra (placa, medalhão, escudos) à medida que se inclina."
+     }
     ]
-  },
-  "37.4.2": {
-    "intro": "",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "Já não há faixa clara na borda da janela quando se inclina a carta",
-            "texte": "Os planos da paisagem passam agora para lá da janela, e a sua borda já não aparece ao deslizar."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.10": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "As cartas de inverno e de verão aparecem mais depressa",
+      "texte": "Num Galaxy A21s, a paisagem de inverno de uma carta aberta desenha-se em 33 ms em vez de 49, a de verão em 21 ms em vez de 35; o outono passa de 47 para 43 ms. As imagens não mudam."
+     }
     ]
-  },
-  "37.4.1": {
-    "intro": "",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "As cartas ganhas fazem vibrar o telemóvel, consoante a raridade",
-            "texte": "Um leve toque para uma carta pouco comum, três estremecimentos e depois a pancada do selo para uma rara, e para uma muito rara uma subida durante o prelúdio, uma pancada cheia no clarão e o crepitar do fogo de artifício. Estas vibrações já existiam mas ficavam mudas em alguns telemóveis, incluindo o Galaxy A21s; passam agora pelo mesmo caminho que o relevo das cartas da coleção. Seguem a opção «Vibração ao tocar nas teclas» das definições do teclado."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.9": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "As cartas de outono aparecem mais depressa",
+      "texte": "A paisagem de outono de uma carta aberta desenha-se em 43 ms em vez de 71 num Galaxy A21s, a de uma miniatura em 21 ms em vez de 30; a primavera também ganha um pouco. As imagens não mudam."
+     }
     ]
-  },
-  "37.3.0": {
-    "intro": "O teclado apanha a letra dobrada escrita uma só vez.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "Uma letra dobrada esquecida é corrigida",
-            "texte": "«Kafi» dá «Kaffi», «ales» dá «alles», «ener» dá «ënner» em vez de «Energie». O luxemburguês dobra muitas letras, e o polegar apressado muitas vezes só escreve uma."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.8": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Correções",
+    "points": [
+     {
+      "titre": "Uma carta muito rara já não fica virada para baixo",
+      "texte": "Num telemóvel lento, o relâmpago que precede a carta muito rara podia anular a sua viragem, e a carta ficava de costas."
+     },
+     {
+      "titre": "O primeiro envelope já não bloqueia",
+      "texte": "Depois de uma instalação ou de uma atualização, a carta parava meio segundo ao virar-se. O trabalho gráfico é agora feito antecipadamente, sem que nada se veja."
+     }
     ]
-  },
-  "37.2.0": {
-    "intro": "O teclado apanha melhor os erros de digitação.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "Duas palavras escritas sem espaço são separadas",
-            "texte": "Para «echhunn», a barra propõe «ech hunn». As palavras compostas do luxemburguês («ausbruecht», «Schoulbus») não são cortadas."
-          },
-          {
-            "titre": "O dedo que cai na tecla ao lado é reconhecido",
-            "texte": "Para «haud», a barra propõe primeiro «Haus», porque o s fica ao lado do d, antes de «haut»."
-          },
-          {
-            "titre": "Duas letras trocadas contam como um só erro",
-            "texte": "«ehc» dá «ech», «mioen» dá «Moien»."
-          },
-          {
-            "titre": "Um erro que parece o início de outra palavra é corrigido na mesma",
-            "texte": "«gir» dá «fir», «vul» dá «vun»."
-          }
-        ]
-      },
-      {
-        "points": [
-          {
-            "titre": "Alguns erros de digitação vindos dos textos que serviram para construir o dicionário foram retirados dele",
-            "texte": "«hunnn», «dobai», «tescht»… Eram aceites tal como estavam, e «hunnn» chegava a ser proposto debaixo de «hunn»."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "O teclado numa conversa de mensagens. Escreve-se «echhunn» sem espaço: a barra propõe «Ech hunn», em que se toca. Depois «geschter» sem acento: a barra propõe «gëschter». Depois «an der» sem erro, e a seguir «schiul», com o dedo caído no i ao lado do o: a barra propõe «Schoul». Por fim «gescahfft», com duas letras trocadas: a barra propõe «geschafft». A frase final é «Ech hunn gëschter an der Schoul geschafft». Um disco azul mostra cada toque.",
-        "legende": "Palavras coladas, acento esquecido, tecla ao lado, letras trocadas: escreve-se depressa, a barra propõe a palavra certa, basta um toque."
-      }
+   },
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "A legenda da coleção filtra",
+      "texte": "Tocar em «✦ 5 muito raras» mostra apenas as muito raras; um segundo toque mostra toda a coleção."
+     },
+     {
+      "titre": "A carta aberta indica o seu nível",
+      "texte": "No canto inferior direito, «✦ Muito rara · 9769.º» em vez de apenas a posição."
+     }
     ]
-  },
-  "37.1.3": {
-    "intro": "As cartas ficam no ecrã quando se roda o telemóvel.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "Uma carta aberta na coleção já não se fecha",
-            "texte": "Quando o telemóvel roda, e um compartimento aberto da Caixa de Leitner também não."
-          },
-          {
-            "titre": "Na revisão, a carta que acabou de virar fica virada",
-            "texte": ""
-          },
-          {
-            "titre": null,
-            "texte": "Enquanto uma carta está no ecrã, inclinar o telemóvel mexe a carta em vez de rodar o ecrã."
-          }
-        ]
-      },
-      {
-        "points": [
-          {
-            "titre": "No telemóvel, a aplicação aparece sempre na vertical",
-            "texte": "Deitado, o telemóvel deixava pouco espaço: na revisão, a carta ficava reduzida a um ícone. Os tablets mantêm as duas orientações."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.7": {
+  "intro": "A primeira carta rara e a primeira muito rara têm a sua cerimónia.",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "A primeira carta rara e a primeira muito rara têm a sua cerimónia",
+      "texte": "A primeira rara estremece uma segunda vez, com mais força, e a primeira muito rara sobe mais devagar; ambas têm um segundo fogo de artifício e uma frase que diz como reconhecer o seu nível (céu de fim de tarde e moldura de prata, noite estrelada e moldura de ouro). Uma só vez por nível."
+     }
     ]
-  },
-  "37.1.2": {
-    "intro": "O pacote de fim de jogo aguenta-se quando se roda o telemóvel.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "Rodar o telemóvel já não faz desaparecer o pacote",
-            "texte": "O ecrã mantém a orientação enquanto o pacote está aberto, e volta a rodar assim que o fecha. Pode assim inclinar o telemóvel para fazer mexer a carta sem a perder."
-          },
-          {
-            "titre": "Na horizontal, as cartas ganhas aparecem finalmente",
-            "texte": "O verso vira-se, a carta aparece com os seus efeitos de raridade e acompanha a inclinação do telemóvel."
-          },
-          {
-            "titre": "O título do pacote já não fica por baixo da hora e dos ícones",
-            "texte": "Nem «Saltar» por baixo da barra de navegação."
-          }
-        ]
-      }
+   }
+  ],
+  "images": [
+   {
+    "alt": "Filmado num Galaxy A21s. Um pacote de cartas no fim do jogo: cai a noite no ecrã, o verso da carta sobe a rodar, passa um relâmpago violeta e a carta vira-se. É «Kran» (grua), dourada, numa noite estrelada. Aparecem dois selos por cima: «Nova carta» e «Carta muito rara». Por baixo da carta, uma frase diz: «A sua primeira carta muito rara! Reconhece-se pela noite estrelada e pela moldura de ouro.»",
+    "legende": "A primeiríssima carta muito rara tem direito à sua cerimónia e a uma frase que diz como reconhecê-la daí em diante."
+   }
+  ]
+ },
+ "37.4.6": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "A raridade diz-se por extenso",
+      "texte": "No topo da coleção, cada nível tem o seu nome («✦ 5 muito raras ★ 11 raras…») em vez de símbolos sozinhos; no pacote de cartas, uma carta rara ou muito rara anuncia-se quando pousa."
+     }
     ]
-  },
-  "37.1.1": {
-    "intro": "A coleção e a Caixa de Leitner respondem sem solavancos.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "Mudar a ordenação ou passar para a Prateleira já não congela a coleção",
-            "texte": "As cartas já mostradas são reaproveitadas em vez de serem refeitas."
-          },
-          {
-            "titre": "A coleção abre mais depressa",
-            "texte": "E a grelha pode ser percorrida assim que aparece."
-          },
-          {
-            "titre": "A primeira carta aberta vira-se tão depressa como as seguintes",
-            "texte": "Num só movimento."
-          },
-          {
-            "titre": "Abrir um compartimento da Caixa de Leitner já não bloqueia o ecrã",
-            "texte": "O leque abre-se assim que as suas cartas estão prontas."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.5": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "As cartas da caixa de Leitner mostram a sua paisagem",
+      "texte": "Nos compartimentos, as cartas empilhadas só mostravam o céu; agora mostram o seu lugar, a sua estação e a sua festa, como na coleção."
+     }
     ]
-  },
-  "37.1.0": {
-    "intro": "Cada carta rara tem agora a sua própria maneira de chegar.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "Uma carta pouco comum ◆◆",
-            "texte": "Pousa com um reflexo de luz que a atravessa."
-          },
-          {
-            "titre": "Uma carta rara ★★★",
-            "texte": "Adivinha-se antes de aparecer: o verso estremece três vezes no pacote, o telemóvel vibra e, depois de a carta virada, o seu selo é cunhado com uma onda."
-          },
-          {
-            "titre": "Uma carta muito rara ✦✦✦✦",
-            "texte": "Muda a cena toda: cai a noite, a carta sobe a rodar, um primeiro relâmpago violeta, e depois revela-se lentamente sob raios de luz."
-          },
-          {
-            "titre": null,
-            "texte": "As vibrações seguem a definição do telemóvel, e tudo fica sóbrio quando o telemóvel pede menos animações."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.4": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Os pássaros de verão voam na janela da carta",
+      "texte": "Na carta aberta e no pacote de cartas, batem suavemente as asas e planam, quase sem derivar. Antes estavam imóveis na paisagem."
+     }
     ]
-  },
-  "37.0.1": {
-    "intro": "Cartas mais fluidas na Caixa de Leitner e no fim de jogo.",
-    "sections": [
-      {
-        "points": [
-          {
-            "titre": "As cartas da Caixa de Leitner recuperam a sua paisagem",
-            "texte": "Quando se abria um compartimento, as cartas espalhadas só mostravam o céu."
-          }
-        ]
-      },
-      {
-        "points": [
-          {
-            "titre": "A revisão vira as cartas sem solavancos",
-            "texte": "A carta prepara-se enquanto lê a pergunta, em vez de congelar o ecrã a meio do gesto."
-          },
-          {
-            "titre": "O pacote de fim de jogo também",
-            "texte": "Cada carta ganha vira-se num só movimento."
-          }
-        ]
-      }
+   }
+  ]
+ },
+ "37.4.3": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "O teclado tem o seu nome no seletor de teclados",
+      "texte": "Nos telemóveis Samsung aparecia como «Clavier luxembourgeois Luxembourg»; agora chama-se em todo o lado «🇱🇺 Lëtzebuergesch Clavier»."
+     }
     ]
-  },
-  "37.9.0": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Novidades",
-        "points": [
-          {
-            "titre": "As cartas tornam-se um pequeno teatro de papel",
-            "texte": "Na carta aberta, a paisagem é feita de cartões recortados postos uns à frente dos outros, cada um com a sua sombra e o seu bordo claro. Incline o telemóvel: os cartões deslizam cada um à sua velocidade, como um cenário de teatro."
-          },
-          {
-            "titre": "Quanto mais rara a carta, mais rico o cenário",
-            "texte": "As cartas raras ganham bastidores, duas árvores em silhueta de cada lado, e as muito raras uma nuvem que atravessa devagar o céu."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "A carta «Auer», hora, comum, aberta e inclinada da esquerda para a direita. O castelo de Vianden e a sua colina, a fila de casas e o rio são três cartões recortados: cada um tem um bordo claro e uma sombra leve, e deslizam a velocidades diferentes quando a carta se inclina.",
-        "legende": "Uma carta comum: três cartões que deslizam cada um à sua velocidade."
-      },
-      {
-        "alt": "A carta «Stall», estábulo, rara, ao fim da tarde em Esch-sur-Sûre, inclinada da esquerda para a direita. À frente das falésias e da vila, duas árvores em silhueta enquadram a cena de cada lado, como os bastidores de um teatro; quase não se mexem, e a paisagem desliza atrás.",
-        "legende": "Uma carta rara: os bastidores enquadram a cena."
-      },
-      {
-        "alt": "A carta «Mënz», moeda, muito rara, de noite no Mosela, inclinada da esquerda para a direita. Além dos bastidores, uma nuvem de cartão atravessa devagar o céu estrelado, à frente das colinas e atrás da aldeia.",
-        "legende": "Uma carta muito rara: além dos bastidores, uma nuvem atravessa o céu."
-      }
+   }
+  ]
+ },
+ "37.4.2": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Já não há faixa clara na borda da janela quando se inclina a carta",
+      "texte": "Os planos da paisagem passam agora para lá da janela, e a sua borda já não aparece ao deslizar."
+     }
     ]
-  },
-  "37.9.1": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "Uma carta partilhada mantém o seu teatro de papel",
-            "texte": "A imagem enviada com «Partilhar» mostra os mesmos cartões que na aplicação, com os bastidores das cartas raras e a nuvem das muito raras."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "1. A carta «Kaz», gato, muito rara, aberta na aplicação e inclinada da esquerda para a direita: a cidade de noite em cartões recortados, com os bastidores em silhueta dos lados. 2. A imagem da mesma carta, tal como é enviada com «Partilhar»: os mesmos cartões, os bastidores e a nuvem no céu estrelado.",
-        "legende": "A carta na aplicação, depois a imagem que se partilha: o mesmo teatro de papel."
-      }
+   }
+  ]
+ },
+ "37.4.1": {
+  "intro": "",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "As cartas ganhas fazem vibrar o telemóvel, consoante a raridade",
+      "texte": "Um leve toque para uma carta pouco comum, três estremecimentos e depois a pancada do selo para uma rara, e para uma muito rara uma subida durante o prelúdio, uma pancada cheia no clarão e o crepitar do fogo de artifício. Estas vibrações já existiam mas ficavam mudas em alguns telemóveis, incluindo o Galaxy A21s; passam agora pelo mesmo caminho que o relevo das cartas da coleção. Seguem a opção «Vibração ao tocar nas teclas» das definições do teclado."
+     }
     ]
-  },
-  "37.9.2": {
-    "intro": "",
-    "sections": [
-      {
-        "titre": "Melhorias",
-        "points": [
-          {
-            "titre": "Os cartões têm o seu bordo branco",
-            "texte": "Na carta aberta e na imagem partilhada, cada cartão recortado tem à volta um bordo branco, como papel a sério, mesmo nas cartas de noite."
-          }
-        ]
-      }
-    ],
-    "images": [
-      {
-        "alt": "A carta «Mënz», moeda, muito rara, aberta na aplicação e inclinada devagar da esquerda para a direita. A noite no Mosela: os bastidores em silhueta dos lados, a colina das vinhas, a aldeia e o seu campanário, e uma nuvem que atravessa o céu estrelado. Cada cartão recortado tem um bordo branco, e os cartões deslizam a velocidades diferentes.",
-        "legende": "Uma carta muito rara a ser inclinada: cada cartão tem o seu bordo branco, mesmo de noite."
-      }
+   }
+  ]
+ },
+ "37.3.0": {
+  "intro": "O teclado apanha a letra dobrada escrita uma só vez.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Uma letra dobrada esquecida é corrigida",
+      "texte": "«Kafi» dá «Kaffi», «ales» dá «alles», «ener» dá «ënner» em vez de «Energie». O luxemburguês dobra muitas letras, e o polegar apressado muitas vezes só escreve uma."
+     }
     ]
-  }
+   }
+  ]
+ },
+ "37.2.0": {
+  "intro": "O teclado apanha melhor os erros de digitação.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Duas palavras escritas sem espaço são separadas",
+      "texte": "Para «echhunn», a barra propõe «ech hunn». As palavras compostas do luxemburguês («ausbruecht», «Schoulbus») não são cortadas."
+     },
+     {
+      "titre": "O dedo que cai na tecla ao lado é reconhecido",
+      "texte": "Para «haud», a barra propõe primeiro «Haus», porque o s fica ao lado do d, antes de «haut»."
+     },
+     {
+      "titre": "Duas letras trocadas contam como um só erro",
+      "texte": "«ehc» dá «ech», «mioen» dá «Moien»."
+     },
+     {
+      "titre": "Um erro que parece o início de outra palavra é corrigido na mesma",
+      "texte": "«gir» dá «fir», «vul» dá «vun»."
+     }
+    ]
+   },
+   {
+    "points": [
+     {
+      "titre": "Alguns erros de digitação vindos dos textos que serviram para construir o dicionário foram retirados dele",
+      "texte": "«hunnn», «dobai», «tescht»… Eram aceites tal como estavam, e «hunnn» chegava a ser proposto debaixo de «hunn»."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "O teclado numa conversa de mensagens. Escreve-se «echhunn» sem espaço: a barra propõe «Ech hunn», em que se toca. Depois «geschter» sem acento: a barra propõe «gëschter». Depois «an der» sem erro, e a seguir «schiul», com o dedo caído no i ao lado do o: a barra propõe «Schoul». Por fim «gescahfft», com duas letras trocadas: a barra propõe «geschafft». A frase final é «Ech hunn gëschter an der Schoul geschafft». Um disco azul mostra cada toque.",
+    "legende": "Palavras coladas, acento esquecido, tecla ao lado, letras trocadas: escreve-se depressa, a barra propõe a palavra certa, basta um toque."
+   }
+  ]
+ },
+ "37.1.3": {
+  "intro": "As cartas ficam no ecrã quando se roda o telemóvel.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Uma carta aberta na coleção já não se fecha",
+      "texte": "Quando o telemóvel roda, e um compartimento aberto da Caixa de Leitner também não."
+     },
+     {
+      "titre": "Na revisão, a carta que acabou de virar fica virada",
+      "texte": ""
+     },
+     {
+      "titre": null,
+      "texte": "Enquanto uma carta está no ecrã, inclinar o telemóvel mexe a carta em vez de rodar o ecrã."
+     }
+    ]
+   },
+   {
+    "points": [
+     {
+      "titre": "No telemóvel, a aplicação aparece sempre na vertical",
+      "texte": "Deitado, o telemóvel deixava pouco espaço: na revisão, a carta ficava reduzida a um ícone. Os tablets mantêm as duas orientações."
+     }
+    ]
+   }
+  ]
+ },
+ "37.1.2": {
+  "intro": "O pacote de fim de jogo aguenta-se quando se roda o telemóvel.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Rodar o telemóvel já não faz desaparecer o pacote",
+      "texte": "O ecrã mantém a orientação enquanto o pacote está aberto, e volta a rodar assim que o fecha. Pode assim inclinar o telemóvel para fazer mexer a carta sem a perder."
+     },
+     {
+      "titre": "Na horizontal, as cartas ganhas aparecem finalmente",
+      "texte": "O verso vira-se, a carta aparece com os seus efeitos de raridade e acompanha a inclinação do telemóvel."
+     },
+     {
+      "titre": "O título do pacote já não fica por baixo da hora e dos ícones",
+      "texte": "Nem «Saltar» por baixo da barra de navegação."
+     }
+    ]
+   }
+  ]
+ },
+ "37.1.1": {
+  "intro": "A coleção e a Caixa de Leitner respondem sem solavancos.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Mudar a ordenação ou passar para a Prateleira já não congela a coleção",
+      "texte": "As cartas já mostradas são reaproveitadas em vez de serem refeitas."
+     },
+     {
+      "titre": "A coleção abre mais depressa",
+      "texte": "E a grelha pode ser percorrida assim que aparece."
+     },
+     {
+      "titre": "A primeira carta aberta vira-se tão depressa como as seguintes",
+      "texte": "Num só movimento."
+     },
+     {
+      "titre": "Abrir um compartimento da Caixa de Leitner já não bloqueia o ecrã",
+      "texte": "O leque abre-se assim que as suas cartas estão prontas."
+     }
+    ]
+   }
+  ]
+ },
+ "37.1.0": {
+  "intro": "Cada carta rara tem agora a sua própria maneira de chegar.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "Uma carta pouco comum ◆◆",
+      "texte": "Pousa com um reflexo de luz que a atravessa."
+     },
+     {
+      "titre": "Uma carta rara ★★★",
+      "texte": "Adivinha-se antes de aparecer: o verso estremece três vezes no pacote, o telemóvel vibra e, depois de a carta virada, o seu selo é cunhado com uma onda."
+     },
+     {
+      "titre": "Uma carta muito rara ✦✦✦✦",
+      "texte": "Muda a cena toda: cai a noite, a carta sobe a rodar, um primeiro relâmpago violeta, e depois revela-se lentamente sob raios de luz."
+     },
+     {
+      "titre": null,
+      "texte": "As vibrações seguem a definição do telemóvel, e tudo fica sóbrio quando o telemóvel pede menos animações."
+     }
+    ]
+   }
+  ]
+ },
+ "37.0.1": {
+  "intro": "Cartas mais fluidas na Caixa de Leitner e no fim de jogo.",
+  "sections": [
+   {
+    "points": [
+     {
+      "titre": "As cartas da Caixa de Leitner recuperam a sua paisagem",
+      "texte": "Quando se abria um compartimento, as cartas espalhadas só mostravam o céu."
+     }
+    ]
+   },
+   {
+    "points": [
+     {
+      "titre": "A revisão vira as cartas sem solavancos",
+      "texte": "A carta prepara-se enquanto lê a pergunta, em vez de congelar o ecrã a meio do gesto."
+     },
+     {
+      "titre": "O pacote de fim de jogo também",
+      "texte": "Cada carta ganha vira-se num só movimento."
+     }
+    ]
+   }
+  ]
+ },
+ "37.9.0": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Novidades",
+    "points": [
+     {
+      "titre": "As cartas tornam-se um pequeno teatro de papel",
+      "texte": "Na carta aberta, a paisagem é feita de cartões recortados postos uns à frente dos outros, cada um com a sua sombra e o seu bordo claro. Incline o telemóvel: os cartões deslizam cada um à sua velocidade, como um cenário de teatro."
+     },
+     {
+      "titre": "Quanto mais rara a carta, mais rico o cenário",
+      "texte": "As cartas raras ganham bastidores, duas árvores em silhueta de cada lado, e as muito raras uma nuvem que atravessa devagar o céu."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "A carta «Auer», hora, comum, aberta e inclinada da esquerda para a direita. O castelo de Vianden e a sua colina, a fila de casas e o rio são três cartões recortados: cada um tem um bordo claro e uma sombra leve, e deslizam a velocidades diferentes quando a carta se inclina.",
+    "legende": "Uma carta comum: três cartões que deslizam cada um à sua velocidade."
+   },
+   {
+    "alt": "A carta «Stall», estábulo, rara, ao fim da tarde em Esch-sur-Sûre, inclinada da esquerda para a direita. À frente das falésias e da vila, duas árvores em silhueta enquadram a cena de cada lado, como os bastidores de um teatro; quase não se mexem, e a paisagem desliza atrás.",
+    "legende": "Uma carta rara: os bastidores enquadram a cena."
+   },
+   {
+    "alt": "A carta «Mënz», moeda, muito rara, de noite no Mosela, inclinada da esquerda para a direita. Além dos bastidores, uma nuvem de cartão atravessa devagar o céu estrelado, à frente das colinas e atrás da aldeia.",
+    "legende": "Uma carta muito rara: além dos bastidores, uma nuvem atravessa o céu."
+   }
+  ]
+ },
+ "37.9.1": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "Uma carta partilhada mantém o seu teatro de papel",
+      "texte": "A imagem enviada com «Partilhar» mostra os mesmos cartões que na aplicação, com os bastidores das cartas raras e a nuvem das muito raras."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "1. A carta «Kaz», gato, muito rara, aberta na aplicação e inclinada da esquerda para a direita: a cidade de noite em cartões recortados, com os bastidores em silhueta dos lados. 2. A imagem da mesma carta, tal como é enviada com «Partilhar»: os mesmos cartões, os bastidores e a nuvem no céu estrelado.",
+    "legende": "A carta na aplicação, depois a imagem que se partilha: o mesmo teatro de papel."
+   }
+  ]
+ },
+ "37.9.2": {
+  "intro": "",
+  "sections": [
+   {
+    "titre": "Melhorias",
+    "points": [
+     {
+      "titre": "Os cartões têm o seu bordo branco",
+      "texte": "Na carta aberta e na imagem partilhada, cada cartão recortado tem à volta um bordo branco, como papel a sério, mesmo nas cartas de noite."
+     }
+    ]
+   }
+  ],
+  "images": [
+   {
+    "alt": "A carta «Mënz», moeda, muito rara, aberta na aplicação e inclinada devagar da esquerda para a direita. A noite no Mosela: os bastidores em silhueta dos lados, a colina das vinhas, a aldeia e o seu campanário, e uma nuvem que atravessa o céu estrelado. Cada cartão recortado tem um bordo branco, e os cartões deslizam a velocidades diferentes.",
+    "legende": "Uma carta muito rara a ser inclinada: cada cartão tem o seu bordo branco, mesmo de noite."
+   }
+  ]
+ }
 }

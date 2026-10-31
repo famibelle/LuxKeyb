@@ -1,528 +1,551 @@
 {
-  "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
-  "37.8.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_cartes_jauges.png",
-        "alt": "Trois cartes du carnet, telles que l'appli les affiche. 1. « Kaz », chat, en or : dans l'écu NIVEAU en bas à droite, une case pleine sur six ; la rareté en bas à droite, quatre étoiles pleines sur cinq. 2. « Bibliothéik », bibliothèque, en argent, avec le sceau « Geléiert » d'un mot acquis : les six cases du NIVEAU sont pleines, et la rareté a trois étoiles. 3. « Elefant », éléphant, en or, avec son nouveau dessin d'éléphant devant la ville de nuit : trois cases pleines sur six. Les écus VUES et NIVEAU sont ciselés, le nombre de VUES gravé dans le métal.",
-        "legende": "Le niveau de révision en six cases, la rareté en étoiles, et le nouveau dessin de l'éléphant."
-      }
-    ]
-  },
-  "37.7.9": {
-    "images": [
-      {
-        "image": "Screenshots/lux_visite_dictionnaire.gif",
-        "alt": "Filmé sur un Galaxy A21s : la bulle « Wierderbuch, le dictionnaire » de la visite guidée. Dans un champ dessiné, « chat » se tape lettre à lettre ; trois résultats apparaissent, Kaz (chat, chatte, chat sauvage), Chat et chatt. Un doigt touche « Kaz » : sa fiche monte, avec son sens et la phrase d'exemple « d'Kaz sëtzt virun der Fënster ze miauen », traduite « le chat est assis devant la fenêtre et miaule ». La fiche redescend, « Kaz » se tape à son tour et retrouve son sens.",
-        "legende": "Le dictionnaire, montré : chercher « chat », lire la fiche de « Kaz », chercher dans l'autre sens."
-      }
-    ]
-  },
-  "37.7.8": {
-    "images": [
-      {
-        "image": "Screenshots/lux_visite_gestes.gif",
-        "alt": "Filmé sur un Galaxy A21s : la bulle « Le clavier en trois gestes » de la visite guidée. En haut, un clavier dessiné. Dans le champ, « Moi » ; trois suggestions rouges, Moien, Moie et Moies ; un doigt touche « Moien », qui s'écrit en entier. Le doigt tape « wéi », puis se pose sur la barre d'espace et glisse vers la gauche : le curseur recule jusqu'après « Moien ». Deux pastilles, 1 et 3, s'allument en rouge au fil des gestes, et le texte les détaille.",
-        "legende": "Les gestes du clavier, montrés : toucher un mot proposé, glisser sur la barre d'espace."
-      },
-      {
-        "image": "Screenshots/lux_visite_dictee.gif",
-        "alt": "Filmé sur un Galaxy A21s : la bulle « La dictée » de la visite guidée. Un doigt touche le micro en haut à droite d'un clavier dessiné ; le micro passe au rouge, entouré d'un anneau qui tourne et de halos, et le bandeau « LuxASR · Schwätzt… » remplace les suggestions. La phrase « Moien, wéi geet et? » s'écrit mot à mot dans le champ, puis le doigt touche de nouveau le micro, qui s'éteint.",
-        "legende": "La dictée, montrée : le micro s'allume, la phrase s'écrit, le micro s'éteint."
-      }
-    ]
-  },
-  "37.7.7": {
-    "images": [
-      {
-        "image": "Screenshots/lux_visite_echange.gif",
-        "alt": "Filmé sur un Galaxy A21s : la bulle « Donner, étape par étape » de la visite des cartes. En haut, deux téléphones dessinés, « Vous » et « L'autre personne ». Le second affiche un code, le premier le vise d'un faisceau bleu et une coche verte apparaît ; la carte s'efface du premier, qui affiche à son tour un code ; le second le vise, puis la carte passe d'un écran à l'autre. Dessous, quatre pastilles numérotées s'allument en rouge au fil des temps, et le texte les détaille : 1. La personne qui reçoit touche « Recevoir » en haut de son carnet. 2. Vous touchez « Céder », puis « Scanner son code ». 3. La carte quitte votre carnet, et un code s'affiche sur votre téléphone. 4. L'autre personne touche « Scanner la carte » et vise ce code.",
-        "legende": "Donner une carte, en quatre temps : la visite des cartes le montre avec deux téléphones côte à côte."
-      }
-    ]
-  },
-  "37.7.5": {
-    "images": [
-      {
-        "image": "Screenshots/lux_aide_visite.gif",
-        "alt": "Filmé sur un Galaxy A21s, en cinq écrans. 1. La dernière bulle de la visite, « Pour la revoir », éclaire le bouton « ? » en haut à gauche et dit : « Toute la visite, ou un seul sujet comme la dictée : touchez le ? en haut de l'écran. » 2. Le « ? » ouvre l'aide : « Toute la visite », puis Le clavier (Écrire avec le clavier, Dicter un message), Les cartes (Lire une carte, Partager une carte, Donner ou recevoir une carte), L'application (Chercher un mot, Jouer pour apprendre des mots, Comprendre l'accueil, Suivre vos progrès, Régler le clavier) et le guide à lire. 3. « Essayer » ouvre un champ avec le clavier : on a tapé « Moi », la barre propose « Moien ». 4. Dans Mäi Carnet, un « ? » en haut ouvre l'aide des cartes. 5. « Partager une carte » ouvre la carte « Moien » et éclaire le bouton Partager.",
-        "legende": "Un « ? » toujours visible ouvre l'aide : la visite entière ou un seul sujet, un essai du clavier sans quitter la visite, et l'aide des cartes dans le carnet."
-      }
-    ]
-  },
-  "37.7.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_visite_application.gif",
-        "alt": "La visite guidée de l'application, étape par étape, sur l'émulateur. Un voile sombre couvre l'écran et une bulle blanche présente ce qui est éclairé d'un cadre jaune : 1. l'onglet Haut, l'accueil du jour ; 2. la roue dentée des réglages du clavier ; 3. l'onglet Spiller et ses jeux ; 4. le bandeau Mäi Carnet ; 5. l'onglet Wierderbuch ; 6. l'onglet Mäi Lëtzebuergesch et les niveaux, d'Ufänger à Sproochemeeschter ; 7. le clavier en trois gestes (toucher un mot proposé, appui long pour les accents, glisser sur la barre d'espace pour déplacer le curseur) ; 8. la dictée, avec l'icône rouge du micro : toucher le micro en haut à droite du clavier, parler luxembourgeois, toucher de nouveau pour finir.",
-        "legende": "La visite de l'application, en huit étapes : les quatre onglets, les réglages, le carnet, les gestes du clavier et la dictée."
-      },
-      {
-        "image": "Screenshots/lux_visite_cartes.gif",
-        "alt": "La visite guidée du carnet, avec la carte « Waasser » (eau). 1. la carte est éclairée dans la grille du carnet ; puis elle s'ouvre en grand et chaque zone s'éclaire tour à tour : 2. le paysage, dont l'heure dit la rareté ; 3. le mot sur sa plaque et la pastille du nombre de lettres ; 4. son sens, « Nom neutre », « eau, (verre d')eau, urine », et une phrase du dictionnaire officiel avec sa traduction ; 5. les écus VUES et NIVEAU et le médaillon du jeu ; 6. le numéro de la carte et son rang ; 7. le bouton Partager ; 8. le bouton Céder ; 9. carte refermée, le bouton Recevoir en haut du carnet.",
-        "legende": "La visite des cartes : chaque zone de la carte expliquée, puis comment la partager, la donner ou en recevoir une."
-      }
-    ]
-  },
-  "37.4.7": {
-    "images": [
-      {
-        "image": "Screenshots/lux_premiere_tres_rare.gif",
-        "alt": "Filmé sur un Galaxy A21s. Une pochette de fin de partie : la nuit tombe sur l'écran, le dos de la carte monte en tournant, un éclair violet passe, puis la carte se retourne. C'est « Kran » (grue), dorée, dans une nuit étoilée. Deux pastilles apparaissent au-dessus : « Nouvelle carte » et « Carte très rare ». Sous la carte, une phrase dit : « Votre première carte très rare ! On la reconnaît à sa nuit étoilée et à sa bordure d'or. »",
-        "legende": "La toute première carte très rare a droit à sa cérémonie, et à une phrase qui dit comment la reconnaître ensuite."
-      }
-    ]
-  },
-  "37.2.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_correction_frappe.gif",
-        "alt": "Le clavier dans une conversation de messages. On tape « echhunn » sans espace : la barre propose « Ech hunn », on la touche. Puis « geschter » sans accent : la barre propose « gëschter ». Puis « an der » sans faute, puis « schiul », le doigt tombé sur le i à côté du o : la barre propose « Schoul ». Enfin « gescahfft », deux lettres inversées : la barre propose « geschafft ». La phrase finale est « Ech hunn gëschter an der Schoul geschafft ». Un disque bleu montre chaque toucher.",
-        "legende": "Mots collés, accent oublié, touche d'à côté, lettres inversées : on tape vite, la barre propose le bon mot, un toucher suffit."
-      }
-    ]
-  },
-  "37.0.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_carte_boule_a_neige.gif",
-        "alt": "La carte « eeleren », gagnée un jour d'hiver, ouverte sur un Galaxy A21s : la neige tombe dans sa fenêtre, sur un paysage de nuit. À côté, un petit téléphone montre le geste. Téléphone penché à droite, la carte pivote et la neige file vers la droite ; penché à gauche, vers la gauche ; redressé, elle retombe droit. Puis le téléphone est secoué : les flocons remontent en tourbillonnant, puis retombent doucement. Le mot LuxKeyb est écrit en filigrane sur la carte.",
-        "legende": "Filmé sur un Galaxy A21s, une carte d'hiver : penchez le téléphone, la neige tombe vers le vrai bas ; secouez-le, elle tourbillonne. Les autres saisons et les fêtes, on vous laisse les découvrir."
-      }
-    ]
-  },
-  "36.3.3": {
-    "images": [
-      {
-        "image": "Screenshots/lux_carnet_elan.gif",
-        "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s. Dans la vue « Séries » du carnet, on fait défiler la liste d'un glissé rapide, puis on touche « Étagère » pendant qu'elle défile encore. À gauche, en 36.3.2, l'étagère s'ouvre puis glisse jusqu'au milieu de sa liste, sans son titre. À droite, en 36.3.3, elle s'ouvre en haut et y reste, sur « Revient dans 1 jour ».",
-        "legende": "On touche « Étagère » pendant que la liste défile encore : elle s'ouvre maintenant en haut, avec son titre."
-      }
-    ]
-  },
-  "36.3.2": {
-    "images": [
-      {
-        "image": "Screenshots/lux_carte_ouverture.gif",
-        "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s. On touche la carte « eeleren » dans le carnet, puis on glisse deux fois vers la carte suivante. À gauche, en 36.3.1, l'écran reste figé un instant après le toucher, et à chaque glissé le fond s'éclaircit et la grille reste immobile avant que la carte suivante apparaisse. À droite, en 36.3.2, le fond s'assombrit aussitôt, la carte se retourne, et « neiem » puis « jour » glissent sans attendre.",
-        "legende": "Filmé en temps réel sur un Galaxy A21s : la carte s'ouvre, puis deux glissés vers les voisines. À gauche, chaque geste fige l'écran un instant ; à droite, plus du tout."
-      }
-    ]
-  },
-  "36.3.1": {
-    "images": [
-      {
-        "image": "Screenshots/lux_carnet_ouverture.gif",
-        "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s, avec un chronomètre sous chacun. On touche « Ouvrir » sur le carnet. À gauche, en 36.2.0, « Ouverture du carnet… » reste affiché et la grille n'apparaît qu'au bout de 11,6 secondes. À droite, en 36.3.2, la grille apparaît au bout de 1,7 seconde, les cartes montrent d'abord le ciel puis leurs paysages arrivent un à un.",
-        "legende": "Filmé en temps réel sur un Galaxy A21s, un téléphone d'entrée de gamme, avec un carnet de 36 cartes : 11,6 s avant, 1,7 s maintenant."
-      }
-    ]
-  },
-  "36.3.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_carnet_metaux.png",
-        "alt": "Quatre cartes du carnet ouvertes, une par rareté. « eeleren » (d'un certain âge), très rare : un cadre d'or poli aux reflets francs, bordé d'un rang de perles. « neiem » (neuf, nouveau), rare : un cadre d'argent ciselé, une tresse gravée sur les côtés, des rivets et un rang de perles. « jour » (à jour), peu commune : un cadre de bronze martelé, à taches, avec des rivets sur les côtés. « wéinst » (à cause de), commune : un cadre d'étain brossé, strié. Chaque cadre est bombé et prend la lumière en haut à gauche.",
-        "legende": "Le cadre prend du volume, et son métal dit la rareté : or poli, argent ciselé, bronze martelé, étain brossé."
-      }
-    ]
-  },
-  "36.2.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_carnet_saisons.png",
-        "alt": "Quatre cartes du carnet ouvertes, une par saison. « Spidol » (hôpital) en hiver : la neige couvre le sol et les rochers, et le feu du Buergbrennen brûle derrière l'hôpital. « Prisong » (prison) au printemps : des fleurs roses et blanches partout devant la Rout Bréck. « Euro » en été, le jour de la fête nationale : des fanions rouge, blanc et bleu au-dessus de la Musel. « jour » en automne : le château de Veianen derrière un feuillage roux. Au pied de chaque carte, après le numéro, un petit poinçon gravé : flocon, fleur, soleil ou feuille.",
-        "legende": "La saison du jour où vous avez gagné la carte habille son paysage. Au pied de la carte, un petit poinçon gravé la rappelle."
-      },
-      {
-        "image": "Screenshots/lux_carnet_saisons_album.png",
-        "alt": "Une page du carnet, douze vignettes. Des feux d'artifice au-dessus de « eeleren », « Jeans » et « empfänken », des guirlandes de lumières du marché de Noël devant « neiem » et « reell », des fanions au-dessus de « wéinst », la neige sur « Spidol » et « reell », des fleurs autour de « Lockdown », un feuillage roux derrière « jour » et « Engel ».",
-        "legende": "Les fêtes laissent aussi leur trace : feu d'artifice du Nouvel An, feu du Buergbrennen, fanions de la fête nationale, Schueberfouer, lumières du Chrëschtmaart."
-      }
-    ]
-  },
-  "36.1.2": {
-    "images": [
-      {
-        "image": "Screenshots/lux_album_tablette.gif",
-        "alt": "Deux tablettes couchées, l'une au-dessus de l'autre, qui descendent dans la série « Les paysages » du carnet, un écran à la fois. En haut, en 36.1.1, quatre grandes cartes par rangée : il faut six écrans pour voir les 36 paysages. En bas, en 36.3.2, huit cartes par rangée, deux lieux du matin à la nuit : deux écrans suffisent.",
-        "legende": "Sur une tablette couchée, la série des paysages tient en deux écrans au lieu de six."
-      },
-      {
-        "image": "Screenshots/lux_carnet_vue_en_haut.gif",
-        "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s. On descend dans la vue « Séries » du carnet, puis on touche « Étagère ». À gauche, en 36.1.1, l'étagère s'ouvre au milieu de la liste, sans son titre. À droite, en 36.3.2, elle s'ouvre en haut, sur « Revient dans 1 jour ».",
-        "legende": "Descendu dans les séries, on passe à l'étagère : elle s'ouvre maintenant en haut, avec son titre."
-      }
-    ]
-  },
-  "36.1.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_carnet_paysages.png",
-        "alt": "À gauche, le carnet : chaque vignette montre un paysage du Luxembourg, la grande roue de la Schueberfouer derrière « Noper », le pont rouge derrière « Pilotprojet », le château de Veianen au soir derrière « Fläch », un soleil dessiné devant la vallée d'Esch-Sauer pour « Sonn ». À droite, la carte « Brëll » ouverte : une paire de lunettes posée devant les rochers du Mëllerdall au coucher du soleil, au-dessus de la plaque du nom et de la définition « (paire de) lunettes, lunette ».",
-        "legende": "Chaque carte ouvre sur un lieu du pays, choisi par le sens du mot, à l'heure de sa rareté : ici « Brëll », une rare, au soir dans le Mëllerdall."
-      },
-      {
-        "image": "Screenshots/lux_carnet_serie_paysages.png",
-        "alt": "À gauche, la série « Les paysages », 18 sur 36 : une rangée par lieu, du matin à la nuit ; les cases déjà gagnées montrent leur carte, les autres le lieu en grisé avec son nom, Rout Bréck, Veianen, Esch-Sauer, Musel. À droite, la carte « Sonn » (soleil) ouverte, un soleil dessiné devant la vallée d'Esch-Sauer au petit matin.",
-        "legende": "La série des paysages : neuf lieux à quatre heures. Une case vide montre le lieu en grisé, jamais le mot."
-      }
-    ]
-  },
-  "36.0.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_carnet_echange.png",
-        "alt": "Deux écrans de l'échange d'une carte. À gauche, « Recevoir une carte » : un code carré, puis « 1. Le donneur ouvre sa carte, touche « Céder » et scanne ce code. 2. Scannez ensuite le code qu'il affichera : la carte arrivera dans votre carnet », avec le bouton « Scanner la carte ». À droite, chez le donneur, « « Kaz » a quitté votre carnet » : un autre code carré, « lui seul peut recevoir cette carte », et les boutons « C'est fait, elle est arrivée » et « Plus tard ».",
-        "legende": "Celle qui reçoit montre son code, vous le scannez : la carte quitte votre carnet, et le code qui s'affiche alors ne s'ouvre que sur son téléphone."
-      },
-      {
-        "image": "Screenshots/lux_carnet_echange_arrivee.png",
-        "alt": "À gauche, le carnet du donneur avec un bandeau violet sous le titre : « « Haus » attend d'être scannée par l'autre téléphone. Touchez ici pour remontrer son code. » À droite, la carte « Kaz » (chat, chatte, chat sauvage) arrivée chez l'autre personne, avec le médaillon « Reçue en cadeau ».",
-        "legende": "Si l'échange est interrompu, un bandeau garde le code de la carte. Elle arrive chez l'autre avec la mention « Reçue en cadeau »."
-      }
-    ]
-  },
-  "35.0.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_carnet_series.png",
-        "alt": "Deux pages « Séries » du carnet. À gauche, « Les nombres », 5 sur 18 : les cartes gagnées (eenanzwanzeg, véieranzwanzeg, fënnefanzwanzeg, sechsandrësseg, sechsafofzeg) occupent leur place, et les cases vides affichent le nombre en chiffres, 27, 28, 32, 35… À droite, « Les illustrations », 10 sur 104 : les cartes « Bam » et « Bus » sont posées, les cases vides montrent la silhouette d'une ambulance, d'une antenne, d'un avion, d'une balance, d'un bateau…",
-        "legende": "Chaque carte gagnée prend sa place dans l'album. Une case vide donne un indice sans la réponse : le nombre en chiffres, ou la silhouette du dessin."
-      },
-      {
-        "image": "Screenshots/lux_carnet_sceau_partage.png",
-        "alt": "À gauche, la carte « Bam » (arbre) ouverte : un sceau de cire rouge marqué « GELÉIERT » et une coche est posé sur l'illustration, une petite plume est gravée au milieu du bas du cadre, et les boutons « Partager » et « Céder » sont sous la carte. À droite, l'image envoyée par « Partager » : la même carte sur fond violet, avec « Lëtzebuergesch Clavier, le clavier luxembourgeois, gratuit sur Google Play ».",
-        "legende": "Un mot appris reçoit le sceau « GELÉIERT », un mot que vous avez écrit vous-même une petite plume. « Partager » envoie la carte en image, avec le lien du clavier."
-      },
-      {
-        "image": "Screenshots/lux_carnet_cession.png",
-        "alt": "À gauche, l'écran « Montrez ce code à l'autre téléphone » : un code QR, les deux étapes de l'échange, et les boutons « Scanner la confirmation » et « Garder la carte ». À droite, la carte « Haus » (maison) arrivée sur l'autre téléphone, avec son médaillon « Reçue en cadeau » orné d'un paquet-cadeau.",
-        "legende": "« Céder » affiche un code que l'autre téléphone scanne avec « Recevoir ». La carte passe d'un carnet à l'autre, téléphones côte à côte, sans Internet."
-      }
-    ]
-  },
-  "34.4.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_activation_etapes.png",
-        "alt": "Deux écrans de « Configuration rapide » sur un téléphone. À gauche, 0/3 : l'étape 1 « Activer le clavier » est ouverte, avec l'encadré « Android affiche un avertissement de sécurité, le même pour tous les claviers tiers : appuyez sur OK (deux fois si un second message suit), puis sur Retour » et le bouton « Ouvrir les réglages Android ». À droite, 3/3 : les trois étapes sont cochées, « Moien alleguer » est écrit dans le champ d'essai, et le clavier luxembourgeois propose « alleguerten », « alleguer ».",
-        "legende": "Le bouton mène droit aux réglages d'Android, et l'étape 1 dit quoi faire de l'avertissement. Dès votre premier mot, la dernière étape se coche."
-      },
-      {
-        "image": "Screenshots/lux_activation_bienvenue.png",
-        "alt": "À gauche, la pochette « Bienvenue » ouverte sur la carte « Moien », marquée « Nouvelle carte », avec son sens « bonjour » et l'exemple « Moien, wéi geet et? ». À droite, l'application au retour des réglages d'Android : l'étape 1 est cochée, et la fenêtre « Sélectionnez le mode de saisie » est ouverte avec Clavier Samsung, Gboard et Lëtzebuergesch Clavier.",
-        "legende": "La carte « Moien » arrive après votre premier mot, quand vous faites une pause. Au retour des réglages, l'application ouvre d'elle-même le choix du clavier."
-      }
-    ]
-  },
-  "33.2.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_actualites_inll.png",
-        "alt": "À gauche, le bas de l'accueil avec la ligne « Actualités de l'INLL » au-dessus du Guide et d'À propos ; à droite, la page « Actualités de la langue » qui liste les dernières nouvelles de l'INLL, chacune avec sa date.",
-        "legende": "En bas de l'accueil, les dernières nouvelles de l'Institut national des langues : touchez-en une pour la lire en entier."
-      }
-    ]
-  },
-  "33.1.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_langue_interface.png",
-        "alt": "Les Réglages du clavier, carte « Langue de l'application » : à gauche Français est coché et l'écran est en français ; à droite Português est coché et le même écran est en portugais.",
-        "legende": "En bas des Réglages du clavier, choisissez la langue de l'application : l'écran change aussitôt."
-      }
-    ]
-  },
-  "33.0.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_dictee_reconstituee.gif",
-        "alt": "Le clavier pendant une dictée dans Messages : sous le bandeau LuxASR, la phrase « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott. » apparaît en trois temps.",
-        "legende": "Touchez le micro et parlez luxembourgeois : le texte s'écrit pendant que vous parlez."
-      }
-    ]
-  },
-  "32.0.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_langues.png",
-        "alt": "Le jeu Kräizwuert affiché en anglais, en allemand, en portugais et en luxembourgeois : boutons, niveaux et définition changent avec la langue de l'application.",
-        "legende": "Kräizwuert en anglais, allemand, portugais et luxembourgeois : la définition suit la langue de l'application."
-      }
-    ]
-  },
-  "30.3.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_suggestions.png",
-        "alt": "Le clavier pendant la frappe de « Moi » : une seule rangée de suggestions, Moien, Moie et Moies en rouge, au-dessus des touches.",
-        "legende": "Une seule rangée de suggestions, en luxembourgeois : le clavier gagne de la place. La rangée française s'allume dans les réglages."
-      }
-    ]
-  },
-  "30.2.2": {
-    "images": [
-      {
-        "image": "Screenshots/lux_kraizwuert_pave_suisse.png",
-        "alt": "Le clavier du jeu Kräizwuert dans la disposition « Suisse allemand » : Q W E R T Z U I O P Ü sur la première rangée, A S D F G H J K L Ö Ä sur la deuxième, Y X C V B N M et la touche d'effacement sur la troisième, É et Ë en bas.",
-        "legende": "Le clavier de Kräizwuert, maintenant dans la disposition de votre clavier : ici « Suisse allemand », celle par défaut."
-      }
-    ]
-  },
-  "30.2.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_correcteur_accueil.png",
-        "alt": "Une carte blanche de l'accueil, titrée « Fini le trait rouge sous vos mots ». Elle explique qu'Android souligne les mots luxembourgeois dans Messages, Notes et ailleurs, et invite à choisir le correcteur de l'application. Une ligne grise prévient qu'Android affichera un avertissement et que le correcteur ne conserve rien et n'envoie rien. En bas, un bouton bleu « Activer » et un lien « Plus tard ».",
-        "legende": "La carte de l'accueil, tant que le correcteur n'est pas choisi. « Activer » ouvre directement le bon écran d'Android ; au retour, un message confirme que c'est fait."
-      }
-    ]
-  },
-  "30.1.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_propositions_francais.png",
-        "alt": "Deux claviers côte à côte après avoir tapé « mai ». À gauche, propositions en français coupées : une seule rangée de suggestions rouges, mäi, Mail, Maison, et un clavier plus court. À droite, propositions en français activées : la rangée rouge, puis une rangée bleue, mais, maintenant.",
-        "legende": "À gauche, les propositions en français coupées : une seule rangée de suggestions, et le clavier laisse plus de place à l'écran. À droite, le réglage par défaut, avec la rangée bleue en français."
-      }
-    ]
-  },
-  "29.4.0": {
-    "image": "Screenshots/lux_accueil_haut.png",
-    "alt": "L'onglet Haut de l'application. En tête « Moien ! » et la date. Une carte violette annonce « 12 cartes à revoir » avec un bouton « Réviser maintenant ». Dessous, le mot du jour « Brauereien », en français brasserie, avec un lien vers le Wierderbuch ; une carte « Rejouer à Wuertmix » ; la progression, niveau Ufänker, avec une barre et « Encore 567 mots avant Klengen » ; enfin une ligne repliée « Clavier installé ».",
-    "legende": "L'accueil d'un utilisateur installé : les cartes à revoir d'abord, puis le mot du jour, le dernier jeu et la progression. La configuration tient sur la dernière ligne, repliée."
-  },
-  "26.2.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_plaque_quatre_raretes.png",
-        "alt": "Quatre hauts de cartes côte à côte, légendés « Commun », « Peu commun », « Rare » et « Très rare ». Sur la carte commune, la plaque de bois porte quatre petites têtes de clou et l'angle haut droit est nu. Sur la peu commune, un écoinçon de fer forgé à deux crosses occupe l'angle. Sur la rare, argentée, les rivets sont bombés et posés sur une rondelle, et la ferronnerie devient une grande spirale tenue par un collier. Sur la très rare, dorée, les rivets sont plus gros encore, la plaque a ses pointes repliées, et une branche suit l'arche avec une perle au cœur de chaque spirale.",
-        "legende": "Le même détail sur les quatre paliers. Les rivets grossissent et se bombent à mesure que la carte est rare, et l'angle haut droit s'enrichit : nu sur une carte commune, un écoinçon à deux crosses sur une peu commune, une volute tenue par un collier sur une rare, une branche et des perles sur une très rare. Le mot, lui, est gravé dans la plaque sur toutes les cartes. Les rivets se sentent aussi sous le doigt, d'autant plus que la carte est rare."
-      },
-      {
-        "image": "Screenshots/lux_plaque_gravee.png",
-        "alt": "Gros plan de la plaque dorée d'une carte très rare, aux pointes repliées en flèche. Le mot « Éierepromotioun » y est creusé : le fond des lettres est de l'or assombri, un filet sombre borde le haut de chaque trait et un liseré clair court sous son pied. Un rivet bombé est posé à chacun des quatre angles de la plaque.",
-        "legende": "La gravure de près. Le fond de chaque lettre est la matière de la plaque assombrie, et non une encre posée dessus : le haut du sillon porte l'ombre, le bas prend la lumière. C'est ce qui fait « dans » plutôt que « sur »."
-      }
-    ]
-  },
-  "26.0.0": {
-    "image": "Screenshots/lux_relief_doigt.png",
-    "alt": "Deux vues de la partie haute de la carte « Kaz », très rare, au cadre doré, côte à côte. À gauche, la carte au repos. À droite, un doigt est posé juste sous la gemme de coût : la carte s'est un peu enfoncée, une ombre floue se lit sous la pulpe, et le point brillant de la gemme rouge s'est déplacé vers le doigt.",
-    "legende": "Un doigt posé sur la carte l'enfonce un peu et y jette son ombre, comme un vrai doigt qui bouche la lumière. Les pierres, les griffes et les rivets proches tournent leur reflet vers lui. Ce qu'une capture ne montre pas : le relief se sent aussi, les yeux fermés. Chaque marche vibre selon sa hauteur, et monter ne vibre pas comme descendre, sur les téléphones dont le vibreur sait doser sa force."
-  },
-  "25.0.0": {
-    "image": "Screenshots/lux_carte_stad.png",
-    "alt": "La carte « Stad » ouverte, au cadre argenté, avec une illustration d'immeubles sur fond vert. Sous la plaque du nom, l'onglet « Nom féminin », puis le panneau : le sens « ville, Luxembourg-ville », la phrase d'exemple en luxembourgeois et, dessous en plus petit, sa traduction française. En bas, les écus VUES et NIVEAU encadrent le médaillon « gagné à Wuertplaz », et la ligne de série se lit « n° 021 · 04.09.25 ».",
-    "legende": "Le bas de la carte est repris : la traduction respire sous sa phrase, les écus s'alignent sur les bords de la plaque, la légende du médaillon est nette et la ligne de série ne garde que le numéro et la date."
-  },
-  "23.0.0": {
-    "image": "Screenshots/lux_carte_tres_rare.png",
-    "alt": "La carte « Kaz », très rare, au cadre doré, ouverte en grand. Le nom est écrit dans une police à empattements sur une plaque dorée aux pointes repliées. Une gemme ovale rouge est sertie sur la clef de voûte de l'arche, au-dessus d'une illustration de chat. En bas, entre les écus, le médaillon « gagné à Wuertplaz ».",
-    "legende": "Le nom prend la police de son palier, ici la plus haute, qui garde la majuscule du substantif. La gemme ovale monte sur la clef de voûte, et la provenance devient un médaillon au bas de la carte, entre les écus."
-  },
-  "22.12.8": {
-    "image": "Screenshots/lux_inclinaison_deux_axes.gif",
-    "alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. D'abord vu de face, le téléphone penche vers la gauche puis vers la droite, une flèche orange courbe l'accompagne, et la carte pivote chaque fois en sens inverse. Puis le téléphone est vu de profil, face à un œil : il se redresse et le haut de la carte recule, il se couche vers l'arrière et c'est le bas de la carte qui recule. L'animation tourne en boucle.",
-    "legende": "La carte répond maintenant sur les deux axes, et deux fois plus fort. De gauche à droite, le bord qui descend avec le téléphone vient vers vous. De haut en bas, redresser le téléphone fait reculer le haut de la carte, le coucher en fait reculer le bas."
-  },
-  "22.12.4": {
-    "image": "Screenshots/lux_contre_pivot.gif",
-    "alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. Le téléphone penche vers la gauche, une flèche orange courbe l'accompagne, et la carte pivote en sens inverse en montrant sa tranche claire le long de son bord gauche. Le téléphone revient droit, puis penche vers la droite, et la tranche passe sur le bord droit. L'animation tourne en boucle.",
-    "legende": "Penchez le téléphone : la carte résiste au geste, comme une carte posée qui garde son aplomb. Le bord qui descend avec le téléphone vient vers vous, et c'est de ce côté que se montre la tranche. La carte ouverte depuis la Boîte de Leitner le fait maintenant aussi."
-  },
-  "22.12.3": {
-    "image": "Screenshots/lux_glisse_lateral.png",
-    "alt": "Un écran de la Boîte de Leitner montrant la carte « Duerf » ouverte en grand. Elle est légèrement décalée vers la droite, figurée par une flèche pointant vers la droite, comme si un doigt la poussait. Derrière elle, l'éventail du casier est en train de réapparaître, avec les autres cartes inclinées de part et d'autre.",
-    "legende": "Une carte ouverte se referme en la glissant vers la gauche ou vers la droite, comme on la repousse d'une main. Elle suit le doigt et sort de l'écran, l'on retrouve l'éventail au même endroit. Un geste trop court la remet en place."
-  },
-  "22.12.2": {
-    "image": "Screenshots/lux_guide_cartes.png",
-    "alt": "Deux écrans du guide de l'application. À gauche, la fin de la liste des sept jeux, puis la section « Les cartes du carnet » et une image du haut de la carte « Waasser » : des flèches orange numérotées pointent vers le mot, la pastille de longueur 7, l'illustration et le cadre, avec leurs légendes « Le mot », « Longueur », « Illustration », « Cadre ». À droite, une image du bas de la même carte, dont les flèches 9 à 13 désignent l'écu VUES, le joyau, l'écu NIVEAU, la ligne de série et le rang, suivie de l'explication numérotée « Le bas de la carte ».",
-    "legende": "Le guide détaille maintenant une carte du carnet, partie par partie : chaque zone de la carte « Waasser » est désignée par une flèche numérotée, et le numéro renvoie à son explication sous l'image."
-  },
-  "22.12.1": {
-    "image": "Screenshots/lux_carte_glissee.png",
-    "alt": "Deux écrans de la Boîte de Leitner. À gauche, la carte « Waasser » ouverte en grand est poussée vers le haut par un doigt, figuré par un disque bleu et une flèche montante : la carte a déjà quitté le haut de l'écran, on lit encore « Nom neutre · gagné à Wuertplaz », le sens « eau, (verre d')eau, urine » et sa phrase d'exemple, et l'éventail du casier réapparaît derrière elle. À droite, la carte est partie : le tiroir « Revient dans 1 jour » est ouvert en éventail, toujours sur « 4 / 4 », la carte « Waasser » au centre.",
-    "legende": "Une carte ouverte depuis l'éventail se chasse d'un glissé vers le haut ou vers le bas, et l'on retrouve l'éventail sur la carte qu'on lisait. En parcourant l'éventail, chaque carte qui passe au centre donne un léger cran de vibration."
-  },
-  "22.12.0": {
-    "image": "Screenshots/lux_categories.png",
-    "alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte bleue « liesen » : sous l'illustration, la ligne « Verbe · gagné à Wuertplaz », puis le sens « lire, vendanger », la phrase « hien huet vu Klengem un e Bräll gebraucht fir ze liesen » et sa traduction « depuis qu'il est petit, il a besoin de lunettes pour lire ». À droite, la carte cuivrée « schéin » : la ligne « Adjectif · gagné à Wuertplaz », le sens « beau, bon, très », la phrase « fir hire groussen Dag huet d'Braut sech extra schéin noeneegemaach » et sa traduction « pour son grand jour, la mariée s'est faite toute belle ».",
-    "legende": "La ligne sous l'illustration dit la nature du mot telle que le dictionnaire officiel du ZLS la donne : « Verbe » pour liesen, « Adjectif » pour schéin, et pour un nom son genre, « Nom féminin » ou « Nom neutre »."
-  },
-  "22.11.0": {
-    "image": "Screenshots/lux_exemple_traduit.png",
-    "alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte « Aarbecht » : sens « travail », phrase d'exemple « hien huet vill Freed u senger Aarbecht » et, dessous en plus petit, sa traduction « il prend beaucoup de plaisir à son travail ». À droite, la carte « Stad » : sens « ville, Luxembourg-ville », phrase « géint fënnef Auer nomëttes ass ëmmer décken Trafick an der Stad » et sa traduction « il y a toujours beaucoup de circulation en ville vers cinq heures de l'après-midi ».",
-    "legende": "La phrase d'exemple porte sa traduction française quand le Zenter fir d'Lëtzebuerger Sprooch l'a publiée : ce sont ses traductions officielles, et aucune autre. Une phrase que le ZLS n'a pas traduite s'affiche seule, sans traduction approchée."
-  },
-  "22.10.0": {
-    "image": "Screenshots/lux_eventail.png",
-    "alt": "Deux écrans de la Boîte de Leitner. À gauche, la boîte en bois vue de dessus : sept fentes contenant chacune une petite pile de cartes illustrées, légendées dessous « 4 · 1 jour », « 4 · 3 jours », « 4 · 1 sem. », « 4 · 2 sem. », « 3 · 1 mois », « 3 · 3 mois » et « 3 · ★ acquis », une phrase en haut « Bonne réponse : la carte avance et revient plus tard », et en bas la plaque dorée « Réviser 12 cartes ». À droite, la boîte assombrie et, par-dessus, le tiroir « Revient dans 1 jour » ouvert en éventail : « 4 cartes · 4 à revoir », « 2 / 4 », la carte « Duerf » (village) au centre, les autres inclinées de part et d'autre, et en bas « Glissez pour parcourir · touchez une carte pour la lire ».",
-    "legende": "Chaque casier montre ses cartes, leur nombre et le délai au bout duquel elles reviennent. Toucher un casier étale ses cartes en main : on glisse pour les parcourir, on touche celle du centre pour la lire en grand, et le bouton retour remonte d'un cran, de la carte à l'éventail puis à la boîte."
-  },
-  "20.6.0": {
-    "image": "Screenshots/lux_pochette.png",
-    "alt": "Deux écrans de la pochette de fin de grille, sur fond sombre. À gauche, le titre « Votre pochette », la mention « 1 / 7 », une étiquette orange « Nouvelle carte », et la carte du mot « gezielt » retournée face visible : rareté « Commun », illustration violette, sens « compter, raconter (à) », une phrase d'exemple et la même famille. En bas, « Passer ». À droite, le bilan : « 7 cartes · 7 nouvelles », « Elles sont rangées dans votre carnet. », et deux boutons, « Fermer » et « Mon carnet ».",
-    "legende": "Une grille terminée verse sa pochette : les mots gagnés se retournent un par un, ceux que le carnet n'avait jamais vus portant une étiquette. « Passer » est offert dès la première carte — c'est un cadeau, pas un passage obligé. Le bilan compte ce que la grille a rapporté et ouvre sur la collection. Une grille dont on a demandé la solution n'en verse aucune, puisqu'elle ne rapporte rien."
-  },
-  "20.5.0": {
-    "image": "Screenshots/lux_carnet.png",
-    "alt": "Deux écrans du carnet. À gauche, l'en-tête « Mäi Carnet », la ligne « 30 mots » suivie du compte par rareté, trois tris (Récent, A → Z, Rareté) et une grille de cartes à deux colonnes : Fans, Stëmme, geparkten, virgelies, sechs, Artikele, chacune avec son illustration, son mot en vert, son symbole de rareté et son sens français. À droite, la carte « virgelies » ouverte par-dessus la grille assombrie : badge violet « Très rare », « 9 lettres », le sens « lire à haute voix (à) », une phrase d'exemple, la même famille, et « n° 27 · 9958ᵉ mot le plus fréquent ».",
-    "legende": "Chaque mot verrouillé dans Wuertplaz devient une carte et rejoint une collection qui ne repart plus de zéro à la grille suivante. La rareté n'est pas inventée : c'est le rang du mot dans le dictionnaire de fréquences, ce qui rend « virgelies » aussi rare que le corpus le dit. Les illustrations sont dessinées à partir des lettres du mot, si bien que la même forme donne toujours la même carte."
-  },
-  "20.4.0": {
-    "image": "Screenshots/lux_recompense_verrouillage.png",
-    "alt": "Deux écrans de Wuertplaz. À gauche, un bandeau orange annonce « 2 mots d'un coup ! Pisten · gefrote » au-dessus d'une grille où deux mots viennent de passer au vert. À droite, un bandeau vert annonce « Grille terminée — 7 mots » et, en dessous, trois étoiles suivies de « sans une seule reprise », la grille étant entièrement verte.",
-    "legende": "Un joueur a signalé que débloquer un mot passait inaperçu : les cases changeaient d'un vert pâle à un autre, sans mouvement ni son. Le verrouillage se ponctue maintenant — les lettres s'allument l'une après l'autre, le téléphone répond, et une carte pleine annonce le sens gagné. Verrouiller plusieurs mots d'une seule pose a sa fête à part, en orange. La fin de grille lâche des confettis et donne une note calée sur les mots repris en cours de partie, jamais sur le temps."
-  },
-  "20.3.0": {
-    "image": "Screenshots/lux_wuertplaz_gagne.png",
-    "alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Fra : femme » au-dessus de la grille, où FRA apparaît en vert et ZALDOTEN en vert pâle. À droite, après un appui sur une case de FRA, le bandeau répond « Fra est gagné : il reste en place ». Dans les deux, la pastille FRA de la liste est verte.",
-    "legende": "Un mot gagné passe au vert et ne se reprend plus : ses croisements l'ont prouvé et le jeu a versé sa traduction. Un mot seulement posé, en vert pâle, se reprend toujours. La traduction ne dit plus que le sens, sans le rappel de majuscule qui revenait à chaque mot, et « Fra » se glose « femme » là où le dictionnaire ajoutait « Gëlle Fra »."
-  },
-  "20.2.2": {
-    "image": "Screenshots/lux_wuertplaz_sens.png",
-    "alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Mauer : mur · un substantif : hors de la grille, il garde sa majuscule » au-dessus de la grille. À droite, sous la liste des mots à caser, une section « Ce que vous avez gagné » énumère Houwald : Howald, Géigner : adversaire, Mauer : mur.",
-    "legende": "L'annonce passe, la liste reste. Plusieurs mots se verrouillent souvent d'un coup et le bandeau n'en montrait qu'un : six traductions sur dix n'étaient jamais lues. Elles s'accumulent maintenant sous les mots à caser, et la grille se double d'un petit lexique à mesure qu'on la remplit."
-  },
-  "20.2.0": {
-    "image": "Screenshots/lux_wuertplaz.png",
-    "alt": "Une grille de chassé-croisé à moitié remplie : deux mots en vert, trois en vert pâle, et au-dessus la ligne « Hoer : cheveu, cheveux, poil · un substantif : hors de la grille, il garde sa majuscule ». Sous la grille, les mots à caser sont groupés par longueur, ceux déjà posés étant barrés.",
-    "legende": "La traduction n'est pas la question mais le salaire : elle n'apparaît qu'au moment où le mot est verrouillé, c'est-à-dire quand tous ses croisements sont posés. Les mots en vert sont gagnés, ceux en vert pâle sont posés mais pas encore confirmés."
-  },
-  "20.1.0": {
-    "image": "Screenshots/lux_kraizwuert_pave.png",
-    "alt": "La grille du niveau Difficile, onze colonnes, entièrement visible au-dessus d'un pavé de lettres en QWERTZ dont la dernière rangée porte Ä, Ë, Ö et Ü, et des boutons du jeu.",
-    "legende": "Le pavé reprend les rangées du clavier luxembourgeois, effacement compris, et remplace la barre d'espace par les voyelles infléchies, sans plus d'appui long pour atteindre ö ou ü. La grille cède quelques pixels pour que l'ensemble tienne à l'écran, ici au niveau le plus difficile."
-  },
-  "20.0.0": {
-    "image": "Screenshots/lux_kraizwuert.png",
-    "alt": "Une grille de mots croisés dans l'application : le mot ÉISCHT trouvé en vert, la définition « début, commencement · 5 lettres » au-dessus de la grille.",
-    "legende": "La définition du mot en cours s'affiche au-dessus de la grille, et le mot achevé rappelle son orthographe hors de la grille, ici « éischt », qui s'écrit en minuscules là où un substantif garderait sa majuscule."
-  },
-  "12.0.0": {
-    "image": "Screenshots/lux_cuvette.png",
-    "alt": "La barre de suggestions du clavier, en thème clair et en thème sombre : elle forme un léger renfoncement sous la ligne de saisie, avec le fond du clavier qui réapparaît de chaque côté.",
-    "legende": "Le plateau creusé, en clair et en sombre. Le fond plus sombre que les touches, l'ombre au bord haut et le filet clair au bord bas creusent la barre ; les touches y regagnent leur relief."
-  },
-  "29.4.2": {
-    "image": "Screenshots/lux_clavier_arobase_slash.png",
-    "alt": "Deux claviers côte à côte. À gauche, la rangée du bas d'un champ d'adresse e-mail : les touches « @ » et « .lu » sont bleues. À droite, la page des chiffres : « @ » et « / » sont blanches comme les autres touches, seuls le point, la virgule et l'apostrophe restent bleus.",
-    "legende": "Le bleu de « @ » n'a de sens que dans un champ d'adresse, où la touche remplace la virgule. Sur la page des chiffres, « @ » et « / » reprennent la couleur des autres touches."
-  },
-  "29.3.1": {
-    "image": "Screenshots/lux_clavier_champ_nom_email.png",
-    "alt": "Deux écrans de la création d'un contact. À gauche, dans le champ e-mail « jean.paul@ », l'appui long sur « .lu » ouvre un menu : .lu, .com, .fr, .de, .be, .eu. À droite, dans un champ de nom, le clavier s'ouvre en majuscules et la touche Maj est allumée.",
-    "legende": "Dans une adresse, « @ » et « .lu » prennent la rangée du bas, et rester appuyé sur « .lu » propose les autres terminaisons. Dans un champ de nom, la touche Maj s'allume dès l'ouverture."
-  },
-  "29.3.0": {
-    "image": "Screenshots/lux_clavier_page_123.png",
-    "alt": "Deux claviers de la page des chiffres. À gauche, la page entière : « % » a sa touche entre l'euro et l'arobase, et de petits signes en coin de touche annoncent les symboles cachés. À droite, l'appui long sur l'euro ouvre un menu : €, $, £, ¥.",
-    "legende": "La page 123 gagne des symboles. « % » a sa touche, et en restant appuyé on trouve « $ £ ¥ » sous l'euro, les crochets et accolades sous les parenthèses, « ° », « ± × ÷ » et d'autres."
-  },
-  "29.5.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_dispositions_suisse_luxembourg.png",
-        "alt": "Deux claviers côte à côte. À gauche, la disposition Suisse allemand, désormais par défaut : onze touches par rangée, « ü » à droite du « p », « ö » et « ä » à droite du « l », « é » et « ë » de part et d'autre de la barre d'espace. À droite, la disposition Luxembourg : dix touches par rangée, « é » à droite du « l », « ä » et « ë » autour de la barre d'espace.",
-        "legende": "À gauche, la disposition Suisse allemand, par défaut depuis cette version : ü, ö et ä à droite, comme sur le clavier physique. À droite, la disposition Luxembourg, toujours au choix dans les réglages."
-      },
-      {
-        "image": "Screenshots/lux_appui_long_reglage.png",
-        "alt": "À gauche, le clavier Suisse allemand avec le menu d'accents de la touche « e » ouvert : e, é, ë, è, ê. À droite, le réglage « Appui long » des réglages du clavier, avec quatre choix : Court (0,3 s), coché, Moyen (0,5 s), Long (0,8 s) et Très long (1,2 s).",
-        "legende": "Les accents s'ouvrent en 0,3 seconde. Qui relâche lentement le doigt peut allonger ce délai jusqu'à 1,2 seconde dans les réglages."
-      }
-    ]
-  },
-  "34.1.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_tablette_kraizwuert.png",
-        "alt": "Kräizwuert sur une tablette tenue en paysage : la grille de mots croisés à gauche, à droite le pavé de lettres avec É et Ë, les boutons et la liste des définitions.",
-        "legende": "Sur tablette en paysage, la grille à gauche et le pavé à droite : tout tient sur un écran."
-      }
-    ]
-  },
-  "34.3.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_tablette_album.png",
-        "alt": "Mäi Carnet sur une tablette tenue en paysage : un album ouvert sur une double page, douze cartes illustrées par page en trois rangées, avec sous chaque carte son mot et son sens. En bas, des flèches et l'indication « 1–2 / 4 ».",
-        "legende": "Sur tablette, le carnet s'ouvre comme un album : douze cartes par page, et un glissé tourne la double page."
-      },
-      {
-        "image": "Screenshots/lux_tablette_eventail.png",
-        "alt": "La Boîte de Leitner sur tablette, avec le casier « Revient dans 1 jour » ouvert en éventail : « 16 cartes · 16 à revoir », « 7 / 16 », la carte « leed » au centre et une quinzaine d'autres cartes inclinées sur un grand arc, d'un bord à l'autre de l'écran.",
-        "legende": "Un casier s'ouvre en grand éventail, d'un bord à l'autre de l'écran : on voit une quinzaine de cartes, et le mot de celle du centre se lit."
-      },
-      {
-        "image": "Screenshots/lux_tablette_carte.png",
-        "alt": "La carte « maacht » ouverte en grand depuis l'éventail, entière à l'écran : cadre doré, illustration violette, l'onglet « Verbe » et le sens « faire, rendre, mettre ». De part et d'autre, deux flèches rondes ‹ et › ; derrière, l'éventail assombri.",
-        "legende": "La carte ouverte tient entière à l'écran. Les flèches, ou un glissé de côté, passent à la carte voisine du casier."
-      },
-      {
-        "image": "Screenshots/lux_tablette_boite.png",
-        "alt": "La Boîte de Leitner sur tablette : sept casiers en perspective, chacun avec sa pile de cartes illustrées, légendés « 16 · 1 jour », « 3 · 3 jours », « 7 · 1 sem. », « 8 · 2 sem. », « 5 · 1 mois », « 4 · 3 mois » et « 4 · ★ acquis », et la plaque dorée « Réviser 12 cartes ». Les onglets sont dans une colonne à gauche.",
-        "legende": "Dans la boîte, les cartes suivent maintenant la perspective de leur casier : sur tablette, celles des casiers du bord ne sont plus coupées en biais."
-      }
-    ]
-  },
-  "34.2.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_tablette_clavier_physique.png",
-        "alt": "Le Wierderbuch sur une tablette tenue en paysage, avec « scho » tapé au clavier Bluetooth dans le champ de recherche et la liste des résultats (schonn, Schof, Schock…). En bas de l'écran, au lieu d'un clavier, une seule barre : les suggestions schonn, scho et Schoul en rouge, puis à droite un bouton clavier et le micro.",
-        "legende": "Avec un clavier Bluetooth, seule la barre de suggestions reste à l'écran. Le bouton clavier, à côté du micro, fait revenir les touches pour un accent ou un emoji."
-      },
-      {
-        "image": "Screenshots/lux_tablette_spiller.png",
-        "alt": "L'onglet Spiller sur tablette en paysage : les quatre onglets Haut, Spiller, Wierderbuch et Mäi Lëtzebuergesch dans une colonne à gauche ; à droite, la carte violette Mäi Carnet, puis les huit jeux sur deux rangées de quatre : Boîte de Leitner, Wuertsich, Wuertmix, Wuertriet, Wuertlück, Zuelwuert, Kräizwuert et Wuertplaz.",
-        "legende": "Sur tablette en paysage, les onglets passent sur le côté et les huit jeux tiennent sur un écran."
-      },
-      {
-        "image": "Screenshots/lux_tablette_clavier_scinde.png",
-        "alt": "Le clavier scindé sur une tablette en paysage : les touches de q à v à gauche, de u à ü à droite, un espace vide au milieu. Au-dessus, la barre de suggestions propose Moien, Moie et Moies après « Moi ».",
-        "legende": "Le clavier scindé, à activer dans Réglages du clavier : en paysage, les touches se partagent entre les deux bords, à portée des pouces."
-      }
-    ]
-  },
-  "37.9.0": {
-    "images": [
-      {
-        "image": "Screenshots/lux_theatre_papier.gif",
-        "alt": "La carte « Auer », heure, commune, ouverte et penchée de gauche à droite. Le château de Vianden et sa colline, la rangée de maisons et la rivière sont trois cartons découpés : chacun a un bord clair et une ombre légère, et ils glissent à des vitesses différentes quand la carte penche.",
-        "legende": "Une carte commune : trois cartons qui glissent chacun à leur vitesse."
-      },
-      {
-        "image": "Screenshots/lux_theatre_rare.gif",
-        "alt": "La carte « Stall », étable, rare, le soir à Esch-sur-Sûre, penchée de gauche à droite. Devant les falaises et le bourg, deux arbres en silhouette encadrent la scène de chaque côté, comme les coulisses d'un théâtre ; ils bougent à peine, le paysage glisse derrière.",
-        "legende": "Une carte rare : les coulisses encadrent la scène."
-      },
-      {
-        "image": "Screenshots/lux_theatre_tres_rare.gif",
-        "alt": "La carte « Mënz », pièce de monnaie, très rare, la nuit sur la Moselle, penchée de gauche à droite. En plus des coulisses, un nuage de carton traverse lentement le ciel étoilé, devant les collines et derrière le village.",
-        "legende": "Une carte très rare : en plus des coulisses, un nuage traverse le ciel."
-      }
-    ]
-  },
-  "37.9.1": {
-    "images": [
-      {
-        "image": "Screenshots/lux_theatre_partage.gif",
-        "alt": "1. La carte « Kaz », chat, très rare, ouverte dans l'appli et penchée de gauche à droite : la ville de nuit en cartons découpés, avec les coulisses en silhouette sur les côtés. 2. L'image de la même carte, telle qu'elle part avec « Partager » : les mêmes cartons, les coulisses et le nuage dans le ciel étoilé.",
-        "legende": "La carte dans l'appli, puis l'image qu'on partage : le même théâtre de papier."
-      }
-    ]
-  },
-  "37.9.2": {
-    "images": [
-      {
-        "image": "Screenshots/lux_theatre_bordure.gif",
-        "alt": "La carte « Mënz », pièce de monnaie, très rare, ouverte dans l'appli et penchée lentement de gauche à droite. La nuit sur la Moselle : les coulisses en silhouette sur les côtés, la colline aux vignes, le village et son clocher, et un nuage qui traverse le ciel étoilé. Chaque carton découpé est cerné d'une bordure blanche, et les cartons glissent à des vitesses différentes.",
-        "legende": "Une carte très rare qu'on penche : chaque carton a sa bordure blanche, même la nuit."
-      }
-    ]
-  }
+ "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+ "37.10.1": {
+  "images": [
+   {
+    "image": "Screenshots/lux_guide_carte_haut.png",
+    "alt": "Planche du guide : le haut de la carte « Waasser », une goutte d'eau devant la vallée, avec quatre repères numérotés : 1 le mot, 2 la longueur, 3 le paysage, 4 le cadre.",
+    "legende": "Le guide de l'aide montre la carte avec son nouveau dessin."
+   }
+  ]
+ },
+ "37.10.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
+    "alt": "Animation dans Mäi Carnet. 1. La grille du carnet : Kaz, un chat qui marche, Léiw, un lion, Moien, un soleil qui se lève, Famill, une famille, Kaddo, un cadeau, Apel, une pomme. 2. à 6. Les cartes s'ouvrent l'une après l'autre en grand : « Kaz » en or devant la ville de nuit, « Léiw » en argent, « Famill » devant la grande roue de la Schueberfouer, « Kaddo » et « Apel » en or. 7. Retour à la grille.",
+    "legende": "Les nouveaux dessins sur les cartes, des animaux aux mots de tous les jours."
+   },
+   {
+    "image": "Screenshots/lux_essentiels.gif",
+    "alt": "Animation. 1. Dans Mäi Carnet, vue Séries, la page « Nombres » des essentiels : six cartes gagnées, eent à sechs, et des cases vides qui montrent le sens à trouver (sept, neuf, dix, vingt, cent, mille). 2. Les pages « Temps » et « Jours », cases vides marquées semaine, demain, lundi, mardi… 3. Dans Wuertmix, l'indice « bonne nuit » : la réponse se pose sur deux lignes, G _ _ _ puis _ _ _ _ _ T. 4. Les lettres sont placées : GUTT NUECHT. 5. Validé, le score passe à 100.",
+    "legende": "La page des essentiels dans le carnet, et une expression à remettre dans l'ordre dans Wuertmix."
+   }
+  ]
+ },
+ "37.8.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_cartes_jauges.png",
+    "alt": "Trois cartes du carnet, telles que l'appli les affiche. 1. « Kaz », chat, en or : dans l'écu NIVEAU en bas à droite, une case pleine sur six ; la rareté en bas à droite, quatre étoiles pleines sur cinq. 2. « Bibliothéik », bibliothèque, en argent, avec le sceau « Geléiert » d'un mot acquis : les six cases du NIVEAU sont pleines, et la rareté a trois étoiles. 3. « Elefant », éléphant, en or, avec son nouveau dessin d'éléphant devant la ville de nuit : trois cases pleines sur six. Les écus VUES et NIVEAU sont ciselés, le nombre de VUES gravé dans le métal.",
+    "legende": "Le niveau de révision en six cases, la rareté en étoiles, et le nouveau dessin de l'éléphant."
+   }
+  ]
+ },
+ "37.7.9": {
+  "images": [
+   {
+    "image": "Screenshots/lux_visite_dictionnaire.gif",
+    "alt": "Filmé sur un Galaxy A21s : la bulle « Wierderbuch, le dictionnaire » de la visite guidée. Dans un champ dessiné, « chat » se tape lettre à lettre ; trois résultats apparaissent, Kaz (chat, chatte, chat sauvage), Chat et chatt. Un doigt touche « Kaz » : sa fiche monte, avec son sens et la phrase d'exemple « d'Kaz sëtzt virun der Fënster ze miauen », traduite « le chat est assis devant la fenêtre et miaule ». La fiche redescend, « Kaz » se tape à son tour et retrouve son sens.",
+    "legende": "Le dictionnaire, montré : chercher « chat », lire la fiche de « Kaz », chercher dans l'autre sens."
+   }
+  ]
+ },
+ "37.7.8": {
+  "images": [
+   {
+    "image": "Screenshots/lux_visite_gestes.gif",
+    "alt": "Filmé sur un Galaxy A21s : la bulle « Le clavier en trois gestes » de la visite guidée. En haut, un clavier dessiné. Dans le champ, « Moi » ; trois suggestions rouges, Moien, Moie et Moies ; un doigt touche « Moien », qui s'écrit en entier. Le doigt tape « wéi », puis se pose sur la barre d'espace et glisse vers la gauche : le curseur recule jusqu'après « Moien ». Deux pastilles, 1 et 3, s'allument en rouge au fil des gestes, et le texte les détaille.",
+    "legende": "Les gestes du clavier, montrés : toucher un mot proposé, glisser sur la barre d'espace."
+   },
+   {
+    "image": "Screenshots/lux_visite_dictee.gif",
+    "alt": "Filmé sur un Galaxy A21s : la bulle « La dictée » de la visite guidée. Un doigt touche le micro en haut à droite d'un clavier dessiné ; le micro passe au rouge, entouré d'un anneau qui tourne et de halos, et le bandeau « LuxASR · Schwätzt… » remplace les suggestions. La phrase « Moien, wéi geet et? » s'écrit mot à mot dans le champ, puis le doigt touche de nouveau le micro, qui s'éteint.",
+    "legende": "La dictée, montrée : le micro s'allume, la phrase s'écrit, le micro s'éteint."
+   }
+  ]
+ },
+ "37.7.7": {
+  "images": [
+   {
+    "image": "Screenshots/lux_visite_echange.gif",
+    "alt": "Filmé sur un Galaxy A21s : la bulle « Donner, étape par étape » de la visite des cartes. En haut, deux téléphones dessinés, « Vous » et « L'autre personne ». Le second affiche un code, le premier le vise d'un faisceau bleu et une coche verte apparaît ; la carte s'efface du premier, qui affiche à son tour un code ; le second le vise, puis la carte passe d'un écran à l'autre. Dessous, quatre pastilles numérotées s'allument en rouge au fil des temps, et le texte les détaille : 1. La personne qui reçoit touche « Recevoir » en haut de son carnet. 2. Vous touchez « Céder », puis « Scanner son code ». 3. La carte quitte votre carnet, et un code s'affiche sur votre téléphone. 4. L'autre personne touche « Scanner la carte » et vise ce code.",
+    "legende": "Donner une carte, en quatre temps : la visite des cartes le montre avec deux téléphones côte à côte."
+   }
+  ]
+ },
+ "37.7.5": {
+  "images": [
+   {
+    "image": "Screenshots/lux_aide_visite.gif",
+    "alt": "Filmé sur un Galaxy A21s, en cinq écrans. 1. La dernière bulle de la visite, « Pour la revoir », éclaire le bouton « ? » en haut à gauche et dit : « Toute la visite, ou un seul sujet comme la dictée : touchez le ? en haut de l'écran. » 2. Le « ? » ouvre l'aide : « Toute la visite », puis Le clavier (Écrire avec le clavier, Dicter un message), Les cartes (Lire une carte, Partager une carte, Donner ou recevoir une carte), L'application (Chercher un mot, Jouer pour apprendre des mots, Comprendre l'accueil, Suivre vos progrès, Régler le clavier) et le guide à lire. 3. « Essayer » ouvre un champ avec le clavier : on a tapé « Moi », la barre propose « Moien ». 4. Dans Mäi Carnet, un « ? » en haut ouvre l'aide des cartes. 5. « Partager une carte » ouvre la carte « Moien » et éclaire le bouton Partager.",
+    "legende": "Un « ? » toujours visible ouvre l'aide : la visite entière ou un seul sujet, un essai du clavier sans quitter la visite, et l'aide des cartes dans le carnet."
+   }
+  ]
+ },
+ "37.7.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_visite_application.gif",
+    "alt": "La visite guidée de l'application, étape par étape, sur l'émulateur. Un voile sombre couvre l'écran et une bulle blanche présente ce qui est éclairé d'un cadre jaune : 1. l'onglet Haut, l'accueil du jour ; 2. la roue dentée des réglages du clavier ; 3. l'onglet Spiller et ses jeux ; 4. le bandeau Mäi Carnet ; 5. l'onglet Wierderbuch ; 6. l'onglet Mäi Lëtzebuergesch et les niveaux, d'Ufänger à Sproochemeeschter ; 7. le clavier en trois gestes (toucher un mot proposé, appui long pour les accents, glisser sur la barre d'espace pour déplacer le curseur) ; 8. la dictée, avec l'icône rouge du micro : toucher le micro en haut à droite du clavier, parler luxembourgeois, toucher de nouveau pour finir.",
+    "legende": "La visite de l'application, en huit étapes : les quatre onglets, les réglages, le carnet, les gestes du clavier et la dictée."
+   },
+   {
+    "image": "Screenshots/lux_visite_cartes.gif",
+    "alt": "La visite guidée du carnet, avec la carte « Waasser » (eau). 1. la carte est éclairée dans la grille du carnet ; puis elle s'ouvre en grand et chaque zone s'éclaire tour à tour : 2. le paysage, dont l'heure dit la rareté ; 3. le mot sur sa plaque et la pastille du nombre de lettres ; 4. son sens, « Nom neutre », « eau, (verre d')eau, urine », et une phrase du dictionnaire officiel avec sa traduction ; 5. les écus VUES et NIVEAU et le médaillon du jeu ; 6. le numéro de la carte et son rang ; 7. le bouton Partager ; 8. le bouton Céder ; 9. carte refermée, le bouton Recevoir en haut du carnet.",
+    "legende": "La visite des cartes : chaque zone de la carte expliquée, puis comment la partager, la donner ou en recevoir une."
+   }
+  ]
+ },
+ "37.4.7": {
+  "images": [
+   {
+    "image": "Screenshots/lux_premiere_tres_rare.gif",
+    "alt": "Filmé sur un Galaxy A21s. Une pochette de fin de partie : la nuit tombe sur l'écran, le dos de la carte monte en tournant, un éclair violet passe, puis la carte se retourne. C'est « Kran » (grue), dorée, dans une nuit étoilée. Deux pastilles apparaissent au-dessus : « Nouvelle carte » et « Carte très rare ». Sous la carte, une phrase dit : « Votre première carte très rare ! On la reconnaît à sa nuit étoilée et à sa bordure d'or. »",
+    "legende": "La toute première carte très rare a droit à sa cérémonie, et à une phrase qui dit comment la reconnaître ensuite."
+   }
+  ]
+ },
+ "37.2.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_correction_frappe.gif",
+    "alt": "Le clavier dans une conversation de messages. On tape « echhunn » sans espace : la barre propose « Ech hunn », on la touche. Puis « geschter » sans accent : la barre propose « gëschter ». Puis « an der » sans faute, puis « schiul », le doigt tombé sur le i à côté du o : la barre propose « Schoul ». Enfin « gescahfft », deux lettres inversées : la barre propose « geschafft ». La phrase finale est « Ech hunn gëschter an der Schoul geschafft ». Un disque bleu montre chaque toucher.",
+    "legende": "Mots collés, accent oublié, touche d'à côté, lettres inversées : on tape vite, la barre propose le bon mot, un toucher suffit."
+   }
+  ]
+ },
+ "37.0.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_carte_boule_a_neige.gif",
+    "alt": "La carte « eeleren », gagnée un jour d'hiver, ouverte sur un Galaxy A21s : la neige tombe dans sa fenêtre, sur un paysage de nuit. À côté, un petit téléphone montre le geste. Téléphone penché à droite, la carte pivote et la neige file vers la droite ; penché à gauche, vers la gauche ; redressé, elle retombe droit. Puis le téléphone est secoué : les flocons remontent en tourbillonnant, puis retombent doucement. Le mot LuxKeyb est écrit en filigrane sur la carte.",
+    "legende": "Filmé sur un Galaxy A21s, une carte d'hiver : penchez le téléphone, la neige tombe vers le vrai bas ; secouez-le, elle tourbillonne. Les autres saisons et les fêtes, on vous laisse les découvrir."
+   }
+  ]
+ },
+ "36.3.3": {
+  "images": [
+   {
+    "image": "Screenshots/lux_carnet_elan.gif",
+    "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s. Dans la vue « Séries » du carnet, on fait défiler la liste d'un glissé rapide, puis on touche « Étagère » pendant qu'elle défile encore. À gauche, en 36.3.2, l'étagère s'ouvre puis glisse jusqu'au milieu de sa liste, sans son titre. À droite, en 36.3.3, elle s'ouvre en haut et y reste, sur « Revient dans 1 jour ».",
+    "legende": "On touche « Étagère » pendant que la liste défile encore : elle s'ouvre maintenant en haut, avec son titre."
+   }
+  ]
+ },
+ "36.3.2": {
+  "images": [
+   {
+    "image": "Screenshots/lux_carte_ouverture.gif",
+    "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s. On touche la carte « eeleren » dans le carnet, puis on glisse deux fois vers la carte suivante. À gauche, en 36.3.1, l'écran reste figé un instant après le toucher, et à chaque glissé le fond s'éclaircit et la grille reste immobile avant que la carte suivante apparaisse. À droite, en 36.3.2, le fond s'assombrit aussitôt, la carte se retourne, et « neiem » puis « jour » glissent sans attendre.",
+    "legende": "Filmé en temps réel sur un Galaxy A21s : la carte s'ouvre, puis deux glissés vers les voisines. À gauche, chaque geste fige l'écran un instant ; à droite, plus du tout."
+   }
+  ]
+ },
+ "36.3.1": {
+  "images": [
+   {
+    "image": "Screenshots/lux_carnet_ouverture.gif",
+    "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s, avec un chronomètre sous chacun. On touche « Ouvrir » sur le carnet. À gauche, en 36.2.0, « Ouverture du carnet… » reste affiché et la grille n'apparaît qu'au bout de 11,6 secondes. À droite, en 36.3.2, la grille apparaît au bout de 1,7 seconde, les cartes montrent d'abord le ciel puis leurs paysages arrivent un à un.",
+    "legende": "Filmé en temps réel sur un Galaxy A21s, un téléphone d'entrée de gamme, avec un carnet de 36 cartes : 11,6 s avant, 1,7 s maintenant."
+   }
+  ]
+ },
+ "36.3.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_carnet_metaux.png",
+    "alt": "Quatre cartes du carnet ouvertes, une par rareté. « eeleren » (d'un certain âge), très rare : un cadre d'or poli aux reflets francs, bordé d'un rang de perles. « neiem » (neuf, nouveau), rare : un cadre d'argent ciselé, une tresse gravée sur les côtés, des rivets et un rang de perles. « jour » (à jour), peu commune : un cadre de bronze martelé, à taches, avec des rivets sur les côtés. « wéinst » (à cause de), commune : un cadre d'étain brossé, strié. Chaque cadre est bombé et prend la lumière en haut à gauche.",
+    "legende": "Le cadre prend du volume, et son métal dit la rareté : or poli, argent ciselé, bronze martelé, étain brossé."
+   }
+  ]
+ },
+ "36.2.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_carnet_saisons.png",
+    "alt": "Quatre cartes du carnet ouvertes, une par saison. « Spidol » (hôpital) en hiver : la neige couvre le sol et les rochers, et le feu du Buergbrennen brûle derrière l'hôpital. « Prisong » (prison) au printemps : des fleurs roses et blanches partout devant la Rout Bréck. « Euro » en été, le jour de la fête nationale : des fanions rouge, blanc et bleu au-dessus de la Musel. « jour » en automne : le château de Veianen derrière un feuillage roux. Au pied de chaque carte, après le numéro, un petit poinçon gravé : flocon, fleur, soleil ou feuille.",
+    "legende": "La saison du jour où vous avez gagné la carte habille son paysage. Au pied de la carte, un petit poinçon gravé la rappelle."
+   },
+   {
+    "image": "Screenshots/lux_carnet_saisons_album.png",
+    "alt": "Une page du carnet, douze vignettes. Des feux d'artifice au-dessus de « eeleren », « Jeans » et « empfänken », des guirlandes de lumières du marché de Noël devant « neiem » et « reell », des fanions au-dessus de « wéinst », la neige sur « Spidol » et « reell », des fleurs autour de « Lockdown », un feuillage roux derrière « jour » et « Engel ».",
+    "legende": "Les fêtes laissent aussi leur trace : feu d'artifice du Nouvel An, feu du Buergbrennen, fanions de la fête nationale, Schueberfouer, lumières du Chrëschtmaart."
+   }
+  ]
+ },
+ "36.1.2": {
+  "images": [
+   {
+    "image": "Screenshots/lux_album_tablette.gif",
+    "alt": "Deux tablettes couchées, l'une au-dessus de l'autre, qui descendent dans la série « Les paysages » du carnet, un écran à la fois. En haut, en 36.1.1, quatre grandes cartes par rangée : il faut six écrans pour voir les 36 paysages. En bas, en 36.3.2, huit cartes par rangée, deux lieux du matin à la nuit : deux écrans suffisent.",
+    "legende": "Sur une tablette couchée, la série des paysages tient en deux écrans au lieu de six."
+   },
+   {
+    "image": "Screenshots/lux_carnet_vue_en_haut.gif",
+    "alt": "Deux téléphones côte à côte, filmés en temps réel sur un Galaxy A21s. On descend dans la vue « Séries » du carnet, puis on touche « Étagère ». À gauche, en 36.1.1, l'étagère s'ouvre au milieu de la liste, sans son titre. À droite, en 36.3.2, elle s'ouvre en haut, sur « Revient dans 1 jour ».",
+    "legende": "Descendu dans les séries, on passe à l'étagère : elle s'ouvre maintenant en haut, avec son titre."
+   }
+  ]
+ },
+ "36.1.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_carnet_paysages.png",
+    "alt": "À gauche, le carnet : chaque vignette montre un paysage du Luxembourg, la grande roue de la Schueberfouer derrière « Noper », le pont rouge derrière « Pilotprojet », le château de Veianen au soir derrière « Fläch », un soleil dessiné devant la vallée d'Esch-Sauer pour « Sonn ». À droite, la carte « Brëll » ouverte : une paire de lunettes posée devant les rochers du Mëllerdall au coucher du soleil, au-dessus de la plaque du nom et de la définition « (paire de) lunettes, lunette ».",
+    "legende": "Chaque carte ouvre sur un lieu du pays, choisi par le sens du mot, à l'heure de sa rareté : ici « Brëll », une rare, au soir dans le Mëllerdall."
+   },
+   {
+    "image": "Screenshots/lux_carnet_serie_paysages.png",
+    "alt": "À gauche, la série « Les paysages », 18 sur 36 : une rangée par lieu, du matin à la nuit ; les cases déjà gagnées montrent leur carte, les autres le lieu en grisé avec son nom, Rout Bréck, Veianen, Esch-Sauer, Musel. À droite, la carte « Sonn » (soleil) ouverte, un soleil dessiné devant la vallée d'Esch-Sauer au petit matin.",
+    "legende": "La série des paysages : neuf lieux à quatre heures. Une case vide montre le lieu en grisé, jamais le mot."
+   }
+  ]
+ },
+ "36.0.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_carnet_echange.png",
+    "alt": "Deux écrans de l'échange d'une carte. À gauche, « Recevoir une carte » : un code carré, puis « 1. Le donneur ouvre sa carte, touche « Céder » et scanne ce code. 2. Scannez ensuite le code qu'il affichera : la carte arrivera dans votre carnet », avec le bouton « Scanner la carte ». À droite, chez le donneur, « « Kaz » a quitté votre carnet » : un autre code carré, « lui seul peut recevoir cette carte », et les boutons « C'est fait, elle est arrivée » et « Plus tard ».",
+    "legende": "Celle qui reçoit montre son code, vous le scannez : la carte quitte votre carnet, et le code qui s'affiche alors ne s'ouvre que sur son téléphone."
+   },
+   {
+    "image": "Screenshots/lux_carnet_echange_arrivee.png",
+    "alt": "À gauche, le carnet du donneur avec un bandeau violet sous le titre : « « Haus » attend d'être scannée par l'autre téléphone. Touchez ici pour remontrer son code. » À droite, la carte « Kaz » (chat, chatte, chat sauvage) arrivée chez l'autre personne, avec le médaillon « Reçue en cadeau ».",
+    "legende": "Si l'échange est interrompu, un bandeau garde le code de la carte. Elle arrive chez l'autre avec la mention « Reçue en cadeau »."
+   }
+  ]
+ },
+ "35.0.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_carnet_series.png",
+    "alt": "Deux pages « Séries » du carnet. À gauche, « Les nombres », 5 sur 18 : les cartes gagnées (eenanzwanzeg, véieranzwanzeg, fënnefanzwanzeg, sechsandrësseg, sechsafofzeg) occupent leur place, et les cases vides affichent le nombre en chiffres, 27, 28, 32, 35… À droite, « Les illustrations », 10 sur 104 : les cartes « Bam » et « Bus » sont posées, les cases vides montrent la silhouette d'une ambulance, d'une antenne, d'un avion, d'une balance, d'un bateau…",
+    "legende": "Chaque carte gagnée prend sa place dans l'album. Une case vide donne un indice sans la réponse : le nombre en chiffres, ou la silhouette du dessin."
+   },
+   {
+    "image": "Screenshots/lux_carnet_sceau_partage.png",
+    "alt": "À gauche, la carte « Bam » (arbre) ouverte : un sceau de cire rouge marqué « GELÉIERT » et une coche est posé sur l'illustration, une petite plume est gravée au milieu du bas du cadre, et les boutons « Partager » et « Céder » sont sous la carte. À droite, l'image envoyée par « Partager » : la même carte sur fond violet, avec « Lëtzebuergesch Clavier, le clavier luxembourgeois, gratuit sur Google Play ».",
+    "legende": "Un mot appris reçoit le sceau « GELÉIERT », un mot que vous avez écrit vous-même une petite plume. « Partager » envoie la carte en image, avec le lien du clavier."
+   },
+   {
+    "image": "Screenshots/lux_carnet_cession.png",
+    "alt": "À gauche, l'écran « Montrez ce code à l'autre téléphone » : un code QR, les deux étapes de l'échange, et les boutons « Scanner la confirmation » et « Garder la carte ». À droite, la carte « Haus » (maison) arrivée sur l'autre téléphone, avec son médaillon « Reçue en cadeau » orné d'un paquet-cadeau.",
+    "legende": "« Céder » affiche un code que l'autre téléphone scanne avec « Recevoir ». La carte passe d'un carnet à l'autre, téléphones côte à côte, sans Internet."
+   }
+  ]
+ },
+ "34.4.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_activation_etapes.png",
+    "alt": "Deux écrans de « Configuration rapide » sur un téléphone. À gauche, 0/3 : l'étape 1 « Activer le clavier » est ouverte, avec l'encadré « Android affiche un avertissement de sécurité, le même pour tous les claviers tiers : appuyez sur OK (deux fois si un second message suit), puis sur Retour » et le bouton « Ouvrir les réglages Android ». À droite, 3/3 : les trois étapes sont cochées, « Moien alleguer » est écrit dans le champ d'essai, et le clavier luxembourgeois propose « alleguerten », « alleguer ».",
+    "legende": "Le bouton mène droit aux réglages d'Android, et l'étape 1 dit quoi faire de l'avertissement. Dès votre premier mot, la dernière étape se coche."
+   },
+   {
+    "image": "Screenshots/lux_activation_bienvenue.png",
+    "alt": "À gauche, la pochette « Bienvenue » ouverte sur la carte « Moien », marquée « Nouvelle carte », avec son sens « bonjour » et l'exemple « Moien, wéi geet et? ». À droite, l'application au retour des réglages d'Android : l'étape 1 est cochée, et la fenêtre « Sélectionnez le mode de saisie » est ouverte avec Clavier Samsung, Gboard et Lëtzebuergesch Clavier.",
+    "legende": "La carte « Moien » arrive après votre premier mot, quand vous faites une pause. Au retour des réglages, l'application ouvre d'elle-même le choix du clavier."
+   }
+  ]
+ },
+ "33.2.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_actualites_inll.png",
+    "alt": "À gauche, le bas de l'accueil avec la ligne « Actualités de l'INLL » au-dessus du Guide et d'À propos ; à droite, la page « Actualités de la langue » qui liste les dernières nouvelles de l'INLL, chacune avec sa date.",
+    "legende": "En bas de l'accueil, les dernières nouvelles de l'Institut national des langues : touchez-en une pour la lire en entier."
+   }
+  ]
+ },
+ "33.1.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_langue_interface.png",
+    "alt": "Les Réglages du clavier, carte « Langue de l'application » : à gauche Français est coché et l'écran est en français ; à droite Português est coché et le même écran est en portugais.",
+    "legende": "En bas des Réglages du clavier, choisissez la langue de l'application : l'écran change aussitôt."
+   }
+  ]
+ },
+ "33.0.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_dictee_reconstituee.gif",
+    "alt": "Le clavier pendant une dictée dans Messages : sous le bandeau LuxASR, la phrase « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott. » apparaît en trois temps.",
+    "legende": "Touchez le micro et parlez luxembourgeois : le texte s'écrit pendant que vous parlez."
+   }
+  ]
+ },
+ "32.0.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_langues.png",
+    "alt": "Le jeu Kräizwuert affiché en anglais, en allemand, en portugais et en luxembourgeois : boutons, niveaux et définition changent avec la langue de l'application.",
+    "legende": "Kräizwuert en anglais, allemand, portugais et luxembourgeois : la définition suit la langue de l'application."
+   }
+  ]
+ },
+ "30.3.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_suggestions.png",
+    "alt": "Le clavier pendant la frappe de « Moi » : une seule rangée de suggestions, Moien, Moie et Moies en rouge, au-dessus des touches.",
+    "legende": "Une seule rangée de suggestions, en luxembourgeois : le clavier gagne de la place. La rangée française s'allume dans les réglages."
+   }
+  ]
+ },
+ "30.2.2": {
+  "images": [
+   {
+    "image": "Screenshots/lux_kraizwuert_pave_suisse.png",
+    "alt": "Le clavier du jeu Kräizwuert dans la disposition « Suisse allemand » : Q W E R T Z U I O P Ü sur la première rangée, A S D F G H J K L Ö Ä sur la deuxième, Y X C V B N M et la touche d'effacement sur la troisième, É et Ë en bas.",
+    "legende": "Le clavier de Kräizwuert, maintenant dans la disposition de votre clavier : ici « Suisse allemand », celle par défaut."
+   }
+  ]
+ },
+ "30.2.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_correcteur_accueil.png",
+    "alt": "Une carte blanche de l'accueil, titrée « Fini le trait rouge sous vos mots ». Elle explique qu'Android souligne les mots luxembourgeois dans Messages, Notes et ailleurs, et invite à choisir le correcteur de l'application. Une ligne grise prévient qu'Android affichera un avertissement et que le correcteur ne conserve rien et n'envoie rien. En bas, un bouton bleu « Activer » et un lien « Plus tard ».",
+    "legende": "La carte de l'accueil, tant que le correcteur n'est pas choisi. « Activer » ouvre directement le bon écran d'Android ; au retour, un message confirme que c'est fait."
+   }
+  ]
+ },
+ "30.1.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_propositions_francais.png",
+    "alt": "Deux claviers côte à côte après avoir tapé « mai ». À gauche, propositions en français coupées : une seule rangée de suggestions rouges, mäi, Mail, Maison, et un clavier plus court. À droite, propositions en français activées : la rangée rouge, puis une rangée bleue, mais, maintenant.",
+    "legende": "À gauche, les propositions en français coupées : une seule rangée de suggestions, et le clavier laisse plus de place à l'écran. À droite, le réglage par défaut, avec la rangée bleue en français."
+   }
+  ]
+ },
+ "29.4.0": {
+  "image": "Screenshots/lux_accueil_haut.png",
+  "alt": "L'onglet Haut de l'application. En tête « Moien ! » et la date. Une carte violette annonce « 12 cartes à revoir » avec un bouton « Réviser maintenant ». Dessous, le mot du jour « Brauereien », en français brasserie, avec un lien vers le Wierderbuch ; une carte « Rejouer à Wuertmix » ; la progression, niveau Ufänker, avec une barre et « Encore 567 mots avant Klengen » ; enfin une ligne repliée « Clavier installé ».",
+  "legende": "L'accueil d'un utilisateur installé : les cartes à revoir d'abord, puis le mot du jour, le dernier jeu et la progression. La configuration tient sur la dernière ligne, repliée."
+ },
+ "26.2.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_plaque_quatre_raretes.png",
+    "alt": "Quatre hauts de cartes côte à côte, légendés « Commun », « Peu commun », « Rare » et « Très rare ». Sur la carte commune, la plaque de bois porte quatre petites têtes de clou et l'angle haut droit est nu. Sur la peu commune, un écoinçon de fer forgé à deux crosses occupe l'angle. Sur la rare, argentée, les rivets sont bombés et posés sur une rondelle, et la ferronnerie devient une grande spirale tenue par un collier. Sur la très rare, dorée, les rivets sont plus gros encore, la plaque a ses pointes repliées, et une branche suit l'arche avec une perle au cœur de chaque spirale.",
+    "legende": "Le même détail sur les quatre paliers. Les rivets grossissent et se bombent à mesure que la carte est rare, et l'angle haut droit s'enrichit : nu sur une carte commune, un écoinçon à deux crosses sur une peu commune, une volute tenue par un collier sur une rare, une branche et des perles sur une très rare. Le mot, lui, est gravé dans la plaque sur toutes les cartes. Les rivets se sentent aussi sous le doigt, d'autant plus que la carte est rare."
+   },
+   {
+    "image": "Screenshots/lux_plaque_gravee.png",
+    "alt": "Gros plan de la plaque dorée d'une carte très rare, aux pointes repliées en flèche. Le mot « Éierepromotioun » y est creusé : le fond des lettres est de l'or assombri, un filet sombre borde le haut de chaque trait et un liseré clair court sous son pied. Un rivet bombé est posé à chacun des quatre angles de la plaque.",
+    "legende": "La gravure de près. Le fond de chaque lettre est la matière de la plaque assombrie, et non une encre posée dessus : le haut du sillon porte l'ombre, le bas prend la lumière. C'est ce qui fait « dans » plutôt que « sur »."
+   }
+  ]
+ },
+ "26.0.0": {
+  "image": "Screenshots/lux_relief_doigt.png",
+  "alt": "Deux vues de la partie haute de la carte « Kaz », très rare, au cadre doré, côte à côte. À gauche, la carte au repos. À droite, un doigt est posé juste sous la gemme de coût : la carte s'est un peu enfoncée, une ombre floue se lit sous la pulpe, et le point brillant de la gemme rouge s'est déplacé vers le doigt.",
+  "legende": "Un doigt posé sur la carte l'enfonce un peu et y jette son ombre, comme un vrai doigt qui bouche la lumière. Les pierres, les griffes et les rivets proches tournent leur reflet vers lui. Ce qu'une capture ne montre pas : le relief se sent aussi, les yeux fermés. Chaque marche vibre selon sa hauteur, et monter ne vibre pas comme descendre, sur les téléphones dont le vibreur sait doser sa force."
+ },
+ "25.0.0": {
+  "image": "Screenshots/lux_carte_stad.png",
+  "alt": "La carte « Stad » ouverte, au cadre argenté, avec une illustration d'immeubles sur fond vert. Sous la plaque du nom, l'onglet « Nom féminin », puis le panneau : le sens « ville, Luxembourg-ville », la phrase d'exemple en luxembourgeois et, dessous en plus petit, sa traduction française. En bas, les écus VUES et NIVEAU encadrent le médaillon « gagné à Wuertplaz », et la ligne de série se lit « n° 021 · 04.09.25 ».",
+  "legende": "Le bas de la carte est repris : la traduction respire sous sa phrase, les écus s'alignent sur les bords de la plaque, la légende du médaillon est nette et la ligne de série ne garde que le numéro et la date."
+ },
+ "23.0.0": {
+  "image": "Screenshots/lux_carte_tres_rare.png",
+  "alt": "La carte « Kaz », très rare, au cadre doré, ouverte en grand. Le nom est écrit dans une police à empattements sur une plaque dorée aux pointes repliées. Une gemme ovale rouge est sertie sur la clef de voûte de l'arche, au-dessus d'une illustration de chat. En bas, entre les écus, le médaillon « gagné à Wuertplaz ».",
+  "legende": "Le nom prend la police de son palier, ici la plus haute, qui garde la majuscule du substantif. La gemme ovale monte sur la clef de voûte, et la provenance devient un médaillon au bas de la carte, entre les écus."
+ },
+ "22.12.8": {
+  "image": "Screenshots/lux_inclinaison_deux_axes.gif",
+  "alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. D'abord vu de face, le téléphone penche vers la gauche puis vers la droite, une flèche orange courbe l'accompagne, et la carte pivote chaque fois en sens inverse. Puis le téléphone est vu de profil, face à un œil : il se redresse et le haut de la carte recule, il se couche vers l'arrière et c'est le bas de la carte qui recule. L'animation tourne en boucle.",
+  "legende": "La carte répond maintenant sur les deux axes, et deux fois plus fort. De gauche à droite, le bord qui descend avec le téléphone vient vers vous. De haut en bas, redresser le téléphone fait reculer le haut de la carte, le coucher en fait reculer le bas."
+ },
+ "22.12.4": {
+  "image": "Screenshots/lux_contre_pivot.gif",
+  "alt": "Animation. La carte « Duerf » ouverte depuis la Boîte de Leitner, sous un petit téléphone dessiné. Le téléphone penche vers la gauche, une flèche orange courbe l'accompagne, et la carte pivote en sens inverse en montrant sa tranche claire le long de son bord gauche. Le téléphone revient droit, puis penche vers la droite, et la tranche passe sur le bord droit. L'animation tourne en boucle.",
+  "legende": "Penchez le téléphone : la carte résiste au geste, comme une carte posée qui garde son aplomb. Le bord qui descend avec le téléphone vient vers vous, et c'est de ce côté que se montre la tranche. La carte ouverte depuis la Boîte de Leitner le fait maintenant aussi."
+ },
+ "22.12.3": {
+  "image": "Screenshots/lux_glisse_lateral.png",
+  "alt": "Un écran de la Boîte de Leitner montrant la carte « Duerf » ouverte en grand. Elle est légèrement décalée vers la droite, figurée par une flèche pointant vers la droite, comme si un doigt la poussait. Derrière elle, l'éventail du casier est en train de réapparaître, avec les autres cartes inclinées de part et d'autre.",
+  "legende": "Une carte ouverte se referme en la glissant vers la gauche ou vers la droite, comme on la repousse d'une main. Elle suit le doigt et sort de l'écran, l'on retrouve l'éventail au même endroit. Un geste trop court la remet en place."
+ },
+ "22.12.2": {
+  "image": "Screenshots/lux_guide_cartes.png",
+  "alt": "Deux écrans du guide de l'application. À gauche, la fin de la liste des sept jeux, puis la section « Les cartes du carnet » et une image du haut de la carte « Waasser » : des flèches orange numérotées pointent vers le mot, la pastille de longueur 7, l'illustration et le cadre, avec leurs légendes « Le mot », « Longueur », « Illustration », « Cadre ». À droite, une image du bas de la même carte, dont les flèches 9 à 13 désignent l'écu VUES, le joyau, l'écu NIVEAU, la ligne de série et le rang, suivie de l'explication numérotée « Le bas de la carte ».",
+  "legende": "Le guide détaille maintenant une carte du carnet, partie par partie : chaque zone de la carte « Waasser » est désignée par une flèche numérotée, et le numéro renvoie à son explication sous l'image."
+ },
+ "22.12.1": {
+  "image": "Screenshots/lux_carte_glissee.png",
+  "alt": "Deux écrans de la Boîte de Leitner. À gauche, la carte « Waasser » ouverte en grand est poussée vers le haut par un doigt, figuré par un disque bleu et une flèche montante : la carte a déjà quitté le haut de l'écran, on lit encore « Nom neutre · gagné à Wuertplaz », le sens « eau, (verre d')eau, urine » et sa phrase d'exemple, et l'éventail du casier réapparaît derrière elle. À droite, la carte est partie : le tiroir « Revient dans 1 jour » est ouvert en éventail, toujours sur « 4 / 4 », la carte « Waasser » au centre.",
+  "legende": "Une carte ouverte depuis l'éventail se chasse d'un glissé vers le haut ou vers le bas, et l'on retrouve l'éventail sur la carte qu'on lisait. En parcourant l'éventail, chaque carte qui passe au centre donne un léger cran de vibration."
+ },
+ "22.12.0": {
+  "image": "Screenshots/lux_categories.png",
+  "alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte bleue « liesen » : sous l'illustration, la ligne « Verbe · gagné à Wuertplaz », puis le sens « lire, vendanger », la phrase « hien huet vu Klengem un e Bräll gebraucht fir ze liesen » et sa traduction « depuis qu'il est petit, il a besoin de lunettes pour lire ». À droite, la carte cuivrée « schéin » : la ligne « Adjectif · gagné à Wuertplaz », le sens « beau, bon, très », la phrase « fir hire groussen Dag huet d'Braut sech extra schéin noeneegemaach » et sa traduction « pour son grand jour, la mariée s'est faite toute belle ».",
+  "legende": "La ligne sous l'illustration dit la nature du mot telle que le dictionnaire officiel du ZLS la donne : « Verbe » pour liesen, « Adjectif » pour schéin, et pour un nom son genre, « Nom féminin » ou « Nom neutre »."
+ },
+ "22.11.0": {
+  "image": "Screenshots/lux_exemple_traduit.png",
+  "alt": "Deux cartes du carnet ouvertes côte à côte. À gauche, la carte « Aarbecht » : sens « travail », phrase d'exemple « hien huet vill Freed u senger Aarbecht » et, dessous en plus petit, sa traduction « il prend beaucoup de plaisir à son travail ». À droite, la carte « Stad » : sens « ville, Luxembourg-ville », phrase « géint fënnef Auer nomëttes ass ëmmer décken Trafick an der Stad » et sa traduction « il y a toujours beaucoup de circulation en ville vers cinq heures de l'après-midi ».",
+  "legende": "La phrase d'exemple porte sa traduction française quand le Zenter fir d'Lëtzebuerger Sprooch l'a publiée : ce sont ses traductions officielles, et aucune autre. Une phrase que le ZLS n'a pas traduite s'affiche seule, sans traduction approchée."
+ },
+ "22.10.0": {
+  "image": "Screenshots/lux_eventail.png",
+  "alt": "Deux écrans de la Boîte de Leitner. À gauche, la boîte en bois vue de dessus : sept fentes contenant chacune une petite pile de cartes illustrées, légendées dessous « 4 · 1 jour », « 4 · 3 jours », « 4 · 1 sem. », « 4 · 2 sem. », « 3 · 1 mois », « 3 · 3 mois » et « 3 · ★ acquis », une phrase en haut « Bonne réponse : la carte avance et revient plus tard », et en bas la plaque dorée « Réviser 12 cartes ». À droite, la boîte assombrie et, par-dessus, le tiroir « Revient dans 1 jour » ouvert en éventail : « 4 cartes · 4 à revoir », « 2 / 4 », la carte « Duerf » (village) au centre, les autres inclinées de part et d'autre, et en bas « Glissez pour parcourir · touchez une carte pour la lire ».",
+  "legende": "Chaque casier montre ses cartes, leur nombre et le délai au bout duquel elles reviennent. Toucher un casier étale ses cartes en main : on glisse pour les parcourir, on touche celle du centre pour la lire en grand, et le bouton retour remonte d'un cran, de la carte à l'éventail puis à la boîte."
+ },
+ "20.6.0": {
+  "image": "Screenshots/lux_pochette.png",
+  "alt": "Deux écrans de la pochette de fin de grille, sur fond sombre. À gauche, le titre « Votre pochette », la mention « 1 / 7 », une étiquette orange « Nouvelle carte », et la carte du mot « gezielt » retournée face visible : rareté « Commun », illustration violette, sens « compter, raconter (à) », une phrase d'exemple et la même famille. En bas, « Passer ». À droite, le bilan : « 7 cartes · 7 nouvelles », « Elles sont rangées dans votre carnet. », et deux boutons, « Fermer » et « Mon carnet ».",
+  "legende": "Une grille terminée verse sa pochette : les mots gagnés se retournent un par un, ceux que le carnet n'avait jamais vus portant une étiquette. « Passer » est offert dès la première carte — c'est un cadeau, pas un passage obligé. Le bilan compte ce que la grille a rapporté et ouvre sur la collection. Une grille dont on a demandé la solution n'en verse aucune, puisqu'elle ne rapporte rien."
+ },
+ "20.5.0": {
+  "image": "Screenshots/lux_carnet.png",
+  "alt": "Deux écrans du carnet. À gauche, l'en-tête « Mäi Carnet », la ligne « 30 mots » suivie du compte par rareté, trois tris (Récent, A → Z, Rareté) et une grille de cartes à deux colonnes : Fans, Stëmme, geparkten, virgelies, sechs, Artikele, chacune avec son illustration, son mot en vert, son symbole de rareté et son sens français. À droite, la carte « virgelies » ouverte par-dessus la grille assombrie : badge violet « Très rare », « 9 lettres », le sens « lire à haute voix (à) », une phrase d'exemple, la même famille, et « n° 27 · 9958ᵉ mot le plus fréquent ».",
+  "legende": "Chaque mot verrouillé dans Wuertplaz devient une carte et rejoint une collection qui ne repart plus de zéro à la grille suivante. La rareté n'est pas inventée : c'est le rang du mot dans le dictionnaire de fréquences, ce qui rend « virgelies » aussi rare que le corpus le dit. Les illustrations sont dessinées à partir des lettres du mot, si bien que la même forme donne toujours la même carte."
+ },
+ "20.4.0": {
+  "image": "Screenshots/lux_recompense_verrouillage.png",
+  "alt": "Deux écrans de Wuertplaz. À gauche, un bandeau orange annonce « 2 mots d'un coup ! Pisten · gefrote » au-dessus d'une grille où deux mots viennent de passer au vert. À droite, un bandeau vert annonce « Grille terminée — 7 mots » et, en dessous, trois étoiles suivies de « sans une seule reprise », la grille étant entièrement verte.",
+  "legende": "Un joueur a signalé que débloquer un mot passait inaperçu : les cases changeaient d'un vert pâle à un autre, sans mouvement ni son. Le verrouillage se ponctue maintenant — les lettres s'allument l'une après l'autre, le téléphone répond, et une carte pleine annonce le sens gagné. Verrouiller plusieurs mots d'une seule pose a sa fête à part, en orange. La fin de grille lâche des confettis et donne une note calée sur les mots repris en cours de partie, jamais sur le temps."
+ },
+ "20.3.0": {
+  "image": "Screenshots/lux_wuertplaz_gagne.png",
+  "alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Fra : femme » au-dessus de la grille, où FRA apparaît en vert et ZALDOTEN en vert pâle. À droite, après un appui sur une case de FRA, le bandeau répond « Fra est gagné : il reste en place ». Dans les deux, la pastille FRA de la liste est verte.",
+  "legende": "Un mot gagné passe au vert et ne se reprend plus : ses croisements l'ont prouvé et le jeu a versé sa traduction. Un mot seulement posé, en vert pâle, se reprend toujours. La traduction ne dit plus que le sens, sans le rappel de majuscule qui revenait à chaque mot, et « Fra » se glose « femme » là où le dictionnaire ajoutait « Gëlle Fra »."
+ },
+ "20.2.2": {
+  "image": "Screenshots/lux_wuertplaz_sens.png",
+  "alt": "Deux écrans de Wuertplaz côte à côte. À gauche, le bandeau annonce « Mauer : mur · un substantif : hors de la grille, il garde sa majuscule » au-dessus de la grille. À droite, sous la liste des mots à caser, une section « Ce que vous avez gagné » énumère Houwald : Howald, Géigner : adversaire, Mauer : mur.",
+  "legende": "L'annonce passe, la liste reste. Plusieurs mots se verrouillent souvent d'un coup et le bandeau n'en montrait qu'un : six traductions sur dix n'étaient jamais lues. Elles s'accumulent maintenant sous les mots à caser, et la grille se double d'un petit lexique à mesure qu'on la remplit."
+ },
+ "20.2.0": {
+  "image": "Screenshots/lux_wuertplaz.png",
+  "alt": "Une grille de chassé-croisé à moitié remplie : deux mots en vert, trois en vert pâle, et au-dessus la ligne « Hoer : cheveu, cheveux, poil · un substantif : hors de la grille, il garde sa majuscule ». Sous la grille, les mots à caser sont groupés par longueur, ceux déjà posés étant barrés.",
+  "legende": "La traduction n'est pas la question mais le salaire : elle n'apparaît qu'au moment où le mot est verrouillé, c'est-à-dire quand tous ses croisements sont posés. Les mots en vert sont gagnés, ceux en vert pâle sont posés mais pas encore confirmés."
+ },
+ "20.1.0": {
+  "image": "Screenshots/lux_kraizwuert_pave.png",
+  "alt": "La grille du niveau Difficile, onze colonnes, entièrement visible au-dessus d'un pavé de lettres en QWERTZ dont la dernière rangée porte Ä, Ë, Ö et Ü, et des boutons du jeu.",
+  "legende": "Le pavé reprend les rangées du clavier luxembourgeois, effacement compris, et remplace la barre d'espace par les voyelles infléchies, sans plus d'appui long pour atteindre ö ou ü. La grille cède quelques pixels pour que l'ensemble tienne à l'écran, ici au niveau le plus difficile."
+ },
+ "20.0.0": {
+  "image": "Screenshots/lux_kraizwuert.png",
+  "alt": "Une grille de mots croisés dans l'application : le mot ÉISCHT trouvé en vert, la définition « début, commencement · 5 lettres » au-dessus de la grille.",
+  "legende": "La définition du mot en cours s'affiche au-dessus de la grille, et le mot achevé rappelle son orthographe hors de la grille, ici « éischt », qui s'écrit en minuscules là où un substantif garderait sa majuscule."
+ },
+ "12.0.0": {
+  "image": "Screenshots/lux_cuvette.png",
+  "alt": "La barre de suggestions du clavier, en thème clair et en thème sombre : elle forme un léger renfoncement sous la ligne de saisie, avec le fond du clavier qui réapparaît de chaque côté.",
+  "legende": "Le plateau creusé, en clair et en sombre. Le fond plus sombre que les touches, l'ombre au bord haut et le filet clair au bord bas creusent la barre ; les touches y regagnent leur relief."
+ },
+ "29.4.2": {
+  "image": "Screenshots/lux_clavier_arobase_slash.png",
+  "alt": "Deux claviers côte à côte. À gauche, la rangée du bas d'un champ d'adresse e-mail : les touches « @ » et « .lu » sont bleues. À droite, la page des chiffres : « @ » et « / » sont blanches comme les autres touches, seuls le point, la virgule et l'apostrophe restent bleus.",
+  "legende": "Le bleu de « @ » n'a de sens que dans un champ d'adresse, où la touche remplace la virgule. Sur la page des chiffres, « @ » et « / » reprennent la couleur des autres touches."
+ },
+ "29.3.1": {
+  "image": "Screenshots/lux_clavier_champ_nom_email.png",
+  "alt": "Deux écrans de la création d'un contact. À gauche, dans le champ e-mail « jean.paul@ », l'appui long sur « .lu » ouvre un menu : .lu, .com, .fr, .de, .be, .eu. À droite, dans un champ de nom, le clavier s'ouvre en majuscules et la touche Maj est allumée.",
+  "legende": "Dans une adresse, « @ » et « .lu » prennent la rangée du bas, et rester appuyé sur « .lu » propose les autres terminaisons. Dans un champ de nom, la touche Maj s'allume dès l'ouverture."
+ },
+ "29.3.0": {
+  "image": "Screenshots/lux_clavier_page_123.png",
+  "alt": "Deux claviers de la page des chiffres. À gauche, la page entière : « % » a sa touche entre l'euro et l'arobase, et de petits signes en coin de touche annoncent les symboles cachés. À droite, l'appui long sur l'euro ouvre un menu : €, $, £, ¥.",
+  "legende": "La page 123 gagne des symboles. « % » a sa touche, et en restant appuyé on trouve « $ £ ¥ » sous l'euro, les crochets et accolades sous les parenthèses, « ° », « ± × ÷ » et d'autres."
+ },
+ "29.5.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_dispositions_suisse_luxembourg.png",
+    "alt": "Deux claviers côte à côte. À gauche, la disposition Suisse allemand, désormais par défaut : onze touches par rangée, « ü » à droite du « p », « ö » et « ä » à droite du « l », « é » et « ë » de part et d'autre de la barre d'espace. À droite, la disposition Luxembourg : dix touches par rangée, « é » à droite du « l », « ä » et « ë » autour de la barre d'espace.",
+    "legende": "À gauche, la disposition Suisse allemand, par défaut depuis cette version : ü, ö et ä à droite, comme sur le clavier physique. À droite, la disposition Luxembourg, toujours au choix dans les réglages."
+   },
+   {
+    "image": "Screenshots/lux_appui_long_reglage.png",
+    "alt": "À gauche, le clavier Suisse allemand avec le menu d'accents de la touche « e » ouvert : e, é, ë, è, ê. À droite, le réglage « Appui long » des réglages du clavier, avec quatre choix : Court (0,3 s), coché, Moyen (0,5 s), Long (0,8 s) et Très long (1,2 s).",
+    "legende": "Les accents s'ouvrent en 0,3 seconde. Qui relâche lentement le doigt peut allonger ce délai jusqu'à 1,2 seconde dans les réglages."
+   }
+  ]
+ },
+ "34.1.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_tablette_kraizwuert.png",
+    "alt": "Kräizwuert sur une tablette tenue en paysage : la grille de mots croisés à gauche, à droite le pavé de lettres avec É et Ë, les boutons et la liste des définitions.",
+    "legende": "Sur tablette en paysage, la grille à gauche et le pavé à droite : tout tient sur un écran."
+   }
+  ]
+ },
+ "34.3.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_tablette_album.png",
+    "alt": "Mäi Carnet sur une tablette tenue en paysage : un album ouvert sur une double page, douze cartes illustrées par page en trois rangées, avec sous chaque carte son mot et son sens. En bas, des flèches et l'indication « 1–2 / 4 ».",
+    "legende": "Sur tablette, le carnet s'ouvre comme un album : douze cartes par page, et un glissé tourne la double page."
+   },
+   {
+    "image": "Screenshots/lux_tablette_eventail.png",
+    "alt": "La Boîte de Leitner sur tablette, avec le casier « Revient dans 1 jour » ouvert en éventail : « 16 cartes · 16 à revoir », « 7 / 16 », la carte « leed » au centre et une quinzaine d'autres cartes inclinées sur un grand arc, d'un bord à l'autre de l'écran.",
+    "legende": "Un casier s'ouvre en grand éventail, d'un bord à l'autre de l'écran : on voit une quinzaine de cartes, et le mot de celle du centre se lit."
+   },
+   {
+    "image": "Screenshots/lux_tablette_carte.png",
+    "alt": "La carte « maacht » ouverte en grand depuis l'éventail, entière à l'écran : cadre doré, illustration violette, l'onglet « Verbe » et le sens « faire, rendre, mettre ». De part et d'autre, deux flèches rondes ‹ et › ; derrière, l'éventail assombri.",
+    "legende": "La carte ouverte tient entière à l'écran. Les flèches, ou un glissé de côté, passent à la carte voisine du casier."
+   },
+   {
+    "image": "Screenshots/lux_tablette_boite.png",
+    "alt": "La Boîte de Leitner sur tablette : sept casiers en perspective, chacun avec sa pile de cartes illustrées, légendés « 16 · 1 jour », « 3 · 3 jours », « 7 · 1 sem. », « 8 · 2 sem. », « 5 · 1 mois », « 4 · 3 mois » et « 4 · ★ acquis », et la plaque dorée « Réviser 12 cartes ». Les onglets sont dans une colonne à gauche.",
+    "legende": "Dans la boîte, les cartes suivent maintenant la perspective de leur casier : sur tablette, celles des casiers du bord ne sont plus coupées en biais."
+   }
+  ]
+ },
+ "34.2.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_tablette_clavier_physique.png",
+    "alt": "Le Wierderbuch sur une tablette tenue en paysage, avec « scho » tapé au clavier Bluetooth dans le champ de recherche et la liste des résultats (schonn, Schof, Schock…). En bas de l'écran, au lieu d'un clavier, une seule barre : les suggestions schonn, scho et Schoul en rouge, puis à droite un bouton clavier et le micro.",
+    "legende": "Avec un clavier Bluetooth, seule la barre de suggestions reste à l'écran. Le bouton clavier, à côté du micro, fait revenir les touches pour un accent ou un emoji."
+   },
+   {
+    "image": "Screenshots/lux_tablette_spiller.png",
+    "alt": "L'onglet Spiller sur tablette en paysage : les quatre onglets Haut, Spiller, Wierderbuch et Mäi Lëtzebuergesch dans une colonne à gauche ; à droite, la carte violette Mäi Carnet, puis les huit jeux sur deux rangées de quatre : Boîte de Leitner, Wuertsich, Wuertmix, Wuertriet, Wuertlück, Zuelwuert, Kräizwuert et Wuertplaz.",
+    "legende": "Sur tablette en paysage, les onglets passent sur le côté et les huit jeux tiennent sur un écran."
+   },
+   {
+    "image": "Screenshots/lux_tablette_clavier_scinde.png",
+    "alt": "Le clavier scindé sur une tablette en paysage : les touches de q à v à gauche, de u à ü à droite, un espace vide au milieu. Au-dessus, la barre de suggestions propose Moien, Moie et Moies après « Moi ».",
+    "legende": "Le clavier scindé, à activer dans Réglages du clavier : en paysage, les touches se partagent entre les deux bords, à portée des pouces."
+   }
+  ]
+ },
+ "37.9.0": {
+  "images": [
+   {
+    "image": "Screenshots/lux_theatre_papier.gif",
+    "alt": "La carte « Auer », heure, commune, ouverte et penchée de gauche à droite. Le château de Vianden et sa colline, la rangée de maisons et la rivière sont trois cartons découpés : chacun a un bord clair et une ombre légère, et ils glissent à des vitesses différentes quand la carte penche.",
+    "legende": "Une carte commune : trois cartons qui glissent chacun à leur vitesse."
+   },
+   {
+    "image": "Screenshots/lux_theatre_rare.gif",
+    "alt": "La carte « Stall », étable, rare, le soir à Esch-sur-Sûre, penchée de gauche à droite. Devant les falaises et le bourg, deux arbres en silhouette encadrent la scène de chaque côté, comme les coulisses d'un théâtre ; ils bougent à peine, le paysage glisse derrière.",
+    "legende": "Une carte rare : les coulisses encadrent la scène."
+   },
+   {
+    "image": "Screenshots/lux_theatre_tres_rare.gif",
+    "alt": "La carte « Mënz », pièce de monnaie, très rare, la nuit sur la Moselle, penchée de gauche à droite. En plus des coulisses, un nuage de carton traverse lentement le ciel étoilé, devant les collines et derrière le village.",
+    "legende": "Une carte très rare : en plus des coulisses, un nuage traverse le ciel."
+   }
+  ]
+ },
+ "37.9.1": {
+  "images": [
+   {
+    "image": "Screenshots/lux_theatre_partage.gif",
+    "alt": "1. La carte « Kaz », chat, très rare, ouverte dans l'appli et penchée de gauche à droite : la ville de nuit en cartons découpés, avec les coulisses en silhouette sur les côtés. 2. L'image de la même carte, telle qu'elle part avec « Partager » : les mêmes cartons, les coulisses et le nuage dans le ciel étoilé.",
+    "legende": "La carte dans l'appli, puis l'image qu'on partage : le même théâtre de papier."
+   }
+  ]
+ },
+ "37.9.2": {
+  "images": [
+   {
+    "image": "Screenshots/lux_theatre_bordure.gif",
+    "alt": "La carte « Mënz », pièce de monnaie, très rare, ouverte dans l'appli et penchée lentement de gauche à droite. La nuit sur la Moselle : les coulisses en silhouette sur les côtés, la colline aux vignes, le village et son clocher, et un nuage qui traverse le ciel étoilé. Chaque carton découpé est cerné d'une bordure blanche, et les cartons glissent à des vitesses différentes.",
+    "legende": "Une carte très rare qu'on penche : chaque carton a sa bordure blanche, même la nuit."
+   }
+  ]
+ }
 }

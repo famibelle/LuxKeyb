@@ -1,9 +1,104 @@
 {
- "genere_le": "2026-10-29",
- "derniere_version": "37.9.2",
- "derniere_date": "2026-10-29",
+ "genere_le": "2026-10-31",
+ "derniere_version": "37.10.1",
+ "derniere_date": "2026-10-31",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.10.1",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "The guide shows the new drawings",
+       "texte": "The pictures in the help that explain a card have been redone with the drawings of 37.10.0."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_guide_carte_haut.png",
+     "alt": "Guide plate: the top of the “Waasser” card, a water drop in front of the valley, with four numbered markers: 1 the word, 2 the length, 3 the landscape, 4 the frame. The plate is in French.",
+     "legende": "The help guide shows the card with its new drawing."
+    }
+   ],
+   "image": "Screenshots/lux_guide_carte_haut.png",
+   "image_alt": "Guide plate: the top of the “Waasser” card, a water drop in front of the valley, with four numbered markers: 1 the word, 2 the length, 3 the landscape, 4 the frame. The plate is in French.",
+   "image_legende": "The help guide shows the card with its new drawing."
+  },
+  {
+   "version": "37.10.0",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "New",
+     "points": [
+      {
+       "titre": "The cards have new drawings",
+       "texte": "The cat, the lion, the horse, the house, the bike and more than a hundred other drawings have been redone, finer and easier to recognise. Animals and vehicles all face right."
+      },
+      {
+       "titre": "The essentials, a new page in the collection",
+       "texte": "Everyday words (greetings, family, days, months, colours, home, shopping…) grouped by theme. Each empty slot shows the meaning of the word to find, and each completed theme is celebrated."
+      },
+      {
+       "titre": "The games help you find them",
+       "texte": "Wuertsich, Wuertmix and Wuertriet slip into their rounds the essential words still missing from your collection."
+      },
+      {
+       "titre": "Expressions to put back in order",
+       "texte": "Wuertmix also offers expressions such as “Gudde Moien” or “Wéi vill kascht dat?”, one word per line."
+      },
+      {
+       "titre": "Nearly 140 more words have their drawing",
+       "texte": "Family, body, clothes, cooking, celebrations…"
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Fixes",
+     "points": [
+      {
+       "titre": "The right meaning for a few words",
+       "texte": "“Mee” now translates as “May”, “Ee” as “egg”, “A” as “eye” and “Fest” as “party”."
+      },
+      {
+       "titre": "Wuertmix",
+       "texte": "removing a letter from the answer no longer moves the letters given in advance."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
+     "alt": "Animation in Mäi Carnet. 1. The collection grid: Kaz, a walking cat, Léiw, a lion, Moien, a rising sun, Famill, a family, Kaddo, a present, Apel, an apple. 2 to 6. The cards open full size one after another: “Kaz” in gold in front of the city at night, “Léiw” in silver, “Famill” in front of the Schueberfouer big wheel, “Kaddo” and “Apel” in gold. 7. Back to the grid. The cards are in French.",
+     "legende": "The new drawings on the cards, from animals to everyday words."
+    },
+    {
+     "image": "Screenshots/lux_essentiels.gif",
+     "alt": "Animation. 1. In Mäi Carnet, Series view, the “Numbers” page of the essentials: six cards won, eent to sechs, and empty slots showing the meaning to find. 2. The “Time” and “Days” pages, empty slots marked week, tomorrow, Monday, Tuesday… 3. In Wuertmix, the hint “good night”: the answer is laid out on two lines, G _ _ _ then _ _ _ _ _ T. 4. The letters are placed: GUTT NUECHT. 5. Validated, the score goes up to 100. The screens are in French.",
+     "legende": "The essentials page in the collection, and an expression to put back in order in Wuertmix."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
+   "image_alt": "Animation in Mäi Carnet. 1. The collection grid: Kaz, a walking cat, Léiw, a lion, Moien, a rising sun, Famill, a family, Kaddo, a present, Apel, an apple. 2 to 6. The cards open full size one after another: “Kaz” in gold in front of the city at night, “Léiw” in silver, “Famill” in front of the Schueberfouer big wheel, “Kaddo” and “Apel” in gold. 7. Back to the grid. The cards are in French.",
+   "image_legende": "The new drawings on the cards, from animals to everyday words."
+  },
   {
    "version": "37.9.2",
    "date": "2026-10-29",
@@ -145,73 +240,6 @@
    "image": "Screenshots/lux_cartes_jauges.png",
    "image_alt": "Three cards from the collection, as the app shows them. 1. “Kaz”, cat, in gold: in the LEVEL shield at the bottom right, one square filled out of six; the rarity at the bottom right, four filled stars out of five. 2. “Bibliothéik”, library, in silver, with the “Geléiert” seal of a learnt word: all six LEVEL squares are full, and the rarity has three stars. 3. “Elefant”, elephant, in gold, with its new elephant drawing in front of the city at night: three squares filled out of six. The SEEN and LEVEL shields are chased, and the SEEN number is engraved in the metal. The cards are in French.",
    "image_legende": "The review level as six squares, rarity in stars, and the new elephant drawing."
-  },
-  {
-   "version": "37.7.9",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "The dictionary, shown in action",
-       "texte": "In the guided tour, a small animation searches for “cat”, opens the entry for “Kaz” with its example sentence, then searches for “Kaz” the other way round."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_dictionnaire.gif",
-     "alt": "Filmed on a Galaxy A21s: the “Wierderbuch, the dictionary” bubble of the guided tour. In a drawn search field, a word is typed letter by letter; three results appear, with Kaz first. A finger taps “Kaz”: its entry slides up, with its meaning and the example sentence “d'Kaz sëtzt virun der Fënster ze miauen” and its translation. The entry slides down, then “Kaz” is typed in turn and finds its meaning. The screens are in French, so the search is for “chat”; in English it is for “cat”.",
-     "legende": "The dictionary, shown: search for a word, read the entry for “Kaz”, search the other way round."
-    }
-   ],
-   "image": "Screenshots/lux_visite_dictionnaire.gif",
-   "image_alt": "Filmed on a Galaxy A21s: the “Wierderbuch, the dictionary” bubble of the guided tour. In a drawn search field, a word is typed letter by letter; three results appear, with Kaz first. A finger taps “Kaz”: its entry slides up, with its meaning and the example sentence “d'Kaz sëtzt virun der Fënster ze miauen” and its translation. The entry slides down, then “Kaz” is typed in turn and finds its meaning. The screens are in French, so the search is for “chat”; in English it is for “cat”.",
-   "image_legende": "The dictionary, shown: search for a word, read the entry for “Kaz”, search the other way round."
-  },
-  {
-   "version": "37.7.8",
-   "date": "2026-10-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "The keyboard, shown in action",
-       "texte": "In the guided tour, a small animation shows the finger tapping a suggested word, then sliding along the space bar to move the cursor."
-      },
-      {
-       "titre": "Dictation, shown in action",
-       "texte": "You see the microphone light up, the sentence being written as you speak, then the microphone switch off."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_visite_gestes.gif",
-     "alt": "Filmed on a Galaxy A21s: the “The keyboard in three gestures” bubble of the guided tour. At the top, a drawn keyboard. In the field, “Moi”; three red suggestions, Moien, Moie and Moies; a finger taps “Moien”, which is written in full. The finger types “wéi”, then rests on the space bar and slides left: the cursor moves back to just after “Moien”. Two dots, 1 and 3, light up in red as the gestures go by, and the text details them. The screens are in French.",
-     "legende": "The keyboard gestures, shown: tap a suggested word, slide along the space bar."
-    },
-    {
-     "image": "Screenshots/lux_visite_dictee.gif",
-     "alt": "Filmed on a Galaxy A21s: the “Dictation” bubble of the guided tour. A finger taps the microphone at the top right of a drawn keyboard; the microphone turns red, circled by a spinning ring and halos, and the “LuxASR · Schwätzt…” banner replaces the suggestions. The sentence “Moien, wéi geet et?” is written word by word in the field, then the finger taps the microphone again and it switches off. The screens are in French.",
-     "legende": "Dictation, shown: the microphone lights up, the sentence is written, the microphone switches off."
-    }
-   ],
-   "image": "Screenshots/lux_visite_gestes.gif",
-   "image_alt": "Filmed on a Galaxy A21s: the “The keyboard in three gestures” bubble of the guided tour. At the top, a drawn keyboard. In the field, “Moi”; three red suggestions, Moien, Moie and Moies; a finger taps “Moien”, which is written in full. The finger types “wéi”, then rests on the space bar and slides left: the cursor moves back to just after “Moien”. Two dots, 1 and 3, light up in red as the gestures go by, and the text details them. The screens are in French.",
-   "image_legende": "The keyboard gestures, shown: tap a suggested word, slide along the space bar."
   }
  ]
 }
