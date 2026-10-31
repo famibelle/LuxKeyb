@@ -310,7 +310,7 @@ numéro, un petit poinçon gravé rappelle la saison : flocon, fleur, soleil ou
 feuille.
 
 <div align="center" style="margin: 16px 0;">
-  <img src="Screenshots/lux_carnet_paysages.png" alt="À gauche, le carnet : chaque vignette montre un paysage du Luxembourg, la grande roue de la Schueberfouer derrière « Noper », le pont rouge derrière « Pilotprojet », le château de Veianen au soir derrière « Fläch », un soleil dessiné devant la vallée d'Esch-Sauer pour « Sonn ». À droite, la carte « Brëll » ouverte : une paire de lunettes posée devant les rochers du Mëllerdall au coucher du soleil, au-dessus de la plaque du nom et de la définition « (paire de) lunettes, lunette »" width="72%">
+  <img src="Screenshots/lux_carnet_paysages.png" alt="À gauche, le carnet : chaque vignette montre un paysage du Luxembourg, la grande roue de la Schueberfouer derrière « Noper », la ville et ses tours derrière « Pilotprojet », la ville au soir derrière « Fläch », un soleil dessiné devant la vallée d'Esch-Sauer enneigée pour « Sonn ». À droite, la carte « Brëll » ouverte : une paire de lunettes posée devant la ville au crépuscule, sous la neige, au-dessus de la plaque du nom et de la définition « (paire de) lunettes, lunette »" width="72%">
 </div>
 
 **Le texte.** Le mot, tel qu'il est sorti du jeu, avec sa majuscule s'il s'agit
@@ -384,7 +384,7 @@ des places, pas des cartes : *Handy*, *Telefon* et *Smartphone* portent le même
 dessin, le premier gagné remplit la case.
 
 <div align="center" style="margin: 16px 0;">
-  <img src="Screenshots/lux_carnet_serie_paysages.png" alt="À gauche, la série « Les paysages », 18 sur 36 : une rangée par lieu, du matin à la nuit ; les cases déjà gagnées montrent leur carte, les autres le lieu en grisé avec son nom. À droite, la carte « Sonn » (soleil) ouverte, un soleil dessiné devant la vallée d'Esch-Sauer au petit matin" width="72%">
+  <img src="Screenshots/lux_carnet_serie_paysages.png" alt="À gauche, la série « Les paysages », 10 sur 36 : une rangée par lieu, du matin à la nuit ; les cases déjà gagnées montrent leur carte, les autres le lieu en grisé avec son nom. À droite, la carte « Sonn » (soleil) ouverte, un soleil dessiné devant la vallée d'Esch-Sauer sous la neige" width="72%">
 </div>
 
 ### Partager une carte, ou l'offrir

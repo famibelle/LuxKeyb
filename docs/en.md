@@ -234,7 +234,7 @@ through the Internet and without ever existing twice.
 <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
     <img src="Screenshots/lux_carnet_paysages.png" style="width:100%;border-radius:8px;"
-         alt="On the left, the collection: each thumbnail shows a Luxembourg landscape, the Schueberfouer big wheel, the red bridge, Veianen castle in the evening. On the right, the open card “Brëll”: a pair of glasses in front of the Mëllerdall rocks at sunset, in a silver frame">
+         alt="On the left, the collection: each thumbnail shows a Luxembourg landscape, the Schueberfouer big wheel, the city and its towers, the city in the evening, the sun under snow. On the right, the open card “Brëll”: a pair of glasses in front of the city at dusk, under snow, in a silver frame">
     <figcaption>Each card opens on a place in the country, at the hour of its rarity (app in French)</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">

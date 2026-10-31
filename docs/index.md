@@ -244,7 +244,7 @@ cartes : voir la [règle du jeu](regle-du-jeu.html).
 <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
     <img src="Screenshots/lux_carnet_paysages.png" style="width:100%;border-radius:8px;"
-         alt="À gauche, le carnet : chaque vignette montre un paysage du Luxembourg, la grande roue de la Schueberfouer, le pont rouge, le château de Veianen au soir. À droite, la carte « Brëll » ouverte : une paire de lunettes devant les rochers du Mëllerdall au coucher du soleil, dans un cadre d'argent">
+         alt="À gauche, le carnet : chaque vignette montre un paysage du Luxembourg, la grande roue de la Schueberfouer, la ville et ses tours, la ville au soir, le soleil sous la neige. À droite, la carte « Brëll » ouverte : une paire de lunettes devant la ville au crépuscule, sous la neige, dans un cadre d'argent">
     <figcaption>Chaque carte ouvre sur un lieu du pays, à l'heure de sa rareté</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">

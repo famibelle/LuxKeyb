@@ -243,7 +243,7 @@ pela Internet e sem nunca existir em duplicado.
 <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
     <img src="Screenshots/lux_carnet_paysages.png" style="width:100%;border-radius:8px;"
-         alt="À esquerda, a coleção: cada miniatura mostra uma paisagem do Luxemburgo, a roda gigante da Schueberfouer, a ponte vermelha, o castelo de Veianen ao fim da tarde. À direita, a carta «Brëll» aberta: uns óculos diante dos rochedos do Mëllerdall ao pôr do sol, numa moldura de prata">
+         alt="À esquerda, a coleção: cada miniatura mostra uma paisagem do Luxemburgo, a roda gigante da Schueberfouer, a cidade e as suas torres, a cidade ao fim da tarde, o sol na neve. À direita, a carta «Brëll» aberta: uns óculos diante da cidade ao anoitecer, sob a neve, numa moldura de prata">
     <figcaption>Cada carta abre sobre um lugar do país, à hora da sua raridade (aplicação em francês)</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">

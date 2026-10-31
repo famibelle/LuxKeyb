@@ -248,7 +248,7 @@ die andere, ohne Internet und ohne je doppelt zu existieren.
 <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
     <img src="Screenshots/lux_carnet_paysages.png" style="width:100%;border-radius:8px;"
-         alt="Links die Sammlung: Jede Vorschau zeigt eine Landschaft Luxemburgs, das Riesenrad der Schueberfouer, die rote Brücke, die Burg Veianen am Abend. Rechts die geöffnete Karte „Brëll“: eine Brille vor den Felsen des Mëllerdall bei Sonnenuntergang, in einem Silberrahmen">
+         alt="Links die Sammlung: Jede Vorschau zeigt eine Landschaft Luxemburgs, das Riesenrad der Schueberfouer, die Stadt mit ihren Türmen, die Stadt am Abend, die Sonne im Schnee. Rechts die geöffnete Karte „Brëll“: eine Brille vor der Stadt in der Abenddämmerung, im Schnee, in einem Silberrahmen">
     <figcaption>Jede Karte öffnet sich auf einen Ort des Landes, zur Stunde ihrer Seltenheit (App auf Französisch)</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 300px;max-width:420px;text-align:center;">
