@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.11.1] - 2026-10-31
+
+### ✨ Améliorations
+
+- **La languette des cartes imprimées pend à une chaîne** : le petit rappel du type et du coût, sous la Force, est accroché à la pastille par une chaîne qui suit la rareté. Un gros anneau de fer pour une commune, deux maillons de bronze, trois maillons d'argent, et une chaîne d'or avec une perle pour une très rare.
+
 ## [37.11.0] - 2026-10-31
 
 ### ✨ Nouveautés
