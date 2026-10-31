@@ -122,7 +122,7 @@ object CarteCarnet {
                 // grille — mais son champ ne fait aucun doute : c'est une
                 // mesure. Les cartes de Zuelwuert forment donc une famille de
                 // couleur, au lieu du semis aléatoire qu'elles étaient.
-                blason = Blasonnement(champ = Champ.TEMPS, nature = Nature.AUTRE),
+                blason = Blasonnement(champ = Champ.TEMPS, nature = Nature.AUTRE, chiffres = valeur.toString()),
                 plume = PreuveDeFrappe.aLaPlume(context, carte.forme)
             ))
         }

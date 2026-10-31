@@ -4840,7 +4840,8 @@ class Motif(
      */
     private val sujet: Sujet =
         if (CarteFierkelsmaart.est(mot)) Porcelet(heure)
-        else blason.meuble?.let { Enluminure.pour(it, heure) } ?: Trace.pour(mot, heure)
+        else blason.chiffres?.let { Enluminure.chiffres(it, heure) }
+            ?: blason.meuble?.let { Enluminure.pour(it, heure) } ?: Trace.pour(mot, heure)
 
     /**
      * Peint le motif dans son ouverture. [echelle] est le nombre de pixels par
@@ -5212,14 +5213,17 @@ private abstract class Sujet(protected val heure: Heure, cadre: RectF) {
 private class Enluminure private constructor(
     private val trace: Path,
     private val nom: String,
-    heure: Heure
-) : Sujet(heure, RectF(CX - TAILLE / 2f, CY - TAILLE / 2f, CX + TAILLE / 2f, CY + TAILLE / 2f)) {
+    heure: Heure,
+    /** La demi-largeur de l'ombre au sol. */
+    private val ombreSol: Float = 13f,
+    cadre: RectF = RectF(CX - TAILLE / 2f, CY - TAILLE / 2f, CX + TAILLE / 2f, CY + TAILLE / 2f)
+) : Sujet(heure, cadre) {
 
     override fun tracer(c: Canvas) {
         // L'ombre au sol, qui pose le dessin dans le lieu au lieu de le coller dessus.
         plume.style = Paint.Style.FILL
         plume.color = argb(if (heure.nuit) 115 else 64, 0, 0, 0)
-        c.drawOval(CX - 13f, SOL - 1.8f, CX + 13f, SOL + 1.8f, plume)
+        c.drawOval(CX - ombreSol, SOL - 1.8f, CX + ombreSol, SOL + 1.8f, plume)
 
         c.save()
         c.translate(0.6f, 1f)
@@ -5273,6 +5277,39 @@ private class Enluminure private constructor(
             // Sans « pair-impair », la porte d'une maison cesse d'être un trou.
             trace.fillType = Path.FillType.EVEN_ODD
             return Enluminure(trace, nom, heure)
+        }
+
+        /** La hauteur des chiffres d'une carte de nombre (maquette du 2026-10-31). */
+        private const val HAUTEUR_CHIFFRES = 26f
+
+        /** La largeur au-delà de laquelle « 100 » rapetisse, pour laisser voir le lieu. */
+        private const val LARGEUR_CHIFFRES = 44f
+
+        /**
+         * Les chiffres d'une carte de nombre, en nacre et posés au sol comme
+         * un meuble. Une capitale à empattements, pour ne pas ressembler au
+         * chiffre blanc et gras de la pastille, qui dit la Force.
+         */
+        fun chiffres(texte: String, heure: Heure): Enluminure {
+            val p = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
+                textSize = 100f
+                textAlign = Paint.Align.CENTER
+            }
+            val brut = Path()
+            p.getTextPath(texte, 0, texte.length, 0f, 0f, brut)
+            val b = RectF()
+            brut.computeBounds(b, true)
+            val e = minOf(HAUTEUR_CHIFFRES / b.height().coerceAtLeast(1f), LARGEUR_CHIFFRES / b.width().coerceAtLeast(1f))
+            val m = Matrix()
+            m.setTranslate(-b.centerX(), -b.bottom)
+            m.postScale(e, e)
+            m.postTranslate(CX, SOL - 0.6f)
+            val trace = Path()
+            brut.transform(m, trace)
+            val l = b.width() * e
+            val cadre = RectF(CX - l / 2f, SOL - b.height() * e, CX + l / 2f, SOL)
+            return Enluminure(trace, "chiffres", heure, ombreSol = l / 2f + 2f, cadre = cadre)
         }
     }
 }

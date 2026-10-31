@@ -91,7 +91,9 @@ data class Blasonnement(
     val champ: Champ? = null,
     val meuble: String? = null,
     val nature: Nature = Nature.AUTRE,
-    val lieu: Lieu? = null
+    val lieu: Lieu? = null,
+    /** Les chiffres d'une carte de nombre, dessinés à la place d'un meuble. */
+    val chiffres: String? = null
 ) {
     companion object {
         val AUCUN = Blasonnement()
