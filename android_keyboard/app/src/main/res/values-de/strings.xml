@@ -163,6 +163,8 @@
     <string name="serie_enluminures">Die Illustrationen</string>
     <string name="serie_essentiels">Das Wichtigste</string>
     <string name="serie_essentiels_theme">Das Wichtigste · %1$s</string>
+    <string name="serie_niveau_a1">Niveau A1</string>
+    <string name="serie_niveau_a1_theme">Niveau A1 · %1$s</string>
     <string name="serie_jeux">Die sieben Spiele</string>
     <string name="serie_paysages">Die Landschaften</string>
     <string name="series_resume">%1$d von %2$d Plätzen belegt. Eine Serie ist vollständig, wenn jeder Platz seine Karte hat.</string>

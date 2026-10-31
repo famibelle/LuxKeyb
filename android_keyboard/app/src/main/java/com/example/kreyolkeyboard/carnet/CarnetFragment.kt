@@ -1254,7 +1254,7 @@ class CarnetFragment : DialogFragment() {
             // Les essentiels montrent un sens écrit, pas un dessin : quatre
             // colonnes suffisent à le lire, et 271 cases tiennent en moins
             // de rangées.
-            serie == Serie.ESSENTIELS -> maxOf(colonnes, 4)
+            serie.parPages -> maxOf(colonnes, 4)
             serie != Serie.NOMBRES -> colonnes
             colonnes >= 10 -> 10
             else -> 5
@@ -1279,17 +1279,17 @@ class CarnetFragment : DialogFragment() {
 
         // Chaque titre et chaque rangée est une étape : voir [poserParEtapes].
         val etapes = mutableListOf<Pair<Int, () -> Unit>>()
-        val premierEssentiel = series.firstOrNull { it.serie == Serie.ESSENTIELS }
+        // Les séries en pages (essentiels, niveau A1) : un en-tête les annonce
+        // une fois, chaque thème garde ensuite son titre.
+        val premieresPages = series.filter { it.serie.parPages }.distinctBy { it.serie }.toSet()
         series.forEach { a ->
-            // Les essentiels sont une série en plusieurs pages : un en-tête
-            // les annonce une fois, chaque thème garde ensuite son titre.
-            if (a === premierEssentiel) {
+            if (a in premieresPages) {
                 etapes += (48 * d).toInt() to { conteneurGrille.addView(TextView(ctx).apply {
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                     ).apply { setMargins(0, (24 * d).toInt(), 0, 0) }
-                    text = getString(R.string.serie_essentiels)
+                    text = getString(a.serie.titre)
                     textSize = 18f
                     setTypeface(null, Typeface.BOLD)
                     setTextColor(accent)

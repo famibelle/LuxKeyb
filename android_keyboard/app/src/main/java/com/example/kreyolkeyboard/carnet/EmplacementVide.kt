@@ -42,7 +42,7 @@ class EmplacementVide(
     private val paysage: Pair<Lieu, Rarete>? = if (serie == Serie.PAYSAGES) Series.paysageDe(cle) else null
 
     /** Le sens d'un essentiel, dans la langue des gloses : « lundi », « bonjour ». */
-    private val sens: String? = if (serie == Serie.ESSENTIELS) {
+    private val sens: String? = if (serie.parPages) {
         com.example.kreyolkeyboard.TranslationDictionary.traduire(context, cle)
     } else null
     private var lignesSens: List<String> = emptyList()
@@ -70,7 +70,7 @@ class EmplacementVide(
                 paysage?.first?.nom ?: cle,
                 paysage?.let { heure(it.second) } ?: ""
             )
-            Serie.ESSENTIELS -> context.getString(
+            Serie.ESSENTIELS, Serie.NIVEAU_A1 -> context.getString(
                 com.example.kreyolkeyboard.R.string.emplacement_essentiel, sens ?: ""
             )
         }
@@ -119,7 +119,7 @@ class EmplacementVide(
                 texte(canvas, jeu?.emoji ?: "?", l * 0.26f, l * 0.46f, gras = false, opaque = true)
                 texte(canvas, jeu?.libelle(context) ?: cle, l * 0.09f, l * 0.74f, gras = true)
             }
-            Serie.ESSENTIELS -> dessinerSens(canvas, l)
+            Serie.ESSENTIELS, Serie.NIVEAU_A1 -> dessinerSens(canvas, l)
         }
     }
 

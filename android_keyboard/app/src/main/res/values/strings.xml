@@ -167,6 +167,8 @@
     <string name="serie_enluminures">Illustrations</string>
     <string name="serie_essentiels">The essentials</string>
     <string name="serie_essentiels_theme">The essentials · %1$s</string>
+    <string name="serie_niveau_a1">Level A1</string>
+    <string name="serie_niveau_a1_theme">Level A1 · %1$s</string>
     <string name="serie_jeux">The seven games</string>
     <string name="serie_paysages">The landscapes</string>
     <string name="series_resume">%1$d of %2$d places filled. Each series is complete when every place holds a card.</string>

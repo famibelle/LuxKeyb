@@ -74,6 +74,40 @@ object Essentiels {
         return lues
     }
 
+    /**
+     * Les séries de niveau (« Niveau A1 ») : le vocabulaire des manuels de
+     * l'INLL tel que le LOD le marque, au format des essentiels, un actif par
+     * niveau (`Dictionnaires/generate_niveaux.py`). Une page par thème, puis
+     * par nature ; les jeux poussent ce qui manque, après les essentiels.
+     */
+    private val niveaux = java.util.concurrent.ConcurrentHashMap<String, Donnees>()
+
+    /** Le niveau [code] (« A1 »), lu une fois ; illisible, une série vide. */
+    fun niveau(context: Context, code: String): Donnees = niveaux[code] ?: run {
+        val actif = "luxemburgish_niveau_${code.lowercase()}.json"
+        val lues = try {
+            lire(context.assets.open(actif).bufferedReader().use { it.readText() })
+        } catch (e: Exception) {
+            Log.e(TAG, "Actif $actif illisible: ${e.message}", e)
+            VIDE
+        }
+        niveaux[code] = lues
+        lues
+    }
+
+    /** Les pages d'une série en pages ([Serie.parPages]), vides pour les autres. */
+    fun pages(context: Context, serie: Serie): Donnees = when (serie) {
+        Serie.ESSENTIELS -> donnees(context)
+        Serie.NIVEAU_A1 -> niveau(context, "A1")
+        else -> VIDE
+    }
+
+    /**
+     * Toutes les listes, la plus prioritaire d'abord : ses sens et ses
+     * catégories passent avant ceux des suivantes.
+     */
+    fun listes(context: Context): List<Donnees> = listOf(donnees(context), niveau(context, "A1"))
+
     /** Sans `Context`, pour le test d'actif. */
     fun lire(json: String): Donnees {
         val racine = JSONObject(json)
@@ -142,12 +176,12 @@ object Essentiels {
 
     // -- ce qui manque, pour les jeux ----------------------------------------
 
-    /** Les essentiels que le carnet n'a pas encore, dans un ordre tiré au hasard. */
-    fun manquants(context: Context): List<String> {
-        val d = donnees(context)
-        if (d.mots.isEmpty()) return emptyList()
-        return d.mots.filterNot { Carnet.contient(context, it) }.shuffled()
-    }
+    /**
+     * Les mots que le carnet n'a pas encore : les essentiels d'abord, puis
+     * ceux du niveau A1, chaque liste dans un ordre tiré au hasard.
+     */
+    fun manquants(context: Context): List<String> =
+        listes(context).flatMap { d -> d.mots.filterNot { Carnet.contient(context, it) }.shuffled() }.distinct()
 
     /** Au plus [n] essentiels manquants qui conviennent à un jeu. */
     fun manquantsPour(context: Context, n: Int, convient: (String) -> Boolean): List<String> =

@@ -224,10 +224,14 @@ object TranslationDictionary {
             // Les sens des essentiels passent avant ceux de la table : « Mee »
             // est le mois de mai, « Moien » salue avant de dire le matin. Voir
             // [Essentiels] et Dictionnaires/generate_essentiels.py.
-            Essentiels.donnees(context).gloses[langue]?.forEach { (forme, glose) ->
-                exactes[forme] = glose
-                val cle = forme.lowercase()
-                if (!minuscules.containsKey(cle)) minuscules[cle] = glose
+            // Puis ceux des niveaux, la liste prioritaire en dernier pour
+            // qu'elle l'emporte.
+            Essentiels.listes(context).asReversed().forEach { liste ->
+                liste.gloses[langue]?.forEach { (forme, glose) ->
+                    exactes[forme] = glose
+                    val cle = forme.lowercase()
+                    if (!minuscules.containsKey(cle)) minuscules[cle] = glose
+                }
             }
 
             traductions = exactes
@@ -525,7 +529,7 @@ object TranslationDictionary {
      */
     @StringRes
     fun categorie(context: Context, mot: String): Int? {
-        Essentiels.donnees(context).categories[mot]?.let { return libelleCategorie(it) }
+        Essentiels.listes(context).firstNotNullOfOrNull { it.categories[mot] }?.let { return libelleCategorie(it) }
         chargerCategories(context)
         return categoriesLod[mot]?.let { libelleCategorie(it) }
     }
@@ -777,7 +781,7 @@ object TranslationDictionary {
         charger(context)
         // Un homographe des essentiels (« Mee », mai) ne prend ni la famille
         // ni les phrases du mot qu'il n'est pas (« mee », mais).
-        if (mot in Essentiels.donnees(context).isoles) {
+        if (Essentiels.listes(context).any { mot in it.isoles }) {
             return Resultat(mot, traductions[mot] ?: "", emptyList())
         }
         chargerFamilles(context)
