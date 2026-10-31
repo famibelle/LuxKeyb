@@ -24,14 +24,24 @@
    ],
    "images": [
     {
+     "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
+     "alt": "Animação em Mäi Carnet. 1. A grelha da coleção: Kaz, um gato a andar, Léiw, um leão, Moien, um sol a nascer, Famill, uma família, Kaddo, um presente, Apel, uma maçã. 2 a 6. As cartas abrem-se em grande uma após a outra: «Kaz» em ouro diante da cidade à noite, «Léiw» em prata, «Famill» diante da roda gigante da Schueberfouer, «Kaddo» e «Apel» em ouro. 7. Regresso à grelha. As cartas estão em francês.",
+     "legende": "Os novos desenhos nas cartas, dos animais às palavras do dia a dia."
+    },
+    {
+     "image": "Screenshots/lux_essentiels.gif",
+     "alt": "Animação. 1. Em Mäi Carnet, vista Séries, a página «Números» do essencial: seis cartas ganhas, eent a sechs, e espaços vazios que mostram o sentido a encontrar. 2. As páginas «Tempo» e «Dias», espaços vazios marcados semana, amanhã, segunda, terça… 3. No Wuertmix, a pista «bonne nuit»: a resposta fica em duas linhas, G _ _ _ e depois _ _ _ _ _ T. 4. As letras estão colocadas: GUTT NUECHT. 5. Validado, a pontuação sobe para 100. Os ecrãs estão em francês.",
+     "legende": "A página do essencial na coleção, e uma expressão para pôr por ordem no Wuertmix."
+    },
+    {
      "image": "Screenshots/lux_guide_carte_haut.png",
      "alt": "Prancha do guia: a parte de cima da carta «Waasser», uma gota de água diante do vale, com quatro marcas numeradas: 1 a palavra, 2 o comprimento, 3 a paisagem, 4 a moldura. A prancha está em francês.",
      "legende": "O guia da ajuda mostra a carta com o seu novo desenho."
     }
    ],
-   "image": "Screenshots/lux_guide_carte_haut.png",
-   "image_alt": "Prancha do guia: a parte de cima da carta «Waasser», uma gota de água diante do vale, com quatro marcas numeradas: 1 a palavra, 2 o comprimento, 3 a paisagem, 4 a moldura. A prancha está em francês.",
-   "image_legende": "O guia da ajuda mostra a carta com o seu novo desenho."
+   "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
+   "image_alt": "Animação em Mäi Carnet. 1. A grelha da coleção: Kaz, um gato a andar, Léiw, um leão, Moien, um sol a nascer, Famill, uma família, Kaddo, um presente, Apel, uma maçã. 2 a 6. As cartas abrem-se em grande uma após a outra: «Kaz» em ouro diante da cidade à noite, «Léiw» em prata, «Famill» diante da roda gigante da Schueberfouer, «Kaddo» e «Apel» em ouro. 7. Regresso à grelha. As cartas estão em francês.",
+   "image_legende": "Os novos desenhos nas cartas, dos animais às palavras do dia a dia."
   },
   {
    "version": "37.10.0",

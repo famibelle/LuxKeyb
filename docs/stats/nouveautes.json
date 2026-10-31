@@ -24,14 +24,24 @@
    ],
    "images": [
     {
+     "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
+     "alt": "Animation dans Mäi Carnet. 1. La grille du carnet : Kaz, un chat qui marche, Léiw, un lion, Moien, un soleil qui se lève, Famill, une famille, Kaddo, un cadeau, Apel, une pomme. 2. à 6. Les cartes s'ouvrent l'une après l'autre en grand : « Kaz » en or devant la ville de nuit, « Léiw » en argent, « Famill » devant la grande roue de la Schueberfouer, « Kaddo » et « Apel » en or. 7. Retour à la grille.",
+     "legende": "Les nouveaux dessins sur les cartes, des animaux aux mots de tous les jours."
+    },
+    {
+     "image": "Screenshots/lux_essentiels.gif",
+     "alt": "Animation. 1. Dans Mäi Carnet, vue Séries, la page « Nombres » des essentiels : six cartes gagnées, eent à sechs, et des cases vides qui montrent le sens à trouver (sept, neuf, dix, vingt, cent, mille). 2. Les pages « Temps » et « Jours », cases vides marquées semaine, demain, lundi, mardi… 3. Dans Wuertmix, l'indice « bonne nuit » : la réponse se pose sur deux lignes, G _ _ _ puis _ _ _ _ _ T. 4. Les lettres sont placées : GUTT NUECHT. 5. Validé, le score passe à 100.",
+     "legende": "La page des essentiels dans le carnet, et une expression à remettre dans l'ordre dans Wuertmix."
+    },
+    {
      "image": "Screenshots/lux_guide_carte_haut.png",
      "alt": "Planche du guide : le haut de la carte « Waasser », une goutte d'eau devant la vallée, avec quatre repères numérotés : 1 le mot, 2 la longueur, 3 le paysage, 4 le cadre.",
      "legende": "Le guide de l'aide montre la carte avec son nouveau dessin."
     }
    ],
-   "image": "Screenshots/lux_guide_carte_haut.png",
-   "image_alt": "Planche du guide : le haut de la carte « Waasser », une goutte d'eau devant la vallée, avec quatre repères numérotés : 1 le mot, 2 la longueur, 3 le paysage, 4 le cadre.",
-   "image_legende": "Le guide de l'aide montre la carte avec son nouveau dessin."
+   "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
+   "image_alt": "Animation dans Mäi Carnet. 1. La grille du carnet : Kaz, un chat qui marche, Léiw, un lion, Moien, un soleil qui se lève, Famill, une famille, Kaddo, un cadeau, Apel, une pomme. 2. à 6. Les cartes s'ouvrent l'une après l'autre en grand : « Kaz » en or devant la ville de nuit, « Léiw » en argent, « Famill » devant la grande roue de la Schueberfouer, « Kaddo » et « Apel » en or. 7. Retour à la grille.",
+   "image_legende": "Les nouveaux dessins sur les cartes, des animaux aux mots de tous les jours."
   },
   {
    "version": "37.10.0",
