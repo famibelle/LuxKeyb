@@ -359,7 +359,7 @@ object CarteCarnet {
             // où ils restent visibles quand la carte est tenue en éventail
             // (voir [IndexJeu]). Les lecteurs d'écran ont déjà les écus.
             carte.posee(
-                IndexJeu(context, picto, cout, metal).apply {
+                IndexJeu(context, picto, cout, metal, c.rarete.ordinal).apply {
                     importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
                 },
                 IndexJeu.CADRE

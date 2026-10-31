@@ -1,6 +1,7 @@
 package com.example.kreyolkeyboard.carnet
 
 import android.content.Context
+import android.graphics.BlurMaskFilter
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.LinearGradient
@@ -358,52 +359,148 @@ class IndexJeu(
     context: Context,
     private val forme: PictoType.Forme?,
     private val cout: Int,
-    private val metal: Ornement.Metal
+    private val metal: Ornement.Metal,
+    /** Le palier de rareté, 0 à 3 : il choisit la chaîne ([chaine]). */
+    private val palier: Int = 0
 ) : View(context) {
 
     companion object {
-        /** La languette, en unités de carte : sous la gemme de Force (11–65). */
-        val CADRE = RectF(27f, 64f, 49f, 112f)
+        /**
+         * La place de la vue, en unités de carte : la chaîne qui part sous
+         * la gemme de Force (11–65), la languette (27–49 × 77–125) et
+         * autour d'elle la marge de son ombre portée.
+         */
+        val CADRE = RectF(25f, 58f, 54f, 130f)
+
+        /** La languette dans la vue, en unités de carte. */
+        private val LANGUETTE = RectF(2f, 19f, 24f, 67f)
+
+        /** Le haut de la chaîne dans la vue, juste sous le bord de la gemme. */
+        private const val CHAINE_HAUT = 5.5f
     }
 
     private val p = Paint(Paint.ANTI_ALIAS_FLAG)
     private val ovale = RectF()
     private val cadre = RectF()
 
+    init {
+        // Le flou de l'ombre ne se dessine qu'en logiciel.
+        setLayerType(LAYER_TYPE_SOFTWARE, null)
+    }
+
     override fun onDraw(canvas: Canvas) {
         val u = width / CADRE.width()
-        val cx = width / 2f
-        // La languette : le métal du palier, son contour, un biseau clair.
-        cadre.set(0.6f * u, 0f, width - 0.6f * u, height - 0.6f * u)
-        p.shader = LinearGradient(
-            0f, 0f, 0f, height.toFloat(),
-            intArrayOf(metal.hi, metal.mid, metal.lo), floatArrayOf(0f, 0.45f, 1f), Shader.TileMode.CLAMP
-        )
+        cadre.set(LANGUETTE.left * u, LANGUETTE.top * u, LANGUETTE.right * u, LANGUETTE.bottom * u)
+        val rayon = 3f * u
+        val cx = cadre.centerX()
+        chaine(canvas, cx, CHAINE_HAUT * u, cadre.top + 1.5f * u, u)
+        // Posée sur la carte, pas creusée dedans (propriétaire, 2026-10-31) :
+        // une ombre portée en bas à droite, la lumière venant d'en haut à
+        // gauche comme pour le reste du cadre, et un métal bombé.
         p.style = Paint.Style.FILL
+        p.color = 0x99000000.toInt()
+        p.maskFilter = BlurMaskFilter(1.8f * u, BlurMaskFilter.Blur.NORMAL)
+        canvas.drawRoundRect(
+            RectF(cadre.left + 1.8f * u, cadre.top + 2.8f * u, cadre.right + 1.8f * u, cadre.bottom + 2.8f * u),
+            rayon, rayon, p
+        )
+        p.maskFilter = null
+        // Le bombé : clair au tiers gauche, sombre au bord droit.
+        p.shader = LinearGradient(
+            cadre.left, 0f, cadre.right, 0f,
+            intArrayOf(metal.mid, metal.hi, metal.mid, metal.lo), floatArrayOf(0f, 0.3f, 0.7f, 1f),
+            Shader.TileMode.CLAMP
+        )
         p.color = Color.BLACK
-        canvas.drawRoundRect(cadre, 3f * u, 3f * u, p)
+        canvas.drawRoundRect(cadre, rayon, rayon, p)
+        // Le haut prend la lumière, le pied passe dans l'ombre.
+        p.shader = LinearGradient(
+            0f, cadre.top, 0f, cadre.bottom,
+            intArrayOf(0x55FFFFFF, 0x00FFFFFF, 0x00000000, 0x40000000), floatArrayOf(0f, 0.25f, 0.75f, 1f),
+            Shader.TileMode.CLAMP
+        )
+        canvas.drawRoundRect(cadre, rayon, rayon, p)
         p.shader = null
         p.style = Paint.Style.STROKE
-        p.strokeWidth = 1.2f * u
+        p.strokeWidth = 1.1f * u
         p.color = metal.trait
-        canvas.drawRoundRect(cadre, 3f * u, 3f * u, p)
-        p.strokeWidth = 0.8f * u
-        p.color = 0x8CFFFFFF.toInt()
-        canvas.drawRoundRect(
-            RectF(cadre.left + 1.8f * u, cadre.top + 1.8f * u, cadre.right - 1.8f * u, cadre.bottom - 1.8f * u),
-            2f * u, 2f * u, p
-        )
+        canvas.drawRoundRect(cadre, rayon, rayon, p)
+        // Le liseré clair du bord éclairé, en haut et à gauche seulement.
+        p.strokeWidth = 0.7f * u
+        p.color = 0xB0FFFFFF.toInt()
+        val arete = Path().apply {
+            moveTo(cadre.left + 1.3f * u, cadre.bottom - rayon)
+            lineTo(cadre.left + 1.3f * u, cadre.top + rayon)
+            quadTo(cadre.left + 1.3f * u, cadre.top + 1.3f * u, cadre.left + rayon, cadre.top + 1.3f * u)
+            lineTo(cadre.right - rayon, cadre.top + 1.3f * u)
+        }
+        canvas.drawPath(arete, p)
         p.style = Paint.Style.FILL
         // Le type, aux quatre cinquièmes de sa taille dans l'écu.
-        forme?.let { dessiner(canvas, p, it, cx, 2.6f * u, 0.8f * u, metal.trait) }
+        forme?.let { dessiner(canvas, p, it, cx, cadre.top + 2.6f * u, 0.8f * u, metal.trait) }
         // Le coût : quatre places de haut en bas, remplies d'autant de pièces.
         val r = 3f * u
         for (k in 0 until PictoCout.PLACES) {
-            val y = (19f + k * 7.3f) * u
+            val y = cadre.top + (19f + k * 7.3f) * u
             if (k < cout) piece(canvas, p, cx, y, r, metal.trait, u) else placeVide(canvas, p, ovale, cx, y, r, u)
         }
     }
 
+
+    /** La perle de l'or, au milieu de sa chaîne. */
+    private fun perle(canvas: Canvas, cx: Float, y: Float, u: Float) {
+        val r = 2.6f * u
+        p.color = metal.trait
+        canvas.drawCircle(cx, y, r + 0.6f * u, p)
+        p.shader = android.graphics.RadialGradient(
+            cx - 0.6f * r, y - 0.6f * r, 1.6f * r,
+            intArrayOf(Color.WHITE, metal.joyau, metal.trait), floatArrayOf(0f, 0.45f, 1f), Shader.TileMode.CLAMP
+        )
+        canvas.drawCircle(cx, y, r, p)
+        p.shader = null
+    }
+
+    /**
+     * La chaîne qui suspend la languette à la gemme, de la noblesse du palier
+     * (propriétaire, 2026-10-31) : son métal est déjà celui de la carte, sa
+     * façon dit en plus le rang. Le fer est un seul gros anneau de forge ; le
+     * bronze, deux maillons ; l'argent, trois maillons fins ; l'or, deux
+     * maillons fins de part et d'autre d'une perle de la couleur du joyau.
+     *
+     * Les maillons alternent de face (un anneau ovale) et de profil (une
+     * barre) : c'est ce qui fait lire une chaîne et non des perles enfilées.
+     */
+    private fun chaine(canvas: Canvas, cx: Float, haut: Float, bas: Float, u: Float) {
+        val maillons = intArrayOf(1, 2, 3, 3)[palier.coerceIn(0, 3)]
+        val fil = floatArrayOf(1.7f, 1.35f, 1.05f, 0.95f)[palier.coerceIn(0, 3)] * u
+        val pas = (bas - haut) / maillons
+        val ovale = RectF()
+        for (k in 0 until maillons) {
+            val y0 = haut + k * pas - 0.35f * pas
+            val y1 = haut + (k + 1) * pas + 0.35f * pas
+            // La perle de l'or prend la place du maillon du milieu.
+            if (palier >= 3 && k == 1) continue
+            val deFace = k % 2 == (maillons - 1) % 2
+            val demi = if (deFace) 2.4f * u + fil / 2f else fil * 0.75f
+            ovale.set(cx - demi, y0, cx + demi, y1)
+            p.style = Paint.Style.STROKE
+            // L'ombre du maillon sur la carte, puis le contour, puis le métal.
+            p.strokeWidth = fil + 0.9f * u
+            p.color = metal.trait
+            if (deFace) canvas.drawOval(ovale, p)
+            else canvas.drawRoundRect(ovale, demi, demi, p)
+            p.strokeWidth = fil
+            p.shader = LinearGradient(
+                ovale.left, ovale.top, ovale.right, ovale.bottom,
+                intArrayOf(metal.hi, metal.mid, metal.lo), floatArrayOf(0f, 0.45f, 1f), Shader.TileMode.CLAMP
+            )
+            if (deFace) canvas.drawOval(ovale, p)
+            else canvas.drawRoundRect(ovale, demi, demi, p)
+            p.shader = null
+        }
+        p.style = Paint.Style.FILL
+        if (palier >= 3) perle(canvas, cx, haut + 1.5f * pas, u)
+    }
 }
 
 /**
