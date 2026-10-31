@@ -1,9 +1,100 @@
 {
  "genere_le": "2026-10-31",
- "derniere_version": "37.10.1",
+ "derniere_version": "37.12.0",
  "derniere_date": "2026-10-31",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.12.0",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Neu",
+     "points": [
+      {
+       "titre": "Eine neue Serie im Carnet: Niveau A1",
+       "texte": "Die rund 800 Wörter des Niveaus A1, die das offizielle luxemburgische Wörterbuch verzeichnet, nach Themen geordnet (Familie, Berufe, Essen und Trinken, Gesundheit, Monate und Feste …), danach Verben, Adjektive und kleine Wörter. Jedes leere Feld zeigt die Bedeutung des gesuchten Wortes."
+      },
+      {
+       "titre": "Die Spiele helfen beim Füllen",
+       "texte": "Nach dem Wichtigsten mischen Wuertsich, Wuertmix und Wuertriet die A1-Wörter in ihre Runden, die Ihrem Carnet noch fehlen."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_carnet_niveau_a1.png",
+     "alt": "Mäi Carnet, Ansicht Serien. Unter dem Titel „Niveau A1“ die Seite „Familie“, 1 von 31: die Karte Famill ist gewonnen, die übrigen leeren Felder zeigen die Bedeutung des gesuchten Wortes: Oma, Opa, Junge, Bruder, Cousin, Tochter, Eltern, Enkel, Enkelin, Frau, Großmutter, Großvater, Kind, Mutter, Mama, Mann. Der Bildschirm ist auf Französisch.",
+     "legende": "Die Serie Niveau A1 im Carnet: die Seite der Familie."
+    }
+   ],
+   "image": "Screenshots/lux_carnet_niveau_a1.png",
+   "image_alt": "Mäi Carnet, Ansicht Serien. Unter dem Titel „Niveau A1“ die Seite „Familie“, 1 von 31: die Karte Famill ist gewonnen, die übrigen leeren Felder zeigen die Bedeutung des gesuchten Wortes: Oma, Opa, Junge, Bruder, Cousin, Tochter, Eltern, Enkel, Enkelin, Frau, Großmutter, Großvater, Kind, Mutter, Mama, Mann. Der Bildschirm ist auf Französisch.",
+   "image_legende": "Die Serie Niveau A1 im Carnet: die Seite der Familie."
+  },
+  {
+   "version": "37.11.1",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Das Schild der gedruckten Karten hängt an einer Kette",
+       "texte": "Die kleine Erinnerung an Typ und Kosten unter der Stärke hängt an einer Kette, die der Seltenheit folgt: ein großer Eisenring für eine gewöhnliche Karte, zwei Bronzeglieder, drei Silberglieder und eine Goldkette mit Perle für eine sehr seltene."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_papier_chaines.png",
+     "alt": "Die Ecke von vier gedruckten Karten, von der gewöhnlichsten bis zur seltensten. Unter der Stärke hängt ein Schild mit Typ und Kosten. 1. Gewöhnlich, Eisen: ein großer Ring. 2. Ungewöhnlich, Bronze: zwei Glieder. 3. Selten, Silber: drei feine Glieder. 4. Sehr selten, Gold: zwei Glieder und eine violette Perle.",
+     "legende": "Die Kette des Schildes folgt der Seltenheit der gedruckten Karte."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_papier_chaines.png",
+   "image_alt": "Die Ecke von vier gedruckten Karten, von der gewöhnlichsten bis zur seltensten. Unter der Stärke hängt ein Schild mit Typ und Kosten. 1. Gewöhnlich, Eisen: ein großer Ring. 2. Ungewöhnlich, Bronze: zwei Glieder. 3. Selten, Silber: drei feine Glieder. 4. Sehr selten, Gold: zwei Glieder und eine violette Perle.",
+   "image_legende": "Die Kette des Schildes folgt der Seltenheit der gedruckten Karte."
+  },
+  {
+   "version": "37.11.0",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Neu",
+     "points": [
+      {
+       "titre": "Zahlenkarten zeigen ihre Zahl",
+       "texte": "Die Karte „zweeavéierzeg“ zeigt eine große 42 mitten in ihrer Landschaft, in Perlmutt wie die anderen Zeichnungen. So erkennt man jede Zahl auf einen Blick, im Carnet und auch auf der gedruckten Karte."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_nombres.png",
+     "alt": "Drei geöffnete Zahlenkarten. 1. „siwen“, Eisen: eine große perlmuttfarbene 7 vor dem Schloss. 2. „zweeavéierzeg“, Gold: eine große goldene 42 vor der Stadt bei Nacht. 3. „honnert“, Eisen: eine große 100 vor dem Schloss. Die Karten sind auf Französisch.",
+     "legende": "Jede Zahlenkarte zeigt ihre Zahl groß."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_nombres.png",
+   "image_alt": "Drei geöffnete Zahlenkarten. 1. „siwen“, Eisen: eine große perlmuttfarbene 7 vor dem Schloss. 2. „zweeavéierzeg“, Gold: eine große goldene 42 vor der Stadt bei Nacht. 3. „honnert“, Eisen: eine große 100 vor dem Schloss. Die Karten sind auf Französisch.",
+   "image_legende": "Jede Zahlenkarte zeigt ihre Zahl groß."
+  },
   {
    "version": "37.10.1",
    "date": "2026-10-31",
@@ -137,119 +228,6 @@
    "image": "Screenshots/lux_theatre_bordure.gif",
    "image_alt": "Die Karte „Mënz“, Münze, sehr selten, in der App geöffnet und langsam von links nach rechts geneigt. Nacht an der Mosel: die Seitenkulissen als Silhouette, der Weinberg, das Dorf mit seinem Kirchturm und eine Wolke, die über den Sternenhimmel zieht. Jeder ausgeschnittene Karton hat einen weißen Rand, und die Kartons gleiten unterschiedlich schnell.",
    "image_legende": "Eine sehr seltene Karte wird geneigt: Jeder Karton hat seinen weißen Rand, auch nachts."
-  },
-  {
-   "version": "37.9.1",
-   "date": "2026-10-29",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Eine geteilte Karte behält ihr Papiertheater",
-       "texte": "Das Bild, das mit „Teilen“ verschickt wird, zeigt dieselben Kartons wie in der App, mit den Seitenkulissen der seltenen Karten und der Wolke der sehr seltenen."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_theatre_partage.gif",
-     "alt": "1. Die Karte „Kaz“, Katze, sehr selten, in der App geöffnet und von links nach rechts geneigt: die Stadt bei Nacht aus ausgeschnittenen Kartons, mit Seitenkulissen als Silhouette. 2. Das Bild derselben Karte, wie es mit „Teilen“ verschickt wird: dieselben Kartons, die Seitenkulissen und die Wolke am Sternenhimmel.",
-     "legende": "Die Karte in der App, dann das geteilte Bild: dasselbe Papiertheater."
-    }
-   ],
-   "image": "Screenshots/lux_theatre_partage.gif",
-   "image_alt": "1. Die Karte „Kaz“, Katze, sehr selten, in der App geöffnet und von links nach rechts geneigt: die Stadt bei Nacht aus ausgeschnittenen Kartons, mit Seitenkulissen als Silhouette. 2. Das Bild derselben Karte, wie es mit „Teilen“ verschickt wird: dieselben Kartons, die Seitenkulissen und die Wolke am Sternenhimmel.",
-   "image_legende": "Die Karte in der App, dann das geteilte Bild: dasselbe Papiertheater."
-  },
-  {
-   "version": "37.9.0",
-   "date": "2026-10-29",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Neu",
-     "points": [
-      {
-       "titre": "Die Karten werden zu einem kleinen Papiertheater",
-       "texte": "Auf der geöffneten Karte besteht die Landschaft aus ausgeschnittenen Kartons, die hintereinander stehen, jeder mit seinem Schatten und seinem hellen Rand. Neigen Sie das Telefon: Die Kartons gleiten jeder in seinem Tempo, wie eine Theaterkulisse."
-      },
-      {
-       "titre": "Je seltener die Karte, desto reicher die Kulisse",
-       "texte": "Seltene Karten bekommen Seitenkulissen, zwei Bäume als Silhouette auf jeder Seite, und sehr seltene eine Wolke, die langsam über den Himmel zieht."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_theatre_papier.gif",
-     "alt": "Die Karte „Auer“, Stunde, häufig, geöffnet und von links nach rechts geneigt. Die Burg Vianden mit ihrem Hügel, die Häuserreihe und der Fluss sind drei ausgeschnittene Kartons: Jeder hat einen hellen Rand und einen leichten Schatten, und sie gleiten unterschiedlich schnell, wenn sich die Karte neigt.",
-     "legende": "Eine häufige Karte: drei Kartons, jeder gleitet in seinem Tempo."
-    },
-    {
-     "image": "Screenshots/lux_theatre_rare.gif",
-     "alt": "Die Karte „Stall“, selten, am Abend in Esch-Sauer, von links nach rechts geneigt. Vor den Felsen und dem Ort rahmen zwei Bäume als Silhouette die Szene auf beiden Seiten ein, wie Seitenkulissen; sie bewegen sich kaum, die Landschaft gleitet dahinter.",
-     "legende": "Eine seltene Karte: Seitenkulissen rahmen die Szene ein."
-    },
-    {
-     "image": "Screenshots/lux_theatre_tres_rare.gif",
-     "alt": "Die Karte „Mënz“, Münze, sehr selten, nachts an der Mosel, von links nach rechts geneigt. Zu den Seitenkulissen kommt eine Wolke aus Karton, die langsam über den Sternenhimmel zieht, vor den Hügeln und hinter dem Dorf.",
-     "legende": "Eine sehr seltene Karte: dazu zieht eine Wolke über den Himmel."
-    }
-   ],
-   "image": "Screenshots/lux_theatre_papier.gif",
-   "image_alt": "Die Karte „Auer“, Stunde, häufig, geöffnet und von links nach rechts geneigt. Die Burg Vianden mit ihrem Hügel, die Häuserreihe und der Fluss sind drei ausgeschnittene Kartons: Jeder hat einen hellen Rand und einen leichten Schatten, und sie gleiten unterschiedlich schnell, wenn sich die Karte neigt.",
-   "image_legende": "Eine häufige Karte: drei Kartons, jeder gleitet in seinem Tempo."
-  },
-  {
-   "version": "37.8.0",
-   "date": "2026-10-27",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Die Lernstufe in sechs Feldern",
-       "texte": "Unten auf jeder Karte füllt sich mit jeder erfolgreichen Wiederholung ein Feld, und alle sechs sind voll, wenn das Wort gelernt ist."
-      },
-      {
-       "titre": "Die Seltenheit in Sternen",
-       "texte": "Eine häufige Karte hat einen Stern, eine sehr seltene vier. Je mehr Sterne, desto seltener die Karte."
-      },
-      {
-       "titre": "Gravierte Wappen",
-       "texte": "Die beiden Wappen unten auf der Karte sind ziseliert wie das Namensschild, und die Zahl, wie oft Sie das Wort gewonnen haben, ist besser lesbar."
-      },
-      {
-       "titre": "Neue Zeichnungen auf den Karten",
-       "texte": "Die Biene, die Ameise, der Elefant, die Banane, der Pfannkuchen und dreizehn weitere Wörter haben jetzt ihre eigene Zeichnung."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_jauges.png",
-     "alt": "Drei Karten aus der Sammlung, so wie die App sie zeigt. 1. „Kaz“, Katze, in Gold: im Wappen STUFE unten rechts ist eines von sechs Feldern gefüllt; die Seltenheit unten rechts zeigt vier von fünf gefüllten Sternen. 2. „Bibliothéik“, Bibliothek, in Silber, mit dem Siegel „Geléiert“ eines gelernten Wortes: alle sechs Felder der STUFE sind voll, die Seltenheit hat drei Sterne. 3. „Elefant“ in Gold, mit seiner neuen Elefantenzeichnung vor der Stadt bei Nacht: drei von sechs Feldern sind gefüllt. Die Wappen GESEHEN und STUFE sind ziseliert, die Zahl bei GESEHEN ist ins Metall graviert. Die Karten sind auf Französisch.",
-     "legende": "Die Lernstufe in sechs Feldern, die Seltenheit in Sternen und die neue Elefantenzeichnung."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_jauges.png",
-   "image_alt": "Drei Karten aus der Sammlung, so wie die App sie zeigt. 1. „Kaz“, Katze, in Gold: im Wappen STUFE unten rechts ist eines von sechs Feldern gefüllt; die Seltenheit unten rechts zeigt vier von fünf gefüllten Sternen. 2. „Bibliothéik“, Bibliothek, in Silber, mit dem Siegel „Geléiert“ eines gelernten Wortes: alle sechs Felder der STUFE sind voll, die Seltenheit hat drei Sterne. 3. „Elefant“ in Gold, mit seiner neuen Elefantenzeichnung vor der Stadt bei Nacht: drei von sechs Feldern sind gefüllt. Die Wappen GESEHEN und STUFE sind ziseliert, die Zahl bei GESEHEN ist ins Metall graviert. Die Karten sind auf Französisch.",
-   "image_legende": "Die Lernstufe in sechs Feldern, die Seltenheit in Sternen und die neue Elefantenzeichnung."
   }
  ]
 }

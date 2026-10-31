@@ -1,9 +1,100 @@
 {
  "genere_le": "2026-10-31",
- "derniere_version": "37.10.1",
+ "derniere_version": "37.12.0",
  "derniere_date": "2026-10-31",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.12.0",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "New",
+     "points": [
+      {
+       "titre": "A new series in the collection: Level A1",
+       "texte": "The 800 or so A1-level words listed by the official Luxembourgish dictionary, sorted by theme (family, jobs, food and drink, health, months and holidays…), then verbs, adjectives and little words. Each empty slot shows the meaning of the word to find."
+      },
+      {
+       "titre": "The games help you fill it",
+       "texte": "After the essentials, Wuertsich, Wuertmix and Wuertriet slip into their games the A1 words still missing from your collection."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_carnet_niveau_a1.png",
+     "alt": "Mäi Carnet, Series view. Under the title “Level A1”, the “Family” page, 1 of 31: the Famill card is won, the other empty slots show the meaning of the word to find: granny, grandpa, boy, brother, cousin, daughter, parents, grandson, granddaughter, wife, grandmother, grandfather, child, mother, mum, man. The screen is in French.",
+     "legende": "The Level A1 series in the collection: the family page."
+    }
+   ],
+   "image": "Screenshots/lux_carnet_niveau_a1.png",
+   "image_alt": "Mäi Carnet, Series view. Under the title “Level A1”, the “Family” page, 1 of 31: the Famill card is won, the other empty slots show the meaning of the word to find: granny, grandpa, boy, brother, cousin, daughter, parents, grandson, granddaughter, wife, grandmother, grandfather, child, mother, mum, man. The screen is in French.",
+   "image_legende": "The Level A1 series in the collection: the family page."
+  },
+  {
+   "version": "37.11.1",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "The tab on printed cards hangs from a chain",
+       "texte": "The small reminder of the type and the cost, under the Strength, hangs from the badge by a chain that follows the rarity: a big iron ring for a common card, two bronze links, three silver links, and a gold chain with a pearl for a very rare one."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_papier_chaines.png",
+     "alt": "The corner of four printed cards, from least to most rare. Under the Strength badge hangs a tab repeating the type and the cost. 1. Common, iron: one big ring. 2. Uncommon, bronze: two links. 3. Rare, silver: three thin links. 4. Very rare, gold: two links and a purple pearl.",
+     "legende": "The chain of the tab follows the rarity of the printed card."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_papier_chaines.png",
+   "image_alt": "The corner of four printed cards, from least to most rare. Under the Strength badge hangs a tab repeating the type and the cost. 1. Common, iron: one big ring. 2. Uncommon, bronze: two links. 3. Rare, silver: three thin links. 4. Very rare, gold: two links and a purple pearl.",
+   "image_legende": "The chain of the tab follows the rarity of the printed card."
+  },
+  {
+   "version": "37.11.0",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "New",
+     "points": [
+      {
+       "titre": "Number cards show their number",
+       "texte": "The “zweeavéierzeg” card shows a big 42 in the middle of its landscape, in mother-of-pearl like the other drawings. You recognise each number at a glance in the collection, and on the printed card too."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_nombres.png",
+     "alt": "Three open number cards. 1. “siwen”, iron: a big pearly 7 in front of the castle. 2. “zweeavéierzeg”, gold: a big golden 42 in front of the city at night. 3. “honnert”, iron: a big 100 in front of the castle. The cards are in French.",
+     "legende": "Each number card shows its number in large figures."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_nombres.png",
+   "image_alt": "Three open number cards. 1. “siwen”, iron: a big pearly 7 in front of the castle. 2. “zweeavéierzeg”, gold: a big golden 42 in front of the city at night. 3. “honnert”, iron: a big 100 in front of the castle. The cards are in French.",
+   "image_legende": "Each number card shows its number in large figures."
+  },
   {
    "version": "37.10.1",
    "date": "2026-10-31",
@@ -137,119 +228,6 @@
    "image": "Screenshots/lux_theatre_bordure.gif",
    "image_alt": "The card “Mënz”, coin, very rare, open in the app and slowly tilted from left to right. Night on the Moselle: the silhouetted wings on the sides, the vineyard hill, the village and its bell tower, and a cloud crossing the starry sky. Each cut-out piece is outlined with a white border, and the pieces slide at different speeds.",
    "image_legende": "A very rare card being tilted: each piece has its white border, even at night."
-  },
-  {
-   "version": "37.9.1",
-   "date": "2026-10-29",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "A shared card keeps its paper theatre",
-       "texte": "The image sent with “Share” shows the same cardboard pieces as in the app, with the wings of rare cards and the cloud of very rare ones."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_theatre_partage.gif",
-     "alt": "1. The card “Kaz”, cat, very rare, open in the app and tilted from left to right: the city at night in cut-out cardboard, with silhouetted wings on the sides. 2. The image of the same card as it is sent with “Share”: the same pieces, the wings and the cloud in the starry sky.",
-     "legende": "The card in the app, then the image you share: the same paper theatre."
-    }
-   ],
-   "image": "Screenshots/lux_theatre_partage.gif",
-   "image_alt": "1. The card “Kaz”, cat, very rare, open in the app and tilted from left to right: the city at night in cut-out cardboard, with silhouetted wings on the sides. 2. The image of the same card as it is sent with “Share”: the same pieces, the wings and the cloud in the starry sky.",
-   "image_legende": "The card in the app, then the image you share: the same paper theatre."
-  },
-  {
-   "version": "37.9.0",
-   "date": "2026-10-29",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "New",
-     "points": [
-      {
-       "titre": "Cards become a little paper theatre",
-       "texte": "On the open card, the landscape is made of cut-out cardboard pieces placed one in front of the other, each with its shadow and its light edge. Tilt the phone: the pieces slide, each at its own speed, like a theatre set."
-      },
-      {
-       "titre": "The rarer the card, the richer the set",
-       "texte": "Rare cards add wings, two silhouetted trees on each side, and very rare ones a cloud that slowly crosses the sky."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_theatre_papier.gif",
-     "alt": "The card “Auer”, hour, common, open and tilted from left to right. Vianden castle and its hill, the row of houses and the river are three cut-out pieces: each has a light edge and a soft shadow, and they slide at different speeds as the card tilts.",
-     "legende": "A common card: three pieces, each sliding at its own speed."
-    },
-    {
-     "image": "Screenshots/lux_theatre_rare.gif",
-     "alt": "The card “Stall”, stable, rare, in the evening at Esch-sur-Sûre, tilted from left to right. In front of the cliffs and the village, two silhouetted trees frame the scene on each side, like theatre wings; they barely move while the landscape slides behind.",
-     "legende": "A rare card: the wings frame the scene."
-    },
-    {
-     "image": "Screenshots/lux_theatre_tres_rare.gif",
-     "alt": "The card “Mënz”, coin, very rare, at night on the Moselle, tilted from left to right. Besides the wings, a cardboard cloud slowly crosses the starry sky, in front of the hills and behind the village.",
-     "legende": "A very rare card: besides the wings, a cloud crosses the sky."
-    }
-   ],
-   "image": "Screenshots/lux_theatre_papier.gif",
-   "image_alt": "The card “Auer”, hour, common, open and tilted from left to right. Vianden castle and its hill, the row of houses and the river are three cut-out pieces: each has a light edge and a soft shadow, and they slide at different speeds as the card tilts.",
-   "image_legende": "A common card: three pieces, each sliding at its own speed."
-  },
-  {
-   "version": "37.8.0",
-   "date": "2026-10-27",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "The review level as six squares",
-       "texte": "At the bottom of each card, a square fills up with each successful review, and all six are full when the word is learnt."
-      },
-      {
-       "titre": "Rarity in stars",
-       "texte": "A common card has one star, a very rare one has four. The more stars, the rarer the card."
-      },
-      {
-       "titre": "Engraved shields",
-       "texte": "The two shields at the bottom of the card are chased like the name plate, and the number of times you won the word is easier to read."
-      },
-      {
-       "titre": "New drawings on the cards",
-       "texte": "The bee, the ant, the elephant, the banana, the pancake and thirteen other words now have their own drawing."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_jauges.png",
-     "alt": "Three cards from the collection, as the app shows them. 1. “Kaz”, cat, in gold: in the LEVEL shield at the bottom right, one square filled out of six; the rarity at the bottom right, four filled stars out of five. 2. “Bibliothéik”, library, in silver, with the “Geléiert” seal of a learnt word: all six LEVEL squares are full, and the rarity has three stars. 3. “Elefant”, elephant, in gold, with its new elephant drawing in front of the city at night: three squares filled out of six. The SEEN and LEVEL shields are chased, and the SEEN number is engraved in the metal. The cards are in French.",
-     "legende": "The review level as six squares, rarity in stars, and the new elephant drawing."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_jauges.png",
-   "image_alt": "Three cards from the collection, as the app shows them. 1. “Kaz”, cat, in gold: in the LEVEL shield at the bottom right, one square filled out of six; the rarity at the bottom right, four filled stars out of five. 2. “Bibliothéik”, library, in silver, with the “Geléiert” seal of a learnt word: all six LEVEL squares are full, and the rarity has three stars. 3. “Elefant”, elephant, in gold, with its new elephant drawing in front of the city at night: three squares filled out of six. The SEEN and LEVEL shields are chased, and the SEEN number is engraved in the metal. The cards are in French.",
-   "image_legende": "The review level as six squares, rarity in stars, and the new elephant drawing."
   }
  ]
 }

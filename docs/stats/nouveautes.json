@@ -1,9 +1,100 @@
 {
  "genere_le": "2026-10-31",
- "derniere_version": "37.10.1",
+ "derniere_version": "37.12.0",
  "derniere_date": "2026-10-31",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.12.0",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Une nouvelle série dans le carnet : Niveau A1",
+       "texte": "Les quelque 800 mots du niveau A1 que recense le dictionnaire officiel du luxembourgeois, rangés par thème (la famille, les métiers, manger et boire, la santé, les mois et les fêtes…), puis les verbes, les adjectifs et les petits mots. Chaque case vide montre le sens du mot à trouver."
+      },
+      {
+       "titre": "Les jeux vous aident à la remplir",
+       "texte": "Après les essentiels, Wuertsich, Wuertmix et Wuertriet glissent dans leurs parties les mots du niveau A1 qui manquent encore à votre carnet."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_carnet_niveau_a1.png",
+     "alt": "Mäi Carnet, vue Séries. Sous le titre « Niveau A1 », la page « Famille », 1 sur 31 : la carte Famill est gagnée, les autres cases vides montrent le sens du mot à trouver : mamie, papi, garçon, frère, cousin, fille, parents, petit-fils, petite-fille, femme, grand-mère, grand-père, enfant, mère, maman, homme.",
+     "legende": "La série Niveau A1 dans le carnet : la page de la famille."
+    }
+   ],
+   "image": "Screenshots/lux_carnet_niveau_a1.png",
+   "image_alt": "Mäi Carnet, vue Séries. Sous le titre « Niveau A1 », la page « Famille », 1 sur 31 : la carte Famill est gagnée, les autres cases vides montrent le sens du mot à trouver : mamie, papi, garçon, frère, cousin, fille, parents, petit-fils, petite-fille, femme, grand-mère, grand-père, enfant, mère, maman, homme.",
+   "image_legende": "La série Niveau A1 dans le carnet : la page de la famille."
+  },
+  {
+   "version": "37.11.1",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "La languette des cartes imprimées pend à une chaîne",
+       "texte": "Le petit rappel du type et du coût, sous la Force, est accroché à la pastille par une chaîne qui suit la rareté. Un gros anneau de fer pour une commune, deux maillons de bronze, trois maillons d'argent, et une chaîne d'or avec une perle pour une très rare."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_papier_chaines.png",
+     "alt": "Le coin de quatre cartes imprimées, de la moins rare à la plus rare. Sous la pastille de Force pend une languette qui répète le type et le coût. 1. Commune, en fer : un seul gros anneau. 2. Peu commune, en bronze : deux maillons. 3. Rare, en argent : trois maillons fins. 4. Très rare, en or : deux maillons et une perle violette.",
+     "legende": "La chaîne de la languette suit la rareté de la carte imprimée."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_papier_chaines.png",
+   "image_alt": "Le coin de quatre cartes imprimées, de la moins rare à la plus rare. Sous la pastille de Force pend une languette qui répète le type et le coût. 1. Commune, en fer : un seul gros anneau. 2. Peu commune, en bronze : deux maillons. 3. Rare, en argent : trois maillons fins. 4. Très rare, en or : deux maillons et une perle violette.",
+   "image_legende": "La chaîne de la languette suit la rareté de la carte imprimée."
+  },
+  {
+   "version": "37.11.0",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Les cartes de nombre montrent leur nombre",
+       "texte": "La carte « zweeavéierzeg » affiche un grand 42 au milieu de son paysage, en nacre comme les autres dessins. On reconnaît chaque nombre d'un coup d'œil dans le carnet, et sur la carte imprimée aussi."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_nombres.png",
+     "alt": "Trois cartes de nombre ouvertes. 1. « siwen », en fer : un grand 7 nacré devant le château. 2. « zweeavéierzeg », en or : un grand 42 doré devant la ville de nuit. 3. « honnert », en fer : un grand 100 devant le château.",
+     "legende": "Chaque carte de nombre montre son nombre en grand."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_nombres.png",
+   "image_alt": "Trois cartes de nombre ouvertes. 1. « siwen », en fer : un grand 7 nacré devant le château. 2. « zweeavéierzeg », en or : un grand 42 doré devant la ville de nuit. 3. « honnert », en fer : un grand 100 devant le château.",
+   "image_legende": "Chaque carte de nombre montre son nombre en grand."
+  },
   {
    "version": "37.10.1",
    "date": "2026-10-31",
@@ -137,119 +228,6 @@
    "image": "Screenshots/lux_theatre_bordure.gif",
    "image_alt": "La carte « Mënz », pièce de monnaie, très rare, ouverte dans l'appli et penchée lentement de gauche à droite. La nuit sur la Moselle : les coulisses en silhouette sur les côtés, la colline aux vignes, le village et son clocher, et un nuage qui traverse le ciel étoilé. Chaque carton découpé est cerné d'une bordure blanche, et les cartons glissent à des vitesses différentes.",
    "image_legende": "Une carte très rare qu'on penche : chaque carton a sa bordure blanche, même la nuit."
-  },
-  {
-   "version": "37.9.1",
-   "date": "2026-10-29",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Une carte partagée garde son théâtre de papier",
-       "texte": "L'image envoyée avec « Partager » montre les mêmes cartons que dans l'appli, avec les coulisses des cartes rares et le nuage des très rares."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_theatre_partage.gif",
-     "alt": "1. La carte « Kaz », chat, très rare, ouverte dans l'appli et penchée de gauche à droite : la ville de nuit en cartons découpés, avec les coulisses en silhouette sur les côtés. 2. L'image de la même carte, telle qu'elle part avec « Partager » : les mêmes cartons, les coulisses et le nuage dans le ciel étoilé.",
-     "legende": "La carte dans l'appli, puis l'image qu'on partage : le même théâtre de papier."
-    }
-   ],
-   "image": "Screenshots/lux_theatre_partage.gif",
-   "image_alt": "1. La carte « Kaz », chat, très rare, ouverte dans l'appli et penchée de gauche à droite : la ville de nuit en cartons découpés, avec les coulisses en silhouette sur les côtés. 2. L'image de la même carte, telle qu'elle part avec « Partager » : les mêmes cartons, les coulisses et le nuage dans le ciel étoilé.",
-   "image_legende": "La carte dans l'appli, puis l'image qu'on partage : le même théâtre de papier."
-  },
-  {
-   "version": "37.9.0",
-   "date": "2026-10-29",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Les cartes deviennent un petit théâtre de papier",
-       "texte": "Dans la carte ouverte, le paysage est fait de cartons découpés posés les uns devant les autres, chacun avec son ombre et son bord clair. Penchez le téléphone : les cartons glissent chacun à leur vitesse, comme un décor de théâtre."
-      },
-      {
-       "titre": "Plus la carte est rare, plus le décor est riche",
-       "texte": "Les cartes rares ajoutent des coulisses, deux arbres en silhouette de chaque côté, et les très rares un nuage qui traverse lentement le ciel."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_theatre_papier.gif",
-     "alt": "La carte « Auer », heure, commune, ouverte et penchée de gauche à droite. Le château de Vianden et sa colline, la rangée de maisons et la rivière sont trois cartons découpés : chacun a un bord clair et une ombre légère, et ils glissent à des vitesses différentes quand la carte penche.",
-     "legende": "Une carte commune : trois cartons qui glissent chacun à leur vitesse."
-    },
-    {
-     "image": "Screenshots/lux_theatre_rare.gif",
-     "alt": "La carte « Stall », étable, rare, le soir à Esch-sur-Sûre, penchée de gauche à droite. Devant les falaises et le bourg, deux arbres en silhouette encadrent la scène de chaque côté, comme les coulisses d'un théâtre ; ils bougent à peine, le paysage glisse derrière.",
-     "legende": "Une carte rare : les coulisses encadrent la scène."
-    },
-    {
-     "image": "Screenshots/lux_theatre_tres_rare.gif",
-     "alt": "La carte « Mënz », pièce de monnaie, très rare, la nuit sur la Moselle, penchée de gauche à droite. En plus des coulisses, un nuage de carton traverse lentement le ciel étoilé, devant les collines et derrière le village.",
-     "legende": "Une carte très rare : en plus des coulisses, un nuage traverse le ciel."
-    }
-   ],
-   "image": "Screenshots/lux_theatre_papier.gif",
-   "image_alt": "La carte « Auer », heure, commune, ouverte et penchée de gauche à droite. Le château de Vianden et sa colline, la rangée de maisons et la rivière sont trois cartons découpés : chacun a un bord clair et une ombre légère, et ils glissent à des vitesses différentes quand la carte penche.",
-   "image_legende": "Une carte commune : trois cartons qui glissent chacun à leur vitesse."
-  },
-  {
-   "version": "37.8.0",
-   "date": "2026-10-27",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Le niveau de révision en six cases",
-       "texte": "En bas de chaque carte, une case se remplit à chaque révision réussie, et les six sont pleines quand le mot est acquis."
-      },
-      {
-       "titre": "La rareté en étoiles",
-       "texte": "Une carte commune a une étoile, une très rare en a quatre. Plus il y a d'étoiles, plus la carte est rare."
-      },
-      {
-       "titre": "Des écus gravés",
-       "texte": "Les deux écus du bas de la carte sont ciselés comme la plaque du nom, et le nombre de fois où vous avez gagné le mot se lit mieux."
-      },
-      {
-       "titre": "De nouveaux dessins sur les cartes",
-       "texte": "L'abeille, la fourmi, l'éléphant, la banane, la crêpe et treize autres mots ont maintenant leur dessin."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_jauges.png",
-     "alt": "Trois cartes du carnet, telles que l'appli les affiche. 1. « Kaz », chat, en or : dans l'écu NIVEAU en bas à droite, une case pleine sur six ; la rareté en bas à droite, quatre étoiles pleines sur cinq. 2. « Bibliothéik », bibliothèque, en argent, avec le sceau « Geléiert » d'un mot acquis : les six cases du NIVEAU sont pleines, et la rareté a trois étoiles. 3. « Elefant », éléphant, en or, avec son nouveau dessin d'éléphant devant la ville de nuit : trois cases pleines sur six. Les écus VUES et NIVEAU sont ciselés, le nombre de VUES gravé dans le métal.",
-     "legende": "Le niveau de révision en six cases, la rareté en étoiles, et le nouveau dessin de l'éléphant."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_jauges.png",
-   "image_alt": "Trois cartes du carnet, telles que l'appli les affiche. 1. « Kaz », chat, en or : dans l'écu NIVEAU en bas à droite, une case pleine sur six ; la rareté en bas à droite, quatre étoiles pleines sur cinq. 2. « Bibliothéik », bibliothèque, en argent, avec le sceau « Geléiert » d'un mot acquis : les six cases du NIVEAU sont pleines, et la rareté a trois étoiles. 3. « Elefant », éléphant, en or, avec son nouveau dessin d'éléphant devant la ville de nuit : trois cases pleines sur six. Les écus VUES et NIVEAU sont ciselés, le nombre de VUES gravé dans le métal.",
-   "image_legende": "Le niveau de révision en six cases, la rareté en étoiles, et le nouveau dessin de l'éléphant."
   }
  ]
 }

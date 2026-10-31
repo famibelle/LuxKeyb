@@ -1,9 +1,100 @@
 {
  "genere_le": "2026-10-31",
- "derniere_version": "37.10.1",
+ "derniere_version": "37.12.0",
  "derniere_date": "2026-10-31",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "37.12.0",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Novidades",
+     "points": [
+      {
+       "titre": "Uma nova série na coleção: Nível A1",
+       "texte": "As cerca de 800 palavras do nível A1 recenseadas pelo dicionário oficial do luxemburguês, arrumadas por tema (família, profissões, comer e beber, saúde, meses e festas…), depois os verbos, os adjetivos e as palavras pequenas. Cada espaço vazio mostra o sentido da palavra a encontrar."
+      },
+      {
+       "titre": "Os jogos ajudam a preenchê-la",
+       "texte": "Depois do essencial, o Wuertsich, o Wuertmix e o Wuertriet incluem nas suas partidas as palavras do nível A1 que ainda faltam na sua coleção."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_carnet_niveau_a1.png",
+     "alt": "Mäi Carnet, vista Séries. Sob o título « Nível A1 », a página « Família », 1 de 31: a carta Famill está ganha, os outros espaços vazios mostram o sentido da palavra a encontrar: avó, avô, rapaz, irmão, primo, filha, pais, neto, neta, mulher, avó, avô, criança, mãe, mamã, homem. O ecrã está em francês.",
+     "legende": "A série Nível A1 na coleção: a página da família."
+    }
+   ],
+   "image": "Screenshots/lux_carnet_niveau_a1.png",
+   "image_alt": "Mäi Carnet, vista Séries. Sob o título « Nível A1 », a página « Família », 1 de 31: a carta Famill está ganha, os outros espaços vazios mostram o sentido da palavra a encontrar: avó, avô, rapaz, irmão, primo, filha, pais, neto, neta, mulher, avó, avô, criança, mãe, mamã, homem. O ecrã está em francês.",
+   "image_legende": "A série Nível A1 na coleção: a página da família."
+  },
+  {
+   "version": "37.11.1",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "A etiqueta das cartas impressas pende de uma corrente",
+       "texte": "O pequeno lembrete do tipo e do custo, sob a Força, pende do emblema por uma corrente que segue a raridade: um grande anel de ferro para uma carta comum, dois elos de bronze, três elos de prata e uma corrente de ouro com uma pérola para uma muito rara."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_papier_chaines.png",
+     "alt": "O canto de quatro cartas impressas, da menos rara à mais rara. Sob o emblema da Força pende uma etiqueta que repete o tipo e o custo. 1. Comum, ferro: um grande anel. 2. Pouco comum, bronze: dois elos. 3. Rara, prata: três elos finos. 4. Muito rara, ouro: dois elos e uma pérola violeta.",
+     "legende": "A corrente da etiqueta segue a raridade da carta impressa."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_papier_chaines.png",
+   "image_alt": "O canto de quatro cartas impressas, da menos rara à mais rara. Sob o emblema da Força pende uma etiqueta que repete o tipo e o custo. 1. Comum, ferro: um grande anel. 2. Pouco comum, bronze: dois elos. 3. Rara, prata: três elos finos. 4. Muito rara, ouro: dois elos e uma pérola violeta.",
+   "image_legende": "A corrente da etiqueta segue a raridade da carta impressa."
+  },
+  {
+   "version": "37.11.0",
+   "date": "2026-10-31",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Novidades",
+     "points": [
+      {
+       "titre": "As cartas de número mostram o seu número",
+       "texte": "A carta « zweeavéierzeg » mostra um grande 42 no meio da sua paisagem, em madrepérola como os outros desenhos. Reconhece-se cada número num relance na coleção, e também na carta impressa."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_nombres.png",
+     "alt": "Três cartas de número abertas. 1. « siwen », ferro: um grande 7 nacarado diante do castelo. 2. « zweeavéierzeg », ouro: um grande 42 dourado diante da cidade à noite. 3. « honnert », ferro: um grande 100 diante do castelo. As cartas estão em francês.",
+     "legende": "Cada carta de número mostra o seu número em grande."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_nombres.png",
+   "image_alt": "Três cartas de número abertas. 1. « siwen », ferro: um grande 7 nacarado diante do castelo. 2. « zweeavéierzeg », ouro: um grande 42 dourado diante da cidade à noite. 3. « honnert », ferro: um grande 100 diante do castelo. As cartas estão em francês.",
+   "image_legende": "Cada carta de número mostra o seu número em grande."
+  },
   {
    "version": "37.10.1",
    "date": "2026-10-31",
@@ -137,119 +228,6 @@
    "image": "Screenshots/lux_theatre_bordure.gif",
    "image_alt": "A carta «Mënz», moeda, muito rara, aberta na aplicação e inclinada devagar da esquerda para a direita. A noite no Mosela: os bastidores em silhueta dos lados, a colina das vinhas, a aldeia e o seu campanário, e uma nuvem que atravessa o céu estrelado. Cada cartão recortado tem um bordo branco, e os cartões deslizam a velocidades diferentes.",
    "image_legende": "Uma carta muito rara a ser inclinada: cada cartão tem o seu bordo branco, mesmo de noite."
-  },
-  {
-   "version": "37.9.1",
-   "date": "2026-10-29",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "Uma carta partilhada mantém o seu teatro de papel",
-       "texte": "A imagem enviada com «Partilhar» mostra os mesmos cartões que na aplicação, com os bastidores das cartas raras e a nuvem das muito raras."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_theatre_partage.gif",
-     "alt": "1. A carta «Kaz», gato, muito rara, aberta na aplicação e inclinada da esquerda para a direita: a cidade de noite em cartões recortados, com os bastidores em silhueta dos lados. 2. A imagem da mesma carta, tal como é enviada com «Partilhar»: os mesmos cartões, os bastidores e a nuvem no céu estrelado.",
-     "legende": "A carta na aplicação, depois a imagem que se partilha: o mesmo teatro de papel."
-    }
-   ],
-   "image": "Screenshots/lux_theatre_partage.gif",
-   "image_alt": "1. A carta «Kaz», gato, muito rara, aberta na aplicação e inclinada da esquerda para a direita: a cidade de noite em cartões recortados, com os bastidores em silhueta dos lados. 2. A imagem da mesma carta, tal como é enviada com «Partilhar»: os mesmos cartões, os bastidores e a nuvem no céu estrelado.",
-   "image_legende": "A carta na aplicação, depois a imagem que se partilha: o mesmo teatro de papel."
-  },
-  {
-   "version": "37.9.0",
-   "date": "2026-10-29",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Novidades",
-     "points": [
-      {
-       "titre": "As cartas tornam-se um pequeno teatro de papel",
-       "texte": "Na carta aberta, a paisagem é feita de cartões recortados postos uns à frente dos outros, cada um com a sua sombra e o seu bordo claro. Incline o telemóvel: os cartões deslizam cada um à sua velocidade, como um cenário de teatro."
-      },
-      {
-       "titre": "Quanto mais rara a carta, mais rico o cenário",
-       "texte": "As cartas raras ganham bastidores, duas árvores em silhueta de cada lado, e as muito raras uma nuvem que atravessa devagar o céu."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_theatre_papier.gif",
-     "alt": "A carta «Auer», hora, comum, aberta e inclinada da esquerda para a direita. O castelo de Vianden e a sua colina, a fila de casas e o rio são três cartões recortados: cada um tem um bordo claro e uma sombra leve, e deslizam a velocidades diferentes quando a carta se inclina.",
-     "legende": "Uma carta comum: três cartões que deslizam cada um à sua velocidade."
-    },
-    {
-     "image": "Screenshots/lux_theatre_rare.gif",
-     "alt": "A carta «Stall», estábulo, rara, ao fim da tarde em Esch-sur-Sûre, inclinada da esquerda para a direita. À frente das falésias e da vila, duas árvores em silhueta enquadram a cena de cada lado, como os bastidores de um teatro; quase não se mexem, e a paisagem desliza atrás.",
-     "legende": "Uma carta rara: os bastidores enquadram a cena."
-    },
-    {
-     "image": "Screenshots/lux_theatre_tres_rare.gif",
-     "alt": "A carta «Mënz», moeda, muito rara, de noite no Mosela, inclinada da esquerda para a direita. Além dos bastidores, uma nuvem de cartão atravessa devagar o céu estrelado, à frente das colinas e atrás da aldeia.",
-     "legende": "Uma carta muito rara: além dos bastidores, uma nuvem atravessa o céu."
-    }
-   ],
-   "image": "Screenshots/lux_theatre_papier.gif",
-   "image_alt": "A carta «Auer», hora, comum, aberta e inclinada da esquerda para a direita. O castelo de Vianden e a sua colina, a fila de casas e o rio são três cartões recortados: cada um tem um bordo claro e uma sombra leve, e deslizam a velocidades diferentes quando a carta se inclina.",
-   "image_legende": "Uma carta comum: três cartões que deslizam cada um à sua velocidade."
-  },
-  {
-   "version": "37.8.0",
-   "date": "2026-10-27",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "O nível de revisão em seis casas",
-       "texte": "No fundo de cada carta, uma casa enche-se a cada revisão certa, e as seis ficam cheias quando a palavra está aprendida."
-      },
-      {
-       "titre": "A raridade em estrelas",
-       "texte": "Uma carta comum tem uma estrela, uma muito rara tem quatro. Quantas mais estrelas, mais rara é a carta."
-      },
-      {
-       "titre": "Escudos gravados",
-       "texte": "Os dois escudos no fundo da carta são cinzelados como a placa do nome, e o número de vezes que ganhou a palavra lê-se melhor."
-      },
-      {
-       "titre": "Novos desenhos nas cartas",
-       "texte": "A abelha, a formiga, o elefante, a banana, o crepe e mais treze palavras têm agora o seu desenho."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_jauges.png",
-     "alt": "Três cartas da coleção, tal como a aplicação as mostra. 1. «Kaz», gato, em ouro: no escudo NÍVEL, em baixo à direita, uma casa cheia em seis; a raridade, em baixo à direita, tem quatro estrelas cheias em cinco. 2. «Bibliothéik», biblioteca, em prata, com o selo «Geléiert» de uma palavra aprendida: as seis casas do NÍVEL estão cheias, e a raridade tem três estrelas. 3. «Elefant», elefante, em ouro, com o seu novo desenho de elefante diante da cidade à noite: três casas cheias em seis. Os escudos VISTA e NÍVEL são cinzelados, e o número de VISTA está gravado no metal. As cartas estão em francês.",
-     "legende": "O nível de revisão em seis casas, a raridade em estrelas e o novo desenho do elefante."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_jauges.png",
-   "image_alt": "Três cartas da coleção, tal como a aplicação as mostra. 1. «Kaz», gato, em ouro: no escudo NÍVEL, em baixo à direita, uma casa cheia em seis; a raridade, em baixo à direita, tem quatro estrelas cheias em cinco. 2. «Bibliothéik», biblioteca, em prata, com o selo «Geléiert» de uma palavra aprendida: as seis casas do NÍVEL estão cheias, e a raridade tem três estrelas. 3. «Elefant», elefante, em ouro, com o seu novo desenho de elefante diante da cidade à noite: três casas cheias em seis. Os escudos VISTA e NÍVEL são cinzelados, e o número de VISTA está gravado no metal. As cartas estão em francês.",
-   "image_legende": "O nível de revisão em seis casas, a raridade em estrelas e o novo desenho do elefante."
   }
  ]
 }
