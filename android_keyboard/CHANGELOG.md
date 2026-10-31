@@ -9,6 +9,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [37.12.0] - 2026-10-31
+
+### ✨ Nouveautés
+
+- **Une nouvelle série dans le carnet : Niveau A1** : les quelque 800 mots du niveau A1 que recense le dictionnaire officiel du luxembourgeois, rangés par thème (la famille, les métiers, manger et boire, la santé, les mois et les fêtes…), puis les verbes, les adjectifs et les petits mots. Chaque case vide montre le sens du mot à trouver.
+- **Les jeux vous aident à la remplir** : après les essentiels, Wuertsich, Wuertmix et Wuertriet glissent dans leurs parties les mots du niveau A1 qui manquent encore à votre carnet.
+
 ## [37.11.1] - 2026-10-31
 
 ### ✨ Améliorations
