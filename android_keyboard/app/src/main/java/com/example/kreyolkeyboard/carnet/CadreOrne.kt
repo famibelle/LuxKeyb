@@ -5241,17 +5241,17 @@ private class Enluminure private constructor(
         plume.style = Paint.Style.FILL
         plume.alpha = 255
 
-        // Le chat de la nuit a les yeux qui brillent.
+        // Le chat de la nuit a l'œil qui brille : un seul, il marche de
+        // profil (la silhouette de PhyloPic, depuis le 2026-10-31). L'œil est
+        // posé derrière l'arête du nez, en unités du carré de Meubles.
         if (nom == "chat" && heure.nuit) {
             val e = TAILLE / Meubles.COTE
-            for (s in floatArrayOf(-1f, 1f)) {
-                val x = CX + s * 13f * e
-                val y = CY - 2f * e
-                plume.color = argb(64, 0xFF, 0xD3, 0x4D)
-                c.drawCircle(x, y, 2.6f, plume)
-                plume.color = argb(255, 0xFF, 0xD3, 0x4D)
-                c.drawOval(x - 1.1f, y - 0.75f, x + 1.1f, y + 0.75f, plume)
-            }
+            val x = CX + 39.8f * e
+            val y = CY + 0.2f * e
+            plume.color = argb(64, 0xFF, 0xD3, 0x4D)
+            c.drawCircle(x, y, 1.6f, plume)
+            plume.color = argb(255, 0xFF, 0xD3, 0x4D)
+            c.drawOval(x - 0.75f, y - 0.5f, x + 0.75f, y + 0.5f, plume)
         }
     }
 

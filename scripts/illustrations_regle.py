@@ -2,8 +2,8 @@
 """Dessine les illustrations de la règle du jeu (docs/regle-du-jeu.md), en SVG,
 dans docs/assets/regle/.
 
-Les silhouettes sont celles de l'application (carnet/Meubles.kt), recopiées
-dans leur carré de cent unités centré sur l'origine ; le tracé d'un verbe ou
+Les silhouettes sont celles de l'application (carnet/Meubles.kt), dans leur
+carré de cent unités centré sur l'origine ; le tracé d'un verbe ou
 d'un adjectif suit la règle de `Trace` (carnet/CadreOrne.kt) : voyelle en haut,
 consonne en bas. Le métal du cadre et le ciel suivent le coût, comme l'heure
 et le métal des cartes de l'application.
@@ -13,7 +13,6 @@ imprimée reste à dessiner (voir la skill imprimeur).
 
 À lancer depuis la racine du dépôt : python3 scripts/illustrations_regle.py
 """
-import math
 import os
 import sys
 
@@ -22,58 +21,15 @@ POLICE = "font-family=\"'Helvetica Neue', Arial, sans-serif\""
 
 # ---------------------------------------------------------------- silhouettes
 
-
-def pol(*v):
-    pts = [f'{v[i]:g} {v[i + 1]:g}' for i in range(0, len(v), 2)]
-    return 'M' + ' L'.join(pts) + ' Z'
-
-
-def disque(cx, cy, r):
-    return f'M{cx - r:g} {cy:g} A{r:g} {r:g} 0 1 0 {cx + r:g} {cy:g} A{r:g} {r:g} 0 1 0 {cx - r:g} {cy:g} Z'
-
-
-def ovale(l, t, r, b):
-    cx, cy, rx, ry = (l + r) / 2, (t + b) / 2, (r - l) / 2, (b - t) / 2
-    return f'M{l:g} {cy:g} A{rx:g} {ry:g} 0 1 0 {r:g} {cy:g} A{rx:g} {ry:g} 0 1 0 {l:g} {cy:g} Z'
-
-
-def lion():
-    pts = []
-    for i in range(20):
-        a = i * math.pi / 10 - math.pi / 2
-        r = 49 if i % 2 == 0 else 31
-        pts += [math.cos(a) * r, math.sin(a) * r]
-    return ' '.join([pol(*pts), disque(-13, -9, 4.5), disque(13, -9, 4.5), ovale(-16, 4, 16, 24),
-                     pol(0, 17, 8, 7, -8, 7)])
-
-
-MEUBLES = {
-    'chat': ' '.join([pol(-34, -14, -30, -46, -8, -28), pol(34, -14, 30, -46, 8, -28),
-                      'M0 -32 C26 -32 38 -14 38 4 C38 26 22 40 0 40 C-22 40 -38 26 -38 4 '
-                      'C-38 -14 -26 -32 0 -32 Z']),
-    'chien': ' '.join(['M0 -38 C16 -38 26 -28 28 -16 C40 -20 48 -4 42 14 C38 26 30 30 25 26 '
-                       'C22 38 12 46 0 46 C-12 46 -22 38 -25 26 C-30 30 -38 26 -42 14 '
-                       'C-48 -4 -40 -20 -28 -16 C-26 -28 -16 -38 0 -38 Z',
-                       disque(-12, -4, 4), disque(12, -4, 4), ovale(-12, 18, 12, 34), ovale(-6, 20, 6, 28)]),
-    'poisson': ' '.join(['M46 0 C30 -26 -6 -30 -22 -14 L-46 -26 L-36 0 L-46 26 L-22 14 '
-                         'C-6 30 30 26 46 0 Z', disque(22, -6, 4.5)]),
-    'cheval': ' '.join(['M-6 -46 L4 -30 C22 -28 38 -16 44 0 L26 8 C22 0 12 -4 4 0 '
-                        'C-4 10 -8 26 -8 46 L-32 46 C-32 16 -26 -4 -14 -16 L-26 -22 L-14 -26 '
-                        'L-24 -36 L-10 -32 Z', disque(16, -8, 3.5)]),
-    'lion': lion(),
-    'pain': ' '.join(['M-46 26 C-46 -18 -30 -34 0 -34 C30 -34 46 -18 46 26 C46 34 40 36 32 36 '
-                      'L-32 36 C-40 36 -46 34 -46 26 Z']
-                     + [pol(x - 12, -18, x + 2, -22, x + 5, -13, x - 9, -9) for x in (-22, 0, 22)]),
-    'fromage': ' '.join([pol(-44, 30, -44, -8, 44, -30, 44, 30), disque(-20, 12, 7),
-                         disque(4, -2, 5), disque(24, 14, 6)]),
-}
-
-# Les meubles de la boîte de départ : scripts/silhouettes_boite.py, qui écrit
-# aussi leur code pour Meubles.kt.
+# Les meubles de l'application, dans leur carré de cent unités : ceux du
+# domaine public (scripts/meubles.json, écrit par scripts/meubles_domaine.py)
+# et les trois encore dessinés à la main (scripts/silhouettes_boite.py).
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import json  # noqa: E402
 import silhouettes_boite  # noqa: E402
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'meubles.json')) as _f:
+    MEUBLES = json.load(_f)
 MEUBLES.update(silhouettes_boite.chemins())
-MEUBLES.update(silhouettes_boite.recopies())
 
 # ------------------------------------------------------------- les paliers
 

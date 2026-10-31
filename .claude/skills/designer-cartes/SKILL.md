@@ -152,6 +152,29 @@ se compense par sa limite (une fois par partie) et se vérifie en simulation
   reste à au moins la moitié de la hauteur de la carte.
 - **La série se reconnaît d'un coup d'œil** : un même langage (métal, gemme,
   paysage aux trois plans) sur toutes les cartes.
+- **Les meubles viennent du domaine public** (propriétaire, 2026-10-31). Les
+  silhouettes dessinées à la main, d'après des emoji puis point par point, ne
+  tenaient pas la comparaison avec les banques d'images (le lion lisait comme
+  « un soleil avec une tétine », le veau comme une chèvre). Source : PhyloPic
+  pour le vivant, Openclipart et les pictogrammes CC0 (Pinhead, Temaki) pour
+  le reste ; **CC0 ou marque du domaine public seulement**, licence vérifiée
+  sur la page d'origine (jamais CC BY, BY-SA ou BY-NC, jamais une banque
+  payante, jamais un logo ni un personnage). Tout passe par
+  `scripts/meubles_domaine.py`, qui lit `scripts/meubles_sources.json` (page,
+  auteur, licence, retouches) et écrit `carnet/MeublesDomaine.kt`. Ne dessiner
+  à la main que faute d'une silhouette libre qui vaille : six restent dans
+  `Meubles.kt` (coffre, miroir, rue, beurre, framboise, alphabet).
+- **Une silhouette pleine** : aucun trait intérieur, tout le détail dans le
+  contour. Un trou ne reste que s'il dessine quelque chose (les vitres du bus,
+  le « ! » du panneau) ; le générateur comble l'œil d'une bête ou une
+  pastille de couleur (`trou`).
+- **Un profil regarde à droite** (propriétaire, 2026-10-30) : bête, oiseau ou
+  véhicule. Une silhouette qui regarde à gauche est retournée par le
+  générateur (`"miroir": true` dans `meubles_sources.json`). Un sujet de face
+  n'est pas concerné.
+- **Vérifier chaque silhouette en nacre pâle sur la carte**, pas seulement en
+  blanc sur bleu : la planche `--apercu` du générateur, puis l'émulateur (la
+  série des enluminures montre toutes les silhouettes en creux).
 
 ### 2.7 L'équilibre
 
@@ -201,7 +224,7 @@ et la skill `imprimeur` (format, fond perdu, budget, licences, imprimeurs).
 |---|---|
 | Recto d'une carte (pastille, nom, panneau, écus, ligne de série) | `carnet/CarteCarnet.kt` (`complete`, `panneau`) |
 | Cadre, métal, joyaux, sujets dessinés (`Porcelet`…) | `carnet/CadreOrne.kt` |
-| Paysages (9 lieux × 4 heures), meubles, mot gravé | `carnet/Paysages.kt`, `Meubles.kt`, `MotGrave.kt` |
+| Paysages (9 lieux × 4 heures), meubles, mot gravé | `carnet/Paysages.kt`, `Meubles.kt` (et `MeublesDomaine.kt`, généré), `MotGrave.kt` |
 | Raretés (4 paliers), natures, champs | `carnet/CarnetModels.kt` (`Rarete`) |
 | Carte spéciale | `carnet/CarteFierkelsmaart.kt` (modèle à suivre) |
 | Version imprimée (écus COÛT et TYPE, pouvoir) | `carnet/ImpressionCarte.kt`, `complete(…, impression = true)` |
@@ -319,10 +342,7 @@ d'un enfant, rien de vulgaire ni d'effrayant), et équilibrés contre les deux
 paquets de la boîte. L'extension (`@E1`, 2026-10-28) est faite ainsi :
 Schoul contre Natur, 54 cartes comme la boîte, noms sur la courbe de Force de
 la boîte, 48–52 % contre tous les paquets en simulation (`selection.md`).
-Chacun de ses 28 noms a son dessin : 15 silhouettes nouvelles (question,
-cahier, colle, calcul, crayon, alphabet, cartable, mathématiques, hêtre,
-orage, verger, automne, printemps, glacier, coquelicot) dans
-`scripts/silhouettes_boite.py`, section « l'extension », recopiées dans
-`Meubles.kt`. Une silhouette nouvelle passe le test du pouce (vignette à 25 %,
+Chacun de ses 28 noms a son dessin, tiré du domaine public comme tous les
+meubles (`scripts/meubles_domaine.py`, voir § 2.6). Une silhouette nouvelle passe le test du pouce (vignette à 25 %,
 clair sur sombre et sombre sur clair) à côté des meubles voisins : le hêtre
 ne doit pas se lire comme « arbre », ni l'orage comme « pluie ».
