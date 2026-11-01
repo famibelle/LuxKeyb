@@ -708,6 +708,7 @@
     <string name="recevoir_telephone">📱 From another phone</string>
     <string name="recevoir_papier">🃏 The code of a paper card</string>
     <string name="papier_invalide">This code is not a Lëtzebuergesch Clavier paper card code.</string>
+    <string name="ean_reconnu">Barcode of the pack recognised (EAN %1$s). Its cards come from a paper card code.</string>
     <string name="papier_deja">This code has already been used on this phone.</string>
     <string name="papier_mettre_a_jour">This code comes from a box newer than the app: update it, then scan the code again.</string>
     <string name="papier_une">« %1$s » is in your notebook</string>

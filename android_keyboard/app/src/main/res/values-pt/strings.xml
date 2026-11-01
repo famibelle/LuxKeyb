@@ -704,6 +704,7 @@
     <string name="recevoir_telephone">📱 De outro telefone</string>
     <string name="recevoir_papier">🃏 O código de uma carta em papel</string>
     <string name="papier_invalide">Este código não é de uma carta em papel do Lëtzebuergesch Clavier.</string>
+    <string name="ean_reconnu">Código de barras do pacote reconhecido (EAN %1$s). As suas cartas vêm de um código de carta em papel.</string>
     <string name="papier_deja">Este código já foi usado neste telefone.</string>
     <string name="papier_mettre_a_jour">Este código vem de uma caixa mais recente do que a aplicação: atualize-a e volte a ler o código.</string>
     <string name="papier_une">«%1$s» está no seu caderno</string>

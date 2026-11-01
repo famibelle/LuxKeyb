@@ -704,6 +704,7 @@
     <string name="recevoir_telephone">📱 Vun engem aneren Telefon</string>
     <string name="recevoir_papier">🃏 De Code vun enger Pabeierkaart</string>
     <string name="papier_invalide">Dëse Code gehéiert zu kenger Pabeierkaart vum Lëtzebuergesch Clavier.</string>
+    <string name="ean_reconnu">Barcode vum Päckchen erkannt (EAN %1$s). Seng Kaarten kommen vun engem Code vun enger Pabeierkaart.</string>
     <string name="papier_deja">Dëse Code gouf op dësem Telefon schonn benotzt.</string>
     <string name="papier_mettre_a_jour">Dëse Code kënnt aus enger méi neier Këscht wéi d\'App: aktualiséiert se a scannt de Code nach eng Kéier.</string>
     <string name="papier_une">„%1$s“ ass an Ärem Carnet</string>

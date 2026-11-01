@@ -1615,7 +1615,7 @@ class CarnetFragment : DialogFragment() {
 
     private fun lancerScan() {
         lanceurScan.launch(ScanOptions().apply {
-            setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+            setDesiredBarcodeFormats(ScanOptions.QR_CODE, ScanOptions.EAN_13)
             setPrompt(getString(R.string.scan_invite))
             setBeepEnabled(false)
             setOrientationLocked(false)
@@ -1623,6 +1623,11 @@ class CarnetFragment : DialogFragment() {
     }
 
     private fun surScan(texte: String) {
+        // Le code-barres du paquet n'a pas de cartes : il identifie seulement le paquet.
+        CodeBarres.ean13(texte)?.let { ean ->
+            dire(getString(R.string.ean_reconnu, ean))
+            return
+        }
         when (scanEnCours) {
             Scan.DEMANDE -> ceder(texte)
             // Une carte code scannée depuis l'écran de la demande, qui
