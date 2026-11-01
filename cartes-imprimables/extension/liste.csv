@@ -1,0 +1,53 @@
+numero,mot,paquet,nature,force,cout,rarete,sens
+053,Fro,Schoul,nom,3,1,Commun,question
+054,Buch,Schoul,nom,4,1,Commun,livre
+055,Heft,Schoul,nom,4,1,Très rare,cahier
+056,Koll,Schoul,nom,4,1,Très rare,colle
+057,Bréif,Schoul,nom,5,2,Commun,lettre
+058,Dësch,Schoul,nom,5,2,Commun,table
+059,Musek,Schoul,nom,5,2,Commun,musique
+060,Calcul,Schoul,nom,6,2,Très rare,calcul
+061,Schoul,Schoul,nom,6,2,Commun,école
+062,Crayong,Schoul,nom,7,2,Très rare,crayon
+063,Alphabet,Schoul,nom,8,3,Très rare,alphabet
+064,Computer,Schoul,nom,8,3,Commun,ordinateur
+065,Schoulsak,Schoul,nom,9,3,Très rare,cartable
+066,Mathematik,Schoul,nom,10,3,Très rare,mathématiques
+067,liesen,Schoul,verbe,6,2,Commun,lire
+068,molen,Schoul,verbe,5,2,Très rare,dessiner
+069,laachen,Schoul,verbe,7,2,Très rare,rire
+070,sichen,Schoul,verbe,6,2,Commun,chercher
+071,schreiwen,Schoul,verbe,9,3,Commun,écrire
+072,rout,Schoul,adjectif,4,1,Commun,rouge
+073,giel,Schoul,adjectif,4,1,Très rare,jaune
+074,wäiss,Schoul,adjectif,5,2,Peu commun,blanc
+075,schwaarz,Schoul,adjectif,8,3,Commun,noir
+076,siwen,Schoul,nombre,5,0,Commun,7
+077,aacht,Schoul,nombre,5,0,Commun,8
+078,néng,Schoul,nombre,4,0,Commun,9
+079,Bam,Natur,nom,3,1,Commun,arbre
+080,Bich,Natur,nom,4,1,Très rare,hêtre
+081,Reen,Natur,nom,4,1,Peu commun,pluie
+082,Sonn,Natur,nom,4,1,Peu commun,soleil
+083,Bësch,Natur,nom,5,2,Commun,forêt
+084,Insel,Natur,nom,5,2,Peu commun,île
+085,Mound,Natur,nom,5,2,Très rare,lune
+086,Donner,Natur,nom,6,2,Très rare,tonnerre
+087,Wanter,Natur,nom,6,2,Commun,hiver
+088,Bongert,Natur,nom,7,2,Très rare,verger
+089,Hierscht,Natur,nom,8,3,Commun,automne
+090,Fréijoer,Natur,nom,8,3,Commun,printemps
+091,Gletscher,Natur,nom,9,3,Très rare,glacier
+092,Feierblumm,Natur,nom,10,3,Très rare,coquelicot
+093,klammen,Natur,verbe,7,2,Commun,grimper
+094,falen,Natur,verbe,5,2,Commun,tomber
+095,fannen,Natur,verbe,6,2,Commun,trouver
+096,kachen,Natur,verbe,6,2,Très rare,cuire
+097,kräischen,Natur,verbe,9,3,Très rare,pleurer
+098,blo,Natur,adjectif,3,1,Peu commun,bleu
+099,kal,Natur,adjectif,3,1,Peu commun,froid
+100,gréng,Natur,adjectif,5,2,Commun,vert
+101,waarm,Natur,adjectif,5,2,Peu commun,chaud
+102,zéng,Natur,nombre,4,0,Commun,10
+103,eelef,Natur,nombre,5,0,Commun,11
+104,zwielef,Natur,nombre,7,0,Commun,12

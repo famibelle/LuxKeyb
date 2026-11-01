@@ -14,6 +14,7 @@ carte officielle du jeu imprimé.
 | `boite/planche_boite.pdf` | La boîte de départ : 52 cartes à jouer (paquets Déieren et Iessen), 2 cartes de règle, le dos. Dessin schématique, pour relire ou jouer tout de suite (`scripts/planche_boite.py`). |
 | `boite/rectos_52.pdf` | Les 52 cartes à jouer de la boîte, dessinées par l'application : une carte par page, 69 × 94 mm fond perdu compris, 300 dpi. Le dos est dans `verso/` (`scripts/rectos_boite.py`). |
 | `boite/liste.csv` | Les 52 cartes dans l'ordre du PDF : mot, paquet, nature, Force, coût, rareté, sens. |
+| `extension/rectos_52.pdf`, `extension/liste.csv` | L'extension : 52 cartes à jouer, paquets Schoul (l'école) et Natur (la nature), cartes n° 53 à 104. Les cartes de règle et le dos sont ceux de la boîte de départ. |
 | `niveau_a1/rectos_52.pdf`, `niveau_a1/liste.csv` | La boîte Niveau A1 : 52 cartes à jouer, paquets Doheem (à la maison) et Dobaussen (dehors), prises dans le vocabulaire de niveau A1 que recense le dictionnaire officiel. Cartes n° 105 à 156. Les cartes de règle et le dos sont ceux de la boîte de départ. |
 | `niveau_a2/rectos_52.pdf`, `niveau_a2/liste.csv` | La boîte Niveau A2, faite de la même façon : cartes n° 157 à 208. |
 | `verso/verso.pdf`, `verso/verso_300dpi.png` | Le dos commun, 69 × 94 mm fond perdu compris (poker 63 × 88 mm + 3 mm). |
