@@ -497,7 +497,7 @@ def notes_bat(p):
         x, y = XD + W - SECU - EAN_L_MM, T + H + (D - EAN_H_MM) / 2
         s += (f'<rect x="{x}" y="{y}" width="{EAN_L_MM}" height="{EAN_H_MM}" fill="none" stroke="{mag}" '
               f'stroke-width=".3" stroke-dasharray="1 .7"/>'
-              + lignes(x + EAN_L_MM / 2, y + 6.4, ['Réservé au code-barres', 'EAN-13 (GS1 Luxembourg)'], 2.1, mag, 2.7,
+              + lignes(x + EAN_L_MM / 2, y + 5.2, ['Réservé au code-barres', 'EAN-13 (GS1 Belgium', '& Luxembourg)'], 2.0, mag, 2.6,
                        ancre='middle', poids=700))
     manque = [m for m, ok in (('éditeur (nom et adresse)', EDITEUR), ('pays de fabrication', PAYS_FABRICATION),
                               ('marquage CE après essais EN 71', MARQUAGE_CE)) if not ok]
