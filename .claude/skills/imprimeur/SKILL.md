@@ -201,12 +201,12 @@ automates, et les deux paquets font **les 52 cartes d'un jeu classique**
 (propriétaire, 2026-10-26 ; 25 auparavant). Composition d'un paquet de 26
 (`scripts/candidats_cartes.py`) : 14 noms, 5 verbes, 4 adjectifs, 3 nombres.
 
-| Produit | Contenu | Rôle | Prix public indicatif |
+| Produit | Contenu | Rôle | Prix public (2026-11-01) |
 |---|---|---|---|
-| **Boîte de départ** (produit principal) | 54 cartes : 52 à jouer (2 paquets de 26 prêts à jouer) + 2 cartes de règle à la place des jokers | Jouer à deux dès l'ouverture ; sert aussi à la Bataille des mots | 12–15 € |
+| **Boîte de départ** (produit principal) | 54 cartes : 52 à jouer (2 paquets de 26 prêts à jouer) + 2 cartes de règle à la place des jokers | Jouer à deux dès l'ouverture ; sert aussi à la Bataille des mots | 9,90 € |
 | Extension Schoul et Natur | 54 cartes comme la boîte : 2 paquets de 26 (Schoul, Natur) + 2 cartes de règle, ensemble `@E1` | Se joue seule ou avec la boîte ; composer son paquet | comme la boîte |
-| Paquet de 6 (complément) | 3 C / 2 PC / 1 R ou mieux, voir plus bas | Faire évoluer son paquet, collectionner, échanger | 4 € |
-| Coffret complet | toutes les cartes | Écoles, collectionneurs | 35–45 € |
+| Paquet de 6 (complément) | 3 C / 2 PC / 1 R ou mieux, voir plus bas | Faire évoluer son paquet, collectionner, échanger | 2 € |
+| Coffret complet | toutes les cartes | Écoles, collectionneurs | 29 € |
 
 **Pourquoi 54** : c'est le format d'un jeu de cartes standard, 52 cartes et
 2 jokers ; le jeu garde ce principe, 52 cartes à jouer et 2 cartes de règle
@@ -214,17 +214,23 @@ automates, et les deux paquets font **les 52 cartes d'un jeu classique**
 et tarifs existent chez tous les imprimeurs (voir la ligne « Jeu de 54 » de la
 section 4) : c'est le format le moins cher à produire en qualité.
 
+Les prix publics ont été fixés le 2026-11-01 par le propriétaire, à partir de
+ce qu'un parent paie (repères : Défis Nature, Uno, Dobble). Le calcul et ses
+hypothèses sont dans la skill `business-modele` et son script
+`scripts/modele.py` : un changement de prix se fait là, puis se reporte ici.
+
 **Économie indicative de la boîte** (à refaire avec les devis) :
 
 - Coût en offset européen, 500 boîtes, qualité exigée (section 2) :
   ~3–4,5 € la boîte avec étui (fourchette 1,5–5 € de la section 4, +20–40 %
   pour la qualité). En impression à la demande (~100) : 6–10 €, trop cher pour
-  vendre à 12 € → réservé aux prototypes.
+  vendre à 9,90 € → réservé aux prototypes.
 - Mise de départ : ~1 500–2 250 € de tirage + ~385 € de frais fixes
   (marque, prototypes, maquette).
-- À 12 € : seuil de rentabilité ~160–220 boîtes ; 400 vendues → bénéfice
-  ~+2 000–2 700 €. En librairie (commission 30–40 %), la boîte rapporte
-  ~7–8,5 € : garder le prix public, ne pas le baisser.
+- À 9,90 € : seuil de rentabilité ~190–270 boîtes (hors essais EN 71) ;
+  400 vendues → bénéfice ~+1 300–2 100 €. En librairie (commission
+  30–40 %), la boîte rapporte ~5,90–6,90 € : ne pas descendre sous 7,50 €,
+  où la librairie fait perdre de l'argent.
 
 **Les mots viennent du LOD** (2026-10-23) : `scripts/candidats_cartes.py`
 compose la boîte (Déieren contre Iessen, noms jumelés par longueur : 50 % de
@@ -295,19 +301,22 @@ Crédit sur l'emballage : « Mots : LOD / ZLS (CC0) ».
 
 Le goulot est les peu communes puis rares/très rares. Compenser par :
 l'échange (QR de l'application, coin « Je cherche / Je donne » au stand) et
-un **coffret complet** de 248 cartes à 35–45 € (écoles, impatients).
+un **coffret complet** de 248 cartes à 29 € (écoles, impatients). Le coût
+pour compléter par paquets est chiffré dans la skill `business-modele` § 5.
 
 **Prix et volume** :
 
-- 4 € le paquet, 3 pour 10 € ; lot école 20 paquets pour 60 €.
-- Tirage 1 : 500 paquets (3 000 cartes, ~12 coffrets), en impression à la
-  demande qualité, mis en paquets à la main.
-- Coût par paquet qualité ~1,25–1,40 € (1,50–1,70 € avec dorure).
+- 2 € le paquet ; lot école 20 paquets pour 28 € (prix public − 30 %).
+- **À 2 €, le tirage se fait en offset** (≥ 1 000 paquets, ~0,60–0,80 € le
+  paquet). En impression à la demande qualité (~1,25–1,40 € le paquet,
+  1,50–1,70 € avec dorure), 500 paquets à 2 € ne couvrent pas les frais
+  fixes, et la librairie fait perdre de l'argent.
 - Frais fixes ~385 € (marque BOIP ~275, prototype ~60, maquette pochette ~50),
-  hors emplacement de stand.
-- Seuil de rentabilité ~150 paquets ; ~400 vendus (80 %) → bénéfice ~+600 €.
-- Librairies : 30–40 % de commission → rester à 4 €, pas en dessous.
-- Édition suivante en offset (≥ 1 000) → ~0,60–0,80 € le paquet.
+  hors emplacement de stand et essais EN 71.
+- Tirage offset de 1 000 : avance ~600–800 € ; seuil de rentabilité
+  ~490–590 paquets ; ~800 vendus (80 %) → bénéfice ~+400–600 €.
+- Librairies : 30–40 % de commission → le paquet rapporte ~1,20–1,40 €,
+  plancher ~1,35 €.
 - TVA : franchise probable sous ~50 000 €/an au Luxembourg — à vérifier.
   Statut (indépendant, asbl) à valider par la Chambre de commerce ou un comptable.
 
@@ -375,8 +384,9 @@ Tout est dans `BOUTIQUE-CARTES.md` ; l'essentiel :
   (MakePlayingCards), le client paie à la livraison TVA, 3 € de douane par
   article (depuis le 1er juillet 2026) et frais de dédouanement. À défaut,
   impression à la demande **par lots** livrés au Luxembourg, puis POST.
-- **Prix** : à l'unité, la boîte livrée coûte ~18–30 € ; les 12–15 € du § 7
-  supposent l'offset. Prix fixé après devis.
+- **Prix** : 9,90 € la boîte et l'extension (§ 7, 2026-11-01). À l'unité,
+  la boîte livrée coûte ~18–30 € : ce prix suppose l'offset, jamais
+  l'impression à la demande (skill `business-modele` § 3 et § 4).
 - **Carte code par e-mail** (`scripts/commandes.py`, réserve
   `impression/codes/B1-boutique`) : la carte de règle d'une boîte imprimée à
   la demande ne porte **aucun** code signé.

@@ -27,9 +27,9 @@ arbitrage chiffré. Elle ne cache jamais le conflit.
 
 ## 1. La méthode : le prix d'abord, le coût ensuite
 
-Partir du coût et ajouter une marge donne les prix trop hauts du dépôt :
-**4 € la pochette de 6** (skill imprimeur § 7), **12–15 € la boîte**, et
-l'exemple de `docs/commander.md`, **« 29 €, livraison comprise »**. C'est le
+Partir du coût et ajouter une marge donnait les prix trop hauts notés dans le
+dépôt jusqu'au 2026-11-01 : **4 € la pochette de 6**, **12–15 € la boîte**,
+et l'exemple de la page Commander, **« 29 €, livraison comprise »**. C'est le
 prix d'un cadeau, pas celui d'un achat de parent.
 
 La méthode est l'inverse : **fixer le prix qu'une famille accepte, puis
@@ -67,7 +67,7 @@ Ce qu'on en tire :
   imprimé par centaines de milliers : ce n'est pas un repère de coût pour nos
   tirages de quelques centaines, mais c'est celui du parent.
 - **Un jeu de cartes pour enfants coûte autour de 10 €** (Uno, Dobble). La
-  boîte à 10 € se place là : deux fois un jeu standard, le prix d'un jeu
+  boîte à 9,90 € se place là : deux fois un jeu standard, le prix d'un jeu
   illustré. Descendre à 5–7 € demanderait des tirages bien plus grands.
 - **Défis Nature est le concurrent le plus proche** : un jeu de cartes
   éducatif pour enfants, vendu par thème (animaux, dinosaures, arbres…), en
@@ -82,8 +82,8 @@ Ce qu'on en tire :
   - **plafond ~15 €**, où nos cartes coûteraient autant à la carte qu'un
     Défis Nature (54 × 0,27 €), sans avantage à montrer.
 
-  **Le prix retenu est 10 €, ou 9,90 € en rayon** pour passer sous le seuil
-  des 10 €. La marge ne change presque pas : en offset, 5,40 à 6,90 € en
+  **Le prix retenu est 9,90 €** (propriétaire, 2026-11-01), juste sous le
+  seuil des 10 €. En offset, la marge est de 5,40 à 6,90 € en
   vente directe et 1,44 à 3,93 € en librairie. L'argument pour un parent :
   *le prix d'un Défis Nature, avec la moitié de cartes en plus* (0,19 € la
   carte contre 0,27 €). À 12 €, chaque boîte rapporterait 1,30 à 2 € de plus,
@@ -97,17 +97,17 @@ Ce qu'on en tire :
 
 ## 2. La gamme et les prix cibles
 
-Propositions du 2026-11-01, **à valider par le propriétaire**. Une fois
-validées, elles remplacent les prix de la skill imprimeur § 7, de
-`BOUTIQUE-CARTES.md` § 5 et de `docs/commander.md` : les mettre à jour
-ensemble, jamais l'un sans l'autre.
+**Prix validés par le propriétaire le 2026-11-01**, reportés dans la skill
+imprimeur (§ 7 et § 9), `BOUTIQUE-CARTES.md` § 5 et `docs/commander.md`. Un
+changement de prix se reporte dans les quatre à la fois, jamais dans l'un
+sans les autres.
 
-| Produit | Prix cible | Prix noté aujourd'hui | Pour qui |
+| Produit | Prix public | Ancien prix (avant le 2026-11-01) | Pour qui |
 |---|---|---|---|
 | Appli, carnet, jeux | **gratuit** | gratuit | tout le monde |
 | PDF à imprimer soi-même (`cartes-imprimables/`) | **gratuit** | gratuit | familles, classes ; usage personnel et scolaire (`LICENSE-VISUELS.md`) |
 | Pochette de 6 cartes | **2 €** | 4 €, 3 pour 10 € | l'argent de poche, la surprise, l'échange |
-| Boîte de 54 (départ, Schoul et Natur, Niveau A1, Niveau A2) | **10 €** (9,90 € en rayon, § 1) | 12–15 € (offset), ~29 € livrée (à la demande) | jouer tout de suite, à deux |
+| Boîte de 54 (départ, Schoul et Natur, Niveau A1, Niveau A2) | **9,90 €** (§ 1) | 12–15 € (offset), ~29 € livrée (à la demande) | jouer tout de suite, à deux |
 | Coffret complet | **29 €** | 35–45 € | écoles, collectionneurs, ceux qui veulent tout |
 | Lot école | **prix public − 30 %** (la commission qu'une librairie aurait prise) : 20 pochettes pour 28 € | 20 pochettes pour 60 € | les classes |
 | Édition luxe (dorure, étui rigide) | **libre** | — | adultes, cadeaux, boutiques souvenirs (§ 7) |
@@ -132,18 +132,18 @@ chaque produit : c'est le pire cas.
 | Produit | Coût offset | Marge directe | Marge librairie | Avance du tirage | Équilibre |
 |---|---|---|---|---|---|
 | Pochette à 2 € | 0,60–0,80 € | 1,20–1,40 € | 0,40–0,80 € | 600–800 € (1 000) | 642–992 vendues |
-| Boîte à 10 € | 3–4,50 € | 5,50–7 € | 1,50–4 € | 1 500–2 250 € (500) | 218–344 vendues |
+| Boîte à 9,90 € | 3–4,50 € | 5,40–6,90 € | 1,44–3,93 € | 1 500–2 250 € (500) | 221–347 vendues |
 | Coffret à 29 € | 8–15 € | 14–21 € | 2,40–12,30 € | 2 400–4 500 € (300) | 106–196 vendus |
 
 Ce qu'il faut en retenir :
 
 - **L'offset est la condition des prix familiaux.** À la demande, la pochette
-  à 2 € perd de l'argent en librairie, la boîte à 10 € n'en gagne nulle part
+  à 2 € perd de l'argent en librairie, la boîte à 9,90 € n'en gagne nulle part
   et le coffret à 29 € en perd partout. L'impression à la demande reste pour
   les prototypes et pour mesurer la demande.
 - **Les planchers testés** : la pochette à 1,50 € perd en librairie et ne
   s'équilibre qu'au-delà du tirage entier ; la boîte à 8 € ne gagne rien en
-  librairie. **2 € et 10 € sont les plus bas tenables** avec ces coûts.
+  librairie. **2 € et 9,90 € sont proches des plus bas tenables** avec ces coûts.
   Ils baisseront avec un vrai devis ou un tirage plus grand : relancer le
   calcul.
 - **La librairie prend 30–40 %.** C'est le canal le plus mince : il se
@@ -153,7 +153,7 @@ Ce qu'il faut en retenir :
   pochettes, ce sont le stand, les écoles et les librairies.
 - **La TVA** : en franchise, rien à reverser. Si l'activité en sort (seuil à
   vérifier sur guichet.lu), le prix TTC reste le même et 17 % de TVA sont à
-  reverser : une boîte à 10 € ne rapporte plus que 8,55 €, pour un coût
+  reverser : une boîte à 9,90 € ne rapporte plus que 8,46 €, pour un coût
   offset de 3 à 4,50 €. Elle reste bénéficiaire.
 
 ---

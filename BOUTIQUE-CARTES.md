@@ -21,6 +21,10 @@ reçoive chez elle**. Choix du propriétaire, le 2026-10-28 :
 - **Deux produits de 54 cartes** : la boîte de départ et l'extension
   *Schoul* et *Natur* (même jour ; deux extensions de 24 cartes d'abord).
 
+**À revoir (2026-11-01)** : le prix public fixé ce jour-là, 9,90 € la boîte
+(§ 5), ne tient pas en impression à la demande. Le mode d'impression de la
+boutique est à trancher avant l'ouverture.
+
 ## 2. La chaîne, de la commande à la boîte
 
 ```
@@ -137,15 +141,21 @@ plus simple pour la TVA (§ 8).
 même prix. Les deux ensemble partent en une commande et un seul port (articles
 optionnels, § 6), ce qui allège le prix par boîte.
 
-La boîte à **12–15 €** de la skill imprimeur (§ 7) repose sur un tirage offset
-de 500 boîtes à 3–4,5 € : elle **n'est pas tenable** en impression à la
-demande. Le prix se fixe après le devis : coût livré réel, plus ~20 % pour
-les colis perdus et les rétractations. Il s'écrit dans `docs/commander.md`
-(`prix:`) et dans Stripe.
+**Le prix public est de 9,90 €**, pour la boîte comme pour l'extension, port
+en plus (propriétaire, 2026-11-01, skill `business-modele` § 1 à § 3). C'est
+le prix d'un Défis Nature, avec la moitié de cartes en plus. Il repose sur un
+tirage offset de 500 boîtes à 3–4,5 € et **n'est pas tenable** en impression à
+la demande : une boîte livrée à 18–30 € et vendue 9,90 € ferait perdre 8 à
+20 €. Il est écrit dans `docs/commander.md` (`prix:`) et s'écrira dans
+Stripe. Si les devis donnent un coût offset au-dessus de 4,50 €, relancer
+`scripts/modele.py` de la skill avant de toucher au prix.
 
-L'impression à la demande sert à **vendre sans rien avancer** et à mesurer la
-demande (la liste d'attente aussi). Passé ~200 boîtes vendues, le tirage
-offset et le stock (skill § 7) ramènent la boîte vers 12–15 €.
+L'impression à la demande sert aux prototypes et à **mesurer la demande**,
+comme la liste d'attente. **Avant d'ouvrir la boutique à ce prix, il faut
+passer à l'offset.** La skill `business-modele` § 4 propose de financer le
+tirage par précommande, avec remboursement si le seuil n'est pas atteint ;
+c'est au propriétaire de trancher. D'ici là, la page reste en liste
+d'attente.
 
 ## 6. Stripe : les réglages
 
@@ -325,7 +335,9 @@ après sa préparation.
   prototypes chez 2–3 imprimeurs de l'UE, envoyés comme à un client (§ 4).
   Question TVA posée à l'AED ou au comptable.
 - **Décembre** : choix de l'imprimeur, essais EN 71, étui avec les mentions,
-  conditions de vente et mentions légales relues, prix fixé.
+  conditions de vente et mentions légales relues. Le prix est fixé depuis le
+  2026-11-01 (9,90 €, § 5) ; reste à choisir le mode d'impression (offset
+  par précommande ou non).
 - **Janvier 2027** : parcours complet en mode test, puis une vraie commande de
   bout en bout, remboursée ; ouverture et e-mail à la liste d'attente.
 - **Avril 2027** : la Fierkelsmaart, avec la boutique en ligne déjà rodée.

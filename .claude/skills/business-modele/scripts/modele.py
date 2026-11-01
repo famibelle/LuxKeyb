@@ -35,7 +35,7 @@ PRODUITS = {
         tirages={"impression à la demande": 500, "offset": 1000},
         source="imprimeur § 7", statut="estimé"),
     "boite": dict(
-        libelle="boîte de 54 cartes", prix=10.0,
+        libelle="boîte de 54 cartes", prix=9.9,
         couts={"impression à la demande": (6.0, 10.0), "offset": (3.0, 4.5)},
         tirages={"impression à la demande": 100, "offset": 500},
         source="imprimeur § 4 et § 7", statut="estimé"),
