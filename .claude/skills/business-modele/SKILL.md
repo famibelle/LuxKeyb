@@ -37,10 +37,40 @@ chercher la production et le canal qui le tiennent.** Si rien ne le tient,
 le produit ne se fait pas encore, ou il se fait autrement (§ 5, § 7). On ne
 remonte pas le prix.
 
-Repères à relever **en magasin au Luxembourg** avant de fixer un prix (ordres
-de grandeur de mémoire, non vérifiés) : pochette d'autocollants Panini autour
-de 1 €, booster de cartes à collectionner du commerce autour de 5–6 €, jeu
-de cartes familial (sept familles, Uno, Dobble) entre 5 et 15 €.
+### Les prix de comparaison
+
+Un parent compare la boîte à ce qu'il connaît. Prix relevés en ligne le
+2026-11-01, sur des pages marchandes souvent sans date : **à reconfirmer en
+magasin au Luxembourg** avant de fixer un prix.
+
+| Jeu | Prix relevé | Par carte | Source |
+|---|---|---|---|
+| ASS Altenburger Rommé, 2 × 55 cartes | 8,70 € les deux (4,99 € en promotion, juillet 2026) | ~0,05–0,08 € | mydealz.de |
+| Piatnik, 2 × 55 cartes | dès 9,05 € les deux | ~0,08 € | guenstiger.de |
+| Grimaud Expert, 54 cartes | 6,90 € | ~0,13 € | ludum.fr |
+| Ducale neuf, 54 cartes (revente) | 6–7 € | ~0,12 € | eBay, Vinted |
+| Ducale Basic biseauté, 54 cartes | 12,51 € | ~0,23 € | touslesprix.com |
+| Bicycle Standard (importé) | ~15 € | ~0,28 € | desertcart.nl |
+| Ducale Origine (premium), 54 cartes | 23,14 € | ~0,43 € | natureetdecouvertes.com |
+| Dobble | ~10 € | — | touslesprix.com |
+| Uno | 10 € (catalogue 2021) | — | savoirsplus.fr |
+| Sept familles | 12,90 € (catalogue 2021) | — | savoirsplus.fr |
+
+Non relevés, de mémoire : pochette d'autocollants Panini autour de 1 €,
+booster de cartes à collectionner du commerce autour de 5–6 €.
+
+Ce qu'on en tire :
+
+- **Un jeu standard de 54 cartes coûte 4–7 €** en marque classique. Il est
+  imprimé par centaines de milliers : ce n'est pas un repère de coût pour nos
+  tirages de quelques centaines, mais c'est celui du parent.
+- **Un jeu de cartes pour enfants coûte autour de 10 €** (Uno, Dobble). La
+  boîte à 10 € se place là : deux fois un jeu standard, le prix d'un jeu
+  illustré. Descendre à 5–7 € demanderait des tirages bien plus grands.
+- **La pochette à 2 € revient à 0,33 € la carte**, trois fois un jeu standard.
+  C'est la norme des pochettes à collectionner, où l'on paie la surprise. C'est
+  aussi pour ça que la boîte doit rester le moyen le moins cher d'avoir
+  les cartes (§ 5).
 
 ---
 
