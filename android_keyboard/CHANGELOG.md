@@ -9,6 +9,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [38.0.0] - 2026-11-01
+
+### ✨ Nouveautés
+
+- **Le dessin de chaque carte prend toute la place** : le chat, la maison, le bus ou le chiffre d'une carte de nombre sont bien plus grands et centrés dans la fenêtre, et le paysage les met en valeur tout autour. Toutes les cartes du carnet en profitent, ouvertes comme dans la grille.
+- **Les mots sans dessin aussi** : le ruban qui suit la sonorité du mot est plus haut et plus épais.
+
 ## [37.12.0] - 2026-10-31
 
 ### ✨ Nouveautés
