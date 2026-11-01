@@ -8,8 +8,10 @@ lang: fr
 # Un lien vide pour l'extension cache seulement son bouton.
 stripe_lien: ""
 stripe_lien_extension: ""
-prix: ""            # la boîte, ex. « 29 €, livraison comprise »
-prix_extension: ""  # l'extension, ex. « 29 €, livraison comprise »
+# Prix du 2026-11-01 (skill business-modele) : ils supposent un tirage offset,
+# jamais l'impression à la demande (BOUTIQUE-CARTES.md § 5).
+prix: "9,90 € (port en plus)"            # la boîte
+prix_extension: "9,90 € (port en plus)"  # l'extension
 delai: "deux à trois semaines"
 fabricant: ""   # nom, adresse postale et e-mail du vendeur, obligatoires sur la page de vente
 ---
