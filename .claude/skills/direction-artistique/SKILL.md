@@ -115,7 +115,8 @@ du nuage générique, et le cadre en rideau de scène (§ 6).
 
 ### La gouache vive sur carton, et la pancarte (décidées le 2026-11-01)
 
-Le propriétaire a retenu, pour **toutes les cartes**, une évolution du
+Le propriétaire a retenu et validé sur maquette (« je valide la direction
+actuelle », 2026-11-01), pour **toutes les cartes**, une évolution du
 théâtre de papier inspirée d'une vitrine en papier découpé (Google Store,
 Paris) : **des couleurs vives, peintes à la gouache sur du carton**. Pour
 l'instant c'est une **maquette** (`maquette/gouache/`), rien n'est dans
@@ -141,9 +142,9 @@ exacte de la fenêtre d'un recto imprimé à 300 dpi.
   feuillage) ; un **bord sec** où le brun du carton reparaît. Le ciel est
   peint à larges touches ; l'astre se peint après, d'un aplat.
 - **La tranche est celle du carton**, brune, et non plus l'âme blanche du
-  papier (point 2 ci-dessus) : c'est ce que montrent toutes les maquettes
-  validées. À confirmer avec le propriétaire au moment de l'écrire dans le
-  code, la bordure blanche étant sur les rectos imprimés.
+  papier (point 2 ci-dessus) : c'est ce que montrent toutes les maquettes,
+  validées par le propriétaire le 2026-11-01. Les rectos imprimés, qui ont
+  la bordure blanche, seront refaits avec le reste.
 - **Des nuages de carton** flottent dans la bande du haut, et la pierre se
   fait en **pièces étagées** (une masse, une face à l'ombre, une face claire,
   des strates collées).
@@ -176,8 +177,8 @@ pour l'inclinaison). Décisions du propriétaire, du 2026-11-01 :
   nacre teintée du métal (acier, bronze) pour la commune et la peu commune,
   qu'on voit le plus et qui doivent rester lumineuses et lisibles ; argent
   et or pleins pour la rare et la très rare (le métal plein sombre, en acier
-  ou en bronze, éteignait le dessin). Proposée et appliquée dans la
-  maquette, à confirmer par le propriétaire.
+  ou en bronze, éteignait le dessin). Validée par le propriétaire le
+  2026-11-01.
 - **La hauteur du socle se juge sur les vrais dessins** : sur un dessin haut
   (arbre, personne), on ne verra presque que le socle.
 
