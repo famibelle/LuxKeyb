@@ -156,7 +156,8 @@ exacte de la fenêtre d'un recto imprimé à 300 dpi.
 **Le dessin du mot devient une plaque sur un pied** (`maquette/gouache/`,
 carte « Bus » : `pancarte.html` pour la fenêtre, `anim.html` et `anim.js`
 pour l'inclinaison, `node anim.js cinq_plans.html images` pour les cinq plans
-et les nuages qui traversent). Décisions du propriétaire, du 2026-11-01 :
+et les nuages qui traversent, `node anim.js automne.html images` pour les
+feuilles d'automne). Décisions du propriétaire, du 2026-11-01 :
 
 - **Une plaque épaisse, fixe.** La silhouette est une plaque d'environ 1,3
   unité d'épaisseur : sa tranche se voit en bas à droite, plus sombre vers
@@ -183,7 +184,27 @@ et les nuages qui traversent). Décisions du propriétaire, du 2026-11-01 :
 - **La hauteur du socle se juge sur les vrais dessins** : sur un dessin haut
   (arbre, personne), on ne verra presque que le socle.
 
-**Le centre est au dessin.** Depuis la 38.0.0, le dessin du mot tient dans
+**Les ambiances de saison sont conservées** (`carnet/Ambiance.kt`, décision
+du propriétaire, 2026-11-01) : flocons en boule à neige l'hiver, pétales au
+printemps, aigrettes le jour et lucioles le soir l'été, feuilles qui
+tournoient l'automne, oiseaux qui battent lentement des ailes, et les
+ambiances des fêtes (feux d'artifice, braises, confettis, lumières). Elles
+restent sur la carte ouverte seulement, jamais dans la grille, coupées avec
+les animations du système, et passent devant le décor et derrière la plaque.
+Dans la nouvelle direction (maquette `automne.html`, carte « Bus ») :
+
+- ce qui est matière devient **papier peint à la gouache** dans les couleurs
+  vives : feuilles, pétales, flocons, aigrettes, confettis, chacun avec son
+  liseré de kraft, sa nervure ou son trait, et une petite ombre ; ce qui est
+  lumière (lucioles, braises, lumières, feux d'artifice) reste de la lumière ;
+- **les oiseaux montent sur le carton des nuages**, et glissent avec lui
+  quand on penche ; toujours des silhouettes qui battent lentement des ailes
+  sur place ;
+- **le ciel ne doit pas s'agiter** : un ciel d'été en plein jour a déjà ses
+  nuages, ses oiseaux et ses aigrettes. Moins d'oiseaux, et un jugement sur
+  le téléphone.
+
+, le dessin du mot tient dans
 une boîte de 66 × 46, centrée (17 à 83, 12,5 à 58,5). Le décor vit donc dans
 la bande du haut et sur les bords : c'est là que mettre la couleur et les
 détails. Une porte, un pont ou un monument placé au centre disparaît derrière
@@ -246,7 +267,10 @@ lui ; sa taille reste à revoir avec le propriétaire).
 6. **Le cadre de scène reste fixe.** Seul le décor bouge ; le cadre orné est la
    vitre.
 7. **Le mouvement autonome est lent et rare.** Une seule chose bouge seule par
-   décor, en boucle longue. Un décor qui s'agite fatigue et distrait du mot.
+   décor, en boucle longue : les nuages qui traversent le ciel. L'ambiance de
+   la saison (neige, feuilles, lucioles, oiseaux) est une couche à part, le
+   temps qu'il faisait le jour où la carte a été gagnée, et non le décor.
+   L'ensemble reste calme : un décor qui s'agite fatigue et distrait du mot.
 8. **La profondeur est la même pour toutes les cartes** (décision du
    propriétaire, 2026-11-01). Cinq plans, quelle que soit la rareté, et les
    nuages qui traversent le ciel sur toutes : une commune, la carte qu'on
@@ -323,7 +347,8 @@ ordre :
    les cartes ; puis les retouches lieu par lieu là où la couleur manque, le
    centre restant calme derrière le dessin.
 5. Recalibrer la reconnaissance de la végétation des saisons (`Habillage`),
-   qui lit les couleurs de la palette.
+   qui lit les couleurs de la palette ; passer les ambiances (`Ambiance.kt`)
+   en papier peint, et les oiseaux sur le carton des nuages.
 6. Réexporter les rectos des quatre boîtes et vérifier l'impression.
 
 ## 7. Revue d'un décor
