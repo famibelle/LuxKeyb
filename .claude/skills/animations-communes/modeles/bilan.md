@@ -19,7 +19,7 @@ version remplie va dans prospection/, jamais dans le dépôt.
 | Âges | [tranches d'âge] |
 | Langues parlées à la maison (si demandé) | [liste, sans noms] |
 | Parties jouées | [nombre] |
-| Inscriptions à la liste d'attente | [nombre] |
+| Boîtes réservées | [nombre] |
 | Installations de l'application sur place | [nombre] |
 
 ## Ce qui s'est passé

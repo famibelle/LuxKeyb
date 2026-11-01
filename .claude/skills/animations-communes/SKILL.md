@@ -1,13 +1,13 @@
 ---
 name: animations-communes
-description: Animations et stands LuxKeyb dans les communes, bibliothèques, maisons relais et écoles du Luxembourg — qui solliciter (communes du Gemengepakt en priorité), comment les contacter (lettres en français et en allemand, relances), suivi des démarches hors du dépôt public, offre et tarifs, préparation et matériel, déroulé d'une animation par âge (Bataille des mots, Wuertduell, découverte de l'appli), règles sur place (pas de vente sans statut, liste d'attente, photos), facture et bilan, calendrier des événements. À utiliser quand on démarche une commune, prépare ou anime un atelier ou un stand, écrit à une institution, fait le point sur les animations obtenues, ou demande « qui contacter » ou « combien demander ».
+description: Animations et stands LuxKeyb dans les communes, bibliothèques, maisons relais et écoles du Luxembourg — qui solliciter (communes du Gemengepakt en priorité), comment les contacter (lettres en français et en allemand, relances), suivi des démarches hors du dépôt public, offre et tarifs, préparation et matériel, déroulé d'une animation par âge (Bataille des mots, Wuertduell, découverte de l'appli), règles sur place (pas de vente sans statut, réservations, photos), facture et bilan, calendrier des événements. À utiliser quand on démarche une commune, prépare ou anime un atelier ou un stand, écrit à une institution, fait le point sur les animations obtenues, ou demande « qui contacter » ou « combien demander ».
 ---
 
 # Animations dans les communes — LuxKeyb
 
 ## 0. Le but
 
-**Faire jouer, montrer l'appli, remplir la liste d'attente, et se faire payer
+**Faire jouer, montrer l'appli, recueillir des réservations, et se faire payer
 pour ça.** Une animation facturée est la recette la plus sûre du début. Elle
 ne demande ni tirage ni stock, et une animation à 200 € rapporte autant que
 20 boîtes (skill `business-modele` § 6, `MODELE-ECONOMIQUE.md`).
@@ -18,7 +18,7 @@ Trois règles valent pour toute la skill :
    D'ici là, on peut démarcher et caler des dates, mais pas encaisser.
 2. **Pas de vente de boîtes** avant le statut, l'autorisation d'établissement
    si elle est nécessaire, et les essais EN 71. Sur place, on fait jouer et on
-   inscrit à la liste d'attente.
+   prend des réservations, sans paiement, sur la page Commander.
 3. **Les contacts ne vont jamais dans le dépôt public** : ils restent dans
    `prospection/`, qui est ignoré par git (§ 4).
 
@@ -147,9 +147,9 @@ sont les seules recettes sûres.
 | Jeux de cartes | 1 jeu de 52 cartes pour 2 joueurs, plus 2 de réserve (10 jeux pour 16 enfants) | jeux de démonstration (skill imprimeur § 7) |
 | Règle du jeu imprimée | 1 par table | `docs/regle-du-jeu.md` |
 | Téléphone ou tablette avec l'appli | 1 ou 2 | l'appli marche hors ligne |
-| Affiche avec un QR code vers la liste d'attente et un QR code pour installer l'appli | 1 | skill imprimeur § 7 |
+| Affiche avec un QR code vers la page de réservation et un QR code pour installer l'appli | 1 | skill imprimeur § 7 |
 | Flyers | 1 par famille | le flyer triptyque |
-| Feuille d'inscription papier à la liste d'attente | 1 | avec la phrase de consentement (§ 7) |
+| Feuille de réservation papier (e-mail, nombre de boîtes de chaque sorte) | 1 | avec la phrase de consentement (§ 7) |
 | Autorisations photo pour les parents | quelques-unes | `administratif/` |
 
 ---
@@ -167,7 +167,7 @@ son mot à voix haute.**
 | 5–15 | Les cartes : la Force (le nombre de lettres), le dessin, le mot. On lit ensemble trois cartes à voix haute. |
 | 15–45 | Parties de Bataille des mots par deux, environ 5 minutes chacune. On change d'adversaire à chaque partie. |
 | 45–55 | Jeu collectif : l'animateur lit un sens en français, le premier qui trouve la carte la lit en luxembourgeois. |
-| 55–60 | Un mot appris par enfant. Pour les parents : le flyer, l'affiche avec les QR codes, la liste d'attente. |
+| 55–60 | Un mot appris par enfant. Pour les parents : le flyer, l'affiche avec les QR codes, la réservation. |
 
 **Atelier Wuertduell, 8–12 ans, 90 minutes**. Même ouverture. On explique la
 règle sur une partie jouée devant tout le monde, puis on joue deux ou trois
@@ -182,27 +182,28 @@ avec l'accord des parents pour l'installer.
 | 10–25 | Le clavier sur leur téléphone : installation par QR code, écrire « Moien, wéi geet et? », voir les suggestions et les accents |
 | 25–55 | Wuertduell par deux |
 | 55–75 | Le Wierderbuch et un jeu de l'appli (Wuertriet ou Wuertsich) |
-| 75–90 | Questions, liste d'attente, ressources (cours de l'INLL, Sproochentest) |
+| 75–90 | Questions, réservations, ressources (cours de l'INLL, Sproochentest) |
 
 **Stand** : une table de jeu en continu, des parties de 5 minutes avec
-l'animateur, l'appli en démonstration et la liste d'attente. Compter les
+l'animateur, l'appli en démonstration et les réservations. Compter les
 parties jouées.
 
 ---
 
 ## 7. Sur place
 
-- **Liste d'attente** : QR code vers `docs/commander.md`, ou feuille papier
-  avec cette phrase : « Votre e-mail sert seulement à vous prévenir de la
-  sortie du jeu, puis il est effacé. » Recopier la feuille dans le formulaire
-  le soir même, puis la détruire.
+- **Réservations** : QR code vers la page Commander (`docs/commander.md`), ou
+  feuille papier avec cette phrase : « Votre e-mail sert seulement à vous
+  écrire quand l'impression se prépare, pour confirmer et payer votre
+  réservation. Il est effacé après la livraison. Réserver n'engage à rien. »
+  Recopier la feuille dans le formulaire le soir même, puis la détruire.
 - **Photos** : jamais d'enfant identifiable sans l'autorisation écrite d'un
   parent. Par défaut, photographier les mains et les cartes.
 - **Pas de vente de boîtes** tant que les conditions du § 0 ne sont pas
-  remplies. Si on demande « où l'acheter ? », la réponse est la liste
-  d'attente.
+  remplies. Si on demande « où l'acheter ? », la réponse est la
+  réservation sur la page Commander, ou sur la feuille papier.
 - **Compter** : les participants, leur tranche d'âge, les parties jouées, les
-  inscriptions à la liste d'attente, les installations de l'appli. Ces chiffres
+  boîtes réservées, les installations de l'appli. Ces chiffres
   font le bilan et nourrissent les dossiers de la skill `subventions`.
 
 ---

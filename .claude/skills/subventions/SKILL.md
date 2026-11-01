@@ -73,7 +73,7 @@ Une fois par mois :
 3. **Le projet** : les animations (formats de `animations-communes` § 2), les
    jeux offerts, l'appli.
 4. **Les objectifs mesurables** : nombre d'animations, de participants, de jeux
-   distribués, d'inscriptions à la liste d'attente, d'installations de l'appli.
+   distribués, de boîtes réservées, d'installations de l'appli.
 5. **Le public et les lieux** : les communes et les structures, l'âge, les
    langues.
 6. **Le calendrier**, mois par mois.

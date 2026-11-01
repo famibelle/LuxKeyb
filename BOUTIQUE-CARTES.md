@@ -21,9 +21,15 @@ reçoive chez elle**. Choix du propriétaire, le 2026-10-28 :
 - **Deux produits de 54 cartes** : la boîte de départ et l'extension
   *Schoul* et *Natur* (même jour ; deux extensions de 24 cartes d'abord).
 
-**À revoir (2026-11-01)** : le prix public fixé ce jour-là, 9,90 € la boîte
-(§ 5), ne tient pas en impression à la demande. Le mode d'impression de la
-boutique est à trancher avant l'ouverture.
+**Décision du 2026-11-01 : la précommande.** Le prix public fixé ce jour-là,
+9,90 € la boîte (§ 5), ne tient pas en impression à la demande. La boutique
+passe donc à la **précommande** et à un **tirage offset** des quatre boîtes
+(départ, Schoul et Natur, Niveau A1, Niveau A2), lancé quand l'objectif est
+atteint (skill `business-modele` § 4). La page Commander a deux modes (§ 9) :
+la **réservation sans paiement**, en ligne dès le 2026-11-01, puis la
+**précommande payée**, une fois le § 8 rempli. La chaîne d'impression à la
+demande des § 2 à § 7 et § 10 reste écrite pour les prototypes. Elle est à
+revoir pour la précommande : envoi depuis le stock, codes dans les boîtes.
 
 ## 2. La chaîne, de la commande à la boîte
 
@@ -287,16 +293,32 @@ personnelles sont détaillés dans la skill `asbl-administratif`.
 
 ## 9. Le site
 
-- **`docs/commander.md`** : la page de la boutique. Tant que `stripe_lien` est
-  vide, elle propose la **liste d'attente** (le formulaire Formspree des avis,
-  avec le sujet « Liste d'attente : boutique Wuertduell » et des cases pour
-  la boîte et l'extension, qui mesurent la demande de chacune ; un
-  formulaire à part sera plus propre si les inscriptions dépassent le quota
-  gratuit). Une fois `stripe_lien`, `prix` et `fabricant` remplis, elle montre
-  le bouton de la boîte, celui de l'extension si son lien est rempli, les prix
-  et les informations du produit.
+- **`docs/commander.md`** : la page de précommande (2026-11-01). Tout se
+  règle dans son en-tête :
+  - `mode: "reservation"` : un formulaire Formspree (celui des avis, sujet
+    « Réservation : Wuertduell », champ `liste` = `precommande-wuertduell`)
+    demande le nombre de boîtes de chaque sorte, l'e-mail, le pays et le mode
+    de réception (livraison, ou retrait sans frais à une animation). On ne
+    paie rien. Un formulaire Formspree à part sera plus propre si les
+    réservations dépassent le quota gratuit.
+  - `mode: "paiement"`, avec `stripe_lien`, `date_limite` et `fabricant`
+    remplis : un bouton vers un lien Stripe qui contient les quatre boîtes
+    en quantités ajustables. Remboursement en entier si l'objectif n'est
+    pas atteint à la date limite. Seulement après le § 8 : statut,
+    conditions de vente (`conditions-de-vente.html`, encore à écrire),
+    mentions légales, marquage CE. Vérifier aussi les règles de Stripe sur
+    les précommandes (délai entre paiement et livraison).
+  - `objectif` (350 boîtes, l'équilibre du tirage dans le cas pessimiste,
+    skill `business-modele` § 3), `reservees` et `reservees_au` : la barre
+    d'avancement. **À mettre à jour à la main** depuis les réservations
+    reçues, avec la date.
+  - **Une réservation n'est pas une recette** (skill `business-modele` § 6) :
+    une partie des réservations ne sera pas payée. L'impression part sur
+    les paiements reçus, pas sur le compteur.
 - **`docs/merci-commande.md`** : le retour après le paiement, hors des moteurs
-  de recherche (`noindex: true`, lu par `_includes/head-custom.html`).
+  de recherche (`noindex: true`, lu par `_includes/head-custom.html`). Il
+  lit l'objectif, la date limite et le délai dans l'en-tête de
+  `commander.md`.
 - Liée depuis la règle du jeu. En français seulement pour l'instant : des
   clients au Luxembourg et en Allemagne demanderont l'allemand.
 

@@ -51,7 +51,7 @@ Ce que ces chiffres montrent :
 - **Une animation à 200 € rapporte autant que 20 boîtes**, sans stock ni
   impression. C'est la recette la plus sûre de la saison.
 - **Une boîte vendue en librairie rapporte 30 à 40 % de moins.** La saison 1
-  compte sur la vente directe : stands, écoles, liste d'attente.
+  compte sur la vente directe : stands, écoles, réservations en ligne.
 
 ## 3. L'ordre dans lequel l'argent arrive
 
@@ -61,10 +61,12 @@ est donc :
 1. **Les animations d'abord.** On joue avec des cartes imprimées depuis
    `cartes-imprimables/` ou des prototypes. Il n'y a ni stock ni essais EN 71
    à faire, et la commune paie.
-2. **La liste d'attente à chaque événement**, avec un QR code vers la page
-   Commander. Elle mesure la demande.
-3. **Les précommandes**, quand le statut est en place. Le tirage part quand
-   précommandes et recettes d'animation couvrent l'avance (skill § 4).
+2. **Les réservations sans paiement**, en ligne depuis le 2026-11-01 sur la
+   page Commander, et à chaque événement avec un QR code vers cette page.
+   Elles mesurent la demande, avec un objectif de 350 boîtes.
+3. **Les précommandes payées**, quand le statut est en place. Le tirage part
+   quand les paiements reçus et les recettes d'animation couvrent l'avance
+   (skill § 4).
 4. **La vente des boîtes** aux stands suivants et en ligne.
 
 **Préalable à toute recette, animation comprise : le statut.** Facturer une

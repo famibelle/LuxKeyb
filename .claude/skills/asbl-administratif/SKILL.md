@@ -1,6 +1,6 @@
 ---
 name: asbl-administratif
-description: Structure juridique et administratif de LuxKeyb — créer l'asbl (loi du 7 août 2023), statuts, dépôt au RCS, compte bancaire, droits sur les visuels et la marque, facturer une commune, TVA et franchise, comptabilité et comptes annuels, assurance, données personnelles (liste d'attente, contacts, photos d'enfants), rangement des pièces hors du dépôt public. À utiliser quand on parle de créer l'association, de statut, de statuts, de facture, de devis, de bon de commande, de TVA, de comptabilité, d'assurance, de RGPD, d'autorisation d'établissement, ou avant toute première recette (animation, vente, subvention).
+description: Structure juridique et administratif de LuxKeyb — créer l'asbl (loi du 7 août 2023), statuts, dépôt au RCS, compte bancaire, droits sur les visuels et la marque, facturer une commune, TVA et franchise, comptabilité et comptes annuels, assurance, données personnelles (réservations, contacts, photos d'enfants), rangement des pièces hors du dépôt public. À utiliser quand on parle de créer l'association, de statut, de statuts, de facture, de devis, de bon de commande, de TVA, de comptabilité, d'assurance, de RGPD, d'autorisation d'établissement, ou avant toute première recette (animation, vente, subvention).
 ---
 
 # ASBL et administratif — LuxKeyb
@@ -176,7 +176,7 @@ en rappelant le numéro de facture.
 
 | Données | Règle |
 |---|---|
-| **Liste d'attente** (e-mail, pays, intérêt) | consentement au moment de l'inscription, un seul e-mail à l'ouverture, puis effacement (`BOUTIQUE-CARTES.md` § 8). Sur papier, la feuille porte la même phrase. |
+| **Réservations** (e-mail, pays, nombre de boîtes, mode de réception) | consentement au moment de la réservation ; des e-mails seulement pour confirmer, payer et livrer ; effacement après la livraison, ou tout de suite si le projet n'aboutit pas (`docs/commander.md`, `BOUTIQUE-CARTES.md` § 8). Sur papier, la feuille porte la même phrase. |
 | **Contacts dans les communes** (nom, fonction, e-mail, téléphone) | dans `prospection/` seulement (§ 8), jamais dans le dépôt public |
 | **Photos d'enfants** | jamais sans **autorisation écrite des parents**. Par défaut, photographier les mains et les cartes, pas les visages. |
 | **Listes de présence** (pour un bilan ou une subvention) | compter les participants plutôt que les nommer. Si un financeur exige des noms, les garder dans `administratif/` et les effacer après le contrôle. |

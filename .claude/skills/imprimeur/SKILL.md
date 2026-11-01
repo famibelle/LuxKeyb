@@ -407,7 +407,7 @@ les boîtes existent :
 - le flyer triptyque existant
   (`LuxKeybPlayStore/graphics/flyer-triptyque/`, PDF et source HTML) ;
 - **une affiche A3, à créer** selon `docs/charte-graphique.html`, avec deux
-  QR codes : la liste d'attente
+  QR codes : la réservation
   (`https://famibelle.github.io/LuxKeyb/commander.html`) et l'installation
   de l'appli. Tester le scan sur l'épreuve imprimée, comme au § 2 ;
 - un kakemono plus tard, si les stands se multiplient.

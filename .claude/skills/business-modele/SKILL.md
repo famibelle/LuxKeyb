@@ -167,7 +167,7 @@ L'offset demande d'avancer 600 à 4 500 € par produit. L'impression à la dema
 **c'est la précommande qui paie le tirage** :
 
 1. La page Commander prend des précommandes au **prix cible**, avec un délai
-   annoncé. La liste d'attente actuelle en est la première étape : elle mesure
+   annoncé. Les réservations sans paiement en sont la première étape : elles mesurent
    la demande.
 2. Le tirage part quand les précommandes, plus la trésorerie hors réserve,
    couvrent **l'avance du tirage et les frais fixes du produit**. Le seuil de
@@ -183,9 +183,11 @@ lieu, et la rétractation de 14 jours. Une plateforme de financement
 participatif en mode « tout ou rien » fait la même chose, contre une
 commission à vérifier.
 
-Ce choix modifie la décision du 2026-10-28 (impression à la demande pour la
-boutique, `BOUTIQUE-CARTES.md` § 1). **Le propriétaire tranche** : la skill
-présente l'écart, elle ne réécrit pas la note seule.
+**Décidé le 2026-11-01** : la boutique passe à la précommande
+(`BOUTIQUE-CARTES.md` § 1 et § 9). La page Commander prend d'abord des
+**réservations sans paiement**, avec un objectif de 350 boîtes, puis des
+précommandes payées une fois l'asbl en place. Une réservation mesure la
+demande, mais elle n'est pas une recette (§ 6).
 
 ---
 
@@ -268,7 +270,7 @@ impression, et une seule à 200 € vaut 20 boîtes. La saison 1 est dans
 encaissées ou précommandées, les animations sous bon de commande signé
 (skill `animations-communes` § 4), et les subventions notifiées par écrit
 (skill `subventions` § 0). Une subvention demandée, une animation promise
-oralement ou une liste d'attente ne sont pas des recettes.
+oralement ou une réservation sans paiement ne sont pas des recettes.
 
 L'ordre du surplus : réserve, puis rémunération, puis réinvestissement. Si une
 mauvaise période entame la réserve, le développement s'arrête avant la
