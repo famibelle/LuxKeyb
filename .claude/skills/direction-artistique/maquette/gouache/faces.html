@@ -1,0 +1,227 @@
+<!doctype html><meta charset="utf-8"><body>
+<script src="moteur.js"></script><script src="lieux.js"></script><script src="breedewee.js"></script>
+<script src="peint.js"></script><script src="vives.js"></script><script src="bus.js"></script>
+<script>
+// La carte « Bus » (commune, le matin, à la Rout Bréck) en gouache vive :
+// la fenêtre entière, décor en trois cartons puis le dessin du mot, à la
+// place exacte de la fenêtre dans le recto à 300 dpi.
+const X = 69.25 + 32 * 2.2545, Y = 59 + 34.12 * 2.2545, U = 2.36 * 2.2545;
+const W = Math.ceil(100 * U), HH = Math.ceil(66 * U);
+let P = VIVES[0];
+
+// Copie de Peintre.routBreck(), avec deux nuages de papier peint dans la
+// bande du haut, la seule que le dessin laisse voir.
+Peintre.prototype.routBreck = function () {
+  const P = this.P, mix = melange, r = Alea(4);
+  this.nuagePeint(58, 2.5, 15);
+  this.nuagePeint(80, 8, 10);
+  const fl = mix(P.loin, P.cielBas, 0.25);
+  const tours = [8, 4, 15, 13, 3, 11, 18, 5, 19, 26, 3.4, 13, 31, 4.2, 16, 86, 4, 12, 92, 3, 9];
+  for (let i = 0; i < tours.length; i += 3) {
+    const x = tours[i], w = tours[i + 1], h = tours[i + 2];
+    this.rect(x, 38 - h, w, h, fl);
+    if (P.allume) for (let y = 40 - h; y < 36; y += 2.2) if (r() < 0.55) this.rect(x + 0.8, y, w - 1.6, 0.5, P.fenetre, 0.7);
+  }
+  this.crete(37, 1.6, 6, P.loin);
+  this.plan(1);
+  this.forme('M0 66L0 38C14 40 28 50 42 62L42 66Z', P.milieu);
+  this.forme('M100 66L100 39C86 41 72 50 58 62L58 66Z', P.milieu);
+  this.bosquet(0, 40, 46, 2.2, 7, mix(P.milieu, P.pres, 0.45));
+  this.bosquet(60, 100, 47, 2.2, 8, mix(P.milieu, P.pres, 0.45));
+  this.plan(2);
+  this.rect(0, 58, 100, 8, P.pres);
+  this.bosquet(34, 66, 60, 2, 9, P.sol);
+  const rouge = [0xFFE8432E, 0xFFE0482F, 0xFFB8323A, 0xFF8A2433].map(hx)[P.rang];
+  const rc = mix(rouge, 0xFFFFFFFF, 0.25);
+  for (const x of [17, 41, 65, 89]) {
+    this.trait(`M${x - 5.5} 33.5L${x} 61L${x + 5.5} 33.5`, rouge, 1.5);
+    this.trait(`M${x - 0.4} 33.5L${x} 61`, mix(rouge, 0xFF000000, 0.3), 0.5);
+  }
+  this.rect(-1, 30, 102, 3.6, rouge);
+  rectNet.call(this, -1, 30, 102, 0.7, rc);
+};
+
+
+// Les coulisses des rares (Peintre.coulisses) : deux arbres sombres sur les côtés.
+const FEUILLES = [0, 12, 7.5, 6, 9.5, 6, 11, 13, 4.6, 14.5, 17.5, 3.4, 2, 19.5, 6.5, 8, 21, 4.6, 1, 27, 5.5, 5.5, 29.5, 3.6, 11.5, 25, 2.8];
+Peintre.prototype.coulisses = function () {
+  const P = this.P;
+  const feuillage = melange(P.pres, 0xFF000000, P.nuit ? 0.25 : 0.38), tronc = melange(P.sol, 0xFF000000, 0.3);
+  for (const droite of [false, true]) {
+    const x = v => droite ? 100 - v : v;
+    this.forme(`M${x(0.6)} 66L${x(1.8)} 34L${x(3.4)} 26L${x(4.6)} 35L${x(5.6)} 66Z`, tronc);
+    this.trait(`M${x(3.8)} 39Q${x(8.5)} 35 ${x(12.5)} 28.5`, tronc, 1);
+    const r = Alea(droite ? 62 : 61);
+    // Le feuillage d'un seul carton : tous les ronds réunis, peints d'un coup.
+    const f = new Path2D();
+    for (let i = 0; i < FEUILLES.length; i += 3) {
+      const rr = FEUILLES[i + 2] * (0.9 + 0.2 * r());
+      f.moveTo(x(FEUILLES[i]) + rr, FEUILLES[i + 1]); f.arc(x(FEUILLES[i]), FEUILLES[i + 1], rr, 0, Math.PI * 2);
+    }
+    this.peint(f, feuillage, -0.6, droite ? [86, 4, 101, 34] : [-1, 4, 14, 34], 0.8, true);
+  }
+};
+
+const NACRES = [['#FFFFFF', '#EBE7EF', '#CDD5DF'], ['#FFFAF0', '#F6E5CC', '#DCC19C'], ['#FFF4EE', '#F3D6CF', '#D8A9A8'], ['#FFFBEE', '#F6E6B6', '#D9B766']];
+const ENCRES = ['127,138,150', '140,106,72', '107,74,92', '91,74,42'];
+const HALOS = [['255,255,255', 107], ['255,255,255', 115], ['255,224,176', 110], ['255,233,168', 64]];
+
+function toile() { const c = document.createElement('canvas'); c.width = W; c.height = HH; return c; }
+function calque(seul, ciel, lieu, coulisses = false) {
+  const t = toile(), c = t.getContext('2d'); c.scale(U, U);
+  const p = new Peintre(c, P, seul);
+  p.gouache = true;
+  if (ciel) p.cielPeint();
+  if (coulisses) p.coulisses(); else if (lieu) p.routBreck();
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  return t;
+}
+function silhouette(src, col = '#000') {
+  const t = toile(), c = t.getContext('2d');
+  c.drawImage(src, 0, 0); c.globalCompositeOperation = 'source-in'; c.fillStyle = col; c.fillRect(0, 0, W, HH); return t;
+}
+function eclaircir(b, forme, vers, t) {
+  const c = b.getContext('2d'); c.globalCompositeOperation = 'source-atop'; c.drawImage(silhouette(forme, css(vers, t)), 0, 0);
+  c.globalCompositeOperation = 'source-over';
+}
+function ombrer(derriere, forme, ecart, force) {
+  const o = toile(), oc = o.getContext('2d');
+  oc.filter = `blur(${1.1 * U * ecart * 0.6}px)`; oc.drawImage(silhouette(forme, '#0B1020'), 0, -0.55 * U * ecart);
+  const c = derriere.getContext('2d'); c.globalAlpha = (P.nuit ? 0.55 : 0.38) * force;
+  c.globalCompositeOperation = 'source-atop'; c.drawImage(o, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+}
+function trancher(b, forme, force = 1) {
+  const col = melange(P.cielBas, 0xFFFFFFFF, P.nuit ? 0.3 : 0.6);
+  const c = b.getContext('2d'); c.globalAlpha = (P.nuit ? 0.45 : 0.7) * force; c.globalCompositeOperation = 'destination-over';
+  c.drawImage(silhouette(forme, css(col)), 0, -Math.max(1, 0.3 * U)); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+}
+
+function sujet(c, variante = 'bois', face = 'nacre') {
+  const n = TRACE_BUS.match(/-?\d*\.?\d+/g).map(Number);
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  for (let i = 0; i + 1 < n.length; i += 2) { x0 = Math.min(x0, n[i]); x1 = Math.max(x1, n[i]); y0 = Math.min(y0, n[i + 1]); y1 = Math.max(y1, n[i + 1]); }
+  const e = Math.min(46 / (y1 - y0), 66 / (x1 - x0));
+  const cx = 50, cy = 59 - 23 - 0.5;
+  const w = (x1 - x0) * e, h = (y1 - y0) * e, L0 = cx - w / 2, T0 = cy - h / 2;
+  const trace = new Path2D(), m = new DOMMatrix().translate(cx, cy).scale(e).translate(-(x0 + x1) / 2, -(y0 + y1) / 2);
+  trace.addPath(new Path2D(TRACE_BUS), m);
+  const [hc, ho] = HALOS[P.rang];
+  const hx_ = cx, hy = T0 + h / 2 - 0.16 * h, hr = Math.min(0.87 * Math.max(w, h), 40);
+  c.save(); c.translate(hx_, hy); c.scale(1, 24 / 27); c.translate(-hx_, -hy);
+  const g = c.createRadialGradient(hx_, hy, 0, hx_, hy, hr);
+  g.addColorStop(0, `rgba(${hc},${ho / 255})`); g.addColorStop(1, `rgba(${hc},0)`);
+  c.fillStyle = g; c.beginPath(); c.arc(hx_, hy, hr, 0, 7); c.fill(); c.restore();
+  // La pancarte sur son pied, selon la matière du pied.
+  const nc = NACRES[P.rang];
+  const METAUX = [['#B9C0C4', '#7E878C', '#454C50'], ['#E3B475', '#B07C3C', '#68441A'], ['#F2F6F9', '#B9C4CE', '#6E7C88'], ['#FFF0BC', '#E0B74E', '#8E6216']];
+  const met = METAUX[P.rang];
+  const SOL = 62.6;
+  // L'ombre du socle.
+  c.fillStyle = `rgba(0,0,0,${P.nuit ? 0.4 : 0.28})`;
+  c.beginPath(); c.ellipse(cx, SOL + 0.6, variante === 'bois' ? 9.5 : 7, 1.5, 0, 0, 7); c.fill();
+  let bord1, bord2;
+  if (variante === 'bois') {
+    const pied = 4, px0 = cx - pied / 2;
+    const bois = P.nuit ? hx(0xFF5E4A3A) : P.allume ? hx(0xFF7E5340) : hx(0xFF9A6A3C);
+    const peintre = new Peintre(c, P);
+    peintre.peint(`M${px0} ${cy}L${px0 + pied} ${cy}L${px0 + pied} ${SOL}L${px0} ${SOL}Z`, bois, Math.PI / 2, [px0, cy, px0 + pied, SOL], 1);
+    peintre.peint(`M${cx - 7.5} ${SOL - 1.8}L${cx + 7.5} ${SOL - 1.8}L${cx + 8.2} ${SOL + 0.6}L${cx - 8.2} ${SOL + 0.6}Z`,
+      melange(bois, 0xFF000000, 0.18), 0, [cx - 8.2, SOL - 1.8, cx + 8.2, SOL + 0.6], 1);
+    for (const sx of [-1, 1])
+      peintre.peint(`M${cx + sx * 2} ${SOL - 1.8}L${cx + sx * 2} ${SOL - 6}L${cx + sx * 5.8} ${SOL - 1.8}Z`, melange(bois, 0xFF000000, 0.1), 0, null, 0.6);
+    bord1 = P.nuit ? '#4A3624' : '#7A5532'; bord2 = P.nuit ? '#6A5038' : '#A07A50';
+  } else {
+    // Une tige ronde et un socle en disque, comme un présentoir.
+    const tige = variante === 'verre' ? 2.2 : 1.6, tx = cx - tige / 2;
+    const cyl = (cols, alpha = 1) => {
+      const g = c.createLinearGradient(tx, 0, tx + tige, 0);
+      g.addColorStop(0, cols[1]); g.addColorStop(0.35, cols[0]); g.addColorStop(1, cols[2]);
+      c.globalAlpha = alpha; c.fillStyle = g;
+    };
+    const disque = (cols, alpha = 1) => {
+      // Le socle : un disque plat et un petit dôme qui reçoit la tige.
+      const g = c.createLinearGradient(0, SOL - 2.2, 0, SOL + 0.6);
+      g.addColorStop(0, cols[0]); g.addColorStop(0.5, cols[1]); g.addColorStop(1, cols[2]);
+      c.globalAlpha = alpha; c.fillStyle = g;
+      c.beginPath(); c.ellipse(cx, SOL - 0.4, 6, 1.4, 0, 0, 7); c.fill();
+      c.beginPath(); c.ellipse(cx, SOL - 1.3, 2.4, 1.2, 0, Math.PI, 0); c.fill();
+    };
+    if (variante === 'metal') {
+      cyl(met); c.fillRect(tx, cy, tige, SOL - 1.3 - cy); disque(met); c.globalAlpha = 1;
+      bord1 = met[2]; bord2 = met[1];
+    } else if (variante === 'nacre') {
+      cyl([nc[0], nc[1], nc[2]]); c.fillRect(tx, cy, tige + 0.4, SOL - 1.3 - cy); disque([nc[0], nc[1], nc[2]]); c.globalAlpha = 1;
+      c.strokeStyle = `rgba(${ENCRES[P.rang]},0.6)`; c.lineWidth = 0.3; c.strokeRect(tx, cy, tige + 0.4, SOL - 1.3 - cy);
+      bord1 = css(melange(hx(parseInt('FF' + nc[2].slice(1), 16)), 0xFF000000, 0.25)); bord2 = nc[2];
+    } else {
+      // Le verre : presque transparent, un reflet vif sur le bord gauche.
+      c.fillStyle = 'rgba(255,255,255,0.22)'; c.fillRect(tx, cy, tige, SOL - 1.3 - cy);
+      c.fillStyle = 'rgba(255,255,255,0.75)'; c.fillRect(tx + 0.25, cy, 0.35, SOL - 1.3 - cy);
+      c.strokeStyle = 'rgba(255,255,255,0.45)'; c.lineWidth = 0.18; c.strokeRect(tx, cy, tige, SOL - 1.3 - cy);
+      disque(['#FFFFFF', '#DDEBF3', '#AFC3D0'], 0.45); c.globalAlpha = 1;
+      c.fillStyle = 'rgba(255,255,255,0.8)'; c.beginPath(); c.ellipse(cx - 2, SOL - 0.9, 2.5, 0.25, 0, 0, 7); c.fill();
+      bord1 = css(melange(hx(parseInt('FF' + nc[2].slice(1), 16)), 0xFF000000, 0.25)); bord2 = nc[2];
+    }
+  }
+  c.save(); c.translate(0.9, 1.3); c.fillStyle = `rgba(0,0,0,${P.nuit ? 0.45 : 0.30})`; c.fill(trace, 'evenodd'); c.restore();
+  for (let k = 5; k >= 1; k--) {
+    c.save(); c.translate(0.12 * k, 0.16 * k);
+    c.fillStyle = k === 5 ? bord1 : bord2; c.fill(trace, 'evenodd'); c.restore();
+  }
+  // La face : nacre de l'heure, métal plein du palier, ou nacre teintée du métal.
+  const hex = v => hx(parseInt('FF' + v.slice(1), 16));
+  let stops = nc, trait = `rgba(${ENCRES[P.rang]},0.78)`;
+  if (face === 'metal') {
+    stops = [met[0], met[1], met[2]];
+    trait = 'rgba(30,24,16,0.7)';
+  } else if (face === 'teinte') {
+    stops = [css(melange(hex(nc[0]), hex(met[0]), 0.35)), css(melange(hex(nc[1]), hex(met[1]), 0.4)), css(melange(hex(nc[2]), hex(met[2]), 0.3))];
+  }
+  const nacre = c.createLinearGradient(L0, T0, L0 + w * 0.7, T0 + h);
+  nacre.addColorStop(0, stops[0]); nacre.addColorStop(0.55, stops[1]); nacre.addColorStop(1, stops[2]);
+  c.fillStyle = nacre; c.fill(trace, 'evenodd');
+  if (face === 'metal') {
+    // Le reflet du métal poli : une bande claire en travers.
+    c.save(); c.clip(trace, 'evenodd');
+    const r = c.createLinearGradient(L0, T0, L0 + w, T0 + h);
+    r.addColorStop(0.28, 'rgba(255,255,255,0)'); r.addColorStop(0.36, 'rgba(255,255,255,0.45)'); r.addColorStop(0.44, 'rgba(255,255,255,0)');
+    c.fillStyle = r; c.fillRect(L0, T0, w, h); c.restore();
+  }
+  c.strokeStyle = trait; c.lineWidth = 0.35; c.lineJoin = 'round'; c.stroke(trace);
+}
+
+function fenetre(rang, variante, face) {
+  P = VIVES[rang];
+  const n = rang >= 2 ? 4 : 3;
+  const fond = calque(0, true, false), loin = calque(0, false, true);
+  const couches = [fond, calque(1, false, true), calque(2, false, true)];
+  if (n === 4) couches.push(calque(-1, false, false, true));
+  const formes = [loin, ...couches.slice(1)].map(s => silhouette(s));
+  ombrer(fond, formes[0], 1, 0.35); trancher(loin, formes[0], 0.6); fond.getContext('2d').drawImage(loin, 0, 0);
+  eclaircir(fond, formes[0], P.cielBas, 0.30); eclaircir(couches[1], formes[1], P.cielBas, 0.10);
+  for (let d = 1; d < couches.length; d++) {
+    for (let b = 0; b < d; b++) ombrer(couches[b], formes[d], d - b, b === 0 ? 0.6 : 1);
+    trancher(couches[d], formes[d]);
+  }
+  const t = toile(), c = t.getContext('2d');
+  couches.forEach(b => c.drawImage(b, 0, 0));
+  c.save(); c.scale(U, U); sujet(c, variante, face); c.restore();
+  return t;
+}
+
+// Deux faces × quatre paliers, chacun à son heure ; pied et bord en métal du palier.
+const FACES = [['metal', 'A · métal plein'], ['teinte', 'B · nacre teintée']];
+const PALIERS = [[0, 'commune · acier'], [1, 'peu commune · bronze'], [2, 'rare · argent'], [3, 'très rare · or']];
+const g = document.createElement('canvas'), m = 20, lh = 34, k = 0.62;
+const w2 = Math.round(W * k), h2 = Math.round(HH * k);
+g.width = 4 * w2 + 5 * m; g.height = 2 * (h2 + lh) + 3 * m + 10;
+const gc = g.getContext('2d');
+gc.fillStyle = '#E6E6E6'; gc.fillRect(0, 0, g.width, g.height);
+FACES.forEach(([f, nomF], j) => PALIERS.forEach(([rang, nomP], i) => {
+  const x = m + i * (w2 + m), y = m + j * (h2 + lh + m);
+  gc.fillStyle = '#222'; gc.font = 'bold 18px sans-serif'; gc.fillText(`${nomF} · ${nomP}`, x, y + 22);
+  gc.save(); gc.beginPath(); gc.roundRect(x, y + lh, w2, h2, 14); gc.clip();
+  gc.drawImage(fenetre(rang, 'metal', f), x, y + lh, w2, h2); gc.restore();
+}));
+window.SORTIE = g.toDataURL('image/png');
+</script>

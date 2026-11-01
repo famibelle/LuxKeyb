@@ -19,7 +19,9 @@ Peintre.prototype.kraft = function () {
 
 // Une pièce de carton peint. [dir] : l'angle des coups de pinceau (0 :
 // horizontaux, π/2 : verticaux). [boite] : où semer les coups.
-Peintre.prototype.peint = function (d, col, dir = 0, boite = null, ombre = 1) {
+// [union] : une forme faite de plusieurs morceaux qui se chevauchent (un
+// feuillage de ronds) ; son bord de carton se pose à l'extérieur seulement.
+Peintre.prototype.peint = function (d, col, dir = 0, boite = null, ombre = 1, union = false) {
   if (!this.actif) return;
   const c = this.c, k = c.getTransform().a, P = this.P;
   const path = typeof d === 'string' ? new Path2D(d) : d;
@@ -30,6 +32,7 @@ Peintre.prototype.peint = function (d, col, dir = 0, boite = null, ombre = 1) {
   c.shadowColor = `rgba(11,16,32,${(P.nuit ? 0.5 : 0.32) * ombre})`;
   c.shadowBlur = 1.1 * k; c.shadowOffsetY = -0.55 * k;
   c.fillStyle = css(kraft); c.fill(path);
+  if (union) { c.strokeStyle = css(kraft); c.lineWidth = 0.9; c.stroke(path); }
   c.restore();
   // 2. La gouache, dans la pièce seulement.
   c.save();
@@ -57,6 +60,7 @@ Peintre.prototype.peint = function (d, col, dir = 0, boite = null, ombre = 1) {
       c.stroke();
     }
   }
+  if (union) { c.restore(); return; }
   // 4. Le bord sec : le pinceau n'a pas couvert jusqu'à la découpe, le
   // carton reparaît par endroits.
   c.setLineDash([0.6 + r() * 1.4, 0.4 + r() * 1.2, 1.5 + r(), 0.8, 0.3, 1.1]);

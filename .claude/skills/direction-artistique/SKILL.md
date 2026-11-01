@@ -1,6 +1,6 @@
 ---
 name: direction-artistique
-description: Direction artistique de LuxKeyb — la ligne visuelle des cartes et de leurs décors, en particulier le « théâtre de papier » (décor en cartons découpés superposés, parallaxe multi-plans dans la fenêtre de la carte). À utiliser quand on discute de l'univers visuel, du style des paysages et des décors, de la profondeur et du mouvement dans la fenêtre d'une carte (inclinaison, parallaxe, profondeur de champ), quand on dessine un nouveau lieu ou un nouveau plan de décor, quand on ajoute une animation au décor, ou quand on se demande si un choix graphique « fait LuxKeyb ». Couvre la direction décidée le 2026-11-01 : couleurs vives peintes à la gouache sur carton, et le dessin du mot en pancarte sur un pied.
+description: Direction artistique de LuxKeyb — la ligne visuelle des cartes et de leurs décors, en particulier le « théâtre de papier » (décor en cartons découpés superposés, parallaxe multi-plans dans la fenêtre de la carte). À utiliser quand on discute de l'univers visuel, du style des paysages et des décors, de la profondeur et du mouvement dans la fenêtre d'une carte (inclinaison, parallaxe, profondeur de champ), quand on dessine un nouveau lieu ou un nouveau plan de décor, quand on ajoute une animation au décor, ou quand on se demande si un choix graphique « fait LuxKeyb ». Couvre la direction décidée le 2026-11-01 : couleurs vives peintes à la gouache sur carton, et le dessin du mot en plaque épaisse sur un pied de métal, dont seule la lumière bouge.
 ---
 
 # Direction artistique — le théâtre de papier
@@ -152,20 +152,33 @@ exacte de la fenêtre d'un recto imprimé à 300 dpi.
   Grund (rose, jaune, bleu, vert, orange) et un lierre vert fleuri retombe
   de l'arche.
 
-**Le dessin du mot devient une pancarte** (`pancarte.html`, carte « Bus ») :
+**Le dessin du mot devient une plaque sur un pied** (`maquette/gouache/`,
+carte « Bus » : `pancarte.html` pour la fenêtre, `anim.html` et `anim.js`
+pour l'inclinaison). Décisions du propriétaire, du 2026-11-01 :
 
-- la silhouette est un **carton découpé** : son épaisseur se voit en brun
-  sur le bord, et elle porte une ombre sur le décor ;
-- la **face reste en nacre** (décision du propriétaire) : c'est elle qui fait
-  ressortir le mot sur un fond coloré ;
-- elle est montée sur une **tige de bois peinte**, cachée derrière elle à
-  partir de son centre, qui descend jusqu'à un **socle** (une planche et
-  deux équerres) posé sur le plancher, avec son ombre au sol. L'ombre qui
-  flottait sous le dessin disparaît ;
-- **elle se balance légèrement sur son pied** quand on penche la carte
-  (décision du propriétaire). C'est une réponse au geste, pas un mouvement
-  autonome (règle 7) ; coupée avec les animations du système ;
-- **la hauteur du socle se juge sur les vrais dessins** : sur un dessin haut
+- **Une plaque épaisse, fixe.** La silhouette est une plaque d'environ 1,3
+  unité d'épaisseur : sa tranche se voit en bas à droite, plus sombre vers
+  l'arrière, et elle porte une ombre sur le décor. **Elle ne bouge pas** :
+  ni balancement ni épaisseur qui change de côté (le balancement, essayé,
+  a été écarté). Le volume se comprend par le dessin et par la lumière.
+- **Seule la lumière bouge à l'inclinaison** : un reflet en bande traverse
+  la face quand on penche le téléphone (plus vif sur le métal plein, absent
+  aux fortes inclinaisons), le chanfrein du bord de la face s'éclaire du
+  côté de la source, qui tourne avec le geste, et un éclat glisse le long
+  de la tige et sur le socle. Le décor, lui, continue de glisser carton par
+  carton derrière.
+- **Le pied et le bord dans le métal du palier**, comme le cadre : acier
+  (commune), bronze (peu commune), argent (rare), or (très rare). Une tige
+  fine et un socle rond, comme un présentoir de bijou, posé sur le plancher
+  avec son ombre. Le pied en bois peint, essayé d'abord, jurait avec la
+  nacre ; le verre faisait flotter le dessin.
+- **La face suit la même échelle de matière que le support du nom** :
+  nacre teintée du métal (acier, bronze) pour la commune et la peu commune,
+  qu'on voit le plus et qui doivent rester lumineuses et lisibles ; argent
+  et or pleins pour la rare et la très rare (le métal plein sombre, en acier
+  ou en bronze, éteignait le dessin). Proposée et appliquée dans la
+  maquette, à confirmer par le propriétaire.
+- **La hauteur du socle se juge sur les vrais dessins** : sur un dessin haut
   (arbre, personne), on ne verra presque que le socle.
 
 **Le centre est au dessin.** Depuis la 38.0.0, le dessin du mot tient dans
@@ -226,7 +239,7 @@ lui ; sa taille reste à revoir avec le propriétaire).
    perd sous le cadre est une affiche, pas un décor.
 5. **Le mot reste l'acteur.** Le décor ne rivalise jamais avec le dessin du
    mot : pas de détail fort ni de contraste maximal derrière lui. Le dessin
-   est une pancarte de carton à face nacrée, sur un pied planté dans le
+   est une plaque épaisse, fixe, sur un pied de métal posé sur le
    plancher : il est sur la scène, pas collé sur le décor.
 6. **Le cadre de scène reste fixe.** Seul le décor bouge ; le cadre orné est la
    vitre.
@@ -286,8 +299,10 @@ ordre :
    A21s, des textures de pinceau préparées d'avance et posées dans le sens de
    chaque pièce plutôt que des centaines de touches tracées une à une. La
    vignette garde des aplats simples.
-3. La pancarte dans `CadreOrne` (`Enluminure`) : épaisseur, ombre portée,
-   tige, socle, et le balancement à l'inclinaison (`Inclinaison.kt`).
+3. La plaque dans `CadreOrne` (`Enluminure`) : épaisseur et ombre portée
+   dessinées une fois, tige et socle dans le métal du palier, et le reflet
+   qui suit l'inclinaison (`Inclinaison.kt`) ; la plaque elle-même ne bouge
+   pas.
 4. Les retouches lieu par lieu là où la couleur manque, le centre restant
    calme derrière le dessin.
 5. Recalibrer la reconnaissance de la végétation des saisons (`Habillage`),
@@ -306,7 +321,7 @@ Avant de valider un nouveau lieu ou une modification de décor :
 - [ ] Chaque carton s'arrête net sur le plancher, au-dessus du bandeau du nom.
 - [ ] Le lointain s'efface par la couleur ; rien n'est flou.
 - [ ] Le dessin du mot reste ce qu'on voit en premier.
-- [ ] La pancarte est posée : son pied descend jusqu'au socle, sur le plancher.
+- [ ] La plaque est posée et fixe : son pied descend jusqu'au socle, sur le plancher ; seul son reflet bouge à l'inclinaison.
 - [ ] Les couleurs vivent dans la bande du haut et sur les bords, pas derrière le dessin.
 - [ ] En vignette dans la grille, le décor est calme et lisible.
 - [ ] Aux quatre heures, le décor reste lisible (la nuit surtout).
