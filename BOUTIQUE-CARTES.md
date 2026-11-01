@@ -232,7 +232,8 @@ la liste de ce que chacun ajoute.
 ## 8. Avant d'ouvrir : les obligations
 
 Informations générales, **à faire confirmer**, jamais présentées comme
-certaines.
+certaines. Le statut, la TVA, les factures, l'assurance et les données
+personnelles sont détaillés dans la skill `asbl-administratif`.
 
 1. **Statut** : autorisation d'établissement, ou asbl dont la vente est
    accessoire à l'objet (guichet.lu, House of Entrepreneurship). Bloquant :

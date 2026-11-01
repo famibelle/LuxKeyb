@@ -349,6 +349,43 @@ Repris des paquets de cartes du commerce (Panini Adrenalyn XL, examinés le
 **Calendrier Fierkelsmaart (avril 2027)** : marque et statut en novembre,
 fichiers et prototypes décembre–janvier, BAT et série en février.
 
+### Jeux de démonstration et supports de stand (2026-11-01)
+
+Pour les animations et les stands (skill `animations-communes`), avant que
+les boîtes existent :
+
+- **Combien** : 10 jeux de 52 cartes pour un atelier de 16 enfants, un jeu
+  pour deux plus deux de réserve. Les cartes passent dans des mains
+  d'enfants : prévoir d'en remplacer environ un sur cinq par saison
+  (hypothèse).
+- **Deux voies, au choix du propriétaire** :
+  1. **Des prototypes en impression à la demande**, avec la qualité du § 2 :
+     12–20 € le jeu (§ 4), soit environ 120–200 € pour 10. Ils montrent le
+     vrai produit, ce qui compte devant un parent, et servent aussi de BAT.
+  2. **Les PDF de `cartes-imprimables/` imprimés sur carton** chez un
+     imprimeur de proximité : moins cher, mais sans la qualité du § 2. Ils
+     portent la mention « usage scolaire » et ne se présentent pas comme
+     le jeu officiel.
+
+  Recommandation : la voie 1 pour les stands et les ateliers, la voie 2
+  pour les jeux laissés aux écoles.
+- **Un jeu laissé à une bibliothèque ou à une école** après un cycle se
+  compte dans le budget de l'animation ou du dossier de subvention (skill
+  `subventions` § 4). Il n'est pas offert sans être compté.
+- **Le coût des jeux de démonstration** entre dans les frais de lancement de
+  `scripts/modele.py`, dans la skill `business-modele` (`FRAIS_FIXES`), dès
+  que la voie est choisie.
+
+**Supports de stand** :
+
+- le flyer triptyque existant
+  (`LuxKeybPlayStore/graphics/flyer-triptyque/`, PDF et source HTML) ;
+- **une affiche A3, à créer** selon `docs/charte-graphique.html`, avec deux
+  QR codes : la liste d'attente
+  (`https://famibelle.github.io/LuxKeyb/commander.html`) et l'installation
+  de l'appli. Tester le scan sur l'épreuve imprimée, comme au § 2 ;
+- un kakemono plus tard, si les stands se multiplient.
+
 ## 8. Contexte : porteur du projet basé au Luxembourg
 
 - **Choisir un imprimeur dans l'UE** (Cartamundi à Turnhout en Belgique,
@@ -357,16 +394,11 @@ fichiers et prototypes décembre–janvier, BAT et série en février.
   + frais de dédouanement du transporteur à la livraison ; acceptable pour
   un prototype, à éviter pour la série. Cartamundi : ~3 h de route,
   visite/BAT sur place possible.
-- **TVA** : 17 % au Luxembourg. Régime de franchise des petites entreprises
-  (seuil de l'ordre de 50 000 €/an, à vérifier sur guichet.lu) → pas de TVA
-  facturée, mais pas de récupération non plus.
-- **Statut** : une activité commerciale demande en principe une
-  autorisation d'établissement (guichet.lu, Ministère de l'Économie). Une
-  asbl peut vendre si c'est accessoire à son objet (promotion de la langue).
-  Conseil gratuit : House of Entrepreneurship (Chambre de commerce).
+- **Statut, TVA, factures, assurance** : skill `asbl-administratif` (asbl
+  recommandée, franchise de TVA, autorisation d'établissement à vérifier).
 - **Marque** : le BOIP couvre le Benelux, donc le Luxembourg.
-- **Stand** : se renseigner auprès de l'organisateur ou de la commune pour
-  l'emplacement et les éventuelles autorisations de vente.
+- **Stands et animations** : skill `animations-communes` (qui solliciter,
+  emplacement, matériel, autorisations de vente).
 - **Débouchés locaux** : librairies (Ernster, Librairie Alinéa…), écoles via
   enseignants de luxembourgeois, Institut national des langues (INLL),
   boutiques souvenirs.

@@ -280,3 +280,9 @@ banc-emulateur/*.mp4
 
 # Fichiers d impression des cartes (jamais publics)
 impression/
+
+# Démarches et administratif : contacts dans les communes, factures, statuts,
+# dossiers de subvention, autorisations photo. Données personnelles, jamais
+# publiques (skills asbl-administratif et animations-communes).
+administratif/
+prospection/

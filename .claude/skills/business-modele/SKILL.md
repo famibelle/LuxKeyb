@@ -111,6 +111,8 @@ sans les autres.
 | Coffret complet | **29 €** | 35–45 € | écoles, collectionneurs, ceux qui veulent tout |
 | Lot école | **prix public − 30 %** (la commission qu'une librairie aurait prise) : 20 pochettes pour 28 € | 20 pochettes pour 60 € | les classes |
 | Édition luxe (dorure, étui rigide) | **libre** | — | adultes, cadeaux, boutiques souvenirs (§ 7) |
+| Animation (environ 2 h, préparation comprise) | **200 €**, tarif de départ à confirmer (skill `animations-communes` § 2) | — | communes, bibliothèques, maisons relais |
+| Cycle de 4 animations | **800–1 000 €** | — | communes du Gemengepakt |
 
 **Le gratuit fait partie du modèle** : aucune famille n'est exclue du jeu.
 Ce qui se vend, c'est le vrai carton, la boîte prête à jouer et la carte code
@@ -262,6 +264,12 @@ bibliothèques et les maisons relais. Elles rapportent sans stock ni
 impression, et une seule à 200 € vaut 20 boîtes. La saison 1 est dans
 `MODELE-ECONOMIQUE.md` : 5 000 € d'ici avril 2027.
 
+**Seules les recettes sûres comptent dans le palier 1** : les ventes
+encaissées ou précommandées, les animations sous bon de commande signé
+(skill `animations-communes` § 4), et les subventions notifiées par écrit
+(skill `subventions` § 0). Une subvention demandée, une animation promise
+oralement ou une liste d'attente ne sont pas des recettes.
+
 L'ordre du surplus : réserve, puis rémunération, puis réinvestissement. Si une
 mauvaise période entame la réserve, le développement s'arrête avant la
 rémunération. Le modèle ne repose jamais sur du travail gratuit présenté comme
@@ -282,17 +290,15 @@ recettes portent une part des frais fixes :
 - **Les adultes qui apprennent le luxembourgeois** (résidents, frontaliers,
   candidats à la nationalité) : le coffret et les boîtes Niveau A1 et A2 leur
   parlent, à un prix qui n'a pas besoin d'être celui de l'argent de poche.
-- **Les subventions et le mécénat** pour la promotion de la langue, pistes
-  **à vérifier** (éligibilité, montants, calendrier) : ministère de
-  l'Éducation nationale, ministère de la Culture, Fonds culturel national,
-  Œuvre Nationale de Secours Grande-Duchesse Charlotte, communes (écoles,
-  maisons relais). Une subvention baisse le prix du lot école ou finance un
-  tirage. Elle ne paie pas la rémunération de façon durable.
+- **Les subventions et le mécénat** : les sources, leur degré de certitude
+  et la façon d'écrire un dossier sont dans la skill `subventions`. Une
+  subvention baisse le prix du lot école, offre des jeux aux bibliothèques
+  ou finance un tirage. Elle ne paie pas la rémunération de façon durable.
 - **Les commandes groupées** des écoles et des communes, à l'avance (§ 4).
 - **Les animations payées** par les communes, les bibliothèques et les maisons
   relais : jouer avec les cartes, montrer l'appli. C'est la recette la plus
-  sûre du début, car elle ne demande ni tirage ni stock. Le tarif se fixe en
-  demandant aux communes ce qu'elles paient d'habitude.
+  sûre du début, car elle ne demande ni tirage ni stock. Qui solliciter,
+  quoi proposer et à quel tarif : skill `animations-communes`.
 
 ---
 
@@ -331,9 +337,11 @@ mesure (ventes, usage, retours).
 
 ## 10. Ce que cette skill ne fait pas
 
-- Elle ne donne pas de conseil fiscal ni juridique. TVA, statut, sécurité des
-  jouets et précommandes se font confirmer par guichet.lu, l'AED, la House of
-  Entrepreneurship ou un comptable (`BOUTIQUE-CARTES.md` § 8).
+- Elle ne donne pas de conseil fiscal ni juridique. Le statut, la TVA, les
+  factures et l'assurance sont dans la skill `asbl-administratif`. La
+  sécurité des jouets et les précommandes se font confirmer par guichet.lu,
+  l'AED, la House of Entrepreneurship ou un comptable (`BOUTIQUE-CARTES.md`
+  § 8).
 - Elle ne publie aucun prix (site, Stripe, appli, pochette) sans décision
   écrite du propriétaire.
 - Elle ne présente jamais une estimation comme un devis. Chaque chiffre porte

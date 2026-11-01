@@ -69,8 +69,13 @@ est donc :
 
 **Préalable à toute recette, animation comprise : le statut.** Facturer une
 commune ou vendre une boîte demande une autorisation d'établissement ou une
-asbl (`BOUTIQUE-CARTES.md` § 8). Vendre une boîte demande en plus les essais
+asbl (skill `asbl-administratif`). Vendre une boîte demande en plus les essais
 de sécurité des jouets (EN 71).
+
+Démarcher les communes et préparer les animations : skill
+`animations-communes`. Chercher des financements : skill `subventions`. Seules
+les recettes sûres comptent dans le palier 1 : ventes, animations sous bon de
+commande, subventions notifiées par écrit.
 
 ## 4. Ce qui reste à chiffrer
 
