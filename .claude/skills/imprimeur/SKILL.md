@@ -205,6 +205,7 @@ automates, et les deux paquets font **les 52 cartes d'un jeu classique**
 |---|---|---|---|
 | **Boîte de départ** (produit principal) | 54 cartes : 52 à jouer (2 paquets de 26 prêts à jouer) + 2 cartes de règle à la place des jokers | Jouer à deux dès l'ouverture ; sert aussi à la Bataille des mots | 12–15 € |
 | Extension Schoul et Natur | 54 cartes comme la boîte : 2 paquets de 26 (Schoul, Natur) + 2 cartes de règle, ensemble `@E1` | Se joue seule ou avec la boîte ; composer son paquet | comme la boîte |
+| Boîtes Niveau A1 et Niveau A2 | 54 cartes chacune, comme la boîte : Doheem (à la maison) contre Dobaussen (dehors), ensembles `@NA1` (n° 105–156) et `@NA2` (n° 157–208), `scripts/boites_niveaux.py` (2026-11-01) | Apprendre le vocabulaire d'un niveau en jouant ; se joue seule ou avec les autres boîtes | comme la boîte |
 | Paquet de 6 (complément) | 3 C / 2 PC / 1 R ou mieux, voir plus bas | Faire évoluer son paquet, collectionner, échanger | 4 € |
 | Coffret complet | toutes les cartes | Écoles, collectionneurs | 35–45 € |
 
@@ -236,6 +237,17 @@ les fichiers, `candidats.csv` pour remplacer un mot. Verbes et adjectifs
 choisis à la main (listes du script), sens et phrases pris au LOD. La famille
 du jeu est le **genre** du nom (pastille), pas le paysage : la plupart de ces
 mots n'ont pas de champ au carnet et tomberaient tous dans « Stad ».
+
+**Les boîtes de niveau** (2026-11-01, `scripts/boites_niveaux.py`) prennent
+leurs mots dans les séries « Niveau A1 » et « Niveau A2 » de l'appli
+(`Dictionnaires/generate_niveaux.py`) et les rangent Doheem ou Dobaussen par
+leur sens. Aucun mot de B1 ou E1. Le médaillon dit « Doheem A1 » : même
+emblème d'un niveau à l'autre (maison, panneau), le nom dit la boîte.
+**Ne plus relancer `candidats_cartes.py` pour B1 et E1** : depuis les dessins
+du domaine public (2026-10-31), il choisit d'autres mots (Café, Kéis, Mëllech
+remplacés) et décalerait toute la numérotation. Il garde les ensembles qu'il
+n'écrit pas (NA1, NA2). La carte imprime le sens de l'appli en entier : relire
+chaque glose (« Stull » donnait « chaise, selles », « lénks » « gauche, gay »).
 
 **Conséquences pour les cartes :**
 
@@ -312,8 +324,22 @@ un **coffret complet** de 248 cartes à 35–45 € (écoles, impatients).
   Statut (indépendant, asbl) à valider par la Chambre de commerce ou un comptable.
 
 **Emballage** : pochette scellée ou kraft étiquetée ; mentions fabricant et
-adresse, avertissement « ne convient pas aux moins de 3 ans », © et licence
-(voir section 6), crédit LOD/ZLS.
+adresse, © et licence (voir section 6), crédit LOD/ZLS. Pas d'avertissement
+« moins de 3 ans » (propriétaire, 2026-11-01 : pas de petits éléments), sauf
+si le laboratoire le demande. **Rien de provisoire dans un fichier
+d'impression** (même date) : une mention inconnue (éditeur, EAN, lot, CE,
+pays) ne s'imprime pas, le BAT la signale. L'EAN va sous l'étui, barres
+raccourcies.
+
+**Étuis et présentoir** (2026-11-01) : `scripts/emballage.py` dessine l'étui à
+rabats droits de chaque boîte (intérieur 64,5 × 89,5 × 19 mm, à caler sur le
+gabarit de l'imprimeur), même habit que le dos des cartes, une couleur par
+produit (rouge B1, vert E1, bleu NA1, violet NA2), trois vraies cartes en
+éventail ; `scripts/presentoir.py` le présentoir de comptoir (12 étuis en
+4 colonnes, fronton 274 × 190 mm, hauteur 290 mm). Sorties et fiche technique
+dans `impression/emballage/` (`LISEZMOI.md` : matières, montage, mentions à
+compléter : éditeur, EAN GS1 Belgium & Luxembourg, lot, CE). Relancer les deux scripts
+après un nouvel export de rectos.
 
 Repris des paquets de cartes du commerce (Panini Adrenalyn XL, examinés le
 2026-10-27), à demander au devis :
@@ -325,7 +351,7 @@ Repris des paquets de cartes du commerce (Panini Adrenalyn XL, examinés le
   ne doit pas repérer une rare à la lumière ni rouvrir sans trace.
 - **« 6 Kaarten » dans un coin du recto**, l'année de l'édition, et au dos le
   fabricant et son adresse, FSC si le carton l'est, le logo de tri, un
-  **code-barres EAN** (indispensable en librairie, adhésion GS1 Luxembourg),
+  **code-barres EAN** (indispensable en librairie, adhésion GS1 Belgium & Luxembourg),
   les mentions en lb, fr, de, en, pt.
 - **Variantes numérotées** d'une même carte (métal ou dorure différents,
   « 07/50 ») : la rareté par la beauté, jamais par la Force. Demande
