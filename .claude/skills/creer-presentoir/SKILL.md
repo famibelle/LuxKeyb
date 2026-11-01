@@ -14,7 +14,7 @@ imprimées : skill **imprimeur**. Ton et typographie des textes : skill
 ## 1. Ce qu'il est (état du 2026-11-01)
 
 ```
-fronton 274 × 190 mm, glissé par deux pattes de 44 × 30 mm dans le dos
+fronton 282 × 190 mm, glissé par deux pattes de 44 × 30 mm dans le haut du dos
 ┌──────────────────────────────────────┐
 │ LËTZEBUERGESCH CLAVIER · WUERTDUELL   │  titre, accroche, 4 vraies cartes,
 │ 2 joueurs · dès 8 ans · 15 min   QR   │  la règle d'or, les 4 boîtes,
@@ -22,24 +22,30 @@ fronton 274 × 190 mm, glissé par deux pattes de 44 × 30 mm dans le dos
 └──────────────────────────────────────┘
 ┌────────┬────────┬────────┬────────┐   dos 100 mm, double paroi
 │ B1     │ E1     │ NA1    │ NA2    │   3 étuis par colonne, l'un derrière l'autre
-└────────┴────────┴────────┴────────┘   lèvre 40 mm : le nom de chaque boîte
-bac 274 × 60 mm · hauteur montée 290 mm · carton ondulé cannelure E (~2 mm)
+└────────┴────────┴────────┴────────┘   lèvre 40 mm, double paroi : le nom de chaque boîte
+fond 282 × 68 mm · hauteur montée 290 mm · carton ondulé cannelure E (2 mm)
 ```
 
-- **12 étuis**, de face, en **4 colonnes**, une par boîte (ordre `ORDRE` :
-  boîte de départ, extension, Niveau A1, Niveau A2). Une colonne fait 66 mm
-  (l'étui 64,5 mm et du jeu), les cloisons 2 mm.
+- **Montage sans colle ni outil** (propriétaire, 2026-11-01) : le bac se
+  verrouille comme une boîte à pizza. Le dos, la lèvre et chaque flanc ont une
+  seconde paroi qui se rabat à l'intérieur, pattes dans des fentes du fond ;
+  les rabats du dos et de la lèvre sont pris entre les deux parois des
+  flancs ; cloisons et fronton s'enfoncent dans leurs fentes. Il se démonte.
+- **Cotes** : l'intérieur est celui des étuis (4 colonnes de 66 mm, cloisons
+  de 2 mm, 60 mm de profondeur) ; les parois ajoutent leur épaisseur (3 cartons
+  par flanc, 2 au dos et à la lèvre), d'où un fond de 282 × 68 mm.
+- **12 étuis**, de face, en **4 colonnes**, une par boîte (`ORDRE`).
 - **La lèvre de 40 mm** cache le bas des étuis et laisse voir le titre et le
-  haut des cartes de chaque face : c'est ce qui vend. Elle porte le nom de
-  chaque boîte dans sa couleur, et ses deux paquets avec leur emblème.
-- **Le fronton** : le même habit que le dos des cartes (nuit bleue, rosace
-  guillochée, or, filet à perles), WUERTDUELL en EB Garamond, l'accroche
-  « Le duel des mots luxembourgeois », **quatre vraies cartes** (une par
-  boîte, exportées par l'appli), « 2 joueurs · dès 8 ans · 15 min », le QR de
-  `regle-du-jeu.html`, la règle d'or, la légende des quatre couleurs, et une
-  **pastille blanche vide** pour l'étiquette de prix du commerçant.
-- **Trois pièces** : le bac (d'un seul tenant), le fronton, trois cloisons sans
-  impression. Impression recto seul.
+  haut des cartes de chaque face. Elle porte le nom de chaque boîte et ses
+  deux paquets avec leur emblème.
+- **Le fronton** : l'habit du dos des cartes (nuit, rosace, or), WUERTDUELL,
+  l'accroche, **quatre vraies cartes**, « 2 joueurs · dès 8 ans · 15 min », le
+  QR de `regle-du-jeu.html`, la règle d'or, les quatre couleurs, une **pastille
+  blanche vide** pour le prix.
+- **Sous le fond**, la notice en huit lignes, en quatre colonnes entre les
+  fentes des cloisons : on la lit sur le présentoir livré à plat.
+- **Trois pièces** : le bac (d'un seul tenant, 498 × 350 mm à plat), le
+  fronton, trois cloisons sans impression. Impression recto seul.
 
 ## 2. Les scripts
 
@@ -65,14 +71,22 @@ ignoré par git) :
   une pièce par PDF, page 1 le visuel (fond perdu 3 mm), page 2 le tracé seul.
   Un PDF par pièce parce que Chromium donne à toutes les pages la taille de la
   première ;
-- `presentoir_bat.pdf` : les trois pièces sur une planche, tracés, cartouche,
-  notes en magenta ;
-- `presentoir_plat.png`, `presentoir_maquette.png` : aperçus.
+- `presentoir_*_decoupe.{pdf,svg,dxf}` : le tracé seul, pour la découpe. PDF en
+  **tons directs** « Decoupe » (magenta) et « Rainage » (cyan) en
+  surimpression, fait par reportlab ; SVG à deux calques ; DXF en mm (ezdxf).
+  Mêmes cotes et même origine que le visuel. `pip install --user reportlab
+  ezdxf` s'ils manquent (le script prévient et continue sans) ;
+- `presentoir_bat.pdf` : les trois pièces sur une planche, tracés, noms des
+  pièces, cartouche, notes en magenta ;
+- `presentoir_notice.pdf` : la notice A4, une page, huit étapes illustrées ;
+- `presentoir_plat.png`, `presentoir_maquette.png`, `etapes/` : aperçus.
 
 ## 3. Modifier
 
 - **Les cotes** sont en tête de `presentoir.py` (`COL`, `CLOISON`, `NCOL`, `EP`,
-  `PROF`, `LEVRE`, `DOS_H`, `FRONTON_H`, `PATTE_*`). Elles suivent celles de
+  `JEU`, `PI`, `LEVRE`, `DOS_H`, `FRONTON_H`, `PATTE_*`, `RABAT_W`, `LANG_*`,
+  `CLOISON_H`) ; `LE` et `BP` s'en déduisent. `gabarit()` construit toutes les
+  pièces, plis, coupes et fentes, et refuse deux pièces qui se chevauchent. Elles suivent celles de
   l'étui (`E.W`, `E.H`, `E.D` dans `emballage.py`) : si l'imprimeur change le
   gabarit de l'étui, refaire les deux.
 - **Les boîtes présentées** : `ORDRE`. Pour un présentoir d'une seule boîte
@@ -133,10 +147,26 @@ ignoré par git) :
   détouré (police Type 3 refusée par les imprimeurs). Contrôler avec
   `pdffonts` : EB Garamond et Roboto en TrueType incorporé, rien d'autre.
 
+- **Le volume est construit sur le gabarit** (`chaine()`, `construire()`) :
+  chaque pièce tourne autour de son pli, vers −z (l'intérieur du bac posé face
+  imprimée dessous). Le sens se calcule depuis le centre de la pièce, ne pas
+  le coder en dur. Les plis à 180° (secondes parois) et les rabats sont
+  décalés d'une épaisseur de carton (`z`, et le point du pli des rabats) :
+  sinon deux plaques confondues se battent à l'écran.
+- **Les étapes** sont des états (`ETATS` : l'angle de chaque pli, la descente
+  des cloisons et du fronton) et un cadrage chacune (`cadrages`) : le plan à
+  plat demande du recul, le bac monté non. La notice doit tenir sur une page :
+  vérifier `pdfinfo presentoir_notice.pdf`.
+- **L'espace CSS est gaucher** (x à droite, y en bas, z vers l'écran) : le
+  client voit sa droite du côté −x du plan. Les étuis et le fronton sont posés
+  par des matrices (`pose()` : direction x, direction y, origine) ; vérifier à
+  l'œil après tout changement.
+
 ## 6. Contrôler avant de montrer
 
-1. `pdfinfo` : tailles de page = cotes + 6 mm de fond perdu (bac 484 × 346 mm,
-   fronton 280 × 226 mm, cloisons 234 × 71 mm).
+1. `pdfinfo` : tailles de page = cotes + 6 mm de fond perdu (bac 504 × 356 mm,
+   fronton 288 × 226 mm, cloisons 204 × 65 mm) ; le PDF de découpe a les mêmes.
+   `pikepdf` : ses espaces de couleur sont `/Decoupe` et `/Rainage`.
 2. `pdffonts` sur chaque PDF : polices incorporées, aucune Type 3.
 3. Le QR du fronton se relit : `zxingcpp` (installé en `--user`) sur un rendu
    à 300 dpi. Même contrôle pour un EAN sous l'étui. OpenCV ne lit pas
@@ -157,6 +187,8 @@ monté, livraison au Luxembourg, et un prototype avant la série.
 
 ## 8. Pas encore fait
 
+- Un prototype découpé pour de vrai : le jeu des fentes (2,5 mm) et la longueur
+  des pattes (5 mm) sont calculés pour un carton de 2 mm, pas essayés.
 - Les deux cartes de règle de chaque boîte (schéma seulement, `scripts/planche_boite.py`).
 - Le carton d'expédition (12 étuis, un présentoir garni).
 - Une version du présentoir pour une seule boîte (prévue par `ORDRE`, jamais rendue).
