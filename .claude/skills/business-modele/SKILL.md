@@ -55,6 +55,8 @@ magasin au Luxembourg** avant de fixer un prix.
 | Dobble | ~10 € | — | touslesprix.com |
 | Uno | 10 € (catalogue 2021) | — | savoirsplus.fr |
 | Sept familles | 12,90 € (catalogue 2021) | — | savoirsplus.fr |
+| **Défis Nature** (Bioviva), boîte à thème | **~9,20–10,15 €** (13–15 € chez certains revendeurs, port compris) | **~0,27 €** (36 cartes) | achatmoinscher.com, greenweez.com |
+| Défis Nature, le grand jeu | ~36 €, port compris | ~0,47 € (72 + 5 collector) | achatmoinscher.com, auchan.fr |
 
 Non relevés, de mémoire : pochette d'autocollants Panini autour de 1 €,
 booster de cartes à collectionner du commerce autour de 5–6 €.
@@ -67,6 +69,25 @@ Ce qu'on en tire :
 - **Un jeu de cartes pour enfants coûte autour de 10 €** (Uno, Dobble). La
   boîte à 10 € se place là : deux fois un jeu standard, le prix d'un jeu
   illustré. Descendre à 5–7 € demanderait des tirages bien plus grands.
+- **Défis Nature est le concurrent le plus proche** : un jeu de cartes
+  éducatif pour enfants, vendu par thème (animaux, dinosaures, arbres…), en
+  grande surface comme en boutique nature. Il se vend **en boîtes à thème au
+  contenu fixe, sans pochettes au hasard**, et la collection se fait en
+  achetant des thèmes. C'est le modèle de nos boîtes (Déieren et Iessen,
+  Schoul et Natur, Niveau A1, Niveau A2).
+- **Le bon prix de la boîte de 54** se lit entre trois bornes :
+  - **plancher 7,50 €**, sous lequel la librairie fait perdre de l'argent
+    (coût offset 4,50 € au pire, commission 40 %) ;
+  - **repère 10 €**, le prix d'un Défis Nature, d'un Uno ou d'un Dobble ;
+  - **plafond ~15 €**, où nos cartes coûteraient autant à la carte qu'un
+    Défis Nature (54 × 0,27 €), sans avantage à montrer.
+
+  **Le prix retenu est 10 €, ou 9,90 € en rayon** pour passer sous le seuil
+  des 10 €. La marge ne change presque pas : en offset, 5,40 à 6,90 € en
+  vente directe et 1,44 à 3,93 € en librairie. L'argument pour un parent :
+  *le prix d'un Défis Nature, avec la moitié de cartes en plus* (0,19 € la
+  carte contre 0,27 €). À 12 €, chaque boîte rapporterait 1,30 à 2 € de plus,
+  mais cet argument disparaîtrait.
 - **La pochette à 2 € revient à 0,33 € la carte**, trois fois un jeu standard.
   C'est la norme des pochettes à collectionner, où l'on paie la surprise. C'est
   aussi pour ça que la boîte doit rester le moyen le moins cher d'avoir
@@ -86,7 +107,7 @@ ensemble, jamais l'un sans l'autre.
 | Appli, carnet, jeux | **gratuit** | gratuit | tout le monde |
 | PDF à imprimer soi-même (`cartes-imprimables/`) | **gratuit** | gratuit | familles, classes ; usage personnel et scolaire (`LICENSE-VISUELS.md`) |
 | Pochette de 6 cartes | **2 €** | 4 €, 3 pour 10 € | l'argent de poche, la surprise, l'échange |
-| Boîte de 54 (départ, Schoul et Natur, Niveau A1, Niveau A2) | **10 €** | 12–15 € (offset), ~29 € livrée (à la demande) | jouer tout de suite, à deux |
+| Boîte de 54 (départ, Schoul et Natur, Niveau A1, Niveau A2) | **10 €** (9,90 € en rayon, § 1) | 12–15 € (offset), ~29 € livrée (à la demande) | jouer tout de suite, à deux |
 | Coffret complet | **29 €** | 35–45 € | écoles, collectionneurs, ceux qui veulent tout |
 | Lot école | **prix public − 30 %** (la commission qu'une librairie aurait prise) : 20 pochettes pour 28 € | 20 pochettes pour 60 € | les classes |
 | Édition luxe (dorure, étui rigide) | **libre** | — | adultes, cadeaux, boutiques souvenirs (§ 7) |
