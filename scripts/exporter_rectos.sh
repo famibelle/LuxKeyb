@@ -16,7 +16,12 @@ premier_plan() {
     || { echo "premier plan inattendu : $foc"; exit 1; }
 }
 
-for n in $(seq 1 "$1"); do
+# Un feuilletage manqué ré-exporte la même carte : on compte les cartes distinctes, pas
+# les tours, avec dix essais de marge.
+# (N est gardé à part : plus bas, « set -- » remplace $1 par les coordonnées du menu.)
+N=$1; faits=0; essais=0; precedent=""
+while [ "$faits" -lt "$N" ] && [ "$essais" -lt $(( N + 10 )) ]; do
+  essais=$((essais + 1))
   premier_plan
   # Appui long sur « Partager » : le menu d'impression.
   adb shell input swipe 385 2312 385 2312 1500 < /dev/null; sleep 2
@@ -39,6 +44,7 @@ for n in $(seq 1 "$1"); do
   done
   adb exec-out run-as com.potomitan.luxkeyboard cat "cache/images/$f" < /dev/null > "$SORTIE/$nom.png"
   echo "$mot $(stat -c %s "$SORTIE/$nom.png")"
+  [ "$mot" != "$precedent" ] && faits=$((faits + 1)); precedent=$mot
   # Ferme la feuille de partage, puis carte suivante.
   sleep 1; adb shell input keyevent BACK < /dev/null; sleep 2
   premier_plan

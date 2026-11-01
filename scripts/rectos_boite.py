@@ -8,7 +8,7 @@ la chaîne, autour de scripts/exporter_rectos.sh qui pilote l'émulateur :
 
 1. `carnet` écrit un carnet (shared_prefs/carnet_cartes.xml) qui contient les
    52 cartes d'un ensemble de assets/cartes_imprimees.json (B1, la boîte de
-   départ, par défaut ; NA1 et NA2, les boîtes de niveau), numérotées pour que
+   départ, par défaut ; E1, l'extension ; NA1 et NA2, les boîtes de niveau), numérotées pour que
    le tri « Récentes » les range dans l'ordre de la boîte ;
 2. `assembler` range les PNG exportés : fichiers au numéro de la collection,
    liste de contrôle, PDF d'une carte par page en 600 dpi pour l'imprimeur
@@ -44,6 +44,7 @@ COLLECTION = ['B1', 'E1', 'NA1', 'NA2']
 # sélection qui donne nature et sens, le titre de l'aperçu.
 BOITES = {
     'B1': ('boite', 'selection.csv', 'la boîte de 52 cartes'),
+    'E1': ('extension', 'selection.csv', "l'extension"),
     'NA1': ('niveau_a1', 'niveaux.csv', 'la boîte Niveau A1'),
     'NA2': ('niveau_a2', 'niveaux.csv', 'la boîte Niveau A2'),
 }

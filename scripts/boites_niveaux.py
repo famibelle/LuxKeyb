@@ -240,6 +240,21 @@ def main():
         json.dump({'ensembles': actifs}, f, ensure_ascii=False, indent=1)
         f.write('\n')
 
+    # Les paquets se mélangent d'une boîte à l'autre (règle du jeu) : chaque
+    # paquet de niveau contre ceux de la boîte, de l'extension et de l'autre niveau.
+    autres = {}
+    with open(os.path.join(CC.SORTIE, 'selection.csv'), encoding='utf-8') as f:
+        for r in csv.DictReader(f):
+            r['force'], r['cout'] = int(r['force']), int(r['cout'])
+            autres.setdefault(r['ensemble'], []).append(r)
+    tous = {**autres, **{f'{nom} {code}': p for code, ps in boites.items() for nom, p in ps.items()}}
+    niveaux = [f'{nom} {code}' for code in boites for nom in ('Doheem', 'Dobaussen')]
+    adversaires = list(autres) + niveaux
+    croises = ['| Paquet | ' + ' | '.join(adversaires) + ' |', '|---' * (len(adversaires) + 1) + '|']
+    for a in niveaux:
+        croises.append(f'| {a} | ' + ' | '.join(
+            '' if b == a else CC.simuler(tous, a, b).split(' gagne ')[1].split(' des')[0] for b in adversaires) + ' |')
+
     l = ['# Cartes imprimées : les boîtes Niveau A1 et Niveau A2', '',
          'Proposition produite par `scripts/boites_niveaux.py` à partir du vocabulaire des niveaux',
          '(`Dictionnaires/generate_niveaux.py`, LOD CC0). **À relire avant impression.**', '']
@@ -256,6 +271,9 @@ def main():
                 l.append(f"| **{c['mot']}** | {nat} | {CC.SYMBOLES.get(c['cout'], 'gratuit')} | {c['force'] or '—'} "
                          f"| {c['sens']} | {c['dessin'] or '—'} | {ex} |")
             l.append('')
+    l += ['# Rencontres croisées', '',
+          'Part des parties gagnées par le paquet de la ligne (simulation, 4 000 parties par rencontre).', '']
+    l += croises + ['']
     with open(os.path.join(CC.SORTIE, 'niveaux.md'), 'w', encoding='utf-8') as f:
         f.write('\n'.join(l) + '\n')
     for code in boites:

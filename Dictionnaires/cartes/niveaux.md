@@ -139,3 +139,14 @@ Vivier : 74 noms pour Doheem, 93 pour Dobaussen.
 | **fofzeg** | nombre | gratuit | — | 50 | — |  |
 | **honnert** | nombre | gratuit | — | 100 | — |  |
 
+# Rencontres croisées
+
+Part des parties gagnées par le paquet de la ligne (simulation, 4 000 parties par rencontre).
+
+| Paquet | Déieren | Iessen | Schoul | Natur | Doheem A1 | Dobaussen A1 | Doheem A2 | Dobaussen A2 |
+|---|---|---|---|---|---|---|---|---|
+| Doheem A1 | 48% | 49% | 48% | 46% |  | 47% | 49% | 48% |
+| Dobaussen A1 | 52% | 51% | 51% | 49% | 53% |  | 51% | 51% |
+| Doheem A2 | 49% | 49% | 48% | 46% | 50% | 47% |  | 49% |
+| Dobaussen A2 | 50% | 51% | 50% | 47% | 51% | 48% | 51% |  |
+
