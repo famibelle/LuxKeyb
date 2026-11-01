@@ -8,6 +8,7 @@ MODELE-ECONOMIQUE.md avec la date :
     python3 .claude/skills/business-modele/scripts/modele.py
     python3 .claude/skills/business-modele/scripts/modele.py --prix pochette=1.5 boite=8
     python3 .claude/skills/business-modele/scripts/modele.py --collection
+    python3 .claude/skills/business-modele/scripts/modele.py --plan
 
 Aucune dépendance. Les montants sont en euros, TVA comprise tant que la
 franchise s'applique (pas de TVA facturée, rien à reverser).
@@ -61,6 +62,17 @@ EDITIONS = {
     "collection complète (248)": dict(C=140, PC=70, R=30, TR=7, UR=1),
     "édition de 54 (30/16/6/2)": dict(C=30, PC=16, R=6, TR=2, UR=0),
 }
+
+# Saison 1 : ce qu'on vend d'ici la Fierkelsmaart (avril 2027), et ce qu'on
+# veut avoir en caisse à la fin. Sert à --plan (objectif de chiffre d'affaires).
+SAISON = dict(
+    produit="boite",
+    tirage=500,  # boîtes de départ et extensions confondues, un seul tirage offset
+    charges_annuelles=(500, 1500, "comptable, assurance, emplacements… à chiffrer",
+                       "hypothèse"),
+    evenements=(10, 15),  # stands et animations de la saison
+    animation=(100, 200, 300),  # ce qu'une commune paierait : à demander, pas un tarif
+)
 
 # --- Calculs ------------------------------------------------------------------
 
@@ -169,14 +181,65 @@ def collection(prix_force, essais=1500):
     print()
 
 
+def plan(prix_force):
+    """Objectif de chiffre d'affaires de la saison, en trois paliers."""
+    s = SAISON
+    p = PRODUITS[s["produit"]]
+    prix = prix_force.get(s["produit"], p["prix"])
+    n = s["tirage"]
+    cout = p["couts"]["offset"]
+    fixes = total_fixes()
+    avance = (n * cout[0], n * cout[1])
+    charges = s["charges_annuelles"]
+    caisse_max = n * prix
+
+    print(f"Saison 1 : {n} boîtes en offset à {prix:.2f} €, vente directe"
+          f" (le tirage entier vendu rapporte {caisse_max:.0f} €)")
+    print(f"  frais de lancement {fixes[0]}–{fixes[1]} € · avance du tirage"
+          f" {avance[0]:.0f}–{avance[1]:.0f} € · charges d'un an"
+          f" {charges[0]}–{charges[1]} € ({charges[3]} : {charges[2]})\n")
+
+    paliers = [
+        ("1. Équilibre", "lancement, tirage et un an de charges payés",
+         fixes[0] + avance[0] + charges[0], fixes[1] + avance[1] + charges[1]),
+        ("2. Sécurité", "+ une réserve qui paie le prochain tirage",
+         fixes[0] + 2 * avance[0] + charges[0], fixes[1] + 2 * avance[1] + charges[1]),
+    ]
+    for nom, quoi, bas, haut in paliers:
+        ub, uh = bas / prix, haut / prix
+        print(f"  {nom} ({quoi}) : chiffre d'affaires {bas:.0f}–{haut:.0f} €")
+        print(f"    soit {ub:.0f}–{uh:.0f} boîtes ({ub / n:.0%}–{uh / n:.0%} du tirage)")
+        e_min, e_max = s["evenements"]
+        print(f"    sur {e_min}–{e_max} stands ou animations :"
+              f" {ub / e_max:.0f}–{uh / e_min:.0f} boîtes par événement")
+        if haut > caisse_max:
+            manque = haut - caisse_max
+            print(f"    au pire, le tirage ne suffit pas : {manque:.0f} € à trouver"
+                  " ailleurs (animations payées, second tirage)")
+            for prix_anim in s["animation"]:
+                print(f"      avec des animations payées {prix_anim} € :"
+                      f" {manque / prix_anim:.0f} animations")
+    print("  3. Au-delà : rémunération, puis réinvestissement (skill § 6 et § 9)\n")
+    print("  Une boîte vendue en librairie rapporte 30–40 % de moins : il en faut"
+          " d'autant plus.")
+    print("  Une animation payée vaut, en caisse, "
+          + ", ".join(f"{a} € = {a / prix:.0f} boîtes" for a in s["animation"]) + ".")
+    print()
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--prix", nargs="*", default=[], metavar="PRODUIT=EUROS",
                     help="remplacer un prix cible, ex. pochette=1.5 boite=8")
     ap.add_argument("--collection", action="store_true",
                     help="simuler le coût pour compléter une édition")
+    ap.add_argument("--plan", action="store_true",
+                    help="objectif de chiffre d'affaires de la saison (paliers)")
     a = ap.parse_args()
     prix_force = {k: float(v) for k, v in (x.split("=") for x in a.prix)}
+    if a.plan:
+        plan(prix_force)
+        return
     rapport(prix_force)
     if a.collection:
         collection(prix_force)

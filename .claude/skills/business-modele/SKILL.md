@@ -247,6 +247,21 @@ ici :
    fixe dès qu'il est décidé. Tant qu'il n'est pas tenu, le réinvestissement
    est nul.
 
+### L'objectif de chiffre d'affaires, en paliers
+
+Le chiffre d'affaires visé pour une saison se fixe en trois paliers
+(`scripts/modele.py --plan`) :
+
+1. **Équilibre** : le lancement, le tirage et un an de charges sont payés.
+2. **Sécurité** : le palier 1, plus une réserve qui paie le prochain tirage.
+3. **Au-delà** : la rémunération, puis le réinvestissement.
+
+L'objectif retenu doit couvrir **le palier 1 dans le cas pessimiste**. Le
+calcul compte aussi les **animations payées** par les communes, les
+bibliothèques et les maisons relais. Elles rapportent sans stock ni
+impression, et une seule à 200 € vaut 20 boîtes. La saison 1 est dans
+`MODELE-ECONOMIQUE.md` : 5 000 € d'ici avril 2027.
+
 L'ordre du surplus : réserve, puis rémunération, puis réinvestissement. Si une
 mauvaise période entame la réserve, le développement s'arrête avant la
 rémunération. Le modèle ne repose jamais sur du travail gratuit présenté comme
@@ -274,6 +289,10 @@ recettes portent une part des frais fixes :
   maisons relais). Une subvention baisse le prix du lot école ou finance un
   tirage. Elle ne paie pas la rémunération de façon durable.
 - **Les commandes groupées** des écoles et des communes, à l'avance (§ 4).
+- **Les animations payées** par les communes, les bibliothèques et les maisons
+  relais : jouer avec les cartes, montrer l'appli. C'est la recette la plus
+  sûre du début, car elle ne demande ni tirage ni stock. Le tarif se fixe en
+  demandant aux communes ce qu'elles paient d'habitude.
 
 ---
 
@@ -327,8 +346,9 @@ mesure (ventes, usage, retours).
 1. Mettre à jour les hypothèses en tête de `scripts/modele.py` si un devis ou
    un prix réel est connu (statut `devis` ou `confirmé`).
 2. Lancer `python3 .claude/skills/business-modele/scripts/modele.py` (ajouter
-   `--collection` pour les pochettes, `--prix pochette=1.5 boite=8` pour tester
-   un prix).
+   `--collection` pour les pochettes, `--plan` pour l'objectif de chiffre
+   d'affaires de la saison, `--prix pochette=1.5 boite=8` pour tester un
+   prix).
 3. Vérifier les quatre contraintes du § 0 dans l'ordre. **Commencer par le
    prix** (§ 1) : c'est la production qui s'adapte.
 4. Si une contrainte échoue, proposer **un** arbitrage chiffré : changer de
