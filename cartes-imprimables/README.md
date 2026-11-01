@@ -14,6 +14,8 @@ carte officielle du jeu imprimé.
 | `boite/planche_boite.pdf` | La boîte de départ : 52 cartes à jouer (paquets Déieren et Iessen), 2 cartes de règle, le dos. Dessin schématique, pour relire ou jouer tout de suite (`scripts/planche_boite.py`). |
 | `boite/rectos_52.pdf` | Les 52 cartes à jouer de la boîte, dessinées par l'application : une carte par page, 69 × 94 mm fond perdu compris, 300 dpi. Le dos est dans `verso/` (`scripts/rectos_boite.py`). |
 | `boite/liste.csv` | Les 52 cartes dans l'ordre du PDF : mot, paquet, nature, Force, coût, rareté, sens. |
+| `niveau_a1/rectos_52.pdf`, `niveau_a1/liste.csv` | La boîte Niveau A1 : 52 cartes à jouer, paquets Doheem (à la maison) et Dobaussen (dehors), prises dans le vocabulaire de niveau A1 que recense le dictionnaire officiel. Cartes n° 105 à 156. Les cartes de règle et le dos sont ceux de la boîte de départ. |
+| `niveau_a2/rectos_52.pdf`, `niveau_a2/liste.csv` | La boîte Niveau A2, faite de la même façon : cartes n° 157 à 208. |
 | `verso/verso.pdf`, `verso/verso_300dpi.png` | Le dos commun, 69 × 94 mm fond perdu compris (poker 63 × 88 mm + 3 mm). |
 | `dessin/carte_appli.py` | La carte très rare de l'application, portée en SVG pour l'impression. |
 | `dessin/verso_luxe.py` | Le dessin du dos. |
@@ -21,7 +23,9 @@ carte officielle du jeu imprimé.
 
 Les mots, leurs sens et leurs phrases viennent du
 [Lëtzebuerger Online Dictionnaire](https://lod.lu) (CC0). La composition des
-paquets : `Dictionnaires/cartes/selection.md` (`scripts/candidats_cartes.py`).
+paquets : `Dictionnaires/cartes/selection.md` (`scripts/candidats_cartes.py`) ;
+celle des boîtes de niveau : `Dictionnaires/cartes/niveaux.md`
+(`scripts/boites_niveaux.py`).
 
 ## Ce qui n'est pas ici, et pourquoi
 

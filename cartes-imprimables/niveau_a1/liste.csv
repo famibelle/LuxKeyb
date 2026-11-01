@@ -1,0 +1,53 @@
+numero,mot,paquet,nature,force,cout,rarete,sens
+105,Fra,Doheem A1,nom,3,1,Commun,femme
+106,Apel,Doheem A1,nom,4,1,Très rare,pomme
+107,Kand,Doheem A1,nom,4,1,Commun,enfant
+108,Zant,Doheem A1,nom,4,1,Très rare,dent
+109,Kaddo,Doheem A1,nom,5,2,Très rare,cadeau
+110,Kaffi,Doheem A1,nom,5,2,Peu commun,café
+111,Pizza,Doheem A1,nom,5,2,Rare,pizza
+112,Famill,Doheem A1,nom,6,2,Commun,famille
+113,Geméis,Doheem A1,nom,6,2,Peu commun,légumes
+114,Fleesch,Doheem A1,nom,7,2,Peu commun,viande
+115,Duechter,Doheem A1,nom,8,3,Peu commun,fille
+116,Baguette,Doheem A1,nom,8,3,Très rare,baguette
+117,Aubergine,Doheem A1,nom,9,3,Très rare,aubergine
+118,Gebuertsdag,Doheem A1,nom,11,4,Peu commun,anniversaire
+119,kafen,Doheem A1,verbe,5,2,Commun,acheter
+120,feieren,Doheem A1,verbe,7,2,Commun,fêter
+121,kënnen,Doheem A1,verbe,6,2,Commun,pouvoir
+122,baken,Doheem A1,verbe,5,2,Très rare,préparer
+123,schwätzen,Doheem A1,verbe,9,3,Commun,parler
+124,gutt,Doheem A1,adjectif,4,1,Commun,bon
+125,blond,Doheem A1,adjectif,5,2,Très rare,blond
+126,bedeckt,Doheem A1,adjectif,7,2,Très rare,couvert
+127,gesond,Doheem A1,adjectif,6,2,Peu commun,en bonne santé
+128,dräizéng,Doheem A1,nombre,8,0,Commun,13
+129,véierzéng,Doheem A1,nombre,9,0,Commun,14
+130,fofzéng,Doheem A1,nombre,7,0,Commun,15
+131,Bus,Dobaussen A1,nom,3,1,Commun,bus
+132,Auto,Dobaussen A1,nom,4,1,Commun,voiture
+133,Büro,Dobaussen A1,nom,4,1,Commun,bureau
+134,Vëlo,Dobaussen A1,nom,4,1,Commun,vélo
+135,Kaart,Dobaussen A1,nom,5,2,Commun,carte
+136,Sport,Dobaussen A1,nom,5,2,Commun,sport
+137,Noper,Dobaussen A1,nom,5,2,Peu commun,voisin
+138,Apdikt,Dobaussen A1,nom,6,2,Très rare,pharmacie
+139,Fliger,Dobaussen A1,nom,6,2,Commun,avion
+140,Strooss,Dobaussen A1,nom,7,2,Commun,rue
+141,Bäckerei,Dobaussen A1,nom,8,3,Rare,boulangerie
+142,Classeur,Dobaussen A1,nom,8,3,Très rare,classeur
+143,Architekt,Dobaussen A1,nom,9,3,Rare,architecte
+144,Supermarché,Dobaussen A1,nom,11,4,Peu commun,supermarché
+145,wunnen,Dobaussen A1,verbe,6,2,Commun,habiter
+146,fueren,Dobaussen A1,verbe,6,2,Commun,circuler
+147,akafen,Dobaussen A1,verbe,6,2,Rare,acheter
+148,bezuelen,Dobaussen A1,verbe,8,3,Commun,payer
+149,ameséieren,Dobaussen A1,verbe,10,3,Très rare,amuser
+150,bestuet,Dobaussen A1,adjectif,7,2,Peu commun,marié
+151,genee,Dobaussen A1,adjectif,5,2,Commun,précis
+152,brong,Dobaussen A1,adjectif,5,2,Très rare,brun
+153,séiss,Dobaussen A1,adjectif,5,2,Très rare,sucré
+154,siechzéng,Dobaussen A1,nombre,9,0,Commun,16
+155,siwwenzéng,Dobaussen A1,nombre,10,0,Commun,17
+156,uechtzéng,Dobaussen A1,nombre,9,0,Commun,18

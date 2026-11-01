@@ -1,0 +1,53 @@
+numero,mot,paquet,nature,force,cout,rarete,sens
+157,Box,Doheem A2,nom,3,1,Peu commun,pantalon
+158,Hand,Doheem A2,nom,4,1,Commun,main
+159,Haus,Doheem A2,nom,4,1,Commun,maison
+160,Mond,Doheem A2,nom,4,1,Peu commun,bouche
+161,Gaart,Doheem A2,nom,5,2,Peu commun,jardin
+162,Häerz,Doheem A2,nom,5,2,Commun,cœur
+163,Schaf,Doheem A2,nom,5,2,Très rare,armoire
+164,Schong,Doheem A2,nom,6,2,Peu commun,chaussure
+165,Kichen,Doheem A2,nom,6,2,Peu commun,cuisine
+166,Fënster,Doheem A2,nom,7,2,Commun,fenêtre
+167,Toilette,Doheem A2,nom,8,3,Rare,toilettes
+168,Gesiicht,Doheem A2,nom,8,3,Commun,visage
+169,Schlëssel,Doheem A2,nom,9,3,Peu commun,clé
+170,Kamillentéi,Doheem A2,nom,11,4,Très rare,camomille
+171,gesinn,Doheem A2,verbe,6,2,Commun,voir
+172,reesen,Doheem A2,verbe,6,2,Peu commun,aller
+173,joggen,Doheem A2,verbe,6,2,Très rare,faire du jogging
+174,moossen,Doheem A2,verbe,7,2,Peu commun,mesurer
+175,erafueren,Doheem A2,verbe,9,3,Très rare,entrer
+176,gro,Doheem A2,adjectif,3,1,Peu commun,gris
+177,aktiv,Doheem A2,adjectif,5,2,Commun,actif
+178,beige,Doheem A2,adjectif,5,2,Très rare,beige
+179,modern,Doheem A2,adjectif,6,2,Peu commun,moderne
+180,nonzéng,Doheem A2,nombre,7,0,Commun,19
+181,zwanzeg,Doheem A2,nombre,7,0,Commun,20
+182,drësseg,Doheem A2,nombre,7,0,Commun,30
+183,Séi,Dobaussen A2,nom,3,1,Peu commun,lac
+184,Rees,Dobaussen A2,nom,4,1,Commun,voyage
+185,Tram,Dobaussen A2,nom,4,1,Commun,tram
+186,Gare,Dobaussen A2,nom,4,1,Commun,gare
+187,Arrêt,Dobaussen A2,nom,5,2,Peu commun,arrêt
+188,Duerf,Dobaussen A2,nom,5,2,Peu commun,village
+189,Metro,Dobaussen A2,nom,5,2,Très rare,métro
+190,Schnéi,Dobaussen A2,nom,6,2,Peu commun,neige
+191,Schëff,Dobaussen A2,nom,6,2,Peu commun,navire
+192,Kolleeg,Dobaussen A2,nom,7,2,Rare,camarade
+193,Autobunn,Dobaussen A2,nom,8,3,Commun,autoroute
+194,Marathon,Dobaussen A2,nom,8,3,Rare,marathon
+195,Aendokter,Dobaussen A2,nom,9,3,Très rare,ophtalmologue
+196,Bibliothéik,Dobaussen A2,nom,11,4,Rare,bibliothèque
+197,héieren,Dobaussen A2,verbe,7,2,Commun,entendre
+198,freeën,Dobaussen A2,verbe,6,2,Peu commun,réjouir
+199,liewen,Dobaussen A2,verbe,6,2,Commun,vivre
+200,beweegen,Dobaussen A2,verbe,8,3,Peu commun,bouger
+201,genéissen,Dobaussen A2,verbe,9,3,Rare,savourer
+202,riets,Dobaussen A2,adjectif,5,2,Commun,droit
+203,aktuell,Dobaussen A2,adjectif,7,2,Commun,actuel
+204,kloer,Dobaussen A2,adjectif,5,2,Commun,clair
+205,propper,Dobaussen A2,adjectif,7,2,Peu commun,propre
+206,véierzeg,Dobaussen A2,nombre,8,0,Commun,40
+207,fofzeg,Dobaussen A2,nombre,6,0,Commun,50
+208,honnert,Dobaussen A2,nombre,7,0,Commun,100
