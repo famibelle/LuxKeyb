@@ -288,10 +288,13 @@ lui ; sa taille reste à revoir avec le propriétaire).
    | 3. Le lointain | crête, ville au loin, tours | 3 % |
    | 4. Le milieu | collines, façades, bâti | 1,7 % |
    | 5. Le proche | le premier plan du lieu, posé sur le plancher | 0,7 % |
+   | 6. Les coulisses (rare et très rare seulement) | deux châssis sur les côtés : arbres, ou piliers et pignons au Breedewee | 0,3 % |
 
-   Les cinq plans viennent **du lieu lui-même** : pas de coulisses génériques
-   sur les bords, qui cacheraient le lieu maintenant que le dessin du mot
-   tient le centre (retirées dans la maquette, à confirmer). Les nuages
+   Les cinq plans viennent **du lieu lui-même**. Les **rares et les très
+   rares gardent en plus leurs coulisses** (décision du propriétaire,
+   2026-11-01) : un sixième carton sur les côtés, devant tous les autres, qui
+   glisse le moins (0,3 %) et porte son ombre sur eux. C'est la seule
+   différence de profondeur qui reste entre les paliers. Les nuages
    portent leur ombre sur leur propre carton, pour qu'elle voyage avec eux.
    C'est le seul élément qui bouge seul (règle 7) ; les cartes de fête,
    rendues à plat, n'en ont pas.
