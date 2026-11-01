@@ -1,6 +1,6 @@
 ---
 name: direction-artistique
-description: Direction artistique de LuxKeyb — la ligne visuelle des cartes et de leurs décors, en particulier le « théâtre de papier » (décor en cartons découpés superposés, parallaxe multi-plans dans la fenêtre de la carte). À utiliser quand on discute de l'univers visuel, du style des paysages et des décors, de la profondeur et du mouvement dans la fenêtre d'une carte (inclinaison, parallaxe, profondeur de champ), quand on dessine un nouveau lieu ou un nouveau plan de décor, quand on ajoute une animation au décor, ou quand on se demande si un choix graphique « fait LuxKeyb ».
+description: Direction artistique de LuxKeyb — la ligne visuelle des cartes et de leurs décors, en particulier le « théâtre de papier » (décor en cartons découpés superposés, parallaxe multi-plans dans la fenêtre de la carte). À utiliser quand on discute de l'univers visuel, du style des paysages et des décors, de la profondeur et du mouvement dans la fenêtre d'une carte (inclinaison, parallaxe, profondeur de champ), quand on dessine un nouveau lieu ou un nouveau plan de décor, quand on ajoute une animation au décor, ou quand on se demande si un choix graphique « fait LuxKeyb ». Couvre la direction décidée le 2026-11-01 : couleurs vives peintes à la gouache sur carton, et le dessin du mot en pancarte sur un pied.
 ---
 
 # Direction artistique — le théâtre de papier
@@ -113,6 +113,68 @@ mesurer le coût du rendu sur le Galaxy A21s en build release (budgets dans
 selon le lieu (drapeau, barque sur la Sûre, vagues sur la Moselle) à la place
 du nuage générique, et le cadre en rideau de scène (§ 6).
 
+### La gouache vive sur carton, et la pancarte (décidées le 2026-11-01)
+
+Le propriétaire a retenu, pour **toutes les cartes**, une évolution du
+théâtre de papier inspirée d'une vitrine en papier découpé (Google Store,
+Paris) : **des couleurs vives, peintes à la gouache sur du carton**. Pour
+l'instant c'est une **maquette** (`maquette/gouache/`), rien n'est dans
+`Paysages.kt` ni dans `CadreOrne.kt`.
+Dans `maquette/gouache/`, `node capture.js` rend le Breedewee aux quatre
+heures (avec la place du dessin en rouge), et `node rendre.js pancarte.html
+sortie.png` la fenêtre de la carte « Bus » avec sa pancarte, à la place
+exacte de la fenêtre d'un recto imprimé à 300 dpi.
+
+**Le décor :**
+
+- **Quatre palettes vives**, une par heure (`maquette/gouache/vives.js`) :
+  le matin, ciel bleu franc qui passe au rose puis au jaune pâle vers
+  l'horizon, soleil jaune vif, collines lavande, verts francs, eau bleu
+  soutenu ; l'après-midi orangé ; le soir violet, rose et orange ; la nuit
+  bleu profond, la vivacité y venant des lumières dorées. L'heure doit
+  toujours dire la rareté au premier coup d'œil (le soir et l'après-midi
+  sont encore trop proches).
+- **Chaque pièce est un carton peint** (`peint` dans `peint.js`) : le carton
+  brun kraft d'abord, avec son ombre ; puis la gouache, mate, un peu mince ;
+  des **coups de pinceau** dans le sens de la forme (horizontaux pour le
+  ciel et l'eau, courts et obliques pour la pierre et le grès, ronds pour le
+  feuillage) ; un **bord sec** où le brun du carton reparaît. Le ciel est
+  peint à larges touches ; l'astre se peint après, d'un aplat.
+- **La tranche est celle du carton**, brune, et non plus l'âme blanche du
+  papier (point 2 ci-dessus) : c'est ce que montrent toutes les maquettes
+  validées. À confirmer avec le propriétaire au moment de l'écrire dans le
+  code, la bordure blanche étant sur les rectos imprimés.
+- **Des nuages de carton** flottent dans la bande du haut, et la pierre se
+  fait en **pièces étagées** (une masse, une face à l'ombre, une face claire,
+  des strates collées).
+- **De la couleur dans les lieux qui en manquent** : une ruelle de pierre
+  reste beige, même vive. Au Breedewee, les façades prennent les couleurs du
+  Grund (rose, jaune, bleu, vert, orange) et un lierre vert fleuri retombe
+  de l'arche.
+
+**Le dessin du mot devient une pancarte** (`pancarte.html`, carte « Bus ») :
+
+- la silhouette est un **carton découpé** : son épaisseur se voit en brun
+  sur le bord, et elle porte une ombre sur le décor ;
+- la **face reste en nacre** (décision du propriétaire) : c'est elle qui fait
+  ressortir le mot sur un fond coloré ;
+- elle est montée sur une **tige de bois peinte**, cachée derrière elle à
+  partir de son centre, qui descend jusqu'à un **socle** (une planche et
+  deux équerres) posé sur le plancher, avec son ombre au sol. L'ombre qui
+  flottait sous le dessin disparaît ;
+- **elle se balance légèrement sur son pied** quand on penche la carte
+  (décision du propriétaire). C'est une réponse au geste, pas un mouvement
+  autonome (règle 7) ; coupée avec les animations du système ;
+- **la hauteur du socle se juge sur les vrais dessins** : sur un dessin haut
+  (arbre, personne), on ne verra presque que le socle.
+
+**Le centre est au dessin.** Depuis la 38.0.0, le dessin du mot tient dans
+une boîte de 66 × 46, centrée (17 à 83, 12,5 à 58,5). Le décor vit donc dans
+la bande du haut et sur les bords : c'est là que mettre la couleur et les
+détails. Une porte, un pont ou un monument placé au centre disparaît derrière
+le dessin (la porte du Breedewee a dû être élargie en avant-scène autour de
+lui ; sa taille reste à revoir avec le propriétaire).
+
 ## 3. Pourquoi cette direction
 
 ### Pour l'expérience
@@ -151,7 +213,8 @@ du nuage générique, et le cadre en rideau de scène (§ 6).
    moins. Un plan qui ne se lit pas en silhouette noire n'est pas un carton.
 2. **Aplats, pas de modelé.** La lumière vient de l'empilement et des ombres
    entre plans, pas des dégradés à l'intérieur d'une forme. Le dégradé reste
-   permis pour le ciel, qui est la toile de fond.
+   permis pour le ciel, qui est la toile de fond. En gouache, l'aplat vit par
+   ses coups de pinceau, pas par un dégradé.
 3. **Le lointain s'efface par la couleur, pas par le flou** : plus clair, moins
    saturé, plus proche du ciel.
 4. **Une ombre par plan, nette, toujours du même côté** : la même lumière de
@@ -162,7 +225,9 @@ du nuage générique, et le cadre en rideau de scène (§ 6).
    rainure ; rien ne descend jusqu'au bas de la fenêtre. Un carton qui se
    perd sous le cadre est une affiche, pas un décor.
 5. **Le mot reste l'acteur.** Le décor ne rivalise jamais avec le dessin du
-   mot : pas de détail fort ni de contraste maximal derrière lui.
+   mot : pas de détail fort ni de contraste maximal derrière lui. Le dessin
+   est une pancarte de carton à face nacrée, sur un pied planté dans le
+   plancher : il est sur la scène, pas collé sur le décor.
 6. **Le cadre de scène reste fixe.** Seul le décor bouge ; le cadre orné est la
    vitre.
 7. **Le mouvement autonome est lent et rare.** Une seule chose bouge seule par
@@ -211,6 +276,24 @@ Ce qui coûte peu et se voit le plus d'abord, ce qui engage l'identité en derni
 4. **Le cadre doré en rideau et avant-scène**, en dernier, quand le décor a
    trouvé son style, et seulement avec l'accord du propriétaire.
 
+**La gouache vive et la pancarte** (§ 2, décidées le 2026-11-01), dans cet
+ordre :
+
+1. Valider les quatre palettes vives sur une même carte (le soir et
+   l'après-midi à écarter).
+2. Le rendu gouache dans `Paysages.rendrePlans` (carton kraft, coups de
+   pinceau, bord sec), une fois pour les dix lieux. Pour tenir sur le Galaxy
+   A21s, des textures de pinceau préparées d'avance et posées dans le sens de
+   chaque pièce plutôt que des centaines de touches tracées une à une. La
+   vignette garde des aplats simples.
+3. La pancarte dans `CadreOrne` (`Enluminure`) : épaisseur, ombre portée,
+   tige, socle, et le balancement à l'inclinaison (`Inclinaison.kt`).
+4. Les retouches lieu par lieu là où la couleur manque, le centre restant
+   calme derrière le dessin.
+5. Recalibrer la reconnaissance de la végétation des saisons (`Habillage`),
+   qui lit les couleurs de la palette.
+6. Réexporter les rectos des quatre boîtes et vérifier l'impression.
+
 ## 7. Revue d'un décor
 
 Avant de valider un nouveau lieu ou une modification de décor :
@@ -223,6 +306,8 @@ Avant de valider un nouveau lieu ou une modification de décor :
 - [ ] Chaque carton s'arrête net sur le plancher, au-dessus du bandeau du nom.
 - [ ] Le lointain s'efface par la couleur ; rien n'est flou.
 - [ ] Le dessin du mot reste ce qu'on voit en premier.
+- [ ] La pancarte est posée : son pied descend jusqu'au socle, sur le plancher.
+- [ ] Les couleurs vivent dans la bande du haut et sur les bords, pas derrière le dessin.
 - [ ] En vignette dans la grille, le décor est calme et lisible.
 - [ ] Aux quatre heures, le décor reste lisible (la nuit surtout).
 - [ ] Le mouvement autonome, s'il y en a un, est lent et unique.
