@@ -21,6 +21,16 @@ reçoive chez elle**. Choix du propriétaire, le 2026-10-28 :
 - **Deux produits de 54 cartes** : la boîte de départ et l'extension
   *Schoul* et *Natur* (même jour ; deux extensions de 24 cartes d'abord).
 
+**Décision du 2026-11-01 : la précommande.** Le prix public fixé ce jour-là,
+9,90 € la boîte (§ 5), ne tient pas en impression à la demande. La boutique
+passe donc à la **précommande** et à un **tirage offset** des quatre boîtes
+(départ, Schoul et Natur, Niveau A1, Niveau A2), lancé quand l'objectif est
+atteint (skill `business-modele` § 4). La page Commander a deux modes (§ 9) :
+la **réservation sans paiement**, en ligne dès le 2026-11-01, puis la
+**précommande payée**, une fois le § 8 rempli. La chaîne d'impression à la
+demande des § 2 à § 7 et § 10 reste écrite pour les prototypes. Elle est à
+revoir pour la précommande : envoi depuis le stock, codes dans les boîtes.
+
 ## 2. La chaîne, de la commande à la boîte
 
 ```
@@ -137,15 +147,21 @@ plus simple pour la TVA (§ 8).
 même prix. Les deux ensemble partent en une commande et un seul port (articles
 optionnels, § 6), ce qui allège le prix par boîte.
 
-La boîte à **12–15 €** de la skill imprimeur (§ 7) repose sur un tirage offset
-de 500 boîtes à 3–4,5 € : elle **n'est pas tenable** en impression à la
-demande. Le prix se fixe après le devis : coût livré réel, plus ~20 % pour
-les colis perdus et les rétractations. Il s'écrit dans `docs/commander.md`
-(`prix:`) et dans Stripe.
+**Le prix public est de 9,90 €**, pour la boîte comme pour l'extension, port
+en plus (propriétaire, 2026-11-01, skill `business-modele` § 1 à § 3). C'est
+le prix d'un Défis Nature, avec la moitié de cartes en plus. Il repose sur un
+tirage offset de 500 boîtes à 3–4,5 € et **n'est pas tenable** en impression à
+la demande : une boîte livrée à 18–30 € et vendue 9,90 € ferait perdre 8 à
+20 €. Il est écrit dans `docs/commander.md` (`prix:`) et s'écrira dans
+Stripe. Si les devis donnent un coût offset au-dessus de 4,50 €, relancer
+`scripts/modele.py` de la skill avant de toucher au prix.
 
-L'impression à la demande sert à **vendre sans rien avancer** et à mesurer la
-demande (la liste d'attente aussi). Passé ~200 boîtes vendues, le tirage
-offset et le stock (skill § 7) ramènent la boîte vers 12–15 €.
+L'impression à la demande sert aux prototypes et à **mesurer la demande**,
+comme la liste d'attente. **Avant d'ouvrir la boutique à ce prix, il faut
+passer à l'offset.** La skill `business-modele` § 4 propose de financer le
+tirage par précommande, avec remboursement si le seuil n'est pas atteint ;
+c'est au propriétaire de trancher. D'ici là, la page reste en liste
+d'attente.
 
 ## 6. Stripe : les réglages
 
@@ -222,7 +238,8 @@ la liste de ce que chacun ajoute.
 ## 8. Avant d'ouvrir : les obligations
 
 Informations générales, **à faire confirmer**, jamais présentées comme
-certaines.
+certaines. Le statut, la TVA, les factures, l'assurance et les données
+personnelles sont détaillés dans la skill `asbl-administratif`.
 
 1. **Statut** : autorisation d'établissement, ou asbl dont la vente est
    accessoire à l'objet (guichet.lu, House of Entrepreneurship). Bloquant :
@@ -276,16 +293,32 @@ certaines.
 
 ## 9. Le site
 
-- **`docs/commander.md`** : la page de la boutique. Tant que `stripe_lien` est
-  vide, elle propose la **liste d'attente** (le formulaire Formspree des avis,
-  avec le sujet « Liste d'attente : boutique Wuertduell » et des cases pour
-  la boîte et l'extension, qui mesurent la demande de chacune ; un
-  formulaire à part sera plus propre si les inscriptions dépassent le quota
-  gratuit). Une fois `stripe_lien`, `prix` et `fabricant` remplis, elle montre
-  le bouton de la boîte, celui de l'extension si son lien est rempli, les prix
-  et les informations du produit.
+- **`docs/commander.md`** : la page de précommande (2026-11-01). Tout se
+  règle dans son en-tête :
+  - `mode: "reservation"` : un formulaire Formspree (celui des avis, sujet
+    « Réservation : Wuertduell », champ `liste` = `precommande-wuertduell`)
+    demande le nombre de boîtes de chaque sorte, l'e-mail, le pays et le mode
+    de réception (livraison, ou retrait sans frais à une animation). On ne
+    paie rien. Un formulaire Formspree à part sera plus propre si les
+    réservations dépassent le quota gratuit.
+  - `mode: "paiement"`, avec `stripe_lien`, `date_limite` et `fabricant`
+    remplis : un bouton vers un lien Stripe qui contient les quatre boîtes
+    en quantités ajustables. Remboursement en entier si l'objectif n'est
+    pas atteint à la date limite. Seulement après le § 8 : statut,
+    conditions de vente (`conditions-de-vente.html`, encore à écrire),
+    mentions légales, marquage CE. Vérifier aussi les règles de Stripe sur
+    les précommandes (délai entre paiement et livraison).
+  - `objectif` (350 boîtes, l'équilibre du tirage dans le cas pessimiste,
+    skill `business-modele` § 3), `reservees` et `reservees_au` : la barre
+    d'avancement. **À mettre à jour à la main** depuis les réservations
+    reçues, avec la date.
+  - **Une réservation n'est pas une recette** (skill `business-modele` § 6) :
+    une partie des réservations ne sera pas payée. L'impression part sur
+    les paiements reçus, pas sur le compteur.
 - **`docs/merci-commande.md`** : le retour après le paiement, hors des moteurs
-  de recherche (`noindex: true`, lu par `_includes/head-custom.html`).
+  de recherche (`noindex: true`, lu par `_includes/head-custom.html`). Il
+  lit l'objectif, la date limite et le délai dans l'en-tête de
+  `commander.md`.
 - Liée depuis la règle du jeu. En français seulement pour l'instant : des
   clients au Luxembourg et en Allemagne demanderont l'allemand.
 
@@ -325,7 +358,9 @@ après sa préparation.
   prototypes chez 2–3 imprimeurs de l'UE, envoyés comme à un client (§ 4).
   Question TVA posée à l'AED ou au comptable.
 - **Décembre** : choix de l'imprimeur, essais EN 71, étui avec les mentions,
-  conditions de vente et mentions légales relues, prix fixé.
+  conditions de vente et mentions légales relues. Le prix est fixé depuis le
+  2026-11-01 (9,90 €, § 5) ; reste à choisir le mode d'impression (offset
+  par précommande ou non).
 - **Janvier 2027** : parcours complet en mode test, puis une vraie commande de
   bout en bout, remboursée ; ouverture et e-mail à la liste d'attente.
 - **Avril 2027** : la Fierkelsmaart, avec la boutique en ligne déjà rodée.

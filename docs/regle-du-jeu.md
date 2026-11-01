@@ -27,8 +27,8 @@ Zenter fir d'Lëtzebuerger Sprooch : des milliers de mots à jouer, de *Kaz* à
 *Krokodil*.
 
 Le jeu imprimé est en préparation : voici la règle, pour l'essayer et nous dire
-ce qu'elle vaut. [Laissez votre adresse](commander.html) : nous vous écrirons à sa
-sortie, pour le recevoir chez vous.
+ce qu'elle vaut. [Réservez vos boîtes](commander.html), sans rien payer :
+l'impression part dès que l'objectif est atteint.
 
 ## Il te faut
 
