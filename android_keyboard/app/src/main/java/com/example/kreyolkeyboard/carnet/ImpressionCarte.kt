@@ -101,8 +101,10 @@ object ImpressionCarte {
     /**
      * Les ensembles numérotés de `cartes_imprimees.json`, dans l'ordre de la
      * collection : la boîte de départ (B1), puis l'extension Schoul et Natur
-     * (E1), deux jeux de 54 cartes. Les extensions de 24 cartes (SCHOUL1,
-     * NATUR1) ont été retirées avant toute impression (2026-10-28).
+     * (E1), puis les boîtes Niveau A1 (NA1) et Niveau A2 (NA2), Doheem contre
+     * Dobaussen (2026-11-01, `scripts/boites_niveaux.py`) : quatre jeux de
+     * 54 cartes. Les extensions de 24 cartes (SCHOUL1, NATUR1) ont été
+     * retirées avant toute impression (2026-10-28).
      *
      * Un numéro par carte, comme sur les cartes à collectionner : il dit ce
      * qui manque et permet une liste à cocher (idée reprise des cartes du
@@ -113,7 +115,7 @@ object ImpressionCarte {
      * comme les cartes promo des grands jeux : son édition se lit déjà à
      * droite de la ligne.
      */
-    val COLLECTION = listOf("B1", "E1")
+    val COLLECTION = listOf("B1", "E1", "NA1", "NA2")
 
     /**
      * Le numéro de collection d'une carte : sa place dans les ensembles de
@@ -141,10 +143,15 @@ object ImpressionCarte {
      * Les paquets du jeu imprimé, dont le médaillon de la carte porte
      * l'emblème ([Ornement.dessinerMedaillonImprime]). [nom] est celui des
      * « paquets » de `cartes_imprimees.json`, écrit par
-     * `scripts/candidats_cartes.py`.
+     * `scripts/candidats_cartes.py` et `scripts/boites_niveaux.py`.
+     *
+     * Les boîtes de niveau ont le même emblème d'un niveau à l'autre (la
+     * maison, le panneau) : c'est le nom, « Doheem A1 » ou « Doheem A2 », qui
+     * dit dans quelle boîte ranger la carte.
      */
     enum class Paquet(val nom: String) {
-        DEIEREN("Déieren"), IESSEN("Iessen"), SCHOUL("Schoul"), NATUR("Natur"), FIERKELSMAART("Fierkelsmaart");
+        DEIEREN("Déieren"), IESSEN("Iessen"), SCHOUL("Schoul"), NATUR("Natur"), FIERKELSMAART("Fierkelsmaart"),
+        DOHEEM_A1("Doheem A1"), DOBAUSSEN_A1("Dobaussen A1"), DOHEEM_A2("Doheem A2"), DOBAUSSEN_A2("Dobaussen A2");
 
         companion object {
             fun deNom(nom: String): Paquet? = entries.firstOrNull { it.nom == nom }

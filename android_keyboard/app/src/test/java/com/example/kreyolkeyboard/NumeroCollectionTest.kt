@@ -44,10 +44,19 @@ class NumeroCollectionTest {
     }
 
     @Test
+    fun lesBoitesDeNiveauSuiventLExtension() {
+        val e = ensembles()
+        assertEquals(105, ImpressionCarte.numero("Fra", null, e))
+        assertEquals(156, ImpressionCarte.numero("uechtzéng", 18, e))
+        assertEquals(157, ImpressionCarte.numero("Box", null, e))
+        assertEquals(208, ImpressionCarte.numero("honnert", 100, e))
+    }
+
+    @Test
     fun horsCollectionPasDeNumero() {
         val e = ensembles()
         assertNull("la carte promo n'est pas numérotée", ImpressionCarte.numero("Fierkelsmaart", null, e))
-        assertNull(ImpressionCarte.numero("Haus", null, e))
+        assertNull(ImpressionCarte.numero("Waasser", null, e))
         // Un numéral se reconnaît à sa valeur, pas à sa seule forme.
         assertNull(ImpressionCarte.numero("eent", null, e))
     }
@@ -79,7 +88,11 @@ class NumeroCollectionTest {
         assertEquals(ImpressionCarte.Paquet.NATUR, ImpressionCarte.paquet("Reen", null, e, p))
         assertEquals(ImpressionCarte.Paquet.NATUR, ImpressionCarte.paquet("zwielef", 12, e, p))
         assertEquals(ImpressionCarte.Paquet.FIERKELSMAART, ImpressionCarte.paquet("Fierkelsmaart", null, e, p))
-        assertNull(ImpressionCarte.paquet("Haus", null, e, p))
+        assertEquals(ImpressionCarte.Paquet.DOHEEM_A1, ImpressionCarte.paquet("Fra", null, e, p))
+        assertEquals(ImpressionCarte.Paquet.DOBAUSSEN_A1, ImpressionCarte.paquet("uechtzéng", 18, e, p))
+        assertEquals(ImpressionCarte.Paquet.DOHEEM_A2, ImpressionCarte.paquet("Haus", null, e, p))
+        assertEquals(ImpressionCarte.Paquet.DOBAUSSEN_A2, ImpressionCarte.paquet("honnert", 100, e, p))
+        assertNull(ImpressionCarte.paquet("Waasser", null, e, p))
     }
 
     @Test

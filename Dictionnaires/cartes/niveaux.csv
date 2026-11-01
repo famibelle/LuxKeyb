@@ -1,0 +1,105 @@
+ensemble,mot,nature,genre,force,cout,sens,sens_de,sens_en,sens_pt,lieu,dessin,exemple,traduction
+A1 Doheem,Fra,nom,f.,3,1,femme,"Frau, Ehefrau","woman, wife","mulher, esposa",Schueberfouer,femme,de Vestiär fir d'Fraen ass op der lénkser Säit,
+A1 Doheem,Apel,nom,m.,4,1,pomme,Apfel,apple,maçã,Mëllerdall,pomme,den Apel fält net wäit vum Bam,la pomme ne tombe jamais loin de l’arbre
+A1 Doheem,Kand,nom,n.,4,1,enfant,Kind,child,"filho, criança",Schueberfouer,enfants,"eis Noperen hu véier Kanner, zwee Jongen an zwee Meedercher","nos voisins ont quatre enfants, deux garçons et deux filles"
+A1 Doheem,Zant,nom,m.,4,1,dent,Zahn,tooth,dente,Stad,dent,déi Portioun war grad fir den huelen Zant,cette portion était si petite que c'en était ridicule
+A1 Doheem,Kaddo,nom,m.,5,2,cadeau,Geschenk,present,prenda,Stad,cadeau,"ech freeë mech iwwer de Kaddo, dee mäi Frënd mer gemaach huet",je me réjouis du cadeau que mon ami m'a offert
+A1 Doheem,Kaffi,nom,m.,5,2,café,"Kaffee, (Tasse) Kaffee, Frühstück","coffee, (cup of) coffee, breakfast","café, (chávena de) café, pequeno-almoço",Mëllerdall,cafe,"wann de Kaffi geréischtert gëtt, entfaalt sech den Aroma",l’arôme se développe quand le café est torréfié !
+A1 Doheem,Pizza,nom,f.,5,2,pizza,Pizza,pizza,piza,Stad,pizza,ech hu gär Anchoisen op der Pizza,
+A1 Doheem,Famill,nom,f.,6,2,famille,Familie,family,família,Schueberfouer,famille,op der Spillplaz ware vill Famille mat klenge Kanner,
+A1 Doheem,Geméis,nom,n.,6,2,légumes,Gemüse,vegetables,legumes,Mëllerdall,legumes,ech kafe mäi Geméis ëmmer am Biobuttek,
+A1 Doheem,Fleesch,nom,n.,7,2,viande,Fleisch,"meat, flesh",carne,Stad,viande,de Kach leet d'Fleesch op de Grill,le cuisinier met la viande sur le barbecue
+A1 Doheem,Duechter,nom,f.,8,3,fille,Tochter,daughter,filha,Schueberfouer,fille,eis Duechter studéiert Medezin,
+A1 Doheem,Baguette,nom,f.,8,3,baguette,"Baguette, Leiste, Taktstock","baguette, moulding, baton","baguete, batuta",Stad,,"du brauchs kee Brout ze kafen, mir hunn nach eng Baguette","tu n'as pas besoin d'acheter du pain, il nous reste une baguette"
+A1 Doheem,Aubergine,nom,f.,9,3,aubergine,Aubergine,aubergine,beringela,Stad,,an enger Ratatouille däerfen d'Auberginnen net feelen!,les aubergines sont indispensables dans une ratatouille !
+A1 Doheem,Gebuertsdag,nom,m.,11,4,anniversaire,Geburtstag,"birthday, birthday (party)","aniversário, (festa de) aniversário",Schueberfouer,gateau,ech sinn dëse Weekend op zwee Gebuertsdeeg invitéiert,
+A1 Doheem,kafen,verbe,,5,2,acheter,kaufen,to buy,comprar,Musel,sac_courses,ech kafe mir elo eng gutt Mettwurscht!,je vais m'acheter une bonne saucisse fumée !
+A1 Doheem,feieren,verbe,,7,2,fêter,feiern,"to celebrate, to party",festejar,Schueberfouer,ballons,hie léisst sech gär feieren,
+A1 Doheem,kënnen,verbe,,6,2,pouvoir,können,"can, may",poder,Gëlle Fra,,de Coureur konnt bei där Vitess net mathalen,le coureur n'a pas pu suivre à cette vitesse
+A1 Doheem,baken,verbe,,5,2,préparer,backen,to bake,"fazer, fazer bolos",Stad,,seng Mamm baakt all Samschdeg e Kuch,sa mère fait un gâteau tous les samedis
+A1 Doheem,schwätzen,verbe,,9,3,parler,"sprechen, reden, aussprechen","to speak, to say","falar, dizer, pronunciar",Neimënster,bulle,hien huet ënnerwee kee Wuert geschwat,
+A1 Doheem,gutt,adjectif,,4,1,bon,"gut, gesund, ordentlich","good, fit, easily","bom, de boa saúde, facilmente",Stad,pouce_haut,"ech wousst net, datt s du esou gutt kéints sangen!",je ne savais pas que tu savais si bien chanter
+A1 Doheem,blond,adjectif,,5,2,blond,blond,blond,louro,Stad,,eis Noperen hunn e léift blond Meedchen,nos voisins ont une jolie petite fille blonde
+A1 Doheem,bedeckt,adjectif,,7,2,couvert,"bedeckt, bedecken",overcast,"coberto, cobrir",Stad,,"et ass bedeckt, géi net ouni Prabbeli eraus!","c'est couvert, ne sors pas sans parapluie !"
+A1 Doheem,gesond,adjectif,,6,2,en bonne santé,gesund,healthy,"de boa saúde, saudável",Mëllerdall,,mat mengen 80 Joer sinn ech nach gesond a monter,"à 80 ans, je suis encore en bonne santé et plein d'énergie"
+A1 Doheem,dräizéng,nombre,,0,0,13,13,13,13,,,,
+A1 Doheem,véierzéng,nombre,,0,0,14,14,14,14,,,,
+A1 Doheem,fofzéng,nombre,,0,0,15,15,15,15,,,,
+A1 Dobaussen,Bus,nom,m.,3,1,bus,Bus,bus,autocarro,Rout Bréck,bus,ech huelen de Bus fir op d'Gare,je prends le bus pour aller à la gare
+A1 Dobaussen,Auto,nom,m.,4,1,voiture,Auto,car,carro,Rout Bréck,voiture,mäi Papp huet schonn d'Wanterpneuen op säin Auto montéiere gelooss,mon père a déjà fait monter les pneus d’hiver sur sa voiture
+A1 Dobaussen,Büro,nom,m.,4,1,bureau,"Schreibtisch, Büro, Direktion","desk, office, management","secretária, escritório, agência",Esch-Sauer,bureau,de Bréif ass am ieweschten Tirang vu mengem Büro,la lettre se trouve dans le tiroir du haut de mon bureau
+A1 Dobaussen,Vëlo,nom,m.,4,1,vélo,Fahrrad,bike,bicicleta,Rout Bréck,velo,d'viischt Rad vu mengem Vëlo huet eng Aachtchen,la roue avant de mon vélo est voilée
+A1 Dobaussen,Kaart,nom,f.,5,2,carte,"Karte, Visitenkarte","card, map, menu","postal, carta, menu",Schueberfouer,carte,"ech hunn eng Kaart aus der Librairie kritt, datt mäi Buch ukomm ass",la librairie m'a envoyé une carte postale m'informant que mon livre était arrivé
+A1 Dobaussen,Sport,nom,m.,5,2,sport,Sport,"sport, (kind of) sport",desporto,Schueberfouer,sport,"ech maache reegelméisseg Sport, fir a Form ze bleiwen",
+A1 Dobaussen,Noper,nom,m.,5,2,voisin,Nachbar,"(next door) neighbour, neighbour",vizinho,Schueberfouer,,mäi Fiederball ass bei den Noper an de Gaart geflunn,mon volant de badminton a volé dans le jardin du voisin
+A1 Dobaussen,Apdikt,nom,f.,6,2,pharmacie,Apotheke,chemist's,farmácia,Mëllerdall,pharmacie,wat fir eng Apdikt huet haut den Owend Déngscht?,quelle pharmacie est de garde ce soir ?
+A1 Dobaussen,Fliger,nom,m.,6,2,avion,Flugzeug,plane,avião,Rout Bréck,avion,mir sinn dëst Joer mam Fliger an d'Vakanz geflunn,"cette année, nous avons pris l’avion pour partir en vacances"
+A1 Dobaussen,Strooss,nom,f.,7,2,rue,"Straße, Mondorf-Route, Nocherstraße","street, road, Mondorf-Route","rua, faixa de rodagem, Mondorf-Route",Esch-Sauer,rue,an de Schoulvakanzen ass manner Verkéier op de Stroossen,"pendant les vacances scolaires, il y a moins de trafic sur les routes"
+A1 Dobaussen,Bäckerei,nom,f.,8,3,boulangerie,Bäckerei,bakery,padaria,Stad,pain,an där Bäckerei kritt ee ganz gutt Aachtercher,
+A1 Dobaussen,Classeur,nom,m.,8,3,classeur,Ordner,folder,dossier,Stad,,ech hunn d'Extraite vu menger Bank an engem Classeur,je range les relevés de ma banque dans un classeur
+A1 Dobaussen,Architekt,nom,m.,9,3,architecte,Architekt,architect,arquiteto,Stad,,et sinn zwee Architekten um Bauprojet bedeelegt,deux architectes sont impliqués dans le projet de construction
+A1 Dobaussen,Supermarché,nom,m.,11,4,supermarché,Supermarkt,supermarket,supermercado,Stad,caddie,mir ginn eis Kommissiounen an de Supermarché maachen,
+A1 Dobaussen,wunnen,verbe,,6,2,habiter,wohnen,to live,morar,Esch-Sauer,maison,"mir wunnen an enger aler Millen, déi mer restauréiert hunn",
+A1 Dobaussen,fueren,verbe,,6,2,circuler,fahren,"to drive, to take a ride","circular, conduzir, ir",Rout Bréck,voiture,op der Musel fuere vill Schëffer,
+A1 Dobaussen,akafen,verbe,,6,2,acheter,einkaufen,"to buy, to do the shopping","comprar, ir às compras",Musel,,de Grosist huet seng Wueren zu engem gënschtege Präis akaaft,le grossiste a acheté ses produits à un prix avantageux
+A1 Dobaussen,bezuelen,verbe,,8,3,payer,bezahlen,"to pay, to spend",pagar,Musel,carte,ech ginn (d'Rechnung) bei de Comptoir bezuelen,je vais payer (l’addition) au comptoir
+A1 Dobaussen,ameséieren,verbe,,10,3,amuser,"amüsieren, sich amüsieren","to amuse, to enjoy oneself","divertir, divertir-se",Stad,,de Clown ameséiert esouwuel d'Kanner ewéi och hir Elteren,le clown amuse aussi bien les enfants que leurs parents
+A1 Dobaussen,bestuet,adjectif,,7,2,marié,"verheiratet, trauen, heiraten","married, to marry, to get married","casado, casar, casar com",Stad,alliances,et waren nëmme bestuete Koppelen op där Soirée,
+A1 Dobaussen,genee,adjectif,,5,2,précis,genau,exact,preciso,Stad,,"ech weess net méi genee, ëm wéi vill Auer de Concert ugeet",je ne sais plus exactement à quelle heure commence le concert
+A1 Dobaussen,brong,adjectif,,5,2,brun,braun,brown,"castanho, bronzeado",Stad,,deng brong Schong passen net bei däi Kostüm,tes chaussures marron ne vont pas avec ton costume
+A1 Dobaussen,séiss,adjectif,,5,2,sucré,süß,sweet,"doce, fofo",Stad,,dëse Wäi schmaacht méi séiss ewéi dee vu gëschter,ce vin a un goût plus sucré que celui d’hier
+A1 Dobaussen,siechzéng,nombre,,0,0,16,16,16,16,,,,
+A1 Dobaussen,siwwenzéng,nombre,,0,0,17,17,17,17,,,,
+A1 Dobaussen,uechtzéng,nombre,,0,0,18,18,18,18,,,,
+A2 Doheem,Box,nom,f.,3,1,pantalon,"Hose, Box, wehe (wenn)","(pair of) trousers, (loud)speaker, stable","(par de) calças, coluna, boxe",Esch-Sauer,,ech huele just eng laang Box mat an d'Vakanz,je n’emporte qu’un seul pantalon en vacances
+A2 Doheem,Hand,nom,f.,4,1,main,Hand,hand,mão,Mëllerdall,main,d'Police hat deen Owend all Hänn voll ze doen,la police avait fort à faire ce soir-là
+A2 Doheem,Haus,nom,n.,4,1,maison,Haus,house,casa,Esch-Sauer,maison,mir hunn nach vill Aarbecht ronderëm eist neit Haus,il reste beaucoup de travaux à faire autour de notre maison
+A2 Doheem,Mond,nom,m.,4,1,bouche,Mund,mouth,boca,Mëllerdall,bouche,maach de Mond grouss op a weis mer deng Zong!,ouvre grand la bouche et tire la langue !
+A2 Doheem,Gaart,nom,m.,5,2,jardin,Garten,garden,jardim,Esch-Sauer,arrosoir,mir hunn hannenaus e grousse Gaart,
+A2 Doheem,Häerz,nom,n.,5,2,cœur,Herz,heart,coração,Stad,coeur,Ausdauersport ass gutt fir d'Häerz,
+A2 Doheem,Schaf,nom,m.,5,2,armoire,Schrank,wardrobe,armário,Esch-Sauer,armoire,et gëtt Schief vu verschiddenen Déiften,
+A2 Doheem,Schong,nom,m.,6,2,chaussure,Schuh,shoe,sapato,Stad,chaussure,d'Woch virun Niklosdag stellen d'Kanner owes de Schong,"la semaine avant la Saint-Nicolas, les enfants posent leur chaussure près de la porte d’entrée le soir"
+A2 Doheem,Kichen,nom,f.,6,2,cuisine,Küche,"kitchen, cuisine",cozinha,Esch-Sauer,casserole,mir brauchen eng nei Kichen,
+A2 Doheem,Fënster,nom,f.,7,2,fenêtre,"Fenster, Fensterbrett","window, (shop) window, window sill","janela, montra, rebordo de janela",Stad,fenetre,mir kréie méi eng grouss Fënster an der Stuff,nous allons faire installer une fenêtre plus grande dans notre séjour
+A2 Doheem,Toilette,nom,f.,8,3,toilettes,Toilette,"toilet, dress, washing and dressing","casa de banho, sanita, toilette",Stad,,"ier mer fueren, muss ech nach séier op d'Toilette","avant de partir, je dois passer vite aux toilettes"
+A2 Doheem,Gesiicht,nom,n.,8,3,visage,Gesicht,face,cara,Mëllerdall,,dat Kand huet e schéint Gesiicht,
+A2 Doheem,Schlëssel,nom,m.,9,3,clé,Schlüssel,"key, spanner, scale","chave, clave, chave (de repartição)",Stad,,"wéi ech de Schlëssel am Schlass gedréit hunn, ass de Baart ofgebrach","quand j'ai tourné la clé dans la serrure, le panneton s'est brisé"
+A2 Doheem,Kamillentéi,nom,m.,11,4,camomille,"Kamillentee, (Tasse) Kamillentee",camomile tea,"chá de camomila, (chávena de) chá de camomila",Stad,,"ier ech schlofe ginn, drénken ech gär Kamillentéi","avant de me coucher, j’aime boire une tisane à la camomille"
+A2 Doheem,gesinn,verbe,,6,2,voir,sehen,to see,ver,Stad,oeil,ech kennen dee Mann vu Gesinn,
+A2 Doheem,reesen,verbe,,6,2,aller,"reisen, pilgern","to travel, to traipse","ir (de viagem), (ter de) ir",Rout Bréck,valise,ech si mäi Liewe laang gär gereest,
+A2 Doheem,joggen,verbe,,6,2,faire du jogging,joggen,to jog,fazer jogging,Stad,,solle mer an de Bësch fuere fir ze joggen?,est-ce que tu veux aller dans la forêt pour faire du jogging ?
+A2 Doheem,moossen,verbe,,7,2,mesurer,messen,"to take, to measure",medir,Veianen,,"mooss emol, wéi grouss dat Zëmmer ass!",mesure donc cette pièce !
+A2 Doheem,erafueren,verbe,,9,3,entrer,hereinfahren,to drive in,entrar,Stad,,"d'Schëff huet getut, wéi et an den Hafen eragefuer ass",le navire a donné un coup de sirène en entrant dans le port
+A2 Doheem,gro,adjectif,,3,1,gris,grau,grey,cinzento,Stad,,mäi Papp krut scho ganz jonk gro Hoer,mon père a eu des cheveux gris très jeune
+A2 Doheem,aktiv,adjectif,,5,2,actif,aktiv,"active, active (voice)",ativo,Stad,,hien ass en aktive Member vum Club,il est un membre actif du club
+A2 Doheem,beige,adjectif,,5,2,beige,beige,beige,bege,Stad,,meng Mamm huet sech e beigë Reemantel kaaft,ma mère s’est acheté un imperméable beige
+A2 Doheem,modern,adjectif,,6,2,moderne,modern,modern,moderno,Stad,,de Pianist huet dat klassescht Stéck modern interpretéiert,le pianiste a fait une interprétation moderne de ce morceau classique
+A2 Doheem,nonzéng,nombre,,0,0,19,19,19,19,,,,
+A2 Doheem,zwanzeg,nombre,,0,0,20,20,20,20,,,,
+A2 Doheem,drësseg,nombre,,0,0,30,30,30,30,,,,
+A2 Dobaussen,Séi,nom,m.,3,1,lac,See,lake,lago,Esch-Sauer,,no där äiseger Wanternuecht war de Séi zougefruer,"après cette nuit d'hiver glaciale, le lac était gelé"
+A2 Dobaussen,Rees,nom,f.,4,1,voyage,Reise,trip,viagem,Rout Bréck,valise,mir hunn eis Rees dräi Méint am Viraus gebucht,nous avons réservé notre voyage trois mois à l'avance
+A2 Dobaussen,Tram,nom,m.,4,1,tram,Straßenbahn,"tram, tram (network)","(carro) elétrico, rede de (carros) elétricos",Rout Bréck,tram,"wéi laang dauert et, bis den nächsten Tram kënnt?",
+A2 Dobaussen,Gare,nom,f.,4,1,gare,"Bahnhof, Luxembourg-Gare, Gare","(railway) station, Luxembourg-Gare, Dippach-Gare","estação (de caminho de ferro), Luxembourg-Gare, Gare",Esch-Sauer,gare,déi nei Buslinn fiert vun der Gare op de Flughafen,
+A2 Dobaussen,Arrêt,nom,m.,5,2,arrêt,"Haltestelle, Halt",stop,paragem,Stad,arret_bus,den Zuch mécht zu Miersch nëmmen e kuerzen Arrêt,
+A2 Dobaussen,Duerf,nom,n.,5,2,village,Dorf,village,aldeia,Esch-Sauer,village,ech sinn an en anert Duerf geplënnert,
+A2 Dobaussen,Metro,nom,m./f.,5,2,métro,U-Bahn,metro,metro,Stad,,a ville Groussstied gëtt et e Metro,"dans de nombreuses grandes villes, il y a un métro"
+A2 Dobaussen,Schnéi,nom,m.,6,2,neige,Schnee,"snow, stiff peaks","neve, (claras em) castelo",Stad,flocon,"wéi ech de Mueren opgestane sinn, louch Schnéi","quand je me suis levé ce matin, il y avait de la neige"
+A2 Dobaussen,Schëff,nom,n.,6,2,navire,Schiff,"ship, nave","navio, nave",Rout Bréck,bateau,d'Containere si mam Kran vum Schëff gehuewe ginn,les conteneurs ont été retirés du navire à l’aide d’une grue
+A2 Dobaussen,Kolleeg,nom,m.,7,2,camarade,"Kamerad, Kollege","friend, colleague","camarada, colega (de trabalho)",Musel,,de Weekend fueren ech mat engem Kolleeg an d'Vakanz,"ce week-end, je pars en vacances avec un ami"
+A2 Dobaussen,Autobunn,nom,f.,8,3,autoroute,Autobahn,motorway,autoestrada,Rout Bréck,,wéinst engem mobille Chantier ass eng Bunn op der Autobunn gespaart,
+A2 Dobaussen,Marathon,nom,m.,8,3,marathon,Marathon,marathon,maratona,Stad,,"ech hu wëlles, dëst Joer de Marathon matzelafen",
+A2 Dobaussen,Aendokter,nom,m.,9,3,ophtalmologue,Augenarzt,ophthalmologist,oftalmologista,Stad,,den Aendokter huet mer en neie Brëll opgeschriwwen,l'ophtalmologue m'a prescrit de nouvelles lunettes
+A2 Dobaussen,Bibliothéik,nom,f.,11,4,bibliothèque,"Bibliothek, Bücherschrank","library, bookcase",biblioteca,Neimënster,,ech hu mir an der Bibliothéik e flott Buch geléint,j'ai emprunté un chouette livre à la bibliothèque
+A2 Dobaussen,héieren,verbe,,7,2,entendre,hören,to hear,"ouvir, ouvir dizer",Neimënster,oreille,héiers de mech?,
+A2 Dobaussen,freeën,verbe,,6,2,réjouir,freuen,to be pleased,fazer prazer a,Stad,,"et géif eis freeën, wa mer eng Kéier zesumme géifen iesse goen",cela nous ferait plaisir d'aller manger ensemble à l'occasion
+A2 Dobaussen,liewen,verbe,,6,2,vivre,leben,to live,viver,Mëllerdall,,"ech wousst net, datt seng Elteren net méi géife liewen",je ne savais pas que tes parents n'étaient plus en vie
+A2 Dobaussen,beweegen,verbe,,8,3,bouger,"bewegen, sich bewegen",to move,"mover, mover-se",Rout Bréck,,mat sengem Temperament huet eise President villes beweegt,"avec son tempérament, notre président a réalisé beaucoup d'avancées"
+A2 Dobaussen,genéissen,verbe,,9,3,savourer,genießen,"to savour, to enjoy",saborear,Stad,,e Cocktail ass fir ze genéissen an net fir séier ze drénken!,"un cocktail, ça se savoure, on ne l'avale pas d'un trait !"
+A2 Dobaussen,riets,adjectif,,5,2,droit,"rechte, rechtsorientiert, rechts","right, (to the) right, to talk","direito, de direita, (à) direita",Gëlle Fra,fleche_droite,déi riets Parteien hunn eng Koalitioun gebilt,
+A2 Dobaussen,aktuell,adjectif,,7,2,actuel,aktuell,current,atual,Stad,,den aktuelle Stand vun der Enquête ass nach net bekannt,l’état actuel de l’enquête n'est pas encore connu
+A2 Dobaussen,kloer,adjectif,,5,2,clair,"hell, klar","light, clear",claro,Stad,,"d'Waasser ass esou kloer, datt ee bis op de Buedem gesäit",l’eau est tellement claire que l’on voit le fond
+A2 Dobaussen,propper,adjectif,,7,2,propre,sauber,"clean, neat",limpo,Stad,,proppert Drénkwaasser ass fir de Mënsch liewensnoutwendeg,l’eau potable propre est vitale pour l’être humain
+A2 Dobaussen,véierzeg,nombre,,0,0,40,40,40,40,,,,
+A2 Dobaussen,fofzeg,nombre,,0,0,50,50,50,50,,,,
+A2 Dobaussen,honnert,nombre,,0,0,100,100,100,100,,,,

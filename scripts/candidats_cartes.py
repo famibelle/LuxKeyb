@@ -253,6 +253,12 @@ NOMBRES = ['eent', 'zwee', 'dräi', 'véier', 'fënnef', 'sechs',
            'siwen', 'aacht', 'néng', 'zéng', 'eelef', 'zwielef']
 
 
+def element(c):
+    """Une carte dans un ensemble de cartes_imprimees.json : le mot, ou le
+    numéral avec sa valeur (« eent#1 »)."""
+    return f"{c['mot']}#{c['sens']}" if c['nature'] == 'nombre' else c['mot']
+
+
 def carte_nombre(mot, valeur):
     return {'mot': mot, 'nature': 'nombre', 'theme': '', 'sens': str(valeur), 'genre': '',
             'force': 0, 'cout': 0, 'lieu': '', 'dessin': '', 'sens_de': str(valeur),
@@ -322,12 +328,14 @@ def main():
     # Les ensembles des codes de cartes en papier. B1 : la boîte de départ,
     # première édition ; E1 : l'extension, première édition. SCHOUL1 et NATUR1
     # (les extensions de 24 cartes) sont retirés : jamais imprimés.
-    def element(c):
-        return f"{c['mot']}#{c['sens']}" if c['nature'] == 'nombre' else c['mot']
     # « paquets » découpe chaque ensemble, dans l'ordre de ses cartes : le
     # médaillon de la carte imprimée porte l'emblème de son paquet, qui dit à
     # quel paquet la rendre après une partie (ImpressionCarte.paquet).
-    actifs = {
+    # Les autres ensembles (NA1, NA2 de boites_niveaux.py) sont gardés tels quels.
+    chemin = os.path.join(A, 'cartes_imprimees.json')
+    with open(chemin, encoding='utf-8') as f:
+        actifs = json.load(f)['ensembles']
+    actifs |= {
         'B1': {'nom': 'Boîte de départ (Déieren, Iessen)',
                'cartes': [element(c) for nom in ('Déieren', 'Iessen') for c in paquets[nom]],
                'paquets': [[nom, len(paquets[nom])] for nom in ('Déieren', 'Iessen')]},
@@ -336,7 +344,7 @@ def main():
                'paquets': [[nom, len(extension[nom])] for nom in ('Schoul', 'Natur')]},
         'FK27': {'nom': 'Fierkelsmaart 2027', 'cartes': ['Fierkelsmaart'], 'paquets': [['Fierkelsmaart', 1]]},
     }
-    with open(os.path.join(A, 'cartes_imprimees.json'), 'w', encoding='utf-8') as f:
+    with open(chemin, 'w', encoding='utf-8') as f:
         json.dump({'ensembles': actifs}, f, ensure_ascii=False, indent=1)
         f.write('\n')
 

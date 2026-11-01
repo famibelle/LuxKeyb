@@ -1905,7 +1905,8 @@ object Ornement {
      * la forme dit d'où vient la carte, la couleur dit sa rareté. Et c'est un
      * fait utile au jeu : après une partie, il dit à quel paquet rendre la
      * carte (patte Déieren, couverts Iessen, livre Schoul, feuille Natur,
-     * étoile de la Fierkelsmaart). Une carte hors collection garde l'emblème
+     * étoile de la Fierkelsmaart, maison Doheem, panneau indicateur
+     * Dobaussen). Une carte hors collection garde l'emblème
      * de la carte en papier, sans nom de paquet.
      *
      * La légende est celle du médaillon de l'appli, en arc : le nom du jeu
@@ -2006,6 +2007,40 @@ object Ornement {
                 p.color = 0xF2FFFFFF.toInt()
                 p.strokeWidth = 1.3f
                 c.drawLine(cx - 5.6f, cy + 5.6f, cx - 7.4f, cy + 7.4f, p)
+            }
+            // Une maison : le toit, les murs, la porte découpée.
+            ImpressionCarte.Paquet.DOHEEM_A1, ImpressionCarte.Paquet.DOHEEM_A2 -> {
+                p.style = Paint.Style.FILL
+                chemin.moveTo(cx, cy - 7.2f)
+                chemin.lineTo(cx + 7.2f, cy - 0.4f)
+                chemin.lineTo(cx + 5f, cy - 0.4f)
+                chemin.lineTo(cx + 5f, cy + 6f)
+                chemin.lineTo(cx - 5f, cy + 6f)
+                chemin.lineTo(cx - 5f, cy - 0.4f)
+                chemin.lineTo(cx - 7.2f, cy - 0.4f)
+                chemin.close()
+                c.drawPath(chemin, p)
+                // La cheminée, sur le pan droit du toit.
+                c.drawRect(cx + 2.8f, cy - 6f, cx + 4.4f, cy - 3f, p)
+                p.color = 0x99000000.toInt()
+                c.drawRoundRect(cx - 1.6f, cy + 1.4f, cx + 1.6f, cy + 6f, 0.8f, 0.8f, p)
+                p.color = 0xF2FFFFFF.toInt()
+            }
+            // Un panneau indicateur : le poteau et deux flèches opposées.
+            ImpressionCarte.Paquet.DOBAUSSEN_A1, ImpressionCarte.Paquet.DOBAUSSEN_A2 -> {
+                p.style = Paint.Style.FILL
+                c.drawRect(cx - 0.8f, cy - 7.4f, cx + 0.8f, cy + 7.4f, p)
+                for ((sens, haut) in listOf(1f to -5.6f, -1f to -0.2f)) {
+                    chemin.reset()
+                    chemin.moveTo(cx - sens * 4.6f, haut)
+                    chemin.lineTo(cx + sens * 4.6f, haut)
+                    chemin.lineTo(cx + sens * 7f, haut + 1.9f)
+                    chemin.lineTo(cx + sens * 4.6f, haut + 3.8f)
+                    chemin.lineTo(cx - sens * 4.6f, haut + 3.8f)
+                    chemin.close()
+                    chemin.offset(0f, cy)
+                    c.drawPath(chemin, p)
+                }
             }
             // L'étoile à quatre branches de l'ultra rare.
             ImpressionCarte.Paquet.FIERKELSMAART -> {

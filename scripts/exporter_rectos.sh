@@ -1,12 +1,13 @@
 #!/bin/bash
-# exporter_rectos.sh N : exporte N cartes à l'impression depuis le lecteur de cartes ouvert,
-# en feuilletant vers la suivante après chacune (scripts/rectos_boite.py pour la suite).
+# exporter_rectos.sh N [DOSSIER] : exporte N cartes à l'impression depuis le lecteur de cartes
+# ouvert, en feuilletant vers la suivante après chacune, dans DOSSIER (par défaut
+# impression/boite/export ; scripts/rectos_boite.py pour la suite).
 #
 # Avant : un build debug sur l'émulateur (run-as), le carnet de `rectos_boite.py carnet`
 # dans shared_prefs/carnet_cartes.xml (appli arrêtée), le carnet trié « Récentes » et la
 # première carte ouverte. Les coordonnées sont celles de l'AVD pixel9 (1080 × 2424).
 export ANDROID_SERIAL=${ANDROID_SERIAL:-emulator-5554}
-SORTIE="$(dirname "$0")/../impression/boite/export"
+SORTIE="${2:-$(dirname "$0")/../impression/boite/export}"
 mkdir -p "$SORTIE"
 
 premier_plan() {

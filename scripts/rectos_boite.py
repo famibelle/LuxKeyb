@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Les rectos de la boîte de départ, dessinés par l'application elle-même.
+"""Les rectos d'une boîte, dessinés par l'application elle-même.
 
 L'appli exporte une carte pour l'impression (appui long sur « Partager » dans
 le lecteur de cartes, puis « Cette carte », carnet/ImpressionCarte.kt) : 600 dpi,
@@ -7,16 +7,18 @@ le lecteur de cartes, puis « Cette carte », carnet/ImpressionCarte.kt) : 600 d
 la chaîne, autour de scripts/exporter_rectos.sh qui pilote l'émulateur :
 
 1. `carnet` écrit un carnet (shared_prefs/carnet_cartes.xml) qui contient les
-   52 cartes de l'ensemble B1 (assets/cartes_imprimees.json), numérotées pour
-   que le tri « Récentes » les range dans l'ordre de la boîte ;
-2. `assembler` range les PNG exportés : fichiers numérotés, liste de contrôle,
-   PDF d'une carte par page en 600 dpi pour l'imprimeur (impression/boite/,
-   privé) et en 300 dpi pour cartes-imprimables/boite/ (public).
+   52 cartes d'un ensemble de assets/cartes_imprimees.json (B1, la boîte de
+   départ, par défaut ; NA1 et NA2, les boîtes de niveau), numérotées pour que
+   le tri « Récentes » les range dans l'ordre de la boîte ;
+2. `assembler` range les PNG exportés : fichiers au numéro de la collection,
+   liste de contrôle, PDF d'une carte par page en 600 dpi pour l'imprimeur
+   (impression/<boîte>/, privé) et en 300 dpi pour cartes-imprimables/<boîte>/
+   (public).
 
 À lancer depuis la racine du dépôt :
-python3 scripts/rectos_boite.py carnet > carnet_cartes.xml
-scripts/exporter_rectos.sh 52
-python3 scripts/rectos_boite.py assembler [dossier des PNG exportés]
+python3 scripts/rectos_boite.py carnet [ENSEMBLE] > carnet_cartes.xml
+scripts/exporter_rectos.sh 52 [dossier d'export]
+python3 scripts/rectos_boite.py assembler [ENSEMBLE] [dossier des PNG exportés]
 
 Le PDF demande img2pdf (pip install img2pdf), qui embarque les PNG sans les
 recompresser.
@@ -34,16 +36,32 @@ from PIL import Image, ImageDraw, ImageFont
 
 RACINE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 ASSETS = os.path.join(RACINE, 'android_keyboard/app/src/main/assets')
-SELECTION = os.path.join(RACINE, 'Dictionnaires/cartes/selection.csv')
-PRIVE = os.path.join(RACINE, 'impression/boite')
-PUBLIC = os.path.join(RACINE, 'cartes-imprimables/boite')
 VERSO = os.path.join(RACINE, 'cartes-imprimables/verso')
 TAILLE = (1630, 2220)  # 69 × 94 mm à 600 dpi
+# La numérotation de la collection (ImpressionCarte.COLLECTION).
+COLLECTION = ['B1', 'E1', 'NA1', 'NA2']
+# Par ensemble : le dossier (sous impression/ et cartes-imprimables/), la
+# sélection qui donne nature et sens, le titre de l'aperçu.
+BOITES = {
+    'B1': ('boite', 'selection.csv', 'la boîte de 52 cartes'),
+    'NA1': ('niveau_a1', 'niveaux.csv', 'la boîte Niveau A1'),
+    'NA2': ('niveau_a2', 'niveaux.csv', 'la boîte Niveau A2'),
+}
 
 
-def boite():
-    """Les cartes de B1 : (mot, nombre ou None, paquet), dans l'ordre de la boîte."""
-    ens = json.load(open(os.path.join(ASSETS, 'cartes_imprimees.json')))['ensembles']['B1']
+def ensembles():
+    return json.load(open(os.path.join(ASSETS, 'cartes_imprimees.json')))['ensembles']
+
+
+def premier_numero(ensemble):
+    """Le numéro de la première carte de l'ensemble dans la collection."""
+    e = ensembles()
+    return 1 + sum(len(e[i]['cartes']) for i in COLLECTION[:COLLECTION.index(ensemble)])
+
+
+def boite(ensemble='B1'):
+    """Les cartes d'un ensemble : (mot, nombre ou None, paquet), dans l'ordre de la boîte."""
+    ens = ensembles()[ensemble]
     paquets = [nom for nom, n in ens['paquets'] for _ in range(n)]
     cartes = []
     for cle, paquet in zip(ens['cartes'], paquets):
@@ -57,10 +75,10 @@ def nom_fichier(mot):
     return ''.join(ch for ch in mot if ch.isalnum())
 
 
-def carnet():
+def carnet(ensemble):
     """Une carte par mot, gagnée à Wuertsich (Zuelwuert pour les nombres)."""
     d = int(time.time() * 1000)
-    cartes = boite()
+    cartes = boite(ensemble)
     entrees = []
     for i, (mot, nombre, _) in enumerate(cartes):
         c = {'m': mot, 'd': d, 'n': 1, 'g': 'zw' if nombre else 'ws', 'k': len(cartes) - i}
@@ -110,7 +128,7 @@ def png(im, dpi):
     return b.getvalue()
 
 
-def apercu(images, sortie):
+def apercu(images, sortie, titre):
     """Les deux paquets d'un coup d'œil, 13 cartes par ligne, sans fond perdu."""
     L, H, cols, ecart = 230, 313, 13, 12
     marge = round(3 / 69 * TAILLE[0])
@@ -120,29 +138,32 @@ def apercu(images, sortie):
         police = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 26)
     except OSError:
         police = ImageFont.load_default()
-    ImageDraw.Draw(ap).text((ecart, 8), 'Wuertduell : la boîte de 52 cartes (Déieren 1 à 26, Iessen 27 à 52)',
-                            fill='white', font=police)
+    ImageDraw.Draw(ap).text((ecart, 8), titre, fill='white', font=police)
     for k, im in enumerate(images):
         im = im.crop((marge, marge, im.width - marge, im.height - marge)).resize((L, H), Image.LANCZOS)
         ap.paste(im, (ecart + (k % cols) * (L + ecart), 52 + (k // cols) * (H + ecart)))
     ap.save(sortie)
 
 
-def assembler(export):
-    selection = {r['mot']: r for r in csv.DictReader(open(SELECTION))}
+def assembler(ensemble, export):
+    dossier, fichier, titre = BOITES[ensemble]
+    prive = os.path.join(RACINE, 'impression', dossier)
+    public = os.path.join(RACINE, 'cartes-imprimables', dossier)
+    selection = {r['mot']: r for r in csv.DictReader(open(os.path.join(RACINE, 'Dictionnaires/cartes', fichier)))}
     rang = {}
     for i, (w, _) in enumerate(json.load(open(os.path.join(ASSETS, 'luxemburgish_dict.json')))):
         rang.setdefault(w, i + 1)
 
-    cartes = boite()
+    cartes = boite(ensemble)
+    debut = premier_numero(ensemble)
     manquants = [mot for mot, _, _ in cartes
                  if not os.path.exists(os.path.join(export, nom_fichier(mot) + '.png'))]
     if manquants:
         sys.exit(f'Exports manquants dans {export} : {", ".join(manquants)}')
 
-    recto = os.path.join(PRIVE, 'recto')
+    recto = os.path.join(prive, 'recto')
     os.makedirs(recto, exist_ok=True)
-    os.makedirs(PUBLIC, exist_ok=True)
+    os.makedirs(public, exist_ok=True)
     images, fichiers, pages_300, lignes = [], [], [], []
     for i, (mot, nombre, paquet) in enumerate(cartes):
         im = Image.open(os.path.join(export, nom_fichier(mot) + '.png'))
@@ -150,36 +171,42 @@ def assembler(export):
         # L'appli écrit de l'ARGB entièrement opaque : en RVB, le PDF n'a pas de masque de transparence.
         assert im.mode != 'RGBA' or im.getchannel('A').getextrema() == (255, 255), mot
         im = im.convert('RGB')
-        dst = os.path.join(recto, f'{i + 1:03d}_{nom_fichier(mot)}.png')
+        dst = os.path.join(recto, f'{debut + i:03d}_{nom_fichier(mot)}.png')
         im.save(dst, dpi=(600, 600))
         fichiers.append(dst)
         images.append(im)
         pages_300.append(png(im.resize((TAILLE[0] // 2, TAILLE[1] // 2), Image.LANCZOS), 300))
         s = selection.get(mot, {})
         lignes.append({
-            'numero': f'{i + 1:03d}', 'mot': mot, 'paquet': paquet,
+            'numero': f'{debut + i:03d}', 'mot': mot, 'paquet': paquet,
             'nature': s.get('nature') or ('nombre' if nombre else ''), 'force': len(mot),
             'cout': cout(mot, nombre), 'rarete': rarete(mot, nombre, rang), 'sens': s.get('sens', ''),
         })
 
-    for dossier in (PRIVE, PUBLIC):
-        with open(os.path.join(dossier, 'liste.csv'), 'w', newline='') as f:
+    for d in (prive, public):
+        with open(os.path.join(d, 'liste.csv'), 'w', newline='') as f:
             w = csv.DictWriter(f, fieldnames=list(lignes[0]))
             w.writeheader()
             w.writerows(lignes)
-    pdf(fichiers, os.path.join(PRIVE, 'rectos_52.pdf'))
-    pdf(pages_300, os.path.join(PUBLIC, 'rectos_52.pdf'))
-    shutil.copy(os.path.join(VERSO, 'verso.pdf'), os.path.join(PRIVE, 'dos.pdf'))
-    shutil.copy(os.path.join(VERSO, 'verso_300dpi.png'), os.path.join(PRIVE, 'dos_300dpi.png'))
-    apercu(images, os.path.join(PRIVE, 'apercu_52.png'))
-    for f in ('impression/boite/rectos_52.pdf', 'cartes-imprimables/boite/rectos_52.pdf'):
-        print(f, os.path.getsize(os.path.join(RACINE, f)) // 1_000_000, 'Mo')
+    pdf(fichiers, os.path.join(prive, 'rectos_52.pdf'))
+    pdf(pages_300, os.path.join(public, 'rectos_52.pdf'))
+    shutil.copy(os.path.join(VERSO, 'verso.pdf'), os.path.join(prive, 'dos.pdf'))
+    shutil.copy(os.path.join(VERSO, 'verso_300dpi.png'), os.path.join(prive, 'dos_300dpi.png'))
+    noms = [nom for nom, _ in ensembles()[ensemble]['paquets']]
+    apercu(images, os.path.join(prive, 'apercu_52.png'),
+           f'Wuertduell : {titre} ({noms[0]} {debut} à {debut + 25}, {noms[1]} {debut + 26} à {debut + 51})')
+    for d in (prive, public):
+        f = os.path.join(d, 'rectos_52.pdf')
+        print(os.path.relpath(f, RACINE), os.path.getsize(f) // 1_000_000, 'Mo')
 
 
 if __name__ == '__main__':
-    if sys.argv[1:2] == ['carnet']:
-        carnet()
-    elif sys.argv[1:2] == ['assembler']:
-        assembler(sys.argv[2] if len(sys.argv) > 2 else os.path.join(PRIVE, 'export'))
+    args = sys.argv[1:]
+    ensemble = args.pop(1) if len(args) > 1 and args[1] in BOITES else 'B1'
+    if args[:1] == ['carnet']:
+        carnet(ensemble)
+    elif args[:1] == ['assembler']:
+        assembler(ensemble, args[1] if len(args) > 1
+                  else os.path.join(RACINE, 'impression', BOITES[ensemble][0], 'export'))
     else:
         sys.exit(__doc__)
