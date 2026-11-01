@@ -1,9 +1,42 @@
 {
- "genere_le": "2026-10-31",
- "derniere_version": "37.12.0",
- "derniere_date": "2026-10-31",
+ "genere_le": "2026-11-01",
+ "derniere_version": "38.0.0",
+ "derniere_date": "2026-11-01",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "38.0.0",
+   "date": "2026-11-01",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Le dessin de chaque carte prend toute la place",
+       "texte": "Le chat, la maison, le bus ou le chiffre d'une carte de nombre sont bien plus grands et centrés dans la fenêtre, et le paysage les met en valeur tout autour. Toutes les cartes du carnet en profitent, ouvertes comme dans la grille."
+      },
+      {
+       "titre": "Les mots sans dessin aussi",
+       "texte": "Le ruban qui suit la sonorité du mot est plus haut et plus épais."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_sujet_agrandi.png",
+     "alt": "Deux colonnes, « Avant » et « Après ». En haut, la grille de Mäi Carnet avec six cartes : Kaz, Bus, Haus, dräi, Fliger, Päerd. Avant, le chat, le bus, la maison, le 3, l'avion et le cheval sont petits au milieu de leur paysage ; après, chacun remplit sa fenêtre. En bas, la carte Bus ouverte : avant, un petit bus posé en bas de la fenêtre ; après, un grand bus qui en prend toute la largeur.",
+     "legende": "Le dessin de chaque carte prend maintenant toute la fenêtre."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_sujet_agrandi.png",
+   "image_alt": "Deux colonnes, « Avant » et « Après ». En haut, la grille de Mäi Carnet avec six cartes : Kaz, Bus, Haus, dräi, Fliger, Päerd. Avant, le chat, le bus, la maison, le 3, l'avion et le cheval sont petits au milieu de leur paysage ; après, chacun remplit sa fenêtre. En bas, la carte Bus ouverte : avant, un petit bus posé en bas de la fenêtre ; après, un grand bus qui en prend toute la largeur.",
+   "image_legende": "Le dessin de chaque carte prend maintenant toute la fenêtre."
+  },
   {
    "version": "37.12.0",
    "date": "2026-10-31",
@@ -199,35 +232,6 @@
    "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
    "image_alt": "Animation dans Mäi Carnet. 1. La grille du carnet : Kaz, un chat qui marche, Léiw, un lion, Moien, un soleil qui se lève, Famill, une famille, Kaddo, un cadeau, Apel, une pomme. 2. à 6. Les cartes s'ouvrent l'une après l'autre en grand : « Kaz » en or devant la ville de nuit, « Léiw » en argent, « Famill » devant la grande roue de la Schueberfouer, « Kaddo » et « Apel » en or. 7. Retour à la grille.",
    "image_legende": "Les nouveaux dessins sur les cartes, des animaux aux mots de tous les jours."
-  },
-  {
-   "version": "37.9.2",
-   "date": "2026-10-29",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Les cartons ont leur bordure blanche",
-       "texte": "Dans la carte ouverte et sur l'image partagée, chaque carton découpé est cerné d'un bord blanc, comme du vrai papier, même sur les cartes de nuit."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_theatre_bordure.gif",
-     "alt": "La carte « Mënz », pièce de monnaie, très rare, ouverte dans l'appli et penchée lentement de gauche à droite. La nuit sur la Moselle : les coulisses en silhouette sur les côtés, la colline aux vignes, le village et son clocher, et un nuage qui traverse le ciel étoilé. Chaque carton découpé est cerné d'une bordure blanche, et les cartons glissent à des vitesses différentes.",
-     "legende": "Une carte très rare qu'on penche : chaque carton a sa bordure blanche, même la nuit."
-    }
-   ],
-   "image": "Screenshots/lux_theatre_bordure.gif",
-   "image_alt": "La carte « Mënz », pièce de monnaie, très rare, ouverte dans l'appli et penchée lentement de gauche à droite. La nuit sur la Moselle : les coulisses en silhouette sur les côtés, la colline aux vignes, le village et son clocher, et un nuage qui traverse le ciel étoilé. Chaque carton découpé est cerné d'une bordure blanche, et les cartons glissent à des vitesses différentes.",
-   "image_legende": "Une carte très rare qu'on penche : chaque carton a sa bordure blanche, même la nuit."
   }
  ]
 }

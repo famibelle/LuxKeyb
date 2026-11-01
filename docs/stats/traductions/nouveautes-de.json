@@ -1,5 +1,29 @@
 {
   "_comment": "Deutsche Übersetzung von nouveautes.html, nach Version. Von Hand gepflegt: generate_nouveautes.py führt sie in stats/nouveautes-de.json zusammen. Jede Version folgt der französischen aus dem CHANGELOG: dieselben Abschnitte, dieselbe Anzahl Punkte, in derselben Reihenfolge; der Titel eines Abschnitts darf fehlen, wenn _sections ihn übersetzt. Eine Version, die hier fehlt oder nicht mehr die französische Form hat, erscheint auf Französisch mit einem Hinweis. Der Text ist HTML: < und & maskieren.",
+  "38.0.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Neu",
+        "points": [
+          {
+            "titre": "Die Zeichnung jeder Karte füllt das ganze Fenster",
+            "texte": "Die Katze, das Haus, der Bus oder die Ziffer einer Zahlenkarte sind jetzt viel größer und mittig im Fenster, die Landschaft rundherum hebt sie hervor. Alle Karten der Sammlung profitieren davon, geöffnet wie im Raster."
+          },
+          {
+            "titre": "Auch Wörter ohne Zeichnung",
+            "texte": "Das Band, das dem Klang des Wortes folgt, ist höher und dicker."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Zwei Spalten, „Vorher“ und „Nachher“. Oben das Raster von Mäi Carnet mit sechs Karten: Kaz, Bus, Haus, dräi, Fliger, Päerd. Vorher sind die Katze, der Bus, das Haus, die 3, das Flugzeug und das Pferd klein in der Mitte ihrer Landschaft; nachher füllt jedes sein Fenster. Unten die geöffnete Karte Bus: vorher ein kleiner Bus unten im Fenster, nachher ein großer Bus über die ganze Breite. Der Bildschirm ist auf Französisch.",
+        "legende": "Die Zeichnung jeder Karte füllt jetzt das ganze Fenster."
+      }
+    ]
+  },
   "37.12.0": {
     "intro": "",
     "sections": [

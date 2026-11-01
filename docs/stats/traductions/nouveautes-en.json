@@ -1,5 +1,29 @@
 {
   "_comment": "English translation of nouveautes.html, by version. Hand-maintained: generate_nouveautes.py merges it into stats/nouveautes-en.json. Each version mirrors the French one from the CHANGELOG: same sections, same number of points, in the same order; a section's title can be left out when _sections translates it. A version that is missing here, or no longer has the French shape, is shown in French with a notice. Text is HTML: escape < and &.",
+  "38.0.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "New",
+        "points": [
+          {
+            "titre": "Each card's drawing fills the whole window",
+            "texte": "The cat, the house, the bus or the digit of a number card are now much bigger and centred in the window, with the landscape setting them off all around. Every card in the collection benefits, open or in the grid."
+          },
+          {
+            "titre": "Words without a drawing too",
+            "texte": "The ribbon that follows the sound of the word is taller and thicker."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Two columns, “Before” and “After”. At the top, the Mäi Carnet grid with six cards: Kaz, Bus, Haus, dräi, Fliger, Päerd. Before, the cat, the bus, the house, the 3, the plane and the horse are small in the middle of their landscape; after, each one fills its window. At the bottom, the open Bus card: before, a small bus at the bottom of the window; after, a large bus spanning its whole width. The screen is in French.",
+        "legende": "Each card's drawing now fills the whole window."
+      }
+    ]
+  },
   "37.12.0": {
     "intro": "",
     "sections": [

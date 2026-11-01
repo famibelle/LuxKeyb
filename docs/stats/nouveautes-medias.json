@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "38.0.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_cartes_sujet_agrandi.png",
+        "alt": "Deux colonnes, « Avant » et « Après ». En haut, la grille de Mäi Carnet avec six cartes : Kaz, Bus, Haus, dräi, Fliger, Päerd. Avant, le chat, le bus, la maison, le 3, l'avion et le cheval sont petits au milieu de leur paysage ; après, chacun remplit sa fenêtre. En bas, la carte Bus ouverte : avant, un petit bus posé en bas de la fenêtre ; après, un grand bus qui en prend toute la largeur.",
+        "legende": "Le dessin de chaque carte prend maintenant toute la fenêtre."
+      }
+    ]
+  },
   "37.12.0": {
     "images": [
       {

@@ -1,9 +1,42 @@
 {
- "genere_le": "2026-10-31",
- "derniere_version": "37.12.0",
- "derniere_date": "2026-10-31",
+ "genere_le": "2026-11-01",
+ "derniere_version": "38.0.0",
+ "derniere_date": "2026-11-01",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "38.0.0",
+   "date": "2026-11-01",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "New",
+     "points": [
+      {
+       "titre": "Each card's drawing fills the whole window",
+       "texte": "The cat, the house, the bus or the digit of a number card are now much bigger and centred in the window, with the landscape setting them off all around. Every card in the collection benefits, open or in the grid."
+      },
+      {
+       "titre": "Words without a drawing too",
+       "texte": "The ribbon that follows the sound of the word is taller and thicker."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_sujet_agrandi.png",
+     "alt": "Two columns, “Before” and “After”. At the top, the Mäi Carnet grid with six cards: Kaz, Bus, Haus, dräi, Fliger, Päerd. Before, the cat, the bus, the house, the 3, the plane and the horse are small in the middle of their landscape; after, each one fills its window. At the bottom, the open Bus card: before, a small bus at the bottom of the window; after, a large bus spanning its whole width. The screen is in French.",
+     "legende": "Each card's drawing now fills the whole window."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_sujet_agrandi.png",
+   "image_alt": "Two columns, “Before” and “After”. At the top, the Mäi Carnet grid with six cards: Kaz, Bus, Haus, dräi, Fliger, Päerd. Before, the cat, the bus, the house, the 3, the plane and the horse are small in the middle of their landscape; after, each one fills its window. At the bottom, the open Bus card: before, a small bus at the bottom of the window; after, a large bus spanning its whole width. The screen is in French.",
+   "image_legende": "Each card's drawing now fills the whole window."
+  },
   {
    "version": "37.12.0",
    "date": "2026-10-31",
@@ -199,35 +232,6 @@
    "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
    "image_alt": "Animation in Mäi Carnet. 1. The collection grid: Kaz, a walking cat, Léiw, a lion, Moien, a rising sun, Famill, a family, Kaddo, a present, Apel, an apple. 2 to 6. The cards open full size one after another: “Kaz” in gold in front of the city at night, “Léiw” in silver, “Famill” in front of the Schueberfouer big wheel, “Kaddo” and “Apel” in gold. 7. Back to the grid. The cards are in French.",
    "image_legende": "The new drawings on the cards, from animals to everyday words."
-  },
-  {
-   "version": "37.9.2",
-   "date": "2026-10-29",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "The cardboard pieces have their white border",
-       "texte": "On the open card and on the shared image, each cut-out piece is outlined with a white edge, like real paper, even on night cards."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_theatre_bordure.gif",
-     "alt": "The card “Mënz”, coin, very rare, open in the app and slowly tilted from left to right. Night on the Moselle: the silhouetted wings on the sides, the vineyard hill, the village and its bell tower, and a cloud crossing the starry sky. Each cut-out piece is outlined with a white border, and the pieces slide at different speeds.",
-     "legende": "A very rare card being tilted: each piece has its white border, even at night."
-    }
-   ],
-   "image": "Screenshots/lux_theatre_bordure.gif",
-   "image_alt": "The card “Mënz”, coin, very rare, open in the app and slowly tilted from left to right. Night on the Moselle: the silhouetted wings on the sides, the vineyard hill, the village and its bell tower, and a cloud crossing the starry sky. Each cut-out piece is outlined with a white border, and the pieces slide at different speeds.",
-   "image_legende": "A very rare card being tilted: each piece has its white border, even at night."
   }
  ]
 }

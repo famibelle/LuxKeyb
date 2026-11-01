@@ -1,9 +1,42 @@
 {
- "genere_le": "2026-10-31",
- "derniere_version": "37.12.0",
- "derniere_date": "2026-10-31",
+ "genere_le": "2026-11-01",
+ "derniere_version": "38.0.0",
+ "derniere_date": "2026-11-01",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "38.0.0",
+   "date": "2026-11-01",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Novidades",
+     "points": [
+      {
+       "titre": "O desenho de cada carta ocupa toda a janela",
+       "texte": "O gato, a casa, o autocarro ou o algarismo de uma carta de número estão agora muito maiores e centrados na janela, e a paisagem à volta põe-nos em destaque. Todas as cartas da coleção beneficiam, abertas ou na grelha."
+      },
+      {
+       "titre": "As palavras sem desenho também",
+       "texte": "A fita que segue o som da palavra é mais alta e mais grossa."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_sujet_agrandi.png",
+     "alt": "Duas colunas, «Antes» e «Depois». Em cima, a grelha de Mäi Carnet com seis cartas: Kaz, Bus, Haus, dräi, Fliger, Päerd. Antes, o gato, o autocarro, a casa, o 3, o avião e o cavalo são pequenos no meio da paisagem; depois, cada um enche a sua janela. Em baixo, a carta Bus aberta: antes, um pequeno autocarro no fundo da janela; depois, um grande autocarro em toda a largura. O ecrã está em francês.",
+     "legende": "O desenho de cada carta ocupa agora toda a janela."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_sujet_agrandi.png",
+   "image_alt": "Duas colunas, «Antes» e «Depois». Em cima, a grelha de Mäi Carnet com seis cartas: Kaz, Bus, Haus, dräi, Fliger, Päerd. Antes, o gato, o autocarro, a casa, o 3, o avião e o cavalo são pequenos no meio da paisagem; depois, cada um enche a sua janela. Em baixo, a carta Bus aberta: antes, um pequeno autocarro no fundo da janela; depois, um grande autocarro em toda a largura. O ecrã está em francês.",
+   "image_legende": "O desenho de cada carta ocupa agora toda a janela."
+  },
   {
    "version": "37.12.0",
    "date": "2026-10-31",
@@ -199,35 +232,6 @@
    "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
    "image_alt": "Animação em Mäi Carnet. 1. A grelha da coleção: Kaz, um gato a andar, Léiw, um leão, Moien, um sol a nascer, Famill, uma família, Kaddo, um presente, Apel, uma maçã. 2 a 6. As cartas abrem-se em grande uma após a outra: «Kaz» em ouro diante da cidade à noite, «Léiw» em prata, «Famill» diante da roda gigante da Schueberfouer, «Kaddo» e «Apel» em ouro. 7. Regresso à grelha. As cartas estão em francês.",
    "image_legende": "Os novos desenhos nas cartas, dos animais às palavras do dia a dia."
-  },
-  {
-   "version": "37.9.2",
-   "date": "2026-10-29",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "Os cartões têm o seu bordo branco",
-       "texte": "Na carta aberta e na imagem partilhada, cada cartão recortado tem à volta um bordo branco, como papel a sério, mesmo nas cartas de noite."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_theatre_bordure.gif",
-     "alt": "A carta «Mënz», moeda, muito rara, aberta na aplicação e inclinada devagar da esquerda para a direita. A noite no Mosela: os bastidores em silhueta dos lados, a colina das vinhas, a aldeia e o seu campanário, e uma nuvem que atravessa o céu estrelado. Cada cartão recortado tem um bordo branco, e os cartões deslizam a velocidades diferentes.",
-     "legende": "Uma carta muito rara a ser inclinada: cada cartão tem o seu bordo branco, mesmo de noite."
-    }
-   ],
-   "image": "Screenshots/lux_theatre_bordure.gif",
-   "image_alt": "A carta «Mënz», moeda, muito rara, aberta na aplicação e inclinada devagar da esquerda para a direita. A noite no Mosela: os bastidores em silhueta dos lados, a colina das vinhas, a aldeia e o seu campanário, e uma nuvem que atravessa o céu estrelado. Cada cartão recortado tem um bordo branco, e os cartões deslizam a velocidades diferentes.",
-   "image_legende": "Uma carta muito rara a ser inclinada: cada cartão tem o seu bordo branco, mesmo de noite."
   }
  ]
 }

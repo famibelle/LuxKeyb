@@ -1,5 +1,29 @@
 {
   "_comment": "Tradução portuguesa de nouveautes.html, por versão. Mantida à mão: generate_nouveautes.py junta-a em stats/nouveautes-pt.json. Cada versão segue a francesa do CHANGELOG: as mesmas secções, o mesmo número de pontos, pela mesma ordem; o título de uma secção pode faltar quando _sections o traduz. Uma versão que falte aqui, ou que já não tenha a forma da francesa, aparece em francês com um aviso. O texto é HTML: escapar < e &.",
+  "38.0.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Novidades",
+        "points": [
+          {
+            "titre": "O desenho de cada carta ocupa toda a janela",
+            "texte": "O gato, a casa, o autocarro ou o algarismo de uma carta de número estão agora muito maiores e centrados na janela, e a paisagem à volta põe-nos em destaque. Todas as cartas da coleção beneficiam, abertas ou na grelha."
+          },
+          {
+            "titre": "As palavras sem desenho também",
+            "texte": "A fita que segue o som da palavra é mais alta e mais grossa."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Duas colunas, «Antes» e «Depois». Em cima, a grelha de Mäi Carnet com seis cartas: Kaz, Bus, Haus, dräi, Fliger, Päerd. Antes, o gato, o autocarro, a casa, o 3, o avião e o cavalo são pequenos no meio da paisagem; depois, cada um enche a sua janela. Em baixo, a carta Bus aberta: antes, um pequeno autocarro no fundo da janela; depois, um grande autocarro em toda a largura. O ecrã está em francês.",
+        "legende": "O desenho de cada carta ocupa agora toda a janela."
+      }
+    ]
+  },
   "37.12.0": {
     "intro": "",
     "sections": [
