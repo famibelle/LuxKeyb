@@ -1,0 +1,290 @@
+<!doctype html><meta charset="utf-8"><body>
+<script src="moteur.js"></script><script src="lieux.js"></script><script src="breedewee.js"></script>
+<script src="peint.js"></script><script src="vives.js"></script><script src="bus.js"></script>
+<script>
+// La carte « Bus » (commune, le matin, à la Rout Bréck) en gouache vive :
+// la fenêtre entière, décor en trois cartons puis le dessin du mot, à la
+// place exacte de la fenêtre dans le recto à 300 dpi.
+const X = 69.25 + 32 * 2.2545, Y = 59 + 34.12 * 2.2545, U = 2.36 * 2.2545;
+const W = Math.ceil(100 * U), HH = Math.ceil(66 * U);
+let P = VIVES[0];
+
+// Copie de Peintre.routBreck(), avec deux nuages de papier peint dans la
+// bande du haut, la seule que le dessin laisse voir.
+Peintre.prototype.routBreck = function () {
+  const P = this.P, mix = melange, r = Alea(4);
+  this.nuagePeint(58, 2.5, 15);
+  this.nuagePeint(80, 8, 10);
+  const fl = mix(P.loin, P.cielBas, 0.25);
+  const tours = [8, 4, 15, 13, 3, 11, 18, 5, 19, 26, 3.4, 13, 31, 4.2, 16, 86, 4, 12, 92, 3, 9];
+  for (let i = 0; i < tours.length; i += 3) {
+    const x = tours[i], w = tours[i + 1], h = tours[i + 2];
+    this.rect(x, 38 - h, w, h, fl);
+    if (P.allume) for (let y = 40 - h; y < 36; y += 2.2) if (r() < 0.55) this.rect(x + 0.8, y, w - 1.6, 0.5, P.fenetre, 0.7);
+  }
+  this.crete(37, 1.6, 6, P.loin);
+  this.plan(1);
+  this.forme('M0 66L0 38C14 40 28 50 42 62L42 66Z', P.milieu);
+  this.forme('M100 66L100 39C86 41 72 50 58 62L58 66Z', P.milieu);
+  this.bosquet(0, 40, 46, 2.2, 7, mix(P.milieu, P.pres, 0.45));
+  this.bosquet(60, 100, 47, 2.2, 8, mix(P.milieu, P.pres, 0.45));
+  this.plan(2);
+  this.rect(0, 58, 100, 8, P.pres);
+  this.bosquet(34, 66, 60, 2, 9, P.sol);
+  const rouge = [0xFFE8432E, 0xFFE0482F, 0xFFB8323A, 0xFF8A2433].map(hx)[P.rang];
+  const rc = mix(rouge, 0xFFFFFFFF, 0.25);
+  for (const x of [17, 41, 65, 89]) {
+    this.trait(`M${x - 5.5} 33.5L${x} 61L${x + 5.5} 33.5`, rouge, 1.5);
+    this.trait(`M${x - 0.4} 33.5L${x} 61`, mix(rouge, 0xFF000000, 0.3), 0.5);
+  }
+  this.rect(-1, 30, 102, 3.6, rouge);
+  rectNet.call(this, -1, 30, 102, 0.7, rc);
+};
+
+
+// Les coulisses des rares (Peintre.coulisses) : deux arbres sombres sur les côtés.
+const FEUILLES = [0, 12, 7.5, 6, 9.5, 6, 11, 13, 4.6, 14.5, 17.5, 3.4, 2, 19.5, 6.5, 8, 21, 4.6, 1, 27, 5.5, 5.5, 29.5, 3.6, 11.5, 25, 2.8];
+Peintre.prototype.coulisses = function () {
+  const P = this.P;
+  const feuillage = melange(P.pres, 0xFF000000, P.nuit ? 0.25 : 0.38), tronc = melange(P.sol, 0xFF000000, 0.3);
+  for (const droite of [false, true]) {
+    const x = v => droite ? 100 - v : v;
+    this.forme(`M${x(0.6)} 66L${x(1.8)} 34L${x(3.4)} 26L${x(4.6)} 35L${x(5.6)} 66Z`, tronc);
+    this.trait(`M${x(3.8)} 39Q${x(8.5)} 35 ${x(12.5)} 28.5`, tronc, 1);
+    const r = Alea(droite ? 62 : 61);
+    // Le feuillage d'un seul carton : tous les ronds réunis, peints d'un coup.
+    const f = new Path2D();
+    for (let i = 0; i < FEUILLES.length; i += 3) {
+      const rr = FEUILLES[i + 2] * (0.9 + 0.2 * r());
+      f.moveTo(x(FEUILLES[i]) + rr, FEUILLES[i + 1]); f.arc(x(FEUILLES[i]), FEUILLES[i + 1], rr, 0, Math.PI * 2);
+    }
+    this.peint(f, feuillage, -0.6, droite ? [86, 4, 101, 34] : [-1, 4, 14, 34], 0.8, true);
+  }
+};
+
+const NACRES = [['#FFFFFF', '#EBE7EF', '#CDD5DF'], ['#FFFAF0', '#F6E5CC', '#DCC19C'], ['#FFF4EE', '#F3D6CF', '#D8A9A8'], ['#FFFBEE', '#F6E6B6', '#D9B766']];
+const ENCRES = ['127,138,150', '140,106,72', '107,74,92', '91,74,42'];
+const HALOS = [['255,255,255', 107], ['255,255,255', 115], ['255,224,176', 110], ['255,233,168', 64]];
+
+// La Rout Bréck en cinq plans : 0 le ciel (cielPeint), 1 les nuages,
+// 2 le lointain (tours, crête), 3 le milieu (talus), 4 le proche (sol, pont).
+Peintre.prototype.routBreck5 = function () {
+  const P = this.P, mix = melange, r = Alea(4);
+  this.plan(1);
+  this.nuagePeint(57, 5.5, 15);
+  this.nuagePeint(80, 11, 10);
+  this.nuagePeint(5, 8, 11);
+  this.plan(2);
+  const fl = mix(P.loin, P.cielBas, 0.25);
+  const tours = [8, 4, 15, 13, 3, 11, 18, 5, 19, 26, 3.4, 13, 31, 4.2, 16, 86, 4, 12, 92, 3, 9];
+  for (let i = 0; i < tours.length; i += 3) {
+    const x = tours[i], w = tours[i + 1], h = tours[i + 2];
+    this.rect(x, 38 - h, w, h, fl);
+    if (P.allume) for (let y = 40 - h; y < 36; y += 2.2) if (r() < 0.55) this.rect(x + 0.8, y, w - 1.6, 0.5, P.fenetre, 0.7);
+  }
+  this.crete(37, 1.6, 6, P.loin);
+  this.plan(3);
+  this.forme('M0 66L0 38C14 40 28 50 42 62L42 66Z', P.milieu);
+  this.forme('M100 66L100 39C86 41 72 50 58 62L58 66Z', P.milieu);
+  this.bosquet(0, 40, 46, 2.2, 7, mix(P.milieu, P.pres, 0.45));
+  this.bosquet(60, 100, 47, 2.2, 8, mix(P.milieu, P.pres, 0.45));
+  this.plan(4);
+  this.rect(0, 58, 100, 8, P.pres);
+  this.bosquet(34, 66, 60, 2, 9, P.sol);
+  const rouge = [0xFFE8432E, 0xFFE0482F, 0xFFB8323A, 0xFF8A2433].map(hx)[P.rang];
+  const rc = mix(rouge, 0xFFFFFFFF, 0.25);
+  for (const x of [17, 41, 65, 89]) {
+    this.trait(`M${x - 5.5} 33.5L${x} 61L${x + 5.5} 33.5`, rouge, 1.5);
+    this.trait(`M${x - 0.4} 33.5L${x} 61`, mix(rouge, 0xFF000000, 0.3), 0.5);
+  }
+  this.rect(-1, 30, 102, 3.6, rouge);
+  rectNet.call(this, -1, 30, 102, 0.7, rc);
+};
+
+function toile() { const c = document.createElement('canvas'); c.width = W; c.height = HH; return c; }
+function calque(seul, ciel, lieu, coulisses = false) {
+  const t = toile(), c = t.getContext('2d'); c.scale(U, U);
+  const p = new Peintre(c, P, seul);
+  p.gouache = true;
+  if (ciel) p.cielPeint();
+  if (coulisses) p.coulisses(); else if (lieu) p.routBreck5();
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  return t;
+}
+function silhouette(src, col = '#000') {
+  const t = toile(), c = t.getContext('2d');
+  c.drawImage(src, 0, 0); c.globalCompositeOperation = 'source-in'; c.fillStyle = col; c.fillRect(0, 0, W, HH); return t;
+}
+function eclaircir(b, forme, vers, t) {
+  const c = b.getContext('2d'); c.globalCompositeOperation = 'source-atop'; c.drawImage(silhouette(forme, css(vers, t)), 0, 0);
+  c.globalCompositeOperation = 'source-over';
+}
+function ombrer(derriere, forme, ecart, force) {
+  const o = toile(), oc = o.getContext('2d');
+  oc.filter = `blur(${1.1 * U * ecart * 0.6}px)`; oc.drawImage(silhouette(forme, '#0B1020'), 0, -0.55 * U * ecart);
+  const c = derriere.getContext('2d'); c.globalAlpha = (P.nuit ? 0.55 : 0.38) * force;
+  c.globalCompositeOperation = 'source-atop'; c.drawImage(o, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+}
+function trancher(b, forme, force = 1) {
+  const col = melange(P.cielBas, 0xFFFFFFFF, P.nuit ? 0.3 : 0.6);
+  const c = b.getContext('2d'); c.globalAlpha = (P.nuit ? 0.45 : 0.7) * force; c.globalCompositeOperation = 'destination-over';
+  c.drawImage(silhouette(forme, css(col)), 0, -Math.max(1, 0.3 * U)); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+}
+
+const METAUX = [['#B9C0C4', '#7E878C', '#454C50'], ['#E3B475', '#B07C3C', '#68441A'], ['#F2F6F9', '#B9C4CE', '#6E7C88'], ['#FFF0BC', '#E0B74E', '#8E6216']];
+const hex = v => hx(parseInt('FF' + v.slice(1), 16));
+
+// Les cartons du décor d'un palier, rendus une fois (Paysages.rendrePlans).
+function cartons(rang) {
+  P = VIVES[rang];
+  const ciel = calque(0, true, false);
+  const plans = [ciel, calque(1, false, true), calque(2, false, true), calque(3, false, true), calque(4, false, true)];
+  const formes = plans.map(s => silhouette(s));
+  eclaircir(plans[2], formes[2], P.cielBas, 0.30); eclaircir(plans[3], formes[3], P.cielBas, 0.10);
+  // Les nuages voyagent : leur ombre est peinte sur leur propre carton, sous
+  // eux, pour partir avec eux. Aucun autre carton ne leur fait d'ombre.
+  {
+    const o = toile(), oc = o.getContext('2d');
+    oc.filter = `blur(${1.1 * U * 0.6}px)`; oc.drawImage(formes[1], 0, -0.55 * U);
+    const c = plans[1].getContext('2d');
+    c.globalAlpha = (P.nuit ? 0.55 : 0.38) * 0.35; c.globalCompositeOperation = 'destination-over';
+    c.drawImage(o, 0, 0); c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+    trancher(plans[1], formes[1], 0.6);
+  }
+  for (let d = 2; d < plans.length; d++) {
+    for (let b = 0; b < d; b++) if (b !== 1) ombrer(plans[b], formes[d], d - b, b === 0 ? 0.35 : 1);
+    trancher(plans[d], formes[d]);
+  }
+  return plans;
+}
+
+// La plaque : le dessin du mot en plaque épaisse sur sa tige de métal, pour
+// une inclinaison t de −1 (penchée à gauche) à 1 (à droite).
+function plaque(c, t) {
+  const n = TRACE_BUS.match(/-?\d*\.?\d+/g).map(Number);
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  for (let i = 0; i + 1 < n.length; i += 2) { x0 = Math.min(x0, n[i]); x1 = Math.max(x1, n[i]); y0 = Math.min(y0, n[i + 1]); y1 = Math.max(y1, n[i + 1]); }
+  const e = Math.min(46 / (y1 - y0), 66 / (x1 - x0));
+  const cx = 50, cy = 59 - 23 - 0.5;
+  const w = (x1 - x0) * e, h = (y1 - y0) * e, L0 = cx - w / 2, T0 = cy - h / 2;
+  const met = METAUX[P.rang], nc = NACRES[P.rang];
+  const plein = P.rang >= 2;              // argent et or : métal plein ; acier et bronze : nacre teintée
+  const face = plein ? [met[0], met[1], met[2]]
+    : [css(melange(hex(nc[0]), hex(met[0]), 0.35)), css(melange(hex(nc[1]), hex(met[1]), 0.4)), css(melange(hex(nc[2]), hex(met[2]), 0.3))];
+  const SOL = 62.6, tige = 1.6, tx = cx - tige / 2;
+
+  // Le halo, puis l'ombre du socle (fixes : ils sont dans le décor).
+  const [hc, ho] = HALOS[P.rang];
+  const hy = cy - 0.16 * h, hr = Math.min(0.87 * Math.max(w, h), 40);
+  c.save(); c.translate(cx, hy); c.scale(1, 24 / 27); c.translate(-cx, -hy);
+  const g0 = c.createRadialGradient(cx, hy, 0, cx, hy, hr);
+  g0.addColorStop(0, `rgba(${hc},${ho / 255})`); g0.addColorStop(1, `rgba(${hc},0)`);
+  c.fillStyle = g0; c.beginPath(); c.arc(cx, hy, hr, 0, 7); c.fill(); c.restore();
+  c.fillStyle = `rgba(0,0,0,${P.nuit ? 0.4 : 0.28})`;
+  c.beginPath(); c.ellipse(cx, SOL + 0.6, 7, 1.5, 0, 0, 7); c.fill();
+
+  // La tige : un cylindre dont le reflet suit l'inclinaison.
+  const reflet = 0.35 - t * 0.25;
+  const gt = c.createLinearGradient(tx, 0, tx + tige, 0);
+  gt.addColorStop(0, met[1]); gt.addColorStop(Math.max(0.05, Math.min(0.95, reflet)), met[0]); gt.addColorStop(1, met[2]);
+  c.fillStyle = gt; c.fillRect(tx, cy, tige, SOL - 1.3 - cy);
+  const gs = c.createLinearGradient(0, SOL - 2.2, 0, SOL + 0.6);
+  gs.addColorStop(0, met[0]); gs.addColorStop(0.5, met[1]); gs.addColorStop(1, met[2]);
+  c.fillStyle = gs;
+  c.beginPath(); c.ellipse(cx, SOL - 0.4, 6, 1.4, 0, 0, 7); c.fill();
+  c.beginPath(); c.ellipse(cx, SOL - 1.3, 2.4, 1.2, 0, Math.PI, 0); c.fill();
+  // Le reflet sur le socle, qui glisse avec l'inclinaison.
+  c.fillStyle = 'rgba(255,255,255,0.55)';
+  c.beginPath(); c.ellipse(cx - 2.5 - t * 2.2, SOL - 0.9, 1.6, 0.22, 0, 0, 7); c.fill();
+
+    const trace = new Path2D(), m = new DOMMatrix().translate(cx, cy).scale(e).translate(-(x0 + x1) / 2, -(y0 + y1) / 2);
+  trace.addPath(new Path2D(TRACE_BUS), m);
+  // La plaque est fixe : seule la lumière bouge.
+  c.save();
+
+  // L'ombre portée sur le décor.
+  c.save(); c.translate(0.9, 1.3); c.fillStyle = `rgba(0,0,0,${P.nuit ? 0.45 : 0.30})`; c.fill(trace, 'evenodd'); c.restore();
+
+  // L'épaisseur : la plaque extrudée vers l'arrière ; la lumière qui passe sur
+  // la tranche suit l'inclinaison.
+  // L'épaisseur est dessinée une fois pour toutes, vue un peu d'en haut à gauche.
+  const ep = 1.3, ex = 0.45, ey = 0.75;
+  const N = 10;
+  for (let k = N; k >= 1; k--) {
+    const f = k / N;
+    c.save(); c.translate(ex * f * ep, ey * f * ep);
+    // Plus on va vers l'arrière, plus la tranche s'assombrit ; près de la face, elle prend la lumière.
+    const col = melange(hex(met[1]), hex(met[2]), f);
+    c.fillStyle = css(k <= 2 ? melange(col, hex(met[0]), 0.5 + 0.3 * Math.max(0, -t)) : col);
+    c.fill(trace, 'evenodd'); c.restore();
+  }
+
+  // La face.
+  const gf = c.createLinearGradient(L0, T0, L0 + w * 0.7, T0 + h);
+  gf.addColorStop(0, face[0]); gf.addColorStop(0.55, face[1]); gf.addColorStop(1, face[2]);
+  c.fillStyle = gf; c.fill(trace, 'evenodd');
+
+  c.save(); c.clip(trace, 'evenodd');
+  // Le chanfrein : le bord de la face prend la lumière du côté de la source,
+  // et l'ombre de l'autre. La source tourne avec l'inclinaison.
+  const lx = -0.35 + t * 0.25, ly = -0.35;
+  c.lineJoin = 'round';
+  c.save(); c.translate(-lx, -ly); c.strokeStyle = 'rgba(255,255,255,0.75)'; c.lineWidth = 1.0; c.stroke(trace); c.restore();
+  c.save(); c.translate(lx, ly); c.strokeStyle = 'rgba(0,0,0,0.30)'; c.lineWidth = 1.0; c.stroke(trace); c.restore();
+  // Le reflet : une bande de lumière en travers de la face, qui la traverse
+  // quand on penche le téléphone ; une seconde, large et douce, la suit.
+  const p = 0.5 + t * 0.55;
+  const fort = plein ? 0.7 : 0.5;
+  const gr = c.createLinearGradient(L0, T0, L0 + w, T0 + h * 1.6);
+  const s = (v) => Math.max(0, Math.min(1, v));
+  gr.addColorStop(s(p - 0.22), 'rgba(255,255,255,0)');
+  gr.addColorStop(s(p - 0.10), `rgba(255,255,255,${fort * 0.25})`);
+  gr.addColorStop(s(p - 0.03), `rgba(255,255,255,${fort})`);
+  gr.addColorStop(s(p + 0.01), `rgba(255,255,255,${fort * 0.9})`);
+  gr.addColorStop(s(p + 0.06), 'rgba(255,255,255,0)');
+  c.fillStyle = gr; c.fillRect(L0 - 2, T0 - 2, w + 4, h + 4);
+  c.restore();
+  // Le liseré.
+  c.strokeStyle = plein ? 'rgba(40,28,10,0.65)' : `rgba(${ENCRES[P.rang]},0.78)`;
+  c.lineWidth = 0.35; c.stroke(trace);
+  c.restore();
+}
+
+// Les images de l'animation : deux cartes (commune, très rare) qui penchent
+// de gauche à droite ; le décor glisse carton par carton (GLISSEMENT).
+// Cinq plans pour toutes les cartes : ciel, nuages, lointain, milieu, proche.
+const GLISSEMENT = [0.05, 0.04, 0.03, 0.017, 0.007];
+const LOTS = [0, 3].map(rang => ({ rang, couches: cartons(rang) }));
+const k = 0.7, w2 = Math.round(W * k), h2 = Math.round(HH * k), m = 16, lh = 30;
+const IMAGES = [];
+const NB = 72;
+for (let f = 0; f < NB; f++) {
+  const t = Math.sin(f / NB * Math.PI * 4);
+  const g = document.createElement('canvas');
+  g.width = 2 * w2 + 3 * m; g.height = h2 + lh + 2 * m;
+  const gc = g.getContext('2d');
+  gc.fillStyle = '#E6E6E6'; gc.fillRect(0, 0, g.width, g.height);
+  LOTS.forEach(({ rang, couches }, i) => {
+    P = VIVES[rang];
+    const x = m + i * (w2 + m), y = m;
+    gc.fillStyle = '#222'; gc.font = 'bold 17px sans-serif';
+    gc.fillText(rang === 0 ? 'Commune · cinq plans' : 'Très rare · cinq plans', x, y + 20);
+    const fen = toile(), fc = fen.getContext('2d');
+    couches.forEach((b, j) => {
+      // Chaque carton glisse à sa vitesse ; agrandi d'autant pour ne pas découvrir son bord.
+      const gl = GLISSEMENT[j], z = 1 + 2 * gl;
+      if (j === 1) {
+        // Les nuages traversent le ciel de gauche à droite et reviennent par la gauche.
+        const dx = (f / NB) * W;
+        for (const k of [-1, 0]) fc.drawImage(b, -W * gl + t * gl * W + dx + k * W, -HH * gl, W * z, HH * z);
+      } else fc.drawImage(b, -W * gl + t * gl * W, -HH * gl, W * z, HH * z);
+    });
+    fc.save(); fc.scale(U, U); plaque(fc, t); fc.restore();
+    gc.save(); gc.beginPath(); gc.roundRect(x, y + lh, w2, h2, 14); gc.clip();
+    gc.drawImage(fen, x, y + lh, w2, h2); gc.restore();
+  });
+  IMAGES.push(g.toDataURL('image/png'));
+}
+window.SORTIE = IMAGES[0];
+window.IMAGES = IMAGES;
+</script>

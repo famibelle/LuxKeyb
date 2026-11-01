@@ -155,7 +155,8 @@ exacte de la fenêtre d'un recto imprimé à 300 dpi.
 
 **Le dessin du mot devient une plaque sur un pied** (`maquette/gouache/`,
 carte « Bus » : `pancarte.html` pour la fenêtre, `anim.html` et `anim.js`
-pour l'inclinaison). Décisions du propriétaire, du 2026-11-01 :
+pour l'inclinaison, `node anim.js cinq_plans.html images` pour les cinq plans
+et les nuages qui traversent). Décisions du propriétaire, du 2026-11-01 :
 
 - **Une plaque épaisse, fixe.** La silhouette est une plaque d'environ 1,3
   unité d'épaisseur : sa tranche se voit en bas à droite, plus sombre vers
@@ -246,17 +247,30 @@ lui ; sa taille reste à revoir avec le propriétaire).
    vitre.
 7. **Le mouvement autonome est lent et rare.** Une seule chose bouge seule par
    décor, en boucle longue. Un décor qui s'agite fatigue et distrait du mot.
-8. **La rareté se voit à la mise en scène, pas à la physique.** Une commune
-   répond au geste comme une rare (règle de `Inclinaison.kt`). La mise en scène
-   suit les **quatre paliers qui donnent déjà le métal et l'heure** : ce n'est
-   pas un nouveau code à apprendre, c'est le même palier dit une fois de plus
-   (le double codage de la skill `designer-cartes`).
+8. **La profondeur est la même pour toutes les cartes** (décision du
+   propriétaire, 2026-11-01). Cinq plans, quelle que soit la rareté, et les
+   nuages qui traversent le ciel sur toutes : une commune, la carte qu'on
+   manipule le plus, a le plein effet de théâtre. La rareté se dit ailleurs,
+   par ce qu'on voit sans bouger la carte : l'heure et son ciel, le métal du
+   cadre, le support du nom et la matière de la plaque, toujours les
+   **quatre mêmes paliers** (le double codage de la skill `designer-cartes`).
+   Le nombre de cartons ne dit plus la rareté : il fallait pencher deux
+   cartes côte à côte pour le voir.
 
-   | Palier | Décor |
-   |---|---|
-   | Commun, peu commun | Trois cartons, rien ne bouge seul. |
-   | Rare | Quatre cartons : un premier plan en plus, les coulisses (pendrillons) sur les côtés. |
-   | Très rare | Quatre cartons et un seul élément animé (nuage, barque, vagues). |
+   | Plan | Contenu | Glissement (maquette) |
+   |---|---|---|
+   | 1. Le ciel | la toile peinte, l'astre, les étoiles | 5 % |
+   | 2. Les nuages | des nuages de carton, qui traversent le ciel en 75 s et glissent avec l'inclinaison | 4 % |
+   | 3. Le lointain | crête, ville au loin, tours | 3 % |
+   | 4. Le milieu | collines, façades, bâti | 1,7 % |
+   | 5. Le proche | le premier plan du lieu, posé sur le plancher | 0,7 % |
+
+   Les cinq plans viennent **du lieu lui-même** : pas de coulisses génériques
+   sur les bords, qui cacheraient le lieu maintenant que le dessin du mot
+   tient le centre (retirées dans la maquette, à confirmer). Les nuages
+   portent leur ombre sur leur propre carton, pour qu'elle voyage avec eux.
+   C'est le seul élément qui bouge seul (règle 7) ; les cartes de fête,
+   rendues à plat, n'en ont pas.
 
 ## 5. Les points de vigilance
 
@@ -304,8 +318,10 @@ ordre :
    dessinées une fois, tige et socle dans le métal du palier, et le reflet
    qui suit l'inclinaison (`Inclinaison.kt`) ; la plaque elle-même ne bouge
    pas.
-4. Les retouches lieu par lieu là où la couleur manque, le centre restant
-   calme derrière le dessin.
+4. Les cinq plans pour toutes les cartes (§ 4, règle 8) : séparer le ciel
+   du lointain, les nuages sur leur carton, qui traversent le ciel de toutes
+   les cartes ; puis les retouches lieu par lieu là où la couleur manque, le
+   centre restant calme derrière le dessin.
 5. Recalibrer la reconnaissance de la végétation des saisons (`Habillage`),
    qui lit les couleurs de la palette.
 6. Réexporter les rectos des quatre boîtes et vérifier l'impression.
