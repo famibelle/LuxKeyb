@@ -67,7 +67,7 @@ THEMES = [
      {'BERUFFSBEZEECHNUNG'}),
     ('personnes', dict(fr='Les gens', en='People', de='Menschen', lb='D\'Leit', pt='Pessoas'), {'PERSOUN'}),
     ('fruits', dict(fr='Fruits et légumes', en='Fruit and vegetables', de='Obst und Gemüse',
-                    lb='Uebst a Geméis', pt='Fruta e legumes'), {'UEBST', 'GEMEIS', 'NOSS', 'FRECHHEET'}),
+                    lb='Uebst a Geméis', pt='Fruta e legumes'), {'UEBST', 'GEMEIS', 'NOSS'}),
     ('repas', dict(fr='Manger et boire', en='Food and drink', de='Essen und Trinken',
                    lb='Iessen an Drénken', pt='Comer e beber'),
      {'IESSEN', 'LWS', 'GEDRENKS', 'GEWIERZ', 'KRAUTGEWIERZ', 'HORECA', 'GASTR', 'FESCH'}),
