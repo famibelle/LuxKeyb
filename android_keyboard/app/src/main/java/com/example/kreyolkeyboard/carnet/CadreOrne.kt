@@ -5187,7 +5187,11 @@ private class Irisation private constructor(private val zone: RectF, private val
  * vient d'en haut à gauche), et une **nacre** dont la couleur suit l'heure,
  * blanche le matin, dorée la nuit.
  */
-private abstract class Sujet(protected val heure: Heure, cadre: RectF) {
+private abstract class Sujet(
+    protected val heure: Heure, cadre: RectF,
+    /** Le halo derrière le sujet : centre et rayon, dans la boîte 100 × 66 du paysage. */
+    private val haloX: Float = 50f, private val haloY: Float = 38f, private val haloR: Float = 27f
+) {
 
     protected val plume = Paint(Paint.ANTI_ALIAS_FLAG)
     protected val nacre: LinearGradient
@@ -5209,7 +5213,7 @@ private abstract class Sujet(protected val heure: Heure, cadre: RectF) {
         }
         val opacite = intArrayOf(107, 115, 110, 64)[heure.rang]
         halo = RadialGradient(
-            50f, 38f, 27f,
+            haloX, haloY, haloR,
             intArrayOf((opacite shl 24) or couleurHalo, couleurHalo),
             null, Shader.TileMode.CLAMP
         )
@@ -5221,8 +5225,8 @@ private abstract class Sujet(protected val heure: Heure, cadre: RectF) {
         plume.style = Paint.Style.FILL
         plume.shader = halo
         c.save()
-        c.scale(1f, 24f / 27f, 50f, 38f)
-        c.drawCircle(50f, 38f, 27f, plume)
+        c.scale(1f, 24f / 27f, haloX, haloY)
+        c.drawCircle(haloX, haloY, haloR, plume)
         c.restore()
         plume.shader = null
         tracer(c)
@@ -5249,16 +5253,20 @@ private class Enluminure private constructor(
     private val trace: Path,
     private val nom: String,
     heure: Heure,
-    /** La demi-largeur de l'ombre au sol. */
-    private val ombreSol: Float = 13f,
-    cadre: RectF = RectF(CX - TAILLE / 2f, CY - TAILLE / 2f, CX + TAILLE / 2f, CY + TAILLE / 2f)
-) : Sujet(heure, cadre) {
+    /** Le dessin tel qu'il est posé : sa boîte réelle, qui oriente la nacre et le halo. */
+    private val cadre: RectF,
+    /** Où le carré de [Meubles] a été posé, pour y placer l'œil du chat. */
+    private val pose: Matrix? = null
+) : Sujet(heure, cadre, cadre.centerX(), cadre.centerY() - 0.16f * cadre.height(),
+    minOf(0.87f * maxOf(cadre.width(), cadre.height()), 40f)) {
 
     override fun tracer(c: Canvas) {
-        // L'ombre au sol, qui pose le dessin dans le lieu au lieu de le coller dessus.
+        // L'ombre sous le dessin, qui le pose dans le lieu au lieu de le coller dessus.
+        val ombreSol = cadre.width() * 0.42f + 2f
+        val sol = cadre.bottom + 0.4f
         plume.style = Paint.Style.FILL
         plume.color = argb(if (heure.nuit) 115 else 64, 0, 0, 0)
-        c.drawOval(CX - ombreSol, SOL - 1.8f, CX + ombreSol, SOL + 1.8f, plume)
+        c.drawOval(cadre.centerX() - ombreSol, sol - 1.8f, cadre.centerX() + ombreSol, sol + 1.8f, plume)
 
         c.save()
         c.translate(0.6f, 1f)
@@ -5283,10 +5291,11 @@ private class Enluminure private constructor(
         // Le chat de la nuit a l'œil qui brille : un seul, il marche de
         // profil (la silhouette de PhyloPic, depuis le 2026-10-31). L'œil est
         // posé derrière l'arête du nez, en unités du carré de Meubles.
-        if (nom == "chat" && heure.nuit) {
-            val e = TAILLE / Meubles.COTE
-            val x = CX + 39.8f * e
-            val y = CY + 0.2f * e
+        if (nom == "chat" && heure.nuit && pose != null) {
+            val oeil = floatArrayOf(39.8f, 0.2f)
+            pose.mapPoints(oeil)
+            val x = oeil[0]
+            val y = oeil[1]
             plume.color = argb(64, 0xFF, 0xD3, 0x4D)
             c.drawCircle(x, y, 1.6f, plume)
             plume.color = argb(255, 0xFF, 0xD3, 0x4D)
@@ -5295,34 +5304,58 @@ private class Enluminure private constructor(
     }
 
     companion object {
-        /** Le dessin tient dans un carré de [TAILLE] centré en ([CX], [CY]), posé sur [SOL]. */
-        private const val TAILLE = 31f
+        /**
+         * Le dessin tient dans une boîte de [LARGEUR] × [TAILLE], centrée en
+         * ([CX], [CY]) : il prend toute la hauteur s'il est haut, toute la
+         * largeur s'il est long, et reste centré dans la fenêtre.
+         *
+         * Depuis le 2026-11-01 (propriétaire, sur les cartes imprimées « Kaz »
+         * puis « Bus ») : le sujet porte le mot, le décor est là pour le mettre
+         * en avant. Avant, chaque dessin était mis à l'échelle du carré de
+         * [Meubles] et non de son tracé réel : un bus, long et bas, restait
+         * petit et posé bas dans la fenêtre. La largeur reste dans ce qu'une
+         * vignette garde une fois rognée (16 à 84, voir [Trace]).
+         */
+        private const val TAILLE = 46f
+        private const val LARGEUR = 66f
         private const val CX = 50f
-        private const val CY = 43f
         private const val SOL = 59f
+        private const val CY = SOL - TAILLE / 2f - 0.5f
+
+        /** Le dessin mis à l'échelle de sa boîte réelle, et centré. */
+        private fun poser(brut: Path, hauteur: Float, largeur: Float): Pair<Matrix, RectF> {
+            val b = RectF()
+            brut.computeBounds(b, true)
+            val e = minOf(hauteur / b.height().coerceAtLeast(1f), largeur / b.width().coerceAtLeast(1f))
+            val m = Matrix()
+            m.setTranslate(-b.centerX(), -b.centerY())
+            m.postScale(e, e)
+            m.postTranslate(CX, CY)
+            val cadre = RectF()
+            m.mapRect(cadre, b)
+            return m to cadre
+        }
 
         /** `null` si la bibliothèque ne connaît pas ce meuble. */
         fun pour(nom: String, heure: Heure): Enluminure? {
             val forme = Meubles.chemin(nom) ?: return null
-            val m = Matrix()
-            m.setScale(TAILLE / Meubles.COTE, TAILLE / Meubles.COTE)
-            m.postTranslate(CX, CY)
+            val (m, cadre) = poser(forme, TAILLE, LARGEUR)
             val trace = Path()
             forme.transform(m, trace)
             // Sans « pair-impair », la porte d'une maison cesse d'être un trou.
             trace.fillType = Path.FillType.EVEN_ODD
-            return Enluminure(trace, nom, heure)
+            return Enluminure(trace, nom, heure, cadre, m)
         }
 
-        /** La hauteur des chiffres d'une carte de nombre (maquette du 2026-10-31). */
-        private const val HAUTEUR_CHIFFRES = 26f
+        /** La hauteur des chiffres d'une carte de nombre (26 jusqu'au 2026-11-01, grandis avec les meubles). */
+        private const val HAUTEUR_CHIFFRES = 40f
 
-        /** La largeur au-delà de laquelle « 100 » rapetisse, pour laisser voir le lieu. */
-        private const val LARGEUR_CHIFFRES = 44f
+        /** La largeur au-delà de laquelle « 100 » rapetisse, dans la largeur que garde une vignette. */
+        private const val LARGEUR_CHIFFRES = 60f
 
         /**
-         * Les chiffres d'une carte de nombre, en nacre et posés au sol comme
-         * un meuble. Une capitale à empattements, pour ne pas ressembler au
+         * Les chiffres d'une carte de nombre, en nacre, centrés comme un
+         * meuble. Une capitale à empattements, pour ne pas ressembler au
          * chiffre blanc et gras de la pastille, qui dit la Force.
          */
         fun chiffres(texte: String, heure: Heure): Enluminure {
@@ -5333,18 +5366,10 @@ private class Enluminure private constructor(
             }
             val brut = Path()
             p.getTextPath(texte, 0, texte.length, 0f, 0f, brut)
-            val b = RectF()
-            brut.computeBounds(b, true)
-            val e = minOf(HAUTEUR_CHIFFRES / b.height().coerceAtLeast(1f), LARGEUR_CHIFFRES / b.width().coerceAtLeast(1f))
-            val m = Matrix()
-            m.setTranslate(-b.centerX(), -b.bottom)
-            m.postScale(e, e)
-            m.postTranslate(CX, SOL - 0.6f)
+            val (m, cadre) = poser(brut, HAUTEUR_CHIFFRES, LARGEUR_CHIFFRES)
             val trace = Path()
             brut.transform(m, trace)
-            val l = b.width() * e
-            val cadre = RectF(CX - l / 2f, SOL - b.height() * e, CX + l / 2f, SOL)
-            return Enluminure(trace, "chiffres", heure, ombreSol = l / 2f + 2f, cadre = cadre)
+            return Enluminure(trace, "chiffres", heure, cadre)
         }
     }
 }
@@ -5623,9 +5648,10 @@ private class Trace private constructor(
      * est la longueur de référence.
      */
     private val maigreur = (7f / maxOf(xs.size, 7)).coerceAtMost(1f)
-    private val epaisseur = 3.2f * maigreur
-    private val rayon = 2.5f * maigreur
-    private val coeur = 1.05f * maigreur
+    // Épaissi avec les meubles le 2026-11-01 (3,2 / 2,5 / 1,05 avant) : le sujet porte le mot.
+    private val epaisseur = 4.2f * maigreur
+    private val rayon = 3.3f * maigreur
+    private val coeur = 1.4f * maigreur
 
     init {
         val n = xs.size
@@ -5706,8 +5732,8 @@ private class Trace private constructor(
          */
         private const val X0 = 16f
         private const val LARGEUR = 68f
-        private const val MILIEU = 36f
-        private const val AMPLITUDE = 13f
+        private const val MILIEU = 35f
+        private const val AMPLITUDE = 17f
 
         fun pour(mot: String, heure: Heure): Trace {
             val lettres = mot.toCharArray()
