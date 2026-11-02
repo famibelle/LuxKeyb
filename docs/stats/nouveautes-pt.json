@@ -1,9 +1,76 @@
 {
- "genere_le": "2026-11-01",
- "derniere_version": "38.0.0",
- "derniere_date": "2026-11-01",
+ "genere_le": "2026-11-02",
+ "derniere_version": "38.1.0",
+ "derniere_date": "2026-11-02",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "38.1.0",
+   "date": "2026-11-02",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Novidades",
+     "points": [
+      {
+       "titre": "Cartas pintadas a guache",
+       "texte": "A paisagem de cada carta é feita de peças de cartão pintadas à mão, em cores vivas, com as pinceladas e a borda do cartão. A manhã é azul e rosa, a tarde alaranjada, o fim de tarde violeta e rosa, a noite azul profundo."
+      },
+      {
+       "titre": "Cinco planos em todas as cartas",
+       "texte": "O céu, as nuvens, o fundo, o plano médio e o primeiro plano deslizam cada um à sua velocidade quando inclina o telemóvel, e nuvens atravessam lentamente o céu. As cartas raras acrescentam árvores ou pilares de cada lado, como os bastidores de um teatro."
+      },
+      {
+       "titre": "O desenho da palavra torna-se uma placa",
+       "texte": "É recortado numa placa espessa, assente numa haste e numa base de metal. O material indica a raridade: madrepérola para uma carta comum ou pouco comum, prata para uma rara, ouro para uma muito rara. Quando inclina a carta, um reflexo desliza sobre a placa."
+      },
+      {
+       "titre": "As estações em papel",
+       "texte": "As folhas de outono, as pétalas, os flocos de neve e os confetes são recortados em papel pintado, e os pássaros do verão pousam nas nuvens."
+      },
+      {
+       "titre": "A ruela do jogo impresso a cores",
+       "texte": "As cartas vindas do jogo em papel ficam numa ruela com as fachadas coloridas do Grund, sob um grande portão de onde pende uma hera florida."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "⚡",
+     "titre": "Rapidez",
+     "points": [
+      {
+       "titre": "As cartas folheiam-se mais depressa",
+       "texte": "A carta seguinte é preparada com antecedência, tal como vai aparecer."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_gouache_penchee.gif",
+     "alt": "A carta «Bus», comum, de manhã na Rout Bréck, ganha no outono, aberta e inclinada lentamente da esquerda para a direita. O céu, as nuvens, a cidade ao longe, as colinas e a ponte vermelha são peças de cartão pintadas a guache que deslizam cada uma à sua velocidade; nuvens de cartão atravessam o céu e caem folhas de papel. O autocarro é uma placa de madrepérola assente numa haste e numa base de metal: a placa não se mexe, só um reflexo desliza sobre ela.",
+     "legende": "Uma carta comum inclinada: cinco planos pintados, nuvens que passam e a placa do autocarro onde desliza um reflexo."
+    },
+    {
+     "image": "Screenshots/lux_gouache_raretes.gif",
+     "alt": "Quatro cartas da mesma ruela, uma depois da outra. 1. «Bank», comum: um céu de manhã azul e rosa, um banco em placa de madrepérola cinzenta. 2. «Chrëschtdag», pouco comum: um céu de tarde alaranjado, um pinheiro em placa de madrepérola dourada. 3. «Brëll», rara: um fim de tarde violeta com janelas acesas, uns óculos em placa de prata, pilares dos lados. 4. «Alphabet», muito rara: uma noite azul profundo, três cubos A, B e C em placa de ouro. Sempre a ruela de fachadas coloridas, sob um grande portão de pedra de onde pende uma hera florida. O ecrã está em francês.",
+     "legende": "Manhã, tarde, fim de tarde e noite: a hora e o material da placa indicam a raridade."
+    },
+    {
+     "image": "Screenshots/lux_gouache_saisons.gif",
+     "alt": "Quatro cartas comuns no Mëllerdall, entre os rochedos de arenito, uma depois da outra. 1. «Bam», ganha no inverno: neve nas cristas e flocos de papel. 2. «Hand», na primavera: flores nas colinas e pétalas a cair. 3. «Café», no verão: pássaros pousados nas nuvens. 4. «Kapp», no outono: folhagem arruivada e folhas de papel de cores vivas.",
+     "legende": "A estação do dia em que a carta foi ganha, em papel pintado."
+    }
+   ],
+   "image": "Screenshots/lux_gouache_penchee.gif",
+   "image_alt": "A carta «Bus», comum, de manhã na Rout Bréck, ganha no outono, aberta e inclinada lentamente da esquerda para a direita. O céu, as nuvens, a cidade ao longe, as colinas e a ponte vermelha são peças de cartão pintadas a guache que deslizam cada uma à sua velocidade; nuvens de cartão atravessam o céu e caem folhas de papel. O autocarro é uma placa de madrepérola assente numa haste e numa base de metal: a placa não se mexe, só um reflexo desliza sobre ela.",
+   "image_legende": "Uma carta comum inclinada: cinco planos pintados, nuvens que passam e a placa do autocarro onde desliza um reflexo."
+  },
   {
    "version": "38.0.0",
    "date": "2026-11-01",
@@ -161,72 +228,6 @@
      "image": "Screenshots/lux_guide_carte_haut.png",
      "alt": "Prancha do guia: a parte de cima da carta «Waasser», uma gota de água diante do vale, com quatro marcas numeradas: 1 a palavra, 2 o comprimento, 3 a paisagem, 4 a moldura. A prancha está em francês.",
      "legende": "O guia da ajuda mostra a carta com o seu novo desenho."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
-   "image_alt": "Animação em Mäi Carnet. 1. A grelha da coleção: Kaz, um gato a andar, Léiw, um leão, Moien, um sol a nascer, Famill, uma família, Kaddo, um presente, Apel, uma maçã. 2 a 6. As cartas abrem-se em grande uma após a outra: «Kaz» em ouro diante da cidade à noite, «Léiw» em prata, «Famill» diante da roda gigante da Schueberfouer, «Kaddo» e «Apel» em ouro. 7. Regresso à grelha. As cartas estão em francês.",
-   "image_legende": "Os novos desenhos nas cartas, dos animais às palavras do dia a dia."
-  },
-  {
-   "version": "37.10.0",
-   "date": "2026-10-31",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Novidades",
-     "points": [
-      {
-       "titre": "As cartas têm desenhos novos",
-       "texte": "O gato, o leão, o cavalo, a casa, a bicicleta e mais de cem outros desenhos foram refeitos, mais finos e mais fáceis de reconhecer. Os animais e os veículos olham todos para a direita."
-      },
-      {
-       "titre": "O essencial, uma nova página da coleção",
-       "texte": "As palavras do dia a dia (cumprimentar, a família, os dias, os meses, as cores, a casa, as compras…) arrumadas por tema. Cada espaço vazio mostra o sentido da palavra a encontrar, e cada tema completo é festejado."
-      },
-      {
-       "titre": "Os jogos ajudam a encontrá-las",
-       "texte": "Wuertsich, Wuertmix e Wuertriet incluem nas suas partidas as palavras essenciais que ainda faltam na sua coleção."
-      },
-      {
-       "titre": "Expressões para pôr por ordem",
-       "texte": "O Wuertmix propõe também expressões como «Gudde Moien» ou «Wéi vill kascht dat?», uma palavra por linha."
-      },
-      {
-       "titre": "Quase mais 140 palavras têm o seu desenho",
-       "texte": "A família, o corpo, a roupa, a cozinha, as festas…"
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Correções",
-     "points": [
-      {
-       "titre": "O sentido certo para algumas palavras",
-       "texte": "«Mee» traduz-se agora por «maio», «Ee» por «ovo», «A» por «olho» e «Fest» por «festa»."
-      },
-      {
-       "titre": "Wuertmix",
-       "texte": "tirar uma letra da resposta já não desloca as letras dadas de antemão."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
-     "alt": "Animação em Mäi Carnet. 1. A grelha da coleção: Kaz, um gato a andar, Léiw, um leão, Moien, um sol a nascer, Famill, uma família, Kaddo, um presente, Apel, uma maçã. 2 a 6. As cartas abrem-se em grande uma após a outra: «Kaz» em ouro diante da cidade à noite, «Léiw» em prata, «Famill» diante da roda gigante da Schueberfouer, «Kaddo» e «Apel» em ouro. 7. Regresso à grelha. As cartas estão em francês.",
-     "legende": "Os novos desenhos nas cartas, dos animais às palavras do dia a dia."
-    },
-    {
-     "image": "Screenshots/lux_essentiels.gif",
-     "alt": "Animação. 1. Em Mäi Carnet, vista Séries, a página «Números» do essencial: seis cartas ganhas, eent a sechs, e espaços vazios que mostram o sentido a encontrar. 2. As páginas «Tempo» e «Dias», espaços vazios marcados semana, amanhã, segunda, terça… 3. No Wuertmix, a pista «bonne nuit»: a resposta fica em duas linhas, G _ _ _ e depois _ _ _ _ _ T. 4. As letras estão colocadas: GUTT NUECHT. 5. Validado, a pontuação sobe para 100. Os ecrãs estão em francês.",
-     "legende": "A página do essencial na coleção, e uma expressão para pôr por ordem no Wuertmix."
     }
    ],
    "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",

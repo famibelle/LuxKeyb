@@ -1,9 +1,76 @@
 {
- "genere_le": "2026-11-01",
- "derniere_version": "38.0.0",
- "derniere_date": "2026-11-01",
+ "genere_le": "2026-11-02",
+ "derniere_version": "38.1.0",
+ "derniere_date": "2026-11-02",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "38.1.0",
+   "date": "2026-11-02",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "New",
+     "points": [
+      {
+       "titre": "Cards painted in gouache",
+       "texte": "The landscape on each card is made of hand-painted cardboard pieces in bright colours, with their brushstrokes and cardboard edges. Morning is blue and pink, afternoon orange, evening purple and pink, night deep blue."
+      },
+      {
+       "titre": "Five layers on every card",
+       "texte": "The sky, the clouds, the distance, the middle ground and the foreground each slide at their own speed when you tilt the phone, and clouds drift slowly across the sky. Rare cards add trees or pillars on each side, like the wings of a theatre."
+      },
+      {
+       "titre": "The word's drawing becomes a plaque",
+       "texte": "It is cut out of a thick plaque standing on a metal rod and base. Its material shows the rarity: mother-of-pearl for a common or uncommon card, silver for a rare one, gold for a very rare one. When you tilt the card, a gleam slides across the plaque."
+      },
+      {
+       "titre": "Paper seasons",
+       "texte": "Autumn leaves, petals, snowflakes and confetti are cut out of painted paper, and the summer birds perch on the clouds."
+      },
+      {
+       "titre": "The printed game's alley in colour",
+       "texte": "Cards that come from the paper game stand in an alley with the colourful façades of the Grund, under a large gate hung with flowering ivy."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "⚡",
+     "titre": "Speed",
+     "points": [
+      {
+       "titre": "Cards flip faster",
+       "texte": "The next card is prepared in advance, exactly as it will appear."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_gouache_penchee.gif",
+     "alt": "The “Bus” card, common, in the morning at the Rout Bréck, won in autumn, open and slowly tilted from left to right. The sky, the clouds, the distant city, the hills and the red bridge are pieces of cardboard painted in gouache, each sliding at its own speed; cardboard clouds cross the sky and paper leaves fall. The bus is a mother-of-pearl plaque on a metal rod and base: the plaque does not move, only a gleam slides across it.",
+     "legende": "A common card being tilted: five painted layers, passing clouds, and the bus plaque with a sliding gleam."
+    },
+    {
+     "image": "Screenshots/lux_gouache_raretes.gif",
+     "alt": "Four cards in the same alley, one after the other. 1. “Bank”, common: a blue and pink morning sky, a bank as a grey mother-of-pearl plaque. 2. “Chrëschtdag”, uncommon: an orange afternoon sky, a fir tree as a golden mother-of-pearl plaque. 3. “Brëll”, rare: a purple evening with lit windows, glasses as a silver plaque, pillars on the sides. 4. “Alphabet”, very rare: a deep blue night, three blocks A, B and C as a gold plaque. Each time, the alley with colourful façades under a large stone gate hung with flowering ivy. The screen is in French.",
+     "legende": "Morning, afternoon, evening and night: the hour and the plaque material show the rarity."
+    },
+    {
+     "image": "Screenshots/lux_gouache_saisons.gif",
+     "alt": "Four common cards in the Mëllerdall, between the sandstone rocks, one after the other. 1. “Bam”, won in winter: snow on the ridges and paper snowflakes. 2. “Hand”, in spring: flowers in the hills and falling petals. 3. “Café”, in summer: birds perched on the clouds. 4. “Kapp”, in autumn: russet foliage and brightly coloured paper leaves.",
+     "legende": "The season of the day the card was won, in painted paper."
+    }
+   ],
+   "image": "Screenshots/lux_gouache_penchee.gif",
+   "image_alt": "The “Bus” card, common, in the morning at the Rout Bréck, won in autumn, open and slowly tilted from left to right. The sky, the clouds, the distant city, the hills and the red bridge are pieces of cardboard painted in gouache, each sliding at its own speed; cardboard clouds cross the sky and paper leaves fall. The bus is a mother-of-pearl plaque on a metal rod and base: the plaque does not move, only a gleam slides across it.",
+   "image_legende": "A common card being tilted: five painted layers, passing clouds, and the bus plaque with a sliding gleam."
+  },
   {
    "version": "38.0.0",
    "date": "2026-11-01",
@@ -161,72 +228,6 @@
      "image": "Screenshots/lux_guide_carte_haut.png",
      "alt": "Guide plate: the top of the “Waasser” card, a water drop in front of the valley, with four numbered markers: 1 the word, 2 the length, 3 the landscape, 4 the frame. The plate is in French.",
      "legende": "The help guide shows the card with its new drawing."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
-   "image_alt": "Animation in Mäi Carnet. 1. The collection grid: Kaz, a walking cat, Léiw, a lion, Moien, a rising sun, Famill, a family, Kaddo, a present, Apel, an apple. 2 to 6. The cards open full size one after another: “Kaz” in gold in front of the city at night, “Léiw” in silver, “Famill” in front of the Schueberfouer big wheel, “Kaddo” and “Apel” in gold. 7. Back to the grid. The cards are in French.",
-   "image_legende": "The new drawings on the cards, from animals to everyday words."
-  },
-  {
-   "version": "37.10.0",
-   "date": "2026-10-31",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "New",
-     "points": [
-      {
-       "titre": "The cards have new drawings",
-       "texte": "The cat, the lion, the horse, the house, the bike and more than a hundred other drawings have been redone, finer and easier to recognise. Animals and vehicles all face right."
-      },
-      {
-       "titre": "The essentials, a new page in the collection",
-       "texte": "Everyday words (greetings, family, days, months, colours, home, shopping…) grouped by theme. Each empty slot shows the meaning of the word to find, and each completed theme is celebrated."
-      },
-      {
-       "titre": "The games help you find them",
-       "texte": "Wuertsich, Wuertmix and Wuertriet slip into their rounds the essential words still missing from your collection."
-      },
-      {
-       "titre": "Expressions to put back in order",
-       "texte": "Wuertmix also offers expressions such as “Gudde Moien” or “Wéi vill kascht dat?”, one word per line."
-      },
-      {
-       "titre": "Nearly 140 more words have their drawing",
-       "texte": "Family, body, clothes, cooking, celebrations…"
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Fixes",
-     "points": [
-      {
-       "titre": "The right meaning for a few words",
-       "texte": "“Mee” now translates as “May”, “Ee” as “egg”, “A” as “eye” and “Fest” as “party”."
-      },
-      {
-       "titre": "Wuertmix",
-       "texte": "removing a letter from the answer no longer moves the letters given in advance."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
-     "alt": "Animation in Mäi Carnet. 1. The collection grid: Kaz, a walking cat, Léiw, a lion, Moien, a rising sun, Famill, a family, Kaddo, a present, Apel, an apple. 2 to 6. The cards open full size one after another: “Kaz” in gold in front of the city at night, “Léiw” in silver, “Famill” in front of the Schueberfouer big wheel, “Kaddo” and “Apel” in gold. 7. Back to the grid. The cards are in French.",
-     "legende": "The new drawings on the cards, from animals to everyday words."
-    },
-    {
-     "image": "Screenshots/lux_essentiels.gif",
-     "alt": "Animation. 1. In Mäi Carnet, Series view, the “Numbers” page of the essentials: six cards won, eent to sechs, and empty slots showing the meaning to find. 2. The “Time” and “Days” pages, empty slots marked week, tomorrow, Monday, Tuesday… 3. In Wuertmix, the hint “good night”: the answer is laid out on two lines, G _ _ _ then _ _ _ _ _ T. 4. The letters are placed: GUTT NUECHT. 5. Validated, the score goes up to 100. The screens are in French.",
-     "legende": "The essentials page in the collection, and an expression to put back in order in Wuertmix."
     }
    ],
    "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",

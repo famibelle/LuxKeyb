@@ -1,5 +1,58 @@
 {
   "_comment": "Deutsche Übersetzung von nouveautes.html, nach Version. Von Hand gepflegt: generate_nouveautes.py führt sie in stats/nouveautes-de.json zusammen. Jede Version folgt der französischen aus dem CHANGELOG: dieselben Abschnitte, dieselbe Anzahl Punkte, in derselben Reihenfolge; der Titel eines Abschnitts darf fehlen, wenn _sections ihn übersetzt. Eine Version, die hier fehlt oder nicht mehr die französische Form hat, erscheint auf Französisch mit einem Hinweis. Der Text ist HTML: < und & maskieren.",
+  "38.1.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Neu",
+        "points": [
+          {
+            "titre": "Mit Gouache bemalte Karten",
+            "texte": "Die Landschaft jeder Karte besteht aus handbemalten Kartonstücken in kräftigen Farben, mit ihren Pinselstrichen und ihrem Kartonrand. Der Morgen ist blau und rosa, der Nachmittag orange, der Abend violett und rosa, die Nacht tiefblau."
+          },
+          {
+            "titre": "Fünf Ebenen auf jeder Karte",
+            "texte": "Himmel, Wolken, Ferne, Mittelgrund und Vordergrund gleiten jeweils in ihrem eigenen Tempo, wenn Sie das Handy neigen, und Wolken ziehen langsam über den Himmel. Seltene Karten haben zusätzlich Bäume oder Säulen an den Seiten, wie die Kulissen eines Theaters."
+          },
+          {
+            "titre": "Die Zeichnung des Wortes wird zur Plakette",
+            "texte": "Sie ist aus einer dicken Plakette geschnitten, die auf einem Metallstab mit Sockel steht. Ihr Material zeigt die Seltenheit: Perlmutt für eine häufige oder ungewöhnliche Karte, Silber für eine seltene, Gold für eine sehr seltene. Wenn Sie die Karte neigen, gleitet ein Lichtreflex über die Plakette."
+          },
+          {
+            "titre": "Jahreszeiten aus Papier",
+            "texte": "Herbstblätter, Blütenblätter, Schneeflocken und Konfetti sind aus bemaltem Papier ausgeschnitten, und die Vögel des Sommers sitzen auf den Wolken."
+          },
+          {
+            "titre": "Die Gasse des gedruckten Spiels in Farbe",
+            "texte": "Karten aus dem Papierspiel stehen in einer Gasse mit den bunten Fassaden des Grund, unter einem großen Tor mit blühendem Efeu."
+          }
+        ]
+      },
+      {
+        "titre": "Geschwindigkeit",
+        "points": [
+          {
+            "titre": "Karten lassen sich schneller durchblättern",
+            "texte": "Die nächste Karte wird im Voraus vorbereitet, genau so, wie sie erscheinen wird."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Die Karte „Bus“, häufig, morgens an der Rout Bréck, im Herbst gewonnen, geöffnet und langsam von links nach rechts geneigt. Himmel, Wolken, die Stadt in der Ferne, die Hügel und die rote Brücke sind mit Gouache bemalte Kartonstücke, die jeweils in ihrem Tempo gleiten; Kartonwolken ziehen über den Himmel, Papierblätter fallen. Der Bus ist eine Perlmuttplakette auf einem Metallstab mit Sockel: Die Plakette bewegt sich nicht, nur ein Lichtreflex gleitet über sie.",
+        "legende": "Eine häufige Karte, die man neigt: fünf bemalte Ebenen, vorbeiziehende Wolken und die Plakette des Busses mit gleitendem Reflex."
+      },
+      {
+        "alt": "Vier Karten in derselben Gasse, eine nach der anderen. 1. „Bank“, häufig: ein blau-rosa Morgenhimmel, eine Bank als graue Perlmuttplakette. 2. „Chrëschtdag“, ungewöhnlich: ein orangefarbener Nachmittagshimmel, eine Tanne als goldene Perlmuttplakette. 3. „Brëll“, selten: ein violetter Abend mit erleuchteten Fenstern, eine Brille als Silberplakette, Säulen an den Seiten. 4. „Alphabet“, sehr selten: eine tiefblaue Nacht, drei Würfel A, B und C als Goldplakette. Jedes Mal die Gasse mit bunten Fassaden unter einem großen Steintor mit blühendem Efeu. Die Oberfläche ist auf Französisch.",
+        "legende": "Morgen, Nachmittag, Abend und Nacht: Die Tageszeit und das Material der Plakette zeigen die Seltenheit."
+      },
+      {
+        "alt": "Vier häufige Karten im Mëllerdall, zwischen den Sandsteinfelsen, eine nach der anderen. 1. „Bam“, im Winter gewonnen: Schnee auf den Kämmen und Schneeflocken aus Papier. 2. „Hand“, im Frühling: Blumen in den Hügeln und fallende Blütenblätter. 3. „Café“, im Sommer: Vögel auf den Wolken. 4. „Kapp“, im Herbst: rostrotes Laub und bunte Papierblätter.",
+        "legende": "Die Jahreszeit des Tages, an dem die Karte gewonnen wurde, aus bemaltem Papier."
+      }
+    ]
+  },
   "38.0.0": {
     "intro": "",
     "sections": [

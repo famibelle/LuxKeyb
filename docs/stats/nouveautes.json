@@ -1,9 +1,76 @@
 {
- "genere_le": "2026-11-01",
- "derniere_version": "38.0.0",
- "derniere_date": "2026-11-01",
+ "genere_le": "2026-11-02",
+ "derniere_version": "38.1.0",
+ "derniere_date": "2026-11-02",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "38.1.0",
+   "date": "2026-11-02",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Des cartes peintes à la gouache",
+       "texte": "Le paysage de chaque carte est fait de pièces de carton peintes à la main, en couleurs vives, avec leurs coups de pinceau et leur bord de carton. Le matin est bleu et rose, l'après-midi orangé, le soir violet et rose, la nuit bleu profond."
+      },
+      {
+       "titre": "Cinq plans pour toutes les cartes",
+       "texte": "Le ciel, les nuages, le lointain, le milieu et le premier plan glissent chacun à sa vitesse quand vous penchez le téléphone, et des nuages traversent lentement le ciel. Les cartes rares ajoutent de chaque côté des arbres ou des piliers, comme les coulisses d'un théâtre."
+      },
+      {
+       "titre": "Le dessin du mot devient une plaque",
+       "texte": "Il est découpé dans une plaque épaisse, posée sur une tige et un socle de métal. Sa matière dit la rareté : nacre pour une commune ou une peu commune, argent pour une rare, or pour une très rare. Quand vous penchez la carte, un reflet glisse sur la plaque."
+      },
+      {
+       "titre": "Les saisons en papier",
+       "texte": "Les feuilles d'automne, les pétales, les flocons et les confettis sont découpés dans du papier peint, et les oiseaux de l'été se posent sur les nuages."
+      },
+      {
+       "titre": "La ruelle du jeu imprimé en couleurs",
+       "texte": "Les cartes venues du jeu en papier se posent dans une ruelle aux façades colorées du Grund, sous une grande porte où pend un lierre fleuri."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "⚡",
+     "titre": "Rapidité",
+     "points": [
+      {
+       "titre": "Les cartes se feuillettent plus vite",
+       "texte": "La carte suivante est préparée à l'avance, telle qu'elle s'affichera."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_gouache_penchee.gif",
+     "alt": "La carte « Bus », commune, le matin à la Rout Bréck, gagnée en automne, ouverte et penchée lentement de gauche à droite. Le ciel, les nuages, la ville au loin, les collines et le pont rouge sont des cartons peints à la gouache qui glissent chacun à sa vitesse ; des nuages de carton traversent le ciel et des feuilles de papier tombent. Le bus est une plaque de nacre posée sur une tige et un socle de métal : la plaque ne bouge pas, seul un reflet glisse sur elle.",
+     "legende": "Une commune qu'on penche : cinq cartons peints, des nuages qui passent, et la plaque du bus où glisse un reflet."
+    },
+    {
+     "image": "Screenshots/lux_gouache_raretes.gif",
+     "alt": "Quatre cartes de la même ruelle, l'une après l'autre. 1. « Bank », commune : un ciel de matin bleu et rose, une banque en plaque de nacre grise. 2. « Chrëschtdag », peu commune : un ciel d'après-midi orangé, un sapin en plaque de nacre dorée. 3. « Brëll », rare : un soir violet aux fenêtres allumées, des lunettes en plaque d'argent, des piliers sur les côtés. 4. « Alphabet », très rare : une nuit bleu profond, trois cubes A, B et C en plaque d'or. Partout, la ruelle aux façades colorées, sous une grande porte de pierre où pend un lierre fleuri.",
+     "legende": "Matin, après-midi, soir et nuit : l'heure et la matière de la plaque disent la rareté."
+    },
+    {
+     "image": "Screenshots/lux_gouache_saisons.gif",
+     "alt": "Quatre cartes communes au Mëllerdall, entre les rochers de grès, l'une après l'autre. 1. « Bam », gagnée en hiver : la neige sur les crêtes et des flocons de papier. 2. « Hand », au printemps : des fleurs dans les collines et des pétales qui tombent. 3. « Café », en été : des oiseaux posés sur les nuages. 4. « Kapp », en automne : les feuillages roussis et des feuilles de papier aux couleurs vives.",
+     "legende": "La saison du jour où la carte a été gagnée, en papier peint."
+    }
+   ],
+   "image": "Screenshots/lux_gouache_penchee.gif",
+   "image_alt": "La carte « Bus », commune, le matin à la Rout Bréck, gagnée en automne, ouverte et penchée lentement de gauche à droite. Le ciel, les nuages, la ville au loin, les collines et le pont rouge sont des cartons peints à la gouache qui glissent chacun à sa vitesse ; des nuages de carton traversent le ciel et des feuilles de papier tombent. Le bus est une plaque de nacre posée sur une tige et un socle de métal : la plaque ne bouge pas, seul un reflet glisse sur elle.",
+   "image_legende": "Une commune qu'on penche : cinq cartons peints, des nuages qui passent, et la plaque du bus où glisse un reflet."
+  },
   {
    "version": "38.0.0",
    "date": "2026-11-01",
@@ -161,72 +228,6 @@
      "image": "Screenshots/lux_guide_carte_haut.png",
      "alt": "Planche du guide : le haut de la carte « Waasser », une goutte d'eau devant la vallée, avec quatre repères numérotés : 1 le mot, 2 la longueur, 3 le paysage, 4 le cadre.",
      "legende": "Le guide de l'aide montre la carte avec son nouveau dessin."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
-   "image_alt": "Animation dans Mäi Carnet. 1. La grille du carnet : Kaz, un chat qui marche, Léiw, un lion, Moien, un soleil qui se lève, Famill, une famille, Kaddo, un cadeau, Apel, une pomme. 2. à 6. Les cartes s'ouvrent l'une après l'autre en grand : « Kaz » en or devant la ville de nuit, « Léiw » en argent, « Famill » devant la grande roue de la Schueberfouer, « Kaddo » et « Apel » en or. 7. Retour à la grille.",
-   "image_legende": "Les nouveaux dessins sur les cartes, des animaux aux mots de tous les jours."
-  },
-  {
-   "version": "37.10.0",
-   "date": "2026-10-31",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Les cartes ont de nouveaux dessins",
-       "texte": "Le chat, le lion, le cheval, la maison, le vélo et plus de cent autres dessins ont été refaits, plus fins et plus faciles à reconnaître. Les animaux et les véhicules regardent tous vers la droite."
-      },
-      {
-       "titre": "Les essentiels, une nouvelle page du carnet",
-       "texte": "Les mots de tous les jours (saluer, la famille, les jours, les mois, les couleurs, la maison, les courses…) rangés par thème. Chaque case vide montre le sens du mot à trouver, et chaque thème complété se fête."
-      },
-      {
-       "titre": "Les jeux vous aident à les trouver",
-       "texte": "Wuertsich, Wuertmix et Wuertriet glissent dans leurs parties les mots essentiels qui manquent encore à votre carnet."
-      },
-      {
-       "titre": "Des expressions à remettre dans l'ordre",
-       "texte": "Wuertmix propose aussi des expressions comme « Gudde Moien » ou « Wéi vill kascht dat? », un mot par ligne."
-      },
-      {
-       "titre": "Près de 140 mots de plus ont leur dessin",
-       "texte": "La famille, le corps, les vêtements, la cuisine, les fêtes…"
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Le bon sens pour quelques mots",
-       "texte": "« Mee » se traduit maintenant par « mai », « Ee » par « œuf », « A » par « œil » et « Fest » par « fête »."
-      },
-      {
-       "titre": "Wuertmix",
-       "texte": "Retirer une lettre de la réponse ne déplace plus les lettres données d'avance."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
-     "alt": "Animation dans Mäi Carnet. 1. La grille du carnet : Kaz, un chat qui marche, Léiw, un lion, Moien, un soleil qui se lève, Famill, une famille, Kaddo, un cadeau, Apel, une pomme. 2. à 6. Les cartes s'ouvrent l'une après l'autre en grand : « Kaz » en or devant la ville de nuit, « Léiw » en argent, « Famill » devant la grande roue de la Schueberfouer, « Kaddo » et « Apel » en or. 7. Retour à la grille.",
-     "legende": "Les nouveaux dessins sur les cartes, des animaux aux mots de tous les jours."
-    },
-    {
-     "image": "Screenshots/lux_essentiels.gif",
-     "alt": "Animation. 1. Dans Mäi Carnet, vue Séries, la page « Nombres » des essentiels : six cartes gagnées, eent à sechs, et des cases vides qui montrent le sens à trouver (sept, neuf, dix, vingt, cent, mille). 2. Les pages « Temps » et « Jours », cases vides marquées semaine, demain, lundi, mardi… 3. Dans Wuertmix, l'indice « bonne nuit » : la réponse se pose sur deux lignes, G _ _ _ puis _ _ _ _ _ T. 4. Les lettres sont placées : GUTT NUECHT. 5. Validé, le score passe à 100.",
-     "legende": "La page des essentiels dans le carnet, et une expression à remettre dans l'ordre dans Wuertmix."
     }
    ],
    "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",

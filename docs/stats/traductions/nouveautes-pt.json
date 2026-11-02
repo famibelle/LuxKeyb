@@ -1,5 +1,58 @@
 {
   "_comment": "Tradução portuguesa de nouveautes.html, por versão. Mantida à mão: generate_nouveautes.py junta-a em stats/nouveautes-pt.json. Cada versão segue a francesa do CHANGELOG: as mesmas secções, o mesmo número de pontos, pela mesma ordem; o título de uma secção pode faltar quando _sections o traduz. Uma versão que falte aqui, ou que já não tenha a forma da francesa, aparece em francês com um aviso. O texto é HTML: escapar < e &.",
+  "38.1.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Novidades",
+        "points": [
+          {
+            "titre": "Cartas pintadas a guache",
+            "texte": "A paisagem de cada carta é feita de peças de cartão pintadas à mão, em cores vivas, com as pinceladas e a borda do cartão. A manhã é azul e rosa, a tarde alaranjada, o fim de tarde violeta e rosa, a noite azul profundo."
+          },
+          {
+            "titre": "Cinco planos em todas as cartas",
+            "texte": "O céu, as nuvens, o fundo, o plano médio e o primeiro plano deslizam cada um à sua velocidade quando inclina o telemóvel, e nuvens atravessam lentamente o céu. As cartas raras acrescentam árvores ou pilares de cada lado, como os bastidores de um teatro."
+          },
+          {
+            "titre": "O desenho da palavra torna-se uma placa",
+            "texte": "É recortado numa placa espessa, assente numa haste e numa base de metal. O material indica a raridade: madrepérola para uma carta comum ou pouco comum, prata para uma rara, ouro para uma muito rara. Quando inclina a carta, um reflexo desliza sobre a placa."
+          },
+          {
+            "titre": "As estações em papel",
+            "texte": "As folhas de outono, as pétalas, os flocos de neve e os confetes são recortados em papel pintado, e os pássaros do verão pousam nas nuvens."
+          },
+          {
+            "titre": "A ruela do jogo impresso a cores",
+            "texte": "As cartas vindas do jogo em papel ficam numa ruela com as fachadas coloridas do Grund, sob um grande portão de onde pende uma hera florida."
+          }
+        ]
+      },
+      {
+        "titre": "Rapidez",
+        "points": [
+          {
+            "titre": "As cartas folheiam-se mais depressa",
+            "texte": "A carta seguinte é preparada com antecedência, tal como vai aparecer."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "A carta «Bus», comum, de manhã na Rout Bréck, ganha no outono, aberta e inclinada lentamente da esquerda para a direita. O céu, as nuvens, a cidade ao longe, as colinas e a ponte vermelha são peças de cartão pintadas a guache que deslizam cada uma à sua velocidade; nuvens de cartão atravessam o céu e caem folhas de papel. O autocarro é uma placa de madrepérola assente numa haste e numa base de metal: a placa não se mexe, só um reflexo desliza sobre ela.",
+        "legende": "Uma carta comum inclinada: cinco planos pintados, nuvens que passam e a placa do autocarro onde desliza um reflexo."
+      },
+      {
+        "alt": "Quatro cartas da mesma ruela, uma depois da outra. 1. «Bank», comum: um céu de manhã azul e rosa, um banco em placa de madrepérola cinzenta. 2. «Chrëschtdag», pouco comum: um céu de tarde alaranjado, um pinheiro em placa de madrepérola dourada. 3. «Brëll», rara: um fim de tarde violeta com janelas acesas, uns óculos em placa de prata, pilares dos lados. 4. «Alphabet», muito rara: uma noite azul profundo, três cubos A, B e C em placa de ouro. Sempre a ruela de fachadas coloridas, sob um grande portão de pedra de onde pende uma hera florida. O ecrã está em francês.",
+        "legende": "Manhã, tarde, fim de tarde e noite: a hora e o material da placa indicam a raridade."
+      },
+      {
+        "alt": "Quatro cartas comuns no Mëllerdall, entre os rochedos de arenito, uma depois da outra. 1. «Bam», ganha no inverno: neve nas cristas e flocos de papel. 2. «Hand», na primavera: flores nas colinas e pétalas a cair. 3. «Café», no verão: pássaros pousados nas nuvens. 4. «Kapp», no outono: folhagem arruivada e folhas de papel de cores vivas.",
+        "legende": "A estação do dia em que a carta foi ganha, em papel pintado."
+      }
+    ]
+  },
   "38.0.0": {
     "intro": "",
     "sections": [

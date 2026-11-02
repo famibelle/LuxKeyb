@@ -1,9 +1,76 @@
 {
- "genere_le": "2026-11-01",
- "derniere_version": "38.0.0",
- "derniere_date": "2026-11-01",
+ "genere_le": "2026-11-02",
+ "derniere_version": "38.1.0",
+ "derniere_date": "2026-11-02",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "38.1.0",
+   "date": "2026-11-02",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Neu",
+     "points": [
+      {
+       "titre": "Mit Gouache bemalte Karten",
+       "texte": "Die Landschaft jeder Karte besteht aus handbemalten Kartonstücken in kräftigen Farben, mit ihren Pinselstrichen und ihrem Kartonrand. Der Morgen ist blau und rosa, der Nachmittag orange, der Abend violett und rosa, die Nacht tiefblau."
+      },
+      {
+       "titre": "Fünf Ebenen auf jeder Karte",
+       "texte": "Himmel, Wolken, Ferne, Mittelgrund und Vordergrund gleiten jeweils in ihrem eigenen Tempo, wenn Sie das Handy neigen, und Wolken ziehen langsam über den Himmel. Seltene Karten haben zusätzlich Bäume oder Säulen an den Seiten, wie die Kulissen eines Theaters."
+      },
+      {
+       "titre": "Die Zeichnung des Wortes wird zur Plakette",
+       "texte": "Sie ist aus einer dicken Plakette geschnitten, die auf einem Metallstab mit Sockel steht. Ihr Material zeigt die Seltenheit: Perlmutt für eine häufige oder ungewöhnliche Karte, Silber für eine seltene, Gold für eine sehr seltene. Wenn Sie die Karte neigen, gleitet ein Lichtreflex über die Plakette."
+      },
+      {
+       "titre": "Jahreszeiten aus Papier",
+       "texte": "Herbstblätter, Blütenblätter, Schneeflocken und Konfetti sind aus bemaltem Papier ausgeschnitten, und die Vögel des Sommers sitzen auf den Wolken."
+      },
+      {
+       "titre": "Die Gasse des gedruckten Spiels in Farbe",
+       "texte": "Karten aus dem Papierspiel stehen in einer Gasse mit den bunten Fassaden des Grund, unter einem großen Tor mit blühendem Efeu."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "⚡",
+     "titre": "Geschwindigkeit",
+     "points": [
+      {
+       "titre": "Karten lassen sich schneller durchblättern",
+       "texte": "Die nächste Karte wird im Voraus vorbereitet, genau so, wie sie erscheinen wird."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_gouache_penchee.gif",
+     "alt": "Die Karte „Bus“, häufig, morgens an der Rout Bréck, im Herbst gewonnen, geöffnet und langsam von links nach rechts geneigt. Himmel, Wolken, die Stadt in der Ferne, die Hügel und die rote Brücke sind mit Gouache bemalte Kartonstücke, die jeweils in ihrem Tempo gleiten; Kartonwolken ziehen über den Himmel, Papierblätter fallen. Der Bus ist eine Perlmuttplakette auf einem Metallstab mit Sockel: Die Plakette bewegt sich nicht, nur ein Lichtreflex gleitet über sie.",
+     "legende": "Eine häufige Karte, die man neigt: fünf bemalte Ebenen, vorbeiziehende Wolken und die Plakette des Busses mit gleitendem Reflex."
+    },
+    {
+     "image": "Screenshots/lux_gouache_raretes.gif",
+     "alt": "Vier Karten in derselben Gasse, eine nach der anderen. 1. „Bank“, häufig: ein blau-rosa Morgenhimmel, eine Bank als graue Perlmuttplakette. 2. „Chrëschtdag“, ungewöhnlich: ein orangefarbener Nachmittagshimmel, eine Tanne als goldene Perlmuttplakette. 3. „Brëll“, selten: ein violetter Abend mit erleuchteten Fenstern, eine Brille als Silberplakette, Säulen an den Seiten. 4. „Alphabet“, sehr selten: eine tiefblaue Nacht, drei Würfel A, B und C als Goldplakette. Jedes Mal die Gasse mit bunten Fassaden unter einem großen Steintor mit blühendem Efeu. Die Oberfläche ist auf Französisch.",
+     "legende": "Morgen, Nachmittag, Abend und Nacht: Die Tageszeit und das Material der Plakette zeigen die Seltenheit."
+    },
+    {
+     "image": "Screenshots/lux_gouache_saisons.gif",
+     "alt": "Vier häufige Karten im Mëllerdall, zwischen den Sandsteinfelsen, eine nach der anderen. 1. „Bam“, im Winter gewonnen: Schnee auf den Kämmen und Schneeflocken aus Papier. 2. „Hand“, im Frühling: Blumen in den Hügeln und fallende Blütenblätter. 3. „Café“, im Sommer: Vögel auf den Wolken. 4. „Kapp“, im Herbst: rostrotes Laub und bunte Papierblätter.",
+     "legende": "Die Jahreszeit des Tages, an dem die Karte gewonnen wurde, aus bemaltem Papier."
+    }
+   ],
+   "image": "Screenshots/lux_gouache_penchee.gif",
+   "image_alt": "Die Karte „Bus“, häufig, morgens an der Rout Bréck, im Herbst gewonnen, geöffnet und langsam von links nach rechts geneigt. Himmel, Wolken, die Stadt in der Ferne, die Hügel und die rote Brücke sind mit Gouache bemalte Kartonstücke, die jeweils in ihrem Tempo gleiten; Kartonwolken ziehen über den Himmel, Papierblätter fallen. Der Bus ist eine Perlmuttplakette auf einem Metallstab mit Sockel: Die Plakette bewegt sich nicht, nur ein Lichtreflex gleitet über sie.",
+   "image_legende": "Eine häufige Karte, die man neigt: fünf bemalte Ebenen, vorbeiziehende Wolken und die Plakette des Busses mit gleitendem Reflex."
+  },
   {
    "version": "38.0.0",
    "date": "2026-11-01",
@@ -161,72 +228,6 @@
      "image": "Screenshots/lux_guide_carte_haut.png",
      "alt": "Tafel der Anleitung: der obere Teil der Karte „Waasser“, ein Wassertropfen vor dem Tal, mit vier nummerierten Markierungen: 1 das Wort, 2 die Länge, 3 die Landschaft, 4 der Rahmen. Die Tafel ist auf Französisch.",
      "legende": "Die Hilfe zeigt die Karte mit ihrer neuen Zeichnung."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
-   "image_alt": "Animation in Mäi Carnet. 1. Das Raster des Carnet: Kaz, eine laufende Katze, Léiw, ein Löwe, Moien, eine aufgehende Sonne, Famill, eine Familie, Kaddo, ein Geschenk, Apel, ein Apfel. 2. bis 6. Die Karten öffnen sich nacheinander groß: „Kaz“ in Gold vor der Stadt bei Nacht, „Léiw“ in Silber, „Famill“ vor dem Riesenrad der Schueberfouer, „Kaddo“ und „Apel“ in Gold. 7. Zurück zum Raster. Die Karten sind auf Französisch.",
-   "image_legende": "Die neuen Zeichnungen auf den Karten, von den Tieren bis zu den Wörtern des Alltags."
-  },
-  {
-   "version": "37.10.0",
-   "date": "2026-10-31",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Neu",
-     "points": [
-      {
-       "titre": "Die Karten haben neue Zeichnungen",
-       "texte": "Die Katze, der Löwe, das Pferd, das Haus, das Fahrrad und über hundert weitere Zeichnungen wurden neu gemacht, feiner und leichter zu erkennen. Tiere und Fahrzeuge schauen alle nach rechts."
-      },
-      {
-       "titre": "Das Wichtigste, eine neue Seite im Carnet",
-       "texte": "Wörter für jeden Tag (grüßen, Familie, Wochentage, Monate, Farben, Wohnen, Einkaufen…), nach Themen geordnet. Jedes leere Feld zeigt die Bedeutung des gesuchten Wortes, und jedes vollständige Thema wird gefeiert."
-      },
-      {
-       "titre": "Die Spiele helfen beim Finden",
-       "texte": "Wuertsich, Wuertmix und Wuertriet bauen die wichtigen Wörter, die Ihrem Carnet noch fehlen, in ihre Runden ein."
-      },
-      {
-       "titre": "Redewendungen zum Ordnen",
-       "texte": "Wuertmix bietet auch Redewendungen wie „Gudde Moien“ oder „Wéi vill kascht dat?“ an, ein Wort pro Zeile."
-      },
-      {
-       "titre": "Fast 140 weitere Wörter haben ihre Zeichnung",
-       "texte": "Familie, Körper, Kleidung, Küche, Feste…"
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Korrekturen",
-     "points": [
-      {
-       "titre": "Die richtige Bedeutung für einige Wörter",
-       "texte": "„Mee“ heißt jetzt „Mai“, „Ee“ „Ei“, „A“ „Auge“ und „Fest“ „Fest“."
-      },
-      {
-       "titre": "Wuertmix",
-       "texte": "Wer einen Buchstaben aus der Antwort entfernt, verschiebt nicht mehr die vorgegebenen Buchstaben."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
-     "alt": "Animation in Mäi Carnet. 1. Das Raster des Carnet: Kaz, eine laufende Katze, Léiw, ein Löwe, Moien, eine aufgehende Sonne, Famill, eine Familie, Kaddo, ein Geschenk, Apel, ein Apfel. 2. bis 6. Die Karten öffnen sich nacheinander groß: „Kaz“ in Gold vor der Stadt bei Nacht, „Léiw“ in Silber, „Famill“ vor dem Riesenrad der Schueberfouer, „Kaddo“ und „Apel“ in Gold. 7. Zurück zum Raster. Die Karten sind auf Französisch.",
-     "legende": "Die neuen Zeichnungen auf den Karten, von den Tieren bis zu den Wörtern des Alltags."
-    },
-    {
-     "image": "Screenshots/lux_essentiels.gif",
-     "alt": "Animation. 1. In Mäi Carnet, Ansicht Serien, die Seite „Zahlen“ des Wichtigsten: sechs gewonnene Karten, eent bis sechs, und leere Felder mit der gesuchten Bedeutung. 2. Die Seiten „Zeit“ und „Wochentage“, leere Felder mit Woche, morgen, Montag, Dienstag… 3. In Wuertmix der Hinweis „bonne nuit“: die Antwort steht auf zwei Zeilen, G _ _ _ und dann _ _ _ _ _ T. 4. Die Buchstaben sind gesetzt: GUTT NUECHT. 5. Bestätigt, die Punktzahl steigt auf 100. Die Bildschirme sind auf Französisch.",
-     "legende": "Die Seite des Wichtigsten im Carnet und eine Redewendung zum Ordnen in Wuertmix."
     }
    ],
    "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",

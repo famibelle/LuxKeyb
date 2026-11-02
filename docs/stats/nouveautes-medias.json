@@ -593,5 +593,24 @@
         "legende": "Une carte très rare qu'on penche : chaque carton a sa bordure blanche, même la nuit."
       }
     ]
+  },
+  "38.1.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_gouache_penchee.gif",
+        "alt": "La carte « Bus », commune, le matin à la Rout Bréck, gagnée en automne, ouverte et penchée lentement de gauche à droite. Le ciel, les nuages, la ville au loin, les collines et le pont rouge sont des cartons peints à la gouache qui glissent chacun à sa vitesse ; des nuages de carton traversent le ciel et des feuilles de papier tombent. Le bus est une plaque de nacre posée sur une tige et un socle de métal : la plaque ne bouge pas, seul un reflet glisse sur elle.",
+        "legende": "Une commune qu'on penche : cinq cartons peints, des nuages qui passent, et la plaque du bus où glisse un reflet."
+      },
+      {
+        "image": "Screenshots/lux_gouache_raretes.gif",
+        "alt": "Quatre cartes de la même ruelle, l'une après l'autre. 1. « Bank », commune : un ciel de matin bleu et rose, une banque en plaque de nacre grise. 2. « Chrëschtdag », peu commune : un ciel d'après-midi orangé, un sapin en plaque de nacre dorée. 3. « Brëll », rare : un soir violet aux fenêtres allumées, des lunettes en plaque d'argent, des piliers sur les côtés. 4. « Alphabet », très rare : une nuit bleu profond, trois cubes A, B et C en plaque d'or. Partout, la ruelle aux façades colorées, sous une grande porte de pierre où pend un lierre fleuri.",
+        "legende": "Matin, après-midi, soir et nuit : l'heure et la matière de la plaque disent la rareté."
+      },
+      {
+        "image": "Screenshots/lux_gouache_saisons.gif",
+        "alt": "Quatre cartes communes au Mëllerdall, entre les rochers de grès, l'une après l'autre. 1. « Bam », gagnée en hiver : la neige sur les crêtes et des flocons de papier. 2. « Hand », au printemps : des fleurs dans les collines et des pétales qui tombent. 3. « Café », en été : des oiseaux posés sur les nuages. 4. « Kapp », en automne : les feuillages roussis et des feuilles de papier aux couleurs vives.",
+        "legende": "La saison du jour où la carte a été gagnée, en papier peint."
+      }
+    ]
   }
 }

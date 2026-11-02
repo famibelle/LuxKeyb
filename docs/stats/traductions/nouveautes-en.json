@@ -1,5 +1,58 @@
 {
   "_comment": "English translation of nouveautes.html, by version. Hand-maintained: generate_nouveautes.py merges it into stats/nouveautes-en.json. Each version mirrors the French one from the CHANGELOG: same sections, same number of points, in the same order; a section's title can be left out when _sections translates it. A version that is missing here, or no longer has the French shape, is shown in French with a notice. Text is HTML: escape < and &.",
+  "38.1.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "New",
+        "points": [
+          {
+            "titre": "Cards painted in gouache",
+            "texte": "The landscape on each card is made of hand-painted cardboard pieces in bright colours, with their brushstrokes and cardboard edges. Morning is blue and pink, afternoon orange, evening purple and pink, night deep blue."
+          },
+          {
+            "titre": "Five layers on every card",
+            "texte": "The sky, the clouds, the distance, the middle ground and the foreground each slide at their own speed when you tilt the phone, and clouds drift slowly across the sky. Rare cards add trees or pillars on each side, like the wings of a theatre."
+          },
+          {
+            "titre": "The word's drawing becomes a plaque",
+            "texte": "It is cut out of a thick plaque standing on a metal rod and base. Its material shows the rarity: mother-of-pearl for a common or uncommon card, silver for a rare one, gold for a very rare one. When you tilt the card, a gleam slides across the plaque."
+          },
+          {
+            "titre": "Paper seasons",
+            "texte": "Autumn leaves, petals, snowflakes and confetti are cut out of painted paper, and the summer birds perch on the clouds."
+          },
+          {
+            "titre": "The printed game's alley in colour",
+            "texte": "Cards that come from the paper game stand in an alley with the colourful façades of the Grund, under a large gate hung with flowering ivy."
+          }
+        ]
+      },
+      {
+        "titre": "Speed",
+        "points": [
+          {
+            "titre": "Cards flip faster",
+            "texte": "The next card is prepared in advance, exactly as it will appear."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "The “Bus” card, common, in the morning at the Rout Bréck, won in autumn, open and slowly tilted from left to right. The sky, the clouds, the distant city, the hills and the red bridge are pieces of cardboard painted in gouache, each sliding at its own speed; cardboard clouds cross the sky and paper leaves fall. The bus is a mother-of-pearl plaque on a metal rod and base: the plaque does not move, only a gleam slides across it.",
+        "legende": "A common card being tilted: five painted layers, passing clouds, and the bus plaque with a sliding gleam."
+      },
+      {
+        "alt": "Four cards in the same alley, one after the other. 1. “Bank”, common: a blue and pink morning sky, a bank as a grey mother-of-pearl plaque. 2. “Chrëschtdag”, uncommon: an orange afternoon sky, a fir tree as a golden mother-of-pearl plaque. 3. “Brëll”, rare: a purple evening with lit windows, glasses as a silver plaque, pillars on the sides. 4. “Alphabet”, very rare: a deep blue night, three blocks A, B and C as a gold plaque. Each time, the alley with colourful façades under a large stone gate hung with flowering ivy. The screen is in French.",
+        "legende": "Morning, afternoon, evening and night: the hour and the plaque material show the rarity."
+      },
+      {
+        "alt": "Four common cards in the Mëllerdall, between the sandstone rocks, one after the other. 1. “Bam”, won in winter: snow on the ridges and paper snowflakes. 2. “Hand”, in spring: flowers in the hills and falling petals. 3. “Café”, in summer: birds perched on the clouds. 4. “Kapp”, in autumn: russet foliage and brightly coloured paper leaves.",
+        "legende": "The season of the day the card was won, in painted paper."
+      }
+    ]
+  },
   "38.0.0": {
     "intro": "",
     "sections": [
