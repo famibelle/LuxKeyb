@@ -59,7 +59,8 @@ internal object Habillage {
      * colline, un toit, une berge, et c'est ce qui pose la neige sur les
      * crêtes sans fleurir le ciel.
      */
-    fun appliquer(b: Bitmap, calque: Bitmap, lieu: Lieu, heure: Heure, s: Souvenir, k: FloatArray) {
+    fun appliquer(b: Bitmap, calque: Bitmap, lieu: Lieu, heure: Heure, s: Souvenir, k: FloatArray,
+                  releve: Bitmap? = null) {
         val w = b.width
         val h = b.height
         val u = k[0] / PIXELS_MAQUETTE_PAR_UNITE
@@ -69,7 +70,7 @@ internal object Habillage {
         b.getPixels(px, 0, w, 0, 0, w, h)
         val graine = lieu.ordinal * 1009 + s.saison.ordinal * 101 + ((s.fete?.ordinal ?: -1) + 1) * 13 + heure.rang
         val alea = Paysages.Alea(graine)
-        val fleurs = fond(px, mk, w, h, u, heure, s.saison, alea)
+        val fleurs = fond(px, mk, w, h, u, heure, s.saison, alea, lire(releve, w, h))
         b.setPixels(px, 0, w, 0, 0, w, h)
         val c = Canvas(b)
         dessus(c, w.toFloat(), h.toFloat(), u, heure, s.saison, alea, fleurs)
@@ -91,7 +92,8 @@ internal object Habillage {
      * l'hiver pâlit et que l'été réchauffe, sans neige ni fleurs.
      */
     fun appliquerPlans(
-        couches: Array<Bitmap>, masques: Array<Bitmap?>, lieu: Lieu, heure: Heure, s: Souvenir, ks: Array<FloatArray>
+        couches: Array<Bitmap>, masques: Array<Bitmap?>, lieu: Lieu, heure: Heure, s: Souvenir, ks: Array<FloatArray>,
+        releves: Array<Bitmap?> = arrayOfNulls(couches.size)
     ) {
         val graine = lieu.ordinal * 1009 + s.saison.ordinal * 101 + heure.rang
         val alea = Paysages.Alea(graine)
@@ -105,7 +107,7 @@ internal object Habillage {
             masques[i]?.getPixels(mk, 0, w, 0, 0, w, h)
             val px = IntArray(w * h)
             b.getPixels(px, 0, w, 0, 0, w, h)
-            val fleurs = fond(px, mk, w, h, u, heure, s.saison, alea)
+            val fleurs = fond(px, mk, w, h, u, heure, s.saison, alea, lire(releves[i], w, h))
             b.setPixels(px, 0, w, 0, 0, w, h)
             fleurir(Canvas(b), p, u, alea, fleurs)
         }
@@ -117,13 +119,29 @@ internal object Habillage {
 
     private fun objet(mk: IntArray, i: Int) = (mk[i] ushr 24) > SEUIL_MASQUE
 
-    // ------------------------------------------------------------ le fond
+    /** Les pixels d'un relevé de la végétation, ou `null`. */
+    private fun lire(releve: Bitmap?, w: Int, h: Int): IntArray? {
+        if (releve == null || releve.width != w || releve.height != h) return null
+        val v = IntArray(w * h)
+        releve.getPixels(v, 0, w, 0, 0, w, h)
+        return v
+    }
 
-    private fun fond(
-        px: IntArray, mk: IntArray, w: Int, h: Int, u: Float,
-        P: Heure, saison: Saison, alea: Paysages.Alea
-    ): FloatArray {
-        val nuit = if (P.nuit) 0.55f else 1f
+    /**
+     * Vrai si la couleur [col] est de la végétation pour l'heure [P] : à
+     * moins de 30 d'un des trois segments de couleur que l'heure emploie pour
+     * les collines, le premier plan et les mousses.
+     *
+     * C'est le test que [fond] fait pixel par pixel quand il n'a pas de
+     * relevé ; [Paysages] le fait une fois par pièce, sur la couleur qu'elle
+     * reçoit avant la gouache, pour dresser le relevé de la végétation.
+     */
+    fun vegetal(col: Int, P: Heure): Boolean {
+        val sg = segments(P)
+        return pres(sg, r(col).toFloat(), g(col).toFloat(), bl(col).toFloat())
+    }
+
+    private fun segments(P: Heure): FloatArray {
         val sg = FloatArray(18)
         intArrayOf(
             P.milieu, P.pres, P.loin, P.milieu,
@@ -131,16 +149,39 @@ internal object Habillage {
         ).forEachIndexed { j, col ->
             sg[j * 3] = r(col).toFloat(); sg[j * 3 + 1] = g(col).toFloat(); sg[j * 3 + 2] = bl(col).toFloat()
         }
-        fun calculer(rr: Float, gg: Float, bb: Float): Boolean {
-            for (o in 0 until 18 step 6) {
-                val ux = sg[o + 3] - sg[o]; val uy = sg[o + 4] - sg[o + 1]; val uz = sg[o + 5] - sg[o + 2]
-                val uu = (ux * ux + uy * uy + uz * uz).takeIf { it > 0f } ?: 1f
-                val t = (((rr - sg[o]) * ux + (gg - sg[o + 1]) * uy + (bb - sg[o + 2]) * uz) / uu).coerceIn(0f, 1f)
-                val dx = sg[o] + ux * t - rr; val dy = sg[o + 1] + uy * t - gg; val dz = sg[o + 2] + uz * t - bb
-                if (dx * dx + dy * dy + dz * dz < 900f) return true
-            }
-            return false
+        return sg
+    }
+
+    private fun pres(sg: FloatArray, rr: Float, gg: Float, bb: Float): Boolean {
+        for (o in 0 until 18 step 6) {
+            val ux = sg[o + 3] - sg[o]; val uy = sg[o + 4] - sg[o + 1]; val uz = sg[o + 5] - sg[o + 2]
+            val uu = (ux * ux + uy * uy + uz * uz).takeIf { it > 0f } ?: 1f
+            val t = (((rr - sg[o]) * ux + (gg - sg[o + 1]) * uy + (bb - sg[o + 2]) * uz) / uu).coerceIn(0f, 1f)
+            val dx = sg[o] + ux * t - rr; val dy = sg[o + 1] + uy * t - gg; val dz = sg[o + 2] + uz * t - bb
+            if (dx * dx + dy * dy + dz * dz < 900f) return true
         }
+        return false
+    }
+
+    // ------------------------------------------------------------ le fond
+
+    /**
+     * [releve] : la végétation pièce par pièce, dressée par [Paysages] pendant
+     * qu'il peint (alpha plein : végétation). Sans lui, la végétation se
+     * reconnaît pixel par pixel à sa couleur, ce qui ne marche plus sur un
+     * carton peint à la gouache : les coups de pinceau éclaircissent et
+     * assombrissent les collines hors des segments de la palette (relevé du
+     * 2026-11-02 sur l'émulateur, la neige et la rouille ne tombaient plus
+     * que par plaques), et le soir et la nuit des pierres et des façades
+     * tombaient dedans.
+     */
+    private fun fond(
+        px: IntArray, mk: IntArray, w: Int, h: Int, u: Float,
+        P: Heure, saison: Saison, alea: Paysages.Alea, releve: IntArray? = null
+    ): FloatArray {
+        val nuit = if (P.nuit) 0.55f else 1f
+        val sg = segments(P)
+        fun calculer(rr: Float, gg: Float, bb: Float): Boolean = pres(sg, rr, gg, bb)
         // Le paysage est fait d'aplats : quelques centaines de couleurs pour des
         // dizaines de milliers de pixels. La réponse se garde par couleur, dans
         // une table à adressage ouvert, sans objet par pixel.
@@ -164,12 +205,13 @@ internal object Habillage {
         // Les aplats se suivent : le pixel précédent répond souvent sans table.
         var derniere = 0
         var derniereReponse = false
-        fun vegetal(c: Int): Boolean {
+        fun vegetalPixel(c: Int): Boolean {
             if (c == derniere && derniere != 0) return derniereReponse
             derniere = c
             derniereReponse = vegetalTable(c)
             return derniereReponse
         }
+        fun vegetal(i: Int): Boolean = if (releve != null) (releve[i] ushr 24) > 127 else vegetalPixel(px[i])
         val rouille = arrayOf(intArrayOf(214, 118, 38), intArrayOf(186, 64, 36), intArrayOf(230, 176, 58), intArrayOf(160, 92, 40))
         // Les taches de l'automne mesurent deux unités et demie de la boîte,
         // quelle que soit la taille du rendu : des blocs de quelques pixels se
@@ -240,7 +282,7 @@ internal object Habillage {
             var avantC = 0; var avantVeg = false; var avantT = -1
             for (i in 0 until w * h) {
                 val c = px[i]
-                val veg = avecVeg && objet(mk, i) && vegetal(c)
+                val veg = avecVeg && objet(mk, i) && vegetal(i)
                 val t = if (avantT >= 0 && c == avantC && veg == avantVeg) avantT else teinteGardee(c, veg)
                 avantC = c; avantVeg = veg; avantT = t
                 px[i] = (c and 0xFF000000.toInt()) or t
@@ -251,7 +293,7 @@ internal object Habillage {
             for (x in 0 until w) {
                 val i = y * w + x
                 val c = px[i]
-                val veg = objet(mk, i) && vegetal(c)
+                val veg = objet(mk, i) && vegetal(i)
                 if (vegetationSeule && !veg) continue
                 var rr = r(c).toFloat(); var gg = g(c).toFloat(); var bb = bl(c).toFloat()
                 when (saison) {

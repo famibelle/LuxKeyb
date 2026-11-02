@@ -370,10 +370,12 @@ object Paysages {
         val cc = Canvas(calque)
         cc.translate(k[1], k[2])
         cc.scale(k[0], k[0])
-        dessiner(cc, lieu, heure, ciel = false, facture = facture, echelle = k[0])
+        val releve = Bitmap.createBitmap(largeurPx, hauteurPx, Bitmap.Config.ALPHA_8)
+        dessiner(cc, lieu, heure, ciel = false, facture = facture, echelle = k[0], releve = aLEchelle(releve, k))
         c.drawBitmap(calque, 0f, 0f, null)
-        Habillage.appliquer(bitmap, calque, lieu, heure, souvenir, k)
+        Habillage.appliquer(bitmap, calque, lieu, heure, souvenir, k, releve)
         calque.recycle()
+        releve.recycle()
         return bitmap
     }
 
@@ -471,9 +473,14 @@ object Paysages {
             return b
         }
         // Le calque [i] porte le plan [i] − 2 du lieu : 0 le lointain, 1 le milieu, 2 le proche.
+        // Avec une saison, il dresse aussi le relevé de sa végétation.
+        val releves = arrayOfNulls<Bitmap>(n)
         fun calque(i: Int, sol: Sol = Sol.SANS) = toile(i) {
+            val releve = if (souvenir != null && sol == Sol.SANS) {
+                Bitmap.createBitmap(tailles[i][0], tailles[i][1], Bitmap.Config.ALPHA_8).also { r -> releves[i] = r }
+            } else null
             dessiner(it, lieu, heure, ciel = false, lieuAussi = true, seul = i - 2, sol = sol,
-                facture = Facture.GOUACHE, echelle = ks[i][0])
+                facture = Facture.GOUACHE, echelle = ks[i][0], releve = releve?.let { r -> aLEchelle(r, ks[i]) })
         }
         fun peindre(i: Int, dessin: Peintre.() -> Unit) = toile(i) {
             Peintre(it, heure, facture = Facture.GOUACHE, echelle = ks[i][0]).dessin()
@@ -489,8 +496,9 @@ object Paysages {
         if (souvenir != null) {
             // Le ciel aussi, sans masque : l'hiver le pâlit, l'été le réchauffe.
             Habillage.appliquerPlans(arrayOf(ciel, loin, milieu, proche), arrayOf(null, loin, milieu, proche),
-                lieu, heure, souvenir, arrayOf(ks[0], ks[2], ks[3], ks[4]))
+                lieu, heure, souvenir, arrayOf(ks[0], ks[2], ks[3], ks[4]), arrayOf(null, releves[2], releves[3], releves[4]))
         }
+        releves.forEach { it?.recycle() }
         // Après la saison, qui reconnaît la végétation à ses couleurs d'origine.
         eclaircir(loin, formes[0], heure.cielBas, ESTOMPE[0])
         eclaircir(milieu, formes[1], heure.cielBas, ESTOMPE[1])
@@ -689,6 +697,9 @@ object Paysages {
     /** Une ombre de carton, pas de suie : un bleu nuit presque noir. */
     private const val OMBRE = 0xFF0B1020.toInt()
 
+    /** Ce qui n'est pas de la végétation efface le relevé : voir [Peintre.relever]. */
+    private val EFFACER = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+
     /**
      * La gouache est un peu mince : 84 % d'opacité, le kraft transparaît
      * (maquette `peint.js`).
@@ -742,8 +753,9 @@ object Paysages {
         plan == 2 || (plan == 1 && (lieu == Lieu.BREEDEWEE || lieu == Lieu.ESCH_SAUER || lieu == Lieu.MUSEL))
 
     fun dessiner(c: Canvas, lieu: Lieu, heure: Heure, ciel: Boolean = true, lieuAussi: Boolean = true,
-                 seul: Int = -1, sol: Sol = Sol.AVEC, facture: Facture = Facture.VIGNETTE, echelle: Float = 1f) {
-        val p = Peintre(c, heure, seul, sol, facture, echelle)
+                 seul: Int = -1, sol: Sol = Sol.AVEC, facture: Facture = Facture.VIGNETTE, echelle: Float = 1f,
+                 releve: Canvas? = null) {
+        val p = Peintre(c, heure, seul, sol, facture, echelle, releve)
         if (ciel) { if (facture == Facture.GOUACHE) p.cielPeint() else p.ciel() }
         if (!lieuAussi) return
         when (lieu) {
@@ -759,6 +771,9 @@ object Paysages {
             Lieu.BREEDEWEE -> p.breedewee()
         }
     }
+
+    /** Un canevas sur [b], à l'échelle [k] d'un [cadrage]. */
+    private fun aLEchelle(b: Bitmap, k: FloatArray) = Canvas(b).apply { translate(k[1], k[2]); scale(k[0], k[0]) }
 
     /**
      * Le hasard à graine fixe (mulberry32) : le même que celui de la maquette,
@@ -950,10 +965,46 @@ object Paysages {
         val c: Canvas, val P: Heure, private val seul: Int = -1, private val sol: Sol = Sol.AVEC,
         private val facture: Facture = Facture.VIGNETTE,
         /** Les pixels par unité du canevas : la finesse des coups de pinceau. */
-        private val echelle: Float = 1f
+        private val echelle: Float = 1f,
+        /**
+         * Le relevé de la végétation, à la même échelle que [c] : chaque
+         * pièce y est posée pleine si sa couleur, avant la gouache, est de la
+         * végétation ([Habillage.vegetal]), et l'efface sinon, si bien que la
+         * pièce de devant décide. [Habillage] le lit au lieu de deviner pixel
+         * par pixel sur le carton peint. Les pièces peintes dans [mineral]
+         * n'en sont jamais.
+         */
+        private val releve: Canvas? = null
     ) {
         val p = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
         val BAS = HAUTEUR
+
+        private val releveP = Paint(Paint.ANTI_ALIAS_FLAG)
+        private val vegetaux = HashMap<Int, Boolean>()
+        private var mineraux = 0
+
+        /**
+         * Peint [dessin] en pierre, bois, enduit ou métal : quelle que soit sa
+         * couleur, la saison n'y verra jamais de végétation. Le soir et la
+         * nuit, les palettes rapprochent la pierre des collines (le rocher du
+         * Bock, le grès du Mëllerdall, les façades bleues du Breedewee la
+         * nuit), et le printemps les aurait fleuries.
+         */
+        fun mineral(dessin: () -> Unit) {
+            mineraux++
+            try { dessin() } finally { mineraux-- }
+        }
+
+        /** Pose sur le [releve] une pièce de couleur [col], tracée par [trace]. */
+        private fun relever(col: Int, o: Float, trace: (Canvas, Paint) -> Unit) {
+            val r = releve ?: return
+            if (o < 0.95f || !actif) return
+            val vegetal = mineraux == 0 && vegetaux.getOrPut(col) { Habillage.vegetal(col, P) }
+            releveP.style = Paint.Style.FILL
+            releveP.xfermode = if (vegetal) null else EFFACER
+            releveP.color = 0xFFFFFFFF.toInt()
+            trace(r, releveP)
+        }
 
         /**
          * Le plan où l'on peint : 0 le lointain, 1 le milieu, 2 le proche.
@@ -997,12 +1048,14 @@ object Paysages {
             }
             p.style = Paint.Style.FILL; teinte(col, o)
             c.drawRect(x, y, x + w, y + h, p)
+            relever(col, o) { r, rp -> r.drawRect(x, y, x + w, y + h, rp) }
         }
 
         fun rond(cx: Float, cy: Float, r: Float, col: Int, o: Float = 1f) {
             if (!actif) return
             p.style = Paint.Style.FILL; teinte(col, o)
             c.drawCircle(cx, cy, r, p)
+            relever(col, o) { rc, rp -> rc.drawCircle(cx, cy, r, rp) }
         }
 
         fun forme(d: String, col: Int, o: Float = 1f) {
@@ -1021,6 +1074,7 @@ object Paysages {
             }
             p.style = Paint.Style.FILL; teinte(col, o)
             c.drawPath(path, p)
+            relever(col, o) { r, rp -> r.drawPath(path, rp) }
         }
 
         // ------------------------------------------------- le carton peint
@@ -1069,6 +1123,7 @@ object Paysages {
          */
         fun peint(chemin: Path, col: Int, dir: Float, b: RectF, ombre: Float = 1f, union: Boolean = false) {
             if (!actif) return
+            relever(col, 1f) { r, rp -> r.drawPath(chemin, rp) }
             val plein = facture == Facture.GOUACHE
             if (plein) ombrer(chemin, ombre)
             gouache.shader = null
@@ -1180,8 +1235,10 @@ object Paysages {
             if (!actif) return
             p.style = Paint.Style.STROKE; p.strokeWidth = largeur; p.strokeCap = Paint.Cap.BUTT
             teinte(col, o)
-            c.drawPath(chemin(d), p)
+            val t = chemin(d)
+            c.drawPath(t, p)
             p.style = Paint.Style.FILL
+            relever(col, o) { r, rp -> rp.style = Paint.Style.STROKE; rp.strokeWidth = largeur; r.drawPath(t, rp) }
         }
 
         fun ligne(x1: Float, y1: Float, x2: Float, y2: Float, col: Int, largeur: Float, o: Float = 1f) {
@@ -1189,6 +1246,7 @@ object Paysages {
             p.style = Paint.Style.STROKE; p.strokeWidth = largeur; teinte(col, o)
             c.drawLine(x1, y1, x2, y2, p)
             p.style = Paint.Style.FILL
+            relever(col, o) { r, rp -> rp.style = Paint.Style.STROKE; rp.strokeWidth = largeur; r.drawLine(x1, y1, x2, y2, rp) }
         }
 
         fun anneau(cx: Float, cy: Float, r: Float, col: Int, largeur: Float) {
@@ -1196,6 +1254,7 @@ object Paysages {
             p.style = Paint.Style.STROKE; p.strokeWidth = largeur; teinte(col, 1f)
             c.drawCircle(cx, cy, r, p)
             p.style = Paint.Style.FILL
+            relever(col, 1f) { rc, rp -> rp.style = Paint.Style.STROKE; rp.strokeWidth = largeur; rc.drawCircle(cx, cy, r, rp) }
         }
 
         fun triangle(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, col: Int, o: Float = 1f) {
@@ -1285,13 +1344,13 @@ object Paysages {
             }
         }
 
-        fun fenetre(x: Float, y: Float, w: Float, h: Float, rnd: Alea?) {
+        fun fenetre(x: Float, y: Float, w: Float, h: Float, rnd: Alea?) = mineral {
             val allumee = P.allume && (rnd == null || rnd() < 0.7f)
             if (allumee) rect(x - w * 0.6f, y - h * 0.4f, w * 2.2f, h * 1.8f, P.fenetre, 0.22f)
             rect(x, y, w, h, if (allumee) P.fenetre else mix(P.pierre, P.pres, 0.55f))
         }
 
-        fun maison(x: Float, y: Float, w: Float, h: Float, rnd: Alea?, toit: Float? = null) {
+        fun maison(x: Float, y: Float, w: Float, h: Float, rnd: Alea?, toit: Float? = null) = mineral {
             val ombre = mix(P.pierre, P.pres, 0.28f)
             rect(x, y - h, w, h, P.pierre)
             rect(x + w * 0.62f, y - h, w * 0.38f, h, ombre, 0.55f)
@@ -1582,24 +1641,26 @@ object Paysages {
             forme("M0 66L0 45C14 41 30 36 42 32C52 29 66 29 76 32C86 35 94 40 100 42L100 66Z", P.milieu)
             val pi = P.pierre
             val om = mix(P.pierre, P.pres, 0.3f)
-            rect(43f, 27f, 36f, 6f, om)
-            var x = 43f
-            while (x < 79f) { rect(x, 25.8f, 1.3f, 1.4f, om); x += 2.4f }
-            rect(52f, 18f, 18f, 10f, pi); triangle(51.4f, 18f, 61f, 10.5f, 70.6f, 18f, P.toit)
-            rect(45.5f, 15f, 5.5f, 13f, pi); triangle(45f, 15f, 48.25f, 7.5f, 51.5f, 15f, P.toit)
-            rect(48.6f, 15f, 2.4f, 13f, om, 0.6f)
-            rect(70f, 13f, 6.5f, 15f, pi); triangle(69.4f, 13f, 73.25f, 5.8f, 77.1f, 13f, P.toit)
-            rect(73.8f, 13f, 2.7f, 15f, om, 0.6f)
-            rect(61.8f, 13.5f, 2.2f, 5f, pi); triangle(61.5f, 13.5f, 62.9f, 9f, 64.3f, 13.5f, P.toit)
-            for (fx in floatArrayOf(54f, 57.5f, 61f, 64.5f, 67f)) fenetre(fx, 21f, 1.3f, 2.2f, r)
-            fenetre(47.4f, 19f, 1.1f, 1.8f, r); fenetre(72.4f, 17f, 1.2f, 2f, r); fenetre(72.4f, 22f, 1.2f, 2f, r)
+            mineral {
+                rect(43f, 27f, 36f, 6f, om)
+                var x = 43f
+                while (x < 79f) { rect(x, 25.8f, 1.3f, 1.4f, om); x += 2.4f }
+                rect(52f, 18f, 18f, 10f, pi); triangle(51.4f, 18f, 61f, 10.5f, 70.6f, 18f, P.toit)
+                rect(45.5f, 15f, 5.5f, 13f, pi); triangle(45f, 15f, 48.25f, 7.5f, 51.5f, 15f, P.toit)
+                rect(48.6f, 15f, 2.4f, 13f, om, 0.6f)
+                rect(70f, 13f, 6.5f, 15f, pi); triangle(69.4f, 13f, 73.25f, 5.8f, 77.1f, 13f, P.toit)
+                rect(73.8f, 13f, 2.7f, 15f, om, 0.6f)
+                rect(61.8f, 13.5f, 2.2f, 5f, pi); triangle(61.5f, 13.5f, 62.9f, 9f, 64.3f, 13.5f, P.toit)
+                for (fx in floatArrayOf(54f, 57.5f, 61f, 64.5f, 67f)) fenetre(fx, 21f, 1.3f, 2.2f, r)
+                fenetre(47.4f, 19f, 1.1f, 1.8f, r); fenetre(72.4f, 17f, 1.2f, 2f, r); fenetre(72.4f, 22f, 1.2f, 2f, r)
+            }
             bosquet(30f, 44f, 34.5f, 2.4f, 8, mix(P.milieu, P.pres, 0.4f))
             bosquet(80f, 100f, 37f, 2.6f, 9, mix(P.milieu, P.pres, 0.4f))
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
             forme("M0 66L0 52C20 48 40 50 60 49C80 48 92 50 100 52L100 66Z", P.pres)
-            x = 14f
+            var x = 14f
             while (x < 90f) {
                 val h = 3f + r() * 2f
                 maison(x, 50.5f - sin(x * 0.05f) * 0.6f, 3.8f, h, r)
@@ -1616,14 +1677,16 @@ object Paysages {
             val fl = mix(P.loin, P.cielBas, 0.25f)
             val tours = floatArrayOf(8f, 4f, 15f, 13f, 3f, 11f, 18f, 5f, 19f, 26f, 3.4f, 13f, 31f, 4.2f, 16f, 86f, 4f, 12f, 92f, 3f, 9f)
             var i = 0
-            while (i < tours.size) {
-                val x = tours[i]; val w = tours[i + 1]; val h = tours[i + 2]
-                rect(x, 38f - h, w, h, fl)
-                if (P.allume) {
-                    var y = 40f - h
-                    while (y < 36f) { if (r() < 0.55f) rect(x + 0.8f, y, w - 1.6f, 0.5f, P.fenetre, 0.7f); y += 2.2f }
+            mineral {
+                while (i < tours.size) {
+                    val x = tours[i]; val w = tours[i + 1]; val h = tours[i + 2]
+                    rect(x, 38f - h, w, h, fl)
+                    if (P.allume) {
+                        var y = 40f - h
+                        while (y < 36f) { if (r() < 0.55f) rect(x + 0.8f, y, w - 1.6f, 0.5f, P.fenetre, 0.7f); y += 2.2f }
+                    }
+                    i += 3
                 }
-                i += 3
             }
             crete(37f, 1.6f, 6, P.loin)
             plan(1)
@@ -1666,15 +1729,17 @@ object Paysages {
             poser(DEVANT)
             forme("M30 66C31 54 38 42 50 37C62 42 69 54 70 66Z", mix(P.milieu, P.pres, 0.5f))
             val om = mix(P.pierre, P.pres, 0.3f)
-            rect(47.5f, 25f, 5f, 12f, om)
-            var x = 47.5f
-            while (x < 52.5f) { rect(x, 23.8f, 0.8f, 1.4f, om); x += 1.4f }
-            fenetre(49.4f, 28f, 1f, 2f, r)
+            mineral {
+                rect(47.5f, 25f, 5f, 12f, om)
+                var x = 47.5f
+                while (x < 52.5f) { rect(x, 23.8f, 0.8f, 1.4f, om); x += 1.4f }
+                fenetre(49.4f, 28f, 1f, 2f, r)
+            }
             val maisons = floatArrayOf(40f, 48f, 4f, 3.5f, 44f, 45f, 3.8f, 3.2f, 48.5f, 43.5f, 4f, 3.4f, 53f, 44.5f, 3.6f, 3.2f,
                 57f, 47f, 4f, 3.4f, 36f, 52f, 4.2f, 3.6f, 61f, 51f, 4f, 3.6f, 45.5f, 50.5f, 4f, 3.6f, 52f, 51f, 4.2f, 3.8f)
             var i = 0
             while (i < maisons.size) { maison(maisons[i], maisons[i + 1], maisons[i + 2], maisons[i + 3], r); i += 4 }
-            rect(58.4f, 38f, 2.2f, 6.8f, P.pierre); triangle(58.2f, 38f, 59.5f, 33f, 60.8f, 38f, P.toit)
+            mineral { rect(58.4f, 38f, 2.2f, 6.8f, P.pierre); triangle(58.2f, 38f, 59.5f, 33f, 60.8f, 38f, P.toit) }
             sapins(P.sol, 4f, DEVANT, 9f, 9f, DEVANT, 7f, 94f, DEVANT, 8f, 89f, DEVANT, 6.5f)
             c.restore()
         }
@@ -1689,11 +1754,13 @@ object Paysages {
             rect(0f, 40f, 100f, 7f, P.milieu)
             var x = 52f
             while (x < 100f) { maison(x, 45f, 3.4f, 2.6f + r() * 1.6f, r); x += 4.2f }
-            rect(76.4f, 34f, 2.4f, 11f, P.pierre); triangle(76.1f, 34f, 77.6f, 27f, 79.1f, 34f, P.toit)
+            mineral { rect(76.4f, 34f, 2.4f, 11f, P.pierre); triangle(76.1f, 34f, 77.6f, 27f, 79.1f, 34f, P.toit) }
             fenetre(77.2f, 37f, 0.8f, 1.6f, r)
             riviere(46.5f, 56f, 21, 56f, 64f, 77f, 90f)
-            forme("M62 52.6L86 52.6L84 54.4L64 54.4Z", P.sol)
-            rect(80f, 51f, 3.2f, 1.8f, P.sol)
+            mineral {
+                forme("M62 52.6L86 52.6L84 54.4L64 54.4Z", P.sol)
+                rect(80f, 51f, 3.2f, 1.8f, P.sol)
+            }
             if (P.allume) rond(81.6f, 51.9f, 0.4f, P.fenetre)
             c.restore()
             plan(2)
@@ -1720,30 +1787,36 @@ object Paysages {
             val roc = mix(P.pierre, P.pres, 0.42f)
             val roc2 = mix(roc, P.sol, 0.3f)
             bosquet(80f, 100f, 36f, 2.6f, 24, mix(P.milieu, P.pres, 0.3f))
-            forme("M0 66L0 11L9 9.6L16 12L24 11.4L31 15L37 24L40 36L42 66Z", roc)
-            var y = 16f
-            while (y < 60f) { trait("M0 ${y}L${30f + y * 0.22f} ${y + 0.8f}", roc2, 0.4f, 0.7f); y += 4.5f }
-            val rempart = mix(P.pierre, P.pres, 0.2f)
-            rect(0f, 6.5f, 30f, 4f, rempart)
-            var x = 0f
-            while (x < 30f) { rect(x, 5.4f, 1.2f, 1.3f, rempart); x += 2.2f }
-            rect(21f, 2f, 4.5f, 6f, rempart)
+            mineral {
+                forme("M0 66L0 11L9 9.6L16 12L24 11.4L31 15L37 24L40 36L42 66Z", roc)
+                var y = 16f
+                while (y < 60f) { trait("M0 ${y}L${30f + y * 0.22f} ${y + 0.8f}", roc2, 0.4f, 0.7f); y += 4.5f }
+                val rempart = mix(P.pierre, P.pres, 0.2f)
+                rect(0f, 6.5f, 30f, 4f, rempart)
+                var x = 0f
+                while (x < 30f) { rect(x, 5.4f, 1.2f, 1.3f, rempart); x += 2.2f }
+                rect(21f, 2f, 4.5f, 6f, rempart)
+            }
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
-            forme("M37 37.5L93 37.5L91 34L39 34Z", P.toit)
-            rect(38f, 37.5f, 54f, 13f, P.pierre)
-            rect(38f, 47.5f, 54f, 3f, mix(P.pierre, P.pres, 0.25f))
-            x = 40f
-            while (x < 91f) { fenetre(x, 39.4f, 1.3f, 2.2f, r); fenetre(x, 43.6f, 1.3f, 2.2f, r); x += 3.6f }
-            rect(45f, 21f, 6.4f, 29.5f, P.pierre)
-            rect(49f, 21f, 2.4f, 29.5f, mix(P.pierre, P.pres, 0.3f), 0.6f)
-            triangle(44.6f, 21f, 48.2f, 11f, 51.8f, 21f, P.toit)
-            rond(48.2f, 24.5f, 1.3f, mix(P.pierre, P.pres, 0.45f))
-            fenetre(47.5f, 28f, 1.4f, 3f, r)
+            mineral {
+                forme("M37 37.5L93 37.5L91 34L39 34Z", P.toit)
+                rect(38f, 37.5f, 54f, 13f, P.pierre)
+                rect(38f, 47.5f, 54f, 3f, mix(P.pierre, P.pres, 0.25f))
+                var x = 40f
+                while (x < 91f) { fenetre(x, 39.4f, 1.3f, 2.2f, r); fenetre(x, 43.6f, 1.3f, 2.2f, r); x += 3.6f }
+                rect(45f, 21f, 6.4f, 29.5f, P.pierre)
+                rect(49f, 21f, 2.4f, 29.5f, mix(P.pierre, P.pres, 0.3f), 0.6f)
+                triangle(44.6f, 21f, 48.2f, 11f, 51.8f, 21f, P.toit)
+                rond(48.2f, 24.5f, 1.3f, mix(P.pierre, P.pres, 0.45f))
+                fenetre(47.5f, 28f, 1.4f, 3f, r)
+            }
             riviere(53.5f, DEVANT, 25, 42f, 52f, 63f, 74f, 85f)
-            forme("M52 52L100 52L100 56.2L97 56.2C97 54 93 54 93 56.2L85 56.2C85 54 81 54 81 56.2L73 56.2C73 54 69 54 69 56.2L61 56.2C61 54 57 54 57 56.2L52 56.2Z",
-                mix(P.pierre, P.pres, 0.15f))
+            mineral {
+                forme("M52 52L100 52L100 56.2L97 56.2C97 54 93 54 93 56.2L85 56.2C85 54 81 54 81 56.2L73 56.2C73 54 69 54 69 56.2L61 56.2C61 54 57 54 57 56.2L52 56.2Z",
+                    mix(P.pierre, P.pres, 0.15f))
+            }
             c.restore()
         }
 
@@ -1752,14 +1825,16 @@ object Paysages {
             crete(34f, 1.4f, 27, P.loin)
             plan(1)
             val pi = mix(P.pierre, P.pres, 0.22f)
-            rect(-1f, 22f, 102f, 2.6f, pi)
-            trait("M6 54Q50 -6 94 54", pi, 3f)
             var x = 14f
-            while (x <= 86f) {
-                val t = (x - 6f) / 88f
-                val y = (1 - t) * (1 - t) * 54f + 2 * (1 - t) * t * (-6f) + t * t * 54f
-                if (y > 24.5f) rect(x - 0.35f, 24.4f, 0.7f, y - 24.4f, pi)
-                x += 4.5f
+            mineral {
+                rect(-1f, 22f, 102f, 2.6f, pi)
+                trait("M6 54Q50 -6 94 54", pi, 3f)
+                while (x <= 86f) {
+                    val t = (x - 6f) / 88f
+                    val y = (1 - t) * (1 - t) * 54f + 2 * (1 - t) * t * (-6f) + t * t * 54f
+                    if (y > 24.5f) rect(x - 0.35f, 24.4f, 0.7f, y - 24.4f, pi)
+                    x += 4.5f
+                }
             }
             if (P.allume) { x = 3f; while (x < 100f) { rond(x, 21.6f, 0.45f, P.fenetre); x += 5f } }
             plan(2)
@@ -1770,10 +1845,12 @@ object Paysages {
             rect(0f, 56.5f, 100f, 10f, P.pres)
             val ob = P.pierre
             val obo = mix(P.pierre, P.pres, 0.3f)
-            rect(75f, 52f, 14f, 6.5f, ob); rect(76.5f, 49f, 11f, 3.2f, ob); rect(83f, 49f, 4.5f, 9.5f, obo, 0.5f)
-            forme("M79.2 49L80.4 12L83.6 12L84.8 49Z", ob)
-            forme("M82.4 12L83.6 12L84.8 49L82.6 49Z", obo, 0.55f)
-            triangle(80f, 12f, 82f, 9.6f, 84f, 12f, ob)
+            mineral {
+                rect(75f, 52f, 14f, 6.5f, ob); rect(76.5f, 49f, 11f, 3.2f, ob); rect(83f, 49f, 4.5f, 9.5f, obo, 0.5f)
+                forme("M79.2 49L80.4 12L83.6 12L84.8 49Z", ob)
+                forme("M82.4 12L83.6 12L84.8 49L82.6 49Z", obo, 0.55f)
+                triangle(80f, 12f, 82f, 9.6f, 84f, 12f, ob)
+            }
             val or = if (P.nuit) 0xFFFFD36A.toInt() else 0xFFE2AC36.toInt()
             if (P.allume) rond(82f, 5f, 6f, or, 0.18f)
             forme("M81.3 9.6L81.6 5.6L82.4 5.6L82.7 9.6Z", or)
@@ -1858,27 +1935,31 @@ object Paysages {
             val roco = mix(roc, P.toit, 0.38f)
             val clair = mix(roc, 0xFFFFFFFF.toInt(), 0.22f)
             val mousse = mix(P.milieu, 0xFF4F7D3A.toInt(), if (P.nuit) 0.1f else 0.35f)
-            carton("M0 66L0 13C4 9 12 9 16 13L18 30C17 40 20 52 23 66Z", roc, OBLIQUE)
-            carton("M11 12C14 12 16 13 16 13L18 30C17 40 20 52 23 66L15 66C14 50 13 30 11 12Z", mix(roc, roco, 0.6f), OBLIQUE, 0.7f)
-            carton("M1 14C4 11 8 10.5 10 11.5L9 28C8 38 9 50 10 66L3 66C3 50 2 30 1 14Z", clair, OBLIQUE, 0.5f)
-            carton("M100 66L100 17C96 11 86 11 82 17L80 33C82 44 78 55 79 66Z", roc, OBLIQUE)
-            carton("M82 17L80 33C82 44 78 55 79 66L86 66C85 50 86 30 84 15Z", mix(roc, roco, 0.6f), OBLIQUE, 0.7f)
-            carton("M99 18C97 14 93 13 91 13.5L92 30C93 42 92 54 92 66L98 66C98 50 99 32 99 18Z", clair, OBLIQUE, 0.5f)
-            for (y in floatArrayOf(24f, 37f, 50f)) {
-                carton("M0 ${y}L${16f + y * 0.08f} ${y + 0.6f}L${16.4f + y * 0.08f} ${y + 2.4f}L0 ${y + 2f}Z", mix(roc, roco, 0.35f), 0f, 0.6f)
-                carton("M${81f - y * 0.02f} ${y + 1f}L100 ${y + 1.6f}L100 ${y + 3.4f}L${80.6f - y * 0.02f} ${y + 3f}Z", mix(roc, roco, 0.35f), 0f, 0.6f)
+            mineral {
+                carton("M0 66L0 13C4 9 12 9 16 13L18 30C17 40 20 52 23 66Z", roc, OBLIQUE)
+                carton("M11 12C14 12 16 13 16 13L18 30C17 40 20 52 23 66L15 66C14 50 13 30 11 12Z", mix(roc, roco, 0.6f), OBLIQUE, 0.7f)
+                carton("M1 14C4 11 8 10.5 10 11.5L9 28C8 38 9 50 10 66L3 66C3 50 2 30 1 14Z", clair, OBLIQUE, 0.5f)
+                carton("M100 66L100 17C96 11 86 11 82 17L80 33C82 44 78 55 79 66Z", roc, OBLIQUE)
+                carton("M82 17L80 33C82 44 78 55 79 66L86 66C85 50 86 30 84 15Z", mix(roc, roco, 0.6f), OBLIQUE, 0.7f)
+                carton("M99 18C97 14 93 13 91 13.5L92 30C93 42 92 54 92 66L98 66C98 50 99 32 99 18Z", clair, OBLIQUE, 0.5f)
+                for (y in floatArrayOf(24f, 37f, 50f)) {
+                    carton("M0 ${y}L${16f + y * 0.08f} ${y + 0.6f}L${16.4f + y * 0.08f} ${y + 2.4f}L0 ${y + 2f}Z", mix(roc, roco, 0.35f), 0f, 0.6f)
+                    carton("M${81f - y * 0.02f} ${y + 1f}L100 ${y + 1.6f}L100 ${y + 3.4f}L${80.6f - y * 0.02f} ${y + 3f}Z", mix(roc, roco, 0.35f), 0f, 0.6f)
+                }
             }
             feuillagePeint(0f, 16f, 12f, 2.2f, 35, mousse)
             feuillagePeint(83f, 100f, 15f, 2.2f, 36, mousse)
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
-            forme("M36 33L64 33L64 38.5L56 38.5C56 35.6 44 35.6 44 38.5L36 38.5Z", mix(P.pierre, P.pres, 0.2f))
             val blanc = if (P.nuit) 0xFF9FB3D8.toInt() else 0xFFFFFFFF.toInt()
-            rect(44.6f, 37.5f, 10.8f, 7f, blanc, 0.85f)
-            forme("M38 44.5L62 44.5L64 46.5L36 46.5Z", roco)
-            rect(40f, 46.5f, 20f, 6f, blanc, 0.8f)
-            forme("M32 52.5L68 52.5L70 54.5L30 54.5Z", roco)
+            mineral {
+                forme("M36 33L64 33L64 38.5L56 38.5C56 35.6 44 35.6 44 38.5L36 38.5Z", mix(P.pierre, P.pres, 0.2f))
+                rect(44.6f, 37.5f, 10.8f, 7f, blanc, 0.85f)
+                forme("M38 44.5L62 44.5L64 46.5L36 46.5Z", roco)
+                rect(40f, 46.5f, 20f, 6f, blanc, 0.8f)
+                forme("M32 52.5L68 52.5L70 54.5L30 54.5Z", roco)
+            }
             rect(34f, 54.5f, 32f, 4.5f, blanc, 0.75f)
             val ecume = mix(P.eau, 0xFFFFFFFF.toInt(), 0.5f)
             for (k in 0 until 14) {
@@ -1906,20 +1987,22 @@ object Paysages {
             }
             val fleches = floatArrayOf(30f, 3.2f, 8f, 36f, 2.2f, 15f, 42.5f, 2.4f, 16f)
             var i = 0
-            while (i < fleches.size) {
-                val fx = fleches[i]; val w = fleches[i + 1]; val fy = fleches[i + 2]
-                rect(fx - w / 2f, fy + 8f, w, 30f - fy, pi)
-                triangle(fx - w / 2f - 0.2f, fy + 8f, fx, fy, fx + w / 2f + 0.2f, fy + 8f, P.toit)
-                i += 3
-            }
-            rect(0f, 37f, 100f, 13f, om)
-            x = 0f
-            while (x < 100f) { rect(x, 35.8f, 1.4f, 1.4f, om); x += 2.6f }
-            x = 4f
-            while (x < 100f) {
-                forme("M$x 50L$x 44.5Q${x + 2.4f} 41.5 ${x + 4.8f} 44.5L${x + 4.8f} 50Z", mix(om, P.sol, 0.5f))
-                if (P.allume && r() < 0.5f) rect(x + 1.8f, 45.5f, 1.2f, 1.8f, P.fenetre)
-                x += 9f
+            mineral {
+                while (i < fleches.size) {
+                    val fx = fleches[i]; val w = fleches[i + 1]; val fy = fleches[i + 2]
+                    rect(fx - w / 2f, fy + 8f, w, 30f - fy, pi)
+                    triangle(fx - w / 2f - 0.2f, fy + 8f, fx, fy, fx + w / 2f + 0.2f, fy + 8f, P.toit)
+                    i += 3
+                }
+                rect(0f, 37f, 100f, 13f, om)
+                x = 0f
+                while (x < 100f) { rect(x, 35.8f, 1.4f, 1.4f, om); x += 2.6f }
+                x = 4f
+                while (x < 100f) {
+                    forme("M$x 50L$x 44.5Q${x + 2.4f} 41.5 ${x + 4.8f} 44.5L${x + 4.8f} 50Z", mix(om, P.sol, 0.5f))
+                    if (P.allume && r() < 0.5f) rect(x + 1.8f, 45.5f, 1.2f, 1.8f, P.fenetre)
+                    x += 9f
+                }
             }
             // Le Grund et l'Alzette, sur le devant de la scène : la rive et ses
             // maisons, puis la rivière en rangée de vagues découpées, posées
@@ -1959,6 +2042,9 @@ object Paysages {
             val pierre = P.pierre
             val joint = mix(pierre, P.pres, 0.42f)
             val couleurs = FACADES[P.rang]
+            // Tout est pierre et enduit, sauf la verdure du rocher et le lierre :
+            // la nuit, les façades bleues tomberaient dans la végétation.
+            mineraux++
 
             // La ville haute, au-dessus de la ruelle : des pignons, et l'église
             // dans leur creux, dont le clocher passe derrière la clé de la porte.
@@ -1980,8 +2066,10 @@ object Paysages {
             rect(57.5f, 12f, 4f, 10f, pierre)
             triangle(57.1f, 12f, 59.5f, 4f, 61.9f, 12f, P.toit)
             // La verdure du rocher, devant la ville haute.
+            mineraux--
             bosquet(0f, 54f, 33f, 2.6f, 51, P.milieu)
             bosquet(66f, 100f, 33f, 2.6f, 52, P.milieu)
+            mineraux++
 
             // La ruelle derrière la porte : des façades enduites aux couleurs
             // du Grund.
@@ -2061,6 +2149,7 @@ object Paysages {
             ligne(px(rx[3], angles[3]), py(ry[3], angles[3]), px(rx[2], angles[2]), py(ry[2], angles[2]), joint, 0.4f)
             // Le lierre fleuri qui retombe des épaules de l'arche : vert à
             // toute heure, assombri le soir et la nuit.
+            mineraux--
             val lr = Alea(53)
             val lierre = mix(0xFF4CB35A.toInt(), P.pres, if (P.nuit) 0.6f else if (P.allume) 0.4f else 0.15f)
             val lierreSombre = mix(lierre, 0xFF000000.toInt(), 0.25f)
@@ -2079,6 +2168,7 @@ object Paysages {
                     rond(px(ex + 1f, a), py(ey + 1f, a) + lr() * 2f, 0.55f, couleurs[if (k % 2 == 1) 0 else 1])
                 }
             }
+            mineraux++
             // Les assises des piliers, joints croisés.
             for (gauche in booleanArrayOf(true, false)) {
                 val xa = if (gauche) cx - ex else cx + ix
@@ -2096,6 +2186,7 @@ object Paysages {
             // Les lanternes, sous l'arc, tournées vers la scène.
             lanterne(cx + ix, naissance + 4f, false)
             lanterne(cx - ix, naissance + 4f, true)
+            mineraux--
         }
     }
 }
