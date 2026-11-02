@@ -75,7 +75,8 @@ asbl (skill `asbl-administratif`). Vendre une boîte demande en plus les essais
 de sécurité des jouets (EN 71).
 
 Démarcher les communes et préparer les animations : skill
-`animations-communes`. Chercher des financements : skill `subventions`. Seules
+`animations-communes`. Chercher des financements : skills `recherche-financement` (toutes les
+sources, le suivi) et `subventions` (dossiers publics). Seules
 les recettes sûres comptent dans le palier 1 : ventes, animations sous bon de
 commande, subventions notifiées par écrit.
 

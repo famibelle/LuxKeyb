@@ -292,8 +292,10 @@ recettes portent une part des frais fixes :
 - **Les adultes qui apprennent le luxembourgeois** (résidents, frontaliers,
   candidats à la nationalité) : le coffret et les boîtes Niveau A1 et A2 leur
   parlent, à un prix qui n'a pas besoin d'être celui de l'argent de poche.
-- **Les subventions et le mécénat** : les sources, leur degré de certitude
-  et la façon d'écrire un dossier sont dans la skill `subventions`. Une
+- **Les subventions et le mécénat** : les sources publiques et la façon
+  d'écrire un dossier sont dans la skill `subventions` ; les fondations, les
+  entreprises, le financement participatif et le suivi de toutes les pistes
+  sont dans la skill `recherche-financement`. Une
   subvention baisse le prix du lot école, offre des jeux aux bibliothèques
   ou finance un tirage. Elle ne paie pas la rémunération de façon durable.
 - **Les commandes groupées** des écoles et des communes, à l'avance (§ 4).

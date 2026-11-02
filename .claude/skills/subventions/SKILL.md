@@ -41,8 +41,12 @@ dates se vérifient sur la page officielle avant chaque dossier.**
 | **ZLS** (Zenter fir d'Lëtzebuerger Sprooch), Commissaire à la langue luxembourgeoise | aucun programme de subvention trouvé | — | — | info@zls.etat.lu, +352 247 88600 | **une lettre de soutien** (§ 3) |
 
 Pistes non vérifiées : le ministère de l'Éducation nationale (page sur la
-promotion de la langue luxembourgeoise), les fondations et le mécénat
-d'entreprises.
+promotion de la langue luxembourgeoise).
+
+**Fondations, banques, entreprises, financement participatif, prix et
+programmes européens** : skill `recherche-financement`, qui tient aussi le
+suivi de toutes les pistes, publiques comprises
+(`administratif/financement/pipeline.csv`).
 
 ---
 
