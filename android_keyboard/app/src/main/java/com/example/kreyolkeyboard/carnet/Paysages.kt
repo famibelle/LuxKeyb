@@ -675,6 +675,17 @@ object Paysages {
         ombre.recycle()
     }
 
+    /**
+     * Les façades du Grund au Breedewee, de toutes les couleurs, réglées pour
+     * chaque heure : rose, jaune, bleu, vert, orange (maquette `vives.js`).
+     */
+    private val FACADES = arrayOf(
+        intArrayOf(0xFFF7A8B8.toInt(), 0xFFFFD66B.toInt(), 0xFF8EC9F0.toInt(), 0xFF9BDBA8.toInt(), 0xFFFFB070.toInt()),
+        intArrayOf(0xFFF59A8C.toInt(), 0xFFFFC94D.toInt(), 0xFF7FC4E8.toInt(), 0xFFA7D67A.toInt(), 0xFFFF9E5A.toInt()),
+        intArrayOf(0xFFD9789A.toInt(), 0xFFE8A85A.toInt(), 0xFF8A86C8.toInt(), 0xFF7FA88C.toInt(), 0xFFE08A6A.toInt()),
+        intArrayOf(0xFF4F5C9E.toInt(), 0xFF6A6AA8.toInt(), 0xFF3E5A9A.toInt(), 0xFF4A7088.toInt(), 0xFF5A5A90.toInt())
+    )
+
     /** Une ombre de carton, pas de suie : un bleu nuit presque noir. */
     private const val OMBRE = 0xFF0B1020.toInt()
 
@@ -1470,6 +1481,52 @@ object Paysages {
             peint(t, col, 0f, boite, 1.2f)
         }
 
+        /**
+         * Une pièce de carton peint écrite comme en SVG : [dir] est le sens
+         * des coups de pinceau, [ombre] la force de son ombre (`peint` de la
+         * maquette, appelé directement).
+         */
+        fun carton(d: String, col: Int, dir: Float, ombre: Float = 1f) {
+            if (!actif) return
+            val t = chemin(d)
+            t.computeBounds(boite, true)
+            peint(t, col, dir, boite, ombre)
+        }
+
+        /** Un rond de carton peint (`rondPeint` de la maquette). */
+        fun rondPeint(cx: Float, cy: Float, r: Float, col: Int, ombre: Float = 0.8f) {
+            if (!actif) return
+            val t = Path()
+            t.addCircle(cx, cy, r, Path.Direction.CW)
+            boite.set(cx - r, cy - r, cx + r, cy + r)
+            peint(t, col, -0.6f, boite, ombre)
+        }
+
+        /**
+         * Un feuillage de ronds de carton peint, deux rangées, la claire
+         * devant la sombre (`feuillagePeint` de la maquette) : là où le
+         * [bosquet] posait des ronds plats.
+         */
+        fun feuillagePeint(x0: Float, x1: Float, y: Float, taille: Float, graine: Int, col: Int) {
+            val r = Alea(graine)
+            val ronds = ArrayList<Float>()
+            var x = x0
+            while (x <= x1) {
+                val rr = taille * (0.65f + 0.5f * r())
+                val cx = x + r() * taille * 0.4f
+                val cy = y - rr * 0.35f + r() * 1.2f
+                ronds.add(cx); ronds.add(cy); ronds.add(rr)
+                x += taille * 1.05f
+            }
+            val sombre = mix(col, 0xFF000000.toInt(), 0.12f)
+            val claire = mix(col, 0xFFFFFFFF.toInt(), 0.1f)
+            for (i in ronds.indices step 3) rondPeint(ronds[i], ronds[i + 1] - ronds[i + 2] * 0.35f, ronds[i + 2], sombre)
+            for (i in ronds.indices step 3) {
+                val rr = ronds[i + 2]
+                rondPeint(ronds[i] + rr * 0.25f, ronds[i + 1] + rr * 0.25f, rr * 0.82f, claire)
+            }
+        }
+
         /** Un arc de cercle tourné dans le sens inverse des aiguilles, de [de] à [a] radians, comme `arc` du canevas HTML. */
         private fun arc(t: Path, cx: Float, cy: Float, r: Float, de: Float, a: Float) {
             var balayage = a - de
@@ -1790,23 +1847,29 @@ object Paysages {
         fun mellerdall() {
             val r = Alea(10)
             crete(30f, 2.2f, 33, P.loin)
-            bosquet(0f, 100f, 34f, 2.2f, 34, mix(P.loin, P.milieu, 0.5f))
+            feuillagePeint(0f, 100f, 34f, 2.2f, 34, mix(P.loin, P.milieu, 0.5f))
             plan(1)
+            // Le grès en pièces étagées (maquette `peint.js`, `mellerdallPeint`) :
+            // une masse, une face à l'ombre, une face claire, des strates
+            // collées, peintes de touches courtes et obliques. La face à
+            // l'ombre tire vers la tuile plutôt que vers le vert : du grès,
+            // pas du kaki.
             val roc = mix(P.pierre, 0xFFB48A55.toInt(), if (P.nuit) 0.15f else 0.32f)
-            val roco = mix(roc, P.pres, 0.4f)
+            val roco = mix(roc, P.toit, 0.38f)
+            val clair = mix(roc, 0xFFFFFFFF.toInt(), 0.22f)
             val mousse = mix(P.milieu, 0xFF4F7D3A.toInt(), if (P.nuit) 0.1f else 0.35f)
-            forme("M0 66L0 13C4 9 12 9 16 13L18 30C17 40 20 52 23 66Z", roc)
-            forme("M11 12C14 12 16 13 16 13L18 30C17 40 20 52 23 66L15 66C14 50 13 30 11 12Z", roco, 0.6f)
-            forme("M100 66L100 17C96 11 86 11 82 17L80 33C82 44 78 55 79 66Z", roc)
-            forme("M82 17L80 33C82 44 78 55 79 66L86 66C85 50 86 30 84 15Z", roco, 0.6f)
-            var y = 18f
-            while (y < 64f) {
-                trait("M0 ${y}L${16f + y * 0.08f} ${y + 0.5f}", roco, 0.4f)
-                trait("M${81f - y * 0.02f} ${y}L100 ${y + 0.5f}", roco, 0.4f)
-                y += 4.2f
+            carton("M0 66L0 13C4 9 12 9 16 13L18 30C17 40 20 52 23 66Z", roc, OBLIQUE)
+            carton("M11 12C14 12 16 13 16 13L18 30C17 40 20 52 23 66L15 66C14 50 13 30 11 12Z", mix(roc, roco, 0.6f), OBLIQUE, 0.7f)
+            carton("M1 14C4 11 8 10.5 10 11.5L9 28C8 38 9 50 10 66L3 66C3 50 2 30 1 14Z", clair, OBLIQUE, 0.5f)
+            carton("M100 66L100 17C96 11 86 11 82 17L80 33C82 44 78 55 79 66Z", roc, OBLIQUE)
+            carton("M82 17L80 33C82 44 78 55 79 66L86 66C85 50 86 30 84 15Z", mix(roc, roco, 0.6f), OBLIQUE, 0.7f)
+            carton("M99 18C97 14 93 13 91 13.5L92 30C93 42 92 54 92 66L98 66C98 50 99 32 99 18Z", clair, OBLIQUE, 0.5f)
+            for (y in floatArrayOf(24f, 37f, 50f)) {
+                carton("M0 ${y}L${16f + y * 0.08f} ${y + 0.6f}L${16.4f + y * 0.08f} ${y + 2.4f}L0 ${y + 2f}Z", mix(roc, roco, 0.35f), 0f, 0.6f)
+                carton("M${81f - y * 0.02f} ${y + 1f}L100 ${y + 1.6f}L100 ${y + 3.4f}L${80.6f - y * 0.02f} ${y + 3f}Z", mix(roc, roco, 0.35f), 0f, 0.6f)
             }
-            bosquet(0f, 16f, 12f, 2.2f, 35, mousse)
-            bosquet(83f, 100f, 15f, 2.2f, 36, mousse)
+            feuillagePeint(0f, 16f, 12f, 2.2f, 35, mousse)
+            feuillagePeint(83f, 100f, 15f, 2.2f, 36, mousse)
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
@@ -1876,21 +1939,26 @@ object Paysages {
          *
          * La porte est un cadre de scène dans la fenêtre : ce qu'on voit à
          * travers glisse contre ses bords quand on penche la carte, la
-         * parallaxe la plus lisible qui soit. Derrière le dessin du mot, dans
-         * l'axe, la ruelle n'a pas de fenêtre, seulement une porte basse. La
-         * ruelle et la porte tiennent debout chacune dans sa rainure du
-         * [plancher] : jusqu'en 37.9.2, une chaussée pavée descendait jusqu'au
-         * bas de la fenêtre et rien ne disait où les cartons étaient posés.
+         * parallaxe la plus lisible qui soit. Depuis le chantier gouache
+         * (maquette `breedewee.js`, 2026-11-01), elle est élargie en
+         * avant-scène autour du dessin du mot, qui tient dans 17–83 ×
+         * 12,5–58,5 : ses piliers restent hors de cette boîte, son arc en
+         * anse de panier passe au-dessus, et un lierre fleuri retombe de ses
+         * épaules. Sa taille reste à revoir avec le propriétaire.
          *
-         * Les couleurs tiennent compte de la végétation de [Habillage], qui se
-         * reconnaît à sa couleur : la porte est en [Heure.pierre] et les
-         * façades en enduit, la pierre tirée vers l'horizon, ce qui ne passe
-         * pour de la verdure à aucune heure.
+         * Une ruelle de pierre reste beige, même vive : ses façades prennent
+         * les couleurs du Grund ([FACADES]), et la ville haute en garde un
+         * reflet. Derrière le dessin du mot, dans l'axe, la ruelle n'a pas de
+         * fenêtre, seulement une porte basse. La ruelle et la porte tiennent
+         * debout chacune dans sa rainure du [plancher] ; la chaussée pavée de
+         * la maquette n'est pas reprise (règle 4 bis de la skill : rien ne
+         * descend jusqu'au bas de la fenêtre).
          */
         fun breedewee() {
             val r = Alea(12)
             val pierre = P.pierre
             val joint = mix(pierre, P.pres, 0.42f)
+            val couleurs = FACADES[P.rang]
 
             // La ville haute, au-dessus de la ruelle : des pignons, et l'église
             // dans leur creux, dont le clocher passe derrière la clé de la porte.
@@ -1899,7 +1967,7 @@ object Paysages {
             var i = 0
             while (i < pignons.size) {
                 val x = pignons[i]; val w = pignons[i + 1]; val h = pignons[i + 2]
-                rect(x, 33f - h, w, h + 33f, pierre)
+                rect(x, 33f - h, w, h + 33f, mix(couleurs[(i / 3 + 2) % 5], pierre, 0.35f))
                 triangle(x - 0.3f, 33f - h, x + w / 2f, 33f - h - w * 0.45f, x + w + 0.3f, 33f - h, P.toit)
                 if (P.allume) {
                     var y = 35f - h
@@ -1911,17 +1979,19 @@ object Paysages {
             triangle(54.6f, 22f, 60.5f, 17.5f, 66.4f, 22f, P.toit)
             rect(57.5f, 12f, 4f, 10f, pierre)
             triangle(57.1f, 12f, 59.5f, 4f, 61.9f, 12f, P.toit)
+            // La verdure du rocher, devant la ville haute.
+            bosquet(0f, 54f, 33f, 2.6f, 51, P.milieu)
+            bosquet(66f, 100f, 33f, 2.6f, 52, P.milieu)
 
-            // La ruelle derrière la porte : des façades enduites, plus claires
-            // que la pierre de la porte, qui s'en détache.
+            // La ruelle derrière la porte : des façades enduites aux couleurs
+            // du Grund.
             plan(1)
             val facades = floatArrayOf(-1f, 12f, 16f, 11f, 11f, 14f, 22f, 12f, 17f, 34f, 12f, 15f, 46f, 10f, 18f,
                 56f, 12f, 14f, 68f, 11f, 17f, 79f, 11f, 15f, 90f, 11f, 16f)
             i = 0
             while (i < facades.size) {
                 val x = facades[i]; val w = facades[i + 1]; val h = facades[i + 2]
-                val enduit = mix(pierre, P.cielBas, if ((i / 3) % 2 == 0) 0.3f else 0.42f)
-                rect(x, 50f - h, w, h, enduit)
+                rect(x, 50f - h, w, h, couleurs[(i / 3) % 5])
                 triangle(x - 0.4f, 50f - h, x + w / 2f, 50f - h - w * 0.3f, x + w + 0.4f, 50f - h, P.toit)
                 // Dans l'axe, derrière le mot, pas de fenêtre (règle 5 de la
                 // skill `direction-artistique` : le mot reste l'acteur).
@@ -1939,58 +2009,83 @@ object Paysages {
                 if (P.allume) mix(P.fenetre, P.toit, 0.35f) else mix(pierre, P.pres, 0.55f))
             // La ruelle s'arrête net sur le plancher, comme un carton glissé
             // dans sa rainure.
-            plancher(50f, 55f)
+            plancher(50f, DEVANT)
 
-            // La porte, sur le devant de la scène.
+            // La porte, sur le devant de la scène : deux piliers et un arc en
+            // anse de panier, d'un seul carton.
             plan(2)
             val cx = 50f
             val naissance = 30f
-            val ri = 13.5f
-            val re = 19.5f
-            val seuil = 55f
+            val ix = 34.5f
+            val iy = 21f
+            val ex = 41.5f
+            val ey = 27f
+            val seuil = DEVANT
             plancher(seuil, BAS)
-            // La porte : deux piliers et l'arc plein cintre, d'un seul carton.
             val porte = Path()
-            porte.moveTo(cx - re, seuil)
-            porte.lineTo(cx - re, naissance)
-            porte.arcTo(RectF(cx - re, naissance - re, cx + re, naissance + re), 180f, 180f)
-            porte.lineTo(cx + re, seuil)
-            porte.lineTo(cx + ri, seuil)
-            porte.lineTo(cx + ri, naissance)
-            porte.arcTo(RectF(cx - ri, naissance - ri, cx + ri, naissance + ri), 0f, -180f)
-            porte.lineTo(cx - ri, seuil)
+            porte.moveTo(cx - ex, seuil)
+            porte.lineTo(cx - ex, naissance)
+            porte.arcTo(RectF(cx - ex, naissance - ey, cx + ex, naissance + ey), 180f, 180f)
+            porte.lineTo(cx + ex, seuil)
+            porte.lineTo(cx + ix, seuil)
+            porte.lineTo(cx + ix, naissance)
+            porte.arcTo(RectF(cx - ix, naissance - iy, cx + ix, naissance + iy), 0f, -180f)
+            porte.lineTo(cx - ix, seuil)
             porte.close()
             forme(porte, pierre)
-            // Les tailloirs, qui débordent : ils font la silhouette de la porte.
-            rect(cx - re - 1f, naissance - 0.2f, re - ri + 2f, 1.7f, pierre)
-            rect(cx + ri - 1f, naissance - 0.2f, re - ri + 2f, 1.7f, pierre)
+            // Les tailloirs et les socles, qui débordent : ils font la silhouette.
+            rect(cx - ex - 1.2f, naissance - 0.2f, ex - ix + 2.4f, 1.8f, pierre)
+            rect(cx + ix - 1.2f, naissance - 0.2f, ex - ix + 2.4f, 1.8f, pierre)
+            rect(cx - ex - 0.8f, seuil - 2.2f, ex - ix + 1.6f, 2.2f, pierre)
+            rect(cx + ix - 0.8f, seuil - 2.2f, ex - ix + 1.6f, 2.2f, pierre)
             // Les claveaux, et la clé qui dépasse de l'arc.
-            val n = 9
+            val n = 15
             val pi = PI.toFloat()
+            fun px(rx: Float, a: Float) = cx + rx * cos(a)
+            fun py(ry: Float, a: Float) = naissance + ry * sin(a)
             for (k in 1 until n) {
                 val a = pi + k * pi / n
-                ligne(cx + ri * cos(a), naissance + ri * sin(a), cx + re * cos(a), naissance + re * sin(a), joint, 0.4f)
+                ligne(px(ix, a), py(iy, a), px(ex, a), py(ey, a), joint, 0.4f)
             }
             val demi = pi / n / 2f
             val haut = 1.5f * pi
-            fun px(rr: Float, a: Float) = cx + rr * cos(a)
-            fun py(rr: Float, a: Float) = naissance + rr * sin(a)
             val angles = floatArrayOf(haut - demi * 0.9f, haut - demi * 1.15f, haut + demi * 1.15f, haut + demi * 0.9f)
-            val rayons = floatArrayOf(ri - 0.6f, re + 1.4f, re + 1.4f, ri - 0.6f)
+            val rx = floatArrayOf(ix - 0.6f, ex + 1.4f, ex + 1.4f, ix - 0.6f)
+            val ry = floatArrayOf(iy - 0.6f, ey + 1.4f, ey + 1.4f, iy - 0.6f)
             val cle = Path()
-            cle.moveTo(px(rayons[0], angles[0]), py(rayons[0], angles[0]))
-            for (q in 1..3) cle.lineTo(px(rayons[q], angles[q]), py(rayons[q], angles[q]))
+            cle.moveTo(px(rx[0], angles[0]), py(ry[0], angles[0]))
+            for (q in 1..3) cle.lineTo(px(rx[q], angles[q]), py(ry[q], angles[q]))
             cle.close()
             forme(cle, pierre)
-            ligne(px(rayons[0], angles[0]), py(rayons[0], angles[0]), px(rayons[1], angles[1]), py(rayons[1], angles[1]), joint, 0.4f)
-            ligne(px(rayons[3], angles[3]), py(rayons[3], angles[3]), px(rayons[2], angles[2]), py(rayons[2], angles[2]), joint, 0.4f)
+            ligne(px(rx[0], angles[0]), py(ry[0], angles[0]), px(rx[1], angles[1]), py(ry[1], angles[1]), joint, 0.4f)
+            ligne(px(rx[3], angles[3]), py(ry[3], angles[3]), px(rx[2], angles[2]), py(ry[2], angles[2]), joint, 0.4f)
+            // Le lierre fleuri qui retombe des épaules de l'arche : vert à
+            // toute heure, assombri le soir et la nuit.
+            val lr = Alea(53)
+            val lierre = mix(0xFF4CB35A.toInt(), P.pres, if (P.nuit) 0.6f else if (P.allume) 0.4f else 0.15f)
+            val lierreSombre = mix(lierre, 0xFF000000.toInt(), 0.25f)
+            for (gauche in booleanArrayOf(true, false)) {
+                val sx = if (gauche) -1f else 1f
+                for (k in 0 until 9) {
+                    val t = k / 8f
+                    val a = pi + (if (gauche) 0.15f + t * 0.55f else pi - 0.15f - t * 0.55f)
+                    val x = px(ex + 0.5f, a)
+                    val y = py(ey + 0.5f, a)
+                    rond(x + (lr() - 0.5f) * 2f, y + (lr() - 0.5f) * 2f, 1.6f + lr() * 1.2f, if (k % 2 == 1) lierre else lierreSombre)
+                }
+                for (k in 0 until 4) rond(cx + sx * (ex - 1f + lr() * 2f), naissance + 2f + k * 3f + lr(), 1.2f + lr() * 0.8f, lierreSombre)
+                for (k in 0 until 6) {
+                    val a = pi + (if (gauche) 0.2f + lr() * 0.5f else pi - 0.2f - lr() * 0.5f)
+                    rond(px(ex + 1f, a), py(ey + 1f, a) + lr() * 2f, 0.55f, couleurs[if (k % 2 == 1) 0 else 1])
+                }
+            }
             // Les assises des piliers, joints croisés.
             for (gauche in booleanArrayOf(true, false)) {
-                val xa = if (gauche) cx - re else cx + ri
-                val w = re - ri
+                val xa = if (gauche) cx - ex else cx + ix
+                val w = ex - ix
                 var decale = gauche
-                var y = naissance + 1.5f + 3.4f
-                while (y < seuil) {
+                var y = naissance + 1.6f + 3.4f
+                while (y < seuil - 2.2f) {
                     ligne(xa, y, xa + w, y, joint, 0.4f)
                     val xj = xa + w * (if (decale) 0.38f else 0.62f)
                     ligne(xj, y - 3.4f, xj, y, joint, 0.4f)
@@ -1998,8 +2093,9 @@ object Paysages {
                     y += 3.4f
                 }
             }
-            lanterne(cx + re, naissance + 6f, true)
-            lanterne(cx - re, naissance + 6f, false)
+            // Les lanternes, sous l'arc, tournées vers la scène.
+            lanterne(cx + ix, naissance + 4f, false)
+            lanterne(cx - ix, naissance + 4f, true)
         }
     }
 }
