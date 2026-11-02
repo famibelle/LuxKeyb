@@ -118,9 +118,11 @@ du nuage générique, et le cadre en rideau de scène (§ 6).
 Le propriétaire a retenu et validé sur maquette (« je valide la direction
 actuelle », 2026-11-01), pour **toutes les cartes**, une évolution du
 théâtre de papier inspirée d'une vitrine en papier découpé (Google Store,
-Paris) : **des couleurs vives, peintes à la gouache sur du carton**. Pour
-l'instant c'est une **maquette** (`maquette/gouache/`), rien n'est dans
-`Paysages.kt` ni dans `CadreOrne.kt`.
+Paris) : **des couleurs vives, peintes à la gouache sur du carton**. Mise au
+point sur une **maquette** (`maquette/gouache/`), elle est **écrite dans
+l'appli depuis le 2026-11-02** (branche `claude/trusting-carson-9twue3`, un
+commit par étape du cahier `CHANTIER-GOUACHE.md` ; voir « Dans l'appli »
+plus bas).
 Dans `maquette/gouache/`, `node capture.js` rend le Breedewee aux quatre
 heures (avec la place du dessin en rouge), et `node rendre.js pancarte.html
 sortie.png` la fenêtre de la carte « Bus » avec sa pancarte, à la place
@@ -204,12 +206,42 @@ Dans la nouvelle direction (maquette `automne.html`, carte « Bus ») :
   nuages, ses oiseaux et ses aigrettes. Moins d'oiseaux, et un jugement sur
   le téléphone.
 
-, le dessin du mot tient dans
+Depuis la 38.0.0, le dessin du mot tient dans
 une boîte de 66 × 46, centrée (17 à 83, 12,5 à 58,5). Le décor vit donc dans
 la bande du haut et sur les bords : c'est là que mettre la couleur et les
 détails. Une porte, un pont ou un monument placé au centre disparaît derrière
 le dessin (la porte du Breedewee a dû être élargie en avant-scène autour de
 lui ; sa taille reste à revoir avec le propriétaire).
+
+### Dans l'appli (2026-11-02)
+
+Ce qui est fait, vu sur l'émulateur, pas encore jugé en main :
+
+- les quatre palettes vives (`Heure.BASE`) ;
+- chaque grande pièce en carton peint (`Paysages.Facture.GOUACHE`) : les
+  coups de pinceau viennent de deux tuiles préparées d'avance et tournées
+  dans le sens de la pièce ; la vignette garde des aplats avec le seul bord
+  de carton ; la bordure blanche a laissé la place à un liseré de lumière au
+  bord haut des cartons ;
+- cinq plans pour toutes les cartes, six avec les coulisses, et les nuages
+  qui traversent le ciel de toutes les cartes ;
+- la plaque du mot (`Plaque` dans `CadreOrne.kt`), pour les meubles, les
+  chiffres et le tracé de sonorité ; sur un dessin en morceaux, la tige
+  tient le morceau le plus proche du centre ;
+- le Breedewee de `breedewee.js`, posé sur le plancher (la chaussée pavée
+  n'est pas reprise, règle 4 bis), et le grès étagé du Mëllerdall ;
+- les saisons lisent la végétation pièce par pièce (un relevé dressé en
+  peignant, la pierre et l'enduit marqués minéraux), parce que les coups de
+  pinceau la rendaient méconnaissable pixel par pixel ;
+- les ambiances en papier peint, les oiseaux sur le carton des nuages.
+
+Reste à juger avec le propriétaire : la taille de la porte du Breedewee, les
+autres lieux qui manquent de couleur, la hauteur du socle (posé à 61 unités,
+au-dessus du bandeau du nom), le nombre d'oiseaux (trois), l'écart entre
+l'après-midi et le soir. Reste à mesurer : le coût sur le Galaxy A21s en
+build release (sur l'émulateur, le rendu des plans d'une carte ouverte est
+passé de 760 à environ 590 ms, et une carte feuilletée est prête en 100 ms
+au lieu de 750).
 
 ## 3. Pourquoi cette direction
 
