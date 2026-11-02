@@ -379,32 +379,40 @@ object Paysages {
 
     /**
      * De combien chaque plan glisse au plus quand la carte penche à fond, en
-     * part de la largeur (de la hauteur pour le tangage) : le lointain, le
-     * milieu, le proche.
+     * part de la largeur (de la hauteur pour le tangage) : le ciel, les
+     * nuages, le lointain, le milieu, le proche, puis les coulisses.
      *
-     * C'est le lointain qui bouge le plus, comme derrière une vitre : le
-     * cadre de la carte est ce qu'il y a de plus près, le dessin du mot est
-     * posé dessus en nacre et ne bouge pas, et plus un plan est loin du
-     * verre, plus il glisse quand l'œil change d'angle.
+     * C'est le fond qui bouge le plus, comme derrière une vitre : le cadre de
+     * la carte est ce qu'il y a de plus près, le dessin du mot est posé
+     * devant et ne bouge pas, et plus un plan est loin du verre, plus il
+     * glisse quand l'œil change d'angle. Les valeurs sont celles de la
+     * maquette `cinq_plans.html` (skill `direction-artistique`, règle 8).
      *
-     * Le quatrième plan n'existe que sur les rares et les très rares : les
+     * Le sixième plan n'existe que sur les rares et les très rares : les
      * coulisses, juste derrière la vitre (voir [nombreDePlans]).
      */
-    val GLISSEMENT = floatArrayOf(0.04f, 0.022f, 0.008f, 0.003f)
+    val GLISSEMENT = floatArrayOf(0.05f, 0.04f, 0.03f, 0.017f, 0.007f, 0.003f)
+
+    /** Le rang des nuages parmi les plans : une bande qui défile, voir [nuages]. */
+    const val NUAGES = 1
 
     /**
-     * Trois cartons pour toutes les cartes, quatre à partir de rare : la mise
-     * en scène suit les paliers qui donnent déjà le métal et l'heure (règle 8
-     * de la skill `direction-artistique`). Une commune répond au geste comme
-     * une rare ; elle a seulement un carton de moins.
+     * Cinq cartons pour toutes les cartes, six à partir de rare (décision du
+     * propriétaire, 2026-11-01, règle 8 de la skill `direction-artistique`) :
+     * une commune, la carte qu'on manipule le plus, a le plein effet de
+     * théâtre. Les rares et les très rares gardent en plus leurs coulisses,
+     * la seule différence de profondeur qui reste entre les paliers ; la
+     * rareté se dit par l'heure, le métal et la plaque, qu'on voit sans
+     * pencher la carte.
      */
-    fun nombreDePlans(heure: Heure): Int = if (heure.rang >= Rarete.RARE.ordinal) 4 else 3
+    fun nombreDePlans(heure: Heure): Int = if (heure.rang >= Rarete.RARE.ordinal) 6 else 5
 
     /**
-     * Le lieu en trois calques, quatre pour une rare ([nombreDePlans]), pour
-     * la carte ouverte : voir [GLISSEMENT]. Le premier porte le ciel et ne
-     * laisse rien de vide, les autres sont transparents autour de ce qu'ils
-     * portent.
+     * Le lieu en cinq calques, six pour une rare ([nombreDePlans]), pour la
+     * carte ouverte : voir [GLISSEMENT]. Le premier est le ciel et ne laisse
+     * rien de vide ; le deuxième est la bande des nuages ([NUAGES]), que
+     * [CadreOrne] fait traverser le ciel ; les autres sont transparents autour
+     * de ce qu'ils portent.
      *
      * Chaque calque déborde de la fenêtre de quoi glisser sans découvrir son
      * bord : voir [marge], et [CadreOrne] qui le peint centré sur elle.
@@ -417,8 +425,8 @@ object Paysages {
      * peint ici, une fois : pencher la carte ne coûte rien de plus.
      *
      * `null` pour une carte gagnée un jour de fête, qui garde son rendu à
-     * plat : les feux, les braises et les lumières s'ajoutent à la lumière
-     * du paysage entier, et ne se répartissent pas en calques.
+     * plat, sans nuages : les feux, les braises et les lumières s'ajoutent à
+     * la lumière du paysage entier, et ne se répartissent pas en calques.
      */
     fun plans(lieu: Lieu, heure: Heure, teinte: Float?, largeurPx: Int, hauteurPx: Int,
               souvenir: Souvenir? = null): Array<Bitmap>? {
@@ -441,119 +449,147 @@ object Paysages {
      */
     fun marge(i: Int, n: Int): Int = ceil(GLISSEMENT[i] * n).toInt() + 1
 
+    /**
+     * La profondeur de chaque calque, en plans, pour l'ombre qu'il reçoit :
+     * plus un carton est loin de celui qui la porte, plus elle monte et
+     * s'étale. Les nuages n'en reçoivent pas (-1).
+     */
+    private val PROFONDEUR = intArrayOf(0, -1, 1, 2, 3, 4)
+
     private fun rendrePlans(lieu: Lieu, heure: Heure, l: Int, h: Int, souvenir: Souvenir?): Array<Bitmap> {
         val n = nombreDePlans(heure)
         val tailles = Array(n) { i -> intArrayOf(l + 2 * marge(i, l), h + 2 * marge(i, h)) }
         val ks = Array(n) { i ->
             cadrage(tailles[i][0].toFloat(), tailles[i][1].toFloat())
         }
-        fun calque(i: Int, ciel: Boolean, lieuAussi: Boolean, sol: Sol = Sol.SANS): Bitmap {
+        fun toile(i: Int, dessin: (Canvas) -> Unit): Bitmap {
             val b = Bitmap.createBitmap(tailles[i][0], tailles[i][1], Bitmap.Config.ARGB_8888)
             val c = Canvas(b)
             c.translate(ks[i][1], ks[i][2])
             c.scale(ks[i][0], ks[i][0])
-            dessiner(c, lieu, heure, ciel = ciel, lieuAussi = lieuAussi, seul = i, sol = sol,
+            dessin(c)
+            return b
+        }
+        // Le calque [i] porte le plan [i] − 2 du lieu : 0 le lointain, 1 le milieu, 2 le proche.
+        fun calque(i: Int, sol: Sol = Sol.SANS) = toile(i) {
+            dessiner(it, lieu, heure, ciel = false, lieuAussi = true, seul = i - 2, sol = sol,
                 facture = Facture.GOUACHE, echelle = ks[i][0])
-            return b
         }
-        fun peindre(i: Int, dessin: Peintre.() -> Unit): Bitmap {
-            val b = Bitmap.createBitmap(tailles[i][0], tailles[i][1], Bitmap.Config.ARGB_8888)
-            val c = Canvas(b)
-            c.translate(ks[i][1], ks[i][2])
-            c.scale(ks[i][0], ks[i][0])
-            Peintre(c, heure, facture = Facture.GOUACHE, echelle = ks[i][0]).dessin()
-            return b
+        fun peindre(i: Int, dessin: Peintre.() -> Unit) = toile(i) {
+            Peintre(it, heure, facture = Facture.GOUACHE, echelle = ks[i][0]).dessin()
         }
-        // Le lointain : le ciel, puis la crête, peinte à part pour s'effacer
-        // vers l'horizon et porter son ombre sur la toile de fond.
-        val fond = calque(0, ciel = true, lieuAussi = false)
-        val loin = calque(0, ciel = false, lieuAussi = true)
-        val couches = arrayOf(fond, calque(1, false, true), calque(2, false, true))
+        val ciel = toile(0) { dessiner(it, lieu, heure, ciel = true, lieuAussi = false, facture = Facture.GOUACHE, echelle = ks[0][0]) }
+        val loin = calque(2)
+        val milieu = calque(3)
+        val proche = calque(4)
         // Les silhouettes avant la saison : la neige ou les fleurs que
         // [Habillage] pose par-dessus ne sont pas du carton.
-        val formes = arrayOf(loin.extractAlpha(), couches[1].extractAlpha(), couches[2].extractAlpha())
+        val formes = arrayOf(loin.extractAlpha(), milieu.extractAlpha(), proche.extractAlpha())
         val unite = ks[0][0]
-        ombrer(fond, formes[0], 0, 0, unite, heure, 1, OMBRE_SUR_LE_CIEL)
-        trancher(loin, formes[0], unite, heure, force = 0.6f)
-        Canvas(fond).drawBitmap(loin, 0f, 0f, null)
         if (souvenir != null) {
-            Habillage.appliquerPlans(couches, arrayOf(loin, couches[1], couches[2]), lieu, heure, souvenir,
-                arrayOf(ks[0], ks[1], ks[2]))
+            // Le ciel aussi, sans masque : l'hiver le pâlit, l'été le réchauffe.
+            Habillage.appliquerPlans(arrayOf(ciel, loin, milieu, proche), arrayOf(null, loin, milieu, proche),
+                lieu, heure, souvenir, arrayOf(ks[0], ks[2], ks[3], ks[4]))
         }
-        loin.recycle()
         // Après la saison, qui reconnaît la végétation à ses couleurs d'origine.
-        eclaircir(fond, formes[0], heure.cielBas, ESTOMPE[0])
-        eclaircir(couches[1], formes[1], heure.cielBas, ESTOMPE[1])
+        eclaircir(loin, formes[0], heure.cielBas, ESTOMPE[0])
+        eclaircir(milieu, formes[1], heure.cielBas, ESTOMPE[1])
         // Les coulisses des rares, posées après la saison : ce sont des
         // châssis de théâtre, pas des arbres du lieu. Au Breedewee, des
         // piliers et des pignons : des arbres n'auraient rien à faire dans la
         // ruelle. Deux rangées, étagées : la seconde, un pas en retrait, est
         // collée au carton du proche, dont elle partage la course.
-        val plans = if (n < 4) couches else {
-            val fond2 = peindre(2) { if (lieu == Lieu.BREEDEWEE) pignons() else coulissesDuFond() }
-            Canvas(couches[2]).drawBitmap(fond2, 0f, 0f, null)
-            val forme2 = Bitmap.createBitmap(tailles[2][0], tailles[2][1], Bitmap.Config.ALPHA_8)
+        val coulisses = if (n < 6) null else {
+            val fond2 = peindre(4) { if (lieu == Lieu.BREEDEWEE) pignons() else coulissesDuFond() }
+            Canvas(proche).drawBitmap(fond2, 0f, 0f, null)
+            val forme2 = Bitmap.createBitmap(tailles[4][0], tailles[4][1], Bitmap.Config.ALPHA_8)
             Canvas(forme2).apply { drawBitmap(formes[2], 0f, 0f, null); drawBitmap(fond2, 0f, 0f, null) }
             formes[2].recycle()
             formes[2] = forme2
             fond2.recycle()
-            arrayOf(*couches, peindre(3) { if (lieu == Lieu.BREEDEWEE) piliers() else coulisses() })
+            peindre(5) { if (lieu == Lieu.BREEDEWEE) piliers() else coulisses() }
         }
+        val plans = listOfNotNull(ciel, nuages(heure, l, h), loin, milieu, proche, coulisses).toTypedArray()
         // Le plancher, là où un lieu en a un : il reçoit les ombres sans en
         // porter, et sans bordure, ce n'est pas un carton.
         val planchers = Array(plans.size) { i ->
-            if (i in 1..2 && aUnPlancher(lieu, i)) calque(i, ciel = false, lieuAussi = true, sol = Sol.SEUL) else null
+            if (i in 3..4 && aUnPlancher(lieu, i - 2)) calque(i, sol = Sol.SEUL) else null
         }
-        val silhouettes = if (n < 4) formes else arrayOf(*formes, plans[3].extractAlpha())
+        val silhouettes = arrayOfNulls<Bitmap>(plans.size)
+        silhouettes[2] = formes[0]
+        silhouettes[3] = formes[1]
+        silhouettes[4] = formes[2]
+        if (coulisses != null) silhouettes[5] = coulisses.extractAlpha()
         // Chaque carton porte son ombre sur tous ceux de derrière : là où un
         // carton intermédiaire la cache, c'est en penchant qu'on la découvre,
-        // comme dans une vraie boîte.
-        for (devant in 1 until plans.size) {
+        // comme dans une vraie boîte. Les nuages n'en reçoivent pas : ils
+        // voyagent, et portent la leur sur leur propre carton ([nuages]).
+        for (devant in 2 until plans.size) {
+            val forme = silhouettes[devant] ?: continue
             for (derriere in 0 until devant) {
+                if (derriere == NUAGES) continue
+                val force = when {
+                    derriere == 0 && devant == 2 -> OMBRE_SUR_LE_CIEL
+                    derriere == 0 || derriere == 2 -> OMBRE_SUR_LE_FOND
+                    else -> 1f
+                }
                 ombrer(
-                    plans[derriere], silhouettes[devant],
+                    plans[derriere], forme,
                     marge(derriere, l) - marge(devant, l), marge(derriere, h) - marge(devant, h),
-                    unite, heure, devant - derriere, if (derriere == 0) OMBRE_SUR_LE_FOND else 1f
+                    unite, heure, PROFONDEUR[devant] - PROFONDEUR[derriere], force
                 )
             }
-            trancher(plans[devant], silhouettes[devant], unite, heure)
+            trancher(plans[devant], forme, unite, heure, force = if (devant == 2) 0.6f else 1f)
             planchers[devant]?.let {
                 val derriere = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OVER) }
                 Canvas(plans[devant]).drawBitmap(it, 0f, 0f, derriere)
                 it.recycle()
             }
         }
-        silhouettes.forEach { it.recycle() }
+        silhouettes.forEach { it?.recycle() }
         return plans
     }
 
     /**
-     * Le nuage des très rares, le seul carton qui bouge seul (règle 7 de la
-     * skill `direction-artistique`) : découpé une fois à la taille de la
-     * fenêtre, [CadreOrne] le fait passer lentement entre le lointain et le
-     * milieu. `null` en dessous de très rare.
+     * Les nuages de carton, le seul plan qui bouge seul (règle 7 de la skill
+     * `direction-artistique`) : une bande de toute la largeur de la boîte, de
+     * [BANDE_NUAGES] unités de haut, qui se raccorde à elle-même. [CadreOrne]
+     * la fait traverser le ciel de gauche à droite, et glisser avec la carte
+     * quand on la penche.
+     *
+     * Chaque nuage porte son ombre sur son propre carton, sous lui, pour
+     * qu'elle voyage avec lui ; aucun autre carton ne lui en fait. Les mêmes
+     * nuages pour tous les lieux : ils passent, leur place ne dit rien.
      */
-    fun nuage(heure: Heure, largeurPx: Int, hauteurPx: Int): Bitmap? {
-        if (heure.rang < Rarete.TRES_RARE.ordinal || largeurPx <= 0 || hauteurPx <= 0) return null
-        val cle = "nuage_${heure.cielHaut}_${heure.cielBas}_${largeurPx}x$hauteurPx"
-        CACHE.get(cle)?.takeIf { !it.isRecycled }?.let { return it }
-        val k = cadrage(largeurPx.toFloat(), hauteurPx.toFloat())[0]
-        val b = Bitmap.createBitmap(
-            ceil(NUAGE_LARGEUR * k).toInt(), ceil(NUAGE_HAUTEUR * k).toInt(), Bitmap.Config.ARGB_8888
-        )
+    private fun nuages(heure: Heure, l: Int, h: Int): Bitmap {
+        val k = cadrage(l.toFloat(), h.toFloat())[0]
+        val b = Bitmap.createBitmap(ceil(LARGEUR * k).toInt(), ceil(BANDE_NUAGES * k).toInt(), Bitmap.Config.ARGB_8888)
         val c = Canvas(b)
         c.scale(k, k)
-        Peintre(c, heure, facture = Facture.GOUACHE, echelle = k).nuage(2f, 5f, 24f)
+        val p = Peintre(c, heure, facture = Facture.GOUACHE, echelle = k)
+        var i = 0
+        while (i < NUEES.size) {
+            val x = NUEES[i]; val y = NUEES[i + 1]; val longueur = NUEES[i + 2]
+            // Un nuage qui déborde à droite repart à gauche : la bande se répète.
+            for (decalage in floatArrayOf(0f, -LARGEUR)) {
+                if (x + decalage + longueur > -2f && x + decalage < LARGEUR + 2f) p.nuage(x + decalage, y, longueur)
+            }
+            i += 3
+        }
         val forme = b.extractAlpha()
         trancher(b, forme, k, heure, force = 0.6f)
         forme.recycle()
-        CACHE.put(cle, b)
         return b
     }
 
-    /** La boîte du nuage, en unités du paysage. */
-    const val NUAGE_LARGEUR = 28f
-    const val NUAGE_HAUTEUR = 11f
+    /** La hauteur de la bande des nuages, en unités du paysage : le haut du ciel. */
+    const val BANDE_NUAGES = 16f
+
+    /**
+     * Les nuages : x, y, longueur, en unités du paysage (maquette
+     * `cinq_plans.html`).
+     */
+    private val NUEES = floatArrayOf(57f, 5.5f, 15f, 80f, 11f, 10f, 5f, 8f, 11f)
 
     /**
      * La part de chemin vers la couleur de l'horizon, par plan : le lointain

@@ -4349,6 +4349,8 @@ class CarteOrnee(
             canvas.scale(u, u)
             motif.dessusDuLieu(canvas, pinceau, roulis, decoupe, avecSujet = true, avecIris = true)
             canvas.restore()
+        } else if (motif.nuagesEnRoute && canvas.isHardwareAccelerated) {
+            relancer()
         }
         refletDuVerre(canvas, u)
         dessus(canvas, u)
@@ -4370,7 +4372,7 @@ class CarteOrnee(
 
     /**
      * Pour le lecteur de cartes et la pochette : la fenêtre vit au temps de sa
-     * saison, et son lieu prend de la profondeur en trois plans qui glissent
+     * saison, et son lieu prend de la profondeur en cinq plans qui glissent
      * avec l'inclinaison ([Motif.profondeur]). Rien sur une vignette, rien si
      * le téléphone demande des animations réduites.
      */
@@ -4461,8 +4463,15 @@ class CarteOrnee(
         canvas.clipPath(decoupe)
         a.dessiner(canvas, pinceau)
         canvas.restore()
-        // Une image sur deux : trente par seconde suffisent à des flocons
-        // lents, et la batterie tient deux fois mieux qu'à soixante.
+        relancer()
+    }
+
+    /**
+     * Redemande une image. Une sur deux : trente par seconde suffisent à des
+     * flocons lents et à des nuages qui passent, et la batterie tient deux
+     * fois mieux qu'à soixante.
+     */
+    private fun relancer() {
         if (!relancePrevue) {
             relancePrevue = true
             postOnAnimationDelayed(relance, 1000L / IMAGES_PAR_SECONDE - 8)
@@ -4638,7 +4647,8 @@ class CarteOrnee(
             motif.peindreLieu(canvas, decoupe, u, regardX, regardY)
             canvas.restore()
         }
-        if (anime) animer(canvas, u)
+        // Sans ambiance (carte sans date), les nuages passent quand même.
+        if (anime) animer(canvas, u) else if (motif.nuagesEnRoute) relancer()
         if (vivantDessous) sujet?.let { canvas.drawRenderNode(it) }
         if (motif.irise) {
             canvas.save()
@@ -4732,17 +4742,11 @@ class CarteOrnee(
  * à chaque trame, dans la boîte 100 × 66 du paysage, et l'irisation d'une très
  * rare passe par-dessus le tout quand l'appareil tourne.
  */
-/** Le temps que met le nuage d'une très rare à traverser la fenêtre. */
-private const val PERIODE_NUAGE = 75_000L
+/** Le temps que mettent les nuages à traverser la fenêtre. */
+private const val PERIODE_NUAGES = 75_000L
 
-/** Sa course quand la carte penche à fond, entre celle du lointain et celle du milieu ([Paysages.GLISSEMENT]). */
-private const val GLISSEMENT_NUAGE = 0.031f
-
-/** Le haut du nuage, en unités du paysage : dans le ciel, au-dessus des crêtes. */
-private const val HAUTEUR_NUAGE = 6f
-
-/** Où est le nuage sur une image figée : à gauche du milieu, loin de la lune et sous l'arche du cadre. */
-private const val PHASE_FIGEE = 0.36f
+/** Où sont les nuages sur une image figée (carte imprimée, partage) : à leur place dans la maquette. */
+private const val PHASE_FIGEE = 0f
 
 class Motif(
     mot: String,
@@ -4778,15 +4782,13 @@ class Motif(
 
     /**
      * Vrai pour la carte ouverte qui vit (lecteur, pochette) : le lieu se
-     * rend alors en trois plans qui glissent avec l'inclinaison, voir
+     * rend alors en cinq plans qui glissent avec l'inclinaison, voir
      * [Paysages.plans]. À poser avant [preparer].
      */
     var profondeur = false
     private var plans: Array<Bitmap>? = null
     private var plansManques = false
     private val ouPlan = RectF()
-    /** Le nuage d'une très rare, découpé à la taille de la fenêtre : voir [peindreNuage]. */
-    private var nuage: Bitmap? = null
 
     /** Vrai quand le lieu est en plans, et donc à peindre à chaque trame. */
     val enPlans: Boolean get() = profondeur && plans != null
@@ -4962,32 +4964,36 @@ class Motif(
                 visible.left - mx + dx, visible.top - my + dy,
                 visible.right + mx + dx, visible.bottom + my + dy
             )
-            c.drawBitmap(etages[i], null, ouPlan, peinture)
-            if (i == 0) peindreNuage(c, l, h, regardX, regardY)
+            if (i == Paysages.NUAGES) peindreNuages(c, etages[i], regardX, regardY)
+            else c.drawBitmap(etages[i], null, ouPlan, peinture)
         }
     }
 
     /**
-     * Le nuage d'une très rare ([Paysages.nuage]) : il traverse la fenêtre de
-     * gauche à droite en [PERIODE_NUAGE], entre le lointain et le milieu, et
-     * glisse avec le regard à la vitesse d'entre les deux. Lent, et seul de
-     * son espèce : la règle 7 de la skill `direction-artistique`.
+     * Les nuages ([Paysages.plans], calque [Paysages.NUAGES]) : leur bande
+     * traverse la fenêtre de gauche à droite en [PERIODE_NUAGES] et revient
+     * par la gauche, et glisse avec le regard comme les autres cartons. Lent,
+     * et seul de son espèce : la règle 7 de la skill `direction-artistique`.
      *
-     * Il avance avec l'horloge, à chaque trame que l'ambiance de la carte
-     * demande ; une carte sans ambiance le montre immobile.
+     * Ils avancent avec l'horloge, à chaque trame que la carte demande (voir
+     * [CarteOrnee.couches]) ; une image figée les pose à leur place.
      */
-    private fun peindreNuage(c: Canvas, l: Int, h: Int, regardX: Float, regardY: Float) {
-        val b = nuage?.takeIf { !it.isRecycled } ?: Paysages.nuage(heure, l, h)?.also { nuage = it } ?: return
+    private fun peindreNuages(c: Canvas, bande: Bitmap, regardX: Float, regardY: Float) {
         val k = cadrage[0]
-        // Une image figée (carte imprimée, partage) le pose à une place choisie.
         val phase = if (!c.isHardwareAccelerated) PHASE_FIGEE
-            else (android.os.SystemClock.uptimeMillis() % PERIODE_NUAGE) / PERIODE_NUAGE.toFloat()
-        val xBoite = -Paysages.NUAGE_LARGEUR + phase * (Paysages.LARGEUR + Paysages.NUAGE_LARGEUR)
-        val x = visible.left + cadrage[1] + xBoite * k + GLISSEMENT_NUAGE * visible.width() * regardX
-        val y = visible.top + cadrage[2] + HAUTEUR_NUAGE * k + GLISSEMENT_NUAGE * visible.height() * regardY
-        ouPlan.set(x, y, x + Paysages.NUAGE_LARGEUR * k, y + Paysages.NUAGE_HAUTEUR * k)
-        c.drawBitmap(b, null, ouPlan, peinture)
+            else (android.os.SystemClock.uptimeMillis() % PERIODE_NUAGES) / PERIODE_NUAGES.toFloat()
+        val gl = Paysages.GLISSEMENT[Paysages.NUAGES]
+        val largeur = Paysages.LARGEUR * k
+        val x = visible.left + cadrage[1] + phase * largeur + gl * visible.width() * regardX
+        val y = visible.top + cadrage[2] + gl * visible.height() * regardY
+        for (x0 in floatArrayOf(x, x - largeur)) {
+            ouPlan.set(x0, y, x0 + largeur, y + Paysages.BANDE_NUAGES * k)
+            c.drawBitmap(bande, null, ouPlan, peinture)
+        }
     }
+
+    /** Vrai quand des nuages traversent le ciel : la carte doit se redessiner. */
+    val nuagesEnRoute: Boolean get() = enPlans
 
     /**
      * Le lieu seul, en plans décalés selon le regard : ce que [peindre] tait
