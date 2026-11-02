@@ -35,8 +35,8 @@ et la tenue de [nombre] animations »].
 de jeux remis, le nombre d'installations de l'application. Nous vous envoyons un
 bilan chiffré à la fin du projet.
 
-**Ce qui est déjà fait.** [L'application est publiée sur Google Play et
-gratuite. La règle du jeu est en ligne. Les premières animations :
+**Ce qui est déjà fait.** [L'application est publiée sur Google Play, gratuite
+et sans publicité. La règle du jeu est en ligne. Les premières animations :
 [communes, dates, nombre de participants] — à ajouter dès qu'elles ont eu lieu.]
 Les cartes à imprimer restent gratuites pour les écoles et les animations
 éducatives.

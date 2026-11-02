@@ -299,6 +299,10 @@ recettes portent une part des frais fixes :
   subvention baisse le prix du lot école, offre des jeux aux bibliothèques
   ou finance un tirage. Elle ne paie pas la rémunération de façon durable.
 - **Les commandes groupées** des écoles et des communes, à l'avance (§ 4).
+- **Les sponsors** : acceptés par le propriétaire (2026-11-02), sans publicité
+  dans l'appli ni logo sur les cartes. Qui solliciter, quelles contreparties :
+  skill `recherche-financement` § 7. Un sponsor n'est une recette qu'une fois
+  la convention signée et le montant notifié (§ 6).
 - **Les animations payées** par les communes, les bibliothèques et les maisons
   relais : jouer avec les cartes, montrer l'appli. C'est la recette la plus
   sûre du début, car elle ne demande ni tirage ni stock. Qui solliciter,

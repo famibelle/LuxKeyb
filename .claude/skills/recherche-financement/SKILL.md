@@ -166,14 +166,18 @@ Les statuts, dans l'ordre : `a-qualifier`, `qualifie`, `contacte`,
 
 ## 5. Les règles d'indépendance
 
+**Décisions du propriétaire, 2026-11-02** : l'application n'a pas de publicité
+et n'en aura pas ; **le financement par un sponsor est accepté**. Un sponsor
+finance le projet, il ne fait pas de publicité dans l'application.
+
 À tenir pour **tout** financeur privé, et à écrire dans chaque convention :
 
-- **Pas de publicité dans l'appli.** Elle n'en affiche aucune à ce jour
-  (`fichePlayStore.md` : classification sans publicité ; aucun module
-  publicitaire dans le build). **La mention « sans publicité » a été retirée
-  des captures le 2026-10-20** : ne pas la promettre dans un dossier sans
-  l'accord du propriétaire. Exposer un sponsor dans l'appli est sa décision,
-  jamais un argument de négociation.
+- **Pas de publicité dans l'appli** (confirmé le 2026-11-02 ; la
+  classification Play Store est sans publicité et le build n'a aucun module
+  publicitaire). On peut donc l'écrire dans un dossier. Un sponsor n'a pas de
+  place dans l'appli, pas même un remerciement : ses contreparties sont dans le
+  § 7. Si le propriétaire change d'avis, il le dit, et ce paragraphe se
+  réécrit avant tout nouveau dossier.
 - **Aucun logo de sponsor sur les faces des cartes.** Le jeu reste un jeu.
   Les contreparties vont ailleurs (§ 7).
 - **Aucune influence sur le contenu** : les mots, les sens et les phrases
