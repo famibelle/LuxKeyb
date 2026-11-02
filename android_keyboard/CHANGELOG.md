@@ -9,6 +9,20 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [38.1.0] - 2026-11-02
+
+### ✨ Nouveautés
+
+- **Des cartes peintes à la gouache** : le paysage de chaque carte est fait de pièces de carton peintes à la main, en couleurs vives, avec leurs coups de pinceau et leur bord de carton. Le matin est bleu et rose, l'après-midi orangé, le soir violet et rose, la nuit bleu profond.
+- **Cinq plans pour toutes les cartes** : le ciel, les nuages, le lointain, le milieu et le premier plan glissent chacun à sa vitesse quand vous penchez le téléphone, et des nuages traversent lentement le ciel. Les cartes rares ajoutent de chaque côté des arbres ou des piliers, comme les coulisses d'un théâtre.
+- **Le dessin du mot devient une plaque** : il est découpé dans une plaque épaisse, posée sur une tige et un socle de métal. Sa matière dit la rareté : nacre pour une commune ou une peu commune, argent pour une rare, or pour une très rare. Quand vous penchez la carte, un reflet glisse sur la plaque.
+- **Les saisons en papier** : les feuilles d'automne, les pétales, les flocons et les confettis sont découpés dans du papier peint, et les oiseaux de l'été se posent sur les nuages.
+- **La ruelle du jeu imprimé en couleurs** : les cartes venues du jeu en papier se posent dans une ruelle aux façades colorées du Grund, sous une grande porte où pend un lierre fleuri.
+
+### ⚡ Rapidité
+
+- **Les cartes se feuillettent plus vite** : la carte suivante est préparée à l'avance, telle qu'elle s'affichera.
+
 ## [38.0.0] - 2026-11-01
 
 ### ✨ Nouveautés
