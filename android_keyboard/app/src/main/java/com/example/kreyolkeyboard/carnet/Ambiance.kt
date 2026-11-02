@@ -73,12 +73,11 @@ abstract class Ambiance(protected val zone: RectF, graine: Int) {
          * le jour, des lucioles le soir et la nuit ([nuit], les deux paliers
          * hauts).
          *
-         * [oiseaux] : les oiseaux de l'été volent ici plutôt que d'être peints
-         * dans le paysage, ce que fait le rendu en plans de la carte ouverte
-         * (voir [Habillage.appliquerPlans]). Le rendu à plat les garde peints.
+         * Les oiseaux de l'été n'en sont plus (2026-11-02) : sur la carte en
+         * plans, ils sont posés sur le carton des nuages et voyagent avec lui
+         * (voir [Motif]) ; le rendu à plat les garde peints ([Habillage]).
          */
-        fun pour(souvenir: Souvenir?, zone: RectF, graine: Int, nuit: Boolean = false,
-                 oiseaux: Boolean = false): Ambiance? =
+        fun pour(souvenir: Souvenir?, zone: RectF, graine: Int, nuit: Boolean = false): Ambiance? =
             when (souvenir?.fete) {
                 Fete.NEIJOERSCHDAG -> FeuxDArtifice(zone, graine, FeuxDArtifice.NOUVEL_AN)
                 Fete.NATIONALFEIERDAG -> FeuxDArtifice(zone, graine, FeuxDArtifice.DRAPEAU)
@@ -89,10 +88,7 @@ abstract class Ambiance(protected val zone: RectF, graine: Int) {
                     Saison.WANTER -> Neige(zone, graine)
                     Saison.HIERSCHT -> Tournoyants(zone, graine, Tournoyants.FEUILLES)
                     Saison.FREIJOER -> Tournoyants(zone, graine, Tournoyants.PETALES)
-                    Saison.SUMMER -> {
-                        val air = if (nuit) Lucioles(zone, graine) else Tournoyants(zone, graine, Tournoyants.AIGRETTES)
-                        if (oiseaux) Ensemble(Oiseaux(zone, graine, nuit), air) else air
-                    }
+                    Saison.SUMMER -> if (nuit) Lucioles(zone, graine) else Tournoyants(zone, graine, Tournoyants.AIGRETTES)
                     null -> null
                 }
             }
@@ -283,6 +279,10 @@ private abstract class Chute(
 /**
  * La neige : des disques, trois profondeurs, lente exprès. Une neige pressée
  * se lit comme de la pluie.
+ *
+ * Depuis le chantier gouache (2026-11-02), des flocons de papier : une petite
+ * ombre, le liseré du carton kraft, puis le disque blanc (skill
+ * `direction-artistique` : ce qui est matière devient papier peint).
  */
 private class Neige(zone: RectF, graine: Int) :
     Chute(zone, graine, FLOCONS, 5f, 16f, 1.5f, 4.5f, 0.55f, 1.35f) {
@@ -291,12 +291,15 @@ private class Neige(zone: RectF, graine: Int) :
     private val alpha = IntArray(n) { (150 + profondeur[it] * 105).toInt() }
 
     override fun dessinerUn(c: Canvas, p: Paint, i: Int, fx: Float, fy: Float) {
-        // Un liseré gris-bleu sous le flocon : sans lui, la neige disparaissait
-        // sur les ciels d'hiver clairs du matin et de l'après-midi, blanc sur
-        // blanc.
-        p.color = LISERE
-        p.alpha = alpha[i] / 3
-        c.drawCircle(fx, fy, r[i] + 0.45f, p)
+        // L'ombre, puis le liseré de kraft sous le flocon : sans un liseré, la
+        // neige disparaissait sur les ciels d'hiver clairs du matin et de
+        // l'après-midi, blanc sur blanc.
+        p.color = OMBRE_PAPIER
+        p.alpha = alpha[i] / 4
+        c.drawCircle(fx + 0.25f, fy + 0.35f, r[i] + 0.3f, p)
+        p.color = KRAFT
+        p.alpha = alpha[i]
+        c.drawCircle(fx, fy, r[i] + 0.3f, p)
         p.color = 0xFFFFFFFF.toInt()
         p.alpha = alpha[i]
         c.drawCircle(fx, fy, r[i], p)
@@ -304,7 +307,6 @@ private class Neige(zone: RectF, graine: Int) :
 
     private companion object {
         const val FLOCONS = 46
-        const val LISERE = 0xFF4A5A78.toInt()
     }
 }
 
@@ -320,6 +322,13 @@ private class Neige(zone: RectF, graine: Int) :
  * Chaque teinte est dessinée une fois dans une petite image, que la carte
  * graphique fait ensuite tourner : tracées comme des chemins, les feuilles
  * étaient redécoupées à chaque angle.
+ *
+ * Depuis le chantier gouache (2026-11-02, maquette `automne.html`), ce sont
+ * des pièces de **papier peint** ([Style.papier]) : une petite ombre, le
+ * papier kraft découpé, la gouache aux couleurs vives posée un peu en
+ * retrait du bord, puis la nervure ; le revers est d'un ton plus sombre. Les
+ * aigrettes, trop fines pour un bord de papier, gardent leur dessin, avec
+ * leur ombre et un trait de kraft.
  */
 private class Tournoyants(zone: RectF, graine: Int, private val style: Style) :
     Chute(
@@ -345,10 +354,15 @@ private class Tournoyants(zone: RectF, graine: Int, private val style: Style) :
         val contour: Int,
         val cadre: RectF,
         val tige: Boolean,
-        val forme: () -> android.graphics.Path
+        val forme: () -> android.graphics.Path,
+        /** Une pièce de papier découpé : un bord de kraft autour de la gouache. */
+        val papier: Boolean = true
     ) {
-        internal val sprites = arrayOfNulls<android.graphics.Bitmap>(teintes.size)
+        /** Deux images par teinte : la face, puis le revers, plus sombre. */
+        internal val sprites = arrayOfNulls<android.graphics.Bitmap>(teintes.size * 2)
         internal val chemin by lazy { forme() }
+        /** Le même, décalé là où tombe son ombre. */
+        internal val ombre by lazy { forme().apply { offset(0.18f, 0.28f) } }
     }
 
     private val taille = FloatArray(n) { style.tailleMin + profondeur[it] * (style.tailleMax - style.tailleMin) }
@@ -376,35 +390,61 @@ private class Tournoyants(zone: RectF, graine: Int, private val style: Style) :
         c.translate(fx, fy)
         c.rotate(angle)
         c.scale(t * (0.25f + 0.75f * abs(retourne)), t)
-        val image = if (c.isHardwareAccelerated) sprite(teinte[i]) else null
+        val revers = retourne < 0f
+        val image = if (c.isHardwareAccelerated) sprite(teinte[i], revers) else null
         p.alpha = alpha[i]
         if (image != null) {
             p.isFilterBitmap = true
             c.drawBitmap(image, null, style.cadre, p)
             p.isFilterBitmap = false
         } else {
-            peindre(c, p, style.teintes[teinte[i]], alpha[i])
+            peindre(c, p, style.teintes[teinte[i]], alpha[i], revers)
         }
         c.restore()
     }
 
-    private fun peindre(c: Canvas, p: Paint, couleur: Int, a: Int) {
+    private fun peindre(c: Canvas, p: Paint, couleur: Int, a: Int, revers: Boolean) {
         p.style = Paint.Style.FILL
-        p.color = couleur
-        p.alpha = a
-        c.drawPath(style.chemin, p)
-        p.style = Paint.Style.STROKE
-        p.strokeWidth = 0.08f
-        p.color = style.contour
-        p.alpha = a / 2
-        c.drawPath(style.chemin, p)
-        if (style.tige) c.drawLine(0f, -0.95f, 0f, 1.15f, p)
+        // L'ombre de la pièce sur ce qu'il y a derrière.
+        p.color = OMBRE_PAPIER
+        p.alpha = a / 4
+        c.drawPath(style.ombre, p)
+        val gouache = if (revers) Heure.melange(couleur, 0xFF000000.toInt(), 0.18f) else couleur
+        if (style.papier) {
+            // Le papier kraft, puis la gouache, un peu en retrait du bord.
+            p.color = KRAFT
+            p.alpha = a
+            c.drawPath(style.chemin, p)
+            c.save()
+            c.scale(0.86f, 0.9f)
+            p.color = gouache
+            p.alpha = a
+            c.drawPath(style.chemin, p)
+            c.restore()
+        } else {
+            p.color = gouache
+            p.alpha = a
+            c.drawPath(style.chemin, p)
+            p.style = Paint.Style.STROKE
+            p.strokeWidth = 0.05f
+            p.color = KRAFT
+            p.alpha = a
+            c.drawPath(style.chemin, p)
+        }
+        if (style.tige) {
+            p.style = Paint.Style.STROKE
+            p.strokeWidth = 0.08f
+            p.color = NERVURE
+            p.alpha = a * 140 / 255
+            c.drawLine(0f, -0.85f, 0f, 1.15f, p)
+        }
         p.style = Paint.Style.FILL
     }
 
-    /** La petite image de la teinte [k], faite au premier besoin et partagée. */
-    private fun sprite(k: Int): android.graphics.Bitmap? {
-        style.sprites[k]?.let { return it }
+    /** La petite image de la teinte [k], face ou [revers], faite au premier besoin et partagée. */
+    private fun sprite(k: Int, revers: Boolean): android.graphics.Bitmap? {
+        val rang = k * 2 + (if (revers) 1 else 0)
+        style.sprites[rang]?.let { return it }
         return try {
             val cadre = style.cadre
             val l = 48
@@ -413,8 +453,8 @@ private class Tournoyants(zone: RectF, graine: Int, private val style: Style) :
             val c = Canvas(b)
             c.scale(l / (cadre.right - cadre.left), h / (cadre.bottom - cadre.top))
             c.translate(-cadre.left, -cadre.top)
-            peindre(c, Paint(Paint.ANTI_ALIAS_FLAG), style.teintes[k], 255)
-            style.sprites[k] = b
+            peindre(c, Paint(Paint.ANTI_ALIAS_FLAG), style.teintes[k], 255, revers)
+            style.sprites[rang] = b
             b
         } catch (e: Throwable) {
             null
@@ -478,29 +518,30 @@ private class Tournoyants(zone: RectF, graine: Int, private val style: Style) :
             close()
         }
 
+        /** Les feuilles d'automne, aux couleurs vives de la maquette `automne.html`. */
         val FEUILLES = Style(
             "feuilles", 16, 4f, 10f, 5f, 11f, 3.4f, 6.6f,
             intArrayOf(
-                0xFFB5481F.toInt(), // rouille
-                0xFFE07B24.toInt(), // orange
-                0xFFD9A03B.toInt(), // ocre
-                0xFF8B5A2B.toInt(), // brun
-                0xFF9E2B25.toInt()  // rouge sombre
+                0xFFE8632A.toInt(), // orange vif
+                0xFFF2A33A.toInt(), // safran
+                0xFFC8402F.toInt(), // rouge
+                0xFFD98A2B.toInt(), // ocre
+                0xFFF6C445.toInt()  // jaune
             ),
-            0xFF4E2E14.toInt(), cadre(-0.85f, -1.1f, 0.85f, 1.25f), true, ::feuille
+            0xFF4E2E14.toInt(), cadre(-0.85f, -1.1f, 1.05f, 1.4f), true, ::feuille
         )
 
         val PETALES = Style(
             "pétales", 22, 3f, 8f, 4f, 9f, 1.8f, 3.4f,
             intArrayOf(0xFFF8BBD0.toInt(), 0xFFFFFFFF.toInt(), 0xFFF48FB1.toInt(), 0xFFFCE4EC.toInt()),
-            0xFFAD5C7A.toInt(), cadre(-0.95f, -1.05f, 0.95f, 1.05f), false, ::petale
+            0xFFAD5C7A.toInt(), cadre(-0.95f, -1.05f, 1.15f, 1.35f), false, ::petale
         )
 
         /** Des aigrettes qui planent : presque sans poids, elles flânent. */
         val AIGRETTES = Style(
             "aigrettes", 12, 1.5f, 4f, 6f, 13f, 3f, 5f,
             intArrayOf(0xFFFFFFFF.toInt(), 0xFFFFFDE7.toInt()),
-            0xFF6D6D6D.toInt(), cadre(-1f, -1.05f, 1f, 1.05f), false, ::aigrette
+            0xFF6D6D6D.toInt(), cadre(-1f, -1.05f, 1.2f, 1.35f), false, ::aigrette, papier = false
         )
 
         val CONFETTIS = Style(
@@ -509,7 +550,7 @@ private class Tournoyants(zone: RectF, graine: Int, private val style: Style) :
                 0xFFED2939.toInt(), 0xFF00A1DE.toInt(), 0xFFFFD54F.toInt(),
                 0xFF66BB6A.toInt(), 0xFFAB47BC.toInt(), 0xFFFFFFFF.toInt()
             ),
-            0xFF333333.toInt(), cadre(-0.5f, -1.05f, 0.5f, 1.05f), false, ::confetti
+            0xFF333333.toInt(), cadre(-0.5f, -1.05f, 0.7f, 1.35f), false, ::confetti
         )
     }
 }
@@ -664,59 +705,6 @@ private class Lumieres(zone: RectF, graine: Int) : Ambiance(zone, graine) {
     }
 }
 
-/**
- * Les oiseaux d'un ciel d'été, ceux que [Habillage] peint dans le paysage à
- * plat (37.4.4) : mêmes traits, même taille, même coin du ciel. Ils battent
- * lentement des ailes, chacun à son rythme, et planent sur place en dérivant
- * à peine. Ils ne traversent pas la fenêtre : on doit les voir vivre, pas
- * les voir partir. La pesanteur et les secousses ne les touchent pas.
- */
-private class Oiseaux(zone: RectF, graine: Int, nuit: Boolean) : Ambiance(zone, graine) {
-
-    // Un pixel de la maquette, en unités de carte : la boîte de 100 de large
-    // couvre la fenêtre, et la maquette en comptait 4,8 pixels par unité.
-    private val px = largeur / 100f / 4.8f
-    private val n = 6
-    private val x0 = FloatArray(n) { zone.left + largeur * (0.12f + hasard() * 0.5f) }
-    private val y0 = FloatArray(n) { zone.top + hauteur * (0.08f + hasard() * 0.22f) }
-    private val t = FloatArray(n) { (3f + hasard() * 3f) * px }
-    private val battement = FloatArray(n) { 0.5f + hasard() * 0.4f }
-    private val derive = FloatArray(n) { 0.15f + hasard() * 0.2f }
-    private val phase = FloatArray(n) { hasard() * 6.28f }
-    private val couleur = if (nuit) 0x99FFFFFF.toInt() else 0xB31E1A1E.toInt()
-    private val trait = 1.3f * px
-    private val chemin = android.graphics.Path()
-    private var temps = 0f
-
-    override fun avancer(dt: Float) {
-        temps += dt
-    }
-
-    override fun dessiner(c: Canvas, p: Paint) {
-        p.shader = null
-        p.style = Paint.Style.STROKE
-        p.strokeWidth = trait
-        p.strokeCap = Paint.Cap.ROUND
-        p.color = couleur
-        for (i in 0 until n) {
-            // Une dérive de quelques pixels de maquette, en huit couché.
-            val a = temps * derive[i] + phase[i]
-            val x = x0[i] + sin(a) * 2.5f * px
-            val y = y0[i] + sin(a * 2f) * 0.8f * px
-            // L'aile monte et descend un peu autour de la pose peinte (0,7),
-            // moins d'un battement par seconde : un oiseau qui plane.
-            val aile = 0.7f + 0.15f * sin(temps * battement[i] * 2f * PI.toFloat() + phase[i])
-            val ti = t[i]
-            chemin.rewind()
-            chemin.moveTo(x - ti, y - ti * (1.2f - aile))
-            chemin.quadTo(x - ti * 0.4f, y - ti * aile, x, y)
-            chemin.quadTo(x + ti * 0.4f, y - ti * aile, x + ti, y - ti * (1.2f - aile))
-            c.drawPath(chemin, p)
-        }
-        p.style = Paint.Style.FILL
-    }
-}
-
 /** Plusieurs ambiances l'une sur l'autre, la première dessous. */
 private class Ensemble(private vararg val parts: Ambiance) : Ambiance(RectF(), 0) {
     override fun orienter(basX: Float, basY: Float) = parts.forEach { it.orienter(basX, basY) }
@@ -821,3 +809,12 @@ private class FeuxDArtifice(zone: RectF, graine: Int, private val couleurs: IntA
         val DRAPEAU = intArrayOf(0xFFED2939.toInt(), 0xFFFFFFFF.toInt(), 0xFF00A1DE.toInt())
     }
 }
+
+/** Le papier kraft des pièces découpées (voir [Peintre.peint] dans [Paysages]). */
+private const val KRAFT = 0xFFB08A5A.toInt()
+
+/** L'ombre d'une pièce de papier : le bleu nuit des ombres de carton. */
+private const val OMBRE_PAPIER = 0xFF0B1020.toInt()
+
+/** La nervure d'une feuille de papier. */
+private const val NERVURE = 0xFF5A3214.toInt()

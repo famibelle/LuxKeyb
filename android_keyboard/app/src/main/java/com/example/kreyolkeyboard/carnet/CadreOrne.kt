@@ -4411,10 +4411,7 @@ class CarteOrnee(
         val zone = RectF(fenetre.left, fenetre.top, fenetre.right, min(fenetre.bottom, Ornement.PLAQUE.top + 4f))
         // L'été, l'heure de la carte choisit : aigrettes le jour, lucioles
         // le soir et la nuit, les heures des deux paliers hauts.
-        ambiance = Ambiance.pour(
-            souvenir, zone, mot.hashCode(), nuit = rarete.ordinal >= Rarete.RARE.ordinal,
-            oiseaux = motif.profondeur
-        )
+        ambiance = Ambiance.pour(souvenir, zone, mot.hashCode(), nuit = rarete.ordinal >= Rarete.RARE.ordinal)
         oublierLesCouches()
         if (isAttachedToWindow) armerSecousse()
         return this
@@ -4766,6 +4763,17 @@ private const val PERIODE_NUAGES = 75_000L
 /** Où sont les nuages sur une image figée (carte imprimée, partage) : à leur place dans la maquette. */
 private const val PHASE_FIGEE = 0f
 
+/**
+ * Les oiseaux de l'été sur le carton des nuages : x et y dans la boîte du
+ * paysage, taille en pixels de maquette, battements par seconde, dérive,
+ * phase.
+ */
+private val OISEAUX = floatArrayOf(
+    18f, 9f, 4.5f, 0.62f, 0.22f, 1.1f,
+    24f, 13f, 3.4f, 0.78f, 0.3f, 3.9f,
+    66f, 7f, 4f, 0.55f, 0.18f, 5.2f
+)
+
 class Motif(
     mot: String,
     rarete: Rarete,
@@ -5012,10 +5020,55 @@ class Motif(
         val largeur = Paysages.LARGEUR * k
         val x = visible.left + cadrage[1] + phase * largeur + gl * visible.width() * regardX
         val y = visible.top + cadrage[2] + gl * visible.height() * regardY
+        val temps = if (c.isHardwareAccelerated) android.os.SystemClock.uptimeMillis() / 1000f else 0f
         for (x0 in floatArrayOf(x, x - largeur)) {
             ouPlan.set(x0, y, x0 + largeur, y + Paysages.BANDE_NUAGES * k)
             c.drawBitmap(bande, null, ouPlan, peinture)
+            if (oiseaux) peindreOiseaux(c, x0, y, k, temps)
         }
+    }
+
+    /**
+     * Les oiseaux d'un ciel d'été, sur le carton des nuages (skill
+     * `direction-artistique`, 2026-11-01) : ils voyagent avec lui et glissent
+     * avec lui quand on penche, et battent lentement des ailes sur place. Trois
+     * seulement : un ciel d'été en plein jour a déjà ses nuages et ses
+     * aigrettes, il ne doit pas s'agiter. Ceux que [Habillage] peint dans le
+     * paysage à plat (37.4.4) leur ont donné leur trait et leur taille.
+     */
+    private val oiseaux = souvenir?.saison == Saison.SUMMER && souvenir.fete == null
+    private val pinceauOiseaux by lazy {
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            strokeCap = Paint.Cap.ROUND
+            strokeWidth = 1.3f / 4.8f
+            color = if (heure.rang >= Rarete.RARE.ordinal) 0x99FFFFFF.toInt() else 0xB31E1A1E.toInt()
+        }
+    }
+    private val vol = Path()
+
+    /** Les oiseaux, la bande des nuages commençant en ([x], [y]), à l'échelle [k] de la boîte. */
+    private fun peindreOiseaux(c: Canvas, x: Float, y: Float, k: Float, temps: Float) {
+        c.save()
+        c.translate(x, y)
+        c.scale(k, k)
+        // Un pixel de la maquette des oiseaux : la boîte de 100 en comptait 4,8 par unité.
+        val px = 1f / 4.8f
+        for (i in OISEAUX.indices step 6) {
+            val a = temps * OISEAUX[i + 4] + OISEAUX[i + 5]
+            val bx = OISEAUX[i] + sin(a) * 2.5f * px
+            val by = OISEAUX[i + 1] + sin(a * 2f) * 0.8f * px
+            // L'aile monte et descend un peu autour de la pose peinte (0,7),
+            // moins d'un battement par seconde : un oiseau qui plane.
+            val aile = 0.7f + 0.15f * sin(temps * OISEAUX[i + 3] * 2f * Math.PI.toFloat() + OISEAUX[i + 5])
+            val t = OISEAUX[i + 2] * px
+            vol.rewind()
+            vol.moveTo(bx - t, by - t * (1.2f - aile))
+            vol.quadTo(bx - t * 0.4f, by - t * aile, bx, by)
+            vol.quadTo(bx + t * 0.4f, by - t * aile, bx + t, by - t * (1.2f - aile))
+            c.drawPath(vol, pinceauOiseaux)
+        }
+        c.restore()
     }
 
     /** Vrai quand des nuages traversent le ciel : la carte doit se redessiner. */
