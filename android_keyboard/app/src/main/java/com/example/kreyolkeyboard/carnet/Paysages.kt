@@ -129,19 +129,28 @@ class Heure private constructor(
 
         private fun h(s: Long) = s.toInt()
 
+        /**
+         * Les quatre heures en couleurs vives, comme peintes à la gouache
+         * (direction validée par le propriétaire le 2026-11-01, palettes de la
+         * maquette `vives.js` de la skill `direction-artistique`) : le matin,
+         * un ciel bleu franc qui passe au rose puis au jaune pâle vers
+         * l'horizon, des verts francs et une eau soutenue ; l'après-midi
+         * orangé ; le soir violet, rose et orange ; la nuit bleu profond, où la
+         * vivacité vient des lumières dorées.
+         */
         private val BASE = arrayOf(
-            Heure(0, h(0xFFA6C6DC), null, h(0xFFF3EBDC), h(0xFFFFF7DF), 22f, 15f, 6f,
-                h(0xFFB3C3C4), h(0xFF8AA392), h(0xFF5D7964), h(0xFF43594A),
-                h(0xFFE4D8C2), h(0xFF8E5C4B), h(0xFF5B6670), false, h(0xFFB7D0D9), false),
-            Heure(1, h(0xFFE2A865), null, h(0xFFFCE6B6), h(0xFFFFF3C6), 78f, 13f, 7f,
-                h(0xFFD6B387), h(0xFFAA895A), h(0xFF735C39), h(0xFF504028),
-                h(0xFFF1D5A1), h(0xFFA3533A), h(0xFF6E4E33), false, h(0xFFECCB8E), false),
-            Heure(2, h(0xFF463A76), h(0xFFC66F8A), h(0xFFF7B179), h(0xFFFFD690), 68f, 31f, 10f,
-                h(0xFF8D6A8A), h(0xFF5D4766), h(0xFF392C46), h(0xFF241C30),
-                h(0xFFC49A8F), h(0xFF5A3141), h(0xFFFFCD78), true, h(0xFFCF8689), false),
-            Heure(3, h(0xFF091030), null, h(0xFF2A3B70), h(0xFFF6F1D8), 79f, 12f, 4.6f,
-                h(0xFF27355B), h(0xFF1A2445), h(0xFF111930), h(0xFF0A1022),
-                h(0xFF4B5474), h(0xFF2A2F4B), h(0xFFFFD98A), true, h(0xFF2A3A68), true)
+            Heure(0, h(0xFF7EC3F2), h(0xFFF5C3DA), h(0xFFFFE9A6), h(0xFFFFE066), 22f, 15f, 6f,
+                h(0xFF6F9BEA), h(0xFF5DBB63), h(0xFF2F8F5B), h(0xFF2A6B45),
+                h(0xFFF4CF94), h(0xFFE0674A), h(0xFF4B6A8A), false, h(0xFF3E9DEB), false),
+            Heure(1, h(0xFFFFA94D), h(0xFFFFD27A), h(0xFFFFF0B8), h(0xFFFFF39A), 78f, 13f, 7f,
+                h(0xFFE38B5C), h(0xFF9CC43F), h(0xFF4E8A2E), h(0xFF3B5E22),
+                h(0xFFFFD9A0), h(0xFFD9503A), h(0xFF6A4A2E), false, h(0xFF2FA8DE), false),
+            Heure(2, h(0xFF4B3BA8), h(0xFFFF6FA8), h(0xFFFFB25C), h(0xFFFFD36A), 68f, 31f, 10f,
+                h(0xFF9B5FB8), h(0xFF6B3F8F), h(0xFF3E2766), h(0xFF2A1A48),
+                h(0xFFF0A890), h(0xFF8A2F5A), h(0xFFFFCD48), true, h(0xFFE8789A), false),
+            Heure(3, h(0xFF0B1450), null, h(0xFF2D4BB0), h(0xFFFFF4C8), 79f, 12f, 4.6f,
+                h(0xFF2F4DA0), h(0xFF22357F), h(0xFF16245A), h(0xFF0C1638),
+                h(0xFF6A79B8), h(0xFF3A3F7A), h(0xFFFFD45A), true, h(0xFF2D4FA8), true)
         )
 
         /**
@@ -1249,7 +1258,7 @@ object Paysages {
             poser(DEVANT)
             rect(0f, 56f, 100f, 10f, P.pres)
             bosquet(34f, 66f, 57.5f, 2f, 9, P.sol)
-            val rouge = intArrayOf(0xFFC63A2E.toInt(), 0xFFC2432F.toInt(), 0xFF9C2F33.toInt(), 0xFF6B1F2A.toInt())[P.rang]
+            val rouge = intArrayOf(0xFFE8432E.toInt(), 0xFFE0482F.toInt(), 0xFFB8323A.toInt(), 0xFF8A2433.toInt())[P.rang]
             val rc = mix(rouge, 0xFFFFFFFF.toInt(), 0.25f)
             for (x in floatArrayOf(17f, 41f, 65f, 89f)) {
                 trait("M${x - 5.5f} 33.5L$x 61L${x + 5.5f} 33.5", rouge, 1.5f)
