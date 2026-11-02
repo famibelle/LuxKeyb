@@ -3640,6 +3640,13 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
     protected val roulis: Float get() = pesanteur + (doigt - pesanteur) * main
 
     /**
+     * La lumière du dessin du mot, dans [-1, 1] : le [roulis], amplifié comme
+     * le regard ([GAIN_REGARD]) pour que le reflet de la plaque traverse sa
+     * face sans qu'il faille coucher le téléphone (voir [Plaque.lumiere]).
+     */
+    protected val lumiere: Float get() = (-roulis * GAIN_REGARD).coerceIn(-1f, 1f)
+
+    /**
      * Comment le carton est réellement tourné, dans les mêmes unités.
      *
      * C'est ce que lit la tranche, et le doigt n'y écrit pas — sauf par
@@ -4352,9 +4359,18 @@ class CarteOrnee(
         } else if (motif.nuagesEnRoute && canvas.isHardwareAccelerated) {
             relancer()
         }
+        lumiereDuSujet(canvas, u)
         refletDuVerre(canvas, u)
         dessus(canvas, u)
         vivant(canvas, u)
+    }
+
+    /** La lumière de la plaque du mot, qui suit l'inclinaison : voir [Motif.lumiereDuSujet]. */
+    private fun lumiereDuSujet(canvas: Canvas, u: Float) {
+        canvas.save()
+        canvas.scale(u, u)
+        motif.lumiereDuSujet(canvas, if (canvas.isHardwareAccelerated) lumiere else 0f, decoupe)
+        canvas.restore()
     }
 
     /** Le reflet de la vitre : par-dessus le paysage et sa neige, sous le métal. */
@@ -4391,6 +4407,7 @@ class CarteOrnee(
     fun avecAmbiance(): CarteOrnee {
         if (vignette || Pochette.animationsReduites(context)) return this
         motif.profondeur = true
+        motif.lumiereVivante = true
         val zone = RectF(fenetre.left, fenetre.top, fenetre.right, min(fenetre.bottom, Ornement.PLAQUE.top + 4f))
         // L'été, l'heure de la carte choisit : aigrettes le jour, lucioles
         // le soir et la nuit, les heures des deux paliers hauts.
@@ -4650,6 +4667,7 @@ class CarteOrnee(
         // Sans ambiance (carte sans date), les nuages passent quand même.
         if (anime) animer(canvas, u) else if (motif.nuagesEnRoute) relancer()
         if (vivantDessous) sujet?.let { canvas.drawRenderNode(it) }
+        lumiereDuSujet(canvas, u)
         if (motif.irise) {
             canvas.save()
             canvas.scale(u, u)
@@ -4887,10 +4905,18 @@ class Motif(
      * bruit, ce qui permet à l'actif et à la bibliothèque d'avancer chacun à
      * son rythme.
      */
-    private val sujet: Sujet =
+    private val sujet: Sujet = (facture == Paysages.Facture.VIGNETTE).let { vignette ->
         if (CarteFierkelsmaart.est(mot)) Porcelet(heure)
-        else blason.chiffres?.let { Enluminure.chiffres(it, heure) }
-            ?: blason.meuble?.let { Enluminure.pour(it, heure) } ?: Trace.pour(mot, heure)
+        else blason.chiffres?.let { Enluminure.chiffres(it, heure, vignette) }
+            ?: blason.meuble?.let { Enluminure.pour(it, heure, vignette) } ?: Trace.pour(mot, heure, vignette)
+    }
+
+    /**
+     * Vrai quand la lumière du dessin suit l'inclinaison, à chaque trame
+     * ([lumiereDuSujet]) ; faux, elle est peinte au repos avec lui. À poser
+     * avant le premier dessin : voir [CarteOrnee.avecAmbiance].
+     */
+    var lumiereVivante = false
 
     /**
      * Peint le motif dans son ouverture. [echelle] est le nombre de pixels par
@@ -5013,7 +5039,22 @@ class Motif(
         c.save()
         c.translate(visible.left + cadrage[1], visible.top + cadrage[2])
         c.scale(cadrage[0], cadrage[0])
-        sujet.peindre(c)
+        sujet.peindre(c, avecLumiere = !lumiereVivante)
+        c.restore()
+    }
+
+    /**
+     * La lumière du dessin pour l'inclinaison [t], dans [-1, 1] : le reflet
+     * de la plaque, son chanfrein, l'éclat de la tige et du socle. Rien si
+     * elle est déjà peinte au repos ([lumiereVivante]).
+     */
+    fun lumiereDuSujet(c: Canvas, t: Float, decoupe: Path) {
+        if (!lumiereVivante) return
+        c.save()
+        c.clipPath(decoupe)
+        c.translate(visible.left + cadrage[1], visible.top + cadrage[2])
+        c.scale(cadrage[0], cadrage[0])
+        sujet.lumiere(c, t)
         c.restore()
     }
 
@@ -5197,6 +5238,223 @@ private class Irisation private constructor(private val zone: RectF, private val
 }
 
 /**
+ * Le dessin du mot en **plaque épaisse sur un pied de métal**, posée sur le
+ * plancher de la scène (skill `direction-artistique`, décisions du
+ * propriétaire du 2026-11-01, maquette `anim.html`, fonction `plaque`).
+ *
+ * - **La plaque est fixe.** Sa tranche d'environ 1,3 unité se voit en bas à
+ *   droite, plus sombre vers l'arrière, et elle porte une ombre sur le décor.
+ *   Ni balancement ni épaisseur qui change de côté : le balancement, essayé,
+ *   a été écarté.
+ * - **La face suit l'échelle de matière du support du nom** : nacre teintée
+ *   d'acier ou de bronze pour la commune et la peu commune, qu'on voit le
+ *   plus et qui doivent rester lumineuses ; argent et or pleins pour la rare
+ *   et la très rare. Le bord, la tige et le socle sont dans le métal du
+ *   palier ([Ornement.metal]), comme le cadre.
+ * - **Seule la lumière bouge** ([lumiere]) : un reflet en bande traverse la
+ *   face, plus vif sur le métal plein ; le chanfrein du bord s'éclaire du
+ *   côté de la source, qui tourne avec le geste ; un éclat glisse le long de
+ *   la tige et sur le socle.
+ *
+ * Tout le reste se peint une fois ([peindre]) et part dans la couche fixe du
+ * sujet de la carte ouverte ([CarteOrnee.couches]).
+ */
+private class Plaque(private val trace: Path, private val cadre: RectF, heure: Heure, vignette: Boolean) {
+
+    private val metal = Ornement.metal(Rarete.values()[heure.rang.coerceIn(0, Rarete.values().size - 1)])
+    private val plein = heure.rang >= Rarete.RARE.ordinal
+    private val nuit = heure.nuit
+    private val p = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val face: LinearGradient
+    private val lisere: Int
+    /** Moins de tranches dans une vignette : l'épaisseur n'y fait que trois pixels. */
+    private val tranches = if (vignette) 3 else 10
+    private val tige: LinearGradient
+    private val socle: LinearGradient
+    private val bande: LinearGradient
+    private val place = Matrix()
+    private val axeX = cadre.width()
+    private val axeY = cadre.height() * 1.6f
+
+    /**
+     * Où le pied tient la plaque : l'axe de la tige, et le haut de ce qu'on en
+     * voit, juste sous le bord bas de la plaque à cet endroit. Au milieu de la
+     * fenêtre si la plaque y passe ; sinon sous le morceau le plus proche du
+     * milieu (les enfants de « Kand », les cubes de « Alphabet ») : une tige
+     * qui monte dans le vide ne tient rien.
+     */
+    private val pied: FloatArray = run {
+        // La plaque en région, à un quart d'unité près : une seule
+        // rastérisation, puis chaque colonne essayée n'est qu'une intersection
+        // de rectangles.
+        val agrandie = Path(trace)
+        agrandie.transform(Matrix().apply { setScale(4f, 4f) })
+        val plaque = android.graphics.Region()
+        plaque.setPath(agrandie, android.graphics.Region(0, 0, 4 * 100, 4 * 66))
+        val essai = android.graphics.Region()
+        val colonne = android.graphics.Rect()
+        for (k in 0..60) {
+            val dx = (if (k % 2 == 0) 1f else -1f) * ((k + 1) / 2) * 0.5f
+            colonne.set(((CX + dx - TIGE / 2f) * 4f).toInt(), 0, ((CX + dx + TIGE / 2f) * 4f).toInt(), (SOCLE * 4f).toInt())
+            essai.set(plaque)
+            if (essai.op(colonne, android.graphics.Region.Op.INTERSECT)) {
+                return@run floatArrayOf(CX + dx, essai.bounds.bottom / 4f - 1.5f)
+            }
+        }
+        floatArrayOf(CX, cadre.centerY())
+    }
+    private val xPied = pied[0]
+
+    init {
+        val n = heure.nacre
+        val couleurs = if (plein) intArrayOf(metal.hi, metal.mid, metal.lo)
+        else intArrayOf(
+            Heure.melange(n[0], metal.hi, 0.35f), Heure.melange(n[1], metal.mid, 0.4f), Heure.melange(n[2], metal.lo, 0.3f)
+        )
+        face = LinearGradient(
+            cadre.left, cadre.top, cadre.left + cadre.width() * 0.7f, cadre.bottom,
+            couleurs, floatArrayOf(0f, 0.55f, 1f), Shader.TileMode.CLAMP
+        )
+        lisere = if (plein) Color.argb(166, 40, 28, 10) else (heure.encre and 0xFFFFFF) or (199 shl 24)
+        tige = LinearGradient(
+            xPied - TIGE / 2f, 0f, xPied + TIGE / 2f, 0f,
+            intArrayOf(metal.mid, metal.hi, metal.lo), floatArrayOf(0f, 0.35f, 1f), Shader.TileMode.CLAMP
+        )
+        socle = LinearGradient(
+            0f, SOCLE - 2.2f, 0f, SOCLE + 0.6f,
+            intArrayOf(metal.hi, metal.mid, metal.lo), floatArrayOf(0f, 0.5f, 1f), Shader.TileMode.CLAMP
+        )
+        // La bande du reflet, au repos au milieu de la face : [lumiere] la
+        // fait glisser le long de son axe, sans rien allouer à chaque trame.
+        val fort = if (plein) 0.7f else 0.5f
+        fun blanc(a: Float) = Color.argb((a * 255f).toInt(), 255, 255, 255)
+        bande = LinearGradient(
+            cadre.left, cadre.top, cadre.left + axeX, cadre.top + axeY,
+            intArrayOf(0x00FFFFFF, blanc(fort * 0.25f), blanc(fort), blanc(fort * 0.9f), 0x00FFFFFF),
+            floatArrayOf(0.28f, 0.40f, 0.47f, 0.51f, 0.56f), Shader.TileMode.CLAMP
+        )
+        p.strokeJoin = Paint.Join.ROUND
+    }
+
+    /** Le pied, l'ombre, l'épaisseur et la face : ce qui ne bouge pas. */
+    fun peindre(c: Canvas) {
+        // L'ombre du socle sur le plancher.
+        p.style = Paint.Style.FILL
+        p.shader = null
+        p.color = Color.argb(if (nuit) 102 else 71, 0, 0, 0)
+        c.drawOval(xPied - 7f, SOCLE + 0.6f - 1.5f, xPied + 7f, SOCLE + 0.6f + 1.5f, p)
+        // La tige, un cylindre fin, de derrière la plaque jusqu'au socle.
+        p.shader = tige
+        p.color = Color.BLACK
+        c.drawRect(xPied - TIGE / 2f, pied[1], xPied + TIGE / 2f, SOCLE - 1.3f, p)
+        // Le socle rond, et son petit dôme.
+        p.shader = socle
+        c.drawOval(xPied - 6f, SOCLE - 0.4f - 1.4f, xPied + 6f, SOCLE - 0.4f + 1.4f, p)
+        c.drawArc(xPied - 2.4f, SOCLE - 1.3f - 1.2f, xPied + 2.4f, SOCLE - 1.3f + 1.2f, 180f, 180f, true, p)
+        p.shader = null
+        // L'ombre portée de la plaque sur le décor.
+        c.save()
+        c.translate(0.9f, 1.3f)
+        p.color = Color.argb(if (nuit) 115 else 77, 0, 0, 0)
+        c.drawPath(trace, p)
+        c.restore()
+        // L'épaisseur, vue un peu d'en haut à gauche : la plaque extrudée vers
+        // l'arrière, plus sombre à mesure qu'elle s'éloigne ; la tranche
+        // proche de la face prend la lumière.
+        for (k in tranches downTo 1) {
+            val f = k / tranches.toFloat()
+            c.save()
+            c.translate(EPAISSEUR * 0.45f * f, EPAISSEUR * 0.75f * f)
+            val col = Heure.melange(metal.mid, metal.lo, f)
+            p.color = if (f <= 0.2f) Heure.melange(col, metal.hi, 0.5f) else col
+            c.drawPath(trace, p)
+            c.restore()
+        }
+        // La face.
+        p.shader = face
+        p.color = Color.BLACK
+        c.drawPath(trace, p)
+        p.shader = null
+    }
+
+    /** Le liseré qui borde la face : par-dessus tout, la lumière comprise. */
+    fun ourler(c: Canvas) {
+        p.shader = null
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 0.35f
+        p.color = lisere
+        c.drawPath(trace, p)
+        p.style = Paint.Style.FILL
+    }
+
+    /**
+     * La lumière, pour une inclinaison [t] dans [-1, 1] (0 au repos) : le
+     * chanfrein, le reflet de la face, l'éclat de la tige et du socle.
+     */
+    fun lumiere(c: Canvas, t: Float) {
+        p.shader = null
+        // L'éclat de la tige, là où elle se voit : hors de la plaque.
+        c.save()
+        if (android.os.Build.VERSION.SDK_INT >= 26) c.clipOutPath(trace)
+        else @Suppress("DEPRECATION") c.clipPath(trace, android.graphics.Region.Op.DIFFERENCE)
+        p.style = Paint.Style.FILL
+        p.color = Color.argb(150, 255, 255, 255)
+        val xe = xPied - TIGE / 2f + TIGE * (0.35f - t * 0.25f).coerceIn(0.1f, 0.9f)
+        c.drawRect(xe - 0.18f, pied[1], xe + 0.18f, SOCLE - 1.4f, p)
+        c.restore()
+        // L'éclat du socle, qui glisse avec l'inclinaison.
+        p.color = Color.argb(140, 255, 255, 255)
+        val xs = xPied - 2.5f - t * 2.2f
+        c.drawOval(xs - 1.6f, SOCLE - 0.9f - 0.22f, xs + 1.6f, SOCLE - 0.9f + 0.22f, p)
+        // La face : le chanfrein éclairé du côté de la source, sombre de
+        // l'autre, puis la bande du reflet qui la traverse.
+        c.save()
+        c.clipPath(trace)
+        val lx = -0.35f + t * 0.25f
+        val ly = -0.35f
+        p.style = Paint.Style.STROKE
+        p.strokeWidth = 1f
+        c.save()
+        c.translate(-lx, -ly)
+        p.color = Color.argb(191, 255, 255, 255)
+        c.drawPath(trace, p)
+        c.restore()
+        c.save()
+        c.translate(lx, ly)
+        p.color = Color.argb(77, 0, 0, 0)
+        c.drawPath(trace, p)
+        c.restore()
+        p.style = Paint.Style.FILL
+        val glisse = t * 0.55f
+        place.setTranslate(glisse * axeX, glisse * axeY)
+        bande.setLocalMatrix(place)
+        p.shader = bande
+        p.color = Color.BLACK
+        c.drawRect(cadre.left - 2f, cadre.top - 2f, cadre.right + 2f, cadre.bottom + 2f, p)
+        p.shader = null
+        c.restore()
+        ourler(c)
+    }
+
+    companion object {
+        /** L'axe du pied, au milieu de la fenêtre. */
+        const val CX = 50f
+
+        /**
+         * Où le socle se pose sur le plancher, en unités du paysage : sur la
+         * carte ouverte, le bandeau du nom cache le bas de la fenêtre sous 62
+         * unités environ (voir `Paysages.DEVANT`). La maquette, qui montre la
+         * fenêtre entière, le pose à 62,6.
+         */
+        const val SOCLE = 61f
+
+        /** La largeur de la tige, l'épaisseur de la plaque. */
+        const val TIGE = 1.6f
+        const val EPAISSEUR = 1.3f
+    }
+}
+
+/**
  * Ce que le **mot** met dans la fenêtre, devant le paysage, dans la boîte
  * 100 × 66 de [Paysages].
  *
@@ -5239,7 +5497,12 @@ private abstract class Sujet(
 
     protected abstract fun tracer(c: Canvas)
 
-    fun peindre(c: Canvas) {
+    /**
+     * Le halo puis le dessin. [avecLumiere] : la lumière au repos est peinte
+     * avec lui (vignette, image figée, animations coupées) ; sinon elle suit
+     * l'inclinaison, à chaque trame, par [lumiere].
+     */
+    fun peindre(c: Canvas, avecLumiere: Boolean = true) {
         plume.style = Paint.Style.FILL
         plume.shader = halo
         c.save()
@@ -5248,7 +5511,11 @@ private abstract class Sujet(
         c.restore()
         plume.shader = null
         tracer(c)
+        if (avecLumiere) lumiere(c, 0f)
     }
+
+    /** La lumière qui suit l'inclinaison [t], dans [-1, 1], sur le dessin déjà peint. */
+    open fun lumiere(c: Canvas, t: Float) {}
 
     protected companion object {
         fun argb(a: Int, r: Int, g: Int, b: Int) = (a shl 24) or (r shl 16) or (g shl 8) or b
@@ -5256,7 +5523,8 @@ private abstract class Sujet(
 }
 
 /**
- * L'enluminure : le meuble du mot, en nacre, posé au sol devant le paysage.
+ * L'enluminure : le meuble du mot, en plaque sur un pied de métal posé sur le
+ * plancher, devant le paysage (voir [Plaque]).
  *
  * C'est le sujet des cartes qu'on collectionne pour elles-mêmes — cent vingt
  * mots sur deux mille huit cents, à peu près quatre sur cent. La rareté
@@ -5271,40 +5539,21 @@ private class Enluminure private constructor(
     private val trace: Path,
     private val nom: String,
     heure: Heure,
-    /** Le dessin tel qu'il est posé : sa boîte réelle, qui oriente la nacre et le halo. */
+    /** Le dessin tel qu'il est posé : sa boîte réelle, qui oriente la face et le halo. */
     private val cadre: RectF,
     /** Où le carré de [Meubles] a été posé, pour y placer l'œil du chat. */
-    private val pose: Matrix? = null
+    private val pose: Matrix? = null,
+    vignette: Boolean = false
 ) : Sujet(heure, cadre, cadre.centerX(), cadre.centerY() - 0.16f * cadre.height(),
     minOf(0.87f * maxOf(cadre.width(), cadre.height()), 40f)) {
 
+    /** Le dessin en plaque sur son pied de métal (2026-11-02) : voir [Plaque]. */
+    private val plaque = Plaque(trace, cadre, heure, vignette)
+
+    override fun lumiere(c: Canvas, t: Float) = plaque.lumiere(c, t)
+
     override fun tracer(c: Canvas) {
-        // L'ombre sous le dessin, qui le pose dans le lieu au lieu de le coller dessus.
-        val ombreSol = cadre.width() * 0.42f + 2f
-        val sol = cadre.bottom + 0.4f
-        plume.style = Paint.Style.FILL
-        plume.color = argb(if (heure.nuit) 115 else 64, 0, 0, 0)
-        c.drawOval(cadre.centerX() - ombreSol, sol - 1.8f, cadre.centerX() + ombreSol, sol + 1.8f, plume)
-
-        c.save()
-        c.translate(0.6f, 1f)
-        plume.color = ombre
-        c.drawPath(trace, plume)
-        c.restore()
-
-        plume.color = Color.BLACK
-        plume.shader = nacre
-        c.drawPath(trace, plume)
-        plume.shader = null
-
-        plume.style = Paint.Style.STROKE
-        plume.strokeWidth = 0.35f
-        plume.strokeJoin = Paint.Join.ROUND
-        plume.color = heure.encre
-        plume.alpha = 200
-        c.drawPath(trace, plume)
-        plume.style = Paint.Style.FILL
-        plume.alpha = 255
+        plaque.peindre(c)
 
         // Le chat de la nuit a l'œil qui brille : un seul, il marche de
         // profil (la silhouette de PhyloPic, depuis le 2026-10-31). L'œil est
@@ -5355,14 +5604,14 @@ private class Enluminure private constructor(
         }
 
         /** `null` si la bibliothèque ne connaît pas ce meuble. */
-        fun pour(nom: String, heure: Heure): Enluminure? {
+        fun pour(nom: String, heure: Heure, vignette: Boolean = false): Enluminure? {
             val forme = Meubles.chemin(nom) ?: return null
             val (m, cadre) = poser(forme, TAILLE, LARGEUR)
             val trace = Path()
             forme.transform(m, trace)
             // Sans « pair-impair », la porte d'une maison cesse d'être un trou.
             trace.fillType = Path.FillType.EVEN_ODD
-            return Enluminure(trace, nom, heure, cadre, m)
+            return Enluminure(trace, nom, heure, cadre, m, vignette)
         }
 
         /** La hauteur des chiffres d'une carte de nombre (26 jusqu'au 2026-11-01, grandis avec les meubles). */
@@ -5376,7 +5625,7 @@ private class Enluminure private constructor(
          * meuble. Une capitale à empattements, pour ne pas ressembler au
          * chiffre blanc et gras de la pastille, qui dit la Force.
          */
-        fun chiffres(texte: String, heure: Heure): Enluminure {
+        fun chiffres(texte: String, heure: Heure, vignette: Boolean = false): Enluminure {
             val p = Paint(Paint.ANTI_ALIAS_FLAG).apply {
                 typeface = Typeface.create(Typeface.SERIF, Typeface.BOLD)
                 textSize = 100f
@@ -5387,7 +5636,7 @@ private class Enluminure private constructor(
             val (m, cadre) = poser(brut, HAUTEUR_CHIFFRES, LARGEUR_CHIFFRES)
             val trace = Path()
             brut.transform(m, trace)
-            return Enluminure(trace, "chiffres", heure, cadre)
+            return Enluminure(trace, "chiffres", heure, cadre, vignette = vignette)
         }
     }
 }
@@ -5629,8 +5878,8 @@ private class Porcelet(heure: Heure) : Sujet(heure, RectF(30f, 6f, 70f, 58f)) {
 }
 
 /**
- * Le tracé du mot : sa sonorité, lue lettre à lettre, posée en ruban de nacre
- * devant le paysage.
+ * Le tracé du mot : sa sonorité, lue lettre à lettre, découpée en ruban dans
+ * une plaque sur un pied de métal, devant le paysage (voir [Plaque]).
  *
  * ## La règle
  *
@@ -5655,7 +5904,8 @@ private class Trace private constructor(
     private val xs: FloatArray,
     private val ys: FloatArray,
     private val voyelle: BooleanArray,
-    heure: Heure
+    heure: Heure,
+    vignette: Boolean
 ) : Sujet(heure, boite(xs, ys)) {
 
     private val chemin = Path()
@@ -5670,6 +5920,12 @@ private class Trace private constructor(
     private val epaisseur = 4.2f * maigreur
     private val rayon = 3.3f * maigreur
     private val coeur = 1.4f * maigreur
+
+    /**
+     * Le ruban et ses nœuds découpés d'une seule plaque, sur son pied de
+     * métal comme les meubles (2026-11-02) : voir [Plaque].
+     */
+    private val plaque: Plaque
 
     init {
         val n = xs.size
@@ -5686,57 +5942,41 @@ private class Trace private constructor(
         }
         plume.strokeCap = Paint.Cap.ROUND
         plume.strokeJoin = Paint.Join.ROUND
+        val ruban = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            strokeWidth = epaisseur
+            strokeCap = Paint.Cap.ROUND
+            strokeJoin = Paint.Join.ROUND
+        }
+        val silhouette = Path()
+        if (n >= 2) ruban.getFillPath(chemin, silhouette)
+        val noeuds = Path()
+        for (i in 0 until n) if (voyelle[i] || n == 1) noeuds.addCircle(xs[i], ys[i], rayon, Path.Direction.CW)
+        silhouette.op(noeuds, Path.Op.UNION)
+        val cadre = RectF()
+        silhouette.computeBounds(cadre, true)
+        plaque = Plaque(silhouette, cadre, heure, vignette)
     }
+
+    override fun lumiere(c: Canvas, t: Float) = plaque.lumiere(c, t)
 
     override fun tracer(c: Canvas) {
         val n = xs.size
         if (n == 0) return
         plume.shader = null
-        plume.style = Paint.Style.STROKE
-
         if (luit && n >= 2) {
+            plume.style = Paint.Style.STROKE
             plume.color = heure.fenetre
             plume.alpha = 71
             plume.strokeWidth = epaisseur * 2.1f
             c.drawPath(chemin, plume)
             plume.alpha = 255
         }
-
-        // L'ombre, puis le ruban, puis son fil de lumière.
-        c.save()
-        c.translate(0.5f, 0.9f)
-        plume.color = ombre
-        plume.strokeWidth = epaisseur
-        if (n >= 2) c.drawPath(chemin, plume)
+        plaque.peindre(c)
+        // Un nœud sur chaque voyelle, gravé dans la plaque : la scansion du mot.
         plume.style = Paint.Style.FILL
-        for (i in 0 until n) if (voyelle[i] || n == 1) c.drawCircle(xs[i], ys[i], rayon, plume)
-        c.restore()
-
-        if (n >= 2) {
-            plume.style = Paint.Style.STROKE
-            plume.color = Color.BLACK
-            plume.shader = nacre
-            c.drawPath(chemin, plume)
-            plume.shader = null
-            c.save()
-            c.translate(-0.4f, -0.5f)
-            plume.color = argb(191, 255, 255, 255)
-            plume.strokeWidth = 0.8f * maigreur
-            c.drawPath(chemin, plume)
-            c.restore()
-        }
-
-        // Un nœud sur chaque voyelle : la scansion du mot.
-        plume.style = Paint.Style.FILL
-        for (i in 0 until n) {
-            if (!voyelle[i] && n > 1) continue
-            plume.color = Color.BLACK
-            plume.shader = nacre
-            c.drawCircle(xs[i], ys[i], rayon, plume)
-            plume.shader = null
-            plume.color = heure.encre
-            c.drawCircle(xs[i], ys[i], coeur, plume)
-        }
+        plume.color = heure.encre
+        for (i in 0 until n) if (voyelle[i] || n == 1) c.drawCircle(xs[i], ys[i], coeur, plume)
     }
 
     companion object {
@@ -5753,7 +5993,7 @@ private class Trace private constructor(
         private const val MILIEU = 35f
         private const val AMPLITUDE = 17f
 
-        fun pour(mot: String, heure: Heure): Trace {
+        fun pour(mot: String, heure: Heure, vignette: Boolean = false): Trace {
             val lettres = mot.toCharArray()
             val n = lettres.size
             // Un mot de sept lettres occupe toute la largeur ; un plus court
@@ -5769,7 +6009,7 @@ private class Trace private constructor(
                 ys[i] = MILIEU + (if (voyelle[i]) -1f else 1f) *
                     AMPLITUDE * (0.42f + 0.58f * ((ch.code % 7) / 6f))
             }
-            return Trace(xs, ys, voyelle, heure)
+            return Trace(xs, ys, voyelle, heure, vignette)
         }
 
         /** La boîte des lettres, qui oriente la nacre du ruban. */
