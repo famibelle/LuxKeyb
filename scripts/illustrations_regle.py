@@ -33,13 +33,36 @@ MEUBLES.update(silhouettes_boite.chemins())
 
 # ------------------------------------------------------------- les paliers
 
-# Métal du cadre (clair, foncé, trait) et ciel (haut, bas), par coût : l'étain
-# du matin, le bronze de l'après-midi, l'argent du soir, l'or de la nuit.
+# Métal du cadre (clair, foncé, trait), ciel (haut, milieu, bas) et face de la
+# plaque du dessin (clair, milieu, sombre), par coût : l'étain du matin, le
+# bronze de l'après-midi, l'argent du soir, l'or de la nuit. Les ciels sont les
+# palettes vives de l'appli (Heure.BASE, chantier gouache du 2026-11-02) ; la
+# face suit carnet/CadreOrne.kt (Plaque) : nacre teintée d'étain ou de bronze
+# pour les deux premiers paliers, argent et or pleins pour les deux derniers.
+def _mix(a, b, t):
+    ca = [int(a[i:i + 2], 16) for i in (1, 3, 5)]
+    cb = [int(b[i:i + 2], 16) for i in (1, 3, 5)]
+    return '#' + ''.join(f'{round(x + (y - x) * t):02X}' for x, y in zip(ca, cb))
+
+
+_METAUX = {1: ('#B9C0C4', '#7E878C', '#454C50'), 2: ('#E3B475', '#B07C3C', '#68441A'),
+           3: ('#F2F6F9', '#B9C4CE', '#6E7C88'), 4: ('#FFF0BC', '#E0B74E', '#8E6216')}
+_NACRES = {1: ('#FFFFFF', '#EBE7EF', '#CDD5DF'), 2: ('#FFFAF0', '#F6E5CC', '#DCC19C')}
+
+
+def _face(cout):
+    m = _METAUX[cout]
+    if cout >= 3:
+        return m
+    n = _NACRES[cout]
+    return _mix(n[0], m[0], .35), _mix(n[1], m[1], .4), _mix(n[2], m[2], .3)
+
+
 PALIERS = {
-    1: (('#B9C0C4', '#7E878C', '#2E3437'), ('#A6C6DC', '#F3EBDC')),
-    2: (('#E3B475', '#B07C3C', '#3E2910'), ('#E2A865', '#FCE6B6')),
-    3: (('#F2F6F9', '#B9C4CE', '#3D474F'), ('#463A76', '#F7B179')),
-    4: (('#FFF0BC', '#E0B74E', '#4A3208'), ('#091030', '#2A3B70')),
+    1: (('#B9C0C4', '#7E878C', '#2E3437'), ('#7EC3F2', '#F5C3DA', '#FFE9A6')),
+    2: (('#E3B475', '#B07C3C', '#3E2910'), ('#FFA94D', '#FFD27A', '#FFF0B8')),
+    3: (('#F2F6F9', '#B9C4CE', '#3D474F'), ('#4B3BA8', '#FF6FA8', '#FFB25C')),
+    4: (('#FFF0BC', '#E0B74E', '#4A3208'), ('#0B1450', '#1C2F80', '#2D4BB0')),
 }
 # Le coût en jauge de quatre places de pièce, le type en image : comme la
 # carte imprimée (carnet/PictoType.kt, 2026-10-27).
@@ -53,8 +76,9 @@ def uid(prefixe):
     return f'{prefixe}{_ids[0]}'
 
 
-def trace(mot):
-    """Le monogramme d'un mot, dans la boîte 100 × 66 du paysage (règle de `Trace`)."""
+def trace(mot, face='#fff', lisere='#3a3a3a'):
+    """Le monogramme d'un mot, dans la boîte 100 × 66 du paysage (règle de `Trace`),
+    découpé dans la plaque : sa face est [face]."""
     n = len(mot)
     pas = 68 / (max(n, 7) - 1)
     pts = []
@@ -66,11 +90,12 @@ def trace(mot):
     for (ax, ay, _), (bx, by, _) in zip(pts, pts[1:]):
         d += (f' Q{ax + (bx - ax) * .55:.1f} {ay:.1f} {(ax + bx) / 2:.1f} {(ay + by) / 2:.1f}'
               f' Q{bx - (bx - ax) * .55:.1f} {by:.1f} {bx:.1f} {by:.1f}')
-    noeuds = ''.join(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.5" fill="#fff" stroke="#3a3a3a" stroke-width=".8"/>'
+    noeuds = ''.join(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.5" fill="{face}" stroke="{lisere}" stroke-width=".8"/>'
                      for x, y, v in pts if v)
     return (f'<path d="{d}" fill="none" stroke="#3a3a3a" stroke-width="4.4" stroke-linecap="round" opacity=".35" '
-            f'transform="translate(.6 1)"/><path d="{d}" fill="none" stroke="#fff" stroke-width="3.2" '
-            f'stroke-linecap="round"/>{noeuds}')
+            f'transform="translate(.6 1)"/><path d="{d}" fill="none" stroke="{lisere}" stroke-width="4" '
+            f'stroke-linecap="round" transform="translate(.4 .6)"/><path d="{d}" fill="none" stroke="{face}" '
+            f'stroke-width="3.2" stroke-linecap="round"/>{noeuds}')
 
 
 def jauge(cout, cx, cy):
@@ -116,17 +141,27 @@ def image_type(nature, cx, cy):
 def carte(x, y, mot, nature, sens, cout, force=None, dessin=None, echelle=1.0, sous=None):
     """Une carte de 150 × 215 unités, coin haut gauche en (x, y)."""
     force = len(mot) if force is None else force
-    metal, ciel = PALIERS[max(cout, 1)]
-    g, c = uid('m'), uid('c')
+    palier = max(cout, 1)
+    metal, ciel = PALIERS[palier]
+    face = _face(palier)
+    pied = _METAUX[palier]
+    g, c, fc = uid('m'), uid('c'), uid('f')
+    # Le dessin du mot en plaque sur un pied de métal, posé sur le plancher
+    # (direction artistique du 2026-11-01) : la tige et le socle d'abord.
+    socle = (f'<rect x="74.2" y="70" width="1.6" height="28" fill="{pied[1]}"/>'
+             f'<ellipse cx="75" cy="100" rx="10" ry="2.4" fill="#000" opacity=".25"/>'
+             f'<ellipse cx="75" cy="98.6" rx="8" ry="2.2" fill="{pied[0]}" stroke="{pied[2]}" stroke-width=".6"/>')
     if dessin:
-        sujet = (f'<g transform="translate(75 70) scale(.55)"><path d="{MEUBLES[dessin]}" fill-rule="evenodd" '
-                 f'fill="#3a3a3a" opacity=".35" transform="translate(2 3)"/><path d="{MEUBLES[dessin]}" '
-                 f'fill-rule="evenodd" fill="#FFFDF6" stroke="#3a3a3a" stroke-width="2.2"/></g>')
+        sujet = (f'{socle}<g transform="translate(75 70) scale(.55)"><path d="{MEUBLES[dessin]}" fill-rule="evenodd" '
+                 f'fill="#3a3a3a" opacity=".35" transform="translate(3 4)"/><path d="{MEUBLES[dessin]}" '
+                 f'fill-rule="evenodd" fill="{pied[2]}" transform="translate(1.2 2)"/><path d="{MEUBLES[dessin]}" '
+                 f'fill-rule="evenodd" fill="url(#{fc})" stroke="{pied[2]}" stroke-width="1.6"/></g>')
     elif nature.startswith('Nombre'):
-        sujet = (f'<text x="75" y="86" text-anchor="middle" {POLICE} font-size="44" font-weight="800" '
-                 f'fill="#fff" stroke="#3a3a3a" stroke-width="1.5" paint-order="stroke">{sens}</text>')
+        sujet = (f'{socle}<text x="75.8" y="87.4" text-anchor="middle" {POLICE} font-size="44" font-weight="800" '
+                 f'fill="{pied[2]}">{sens}</text><text x="75" y="86" text-anchor="middle" {POLICE} font-size="44" '
+                 f'font-weight="800" fill="url(#{fc})" stroke="{pied[2]}" stroke-width="1" paint-order="stroke">{sens}</text>')
     else:
-        sujet = f'<g transform="translate(12 38) scale(1.26 1.1)">{trace(mot)}</g>'
+        sujet = f'{socle}<g transform="translate(12 38) scale(1.26 1.1)">{trace(mot, face[0], pied[2])}</g>'
     taille_mot = 15 if len(mot) <= 9 else 12
     # Un nombre n'a pas de Force : il ne combat pas.
     gemme = '' if nature.startswith('Nombre') else (
@@ -134,7 +169,8 @@ def carte(x, y, mot, nature, sens, cout, force=None, dessin=None, echelle=1.0, s
         f'<text x="21" y="27" text-anchor="middle" {POLICE} font-size="17" font-weight="800" fill="#fff">{force}</text>')
     return f'''<g transform="translate({x} {y}) scale({echelle})">
   <defs><linearGradient id="{g}" x1="0" y1="0" x2=".7" y2="1"><stop offset="0" stop-color="{metal[0]}"/><stop offset="1" stop-color="{metal[1]}"/></linearGradient>
-  <linearGradient id="{c}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{ciel[0]}"/><stop offset="1" stop-color="{ciel[1]}"/></linearGradient></defs>
+  <linearGradient id="{c}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{ciel[0]}"/><stop offset=".58" stop-color="{ciel[1]}"/><stop offset="1" stop-color="{ciel[2]}"/></linearGradient>
+  <linearGradient id="{fc}" x1="0" y1="0" x2=".7" y2="1"><stop offset="0" stop-color="{face[0]}"/><stop offset=".55" stop-color="{face[1]}"/><stop offset="1" stop-color="{face[2]}"/></linearGradient></defs>
   <rect x="2" y="4" width="150" height="215" rx="11" fill="#000" opacity=".18"/>
   <rect width="150" height="215" rx="11" fill="url(#{g})" stroke="{metal[2]}" stroke-width="1.2"/>
   <rect x="7" y="7" width="136" height="201" rx="7" fill="#FBF6EA"/>
