@@ -219,13 +219,19 @@ object CarteCarnet {
      * de [c] calculerait à sa première image : son métal, ses rayons et son
      * paysage, à la largeur [largeurPx]. Le lecteur s'en sert pour les deux
      * cartes voisines, si bien qu'on feuillette sans attendre.
+     *
+     * Le paysage est celui que le lecteur montrera : en plans de théâtre
+     * ([CarteOrnee.avecAmbiance]), sauf animations coupées. Jusqu'au
+     * 2026-11-02 c'était le lieu à plat, que la carte ouverte ne montre pas :
+     * la voisine recalculait ses plans au glissé.
      */
     fun preparer(context: Context, c: ContenuCarte, largeurPx: Int) {
         if (largeurPx <= 0) return
         Ornement.metal(context, c.rarete, largeurPx, vignette = false)
         Ornement.rayons(c.rarete, largeurPx, vignette = false)
         Motif(c.carte.forme, c.rarete, Ornement.FENETRE, c.blason, Souvenir.de(c.carte.premiereFois))
-            .rendreLieu(largeurPx / Ornement.LARGEUR)
+            .apply { profondeur = !Pochette.animationsReduites(context) }
+            .rendreIci(largeurPx / Ornement.LARGEUR)
     }
 
     /**

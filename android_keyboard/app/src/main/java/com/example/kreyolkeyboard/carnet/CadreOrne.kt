@@ -4769,6 +4769,8 @@ class Motif(
     private val visible = if (zone == Ornement.FENETRE)
         RectF(zone.left, zone.top, zone.right, min(zone.bottom, Ornement.PLAQUE.top + 4f)) else RectF(zone)
     private val cadrage = Paysages.cadrage(visible.width(), visible.height())
+    /** Le carton peint à la gouache sur la carte ouverte, des aplats en vignette. */
+    private val facture = if (zone == Ornement.FENETRE) Paysages.Facture.GOUACHE else Paysages.Facture.VIGNETTE
     private val iris = Irisation.pour(rarete, zone, Ornement.teinteDe(mot, blason.champ))
     private val peinture = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
     private var rendu: Bitmap? = null
@@ -4823,6 +4825,16 @@ class Motif(
     }
 
     /**
+     * Ce que [preparer] calcule, sur le fil appelant : les plans de la carte
+     * ouverte, ou son lieu à plat (carte de fête, animations coupées). Le
+     * résultat reste dans le cache de [Paysages].
+     */
+    fun rendreIci(echelle: Float) {
+        if (profondeur && rendrePlans(echelle) != null) return
+        rendreLieu(echelle)
+    }
+
+    /**
      * Demande le lieu à l'échelle [echelle] aux fils de fond de [Paysages],
      * depuis n'importe quel fil, et appelle [pret] quand il est en cache.
      * Une vignette qui se dessine ensuite le trouve, ou rejoint la demande en
@@ -4846,7 +4858,7 @@ class Motif(
         val l = (visible.width() * echelle).toInt()
         val h = (visible.height() * echelle).toInt()
         return try {
-            Paysages.image(lieu, heure, teinteChamp, l, h, souvenir)
+            Paysages.image(lieu, heure, teinteChamp, l, h, souvenir, facture)
         } catch (e: OutOfMemoryError) {
             null
         }
@@ -4854,7 +4866,7 @@ class Motif(
 
     /** Le lieu rendu à [l] × [h], ou `null` s'il est en route vers une vignette. */
     private fun lieuAPeindre(l: Int, h: Int): Bitmap? {
-        val signal = surPaysage ?: return Paysages.image(lieu, heure, teinteChamp, l, h, souvenir)
+        val signal = surPaysage ?: return Paysages.image(lieu, heure, teinteChamp, l, h, souvenir, facture)
         Paysages.enCache(lieu, heure, teinteChamp, l, h, souvenir)?.let { return it }
         val taille = "${l}x$h"
         if (demande == taille) return null
