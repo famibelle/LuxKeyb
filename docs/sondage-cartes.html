@@ -13,7 +13,8 @@
 /* Sondage de la newsletter de novembre 2026 : l'envie pour le jeu de cartes
    et le prix jugé juste. Les questions de prix viennent AVANT tout prix
    affiché, pour ne pas influencer la réponse (pas de prix dans la lettre).
-   Les réponses partent sur Formspree, liste « sondage-cartes-2026-11 ». */
+   Les réponses partent sur Formspree, dans le formulaire « sondage-cartes »
+   du projet décrit par formspree.json (à la racine), créé par « formspree deploy ». */
 *,*::before,*::after{box-sizing:border-box}
 :root{
   --fond:#f3f6f9; --papier:#ffffff; --encre:#17212b; --doux:#56636f; --filet:#dbe3ea;
@@ -58,7 +59,7 @@ a{color:var(--bleu-encre)}
     <h1>Un jeu de cartes en luxembourgeois : votre avis</h1>
     <p class="chapo">Ce n'est encore qu'une idée. Vos réponses nous disent s'il faut la mener jusqu'au bout, et comment. Quatre questions, une minute, et aucune adresse e-mail obligatoire.</p>
 
-    <form id="sondage" action="https://formspree.io/f/mvgwnlky" method="POST" style="display:grid;gap:26px">
+    <form id="sondage" action="https://formspree.io/p/3129770432035553221/f/sondage-cartes" method="POST" style="display:grid;gap:26px">
       <input type="hidden" name="_subject" value="Sondage : le jeu de cartes">
       <input type="hidden" name="liste" value="sondage-cartes-2026-11">
       <input type="hidden" name="source" id="source" value="">
