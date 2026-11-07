@@ -58,7 +58,7 @@ Peut devenir membre toute personne physique ou morale qui adhère aux présents 
 La demande d'admission est adressée par écrit au conseil d'administration, qui décide souverainement. Un refus n'a pas à être motivé.
 
 **Article 8 — Cotisation**
-L'assemblée générale fixe chaque année le montant de la cotisation. Il ne peut dépasser [50] euros par an.
+L'assemblée générale fixe chaque année le montant de la cotisation. Il ne peut dépasser 25 euros par an.
 
 **Article 9 — Démission**
 Tout membre peut se retirer de l'association à tout moment en adressant sa démission par écrit au conseil d'administration.
@@ -196,7 +196,7 @@ Réunis le [date] à [lieu], les membres fondateurs ont nommé administrateurs p
 - [Prénom Nom], président ;
 - [Prénom Nom], secrétaire et trésorier.
 
-La cotisation pour l'exercice [année] est fixée à [montant] euros.
+La cotisation pour l'exercice [année] est fixée à 10 euros.
 
 Fait à [lieu], le [date], en [nombre] exemplaires originaux.
 
