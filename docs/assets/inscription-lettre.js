@@ -58,15 +58,15 @@
      newsletters), sinon des valeurs proches ; le mode sombre est celui du
      système ou du bouton du site (data-theme). */
   var STYLE =
-    ".inscription-lettre{--il-fond:var(--papier,#fff);--il-encre:var(--encre,#17212b);--il-doux:var(--doux,#56636f);--il-filet:var(--filet,#dbe3ea);--il-rouge:#ed2939;--il-vert:#1f7a3f;" +
+    ".inscription-lettre{--il-fond:var(--papier,#fff);--il-encre:var(--encre,#17212b);--il-doux:var(--doux,#56636f);--il-filet:var(--filet,#dbe3ea);--il-rouge:#ed2939;--il-vert:#1f7a3f;--il-champ:var(--fond,#fff);" +
     "font-family:var(--display,inherit);background:var(--il-fond);color:var(--il-encre);border:1px solid var(--il-filet);border-top:4px solid var(--il-rouge);border-radius:10px;padding:20px 22px;margin:24px 0}" +
-    "@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .inscription-lettre{--il-fond:var(--papier,#151d25);--il-encre:var(--encre,#e8eef3);--il-doux:var(--doux,#9aa8b4);--il-filet:var(--filet,#2a3641);--il-vert:#5fd38a}}" +
-    ":root[data-theme=dark] .inscription-lettre{--il-fond:var(--papier,#151d25);--il-encre:var(--encre,#e8eef3);--il-doux:var(--doux,#9aa8b4);--il-filet:var(--filet,#2a3641);--il-vert:#5fd38a}" +
+    "@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .inscription-lettre{--il-fond:var(--papier,#151d25);--il-encre:var(--encre,#e8eef3);--il-doux:var(--doux,#9aa8b4);--il-filet:var(--filet,#2a3641);--il-vert:#5fd38a;--il-champ:#0e141a}}" +
+    ":root[data-theme=dark] .inscription-lettre{--il-fond:var(--papier,#151d25);--il-encre:var(--encre,#e8eef3);--il-doux:var(--doux,#9aa8b4);--il-filet:var(--filet,#2a3641);--il-vert:#5fd38a;--il-champ:#0e141a}" +
     ".inscription-lettre h2{font-family:var(--display,inherit);font-size:22px;font-weight:800;line-height:1.2;margin:0 0 4px;border:0;padding:0;color:inherit}" +
     ".inscription-lettre p{margin:0;color:var(--il-doux);font-size:16px;line-height:1.5}" +
     ".inscription-lettre form{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 10px}" +
     ".inscription-lettre form[hidden]{display:none}" +
-    ".inscription-lettre input[type=email]{flex:1 1 220px;min-width:0;font:inherit;font-size:16px;line-height:1.2;padding:12px 14px;border:1px solid var(--il-filet);border-radius:8px;background:var(--fond,#fff);color:var(--il-encre)}" +
+    ".inscription-lettre input[type=email]{flex:1 1 220px;min-width:0;font:inherit;font-size:16px;line-height:1.2;padding:12px 14px;border:1px solid var(--il-filet);border-radius:8px;background:var(--il-champ);color:var(--il-encre)}" +
     ".inscription-lettre input[type=email]:focus{outline:3px solid #00a1de;outline-offset:1px}" +
     ".inscription-lettre button{flex:0 0 auto;font:inherit;font-size:16px;font-weight:700;line-height:1;padding:12px 20px;border:0;border-radius:8px;background:var(--il-rouge);color:#fff;cursor:pointer}" +
     ".inscription-lettre button[disabled]{opacity:.6;cursor:wait}" +
