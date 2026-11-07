@@ -197,17 +197,17 @@ que falta uma palavra, **Zuelwuert**, em que escreve por extenso os números de 
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_niveaux.png" style="width:100%;border-radius:6px;"
-         alt="Ecrã de progresso: nível Ufänger, 0,5 % do dicionário descoberto, palavra do dia e palavras a descobrir">
+         alt="Ecrã de progresso: nível Klengen, 1 % do dicionário descoberto, palavra do dia e palavras a descobrir">
     <figcaption>Progresso e palavra do dia</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_wuertsich.gif" style="width:100%;border-radius:6px;"
-         alt="Animação Wuertsich: o dedo traça KORREKT na horizontal e depois BRAUCHT na diagonal na grelha da sopa de letras; as casas ficam verdes e as palavras são assinaladas na lista">
+         alt="Animação Wuertsich: o dedo traça MANN na vertical e depois ËMFELD na diagonal na grelha da sopa de letras; as casas ficam verdes e as palavras são assinaladas na lista">
     <figcaption>Wuertsich · sopa de letras</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_wuertmix.gif" style="width:100%;border-radius:6px;"
-         alt="Animação Wuertmix: as letras são recolocadas uma a uma para formar «Rulle» (rolo), cuja primeira e última letras são dadas, e a resposta é validada">
+         alt="Animação Wuertmix: as letras são recolocadas uma a uma para formar «Ofgesat» (destituído), cuja primeira e última letras são dadas, e a resposta é validada">
     <figcaption>Wuertmix · palavras baralhadas</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">

@@ -195,17 +195,17 @@ mots à y caser.
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_niveaux.png" style="width:100%;border-radius:6px;"
-         alt="Écran de progression : niveau Ufänger, 0,5 % du dictionnaire découvert, mot du jour et mots à découvrir">
+         alt="Écran de progression : niveau Klengen, 1 % du dictionnaire découvert, mot du jour et mots à découvrir">
     <figcaption>Progression et mot du jour</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_wuertsich.gif" style="width:100%;border-radius:6px;"
-         alt="Animation Wuertsich : le doigt trace KORREKT à l'horizontale puis BRAUCHT en diagonale dans la grille de mots mêlés ; les cases passent au vert et les mots se cochent dans la liste">
+         alt="Animation Wuertsich : le doigt trace MANN à la verticale puis ËMFELD en diagonale dans la grille de mots mêlés ; les cases passent au vert et les mots se cochent dans la liste">
     <figcaption>Wuertsich · mots mêlés</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_wuertmix.gif" style="width:100%;border-radius:6px;"
-         alt="Animation Wuertmix : les lettres sont replacées une à une pour reconstituer « Rulle » (roulette, rouleau), dont la première et la dernière lettre sont données, puis la réponse est validée">
+         alt="Animation Wuertmix : les lettres sont replacées une à une pour reconstituer « Ofgesat » (déposer, destituer), dont la première et la dernière lettre sont données, puis la réponse est validée">
     <figcaption>Wuertmix · mots mélangés</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">

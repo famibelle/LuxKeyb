@@ -200,17 +200,17 @@ die hineingehören.
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_niveaux.png" style="width:100%;border-radius:6px;"
-         alt="Fortschrittsanzeige: Stufe Ufänger, 0,5 % des Wörterbuchs entdeckt, Wort des Tages und Wörter zum Entdecken">
+         alt="Fortschrittsanzeige: Stufe Klengen, 1 % des Wörterbuchs entdeckt, Wort des Tages und Wörter zum Entdecken">
     <figcaption>Fortschritt und Wort des Tages</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_wuertsich.gif" style="width:100%;border-radius:6px;"
-         alt="Animation Wuertsich: Der Finger zieht KORREKT waagerecht und BRAUCHT diagonal durch das Buchstabenraster; die Felder werden grün und die Wörter in der Liste abgehakt">
+         alt="Animation Wuertsich: Der Finger zieht MANN senkrecht und ËMFELD diagonal durch das Buchstabenraster; die Felder werden grün und die Wörter in der Liste abgehakt">
     <figcaption>Wuertsich · Buchstabensalat</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_wuertmix.gif" style="width:100%;border-radius:6px;"
-         alt="Animation Wuertmix: Die Buchstaben werden einzeln zurückgesetzt, um „Rulle“ (Rolle) zu bilden, dessen erster und letzter Buchstabe vorgegeben sind, dann wird die Antwort bestätigt">
+         alt="Animation Wuertmix: Die Buchstaben werden einzeln zurückgesetzt, um „Ofgesat“ (abgesetzt) zu bilden, dessen erster und letzter Buchstabe vorgegeben sind, dann wird die Antwort bestätigt">
     <figcaption>Wuertmix · Wörter entwirren</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">

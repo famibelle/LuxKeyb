@@ -188,17 +188,17 @@ result of a sum, in full, **Kräizwuert**, a crossword with clues in your langua
 <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:24px 0;">
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_niveaux.png" style="width:100%;border-radius:6px;"
-         alt="Progress screen: Ufänger level, 0.5% of the dictionary discovered, word of the day and words to discover">
+         alt="Progress screen: Klengen level, 1% of the dictionary discovered, word of the day and words to discover">
     <figcaption>Progress and word of the day</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_wuertsich.gif" style="width:100%;border-radius:6px;"
-         alt="Wuertsich animation: the finger traces KORREKT horizontally then BRAUCHT diagonally in the word search grid; the cells turn green and the words are ticked off in the list">
+         alt="Wuertsich animation: the finger traces MANN vertically then ËMFELD diagonally in the word search grid; the cells turn green and the words are ticked off in the list">
     <figcaption>Wuertsich · word search</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
     <img src="Screenshots/lux_wuertmix.gif" style="width:100%;border-radius:6px;"
-         alt="Wuertmix animation: the letters are put back one by one to rebuild “Rulle” (roll), whose first and last letters are given, then the answer is checked">
+         alt="Wuertmix animation: the letters are put back one by one to rebuild “Ofgesat” (deposed), whose first and last letters are given, then the answer is checked">
     <figcaption>Wuertmix · scrambled words</figcaption>
   </figure>
   <figure style="margin:0;flex:1 1 160px;max-width:220px;text-align:center;">
