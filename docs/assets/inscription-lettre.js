@@ -62,7 +62,7 @@
     "font-family:var(--display,inherit);background:var(--il-fond);color:var(--il-encre);border:1px solid var(--il-filet);border-top:4px solid var(--il-rouge);border-radius:10px;padding:20px 22px;margin:24px 0}" +
     "@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .inscription-lettre{--il-fond:var(--papier,#151d25);--il-encre:var(--encre,#e8eef3);--il-doux:var(--doux,#9aa8b4);--il-filet:var(--filet,#2a3641);--il-vert:#5fd38a}}" +
     ":root[data-theme=dark] .inscription-lettre{--il-fond:var(--papier,#151d25);--il-encre:var(--encre,#e8eef3);--il-doux:var(--doux,#9aa8b4);--il-filet:var(--filet,#2a3641);--il-vert:#5fd38a}" +
-    ".inscription-lettre h2{font:800 22px/1.2 var(--display,inherit);margin:0 0 4px;border:0;padding:0;color:inherit}" +
+    ".inscription-lettre h2{font-family:var(--display,inherit);font-size:22px;font-weight:800;line-height:1.2;margin:0 0 4px;border:0;padding:0;color:inherit}" +
     ".inscription-lettre p{margin:0;color:var(--il-doux);font-size:16px;line-height:1.5}" +
     ".inscription-lettre form{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 10px}" +
     ".inscription-lettre form[hidden]{display:none}" +
