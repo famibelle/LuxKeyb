@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lëtzebuergesch Clavier, novembro de 2026</title>
+<meta name="description" content="Cartas pintadas a guache que ganham vida, palavras do dia a dia para aprender, e uma ideia para testar consigo: um verdadeiro jogo de cartas em luxemburguês.">
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Lëtzebuergesch Clavier">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:title" content="As suas cartas ganham vida. E amanhã em cima da mesa?">
+<meta property="og:description" content="Cartas pintadas a guache que ganham vida, palavras do dia a dia para aprender, e uma ideia para testar consigo: um verdadeiro jogo de cartas em luxemburguês.">
+<meta property="og:url" content="https://famibelle.github.io/LuxKeyb/newsletter/2026-11-pt.html">
+<meta property="og:image" content="https://famibelle.github.io/LuxKeyb/newsletter/2026-11/partage-pt.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Quatro cartas do Wuertduell em leque: Buch, Kaffi, Léiw e Kamillentéi.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="As suas cartas ganham vida. E amanhã em cima da mesa?">
+<meta name="twitter:description" content="Cartas pintadas a guache que ganham vida, palavras do dia a dia para aprender, e uma ideia para testar consigo: um verdadeiro jogo de cartas em luxemburguês.">
+<meta name="twitter:image" content="https://famibelle.github.io/LuxKeyb/newsletter/2026-11/partage-pt.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+
+/* Mise en page : la même lettre d'une colonne que l'édition d'octobre. */
+:root{
+  --fond:#f3f6f9; --papier:#ffffff; --encre:#17212b; --doux:#56636f; --filet:#dbe3ea;
+  --rouge:#ed2939; --bleu:#00a1de; --bleu-encre:#006f9a; --puce:#eef4f8;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --texte:Literata, Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --fond:#0e141a; --papier:#151d25; --encre:#e8eef3; --doux:#9aa8b4; --filet:#2a3641;
+  --rouge:#ff5a66; --bleu:#3cbcef; --bleu-encre:#7fd3f5; --puce:#1c2731; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --fond:#0e141a; --papier:#151d25; --encre:#e8eef3; --doux:#9aa8b4; --filet:#2a3641;
+  --rouge:#ff5a66; --bleu:#3cbcef; --bleu-encre:#7fd3f5; --puce:#1c2731; color-scheme:dark}
+
+body{background:var(--fond); color:var(--encre); font:17px/1.6 var(--texte); padding:32px 16px 48px}
+.lettre{max-width:660px; margin:0 auto; background:var(--papier); border:1px solid var(--filet); border-radius:6px; overflow:hidden}
+.drapeau{display:flex; height:6px}
+.drapeau span{flex:1}
+.drapeau span:nth-child(1){background:#ed2939}.drapeau span:nth-child(2){background:#fff; border-block:1px solid var(--filet)}.drapeau span:nth-child(3){background:#00a1de}
+.corps{padding:36px clamp(20px,6vw,48px) 40px; display:grid; gap:40px}
+
+header{display:grid; gap:14px}
+.tete{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font:600 12px/1 var(--display); letter-spacing:.12em; text-transform:uppercase; color:var(--doux)}
+.langues-nl{display:flex; gap:6px; flex-wrap:wrap}
+.langues-nl a{font:600 12px/1 var(--display); letter-spacing:.08em; color:var(--doux); text-decoration:none; padding:6px 9px; border:1px solid var(--filet); border-radius:99px}
+.langues-nl a[aria-current]{background:var(--encre); color:var(--papier); border-color:var(--encre)}
+.langues-nl a:hover{border-color:var(--doux)}
+h1{font:800 clamp(30px,6.4vw,44px)/1.05 var(--display); letter-spacing:-.02em; margin:0; text-wrap:balance}
+h1 em{font-style:normal; color:var(--rouge)}
+.chapo{margin:0; font-size:19px; color:var(--doux); max-width:60ch}
+
+section{display:grid; gap:12px}
+h2{font:700 24px/1.2 var(--display); letter-spacing:-.01em; margin:0; text-wrap:balance}
+h3{font:700 18px/1.25 var(--display); margin:6px 0 0}
+.version{font:600 12px/1 var(--display); letter-spacing:.08em; text-transform:uppercase; color:var(--bleu-encre)}
+p{margin:0; max-width:62ch}
+ul{margin:0; padding-left:1.1em; display:grid; gap:6px}
+li::marker{color:var(--rouge)}
+hr{border:0; border-top:1px solid var(--filet); margin:0}
+a{color:var(--bleu-encre)}
+
+.bref{background:var(--puce); border-radius:8px; padding:20px 22px; display:grid; gap:10px}
+.bref h2{font-size:19px}
+
+/* Images */
+.eventail{display:flex; justify-content:center; align-items:flex-end; padding:14px 0 6px}
+.eventail img{height:auto; width:min(27%,170px); border-radius:4%/2.9%; box-shadow:0 10px 24px rgba(15,25,35,.24); position:relative}
+.eventail img:nth-child(1){transform:rotate(-10deg) translate(24%,9%)}
+.eventail img:nth-child(2){transform:rotate(-3.5deg) translate(8%,0); z-index:1}
+.eventail img:nth-child(3){transform:rotate(3.5deg) translate(-8%,0); z-index:2}
+.eventail img:nth-child(4){transform:rotate(10deg) translate(-24%,9%); z-index:3}
+.legende-eventail{text-align:center; font:500 15px/1.5 var(--display); color:var(--doux); margin:22px auto 0; max-width:52ch}
+figure{margin:4px 0 0; display:grid; gap:8px; justify-items:center}
+figure img{height:auto; border-radius:10px; border:1px solid var(--filet); display:block}
+figcaption{font:500 13px/1.45 var(--display); color:var(--doux); text-align:center; max-width:52ch}
+.ecran{max-width:min(100%,480px)}
+.haute{max-width:min(100%,280px)}
+.large{max-width:100%}
+@media (prefers-reduced-motion: reduce){.eventail img{transform:none!important}}
+
+/* Les quatre boîtes du jeu */
+.boites{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:10px}
+.boite{border:1px solid var(--filet); border-left:6px solid var(--teinte); border-radius:8px; padding:12px 14px; display:grid; gap:4px}
+.boite strong{font:700 16px/1.25 var(--display)}
+.boite span{font-size:15px; color:var(--doux)}
+.chiffres{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; text-align:center}
+.chiffres div{background:var(--puce); border-radius:8px; padding:12px 6px; display:grid; gap:4px}
+.chiffres b{font:800 26px/1 var(--display); color:var(--rouge)}
+.chiffres span{font:500 13px/1.3 var(--display); color:var(--doux)}
+
+.sondage{background:var(--puce); border-radius:10px; padding:20px 22px; display:grid; gap:14px; margin-top:6px}
+.sondage .question{font:700 20px/1.3 var(--display)}
+.reponses{display:flex; flex-wrap:wrap; gap:10px}
+.note-sondage{font-size:15px; color:var(--doux)}
+
+.appel{display:grid; gap:14px; justify-items:start}
+.bouton{display:inline-block; background:var(--rouge); color:#fff; text-decoration:none; font:700 16px/1 var(--display); padding:15px 22px; border-radius:8px}
+.bouton.second{background:transparent; color:var(--encre); border:2px solid var(--encre)}
+.bouton:focus-visible{outline:3px solid var(--bleu); outline-offset:3px}
+.slogan{font:700 20px/1.3 var(--display); margin:0}
+footer{font-size:13px; color:var(--doux); display:grid; gap:6px}
+</style>
+</head>
+<body>
+<article class="lettre">
+  <div class="drapeau" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="corps">
+
+    <header>
+      <div class="tete"><span>Lëtzebuergesch Clavier</span><span>Novembro de 2026</span></div>
+      <nav class="langues-nl" aria-label="Língua"><a href="2026-11.html" lang="fr">FR</a><a href="2026-11-en.html" lang="en">EN</a><a href="2026-11-de.html" lang="de">DE</a><a href="2026-11-pt.html" lang="pt" aria-current="page">PT</a></nav>
+      <h1>As suas cartas ganham vida. <em>E amanhã em cima da mesa?</em></h1>
+      <p class="chapo">Este mês, as cartas da aplicação foram completamente repintadas, as palavras do dia a dia têm o seu próprio álbum, e temos uma pergunta para si: que tal um verdadeiro jogo de cartas em luxemburguês?</p>
+    </header>
+
+    <section>
+      <span class="version">Em destaque</span>
+      <h2>Cartas pintadas à mão… ou quase</h2>
+      <p>Cada carta parece agora um pequeno teatro de papel. O céu, as nuvens, as colinas, a cidade ao longe: tudo é recortado em cartão e pintado a guache, com cores vivas. Incline o telemóvel e cada peça do cenário desliza ao seu ritmo, como se estivesse a olhar por uma janela. As nuvens atravessam o céu, as folhas caem no outono.</p>
+      <figure>
+        <img class="ecran" src="../Screenshots/lux_gouache_penchee.gif" alt="A carta «Bus» inclinada devagar da esquerda para a direita: o céu, as nuvens, a cidade, as colinas e a ponte vermelha deslizam cada um ao seu ritmo, caem folhas de papel e um reflexo passa sobre o autocarro." width="540" height="422" loading="lazy">
+        <figcaption>Incline o telemóvel: o cenário mexe-se e um reflexo desliza sobre o desenho da palavra.</figcaption>
+      </figure>
+      <p>O desenho da palavra ocupa agora toda a janela. O gato, o autocarro, a casa veem-se ao primeiro olhar, mesmo em ponto pequeno no álbum. E há um novo lugar para descobrir: o <strong>Breedewee</strong>, com as cores do Grund.</p>
+    </section>
+
+    <hr>
+
+    <section>
+      <span class="version">Para aprender</span>
+      <h2>As palavras do dia a dia, página a página</h2>
+      <p>Acabou de chegar ao Luxemburgo, ajuda os seus filhos com a escola ou quer finalmente arriscar algumas frases? O álbum tem agora uma série <strong>«Nível A1»</strong>: as primeiras palavras a conhecer, arrumadas por tema, como a família, a casa ou as compras.</p>
+      <ul>
+        <li>Uma casa vazia mostra o significado da palavra a encontrar: cabe-lhe a si ganhá-la a jogar.</li>
+        <li>As palavras essenciais do dia a dia têm todas a sua carta.</li>
+        <li>As cartas de números mostram o algarismo em grande: «zweeavéierzeg» é 42.</li>
+      </ul>
+      <figure>
+        <img class="haute" src="../Screenshots/lux_carnet_niveau_a1.png" alt="A página «Família» da série Nível A1: a carta Famill foi ganha, as outras casas mostram a palavra a encontrar, como avó, avô, irmão ou primo." width="720" height="1396" loading="lazy">
+        <figcaption>A página «Família»: uma carta ganha, as outras por encontrar.</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <figure>
+      <img class="large" src="2026-11/boite_ouverte.webp" alt="Maqueta da caixa inicial aberta, azul-noite e dourada. Ao lado, cartas pousadas na mesa: o verso de uma carta com o seu brasão, a carta de regras «Bataille des mots, a partir dos 6 anos · 2 jogadores» e três cartas de jogo, Hond (cão), Kaz (gato) e Kéis (queijo)." width="1400" height="898" loading="lazy">
+      <figcaption>Uma maqueta da caixa inicial, aberta: as cartas, o seu verso e a carta de regras.</figcaption>
+    </figure>
+
+    <section>
+      <span class="version">Uma ideia em estudo</span>
+      <h2>E se as cartas saíssem do telemóvel?</h2>
+      <p>Imaginamos um verdadeiro jogo de cartas em luxemburguês, o <strong>Wuertduell</strong>, para jogar a dois, em família ou na escola, para aprender a língua sem dar por isso. Ainda nada está decidido: nem a data, nem o preço. Antes de ir mais longe, queremos saber se a ideia lhe agrada.</p>
+
+      <h3>Duas maneiras de jogar</h3>
+      <ul>
+        <li><strong>A Batalha das palavras, a partir dos 6 anos</strong>: cada um vira uma carta e lê a palavra em voz alta, a palavra mais comprida ganha. Aprende-se a jogar.</li>
+        <li><strong>O Wuertduell, a partir dos 8 anos</strong>: um verdadeiro duelo em que se escolhem as cartas e a estratégia. <a href="../regle-du-jeu.html">Ler as regras (em francês)</a>.</li>
+      </ul>
+
+      <h3>Caixas para colecionar</h3>
+      <figure>
+        <img class="large" src="2026-11/etuis.webp" alt="Maqueta de quatro caixas de cartas azul-noite, com o título WUERTDUELL em letras douradas, cada uma com três cartas em leque e uma faixa de cor: vermelho para a caixa inicial, verde para a extensão, azul para o Nível A1, roxo para o Nível A2." width="1400" height="653" loading="lazy">
+        <figcaption>Uma maqueta das quatro caixas, tal como poderiam ser.</figcaption>
+      </figure>
+      <p>Cada caixa poria frente a frente duas famílias de palavras, por exemplo:</p>
+      <div class="boites">
+        <div class="boite" style="--teinte:#ed2939"><strong>Os animais contra a comida</strong><span><i>Déieren</i> contra <i>Iessen</i></span></div>
+        <div class="boite" style="--teinte:#2e9e4f"><strong>A escola contra a natureza</strong><span><i>Schoul</i> contra <i>Natur</i></span></div>
+        <div class="boite" style="--teinte:#00a1de"><strong>As primeiras palavras, em casa e lá fora</strong><span><i>Doheem</i> contra <i>Dobaussen</i>, nível A1</span></div>
+        <div class="boite" style="--teinte:#7b4fc4"><strong>A continuação, para ir mais longe</strong><span><i>Doheem</i> contra <i>Dobaussen</i>, nível A2</span></div>
+      </div>
+      <p>Cada caixa poderia jogar-se sozinha, logo que se abre, ou com as outras. Quanto mais rara for uma carta, mais precioso é o seu quadro. E um código na caixa acrescentaria as suas cartas ao álbum da aplicação: a coleção continuaria no telemóvel.</p>
+
+      <figure>
+        <img class="large" src="2026-11/etui_depart.webp" alt="Maqueta da caixa inicial, frente e verso. À frente: WUERTDUELL, «O duelo das palavras luxemburguesas», três cartas (Hond, Kaz, Brout) e a faixa vermelha «Caixa inicial». Atrás: as regras em três passos, a regra de ouro «cada carta jogada lê-se em voz alta», o conteúdo da caixa e um código para ler as regras completas." width="1230" height="700" loading="lazy">
+        <figcaption>A caixa inicial, de frente e de costas: as regras cabem no verso da caixa.</figcaption>
+      </figure>
+
+      <figure>
+        <img class="ecran" src="2026-11/presentoir.webp" alt="Maqueta de um expositor de balcão em cartão azul-noite. Em cima, um painel WUERTDUELL, «O duelo das palavras luxemburguesas», com quatro cartas, «2 jogadores, a partir dos 8 anos, 15 min» e um código para ler as regras. Em baixo, doze caixas em quatro colunas de cor: caixa inicial, extensão, Nível A1, Nível A2." width="900" height="920" loading="lazy">
+        <figcaption>E numa loja ou num stand, um expositor de balcão. Mais uma vez, apenas uma maqueta.</figcaption>
+      </figure>
+
+      <div class="sondage">
+        <p class="question">Este jogo despertaria o seu interesse?</p>
+        <div class="reponses">
+          <a class="bouton" href="https://famibelle.github.io/LuxKeyb/sondage-cartes-pt.html?envie=oui&amp;source=newsletter-2026-11">Sim, gostava de o ter</a>
+          <a class="bouton second" href="https://famibelle.github.io/LuxKeyb/sondage-cartes-pt.html?envie=peut-etre&amp;source=newsletter-2026-11">Talvez</a>
+          <a class="bouton second" href="https://famibelle.github.io/LuxKeyb/sondage-cartes-pt.html?envie=non&amp;source=newsletter-2026-11">Não é para mim</a>
+        </div>
+        <p class="note-sondage">Basta um clique. Se tiver mais um minuto, seguem-se três perguntas curtas, uma delas sobre o preço que lhe pareceria justo. Não é pedido nenhum endereço de e-mail.</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <div class="bref">
+      <h2>Mais legível para todos</h2>
+      <p>Os textos a laranja ou a verde, por vezes difíceis de ler, foram corrigidos. A aplicação lê-se melhor, em pleno sol como ao fim do dia.</p>
+    </div>
+
+    <div class="bref">
+      <h2>E para os curiosos…</h2>
+      <p>O nosso laboratório está cheio de experiências. São ideias ainda em construção, que pode experimentar antes de toda a gente:</p>
+      <ul>
+        <li><strong>Quem disse o quê?</strong> Envia a gravação de uma conversa em luxemburguês. O texto aparece, com o nome de cada pessoa que fala.</li>
+        <li><strong>Legendas em direto</strong>: alguém fala luxemburguês e o texto aparece no ecrã à medida que fala, com a tradução em francês logo por baixo.</li>
+        <li><strong>Uma aplicação para as suas reuniões</strong>: ouve a reunião, legenda cada frase e propõe-lhe depois uma ata pronta.</li>
+      </ul>
+      <p>Estas experiências ainda não estão acabadas, e é justamente por isso que são divertidas de experimentar. As suas opiniões ajudam-nos a melhorá-las.</p>
+      <p><a href="../labs-en.html"><strong>Descobrir o laboratório →</strong></a></p>
+    </div>
+
+    <div class="bref">
+      <h2>E um regalo para os olhos</h2>
+      <p>Uma mesma ruela, quatro horas do dia. A carta mais comum passa-se de manhã, a mais rara em plena noite, sob um desenho dourado.</p>
+      <figure><img class="ecran" src="../Screenshots/lux_gouache_raretes.gif" alt="Quatro cartas da mesma ruela: Bank de manhã, Chrëschtdag à tarde, Brëll ao fim do dia, Alphabet em plena noite com um desenho dourado." width="540" height="422" loading="lazy"><figcaption>Manhã, tarde, fim do dia e noite: a hora indica a raridade da carta.</figcaption></figure>
+    </div>
+
+    <div class="appel">
+      <p class="slogan">Fala-o. Agora, escreve-o.</p>
+      <a class="bouton" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;hl=pt">Atualizar no Google Play</a>
+    </div>
+
+    <hr>
+
+    <footer>
+      <p>Lëtzebuergesch Clavier, gratuito para Android, a partir dos 16 anos. Versão 38.1.0.</p>
+      <p>Uma ideia, uma palavra que falta? <a href="https://famibelle.github.io/LuxKeyb/feedbacks_form.html">Escreva-nos</a>. Experimente o teclado sem o instalar no <a href="https://famibelle.github.io/LuxKeyb/simulateur.html">simulador</a>.</p>
+      <p><a href="./">Todas as newsletters</a></p>
+    </footer>
+  </div>
+</article>
+</body>
+</html>

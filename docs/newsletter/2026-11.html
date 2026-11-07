@@ -50,6 +50,10 @@ body{background:var(--fond); color:var(--encre); font:17px/1.6 var(--texte); pad
 
 header{display:grid; gap:14px}
 .tete{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font:600 12px/1 var(--display); letter-spacing:.12em; text-transform:uppercase; color:var(--doux)}
+.langues-nl{display:flex; gap:6px; flex-wrap:wrap}
+.langues-nl a{font:600 12px/1 var(--display); letter-spacing:.08em; color:var(--doux); text-decoration:none; padding:6px 9px; border:1px solid var(--filet); border-radius:99px}
+.langues-nl a[aria-current]{background:var(--encre); color:var(--papier); border-color:var(--encre)}
+.langues-nl a:hover{border-color:var(--doux)}
 h1{font:800 clamp(30px,6.4vw,44px)/1.05 var(--display); letter-spacing:-.02em; margin:0; text-wrap:balance}
 h1 em{font-style:normal; color:var(--rouge)}
 .chapo{margin:0; font-size:19px; color:var(--doux); max-width:60ch}
@@ -113,6 +117,7 @@ footer{font-size:13px; color:var(--doux); display:grid; gap:6px}
 
     <header>
       <div class="tete"><span>Lëtzebuergesch Clavier</span><span>Novembre 2026</span></div>
+      <nav class="langues-nl" aria-label="Langue"><a href="2026-11.html" lang="fr" aria-current="page">FR</a><a href="2026-11-en.html" lang="en">EN</a><a href="2026-11-de.html" lang="de">DE</a><a href="2026-11-pt.html" lang="pt">PT</a></nav>
       <h1>Vos cartes prennent vie, <em>et demain sur la table ?</em></h1>
       <p class="chapo">Ce mois-ci, les cartes de l'application ont été entièrement repeintes, les mots de tous les jours ont leur propre album, et nous avons une question pour vous : un vrai jeu de cartes en luxembourgeois, ça vous dirait ?</p>
     </header>

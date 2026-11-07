@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A sua opinião sobre as cartas</title>
+<meta name="description" content="Um jogo de cartas em luxemburguês: despertaria o seu interesse, e a que preço? Quatro perguntas, um minuto.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<style>
+/* Sondage de la newsletter de novembre 2026 : l'envie pour le jeu de cartes
+   et le prix jugé juste. Les questions de prix viennent AVANT tout prix
+   affiché, pour ne pas influencer la réponse (pas de prix dans la lettre).
+   Les réponses partent sur Formspree, dans le formulaire « sondage-cartes »
+   du projet décrit par formspree.json (à la racine), créé par « formspree deploy ». */
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --fond:#f3f6f9; --papier:#ffffff; --encre:#17212b; --doux:#56636f; --filet:#dbe3ea;
+  --rouge:#ed2939; --bleu:#00a1de; --bleu-encre:#006f9a; --puce:#eef4f8;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --texte:Literata, Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --fond:#0e141a; --papier:#151d25; --encre:#e8eef3; --doux:#9aa8b4; --filet:#2a3641;
+  --rouge:#ff5a66; --bleu:#3cbcef; --bleu-encre:#7fd3f5; --puce:#1c2731; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --fond:#0e141a; --papier:#151d25; --encre:#e8eef3; --doux:#9aa8b4; --filet:#2a3641;
+  --rouge:#ff5a66; --bleu:#3cbcef; --bleu-encre:#7fd3f5; --puce:#1c2731; color-scheme:dark}
+body{margin:0; background:var(--fond); color:var(--encre); font:17px/1.6 var(--texte); padding:32px 16px 48px}
+.cadre{max-width:620px; margin:0 auto; background:var(--papier); border:1px solid var(--filet); border-radius:6px; overflow:hidden}
+.drapeau{display:flex; height:6px}
+.drapeau span{flex:1}
+.drapeau span:nth-child(1){background:#ed2939}.drapeau span:nth-child(2){background:#fff; border-block:1px solid var(--filet)}.drapeau span:nth-child(3){background:#00a1de}
+.corps{padding:32px clamp(20px,6vw,44px) 36px; display:grid; gap:26px}
+h1{font:800 clamp(28px,6vw,38px)/1.1 var(--display); margin:0; letter-spacing:-.02em}
+p{margin:0}
+.chapo{color:var(--doux)}
+fieldset{border:0; margin:0; padding:0; display:grid; gap:8px}
+legend{font:700 18px/1.3 var(--display); padding:0; margin-bottom:8px}
+.aide{font-size:15px; color:var(--doux); margin:-4px 0 4px}
+label.choix{display:flex; gap:10px; align-items:center; padding:10px 14px; border:1px solid var(--filet); border-radius:8px; cursor:pointer}
+label.choix:has(input:checked){border-color:var(--rouge); background:var(--puce)}
+/* Ronds et cases dessinés ici : sur iPhone en mode sombre, les ronds non
+   cochés du système sortaient en noir plein, comme s'ils étaient cochés. */
+input[type=radio],input[type=checkbox]{-webkit-appearance:none; appearance:none; width:20px; height:20px; flex:none; margin:0; border:2px solid var(--doux); background:var(--papier); display:grid; place-content:center}
+input[type=radio]{border-radius:50%}
+input[type=checkbox]{border-radius:5px}
+input[type=radio]::before{content:""; width:10px; height:10px; border-radius:50%; background:var(--rouge); transform:scale(0)}
+input[type=checkbox]::before{content:""; width:11px; height:11px; background:var(--rouge); clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0%,43% 62%); transform:scale(0)}
+input:checked{border-color:var(--rouge)}
+input:checked::before{transform:scale(1)}
+input[type=radio]:focus-visible,input[type=checkbox]:focus-visible{outline:3px solid var(--bleu); outline-offset:2px}
+textarea,input[type=email]{width:100%; padding:10px; font:16px var(--texte); border:1px solid var(--filet); border-radius:8px; background:var(--papier); color:var(--encre)}
+textarea{min-height:90px}
+button{background:var(--rouge); color:#fff; border:0; font:700 16px/1 var(--display); padding:15px 22px; border-radius:8px; cursor:pointer; justify-self:start}
+button:focus-visible{outline:3px solid var(--bleu); outline-offset:3px}
+.note{font-size:14px; color:var(--doux)}
+#message{font:700 17px/1.4 var(--display)}
+a{color:var(--bleu-encre)}
+</style>
+</head>
+<body>
+<main class="cadre">
+  <div class="drapeau" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="corps">
+    <h1>Um jogo de cartas em luxemburguês: a sua opinião</h1>
+    <p class="chapo">Por agora é só uma ideia. As suas respostas dizem-nos se devemos levá-la até ao fim, e como. Quatro perguntas, um minuto, e nenhum endereço de e-mail obrigatório.</p>
+
+    <form id="sondage" action="https://formspree.io/p/3129770432035553221/f/sondage-cartes" method="POST" style="display:grid;gap:26px">
+      <input type="hidden" name="_subject" value="Sondage : le jeu de cartes">
+      <input type="hidden" name="liste" value="sondage-cartes-2026-11">
+      <input type="hidden" name="source" id="source" value="">
+      <input type="hidden" name="pour_qui" id="pour_qui" value="">
+      <input type="hidden" name="langue" value="pt">
+
+      <fieldset>
+        <legend>1. Este jogo despertaria o seu interesse?</legend>
+        <label class="choix"><input type="radio" name="envie" value="oui" required> Sim, gostava de o ter</label>
+        <label class="choix"><input type="radio" name="envie" value="peut-etre"> Talvez, quero saber mais</label>
+        <label class="choix"><input type="radio" name="envie" value="non"> Não é para mim</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Para quem?</legend>
+        <p class="aide">Pode escolher várias respostas.</p>
+        <label class="choix"><input type="checkbox" class="pour-qui" value="enfants"> Os meus filhos ou netos</label>
+        <label class="choix"><input type="checkbox" class="pour-qui" value="moi"> Para mim, para aprender a língua</label>
+        <label class="choix"><input type="checkbox" class="pour-qui" value="classe"> Uma turma, um atelier, uma associação</label>
+        <label class="choix"><input type="checkbox" class="pour-qui" value="cadeau"> Para oferecer</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Para uma caixa de 54 cartas, que preço lhe parece justo?</legend>
+        <label class="choix"><input type="radio" name="prix_juste" value="moins de 5 €" required> Menos de 5 €</label>
+        <label class="choix"><input type="radio" name="prix_juste" value="5 à 8 €"> De 5 a 8 €</label>
+        <label class="choix"><input type="radio" name="prix_juste" value="8 à 12 €"> De 8 a 12 €</label>
+        <label class="choix"><input type="radio" name="prix_juste" value="12 à 15 €"> De 12 a 15 €</label>
+        <label class="choix"><input type="radio" name="prix_juste" value="plus de 15 €"> Mais de 15 €</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. A partir de que preço deixaria de o comprar?</legend>
+        <p class="aide">O preço em que pensa: «é demasiado caro».</p>
+        <label class="choix"><input type="radio" name="prix_trop_cher" value="5 €" required> 5 €</label>
+        <label class="choix"><input type="radio" name="prix_trop_cher" value="8 €"> 8 €</label>
+        <label class="choix"><input type="radio" name="prix_trop_cher" value="12 €"> 12 €</label>
+        <label class="choix"><input type="radio" name="prix_trop_cher" value="15 €"> 15 €</label>
+        <label class="choix"><input type="radio" name="prix_trop_cher" value="20 €"> 20 €</label>
+        <label class="choix"><input type="radio" name="prix_trop_cher" value="plus de 20 €"> Mais de 20 €</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Quer acrescentar alguma coisa? <span style="font-weight:500;color:var(--doux)">(facultativo)</span></legend>
+        <textarea name="commentaire" aria-label="O seu comentário" placeholder="Uma ideia de caixa, um tema, uma observação…"></textarea>
+      </fieldset>
+
+      <fieldset>
+        <legend>Quer ser avisado se o jogo sair? <span style="font-weight:500;color:var(--doux)">(facultativo)</span></legend>
+        <input type="email" name="email" autocomplete="email" aria-label="O seu e-mail" placeholder="o.seu@endereco.lu">
+        <p class="note">O seu endereço serve apenas para lhe escrevermos sobre o jogo. É apagado a pedido, ou se o projeto parar.</p>
+      </fieldset>
+
+      <button type="submit">Enviar a minha opinião</button>
+      <p id="message" role="status"></p>
+    </form>
+
+    <p class="note">As respostas são recolhidas pelo <a href="https://formspree.io/legal/privacy-policy">Formspree</a>, tal como as opiniões sobre a aplicação. <a href="newsletter/2026-11-pt.html">Voltar à newsletter</a></p>
+  </div>
+</main>
+<script>
+(function () {
+  var form = document.getElementById('sondage');
+  var message = document.getElementById('message');
+  var q = new URLSearchParams(location.search);
+  /* Le clic dans la lettre choisit déjà la réponse à la question 1. */
+  var envie = q.get('envie');
+  if (envie) {
+    var r = form.querySelector('input[name="envie"][value="' + envie.replace(/[^a-z-]/g, '') + '"]');
+    if (r) r.checked = true;
+  }
+  document.getElementById('source').value = q.get('source') || 'direct';
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    /* Les cases cochées partent en un seul champ, « enfants, cadeau » : avec
+       plusieurs champs du même nom, Formspree ne garderait que le dernier. */
+    document.getElementById('pour_qui').value = Array.prototype.map.call(
+      form.querySelectorAll('.pour-qui:checked'), function (c) { return c.value; }).join(', ');
+    message.textContent = 'A enviar…';
+    fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        form.reset();
+        message.textContent = 'Obrigado! A sua opinião conta mesmo para o que vem a seguir.';
+      })
+      .catch(function () {
+        message.textContent = 'O envio não funcionou. Tente de novo dentro de momentos.';
+      });
+  });
+})();
+</script>
+</body>
+</html>
