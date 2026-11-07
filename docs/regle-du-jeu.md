@@ -10,7 +10,6 @@ lang: fr
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="guide.html">📘 Guide</a> ·
   <strong>🃏 Règle du jeu</strong> ·
-  <a href="commander.html">🛒 Commander</a> ·
   <a href="faq.html">❓ Aide</a> ·
   <button type="button" class="theme-toggle" aria-label="Passer en mode sombre">🌙</button>
 </nav>
@@ -26,9 +25,8 @@ Tous les mots, leurs sens, leurs genres et leurs phrases d'exemple viennent du
 Zenter fir d'Lëtzebuerger Sprooch : des milliers de mots à jouer, de *Kaz* à
 *Krokodil*.
 
-Le jeu imprimé est en préparation : voici la règle, pour l'essayer et nous dire
-ce qu'elle vaut. [Réservez vos boîtes](commander.html), sans rien payer :
-l'impression part dès que l'objectif est atteint.
+Le jeu imprimé est à l'étude : voici la règle, pour l'essayer et nous dire
+ce qu'elle vaut. [Donnez votre avis](sondage-cartes.html) en une minute.
 
 ## Il te faut
 
@@ -173,7 +171,7 @@ de 26 prêts à jouer, **Schoul** (l'école : *Buch*, *Heft*, *Schoulsak*,
 2 cartes de règle. Elle se joue seule, Schoul contre Natur, ou avec la boîte :
 chacun de ses paquets tient tête à *Déieren* comme à *Iessen*. Aucun mot n'est
 dans les deux boîtes. D'autres suivront, puisque le dictionnaire ne manque pas
-de mots. Elle se commande avec la boîte, [sur la page Commander](commander.html).
+de mots.
 
 ### Composer son paquet
 

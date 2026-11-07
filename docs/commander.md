@@ -2,6 +2,9 @@
 title: "Précommander le jeu de cartes"
 description: "Le Wuertduell, le jeu de cartes en luxembourgeois : quatre boîtes de 54 cartes à 9,90 € la boîte. Réservez les vôtres sans payer : l'impression part dès que l'objectif est atteint. Livraison au Luxembourg, en Belgique, en France et en Allemagne."
 lang: fr
+# Pendant le sondage de novembre 2026 sur le jeu et son prix, la page reste en
+# ligne mais aucune page du site ne la cite, et elle sort des moteurs de recherche.
+noindex: true
 # La précommande (BOUTIQUE-CARTES.md § 1 et § 9, skill business-modele § 4).
 #
 # mode "reservation" : réservation sans paiement, par le formulaire. C'est le
