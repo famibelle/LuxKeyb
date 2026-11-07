@@ -216,13 +216,3 @@ Fait à [lieu], le [date], en autant d'exemplaires originaux que de signataires,
 | [Prénom Nom] | [Prénom Nom] | |
 |---|---|---|
 | Signature | Signature | |
-
----
-
-## Points à vérifier ensemble avant de signer
-
-1. **La relecture** par la House of Entrepreneurship, myASBL ou un juriste : toutes les mentions obligatoires de la loi du 7 août 2023 (article 3) sont-elles présentes ?
-2. **Les majorités de l'article 16** : la loi impose-t-elle une majorité plus forte pour modifier l'objet ?
-3. **La vente des cartes** (article 4) : la formulation « à titre accessoire » suffit-elle, et faut-il une autorisation d'établissement ?
-4. **Le nom « LuxKeyb »** : est-il libre sur lbr.lu ?
-5. **Les fonctions** : qui est président, qui est secrétaire et trésorier ?
