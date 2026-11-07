@@ -1,9 +1,9 @@
 # Statuts : projet
 
 **LuxKeyb asbl**
-Association sans but lucratif régie par la loi modifiée du 7 août 2023 sur les associations sans but lucratif et les fondations.
+Association sans but lucratif régie par la loi du 7 août 2023 sur les associations sans but lucratif et les fondations.
 
-> Projet du 7 novembre 2026, à faire relire (House of Entrepreneurship, myASBL ou juriste) avant signature. Les passages entre [crochets] sont à compléter. Les notes en italique sont à supprimer avant signature.
+> Projet du 7 novembre 2026, à relire ensemble avant la signature. Les passages entre [crochets] sont à compléter.
 
 Entre les soussignés :
 
@@ -18,9 +18,8 @@ et toutes les personnes qui deviendront membres par la suite, il est constitué 
 
 **Article 1 : Dénomination**
 L'association porte le nom « LuxKeyb », association sans but lucratif, en abrégé « LuxKeyb asbl ».
-Dans ses activités, elle peut aussi utiliser la dénomination « Lëtzebuergesch Clavier », nom de l'application publiée sur le Play Store.
-
-*Note : les noms « LuxKeyb » et « Lëtzebuergesch Clavier » désignent l'application, qui reste la propriété de son auteur. L'association les utilise selon la licence prévue à l'article 24.*
+Dans ses activités, elle peut aussi utiliser la dénomination « Lëtzebuergesch Clavier ».
+Ces noms désignent aussi une application dont les droits appartiennent à son auteur. L'association les utilise selon l'article 24.
 
 **Article 2 : Siège**
 Le siège de l'association est établi dans la commune de Rambrouch (Grand-Duché de Luxembourg).
@@ -35,8 +34,8 @@ L'association est constituée pour une durée illimitée.
 
 **Article 4 : Objet**
 L'association a pour objet de promouvoir l'apprentissage et l'usage de la langue luxembourgeoise, notamment :
-- par la conception, le développement et la diffusion d'outils numériques gratuits, dont un clavier et des applications d'aide à l'écriture ;
-- par des jeux, des animations, des ateliers et des stands destinés aux enfants, aux familles et aux adultes, en particulier dans les communes, les écoles, les bibliothèques et les structures d'accueil ;
+- par le développement, l'amélioration et la diffusion d'outils numériques gratuits d'aide à l'écriture et à l'apprentissage, comme un clavier pour téléphone ;
+- par des jeux, des animations, des ateliers et des stands destinés aux enfants, aux familles et aux adultes, en particulier dans les communes, les fêtes locales, les écoles, les bibliothèques et les structures d'accueil ;
 - par la collaboration avec les institutions publiques, les associations et toute personne poursuivant un but semblable.
 
 À titre accessoire, l'association peut éditer et vendre des supports pédagogiques et ludiques, dont des cartes à jouer, et facturer des animations. Les recettes de ces activités sont entièrement affectées à la réalisation de l'objet.
@@ -65,16 +64,15 @@ Tout membre peut se retirer de l'association à tout moment en adressant sa dém
 Est réputé démissionnaire le membre qui n'a pas payé sa cotisation trois mois après un rappel écrit.
 
 **Article 10 : Exclusion**
-L'exclusion d'un membre ne peut être prononcée que par l'assemblée générale, à la majorité des **deux tiers** des voix présentes ou représentées, pour une atteinte grave aux statuts, à l'objet ou aux intérêts de l'association.
+L'exclusion d'un membre ne peut être prononcée que par l'assemblée générale, à la majorité des deux tiers des voix présentes ou représentées, pour une atteinte grave aux statuts, à l'objet ou aux intérêts de l'association.
 Le membre concerné est informé par écrit des motifs au moins quinze jours avant l'assemblée et a le droit d'y être entendu.
-
-*Note : la majorité des deux tiers et le droit d'être entendu protègent chaque fondateur contre une exclusion à la majorité simple.*
 
 **Article 11 : Effets du départ**
 Le membre démissionnaire ou exclu n'a aucun droit sur le patrimoine de l'association et ne peut réclamer le remboursement des cotisations versées.
 
 **Article 12 : Registre des membres**
 Le conseil d'administration tient au siège un registre des membres, mis à jour dans le mois qui suit toute admission, démission ou exclusion.
+Les données personnelles des membres ne servent qu'à la gestion de l'association. Elles ne sont ni vendues ni transmises à des tiers, sauf obligation légale.
 
 ---
 
@@ -91,41 +89,43 @@ L'assemblée générale réunit tous les membres. Elle seule peut :
 
 **Article 14 : Convocation**
 L'assemblée générale se réunit au moins une fois par an, dans les six mois qui suivent la clôture de l'exercice.
-Elle est convoquée par le conseil d'administration, ou à la demande d'un cinquième des membres, par écrit (courrier ou courriel) au moins quinze jours à l'avance. La convocation contient l'ordre du jour.
+Elle est convoquée par le conseil d'administration, ou à la demande d'un cinquième des membres, par courrier ou par courriel, au moins quinze jours à l'avance. La convocation contient l'ordre du jour.
 
 **Article 15 : Délibérations**
 Chaque membre dispose d'une voix. Il peut se faire représenter par un autre membre muni d'une procuration écrite. Un membre ne peut détenir plus d'une procuration.
-Sauf disposition contraire de la loi ou des statuts, les décisions sont prises à la majorité simple des voix présentes ou représentées. En cas d'égalité, la voix du président est prépondérante.
-L'assemblée peut se réunir par visioconférence et voter par écrit si les membres en sont d'accord.
+Sauf disposition contraire de la loi ou des statuts, les décisions sont prises à la majorité simple des voix présentes ou représentées. En cas d'égalité, la proposition est rejetée.
+Si la convocation le prévoit, les membres peuvent participer à l'assemblée générale par visioconférence ou par tout autre moyen qui permet de les identifier, et voter par écrit avant la réunion. Ils sont alors réputés présents.
 
 **Article 16 : Modification des statuts et dissolution**
 Une modification des statuts ou la dissolution n'est valable que si l'objet en est indiqué dans la convocation et si l'assemblée réunit au moins les deux tiers des membres. La décision est prise à la majorité des deux tiers des voix présentes ou représentées.
 Si le quorum n'est pas atteint, une seconde assemblée, convoquée au moins quinze jours plus tard, délibère quel que soit le nombre de membres présents, à la même majorité.
 
-*Note : vérifier que ces règles respectent le minimum fixé par la loi du 7 août 2023.*
-
-**Article 17 : Procès-verbaux**
+**Article 17 : Procès-verbaux et communication des décisions**
 Les décisions sont consignées dans des procès-verbaux signés par le président et un autre administrateur, et conservés au siège. Tout membre peut les consulter.
+Les décisions de l'assemblée générale sont communiquées aux membres par courriel ou par courrier dans le mois qui suit. Celles qui intéressent les tiers sont déposées au Registre de commerce et des sociétés lorsque la loi l'exige.
 
 ---
 
 ## Titre V : Conseil d'administration
 
 **Article 18 : Composition**
-L'association est administrée par un conseil d'administration de deux à [sept] membres, nommés par l'assemblée générale parmi les membres pour un mandat de [trois] ans, renouvelable.
+L'association est administrée par un conseil d'administration de trois à [sept] administrateurs, membres ou non de l'association. Tant que l'association ne compte que deux membres, le conseil peut ne compter que deux administrateurs. Dès qu'elle en compte davantage, l'assemblée générale complète le conseil dans les trois mois.
+Les administrateurs sont nommés par l'assemblée générale pour un mandat de [trois] ans, renouvelable. L'assemblée générale peut les révoquer à tout moment, à la majorité simple. Un administrateur peut démissionner à tout moment par écrit.
+En cas de vacance, le conseil peut désigner un remplaçant jusqu'à la prochaine assemblée générale, qui confirme ou non cette nomination.
 Le conseil désigne en son sein un président, un secrétaire et un trésorier. Une même personne peut cumuler les fonctions de secrétaire et de trésorier.
 
 **Article 19 : Pouvoirs**
 Le conseil d'administration a les pouvoirs les plus étendus pour gérer l'association et la représenter, sauf ceux que la loi ou les statuts réservent à l'assemblée générale.
 
 **Article 20 : Fonctionnement**
-Le conseil se réunit chaque fois que l'intérêt de l'association l'exige, sur convocation du président ou de deux administrateurs. Il peut se réunir par visioconférence ou décider par écrit.
-Il ne délibère valablement que si la majorité des administrateurs est présente ou représentée. Les décisions sont prises à la majorité simple. En cas d'égalité, la voix du président est prépondérante.
+Le conseil se réunit chaque fois que l'intérêt de l'association l'exige, sur convocation du président ou de deux administrateurs, par courriel ou par tout autre moyen. Il peut se réunir par visioconférence ou décider par écrit.
+Il ne délibère valablement que si la majorité des administrateurs est présente ou représentée. Les décisions sont prises à la majorité simple. En cas d'égalité, la proposition est rejetée.
 
 **Article 21 : Représentation et signature**
 L'association est valablement engagée envers les tiers par la signature conjointe de deux administrateurs.
 Pour la gestion journalière, et pour toute dépense ne dépassant pas [500] euros, la signature du président ou du trésorier suffit.
 Aucun administrateur ne peut engager l'association par un emprunt, une caution ou une garantie sans une décision préalable du conseil d'administration.
+Lorsqu'un administrateur est en conflit d'intérêts (article 22), il ne signe pas pour l'association. Si deux autres administrateurs ne peuvent pas signer, l'administrateur restant engage seul l'association, sur la base de la décision du conseil.
 
 **Article 22 : Conflit d'intérêts**
 L'administrateur qui a un intérêt personnel, direct ou indirect, dans une décision le déclare au conseil avant la délibération. Il ne prend part ni à la délibération ni au vote. La déclaration et la décision sont inscrites au procès-verbal.
@@ -144,8 +144,6 @@ Les œuvres, logiciels, visuels, illustrations, cartes, marques et noms apporté
 L'association les utilise selon les licences écrites accordées par leurs titulaires. Ces licences précisent l'étendue, la durée et les conditions de l'utilisation.
 Les droits sur les œuvres créées par l'association elle-même, par ses salariés ou sur sa commande expresse lui appartiennent, sauf convention écrite contraire.
 
-*Note : cet article protège votre propriété sur le clavier, les visuels et les cartes. La licence à l'asbl est un document à part.*
-
 ---
 
 ## Titre VII : Ressources, exercice et comptes
@@ -159,7 +157,7 @@ Les ressources de l'association comprennent notamment :
 - les revenus de son patrimoine.
 
 **Article 26 : Exercice**
-L'exercice commence le 1ᵉʳ janvier et finit le 31 décembre. Le premier exercice commence le jour de la constitution et finit le 31 décembre [2026 ou 2027].
+L'exercice commence le 1ᵉʳ janvier et finit le 31 décembre. Le premier exercice commence le jour de la constitution et finit le 31 décembre [2027].
 
 **Article 27 : Comptes**
 Le conseil d'administration tient une comptabilité conforme à la loi. Chaque année, il établit les comptes de l'exercice écoulé et le budget de l'exercice suivant, et les soumet à l'assemblée générale.
@@ -183,7 +181,7 @@ Les licences de propriété intellectuelle accordées à l'association prennent 
 ## Titre IX : Dispositions finales
 
 **Article 30 : Renvoi à la loi**
-Pour tout ce qui n'est pas réglé par les présents statuts, il est renvoyé à la loi modifiée du 7 août 2023 sur les associations sans but lucratif et les fondations.
+Pour tout ce qui n'est pas réglé par les présents statuts, il est renvoyé à la loi du 7 août 2023 sur les associations sans but lucratif et les fondations, telle que modifiée.
 
 **Article 31 : Reprise des engagements**
 Le premier conseil d'administration peut décider de reprendre les engagements pris au nom de l'association avant l'acquisition de sa personnalité juridique.
@@ -196,9 +194,9 @@ Réunis le [date] à [lieu], les membres fondateurs ont nommé administrateurs p
 - [Prénom Nom], président ;
 - [Prénom Nom], secrétaire et trésorier.
 
-La cotisation pour l'exercice [année] est fixée à 5 euros.
+La cotisation pour le premier exercice est fixée à 5 euros.
 
-Fait à [lieu], le [date], en [nombre] exemplaires originaux.
+Fait à [lieu], le [date], en [trois] exemplaires originaux.
 
 | [Prénom Nom] | [Prénom Nom] |
 |---|---|
@@ -206,10 +204,10 @@ Fait à [lieu], le [date], en [nombre] exemplaires originaux.
 
 ---
 
-## À vérifier avant de signer
+## Points à vérifier ensemble avant de signer
 
-1. **Les mentions obligatoires** prévues par la loi du 7 août 2023 : sont-elles toutes présentes ? À vérifier sur myasbl.public.lu.
-2. **Les quorums et les majorités** des articles 10 et 16 : conformes au minimum légal ?
-3. **La vente des cartes** (article 4) : la formulation « à titre accessoire » convient-elle, et faut-il une autorisation d'établissement ?
-4. **L'article 24 sur la propriété intellectuelle** : à faire relire, avec la licence séparée des visuels.
-5. **Le nom « LuxKeyb »** : vérifier qu'il est libre sur lbr.lu, et prévoir dans la licence de l'article 24 l'usage du nom et de la marque par l'association.
+1. **La relecture** par la House of Entrepreneurship, myASBL ou un juriste : toutes les mentions obligatoires de la loi du 7 août 2023 (article 3) sont-elles présentes ?
+2. **Les majorités de l'article 16** : la loi impose-t-elle une majorité plus forte pour modifier l'objet ?
+3. **La vente des cartes** (article 4) : la formulation « à titre accessoire » suffit-elle, et faut-il une autorisation d'établissement ?
+4. **Le nom « LuxKeyb »** : est-il libre sur lbr.lu ?
+5. **Les fonctions** : qui est président, qui est secrétaire et trésorier ?
