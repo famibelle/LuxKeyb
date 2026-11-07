@@ -9,6 +9,11 @@ Entre les soussignés :
 
 1. [Prénom Nom], [profession], demeurant à [adresse], de nationalité [nationalité] ;
 2. [Prénom Nom], [profession], demeurant à [adresse], de nationalité [nationalité] ;
+3. [Prénom Nom], [profession], demeurant à [adresse], de nationalité [nationalité] ;
+4. [Prénom Nom], [profession], demeurant à [adresse], de nationalité [nationalité] ;
+5. [Prénom Nom], [profession], demeurant à [adresse], de nationalité [nationalité] ;
+
+(Deux fondateurs suffisent. Les lignes non utilisées sont barrées.)
 
 et toutes les personnes qui deviendront membres par la suite, il est constitué une association sans but lucratif régie par les présents statuts.
 
@@ -202,11 +207,15 @@ Deux administrateurs suffisent au départ. Les lignes non utilisées sont barré
 
 La cotisation pour le premier exercice est fixée à 5 euros.
 
-Fait à [lieu], le [date], en [trois] exemplaires originaux.
+Fait à [lieu], le [date], en autant d'exemplaires originaux que de signataires, plus un pour l'association.
 
-| [Prénom Nom] | [Prénom Nom] |
-|---|---|
-| Signature | Signature |
+| [Prénom Nom] | [Prénom Nom] | [Prénom Nom] |
+|---|---|---|
+| Signature | Signature | Signature |
+
+| [Prénom Nom] | [Prénom Nom] | |
+|---|---|---|
+| Signature | Signature | |
 
 ---
 
