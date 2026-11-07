@@ -58,6 +58,8 @@ button{background:var(--rouge); color:#fff; border:0; font:700 16px/1 var(--disp
 button:focus-visible{outline:3px solid var(--bleu); outline-offset:3px}
 .note{font-size:14px; color:var(--doux)}
 #message{font:700 17px/1.4 var(--display)}
+#suite[hidden]{display:none!important}
+button:disabled{opacity:.6; cursor:default}
 .bandeau{background:var(--puce); border-left:5px solid var(--rouge); border-radius:8px; padding:14px 16px; font:600 17px/1.45 var(--display)}
 a{color:var(--bleu-encre)}
 </style>
@@ -67,8 +69,7 @@ a{color:var(--bleu-encre)}
   <div class="drapeau" aria-hidden="true"><span></span><span></span><span></span></div>
   <div class="corps">
     <h1>Ein Kartenspiel auf Luxemburgisch: Ihre Meinung</h1>
-    <p class="chapo">Noch ist es nur eine Idee. Ihre Antworten sagen uns, ob wir sie umsetzen sollen, und wie. Vier Fragen, eine Minute, keine E-Mail-Adresse nötig.</p>
-    <p id="clic-ok" class="bandeau" role="status" hidden>Danke, Ihre Antwort ist gespeichert! Wenn Sie noch eine Minute haben, helfen uns die folgenden Fragen sehr, vor allem die zum Preis.</p>
+    <p class="chapo">Noch ist es nur eine Idee. Ihre Antworten sagen uns, ob wir sie umsetzen sollen, und wie. Nur eine Frage ist Pflicht, die anderen sind für Sie da, wenn Sie eine Minute haben.</p>
 
     <form id="sondage" action="https://formspree.io/p/3129770432035553221/f/sondage-cartes" method="POST" style="display:grid;gap:26px">
       <input type="hidden" name="_subject" value="Sondage : le jeu de cartes">
@@ -77,7 +78,7 @@ a{color:var(--bleu-encre)}
       <input type="hidden" name="pour_qui" id="pour_qui" value="">
       <input type="hidden" name="langue" value="de">
       <input type="hidden" name="reponse_id" id="reponse_id" value="">
-      <input type="hidden" name="etape" value="complet">
+      <input type="hidden" name="etape" id="etape" value="complet">
 
       <fieldset>
         <legend>1. Hätten Sie Lust auf dieses Spiel?</legend>
@@ -86,8 +87,14 @@ a{color:var(--bleu-encre)}
         <label class="choix"><input type="radio" name="envie" value="non"> Nichts für mich</label>
       </fieldset>
 
+      <button type="button" id="envoyer1">Meine Antwort senden</button>
+      <p id="message1" role="status"></p>
+      <p id="clic-ok" class="bandeau" role="status" hidden>Danke, Ihre Antwort ist gespeichert! Wenn Sie möchten, beantworten Sie auch die Fragen unten. Sie sind freiwillig, aber die Frage zum Preis hilft uns sehr.</p>
+
+      <div id="suite" hidden style="display:grid;gap:26px">
+
       <fieldset>
-        <legend>2. Für wen?</legend>
+        <legend>2. Für wen? <span style="font-weight:500;color:var(--doux)">(freiwillig)</span></legend>
         <p class="aide">Mehrere Antworten möglich.</p>
         <label class="choix"><input type="checkbox" class="pour-qui" value="enfants"> Meine Kinder oder Enkel</label>
         <label class="choix"><input type="checkbox" class="pour-qui" value="moi"> Für mich, um die Sprache zu lernen</label>
@@ -96,8 +103,8 @@ a{color:var(--bleu-encre)}
       </fieldset>
 
       <fieldset>
-        <legend>3. Welcher Preis erscheint Ihnen für eine Box mit 54 Karten angemessen?</legend>
-        <label class="choix"><input type="radio" name="prix_juste" value="moins de 5 €" required> Weniger als 5 €</label>
+        <legend>3. Welcher Preis erscheint Ihnen für eine Box mit 54 Karten angemessen? <span style="font-weight:500;color:var(--doux)">(freiwillig)</span></legend>
+        <label class="choix"><input type="radio" name="prix_juste" value="moins de 5 €"> Weniger als 5 €</label>
         <label class="choix"><input type="radio" name="prix_juste" value="5 à 8 €"> 5 bis 8 €</label>
         <label class="choix"><input type="radio" name="prix_juste" value="8 à 12 €"> 8 bis 12 €</label>
         <label class="choix"><input type="radio" name="prix_juste" value="12 à 15 €"> 12 bis 15 €</label>
@@ -105,9 +112,9 @@ a{color:var(--bleu-encre)}
       </fieldset>
 
       <fieldset>
-        <legend>4. Ab welchem Preis würden Sie es nicht mehr kaufen?</legend>
+        <legend>4. Ab welchem Preis würden Sie es nicht mehr kaufen? <span style="font-weight:500;color:var(--doux)">(freiwillig)</span></legend>
         <p class="aide">Der Preis, bei dem Sie sagen: „Das ist zu teuer.“</p>
-        <label class="choix"><input type="radio" name="prix_trop_cher" value="5 €" required> 5 €</label>
+        <label class="choix"><input type="radio" name="prix_trop_cher" value="5 €"> 5 €</label>
         <label class="choix"><input type="radio" name="prix_trop_cher" value="8 €"> 8 €</label>
         <label class="choix"><input type="radio" name="prix_trop_cher" value="12 €"> 12 €</label>
         <label class="choix"><input type="radio" name="prix_trop_cher" value="15 €"> 15 €</label>
@@ -126,8 +133,9 @@ a{color:var(--bleu-encre)}
         <p class="note">Ihre Adresse dient nur dazu, Ihnen über das Spiel zu schreiben. Sie wird auf Wunsch gelöscht oder wenn das Projekt eingestellt wird.</p>
       </fieldset>
 
-      <button type="submit">Meine Meinung senden</button>
+      <button type="submit">Meine weiteren Antworten senden</button>
       <p id="message" role="status"></p>
+      </div>
     </form>
 
     <p class="note">Die Antworten werden über <a href="https://formspree.io/legal/privacy-policy">Formspree</a> gesammelt, wie die Rückmeldungen zur App. <a href="newsletter/2026-11-de.html">Zurück zum Newsletter</a></p>
@@ -157,49 +165,91 @@ a{color:var(--bleu-encre)}
   }
   document.getElementById('reponse_id').value = id;
 
-  /* Le clic dans la lettre suffit : la réponse à la question 1 part dès
-     l'ouverture, sans attendre le bouton. Une seule fois par lien et par
-     onglet, pour qu'un rechargement ne la compte pas deux fois. Les robots qui
-     vérifient les liens des e-mails n'exécutent pas ce code. */
-  if (r) {
-    var cle = 'sondage-clic-' + r.value;
-    var deja = false;
-    try { deja = sessionStorage.getItem(cle) === '1'; } catch (e) {}
-    if (!deja) {
-      var d = new FormData();
-      ['_subject', 'liste', 'source', 'langue'].forEach(function (n) {
-        d.append(n, form.querySelector('input[name="' + n + '"]').value);
-      });
-      d.append('envie', r.value);
-      d.append('reponse_id', id);
-      d.append('etape', 'clic');
-      fetch(form.action, { method: 'POST', body: d, headers: { 'Accept': 'application/json' } })
-        .then(function (rep) {
-          if (!rep.ok) return;
-          document.getElementById('clic-ok').hidden = false;
-          try { sessionStorage.setItem(cle, '1'); } catch (e) {}
-        })
-        .catch(function () {});
-    } else {
-      document.getElementById('clic-ok').hidden = false;
-    }
+  var etape = document.getElementById('etape');
+  var envoyer1 = document.getElementById('envoyer1');
+  var message1 = document.getElementById('message1');
+  var TXT = {
+    envoye: "Antwort gesendet ✓",
+    choisir: "Bitte wählen Sie zuerst eine Antwort.",
+    envoi: "Wird gesendet…",
+    merci: "Danke! Ihre Meinung ist uns für die nächsten Schritte wirklich wichtig.",
+    erreur: "Das Senden hat nicht geklappt. Bitte versuchen Sie es gleich noch einmal."
+  };
+
+  /* La question 1 enregistrée : le bouton se fige et les questions
+     facultatives apparaissent. */
+  function q1Faite(defiler) {
+    envoyer1.disabled = true;
+    envoyer1.textContent = TXT.envoye;
+    message1.textContent = '';
+    document.getElementById('clic-ok').hidden = false;
+    document.getElementById('suite').hidden = false;
+    if (defiler) document.getElementById('clic-ok').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  /* Envoie la seule réponse à la question 1 (étape « clic » depuis la lettre,
+     « reponse » depuis le bouton). */
+  function envoyerQ1(valeur, nomEtape) {
+    var d = new FormData();
+    ['_subject', 'liste', 'source', 'langue'].forEach(function (n) {
+      d.append(n, form.querySelector('input[name="' + n + '"]').value);
+    });
+    d.append('envie', valeur);
+    d.append('reponse_id', id);
+    d.append('etape', nomEtape);
+    return fetch(form.action, { method: 'POST', body: d, headers: { 'Accept': 'application/json' } })
+      .then(function (rep) {
+        if (!rep.ok) throw new Error(rep.status);
+        try { sessionStorage.setItem('sondage-q1', valeur); } catch (e) {}
+      });
+  }
+
+  var dejaQ1 = null;
+  try { dejaQ1 = sessionStorage.getItem('sondage-q1'); } catch (e) {}
+
+  /* Le clic dans la lettre suffit : la réponse à la question 1 part dès
+     l'ouverture, sans attendre le bouton. Une seule fois par onglet, pour
+     qu'un rechargement ne la compte pas deux fois. Les robots qui vérifient
+     les liens des e-mails n'exécutent pas ce code. */
+  if (r && !dejaQ1) {
+    envoyerQ1(r.value, 'clic').then(function () { q1Faite(false); }, function () {});
+  } else if (dejaQ1) {
+    var c = form.querySelector('input[name="envie"][value="' + dejaQ1 + '"]');
+    if (c) c.checked = true;
+    q1Faite(false);
+  }
+
+  envoyer1.addEventListener('click', function () {
+    var choix = form.querySelector('input[name="envie"]:checked');
+    if (!choix) { message1.textContent = TXT.choisir; return; }
+    message1.textContent = TXT.envoi;
+    envoyer1.disabled = true;
+    envoyerQ1(choix.value, 'reponse').then(function () { q1Faite(true); }, function () {
+      envoyer1.disabled = false;
+      message1.textContent = TXT.erreur;
+    });
+  });
+
+  /* Les questions facultatives partent avec la question 1, sous le même
+     identifiant (étape « complet ») : à l'analyse, on garde cette ligne. */
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     /* Les cases cochées partent en un seul champ, « enfants, cadeau » : avec
        plusieurs champs du même nom, Formspree ne garderait que le dernier. */
     document.getElementById('pour_qui').value = Array.prototype.map.call(
       form.querySelectorAll('.pour-qui:checked'), function (c) { return c.value; }).join(', ');
-    message.textContent = 'Wird gesendet…';
+    etape.value = 'complet';
+    var bouton = form.querySelector('button[type="submit"]');
+    message.textContent = TXT.envoi;
+    bouton.disabled = true;
     fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
       .then(function (r) {
         if (!r.ok) throw new Error(r.status);
-        form.reset();
-        message.textContent = 'Danke! Ihre Meinung ist uns für die nächsten Schritte wirklich wichtig.';
+        message.textContent = TXT.merci;
       })
       .catch(function () {
-        message.textContent = 'Das Senden hat nicht geklappt. Bitte versuchen Sie es gleich noch einmal.';
+        bouton.disabled = false;
+        message.textContent = TXT.erreur;
       });
   });
 })();
