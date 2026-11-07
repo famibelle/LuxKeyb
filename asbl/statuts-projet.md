@@ -196,7 +196,7 @@ Réunis le [date] à [lieu], les membres fondateurs ont nommé administrateurs p
 - [Prénom Nom], président ;
 - [Prénom Nom], secrétaire et trésorier.
 
-La cotisation pour l'exercice [année] est fixée à 10 euros.
+La cotisation pour l'exercice [année] est fixée à 5 euros.
 
 Fait à [lieu], le [date], en [nombre] exemplaires originaux.
 
