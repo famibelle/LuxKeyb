@@ -6,18 +6,20 @@
 <meta name="robots" content="noindex">
 <title>Newsletter November 2026 · E-Mail-Version</title>
 <!-- Version mail de 2026-11-de.html : tableaux, styles en ligne, adresses absolues,
-     images en JPG/GIF. Faite pour être ouverte dans le navigateur, sélectionnée
-     en entier (Ctrl+A), copiée et collée dans Gmail, ou importée telle quelle
-     dans un outil d'e-mailing (Brevo, Mailchimp). Pas de <style> : Gmail le
-     perd au collage. -->
+     images en JPG/GIF, pas de <style>. Le premier bouton copie le code HTML
+     complet, à coller dans l'éditeur HTML de Brevo ; le second copie la lettre
+     mise en page, à coller dans Gmail. Le lien de désinscription de Brevo
+     ({{ unsubscribe }}) n'est ajouté qu'au code HTML. -->
 </head>
 <body style="margin:0; padding:0; background:#f3f6f9;">
-<!-- Hors de la lettre : ce bouton n'est jamais copié avec elle. -->
-<div style="max-width:600px; margin:16px auto 0; padding:0 12px; font-family:Arial, Helvetica, sans-serif; text-align:center;">
-  <button id="copier" type="button" style="background:#ed2939; color:#ffffff; border:0; border-radius:8px; padding:12px 18px; font:bold 15px Arial, Helvetica, sans-serif; cursor:pointer;">Newsletter für die E-Mail kopieren</button>
-  <div id="retour" role="status" style="padding-top:8px; font:13px Arial, Helvetica, sans-serif; color:#56636f;"></div>
+<!-- Hors de la lettre : ces boutons ne sont jamais copiés avec elle. -->
+<div id="outils" style="max-width:600px; margin:16px auto 0; padding:0 12px; font-family:Arial, Helvetica, sans-serif; text-align:center;">
+  <button id="copier-html" type="button" style="background:#ed2939; color:#ffffff; border:0; border-radius:8px; padding:12px 18px; margin:0 4px 8px; font:bold 15px Arial, Helvetica, sans-serif; cursor:pointer;">HTML-Code für Brevo kopieren</button>
+  <button id="copier" type="button" style="background:#ffffff; color:#17212b; border:2px solid #17212b; border-radius:8px; padding:10px 16px; margin:0 4px 8px; font:bold 15px Arial, Helvetica, sans-serif; cursor:pointer;">Für Gmail kopieren</button>
+  <div id="retour" role="status" style="padding-top:4px; font:13px/1.5 Arial, Helvetica, sans-serif; color:#56636f;"></div>
+  <textarea id="code" readonly aria-label="HTML" style="display:none; width:100%; height:180px; margin-top:8px; font:12px monospace;"></textarea>
 </div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f3f6f9;">
+<table id="enveloppe" role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f3f6f9;">
 <tr><td align="center" style="padding:24px 12px;">
 
 <table id="lettre" role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%; max-width:600px; background:#ffffff; border:1px solid #dbe3ea; border-collapse:separate;">
@@ -35,8 +37,8 @@
   Lëtzebuergesch Clavier · November 2026
 </td></tr>
 
-<tr><td style="padding:10px 32px 0; font-family:Arial, Helvetica, sans-serif; font-size:13px; line-height:20px; color:#56636f;">
-  Auch auf <a href="https://famibelle.github.io/LuxKeyb/newsletter/2026-11.html" lang="fr" style="color:#006f9a;">Français</a> · <a href="https://famibelle.github.io/LuxKeyb/newsletter/2026-11-en.html" lang="en" style="color:#006f9a;">English</a> · <a href="https://famibelle.github.io/LuxKeyb/newsletter/2026-11-pt.html" lang="pt" style="color:#006f9a;">Português</a>
+<tr><td style="padding:12px 32px 0;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding:0 6px 0 0;"><a href="https://famibelle.github.io/LuxKeyb/newsletter/2026-11.html" lang="fr" style="display:inline-block; background:#ffffff; border:1px solid #dbe3ea; color:#56636f; border-radius:99px; padding:6px 10px; font-family:Arial, Helvetica, sans-serif; font-size:12px; line-height:12px; font-weight:bold; letter-spacing:1px; text-decoration:none;">FR</a></td><td style="padding:0 6px 0 0;"><a href="https://famibelle.github.io/LuxKeyb/newsletter/2026-11-en.html" lang="en" style="display:inline-block; background:#ffffff; border:1px solid #dbe3ea; color:#56636f; border-radius:99px; padding:6px 10px; font-family:Arial, Helvetica, sans-serif; font-size:12px; line-height:12px; font-weight:bold; letter-spacing:1px; text-decoration:none;">EN</a></td><td style="padding:0 6px 0 0;"><a href="https://famibelle.github.io/LuxKeyb/newsletter/2026-11-de.html" lang="de" style="display:inline-block; background:#17212b; border:1px solid #17212b; color:#ffffff; border-radius:99px; padding:6px 10px; font-family:Arial, Helvetica, sans-serif; font-size:12px; line-height:12px; font-weight:bold; letter-spacing:1px; text-decoration:none;">DE</a></td><td style="padding:0 6px 0 0;"><a href="https://famibelle.github.io/LuxKeyb/newsletter/2026-11-pt.html" lang="pt" style="display:inline-block; background:#ffffff; border:1px solid #dbe3ea; color:#56636f; border-radius:99px; padding:6px 10px; font-family:Arial, Helvetica, sans-serif; font-size:12px; line-height:12px; font-weight:bold; letter-spacing:1px; text-decoration:none;">PT</a></td></tr></table>
 </td></tr>
 
 <tr><td style="padding:14px 32px 0; font-family:Arial, Helvetica, sans-serif; font-size:34px; line-height:38px; font-weight:bold; color:#17212b;">
@@ -200,41 +202,63 @@
 <tr><td style="padding:18px 32px 32px; font-family:Arial, Helvetica, sans-serif; font-size:13px; line-height:20px; color:#56636f;">
   Lëtzebuergesch Clavier, kostenlos für Android, ab 16 Jahren. Version 38.1.0.<br>
   Eine Idee, ein fehlendes Wort? <a href="https://famibelle.github.io/LuxKeyb/feedbacks_form.html" style="color:#006f9a;">Schreiben Sie uns</a>. Probieren Sie die Tastatur ohne Installation im <a href="https://famibelle.github.io/LuxKeyb/simulateur.html" style="color:#006f9a;">Simulator</a> aus.<br>
-  <a href="https://famibelle.github.io/LuxKeyb/newsletter/2026-11-de.html" style="color:#006f9a;">Diesen Newsletter online lesen</a> · <a href="https://famibelle.github.io/LuxKeyb/newsletter/" style="color:#006f9a;">Alle Newsletter</a>
+  <a href="https://famibelle.github.io/LuxKeyb/newsletter/2026-11-de.html" style="color:#006f9a;">Diesen Newsletter online lesen</a> · <a href="https://famibelle.github.io/LuxKeyb/newsletter/" style="color:#006f9a;">Alle Newsletter</a><!--desinscription-->
 </td></tr>
+
+
 
 </table>
 </td></tr>
 </table>
 <script>
-// Copie la lettre en HTML : Gmail la colle avec sa mise en page et ses images.
-// Le presse-papiers exige que la copie parte directement du clic, d'où la
-// promesse passée à ClipboardItem. Si le navigateur refuse (Safari sur iPhone
-// notamment), la lettre est sélectionnée pour un Ctrl+C ou un appui long.
 (function () {
-  var bouton = document.getElementById('copier');
   var retour = document.getElementById('retour');
+  var code = document.getElementById('code');
+  var enveloppe = document.getElementById('enveloppe');
   var lettre = document.getElementById('lettre');
-  function selectionner() {
-    var zone = document.createRange();
-    zone.selectNodeContents(lettre);
-    var sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(zone);
+
+  /* Le code HTML complet pour Brevo : un document autonome, avec le lien de
+     désinscription que Brevo remplit lui-même. */
+  function codeBrevo() {
+    var corps = enveloppe.outerHTML.replace(' id="enveloppe"', '').replace(' id="lettre"', '')
+      .replace('<!--desinscription-->', ' · <a href="{{ unsubscribe }}" style="color:#006f9a;">' + "Abmelden" + '</a>');
+    return '<!doctype html>\n<html lang="de">\n<head>\n<meta charset="utf-8">\n'
+      + '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+      + '<title>' + "Ihre Karten werden lebendig. Und bald auf dem Tisch?" + '</title>\n</head>\n'
+      + '<body style="margin:0; padding:0; background:#f3f6f9;">\n' + corps + '\n</body>\n</html>\n';
   }
-  bouton.addEventListener('click', function () {
+
+  document.getElementById('copier-html').addEventListener('click', function () {
+    var html = codeBrevo();
+    function montrer() {
+      code.value = html;
+      code.style.display = 'block';
+      code.focus();
+      code.select();
+      retour.textContent = "Direktes Kopieren ist hier nicht möglich: Der Code ist unten markiert, kopieren Sie ihn (Strg+C oder lange drücken).";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(html).then(function () {
+        retour.textContent = "HTML-Code kopiert. Öffnen Sie in Brevo den HTML-Editor der Kampagne, löschen Sie den Inhalt und fügen Sie ein.";
+      }, montrer);
+    } else { montrer(); }
+  });
+
+  /* La lettre mise en page, pour Gmail : la copie part directement du clic. */
+  document.getElementById('copier').addEventListener('click', function () {
     var html = '<meta charset="utf-8">' + lettre.outerHTML;
-    var texte = lettre.innerText;
     try {
       navigator.clipboard.write([new ClipboardItem({
         'text/html': new Blob([html], { type: 'text/html' }),
-        'text/plain': new Blob([texte], { type: 'text/plain' })
-      })]).then(function () {
-        retour.textContent = "Kopiert. Fügen Sie ihn in eine neue Gmail-Nachricht ein.";
-      }, echec);
+        'text/plain': new Blob([lettre.innerText], { type: 'text/plain' })
+      })]).then(function () { retour.textContent = "Kopiert. Fügen Sie ihn in eine neue Gmail-Nachricht ein."; }, echec);
     } catch (e) { echec(); }
     function echec() {
-      selectionner();
+      var zone = document.createRange();
+      zone.selectNodeContents(lettre);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(zone);
       retour.textContent = "Ihr Browser erlaubt das direkte Kopieren nicht: Der Newsletter ist markiert, drücken Sie Strg+C (oder kopieren Sie ihn auf dem Handy über das Menü).";
     }
   });
