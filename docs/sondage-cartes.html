@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Votre avis sur les cartes</title>
+<meta name="description" content="Un jeu de cartes en luxembourgeois : est-ce qu'il vous donne envie, et à quel prix ? Quatre questions, une minute.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap">
+<style>
+/* Sondage de la newsletter de novembre 2026 : l'envie pour le jeu de cartes
+   et le prix jugé juste. Les questions de prix viennent AVANT tout prix
+   affiché, pour ne pas influencer la réponse (pas de prix dans la lettre).
+   Les réponses partent sur Formspree, liste « sondage-cartes-2026-11 ». */
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --fond:#f3f6f9; --papier:#ffffff; --encre:#17212b; --doux:#56636f; --filet:#dbe3ea;
+  --rouge:#ed2939; --bleu:#00a1de; --bleu-encre:#006f9a; --puce:#eef4f8;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --texte:Literata, Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --fond:#0e141a; --papier:#151d25; --encre:#e8eef3; --doux:#9aa8b4; --filet:#2a3641;
+  --rouge:#ff5a66; --bleu:#3cbcef; --bleu-encre:#7fd3f5; --puce:#1c2731; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --fond:#0e141a; --papier:#151d25; --encre:#e8eef3; --doux:#9aa8b4; --filet:#2a3641;
+  --rouge:#ff5a66; --bleu:#3cbcef; --bleu-encre:#7fd3f5; --puce:#1c2731; color-scheme:dark}
+body{margin:0; background:var(--fond); color:var(--encre); font:17px/1.6 var(--texte); padding:32px 16px 48px}
+.cadre{max-width:620px; margin:0 auto; background:var(--papier); border:1px solid var(--filet); border-radius:6px; overflow:hidden}
+.drapeau{display:flex; height:6px}
+.drapeau span{flex:1}
+.drapeau span:nth-child(1){background:#ed2939}.drapeau span:nth-child(2){background:#fff; border-block:1px solid var(--filet)}.drapeau span:nth-child(3){background:#00a1de}
+.corps{padding:32px clamp(20px,6vw,44px) 36px; display:grid; gap:26px}
+h1{font:800 clamp(28px,6vw,38px)/1.1 var(--display); margin:0; letter-spacing:-.02em}
+p{margin:0}
+.chapo{color:var(--doux)}
+fieldset{border:0; margin:0; padding:0; display:grid; gap:8px}
+legend{font:700 18px/1.3 var(--display); padding:0; margin-bottom:8px}
+.aide{font-size:15px; color:var(--doux); margin:-4px 0 4px}
+label.choix{display:flex; gap:10px; align-items:center; padding:10px 14px; border:1px solid var(--filet); border-radius:8px; cursor:pointer}
+label.choix:has(input:checked){border-color:var(--rouge); background:var(--puce)}
+input[type=radio],input[type=checkbox]{accent-color:#ed2939; width:18px; height:18px; flex:none}
+textarea,input[type=email]{width:100%; padding:10px; font:16px var(--texte); border:1px solid var(--filet); border-radius:8px; background:var(--papier); color:var(--encre)}
+textarea{min-height:90px}
+button{background:var(--rouge); color:#fff; border:0; font:700 16px/1 var(--display); padding:15px 22px; border-radius:8px; cursor:pointer; justify-self:start}
+button:focus-visible{outline:3px solid var(--bleu); outline-offset:3px}
+.note{font-size:14px; color:var(--doux)}
+#message{font:700 17px/1.4 var(--display)}
+a{color:var(--bleu-encre)}
+</style>
+</head>
+<body>
+<main class="cadre">
+  <div class="drapeau" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="corps">
+    <h1>Un jeu de cartes en luxembourgeois : votre avis</h1>
+    <p class="chapo">Ce n'est encore qu'une idée. Vos réponses nous disent s'il faut la mener jusqu'au bout, et comment. Quatre questions, une minute, et aucune adresse e-mail obligatoire.</p>
+
+    <form id="sondage" action="https://formspree.io/f/mvgwnlky" method="POST" style="display:grid;gap:26px">
+      <input type="hidden" name="_subject" value="Sondage : le jeu de cartes">
+      <input type="hidden" name="liste" value="sondage-cartes-2026-11">
+      <input type="hidden" name="source" id="source" value="">
+
+      <fieldset>
+        <legend>1. Ce jeu vous donne-t-il envie ?</legend>
+        <label class="choix"><input type="radio" name="envie" value="oui" required> Oui, j'aimerais l'avoir</label>
+        <label class="choix"><input type="radio" name="envie" value="peut-etre"> Peut-être, je veux en savoir plus</label>
+        <label class="choix"><input type="radio" name="envie" value="non"> Pas pour moi</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Pour qui ?</legend>
+        <p class="aide">Plusieurs réponses possibles.</p>
+        <label class="choix"><input type="checkbox" name="pour_qui" value="enfants"> Mes enfants ou petits-enfants</label>
+        <label class="choix"><input type="checkbox" name="pour_qui" value="moi"> Moi, pour apprendre la langue</label>
+        <label class="choix"><input type="checkbox" name="pour_qui" value="classe"> Une classe, un atelier, une association</label>
+        <label class="choix"><input type="checkbox" name="pour_qui" value="cadeau"> Pour offrir</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Pour une boîte de 54 cartes, quel prix vous semble juste ?</legend>
+        <label class="choix"><input type="radio" name="prix_juste" value="moins de 5 €" required> Moins de 5 €</label>
+        <label class="choix"><input type="radio" name="prix_juste" value="5 à 8 €"> De 5 à 8 €</label>
+        <label class="choix"><input type="radio" name="prix_juste" value="8 à 12 €"> De 8 à 12 €</label>
+        <label class="choix"><input type="radio" name="prix_juste" value="12 à 15 €"> De 12 à 15 €</label>
+        <label class="choix"><input type="radio" name="prix_juste" value="plus de 15 €"> Plus de 15 €</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. À partir de quel prix ne l'achèteriez-vous plus ?</legend>
+        <p class="aide">Le prix où vous vous dites : « c'est trop cher ».</p>
+        <label class="choix"><input type="radio" name="prix_trop_cher" value="5 €" required> 5 €</label>
+        <label class="choix"><input type="radio" name="prix_trop_cher" value="8 €"> 8 €</label>
+        <label class="choix"><input type="radio" name="prix_trop_cher" value="12 €"> 12 €</label>
+        <label class="choix"><input type="radio" name="prix_trop_cher" value="15 €"> 15 €</label>
+        <label class="choix"><input type="radio" name="prix_trop_cher" value="20 €"> 20 €</label>
+        <label class="choix"><input type="radio" name="prix_trop_cher" value="plus de 20 €"> Plus de 20 €</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Un mot à ajouter ? <span style="font-weight:500;color:var(--doux)">(facultatif)</span></legend>
+        <textarea name="commentaire" aria-label="Votre commentaire" placeholder="Une idée de boîte, un thème, une remarque…"></textarea>
+      </fieldset>
+
+      <fieldset>
+        <legend>Être prévenu si le jeu voit le jour ? <span style="font-weight:500;color:var(--doux)">(facultatif)</span></legend>
+        <input type="email" name="email" autocomplete="email" aria-label="Votre e-mail" placeholder="votre@adresse.lu">
+        <p class="note">Votre adresse sert seulement à vous écrire au sujet du jeu. Elle est effacée sur simple demande, ou si le projet s'arrête.</p>
+      </fieldset>
+
+      <button type="submit">Envoyer mon avis</button>
+      <p id="message" role="status"></p>
+    </form>
+
+    <p class="note">Les réponses sont recueillies par <a href="https://formspree.io/legal/privacy-policy">Formspree</a>, comme les avis sur l'application. <a href="newsletter/2026-11.html">Retour à la newsletter</a></p>
+  </div>
+</main>
+<script>
+(function () {
+  var form = document.getElementById('sondage');
+  var message = document.getElementById('message');
+  var q = new URLSearchParams(location.search);
+  /* Le clic dans la lettre choisit déjà la réponse à la question 1. */
+  var envie = q.get('envie');
+  if (envie) {
+    var r = form.querySelector('input[name="envie"][value="' + envie.replace(/[^a-z-]/g, '') + '"]');
+    if (r) r.checked = true;
+  }
+  document.getElementById('source').value = q.get('source') || 'direct';
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    message.textContent = 'Envoi…';
+    fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        form.reset();
+        message.textContent = 'Merci ! Votre avis compte vraiment pour la suite.';
+      })
+      .catch(function () {
+        message.textContent = 'L\'envoi n\'a pas marché. Réessayez dans un instant.';
+      });
+  });
+})();
+</script>
+</body>
+</html>
