@@ -109,7 +109,8 @@ Les décisions de l'assemblée générale sont communiquées aux membres par cou
 ## Titre V : Conseil d'administration
 
 **Article 18 : Composition**
-L'association est administrée par un conseil d'administration de trois à [sept] administrateurs, membres ou non de l'association. Tant que l'association ne compte que deux membres, le conseil peut ne compter que deux administrateurs. Dès qu'elle en compte davantage, l'assemblée générale complète le conseil dans les trois mois.
+L'association est administrée par un conseil d'administration de deux à cinq administrateurs, membres ou non de l'association.
+Tant que l'association ne compte que deux membres, deux administrateurs suffisent. Dès qu'elle en compte davantage, le conseil compte au moins trois administrateurs, et l'assemblée générale le complète si besoin dans les trois mois.
 Les administrateurs sont nommés par l'assemblée générale pour un mandat de [trois] ans, renouvelable. L'assemblée générale peut les révoquer à tout moment, à la majorité simple. Un administrateur peut démissionner à tout moment par écrit.
 En cas de vacance, le conseil peut désigner un remplaçant jusqu'à la prochaine assemblée générale, qui confirme ou non cette nomination.
 Le conseil désigne en son sein un président, un secrétaire et un trésorier. Une même personne peut cumuler les fonctions de secrétaire et de trésorier.
@@ -191,8 +192,13 @@ Le premier conseil d'administration peut décider de reprendre les engagements p
 ## Dispositions transitoires : Assemblée constitutive
 
 Réunis le [date] à [lieu], les membres fondateurs ont nommé administrateurs pour une durée de [trois] ans :
-- [Prénom Nom], président ;
-- [Prénom Nom], secrétaire et trésorier.
+1. [Prénom Nom], président ;
+2. [Prénom Nom], secrétaire et trésorier ;
+3. [Prénom Nom], administrateur ;
+4. [Prénom Nom], administrateur ;
+5. [Prénom Nom], administrateur.
+
+Deux administrateurs suffisent au départ. Les lignes non utilisées sont barrées, et les places libres pourront être pourvues plus tard par l'assemblée générale.
 
 La cotisation pour le premier exercice est fixée à 5 euros.
 
