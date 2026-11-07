@@ -58,6 +58,7 @@ button{background:var(--rouge); color:#fff; border:0; font:700 16px/1 var(--disp
 button:focus-visible{outline:3px solid var(--bleu); outline-offset:3px}
 .note{font-size:14px; color:var(--doux)}
 #message{font:700 17px/1.4 var(--display)}
+.bandeau{background:var(--puce); border-left:5px solid var(--rouge); border-radius:8px; padding:14px 16px; font:600 17px/1.45 var(--display)}
 a{color:var(--bleu-encre)}
 </style>
 </head>
@@ -67,6 +68,7 @@ a{color:var(--bleu-encre)}
   <div class="corps">
     <h1>Un jeu de cartes en luxembourgeois : votre avis</h1>
     <p class="chapo">Ce n'est encore qu'une idée. Vos réponses nous disent s'il faut la mener jusqu'au bout, et comment. Quatre questions, une minute, et aucune adresse e-mail obligatoire.</p>
+    <p id="clic-ok" class="bandeau" role="status" hidden>Merci, votre réponse est enregistrée ! Si vous avez encore une minute, les questions suivantes nous aident beaucoup, surtout celle sur le prix.</p>
 
     <form id="sondage" action="https://formspree.io/p/3129770432035553221/f/sondage-cartes" method="POST" style="display:grid;gap:26px">
       <input type="hidden" name="_subject" value="Sondage : le jeu de cartes">
@@ -74,6 +76,8 @@ a{color:var(--bleu-encre)}
       <input type="hidden" name="source" id="source" value="">
       <input type="hidden" name="pour_qui" id="pour_qui" value="">
       <input type="hidden" name="langue" value="fr">
+      <input type="hidden" name="reponse_id" id="reponse_id" value="">
+      <input type="hidden" name="etape" value="complet">
 
       <fieldset>
         <legend>1. Ce jeu vous donne-t-il envie ?</legend>
@@ -136,11 +140,50 @@ a{color:var(--bleu-encre)}
   var q = new URLSearchParams(location.search);
   /* Le clic dans la lettre choisit déjà la réponse à la question 1. */
   var envie = q.get('envie');
+  var r = null;
   if (envie) {
-    var r = form.querySelector('input[name="envie"][value="' + envie.replace(/[^a-z-]/g, '') + '"]');
+    r = form.querySelector('input[name="envie"][value="' + envie.replace(/[^a-z-]/g, '') + '"]');
     if (r) r.checked = true;
   }
   document.getElementById('source').value = q.get('source') || 'direct';
+
+  /* Un identifiant relie la réponse au clic et le sondage complet de la même
+     personne : à l'analyse, on garde la plus complète des deux. */
+  var id = null;
+  try { id = sessionStorage.getItem('sondage-id'); } catch (e) {}
+  if (!id) {
+    id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    try { sessionStorage.setItem('sondage-id', id); } catch (e) {}
+  }
+  document.getElementById('reponse_id').value = id;
+
+  /* Le clic dans la lettre suffit : la réponse à la question 1 part dès
+     l'ouverture, sans attendre le bouton. Une seule fois par lien et par
+     onglet, pour qu'un rechargement ne la compte pas deux fois. Les robots qui
+     vérifient les liens des e-mails n'exécutent pas ce code. */
+  if (r) {
+    var cle = 'sondage-clic-' + r.value;
+    var deja = false;
+    try { deja = sessionStorage.getItem(cle) === '1'; } catch (e) {}
+    if (!deja) {
+      var d = new FormData();
+      ['_subject', 'liste', 'source', 'langue'].forEach(function (n) {
+        d.append(n, form.querySelector('input[name="' + n + '"]').value);
+      });
+      d.append('envie', r.value);
+      d.append('reponse_id', id);
+      d.append('etape', 'clic');
+      fetch(form.action, { method: 'POST', body: d, headers: { 'Accept': 'application/json' } })
+        .then(function (rep) {
+          if (!rep.ok) return;
+          document.getElementById('clic-ok').hidden = false;
+          try { sessionStorage.setItem(cle, '1'); } catch (e) {}
+        })
+        .catch(function () {});
+    } else {
+      document.getElementById('clic-ok').hidden = false;
+    }
+  }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
