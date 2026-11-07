@@ -35,8 +35,8 @@ gefragt wird: Zur Orientierung: Ein Workshop kostet [Tarif] €.]
 
 Im Anhang finden Sie den Flyer des Projekts. Die Spielregel steht online (auf
 Französisch): https://famibelle.github.io/LuxKeyb/regle-du-jeu.html, und die
-Tastatur lässt sich im Browser ausprobieren:
-https://famibelle.github.io/LuxKeyb/simulateur.html.
+Tastatur ist kostenlos im Google Play Store erhältlich:
+https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard.
 
 Gern rufe ich Sie in der kommenden Woche an, um die Einzelheiten zu
 besprechen.

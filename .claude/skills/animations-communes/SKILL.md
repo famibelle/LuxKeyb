@@ -95,8 +95,9 @@ publié au Luxembourg n'a été trouvé. Les règles :
    (`LuxKeybPlayStore/graphics/flyer-triptyque/Letzebuergesch_Clavier_flyer.pdf`),
    et les liens vers la règle du jeu
    (https://famibelle.github.io/LuxKeyb/regle-du-jeu.html, en français seulement
-   pour l'instant) et le simulateur
-   (https://famibelle.github.io/LuxKeyb/simulateur.html).
+   pour l'instant) et la fiche Play Store de l'appli
+   (https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard).
+   Pas le simulateur : il ne donne pas une bonne idée de l'appli.
 3. **Un appel** après 7 à 10 jours sans réponse. Ensuite, une seule relance
    par e-mail, puis on passe à la commune suivante et on note « à recontacter »
    avec une date.

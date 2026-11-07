@@ -35,8 +35,8 @@ un prix : à titre indicatif, un atelier est proposé à [tarif] €.]
 
 Vous trouverez en pièce jointe le flyer du projet. La règle du jeu est en
 ligne : https://famibelle.github.io/LuxKeyb/regle-du-jeu.html, et le clavier
-peut s'essayer dans le navigateur :
-https://famibelle.github.io/LuxKeyb/simulateur.html.
+se télécharge gratuitement sur le Google Play Store :
+https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard.
 
 Je me permettrai de vous appeler la semaine prochaine pour en parler.
 
