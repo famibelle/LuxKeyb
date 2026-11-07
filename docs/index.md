@@ -519,6 +519,9 @@ Un mot manque, une suggestion tombe à côté, une touche vous gêne ? Ouvrez un
 [formulaire de retours](feedbacks_form.html). Le dictionnaire progresse surtout
 grâce à ces signalements.
 
+<div class="inscription-lettre" lang="fr"><noscript><p><a href="https://59665626.sibforms.com/v2/serve/MUIFALrEewAgsgtfo-dwb_9JQPAch_GA_70rnty6I5FXP1G8XZkCKnFCXg2jgbkS3kMxU71nj9W0CD8pnV7LMwFctUPH42j0f48L7aRdz58oUqOC19FIoqG05SL6y2RPcSddU_pNkSYPkjZOEjbUowpBz8TWutOi3x84W_0KjrMg3YZPWlc-_HEFW8y9bUJagnxca5aTIfl63dqXAw==">S'inscrire à la newsletter</a></p></noscript></div>
+<script defer src="assets/inscription-lettre.js"></script>
+
 ---
 
 ## Pour aller plus loin

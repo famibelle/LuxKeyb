@@ -1,8 +1,8 @@
 # Politique de Confidentialité - Lëtzebuergesch Clavier
 
 **Date d'entrée en vigueur :** 19 septembre 2025  
-**Dernière mise à jour :** 10 octobre 2026  
-**Version :** 3.3 (cartes du carnet)  
+**Dernière mise à jour :** 7 novembre 2026  
+**Version :** 3.4 (newsletter du site)  
 **Application :** Lëtzebuergesch Clavier  
 **Nom du package :** com.potomitan.luxkeyboard
 
@@ -233,6 +233,12 @@ Les données suivantes existent **uniquement sur votre appareil** et ne sont **j
 
 ---
 
+## 📰 La newsletter du site
+
+Sur le site, vous pouvez vous inscrire à la newsletter avec votre adresse e-mail. Elle est conservée par Brevo, le service qui envoie la lettre, et ne sert qu'à vous l'envoyer. Rien d'autre ne vous est demandé, et rien ne passe par l'application : le clavier ne connaît pas votre adresse. Pour vous désabonner, utilisez le lien en bas de chaque lettre. Pour faire effacer votre adresse, écrivez à medhi.famibelle@gmail.com.
+
+---
+
 ## 🔐 Protection et Sécurité des Données
 
 ### Comment Nous Protégeons Votre Vie Privée :
@@ -365,6 +371,8 @@ Nous ne demandons **intentionnellement pas** les autorisations courantes suivant
 ### Partage avec des Tiers :
 
 **Nous partageons ZÉRO donnée avec des tiers** car nous collectons zéro donnée. La seule chose qui quitte votre téléphone est votre voix, quand vous dictez, et elle va directement à l'Université du Luxembourg pour être transcrite (voir [🎙️ La dictée vocale](#dictee-vocale)).
+
+La newsletter du site est à part : si vous vous y inscrivez, votre adresse e-mail est gardée par Brevo pour vous l'envoyer (voir [📰 La newsletter du site](#-la-newsletter-du-site)).
 
 Soyons explicites sur ce que nous **ne faisons pas** :
 
@@ -666,7 +674,7 @@ Nous pouvons mettre à jour cette politique pour refléter :
 
 ### Contrôle de Version :
 
-1. **Numéro de Version :** Chaque mise à jour incrémente la version (Actuelle : **3.3**)
+1. **Numéro de Version :** Chaque mise à jour incrémente la version (Actuelle : **3.4**)
 2. **Date d'Entrée en Vigueur :** Mise à jour en haut de ce document
 3. **Historique des Changements :** Disponible sur notre dépôt GitHub
 4. **Changements Importants :** Seront mis en évidence dans les annonces de mise à jour
@@ -680,11 +688,15 @@ Nous pouvons mettre à jour cette politique pour refléter :
 
 **Pour des changements importants (nouvelle collecte de données, nouvelles fonctionnalités) :**
 - Notification dans l'app au prochain lancement
-- Email aux utilisateurs (si nous avions des emails - nous n'en avons pas !)
+- Email aux abonnés de la newsletter du site (l'application, elle, ne connaît aucune adresse)
 - Préavis de 30 jours avant que les changements prennent effet
 - Option de réviser les changements avant d'accepter
 
 ### Historique des Changements :
+
+**Version 3.4 (7 novembre 2026) :**
+- Nouvelle section : l'inscription à la newsletter sur le site, l'adresse e-mail gardée par Brevo pour l'envoyer, la désinscription et l'effacement
+- L'application ne change pas : elle ne collecte toujours aucune adresse
 
 **Version 3.3 (10 octobre 2026) :**
 - Nouvelle autorisation documentée : CAMERA, demandée au premier scan, seulement pour lire le code d'une carte offerte (version 35.0.0)

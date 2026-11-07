@@ -519,6 +519,9 @@ Ein Wort fehlt, ein Vorschlag liegt daneben, eine Taste stört? Eröffnen Sie ei
 [Rückmeldeformular](feedbacks_form.html). Das Wörterbuch wird vor allem durch
 diese Hinweise besser.
 
+<div class="inscription-lettre" lang="de"><noscript><p><a href="https://59665626.sibforms.com/v2/serve/MUIFALrEewAgsgtfo-dwb_9JQPAch_GA_70rnty6I5FXP1G8XZkCKnFCXg2jgbkS3kMxU71nj9W0CD8pnV7LMwFctUPH42j0f48L7aRdz58oUqOC19FIoqG05SL6y2RPcSddU_pNkSYPkjZOEjbUowpBz8TWutOi3x84W_0KjrMg3YZPWlc-_HEFW8y9bUJagnxca5aTIfl63dqXAw==">Newsletter abonnieren</a></p></noscript></div>
+<script defer src="assets/inscription-lettre.js"></script>
+
 ---
 
 ## Mehr erfahren
