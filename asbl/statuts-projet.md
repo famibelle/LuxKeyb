@@ -41,11 +41,13 @@ L'association est constituée pour une durée illimitée.
 L'association a pour objet de promouvoir l'apprentissage et l'usage de la langue luxembourgeoise, notamment :
 - par le développement, l'amélioration et la diffusion d'outils numériques gratuits d'aide à l'écriture et à l'apprentissage, comme un clavier pour téléphone ;
 - par des jeux, des animations, des ateliers et des stands destinés aux enfants, aux familles et aux adultes, en particulier dans les communes, les fêtes locales, les écoles, les bibliothèques et les structures d'accueil ;
+- par l'organisation d'événements, de rencontres, de soirées d'échange et de réseautage (networking), de conférences et de concours ;
+- par la promotion de ces outils et de ces activités, notamment sur internet et les réseaux sociaux ;
 - par la collaboration avec les institutions publiques, les associations et toute personne poursuivant un but semblable.
 
-À titre accessoire, l'association peut éditer et vendre des supports pédagogiques et ludiques, dont des cartes à jouer, et facturer des animations. Les recettes de ces activités sont entièrement affectées à la réalisation de l'objet.
+À titre accessoire, l'association peut éditer et vendre des supports pédagogiques et ludiques, dont des cartes à jouer, facturer des animations, demander une participation aux frais lors de ses événements et y proposer une petite restauration et des boissons. Les recettes de ces activités sont entièrement affectées à la réalisation de l'objet.
 
-L'association peut accomplir tout acte qui se rapporte directement ou indirectement à son objet. Elle peut notamment recevoir des subventions, des dons et des legs, dans les limites de la loi.
+L'association peut accomplir tout acte qui se rapporte directement ou indirectement à son objet. Elle peut notamment recevoir des subventions, des dons et des legs, dans les limites de la loi. Elle peut rechercher des sponsors et des partenaires, publics ou privés, qui prennent en charge tout ou partie des frais de ses activités et de ses événements, en contrepartie notamment d'une mention de leur soutien.
 
 **Article 5 : Absence de but lucratif**
 L'association ne procure aucun gain matériel à ses membres ni à ses administrateurs. Aucune distribution de bénéfices, directe ou indirecte, n'est permise.
@@ -159,7 +161,8 @@ Les ressources de l'association comprennent notamment :
 - les cotisations ;
 - les subventions publiques ;
 - les dons et legs ;
-- les recettes des animations, des ventes de supports et de toute activité accessoire liée à l'objet ;
+- le sponsoring et le parrainage d'entreprises et d'autres partenaires ;
+- les recettes des animations, des événements, des ventes de supports et de toute activité accessoire liée à l'objet ;
 - les revenus de son patrimoine.
 
 **Article 26 : Exercice**
