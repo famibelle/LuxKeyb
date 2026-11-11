@@ -131,8 +131,8 @@ Elles sont communiquées aux membres par courriel ou par courrier dans le mois q
 ## Titre V : Conseil d'administration
 
 **Article 19 : Composition, nomination et fin du mandat**
-Le conseil d'administration se compose de trois administrateurs au moins et de cinq au plus. L'assemblée générale fixe le nombre précis d'administrateurs à élire.
-Si et aussi longtemps que l'association compte moins de trois membres, le conseil peut ne compter que deux administrateurs. Lorsque l'association atteint trois membres, l'assemblée générale nomme sans délai un troisième administrateur.
+Le conseil d'administration se compose de deux à cinq administrateurs. L'assemblée générale fixe le nombre précis d'administrateurs à élire.
+Conformément à la Loi, le conseil ne peut compter deux administrateurs que si et aussi longtemps que l'association compte moins de trois membres. Lorsque l'association atteint trois membres, l'assemblée générale nomme sans délai un troisième administrateur.
 Les administrateurs sont des personnes physiques ou morales, membres ou non de l'association. Une personne morale nommée administrateur désigne une personne physique comme représentant permanent.
 Les administrateurs sont nommés par l'assemblée générale, à la majorité simple, pour un mandat de trois ans, renouvelable.
 Le mandat des administrateurs expire par l'échéance du terme, le décès, la révocation ou la démission. L'assemblée générale peut révoquer un administrateur à tout moment. L'administrateur concerné est informé des motifs par écrit et peut être entendu avant le vote. Un administrateur peut démissionner à tout moment par simple lettre ou courriel adressé au conseil d'administration. Si sa démission fait passer le conseil sous le nombre minimum d'administrateurs, il reste en fonction jusqu'à son remplacement.
