@@ -115,11 +115,14 @@ Les décisions de l'assemblée générale sont communiquées aux membres par cou
 
 ## Titre V : Conseil d'administration
 
-**Article 18 : Composition**
-L'association est administrée par un conseil d'administration de deux à cinq administrateurs, membres ou non de l'association.
-Tant que l'association ne compte que deux membres, deux administrateurs suffisent. Dès qu'elle en compte davantage, le conseil compte au moins trois administrateurs, et l'assemblée générale le complète si besoin dans les trois mois.
-Les administrateurs sont nommés par l'assemblée générale pour un mandat de trois ans, renouvelable. L'assemblée générale peut les révoquer à tout moment, à la majorité simple. Un administrateur peut démissionner à tout moment par écrit.
+**Article 18 : Composition, nomination et fin du mandat**
+L'association est administrée par un conseil d'administration de trois à cinq administrateurs. Si et aussi longtemps que l'association compte moins de trois membres, le conseil peut ne compter que deux administrateurs. Lorsque l'association atteint trois membres, l'assemblée générale nomme sans délai un troisième administrateur.
+Les administrateurs sont des personnes physiques ou morales, membres ou non de l'association. Une personne morale nommée administrateur désigne une personne physique comme représentant permanent.
+Les administrateurs sont nommés par l'assemblée générale, à la majorité simple, pour un mandat de trois ans, renouvelable.
+Le mandat prend fin à son échéance, par décès, par démission ou par révocation. Un administrateur peut démissionner à tout moment par écrit adressé au conseil d'administration. Si sa démission fait passer le conseil sous le nombre minimum d'administrateurs, il reste en fonction jusqu'à son remplacement.
+L'assemblée générale peut révoquer un administrateur à tout moment, à la majorité simple. L'administrateur concerné est informé des motifs par écrit et peut être entendu avant le vote.
 En cas de vacance, le conseil peut désigner un remplaçant jusqu'à la prochaine assemblée générale, qui confirme ou non cette nomination.
+Les nominations et les cessations de fonctions des administrateurs sont déposées au Registre de commerce et des sociétés dans le délai légal.
 Le conseil désigne en son sein un président, un secrétaire et un trésorier. Une même personne peut cumuler les fonctions de secrétaire et de trésorier.
 
 **Article 19 : Pouvoirs**
@@ -131,7 +134,7 @@ Il ne délibère valablement que si la majorité des administrateurs est présen
 
 **Article 21 : Représentation et signature**
 L'association est valablement engagée envers les tiers par la signature conjointe de deux administrateurs.
-Pour les actes de gestion journalière dont le montant ne dépasse pas 500 euros, la signature du président ou du trésorier suffit.
+Pour les actes de gestion journalière dont le montant ne dépasse pas 500 euros, la signature du président ou du trésorier suffit. Cette délégation de la gestion journalière prend fin avec la fonction de président ou de trésorier. Le conseil d'administration peut la restreindre ou la retirer à tout moment. L'identité des personnes chargées de la gestion journalière est déposée au Registre de commerce et des sociétés.
 Aucun administrateur ne peut engager l'association par un emprunt, une caution ou une garantie sans une décision préalable du conseil d'administration.
 Lorsqu'un administrateur est en conflit d'intérêts (article 22), il ne signe pas pour l'association. Si deux autres administrateurs ne peuvent pas signer, l'administrateur restant engage seul l'association, sur la base de la décision du conseil.
 
