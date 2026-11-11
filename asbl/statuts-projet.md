@@ -166,7 +166,7 @@ Les ressources de l'association comprennent notamment :
 - les revenus de son patrimoine.
 
 **Article 26 : Exercice**
-L'exercice commence le 1ᵉʳ janvier et finit le 31 décembre. Le premier exercice commence le jour de la constitution et finit le 31 décembre [2027].
+L'exercice commence le 1ᵉʳ janvier et finit le 31 décembre. Le premier exercice commence le jour de la constitution et finit le 31 décembre 2027.
 
 **Article 27 : Comptes**
 Le conseil d'administration tient une comptabilité conforme à la loi. Chaque année, il établit les comptes de l'exercice écoulé et le budget de l'exercice suivant, et les soumet à l'assemblée générale.
