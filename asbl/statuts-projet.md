@@ -118,7 +118,7 @@ Les décisions de l'assemblée générale sont communiquées aux membres par cou
 **Article 18 : Composition**
 L'association est administrée par un conseil d'administration de deux à cinq administrateurs, membres ou non de l'association.
 Tant que l'association ne compte que deux membres, deux administrateurs suffisent. Dès qu'elle en compte davantage, le conseil compte au moins trois administrateurs, et l'assemblée générale le complète si besoin dans les trois mois.
-Les administrateurs sont nommés par l'assemblée générale pour un mandat de [trois] ans, renouvelable. L'assemblée générale peut les révoquer à tout moment, à la majorité simple. Un administrateur peut démissionner à tout moment par écrit.
+Les administrateurs sont nommés par l'assemblée générale pour un mandat de trois ans, renouvelable. L'assemblée générale peut les révoquer à tout moment, à la majorité simple. Un administrateur peut démissionner à tout moment par écrit.
 En cas de vacance, le conseil peut désigner un remplaçant jusqu'à la prochaine assemblée générale, qui confirme ou non cette nomination.
 Le conseil désigne en son sein un président, un secrétaire et un trésorier. Une même personne peut cumuler les fonctions de secrétaire et de trésorier.
 
@@ -199,7 +199,7 @@ Le premier conseil d'administration peut décider de reprendre les engagements p
 
 ## Dispositions transitoires : Assemblée constitutive
 
-Réunis le [date] à [lieu], les membres fondateurs décident que chacun d'eux est nommé administrateur, pour une durée de [trois] ans. Le premier conseil d'administration se compose ainsi de tous les membres fondateurs, avec les fonctions suivantes :
+Réunis le [date] à [lieu], les membres fondateurs décident que chacun d'eux est nommé administrateur, pour une durée de trois ans. Le premier conseil d'administration se compose ainsi de tous les membres fondateurs, avec les fonctions suivantes :
 1. [Prénom Nom], [fonction] ;
 2. [Prénom Nom], [fonction] ;
 3. [Prénom Nom], [fonction] ;
