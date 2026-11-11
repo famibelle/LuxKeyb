@@ -131,7 +131,7 @@ Il ne délibère valablement que si la majorité des administrateurs est présen
 
 **Article 21 : Représentation et signature**
 L'association est valablement engagée envers les tiers par la signature conjointe de deux administrateurs.
-Pour la gestion journalière, et pour toute dépense ne dépassant pas [500] euros, la signature du président ou du trésorier suffit.
+Pour les actes de gestion journalière dont le montant ne dépasse pas 500 euros, la signature du président ou du trésorier suffit.
 Aucun administrateur ne peut engager l'association par un emprunt, une caution ou une garantie sans une décision préalable du conseil d'administration.
 Lorsqu'un administrateur est en conflit d'intérêts (article 22), il ne signe pas pour l'association. Si deux autres administrateurs ne peuvent pas signer, l'administrateur restant engage seul l'association, sur la base de la décision du conseil.
 
