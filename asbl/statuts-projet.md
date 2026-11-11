@@ -199,14 +199,14 @@ Le premier conseil d'administration peut décider de reprendre les engagements p
 
 ## Dispositions transitoires : Assemblée constitutive
 
-Réunis le [date] à [lieu], les membres fondateurs ont nommé administrateurs pour une durée de [trois] ans :
-1. [Prénom Nom], président ;
-2. [Prénom Nom], secrétaire et trésorier ;
-3. [Prénom Nom], administrateur ;
-4. [Prénom Nom], administrateur ;
-5. [Prénom Nom], administrateur.
+Réunis le [date] à [lieu], les membres fondateurs décident que chacun d'eux est nommé administrateur, pour une durée de [trois] ans. Le premier conseil d'administration se compose ainsi de tous les membres fondateurs, avec les fonctions suivantes :
+1. [Prénom Nom], [fonction] ;
+2. [Prénom Nom], [fonction] ;
+3. [Prénom Nom], [fonction] ;
+4. [Prénom Nom], [fonction] ;
+5. [Prénom Nom], [fonction].
 
-Deux administrateurs suffisent au départ. Les lignes non utilisées sont barrées, et les places libres pourront être pourvues plus tard par l'assemblée générale.
+Les fonctions sont : président, secrétaire, trésorier, ou administrateur. Une même personne peut être secrétaire et trésorier. Les lignes qui ne correspondent à aucun fondateur sont barrées.
 
 La cotisation pour le premier exercice est fixée à 5 euros.
 
