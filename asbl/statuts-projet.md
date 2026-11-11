@@ -1,10 +1,8 @@
-# Statuts : projet
+# Statuts
 
 **LuxKeyb asbl**
 Association sans but lucratif
 Siège : [adresse] (commune de Rambrouch)
-
-> Projet du 7 novembre 2026, à relire ensemble avant la signature. Les passages entre [crochets] sont à compléter.
 
 Entre les soussignés :
 
@@ -229,8 +227,7 @@ Le premier conseil d'administration peut décider de reprendre les engagements p
 
 En signant les présents statuts, les fondateurs prennent les résolutions suivantes :
 
-1. Le nombre d'administrateurs est fixé à [nombre].
-2. Chaque fondateur est nommé administrateur, pour une durée de trois ans, avec la fonction suivante :
+1. Chaque fondateur est nommé administrateur, pour une durée de trois ans. Le nombre d'administrateurs est ainsi égal au nombre de fondateurs signataires. Les fonctions sont les suivantes :
    - [Prénom Nom], [fonction] ;
    - [Prénom Nom], [fonction] ;
    - [Prénom Nom], [fonction] ;
@@ -238,9 +235,9 @@ En signant les présents statuts, les fondateurs prennent les résolutions suiva
    - [Prénom Nom], [fonction].
 
    Les fonctions sont : président, secrétaire, trésorier, ou administrateur. Une même personne peut être secrétaire et trésorier. Les lignes qui ne correspondent à aucun fondateur sont barrées.
-3. Le siège de l'association est établi au [adresse], commune de Rambrouch.
-4. Les fondateurs autorisent le conseil d'administration à déléguer la gestion journalière au président et au trésorier, dans les conditions de l'article 24.
-5. La cotisation pour le premier exercice est fixée à 5 euros, pour les membres comme pour les membres adhérents.
+2. Le siège de l'association est établi au [adresse], commune de Rambrouch.
+3. Les fondateurs autorisent le conseil d'administration à déléguer la gestion journalière au président et au trésorier, dans les conditions de l'article 24.
+4. La cotisation pour le premier exercice est fixée à 5 euros, pour les membres comme pour les membres adhérents.
 
 Signé électroniquement par les fondateurs. Les présents statuts prennent effet à la date de la dernière signature. Chaque fondateur en reçoit un exemplaire signé, et l'association conserve le sien à son siège.
 
