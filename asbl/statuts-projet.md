@@ -16,7 +16,7 @@ Entre les soussignés :
 
 (Deux fondateurs suffisent. Les lignes non utilisées sont barrées.)
 
-et tous ceux qui deviendront membres par la suite, est constituée en date du [date] une association sans but lucratif, ci-après « l'association », régie par la loi modifiée du 7 août 2023 sur les associations sans but lucratif et les fondations, ci-après « la Loi », et par les présents statuts.
+et tous ceux qui deviendront membres par la suite, est constituée, à la date de la dernière signature des présents statuts, une association sans but lucratif, ci-après « l'association », régie par la loi modifiée du 7 août 2023 sur les associations sans but lucratif et les fondations, ci-après « la Loi », et par les présents statuts.
 
 ---
 
@@ -227,7 +227,7 @@ Le premier conseil d'administration peut décider de reprendre les engagements p
 
 ## Résolutions prises par les fondateurs
 
-Réunis le [date] à [lieu], les fondateurs ont pris les résolutions suivantes :
+En signant les présents statuts, les fondateurs prennent les résolutions suivantes :
 
 1. Le nombre d'administrateurs est fixé à [nombre].
 2. Chaque fondateur est nommé administrateur, pour une durée de trois ans, avec la fonction suivante :
@@ -242,7 +242,7 @@ Réunis le [date] à [lieu], les fondateurs ont pris les résolutions suivantes 
 4. Les fondateurs autorisent le conseil d'administration à déléguer la gestion journalière au président et au trésorier, dans les conditions de l'article 24.
 5. La cotisation pour le premier exercice est fixée à 5 euros, pour les membres comme pour les membres adhérents.
 
-Fait à [lieu], le [date], en autant d'exemplaires originaux que de signataires, plus un pour l'association.
+Signé électroniquement par les fondateurs. Les présents statuts prennent effet à la date de la dernière signature. Chaque fondateur en reçoit un exemplaire signé, et l'association conserve le sien à son siège.
 
 | [Prénom Nom] | [Prénom Nom] | [Prénom Nom] |
 |---|---|---|
