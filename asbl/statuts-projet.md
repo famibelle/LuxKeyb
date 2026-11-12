@@ -79,8 +79,11 @@ La qualité de membre se perd par :
 - l'exclusion prononcée par l'assemblée générale selon l'article 11.
 
 **Article 11 : Exclusion**
-L'exclusion d'un membre ne peut être prononcée que par l'assemblée générale, à la majorité des deux tiers des voix des membres présents ou représentés, pour un motif grave ou une atteinte grave aux intérêts de l'association.
-Sont notamment considérés comme graves : un manquement grave ou répété aux présents statuts ; un comportement qui nuit gravement à l'image, aux activités ou aux intérêts de l'association ; l'utilisation du nom, des biens ou des fonds de l'association à des fins personnelles ; des propos ou des actes discriminatoires ou violents lors de ses activités.
+L'exclusion d'un membre ne peut être prononcée que par l'assemblée générale, à la majorité des deux tiers des voix des membres présents ou représentés, et seulement dans les cas suivants :
+- un manquement grave ou répété aux présents statuts ;
+- un comportement qui nuit gravement à l'image, aux activités ou aux intérêts de l'association ;
+- l'utilisation du nom, des biens ou des fonds de l'association à des fins personnelles ;
+- des propos ou des actes discriminatoires ou violents lors de ses activités.
 Le membre concerné est informé par écrit des motifs au moins quinze jours avant l'assemblée et a le droit d'y être entendu.
 
 **Article 12 : Effets du départ**
@@ -114,14 +117,15 @@ Tous les membres sont convoqués par le conseil d'administration, par courrier p
 **Article 16 : Délibérations**
 Tous les membres ont un droit de vote égal. Un membre peut se faire représenter par un autre membre muni d'une procuration écrite. Un membre ne peut détenir plus d'une procuration.
 Les décisions sont prises à la majorité des voix des membres présents ou représentés, sauf si la Loi ou les statuts en disposent autrement. En cas d'égalité, la proposition est rejetée.
+L'assemblée générale est présidée par le président du conseil d'administration ou, à défaut, par un administrateur qu'elle désigne en début de séance.
 Les membres peuvent participer à l'assemblée générale par visioconférence ou par tout autre moyen de télécommunication qui permet de les identifier. Ils sont alors réputés présents.
 
 **Article 17 : Modification des statuts et dissolution**
 La modification des statuts s'effectue selon l'article 15 de la Loi. La dissolution de l'association s'effectue selon l'article 25 de la Loi.
-La convocation de l'assemblée générale indique les modifications proposées ou la proposition de dissolution.
+Le texte des modifications proposées, ou la proposition de dissolution, est indiqué dans la convocation. Conformément à la Loi, l'assemblée doit réunir au moins les deux tiers des membres présents ou représentés. Une modification des statuts est adoptée à la majorité des deux tiers des voix, une modification du but et la dissolution à la majorité des trois quarts des voix des membres présents ou représentés.
 
 **Article 18 : Procès-verbaux et communication des décisions**
-Les décisions de l'assemblée générale sont consignées dans des procès-verbaux signés par le président et conservés au siège, où les membres peuvent les consulter.
+Les décisions de l'assemblée générale sont consignées dans des procès-verbaux signés par celui qui a présidé la réunion et, le cas échéant, par le secrétaire. Ils sont conservés au siège, où les membres peuvent les consulter.
 Elles sont communiquées aux membres par courriel ou par courrier dans le mois qui suit. Celles qui intéressent les tiers sont déposées au Registre de commerce et des sociétés lorsque la Loi l'exige.
 
 ---
@@ -138,17 +142,18 @@ En cas de vacance, le conseil peut désigner un remplaçant jusqu'à la prochain
 Les nominations et les cessations de fonctions des administrateurs sont déposées au Registre de commerce et des sociétés dans le délai légal.
 
 **Article 20 : Fonctions**
-Les administrateurs désignent entre eux, à la majorité simple, un président, un secrétaire et un trésorier. Une même personne peut cumuler les fonctions de secrétaire et de trésorier.
+Les administrateurs peuvent désigner entre eux, à la majorité simple, un président, un secrétaire et un trésorier. Une même personne peut cumuler les fonctions de secrétaire et de trésorier. Un administrateur sans fonction particulière exerce son mandat comme les autres, de manière collégiale.
+En l'absence de président, chaque réunion du conseil est présidée par un administrateur désigné en début de séance.
 
 **Article 21 : Pouvoirs**
 Le conseil d'administration a le pouvoir d'accomplir tous les actes nécessaires et utiles à la réalisation de l'objet, à l'exception de ceux que la Loi ou les statuts réservent à l'assemblée générale.
 
 **Article 22 : Fonctionnement**
-Le conseil se réunit chaque fois que l'intérêt de l'association l'exige, sur convocation du président ou de deux administrateurs, envoyée par voie postale ou électronique au moins huit jours avant la réunion. L'ordre du jour est joint à la convocation.
+Le conseil se réunit chaque fois que l'intérêt de l'association l'exige, sur convocation du président ou, à défaut, de tout administrateur, envoyée par voie postale ou électronique au moins huit jours avant la réunion. L'ordre du jour est joint à la convocation.
 Il ne délibère valablement que si la majorité des administrateurs est présente ou représentée. Les décisions sont prises à la majorité des administrateurs présents ou représentés. En cas d'égalité, la proposition est rejetée.
-Les administrateurs peuvent participer par visioconférence ou par tout autre moyen de télécommunication qui permet de les identifier. Un administrateur peut donner, par voie postale ou électronique, mandat à un autre administrateur pour le représenter. Un administrateur ne peut représenter qu'un seul autre administrateur à la fois.
+Les administrateurs peuvent participer par visioconférence ou par tout autre moyen de télécommunication qui permet de les identifier. Un administrateur peut donner, par voie postale ou électronique, mandat à un autre administrateur pour le représenter. Un administrateur ne peut représenter qu'un seul autre administrateur à la fois. Le mandat n'est valable que pour une seule séance.
 Dans des cas exceptionnels dûment justifiés, les décisions peuvent être prises par consentement unanime des administrateurs, exprimé par écrit.
-Les décisions du conseil sont consignées dans des procès-verbaux signés par le président et conservés au siège.
+Un procès-verbal est dressé pour chaque séance. Il est signé par celui qui a présidé la séance et, le cas échéant, par le secrétaire, et conservé au siège.
 
 **Article 23 : Représentation et signature**
 L'association est engagée envers les tiers par la signature conjointe de deux administrateurs, sous réserve de la gestion journalière (article 24).
@@ -156,10 +161,10 @@ Aucun administrateur ne peut engager l'association par un emprunt, une caution o
 Lorsqu'un administrateur est en conflit d'intérêts (article 25), il ne signe pas pour l'association. Si deux autres administrateurs ne peuvent pas signer, l'administrateur restant engage seul l'association, sur la base de la décision du conseil.
 
 **Article 24 : Gestion journalière**
-Avec l'autorisation préalable de l'assemblée générale, le conseil d'administration peut déléguer la gestion journalière au président et au trésorier, agissant chacun seul.
+Avec l'autorisation préalable de l'assemblée générale, le conseil d'administration peut déléguer la gestion journalière à un ou plusieurs administrateurs qu'il désigne, agissant chacun seul.
 L'association est engagée par la signature unique d'un délégué à la gestion journalière pour tous les actes dont le montant n'excède pas 500 euros.
 Le conseil rend compte chaque année à l'assemblée générale des traitements, émoluments et avantages quelconques alloués aux délégués. Le mandat de délégué étant gratuit (article 26), ce compte rendu porte en principe sur les seuls remboursements de frais.
-Le mandat de délégué expire par l'échéance du terme, la fin de la fonction de président ou de trésorier, le décès, la révocation à tout moment par l'assemblée générale ou la démission écrite adressée par simple lettre ou courriel au conseil d'administration. L'identité des délégués est déposée au Registre de commerce et des sociétés.
+Le mandat de délégué expire par l'échéance du terme fixé par le conseil, la fin du mandat d'administrateur, le décès, la révocation à tout moment par l'assemblée générale ou la démission écrite adressée par simple lettre ou courriel au conseil d'administration. L'identité des délégués est déposée au Registre de commerce et des sociétés.
 
 **Article 25 : Conflit d'intérêts**
 L'administrateur qui a un intérêt personnel, direct ou indirect, dans une décision le déclare au conseil avant la délibération. Il ne prend part ni à la délibération ni au vote. La déclaration et la décision sont inscrites au procès-verbal.
@@ -196,7 +201,7 @@ L'exercice social coïncide avec l'année civile. Le premier exercice commence l
 
 **Article 30 : Comptes**
 Selon l'article 18 de la Loi, le régime comptable de l'association est celui qui s'applique à la catégorie à laquelle elle appartient.
-Chaque année, le conseil d'administration établit les comptes de l'exercice écoulé et le budget de l'exercice suivant, et les soumet à l'assemblée générale. Les comptes approuvés sont déposés au Registre de commerce et des sociétés dans les délais légaux.
+Chaque année, le conseil d'administration établit les comptes de l'exercice écoulé et le budget de l'exercice suivant, et les soumet à l'assemblée générale. Les documents comptables approuvés sont déposés et publiés au Registre de commerce et des sociétés dans le mois de leur approbation.
 
 **Article 31 : Contrôle**
 L'assemblée générale peut désigner un ou deux réviseurs de caisse, choisis parmi les membres qui ne sont pas administrateurs, chargés de vérifier les comptes et de lui en faire rapport.
@@ -219,7 +224,7 @@ Les licences de propriété intellectuelle accordées à l'association prennent 
 Pour tous les points non réglés par les présents statuts, les dispositions de la Loi s'appliquent.
 
 **Article 34 : Reprise des engagements**
-Le premier conseil d'administration peut décider de reprendre les engagements pris au nom de l'association avant l'acquisition de sa personnalité juridique.
+Le conseil d'administration peut, dans les six mois de l'immatriculation de l'association au Registre de commerce et des sociétés, reprendre les engagements pris en son nom avant cette immatriculation, conformément à l'article 2 de la Loi.
 
 ---
 
@@ -227,16 +232,16 @@ Le premier conseil d'administration peut décider de reprendre les engagements p
 
 En signant les présents statuts, les fondateurs prennent les résolutions suivantes :
 
-1. Chaque fondateur est nommé administrateur, pour une durée de trois ans. Le nombre d'administrateurs est ainsi égal au nombre de fondateurs signataires. Les fonctions sont les suivantes :
+1. Chaque fondateur est nommé administrateur, pour une durée de trois ans. Le nombre d'administrateurs est ainsi égal au nombre de fondateurs signataires. Les administrateurs exercent les fonctions suivantes :
    - [Prénom Nom], [fonction] ;
    - [Prénom Nom], [fonction] ;
    - [Prénom Nom], [fonction] ;
    - [Prénom Nom], [fonction] ;
    - [Prénom Nom], [fonction].
 
-   Les fonctions sont : président, secrétaire, trésorier, ou administrateur. Une même personne peut être secrétaire et trésorier. Les lignes qui ne correspondent à aucun fondateur sont barrées.
+   Un administrateur peut aussi être président, secrétaire ou trésorier. Ces fonctions sont facultatives (article 20). Une même personne peut être secrétaire et trésorier. Les lignes qui ne correspondent à aucun fondateur sont barrées.
 2. Le siège de l'association est établi au [adresse], commune de Rambrouch.
-3. Les fondateurs autorisent le conseil d'administration à déléguer la gestion journalière au président et au trésorier, dans les conditions de l'article 24.
+3. Les fondateurs autorisent le conseil d'administration à déléguer la gestion journalière à un ou plusieurs administrateurs, dans les conditions de l'article 24.
 4. La cotisation pour le premier exercice est fixée à 5 euros, pour les membres comme pour les membres adhérents.
 
 Signé électroniquement par les fondateurs. Les présents statuts prennent effet à la date de la dernière signature. Chaque fondateur en reçoit un exemplaire signé, et l'association conserve le sien à son siège.
