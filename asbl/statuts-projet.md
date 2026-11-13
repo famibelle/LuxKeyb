@@ -232,7 +232,7 @@ Le conseil d'administration peut, dans les six mois de l'immatriculation de l'as
 
 En signant les présents statuts, les fondateurs prennent les résolutions suivantes :
 
-1. Chaque fondateur signataire est nommé administrateur, pour une durée de trois ans. Le nombre d'administrateurs est ainsi égal au nombre de fondateurs signataires. Le conseil d'administration répartit ensuite, s'il le souhaite, les fonctions prévues à l'article 20.
+1. Chaque fondateur signataire est nommé administrateur, pour une durée de trois ans. Le nombre d'administrateurs est ainsi égal au nombre de fondateurs signataires. Les fondateurs, tous administrateurs, désignent [Prénom Nom] comme président du conseil d'administration. Le conseil répartit ensuite, s'il le souhaite, les autres fonctions prévues à l'article 20.
 2. Le siège de l'association est établi au [adresse], commune de Rambrouch.
 3. Les fondateurs autorisent le conseil d'administration à déléguer la gestion journalière à un ou plusieurs administrateurs, dans les conditions de l'article 24.
 4. La cotisation pour le premier exercice est fixée à 5 euros, pour les membres comme pour les membres adhérents.
