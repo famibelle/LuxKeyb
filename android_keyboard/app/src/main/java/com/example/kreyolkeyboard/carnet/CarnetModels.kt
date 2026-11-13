@@ -423,6 +423,32 @@ object Carnet {
         return true
     }
 
+    private const val CLE_BASCULE = "bascule_lieux"
+    private var bascule = -1L
+
+    /**
+     * L'instant où ce carnet a connu la deuxième vague de lieux (2026-11-13),
+     * noté une fois pour toutes à la première lecture : une carte gagnée
+     * avant garde le premier lieu de son champ, celle gagnée après est
+     * répartie entre les lieux du champ ([Lieu.pour]). Ainsi aucune carte
+     * déjà vue ne change de paysage. Un carnet vide n'a rien à garder : sa
+     * bascule est à zéro. Rangée avec les cartes, elle les suit dans une
+     * sauvegarde.
+     */
+    @Synchronized
+    fun basculeDesLieux(context: Context): Long {
+        if (bascule >= 0) return bascule
+        charger(context)
+        val p = prefs(context)
+        var b = p.getLong(CLE_BASCULE, -1L)
+        if (b < 0) {
+            b = if (cartes.isEmpty()) 0L else System.currentTimeMillis()
+            p.edit().putLong(CLE_BASCULE, b).apply()
+        }
+        bascule = b
+        return b
+    }
+
     /** Remet le carnet à zéro. N'existe que pour les tests et le débogage. */
     @Synchronized
     fun vider(context: Context) {

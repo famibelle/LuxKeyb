@@ -4429,14 +4429,17 @@ class CarteOrnee(
      */
     private val ecouteSecousse = object : android.hardware.SensorEventListener {
         override fun onSensorChanged(e: android.hardware.SensorEvent) {
-            val a = ambiance ?: return
+            val a = ambiance
+            if (a == null && !motif.vit) return
             val v = e.values
             val m = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2])
             if (m < SEUIL_SECOUSSE) return
             val maintenant = android.os.SystemClock.uptimeMillis()
             if (maintenant - derniereSecousse < 120L) return
             derniereSecousse = maintenant
-            a.secouer(((m - SEUIL_SECOUSSE) / 20f).coerceIn(0.3f, 1f))
+            val force = ((m - SEUIL_SECOUSSE) / 20f).coerceIn(0.3f, 1f)
+            a?.secouer(force)
+            motif.secouer(force)
             invalidate()
         }
 
@@ -4444,7 +4447,7 @@ class CarteOrnee(
     }
 
     private fun armerSecousse() {
-        if (ambiance == null || secousses != null) return
+        if ((ambiance == null && !motif.vit) || secousses != null) return
         val m = context.getSystemService(Context.SENSOR_SERVICE) as? android.hardware.SensorManager ?: return
         val capteur = m.getDefaultSensor(android.hardware.Sensor.TYPE_LINEAR_ACCELERATION) ?: return
         m.registerListener(ecouteSecousse, capteur, android.hardware.SensorManager.SENSOR_DELAY_GAME)
@@ -4989,6 +4992,7 @@ class Motif(
     private fun peindrePlans(c: Canvas, etages: Array<Bitmap>, l: Int, h: Int, regardX: Float, regardY: Float) {
         val sx = visible.width() / l
         val sy = visible.height() / h
+        val ombres = Paysages.ombres(lieu, heure, teinteChamp, l, h, souvenir)
         for (i in etages.indices) {
             val dx = Paysages.GLISSEMENT[i] * visible.width() * regardX
             val dy = Paysages.GLISSEMENT[i] * visible.height() * regardY
@@ -4999,8 +5003,65 @@ class Motif(
                 visible.right + mx + dx, visible.bottom + my + dy
             )
             if (i == Paysages.NUAGES) peindreNuages(c, etages[i], regardX, regardY)
-            else c.drawBitmap(etages[i], null, ouPlan, peinture)
+            else {
+                ombres?.getOrNull(i)?.let { o -> peindreOmbre(c, o, i, regardX, regardY) }
+                c.drawBitmap(etages[i], null, ouPlan, peinture)
+                vie?.takeIf { it.vitDans(i) }?.let { v -> peindreVie(c, v, i, l, h, sx, sy) }
+            }
         }
+    }
+
+    /**
+     * Ce qui vit dans le lieu ([Paysages.Vie]) : la roue, le tram, la brume…
+     * Seulement sur la carte ouverte, où le lieu est en cartons ; une image
+     * figée le pose à l'instant zéro.
+     */
+    private val vie: Paysages.Vie? = if (zone == Ornement.FENETRE) Paysages.Vie.pour(lieu, heure) else null
+
+    /** Vrai quand le lieu a quelque chose à faire d'une secousse. */
+    val vit: Boolean get() = vie != null && profondeur
+
+    /** Une secousse du téléphone, de [force] entre 0 et 1 : le lieu y répond. */
+    fun secouer(force: Float) {
+        vie?.secouer(force, android.os.SystemClock.uptimeMillis() / 1000f)
+    }
+
+    /**
+     * Pose ce qui vit dans le carton [i], juste après lui, dans la boîte du
+     * paysage de ce carton : il glisse donc avec lui quand on penche la carte.
+     */
+    private fun peindreVie(c: Canvas, v: Paysages.Vie, i: Int, l: Int, h: Int, sx: Float, sy: Float) {
+        val lp = l + 2 * Paysages.marge(i, l)
+        val hp = h + 2 * Paysages.marge(i, h)
+        val k = Paysages.cadrage(lp.toFloat(), hp.toFloat())
+        c.save()
+        c.translate(ouPlan.left + k[1] * sx, ouPlan.top + k[2] * sy)
+        c.scale(k[0] * sx, k[0] * sy)
+        v.dessiner(c, i, if (c.isHardwareAccelerated) android.os.SystemClock.uptimeMillis() / 1000f else 0f)
+        c.restore()
+    }
+
+    private val peintureOmbre by lazy {
+        Paint(Paint.FILTER_BITMAP_FLAG).apply { color = Paysages.couleurOmbrePortee(heure) }
+    }
+    private val ouOmbre = RectF()
+
+    /**
+     * L'ombre portée du carton [i] ([Paysages.ombres]), juste avant lui : elle
+     * tombe sur le carton de derrière et glisse avec lui, pas avec celui qui
+     * la porte. Pencher la carte fait donc varier l'écart entre la découpe et
+     * son ombre, comme dans un théâtre de papier (repris de KreyolKeyb).
+     */
+    private fun peindreOmbre(c: Canvas, ombre: Bitmap, i: Int, regardX: Float, regardY: Float) {
+        val derriere = if (i - 1 == Paysages.NUAGES) 0 else i - 1
+        val k = cadrage[0]
+        val ecart = Paysages.GLISSEMENT[derriere] - Paysages.GLISSEMENT[i]
+        ouOmbre.set(ouPlan)
+        ouOmbre.offset(
+            ecart * visible.width() * regardX + Paysages.OMBRE_PORTEE_X * k,
+            ecart * visible.height() * regardY + Paysages.OMBRE_PORTEE_Y * k
+        )
+        c.drawBitmap(ombre, null, ouOmbre, peintureOmbre)
     }
 
     /**

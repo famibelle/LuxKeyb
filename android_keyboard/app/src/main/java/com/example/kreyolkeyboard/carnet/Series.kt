@@ -25,8 +25,9 @@ import org.json.JSONObject
  *   langues de glose, lus dans `luxemburgish_series.json`
  *   (`Dictionnaires/generate_series.py`, qui fait la preuve) ;
  * - [JEUX] : une carte de chacun des sept jeux ;
- * - [PAYSAGES] : chaque lieu des cartes à chacune de ses quatre heures, soit
- *   neuf lieux par quatre raretés. Les grilles de Wuertplaz suffisent à la
+ * - [PAYSAGES] : chaque lieu des cartes à chacune de ses heures, soit
+ *   neuf lieux par quatre raretés, et depuis la 39.0.0 cinq lieux de la
+ *   deuxième vague sans la nuit (voir [Lieu.pour]), 51 cases. Les grilles de Wuertplaz suffisent à la
  *   remplir dans les quatre langues de glose : `SeriesPaysagesAssetTest`
  *   compte, case par case, les mots qui y mènent ;
  * - [ESSENTIELS] : le vocabulaire de base, une page par thème (voir
@@ -125,11 +126,14 @@ object Series {
     val NOMBRES: List<Int> = (0..ZuelenSpeller.MAXIMUM).toList()
 
     /**
-     * Les trente-six cases de l'album des paysages, rangées lieu par lieu, du
-     * matin à la nuit : la grille du carnet en fait neuf rangées de quatre.
+     * Les cinquante et une cases de l'album des paysages, rangées lieu par
+     * lieu, du matin à la nuit : neuf lieux aux quatre heures, puis les cinq
+     * de la deuxième vague, sans la nuit ([Lieu.ALBUM_SANS_NUIT]).
      * Le Breedewee n'y est pas : aucun jeu ne le donne (voir [Lieu.ALBUM]).
      */
-    val PAYSAGES: List<String> = Lieu.ALBUM.flatMap { l -> Rarete.values().map { r -> cleDePaysage(l, r) } }
+    val PAYSAGES: List<String> = Lieu.ALBUM.flatMap { l ->
+        Rarete.values().filter { r -> r != Rarete.TRES_RARE || l !in Lieu.ALBUM_SANS_NUIT }.map { r -> cleDePaysage(l, r) }
+    }
 
     fun cleDePaysage(lieu: Lieu, rarete: Rarete): String = "${lieu.name}:${rarete.ordinal}"
 
@@ -149,7 +153,7 @@ object Series {
      * Scanner une carte en papier n'a pas à faire perdre une case gagnée.
      */
     fun paysage(contenu: ContenuCarte): String =
-        cleDePaysage(Lieu.de(contenu.blason.champ), contenu.rarete)
+        cleDePaysage(contenu.blason.lieu?.takeIf { it != Lieu.BREEDEWEE } ?: Lieu.de(contenu.blason.champ), contenu.rarete)
 
     @Volatile
     private var enluminures: List<String>? = null

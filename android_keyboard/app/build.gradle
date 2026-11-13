@@ -72,8 +72,8 @@ android {
         // l'exige, et les Android 5 et 6 ne pèsent plus qu'environ 1 % du parc.
         minSdk = 24
         targetSdk = 36
-        versionCode = 380100
-        versionName "38.1.0"
+        versionCode = 390000
+        versionName "39.0.0"
         
         // Améliorer la compatibilité Samsung ULTRA
         multiDexEnabled true
@@ -164,6 +164,14 @@ android {
         // Les tests JVM appellent du code qui loggue via android.util.Log :
         // sans cette option, chaque Log.d lève "Method d not mocked"
         unitTests.returnDefaultValues = true
+        // Les planches de relecture des cartes (PlancheCartesTest) passent par
+        // Robolectric et ses ressources ; elles ne tournent que sur demande :
+        // ./gradlew :app:testDebugUnitTest --tests '*Planche*' -Pplanche=<dossier>
+        unitTests.includeAndroidResources = true
+        unitTests.all {
+            if (project.hasProperty('planche')) systemProperty 'planche', project.property('planche')
+            if (project.hasProperty('plancheCartes')) systemProperty 'planche.cartes', 'oui'
+        }
     }
 
     buildFeatures {
@@ -243,6 +251,8 @@ dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test:1.9.22'
     // Implémentation réelle de org.json pour les tests JVM (sinon le stub Android renvoie des valeurs vides)
     testImplementation 'org.json:json:20240303'
+    // Rendu réel du Canvas sur la JVM, pour les planches de relecture des cartes.
+    testImplementation 'org.robolectric:robolectric:4.16.1'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }

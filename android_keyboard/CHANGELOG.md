@@ -9,6 +9,17 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [39.0.0] - 2026-11-13
+
+### ✨ Nouveautés
+
+- **Des paysages en papier découpé** : chaque carte montre son lieu en feuilles de papier de couleur posées en couches, avec leur grain, une fine tranche de papier kraft et une ombre douce de l'une à l'autre. Quand vous penchez le téléphone, l'ombre de chaque feuille glisse sur celle de derrière, comme dans un vrai théâtre de papier.
+- **Des lieux redessinés d'après des photos** : le château de Vianden au-dessus de la brume, la tour d'Esch-sur-Sûre et son drapeau, la vue des casemates du Bock, la cascade du Schiessentümpel et son pont, le Grund au bord de l'Alzette, le monument de Schengen au bord de la Moselle, la grande roue et le carrousel de la Schueberfouer.
+- **Cinq nouveaux lieux** : le pont Adolphe et son tram, les hauts fourneaux de Belval, l'arche de grès de Berdorf, les jardins du château d'Ansembourg et l'ascenseur du Pfaffenthal. L'album des paysages compte maintenant 51 cases. Les cartes déjà gagnées gardent leur paysage.
+- **Des paysages qui bougent** : sur la carte ouverte, la brume glisse sous le château de Vianden, le drapeau flotte, la grande roue tourne et les chevaux de bois montent et descendent, l'eau coule des chutes, la péniche descend la Moselle, le tram traverse le pont, la cabine de l'ascenseur monte et descend. Le soir et la nuit, leurs lumières s'allument.
+- **Secouez le téléphone** : le paysage répond. Les oiseaux quittent les arbres, la roue s'emballe, le drapeau claque, les chutes éclaboussent, des ronds se forment sur l'Alzette, des feuilles tombent sous l'arche de Berdorf.
+- **L'image partagée garde tout** : la roue, le tram, le drapeau ou la péniche restent sur l'image d'une carte qu'on partage.
+
 ## [38.1.0] - 2026-11-02
 
 ### ✨ Nouveautés

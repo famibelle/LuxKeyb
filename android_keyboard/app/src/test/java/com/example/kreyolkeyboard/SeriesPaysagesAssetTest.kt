@@ -58,8 +58,12 @@ class SeriesPaysagesAssetTest {
             for (i in 0 until mots.length()) {
                 val forme = mots.getJSONObject(i).getString("f")
                 if (!vus.add(forme)) continue
-                val champ = champs[representant[forme] ?: forme]
-                val cle = Series.cleDePaysage(Lieu.de(champ), Rarete.pourRang(rangs[forme]))
+                val tete = representant[forme] ?: forme
+                val champ = champs[tete]
+                // Une carte gagnée après la deuxième vague de lieux : son lieu
+                // est tiré sur son représentant parmi ceux du champ.
+                val rarete = Rarete.pourRang(rangs[forme])
+                val cle = Series.cleDePaysage(Lieu.pour(champ, tete, rarete), rarete)
                 compte[cle] = (compte[cle] ?: 0) + 1
             }
         }
@@ -67,35 +71,40 @@ class SeriesPaysagesAssetTest {
     }
 
     @Test
-    fun lAlbumCompteTrenteSixCasesDistinctes() {
-        assertEquals(36, Series.PAYSAGES.size)
-        assertEquals(36, Series.PAYSAGES.toSet().size)
+    fun lAlbumCompteCinquanteEtUneCasesDistinctes() {
+        // Neuf lieux aux quatre heures, cinq de la deuxième vague sans la nuit.
+        assertEquals(51, Series.PAYSAGES.size)
+        assertEquals(51, Series.PAYSAGES.toSet().size)
         Series.PAYSAGES.forEach { assertTrue(it, Series.paysageDe(it) != null) }
     }
 
     @Test
     fun chaqueLieuSaitDeQuelChampIlEstLaFenetre() {
-        Lieu.ALBUM.forEach { assertEquals(it, Lieu.de(it.champ())) }
+        Lieu.ALBUM.forEach { assertTrue(it.name, it in Lieu.choix(it.champ())) }
+        // Le premier lieu de chaque champ reste celui d'avant la deuxième vague.
+        (Champ.values().toList() + null).forEach { assertEquals(Lieu.de(it), Lieu.choix(it)[0]) }
     }
 
     /** Aucun champ ne mène au Breedewee : sa case ne se remplirait jamais. */
     @Test
     fun leBreedeweeEstHorsDeLAlbum() {
         assertTrue(Lieu.BREEDEWEE !in Lieu.ALBUM)
-        assertTrue((Champ.values().toList() + null).none { Lieu.de(it) == Lieu.BREEDEWEE })
+        assertTrue((Champ.values().toList() + null).none { Lieu.BREEDEWEE in Lieu.choix(it) })
         assertTrue(Series.PAYSAGES.none { it.startsWith(Lieu.BREEDEWEE.name) })
     }
 
     @Test
     fun wuertplazRemplitChaqueCaseDansLesQuatreLangues() {
+        val manques = ArrayList<String>()
         for (suffixe in listOf("", "_de", "_en", "_pt")) {
             val asset = "luxemburgish_chassecroise$suffixe.json"
             val compte = cases(asset)
             for (cle in Series.PAYSAGES) {
                 val n = compte[cle] ?: 0
-                assertTrue("$asset : la case $cle n'est atteinte que par $n mots", n >= PLANCHER)
+                if (n < PLANCHER) manques += "$asset : la case $cle n'est atteinte que par $n mots"
             }
         }
+        assertTrue(manques.joinToString("\n"), manques.isEmpty())
     }
 
     private companion object {

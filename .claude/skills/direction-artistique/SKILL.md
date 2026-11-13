@@ -243,6 +243,59 @@ build release (sur l'émulateur, le rendu des plans d'une carte ouverte est
 passé de 760 à environ 590 ms, et une carte feuilletée est prête en 100 ms
 au lieu de 750).
 
+### Le papier découpé, et les lieux d'après photos (2026-11-13)
+
+Repris de KreyolKeyb, où le propriétaire l'a choisi le 2026-11-07 après la
+gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
+
+- **Des feuilles de papier opaques** à la place du carton peint
+  (`Paysages.PAPIER`, faux pour retrouver la gouache) : aplats sans coups de
+  pinceau, **grain** posé une fois sur chaque calque (`Grain`), **tranche de
+  kraft tout autour** de chaque découpe (`krafter`), et sous chaque pièce une
+  ombre douce que la rampe porte vers le haut. Le ciel est fait de bandes de
+  papier aux bords ondulés (`cielPapier`).
+- **L'ombre portée vit** : chaque carton a son ombre à part
+  (`Paysages.ombres`), que `Motif.peindreOmbre` pose à chaque trame et qui
+  glisse avec le carton de derrière. Pencher la carte fait varier l'écart
+  entre une découpe et son ombre. Avant, l'ombre était peinte une fois dans
+  le carton de derrière et restait collée.
+- **Chaque lieu est redessiné d'après une photo du propriétaire**, sa
+  silhouette la plus reconnaissable sur un bord ou dans la bande du haut
+  (le dessin du mot tient le centre). Demande les photos au propriétaire
+  plutôt que de dessiner de mémoire. Fait : Veianen (le château dans la
+  brume), Esch-Sauer (la tour et son drapeau), Neimënster (vu des casemates
+  du Bock), Mëllerdall (le Schiessentümpel), Stad (le Grund sur l'Alzette),
+  Musel (le monument de Schengen), Schueberfouer (la roue et le carrousel).
+  Restent sans photo : Rout Bréck, Gëlle Fra, Breedewee.
+- **Une deuxième vague de lieux** (`Lieu.choix`) : un champ peut en avoir
+  deux, tirés sur le mot (`Lieu.pour`). Pafendall (mouvement), Ansebuerg
+  (temps), Belval (économie), Nei Bréck, le pont Adolphe (chose publique),
+  Bäerdref (vie). Les cartes gagnées avant la bascule
+  (`Carnet.basculeDesLieux`) gardent leur lieu ; la nuit des très rares
+  reste au premier lieu du champ, faute de très rares pour remplir deux
+  cases. Photos reçues pour une vague suivante : barrage d'Esch-sur-Sûre
+  (dit de Rosport), Wollefsschlucht, Hohllay, Haff Réimech, vallée de la
+  Pétrusse, Kallektuffquell, Priedegtstull, promenade de l'Ourdall. Chaque
+  lieu ajouté à un champ doit garder trois mots de Wuertplaz par case dans
+  les quatre langues (`SeriesPaysagesAssetTest`).
+- **Un élément vivant par lieu** (`Paysages.Vie`), qui assouplit la règle 7 :
+  la brume de l'Our, le drapeau, la roue et les chevaux de bois, les chutes,
+  les reflets de l'Alzette, la péniche, le tram, les bannières de Belval, la
+  cabine de l'ascenseur, le bus de la Rout Bréck. Lents, en boucle longue,
+  leurs lumières allumées le soir et la nuit. **Secouer le téléphone** fait
+  répondre le lieu (oiseaux qui s'envolent, roue qui s'emballe, chutes qui
+  éclaboussent). Ce que `Vie` dessine n'est pas peint dans les cartons
+  (`Peintre.vivant`) ; une image figée le pose à l'instant zéro.
+- **Pas de coulisses** là où le lieu a déjà son cadre (voûte du Bock, arche
+  de Berdorf, charmille d'Ansembourg) ni là où le sujet tient un bord
+  (`ENCADRES`) : des arbres de coulisse cacheraient la tour, la roue ou la
+  statue.
+
+**Voir les cartes sans téléphone** : `PlancheCartesTest` (Robolectric, rendu
+natif du canevas) rend la fenêtre de chaque lieu aux quatre heures, droite
+puis penchée, et les cartes entières :
+`./gradlew :app:testDebugUnitTest --tests '*PlancheCartesTest*' -Pplanche=<dossier> [-PplancheCartes]`.
+
 ## 3. Pourquoi cette direction
 
 ### Pour l'expérience
