@@ -3986,7 +3986,7 @@ object Paysages {
                 }
             }
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.BERGE)  // les galets au bord du bassin
             poser(DEVANT)
             // Le fond du bassin et ses galets, que l'eau laisse voir.
             val lit = duJour(0xFF6A6248.toInt())
@@ -4131,6 +4131,104 @@ object Paysages {
 
         /** Le bord du quai d'où l'on regarde le Grund, à l'abscisse [x] : il monte vers la droite. */
         private fun quaiProche(x: Float) = 59.6f - (x + 2f) * 0.042f
+
+        /** La matière d'un sol naturel ([solNaturel]). */
+        enum class SolNaturel { HERBE, TERRE, MOUSSE, BERGE }
+
+        /**
+         * Le premier plan d'un paysage naturel en vraie matière, au lieu du
+         * plancher de la scène (propriétaire, 2026-11-14) : une herbe drue,
+         * la terre d'un chemin de forêt avec ses feuilles, ses cailloux et
+         * ses racines, la mousse sur le grès du Mullerthal, ou la berge de
+         * sable et de galets. Posé de [haut] au bas de la fenêtre, penché de
+         * [pente] ; tout grossit en approchant. L'herbe et la mousse restent
+         * de la végétation : les saisons les colorent et la neige s'y pose.
+         */
+        fun solNaturel(sorte: SolNaturel, haut: Float = DEVANT, pente: Float = 0f) {
+            dansLePlancher = true
+            val r = Alea(161 + sorte.ordinal)
+            val base = when (sorte) {
+                SolNaturel.HERBE -> vert(0.75f)
+                // Une terre d'humus brun sombre, pas l'orange du plancher.
+                SolNaturel.TERRE -> neutre(duJour(0xFF5E4E3E.toInt()))
+                SolNaturel.MOUSSE -> sombre(vert(0.55f), 0.2f)
+                SolNaturel.BERGE -> neutre(duJour(0xFFB9AE96.toInt()))
+            }
+            fun bord(x: Float) = haut + (x + 2f) * pente
+            val sol = Path().apply { moveTo(-2f, BAS + 2f); lineTo(-2f, bord(-2f)); lineTo(102f, bord(102f)); lineTo(102f, BAS + 2f); close() }
+            if (sorte == SolNaturel.TERRE || sorte == SolNaturel.BERGE) mineral { piece(sol, base, 0.3f) } else piece(sol, base, 0.3f)
+            enPerspective(-2f, haut, pente) {
+                // Une ligne d'éléments par rang ; [t] de 0 (au fond) à 1 (devant).
+                fun rangs(pas0: Float, bloc: (x: Float, y: Float, t: Float) -> Unit) {
+                    var y = haut + 0.3f
+                    var pas = pas0
+                    while (y < BAS + 2f) {
+                        val t = ((y - haut) / (BAS - haut)).coerceIn(0f, 1f)
+                        var x = -2f + r() * pas * 2f
+                        while (x < 104f) { bloc(x, y + r() * pas * 0.6f, t); x += pas * (1.6f + r() * 2.4f) }
+                        y += pas
+                        pas *= 1.18f
+                    }
+                }
+                when (sorte) {
+                    SolNaturel.HERBE -> {
+                        val clair = mix(vert(0.75f), 0xFFE8F0A0.toInt(), if (P.nuit) 0.05f else 0.35f)
+                        val fonce = sombre(vert(0.75f), 0.3f)
+                        rangs(0.55f) { x, y, t ->
+                            val l = 0.7f + t * 2.6f
+                            val col = if (r() < 0.5f) clair else fonce
+                            ligne(x, y, x + (r() - 0.5f) * l * 0.6f, y - l, col, 0.12f + t * 0.22f, 0.9f)
+                            ligne(x + 0.3f, y, x + 0.3f + (r() - 0.3f) * l * 0.5f, y - l * 0.8f, col, 0.1f + t * 0.2f, 0.9f)
+                            if (r() < 0.04f) rond(x, y - l, 0.2f + t * 0.35f, if (r() < 0.5f) duJour(0xFFF6F2E4.toInt()) else duJour(0xFFF2C230.toInt()))
+                        }
+                    }
+                    SolNaturel.TERRE -> {
+                        val caillou = intArrayOf(neutre(duJour(0xFFA39C90.toInt())), neutre(duJour(0xFF8C857A.toInt())))
+                        val feuilles = intArrayOf(neutre(duJour(0xFF9A6A3E.toInt())), neutre(duJour(0xFF7E6A42.toInt())), neutre(duJour(0xFF6E4A30.toInt())))
+                        val racine = sombre(base, 0.45f)
+                        mineral {
+                            trait("M-2 ${haut + 2.4f}C20 ${haut + 4f} 34 ${haut + 1.6f} 52 ${haut + 3.6f}", racine, 0.45f, 0.8f)
+                            trait("M60 ${BAS - 2f}C70 ${BAS - 5f} 84 ${BAS - 3f} 104 ${BAS - 6f}", racine, 0.7f, 0.8f)
+                        }
+                        rangs(0.9f) { x, y, t ->
+                            val k = r()
+                            if (k < 0.35f) mineral { ovalePapier(x, y, 0.3f + t * 0.9f, 0.18f + t * 0.5f, caillou[(r() * 2f).toInt().coerceAtMost(1)], 0.2f) }
+                            else if (k < 0.75f) mineral { ovalePapier(x, y, 0.4f + t * 1f, 0.15f + t * 0.35f, feuilles[(r() * 3f).toInt().coerceAtMost(2)], 0.2f) }
+                            else mineral { rond(x, y, 0.1f + t * 0.15f, sombre(base, 0.3f), 0.8f) }
+                        }
+                    }
+                    SolNaturel.MOUSSE -> {
+                        val gres = neutre(duJour(0xFF8E8676.toInt()))
+                        val mousse = vert(0.45f)
+                        val claire = mix(mousse, 0xFFD8E070.toInt(), if (P.nuit) 0.05f else 0.35f)
+                        rangs(1.6f) { x, y, t ->
+                            if (r() < 0.45f) {
+                                val rx = 0.8f + t * 2.6f; val ry = 0.45f + t * 1.4f
+                                mineral { ovalePapier(x, y, rx, ry, gres, 0.4f) }
+                                // Le coussin de mousse sur la pierre.
+                                piece(Path().apply { addArc(x - rx * 0.95f, y - ry * 1.05f, x + rx * 0.95f, y + ry * 0.5f, 180f, 180f); close() }, mousse, 0.2f)
+                            } else {
+                                rond(x, y, 0.35f + t * 0.9f, if (r() < 0.5f) claire else mousse, 0.95f)
+                            }
+                        }
+                    }
+                    SolNaturel.BERGE -> {
+                        val galets = intArrayOf(duJour(0xFFB9B0A0.toInt()), duJour(0xFF9C9484.toInt()), duJour(0xFFC8BFA8.toInt()), duJour(0xFF857E70.toInt()))
+                            .map { neutre(it) }
+                        rangs(0.75f) { x, y, t ->
+                            if (r() < 0.7f) mineral {
+                                ovalePapier(x, y, 0.35f + t * 1.3f, 0.22f + t * 0.75f, galets[(r() * 4f).toInt().coerceAtMost(3)], 0.25f)
+                            } else if (r() < 0.25f) {
+                                val l = 1f + t * 3f
+                                ligne(x, y, x - 0.3f, y - l, vert(0.6f), 0.15f + t * 0.2f)
+                                ligne(x + 0.4f, y, x + 0.8f, y - l * 0.8f, vert(0.6f), 0.15f + t * 0.2f)
+                            }
+                        }
+                    }
+                }
+            }
+            dansLePlancher = false
+        }
 
         /** La matière d'un sol de pierre ([solDePierre]). */
         enum class SolDePierre { PAVES, DALLES, GRAVIER }
@@ -4504,7 +4602,7 @@ object Paysages {
             mineral { pieceD("M54 50C54 45 58 42.5 64 42.5C70 42.5 73 45.5 74 50Z", duJour(0xFF9A9684.toInt())) }
             pieceD("M55 46C57 43.5 60 42.6 64 42.6C68 42.6 71 43.6 72.6 46C68 44.6 60 44.6 55 46Z", duJour(0xFF6E8A44.toInt()), 0.3f)
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.TERRE)  // le chemin sous l'arche
             poser(DEVANT)
             val roche = duJour(0xFFC99A62.toInt())
             mineral {
@@ -4783,7 +4881,7 @@ object Paysages {
             }
             mineral { pieceD("M40 30C42 26 50 25 56 27C58 30 56 34 50 35C44 35 40 34 40 30Z", gres) }
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.TERRE)  // le sentier au pied des rochers
             poser(DEVANT)
             val bois = duJour(0xFFB08A60.toInt())
             pieceD("M58 58.5C66 48 78 40 84 34L90 34C88 40 96 50 102 54L102 58.5Z", bois)
@@ -4804,7 +4902,7 @@ object Paysages {
             for (k in 0 until 8) rect(r() * 60f, 36f + r() * 14f, 3f + r() * 6f, 0.3f, clair, 0.7f)
             lisiere(62f, 102f, { x -> 32f - (x - 62f) * 0.05f }, 1.6f, 2.4f, 237, vert(0.35f))
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.BERGE)  // la rive du lac
             poser(DEVANT)
             val bois = duJour(0xFFB9A07A.toInt())
             val gris = duJour(0xFF8A8E92.toInt())
@@ -4843,7 +4941,7 @@ object Paysages {
                 pieceD("M-2 50C6 46 14 44 20 46C24 47 26 50 24 52L-2 52Z", duJour(0xFFB9B0A0.toInt()))
             }
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.BERGE)  // la rive du lac
             poser(DEVANT)
             pieceD("M-2 66L-2 46C30 44 70 44 102 46L102 66Z", mix(P.eau, 0xFF3F8A6A.toInt(), 0.45f), 0.4f)
             // La passerelle d'Insenborn, en bas à droite.
@@ -4905,7 +5003,7 @@ object Paysages {
                 rond(p[0], p[1], 0.55f * p[2], duJour(0xFFF2C230.toInt()))
             }
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.HERBE)  // la prairie
             poser(DEVANT)
             pieceD("M-2 66L-2 47C30 44.5 70 41.5 102 40L102 66Z", vert(0.7f), 0.4f)
             if (!vivant) for ((k, mx) in MOUTONS.withIndex()) mouton(mx, 47f + (k % 2) * 3f, 1f, if (k % 2 == 0) 1f else 0f, k % 3 != 0)
@@ -5000,7 +5098,7 @@ object Paysages {
                 piece(quad(poutre), sombre(bois, 0.35f), 0.4f)
             }
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.BERGE)  // la berge de la Sûre
             poser(DEVANT)
             pieceD("M-3 4C20 2 40 6 60 3C70 2 84 6 103 2L103 4.4C84 8 70 4.4 60 5.4C40 8.6 20 4.6 -3 6.6Z", duJour(0xFF7A7048.toInt()), 0.5f)
             touffe(vert(0.5f), 0f, 30f, 6f, 4f, 44f, 6f, -2f, 54f, 5f, 96f, 36f, 6f, 100f, 48f, 6f, 92f, 54f, 5f)
@@ -5029,7 +5127,7 @@ object Paysages {
                 pieceD("M-3 -3L103 -3L103 12C80 16 60 10 50 12C40 14 20 10 -3 14Z", gres)
             }
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.TERRE)  // le sol sableux de la grotte
             poser(DEVANT)
             mineral {
                 piece(cadre("M8 60L8 30C8 16 26 8 50 8C74 8 92 16 92 30L92 60Z"), gres)
@@ -5110,7 +5208,7 @@ object Paysages {
                 pieceD("M-3 -3L66 -3C70 6 64 14 56 20C44 26 24 24 10 26C4 27 0 26 -3 27Z", mousse)
             }
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.MOUSSE)  // la mousse autour de la source
             poser(DEVANT)
             val bassin = mix(duJour(0xFF6FB8B0.toInt()), P.eau, 0.2f)
             // Le bassin, dont le bord suit le pied du mur qui fuit.
@@ -5149,7 +5247,7 @@ object Paysages {
                 if (!vivant) tram(54f, 2.2f)
             }
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.HERBE)  // le parc de la vallée
             poser(DEVANT)
             pieceD("M-3 58.5L-3 44C30 40 70 40 103 42L103 58.5Z", vert(0.8f), 0.4f)
             pieceD("M60 58.5C66 50 70 44 72 38L75 38C76 44 84 52 96 58.5Z", duJour(0xFF6A6C70.toInt()), 0.4f)
@@ -5181,7 +5279,7 @@ object Paysages {
             pieceD("M103 12C92 8 80 12 72 20C80 22 92 24 103 26Z", mousse, 0.4f)
             touffe(mousse, 4f, 56f, 4f, 12f, 60f, 4f, 96f, 52f, 4f, 88f, 58f, 4f)
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.TERRE)  // le sentier de la gorge
             poser(DEVANT)
             val bois = duJour(0xFFB0805A.toInt())
             pieceD("M30 58.5L47 30L53 30L70 58.5Z", bois)
@@ -5217,7 +5315,7 @@ object Paysages {
             mineral { for (k in 0 until 12) feuille(16f + k * 1.2f, 56f - k * 2.2f, 6f, 0.9f, marche, 0.3f) }
             pieceD("M-3 66L-3 36C4 34 10 38 14 44L16 66Z", duJour(0xFF5F8A3C.toInt()))
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.MOUSSE)  // les grès moussus
             poser(DEVANT)
             val gres = duJour(0xFFC8B89A.toInt())
             mineral {
@@ -5244,7 +5342,7 @@ object Paysages {
             feuille(95f, 18f, 1.4f, 24f, ecorce, 0.5f)
             touffe(vert(0.55f), 92f, 14f, 7f, 100f, 22f, 8f, 86f, 24f, 6f)
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.BERGE)  // la rive de l'étang
             poser(DEVANT)
             val bois = duJour(0xFF9C8A70.toInt())
             fun pont(x: Float) = 46f - 18f * (1f - ((x - 53f) / 43f).pow(2))
@@ -5284,7 +5382,7 @@ object Paysages {
             lisiere(-2f, 102f, { x -> 42f + 4f * sin(x * 0.09f + 1f) }, 2.4f, 3.6f, 337, vert(0.45f))
             maisonArdoise(30f, 50f, 5f, 3f, 2f, duJour(0xFFE8E2D6.toInt()), r)
             plan(2)
-            plancher(DEVANT, BAS)
+            solNaturel(SolNaturel.HERBE)  // la pelouse sous le pont
             poser(DEVANT)
             val rouge = duJour(0xFFC94459.toInt())
             val fer = duJour(0xFF55595F.toInt())

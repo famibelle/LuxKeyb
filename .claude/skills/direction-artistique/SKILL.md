@@ -337,9 +337,15 @@ gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
   (les allées d'Ansembourg, du parc de la Pétrusse sous la Nei Bréck, du
   Napoleonsgaart, le chemin de l'Our à Vianden). Les rangs grossissent en
   approchant et suivent la fuite du lieu. L'Alzette du Grund reflète ses
-  façades en traits couchés qui tremblent. Les paysages naturels gardent le
-  plancher ; le Breedewee aussi (sa chaussée pavée a été retirée le
-  2026-10-30).
+  façades en traits couchés qui tremblent. Les paysages naturels ont le leur
+  (`Peintre.solNaturel`) : herbe drue (Conzefenn, Péitrusdall, Rout Bréck),
+  terre d'humus avec feuilles, cailloux et racines (Bäerdref, Felsmillen,
+  Hohllay, Wollefsschlucht), mousse sur le grès (Kallektuffquell,
+  Priedegtstull), berge de sable et de galets (Mëllerdall, Ourdall, Stauséi,
+  Haff Réimech, Dumongshaff). L'herbe et la mousse restent de la végétation
+  pour les saisons ; la terre et les galets sont peints avec `neutre`. Seul
+  le Breedewee garde le plancher de la scène (sa chaussée pavée a été
+  retirée le 2026-10-30).
 - **Une deuxième vague de lieux** (`Lieu.choix`) : un champ peut en avoir
   deux, tirés sur le mot (`Lieu.pour`). Pafendall (mouvement), Ansebuerg
   (temps), Belval (économie), Nei Bréck, le pont Adolphe (chose publique),
