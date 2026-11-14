@@ -1205,6 +1205,16 @@ object Paysages {
     private val MAISONS_ESCH_HAUT = maisonsAuHasard(32, 117, 12f, 18f)
     private val MAISONS_ESCH_BAS = maisonsAuHasard(36, 118, 12f, 18f)
 
+    /** Le village de l'autre rive de la Moselle. */
+    internal val RUE_MUSEL = Fuite(floatArrayOf(63f, 32.5f), floatArrayOf(175f, 28.5f), floatArrayOf(-80f, 31f), taille = 0.2f)
+    private val MAISONS_MUSEL = maisonsAuHasard(26, 157, 12f, 18f)
+
+    /** La ville haute vue par la voûte de Neimënster, sur son rempart, et le palais de la crête. */
+    internal val RUE_NEIMENSTER = Fuite(floatArrayOf(18f, 26f), floatArrayOf(135f, 15f), floatArrayOf(-120f, 22f), taille = 0.34f)
+    private val MAISONS_NEIMENSTER = maisonsAuHasard(26, 127, 13f, 20f)
+    internal val RUE_PALAIS = Fuite(floatArrayOf(78f, 9.5f), floatArrayOf(190f, 1f), floatArrayOf(-60f, 6f), taille = 0.32f)
+    private val PALAIS = arrayOf(floatArrayOf(70f, 20f, 0f, 0f, 5f, 1f))
+
     /** La rue du Grund, au bord de l'Alzette : elle fuit vers la droite. */
     internal val RUE_GRUND = Fuite(floatArrayOf(13f, 50.5f), floatArrayOf(178f, 34f), floatArrayOf(-140f, 40f), 150f, quai = 3f)
 
@@ -3509,24 +3519,42 @@ object Paysages {
             val facades = intArrayOf(duJour(0xFFF1E6CF.toInt()), duJour(0xFFE9C9B8.toInt()), duJour(0xFFF3DC96.toInt()),
                 duJour(0xFFE6E2D6.toInt()))
             mineral {
-                var x = 22f
-                var k = 0
-                while (x < 62f) {
-                    val w = 4f + r() * 2.5f
-                    val h = 4f + r() * 4f
-                    feuille(x, 25f - h, w, h + 2f, facades[k % 4], 0.6f)
-                    pieceD("M${x - 0.3f} ${25.2f - h}L${x + 0.8f} ${22.6f - h}L${x + w - 0.8f} ${22.6f - h}L${x + w + 0.3f} ${25.2f - h}Z", toit, 0.5f)
-                    fenetre(x + w * 0.25f, 25f - h * 0.6f, w * 0.18f, 1.4f, r)
-                    fenetre(x + w * 0.6f, 25f - h * 0.6f, w * 0.18f, 1.4f, r)
-                    x += w + 0.4f; k++
-                }
                 // Une tourelle à flèche bleue, au-dessus des toits.
-                feuille(33f, 11.5f, 2.2f, 8f, facades[3])
-                pieceD("M32.6 11.7L34.1 7.2L35.6 11.7Z", duJour(0xFF4E6E9A.toInt()))
+                feuille(33f, 9.5f, 2.2f, 8f, facades[3])
+                pieceD("M32.6 9.7L34.1 5.2L35.6 9.7Z", duJour(0xFF4E6E9A.toInt()))
+            }
+            // La ville haute en rangée de trois quarts, posée sur le rempart
+            // qui fuit avec elle vers le rocher.
+            val f = RUE_NEIMENSTER
+            rue3q(f, MAISONS_NEIMENSTER, facades, r)
+            mineral {
                 val rempart = duJour(0xFFBDB29A.toInt())
-                feuille(20f, 25f, 45f, 9f, rempart)
-                var cx = 20f
-                while (cx < 64f) { rect(cx, 24.2f, 1.2f, 1f, rempart); cx += 2.4f }
+                val fin = 120f
+                piece(Path().apply {
+                    moveTo(f.x(0f), f.y(0f))
+                    var u = 0f
+                    while (u <= fin) { lineTo(f.x(u), f.y(u)); u += 4f }
+                    u = fin
+                    while (u >= 0f) { lineTo(f.x(u), f.y(u) + 9f * f.echelle(u)); u -= 4f }
+                    close()
+                }, rempart)
+                // Les créneaux, qui se serrent en fuyant.
+                var u = 0f
+                while (u < fin) {
+                    val e = f.echelle(u)
+                    rect(f.x(u), f.y(u) - 1f * e, 1.2f * e, 1f * e, rempart)
+                    u += 3.4f
+                }
+                // Le pied du rempart, à l'ombre, sous le parement.
+                val ombre = sombre(rempart, 0.3f)
+                piece(Path().apply {
+                    moveTo(f.x(0f), f.y(0f) + 9f)
+                    var v = 0f
+                    while (v <= fin) { lineTo(f.x(v), f.y(v) + 9f * f.echelle(v)); v += 4f }
+                    v = fin
+                    while (v >= 0f) { lineTo(f.x(v), f.y(v) + 10.5f * f.echelle(v)); v -= 4f }
+                    close()
+                }, ombre, 0.3f)
             }
             plan(1)
             lisiere(12f, 70f, { x -> 37f + 2.4f * sin(x * 0.21f) }, 2f, 3.2f, 126, vert(0.45f))
@@ -3539,11 +3567,9 @@ object Paysages {
                 for (y in floatArrayOf(14f, 18f, 22f, 26f)) ligne(63.4f, y, 102f, y - 1.4f, joint, 0.16f, 0.6f)
                 val strate = mix(roc, P.pres, 0.3f)
                 for (x in floatArrayOf(66f, 72f, 79f, 86f, 93f)) ligne(x, 32f, x - 1f, 64f, strate, 0.22f, 0.6f)
-                // Le palais jaune sur la crête.
-                feuille(80f, 3.5f, 18f, 6f, duJour(0xFFE9C05A.toInt()))
-                pieceD("M79.4 3.7L81.6 0.6L96.4 0.6L98.6 3.7Z", toit)
-                for (fx in floatArrayOf(82f, 85f, 88f, 91f, 94f)) fenetre(fx, 5.4f, 1f, 1.8f, r)
             }
+            // Le palais jaune sur la crête, en trois quarts lui aussi.
+            rue3q(RUE_PALAIS, PALAIS, intArrayOf(duJour(0xFFE9C05A.toInt())), r)
             touffe(vert(0.35f), 64f, 31f, 2.4f, 68f, 30.5f, 2f, 98f, 28.5f, 2.6f)
             plan(2)
             plancher(DEVANT, BAS)
@@ -3703,8 +3729,9 @@ object Paysages {
         fun muselPapier() {
             val r = Alea(155)
             lisiere(-2f, 102f, { x -> 29f + 2f * sin(x * 0.08f) }, 1.4f, 2.2f, 156, mix(P.loin, P.milieu, 0.3f))
-            var x = 66f
-            while (x < 100f) { maisonArdoise(x, 31.5f, 3.6f, 2.4f + r() * 1.2f, 1.6f, duJour(0xFFEDE3C8.toInt()), r); x += 4.4f }
+            // Le village de l'autre rive, en rue qui longe la Moselle en fuyant.
+            val enduit = duJour(0xFFEDE3C8.toInt())
+            rue3q(RUE_MUSEL, MAISONS_MUSEL, intArrayOf(enduit, duJour(0xFFE6D2B0.toInt()), enduit, duJour(0xFFF2EEE4.toInt())), r, ecart = 4f)
             plan(1)
             plancher(56f, DEVANT)
             poser(56f)
