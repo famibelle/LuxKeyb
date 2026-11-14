@@ -1130,33 +1130,48 @@ object Paysages {
 
     /**
      * Les maisons du Grund vues de trois quarts ([Peintre.rue3q]), de la plus
-     * proche à la plus lointaine : largeur et hauteur à l'échelle du premier
-     * plan, mur, colombages (1), hauteur du toit, lucarnes (1).
+     * proche à la plus lointaine : largeur le long de la rue et hauteur (au
+     * premier plan), mur, colombages (1), hauteur du toit, lucarnes (1).
+     * Étroites et hautes, comme les maisons du quai.
      */
     private val MAISONS_GRUND_3Q = arrayOf(
-        floatArrayOf(13f, 25f, 2f, 0f, 6f, 1f), floatArrayOf(10f, 21f, 1f, 1f, 5f, 0f),
-        floatArrayOf(12f, 27f, 0f, 0f, 6.5f, 1f), floatArrayOf(9f, 20f, 3f, 0f, 5f, 0f),
-        floatArrayOf(12f, 24f, 2f, 1f, 6f, 1f), floatArrayOf(10f, 22f, 1f, 0f, 5.5f, 0f),
-        floatArrayOf(12f, 26f, 3f, 0f, 6f, 1f), floatArrayOf(11f, 22f, 0f, 1f, 5.5f, 0f),
-        floatArrayOf(12f, 24f, 2f, 0f, 6f, 1f)
+        floatArrayOf(14f, 27f, 2f, 0f, 6f, 1f), floatArrayOf(10f, 22f, 1f, 1f, 5f, 0f),
+        floatArrayOf(13f, 28f, 0f, 0f, 6.5f, 1f), floatArrayOf(10f, 21f, 3f, 0f, 5f, 0f),
+        floatArrayOf(14f, 25f, 2f, 1f, 6f, 1f), floatArrayOf(11f, 23f, 1f, 0f, 5.5f, 0f),
+        floatArrayOf(13f, 27f, 3f, 0f, 6f, 1f), floatArrayOf(11f, 22f, 0f, 1f, 5.5f, 0f),
+        floatArrayOf(13f, 25f, 2f, 0f, 6f, 1f), floatArrayOf(11f, 23f, 1f, 0f, 5.5f, 0f),
+        floatArrayOf(14f, 26f, 3f, 1f, 6f, 1f), floatArrayOf(12f, 24f, 0f, 0f, 5.5f, 0f),
+        floatArrayOf(13f, 25f, 2f, 0f, 6f, 1f), floatArrayOf(12f, 23f, 1f, 0f, 5.5f, 0f)
     )
 
     /**
-     * La perspective de la rue du Grund : la base des façades part de
-     * [proche] et fuit vers [fuite], hors de la fenêtre à droite ; les
-     * pignons fuient vers [fuiteGauche]. Une longueur réelle [u] le long de la
-     * rue tombe à `u / (u + RECUL)` du chemin vers le point de fuite, et
-     * tout y est réduit d'autant.
+     * Une perspective de trois quarts ([Peintre.rue3q], [Peintre.planche3q]) :
+     * la base des façades part de [proche] et fuit vers [fuite], d'ordinaire
+     * hors de la fenêtre ; les pignons fuient vers [fuiteCote]. Une longueur
+     * réelle `u` le long de la façade tombe à `u / (u + recul)` du chemin vers
+     * le point de fuite, et tout y est réduit d'autant ; [taille] met la
+     * rangée à l'échelle d'un plan lointain. [quai] : la hauteur du mur de
+     * quai sous les façades, au premier plan, zéro pour une rue sans eau.
      */
-    internal object RueGrund {
-        val proche = floatArrayOf(13f, 50.5f)
-        val fuite = floatArrayOf(178f, 34f)
-        val fuiteGauche = floatArrayOf(-140f, 40f)
-        const val RECUL = 58f
-        /** La hauteur du mur du quai sous les façades, au premier plan. */
-        const val QUAI = 3f
+    internal class Fuite(
+        val proche: FloatArray,
+        val fuite: FloatArray,
+        val fuiteCote: FloatArray,
+        recul: Float = -1f,
+        val taille: Float = 1f,
+        val quai: Float = 0f
+    ) {
+        /**
+         * Par défaut, celui qui donne au premier plan une façade de la
+         * largeur qu'elle aurait vue à 45° environ : sans cela, une rangée
+         * lointaine s'allonge en barres basses.
+         */
+        val recul: Float = if (recul > 0f) recul else {
+            val dx = fuite[0] - proche[0]; val dy = fuite[1] - proche[1]
+            sqrt(dx * dx + dy * dy) / (0.7f * taille)
+        }
 
-        fun t(u: Float) = u / (u + RECUL)
+        fun t(u: Float) = u / (u + recul)
         fun x(u: Float) = proche[0] + t(u) * (fuite[0] - proche[0])
         fun y(u: Float) = proche[1] + t(u) * (fuite[1] - proche[1])
         fun echelle(u: Float) = 1f - t(u)
@@ -1164,9 +1179,34 @@ object Paysages {
         /** Le bord de l'eau au pied du quai, à l'abscisse [x] de la fenêtre. */
         fun eau(x: Float): Float {
             val t = ((x - proche[0]) / (fuite[0] - proche[0])).coerceAtLeast(-0.2f)
-            return proche[1] + t * (fuite[1] - proche[1]) + QUAI * (1f - t)
+            return proche[1] + t * (fuite[1] - proche[1]) + quai * taille * (1f - t)
         }
     }
+
+    /**
+     * [n] maisons tirées au sort pour [Peintre.rue3q], dans l'ordre d'une rue
+     * : largeur et hauteur autour de [largeur] et [hauteur], quatre murs.
+     */
+    internal fun maisonsAuHasard(n: Int, graine: Int, largeur: Float, hauteur: Float): Array<FloatArray> {
+        val r = Alea(graine)
+        return Array(n) {
+            floatArrayOf(largeur * (0.8f + 0.4f * r()), hauteur * (0.8f + 0.4f * r()), (r() * 4f).toInt().coerceAtMost(3).toFloat(),
+                if (r() < 0.25f) 1f else 0f, hauteur * (0.2f + 0.06f * r()), if (r() < 0.5f) 1f else 0f)
+        }
+    }
+
+    /** La ville basse sous la Gëlle Fra : une rue qui fuit vers le pied du monument. */
+    internal val RUE_GELLE_FRA = Fuite(floatArrayOf(-4f, 58f), floatArrayOf(86f, 47f), floatArrayOf(-160f, 54f), 170f, taille = 0.62f)
+    private val MAISONS_GELLE_FRA = maisonsAuHasard(60, 350, 15f, 22f)
+
+    /** Les deux rues du village d'Esch-sur-Sûre, qui fuient vers le fond de la boucle. */
+    internal val RUE_ESCH_HAUT = Fuite(floatArrayOf(36f, 43.5f), floatArrayOf(150f, 33f), floatArrayOf(-120f, 40f), taille = 0.3f)
+    internal val RUE_ESCH_BAS = Fuite(floatArrayOf(30f, 51.5f), floatArrayOf(150f, 33f), floatArrayOf(-120f, 47f), taille = 0.36f)
+    private val MAISONS_ESCH_HAUT = maisonsAuHasard(32, 117, 12f, 18f)
+    private val MAISONS_ESCH_BAS = maisonsAuHasard(36, 118, 12f, 18f)
+
+    /** La rue du Grund, au bord de l'Alzette : elle fuit vers la droite. */
+    internal val RUE_GRUND = Fuite(floatArrayOf(13f, 50.5f), floatArrayOf(178f, 34f), floatArrayOf(-140f, 40f), 150f, quai = 3f)
 
     /** La pente du tablier de la Rout Bréck, vu d'en bas. */
     private const val TABLIER_PENTE = 0.17f
@@ -1606,13 +1646,13 @@ object Paysages {
             for (k in 0 until 9) {
                 val x = 4f + k * 11f + sin(temps * 0.4f + k * 1.3f) * 2.5f
                 val o = 0.35f + 0.35f * sin(temps * 1.1f + k * 2.3f)
-                p.rect(x, RueGrund.eau(x) + 1.6f + (k % 3) * 1.2f, 3f + (k % 2) * 2f, 0.3f, if (heure.allume && k % 2 == 0) heure.fenetre else clair, o)
+                p.rect(x, RUE_GRUND.eau(x) + 1.6f + (k % 3) * 1.2f, 3f + (k % 2) * 2f, 0.3f, if (heure.allume && k % 2 == 0) heure.fenetre else clair, o)
             }
             if (vol in 0f..3f) for (k in 0..1) {
                 val d = vol - k * 0.5f
                 if (d < 0f) continue
                 val ax = 30f + k * 44f
-                p.anneau(ax, RueGrund.eau(ax) + 2.4f, 0.6f + d * 2.2f, p.mix(clair, eau, (d / 2.5f).coerceIn(0f, 1f)), 0.25f)
+                p.anneau(ax, RUE_GRUND.eau(ax) + 2.4f, 0.6f + d * 2.2f, p.mix(clair, eau, (d / 2.5f).coerceIn(0f, 1f)), 0.25f)
             }
         }
 
@@ -3198,24 +3238,27 @@ object Paysages {
          * Une rangée de maisons vue de trois quarts, au lieu d'une bande de
          * façades de face (demande du propriétaire, 2026-11-14 : « peintes
          * sur une planche de trois quarts », sans « bandes blanches
-         * horizontales qui se succèdent »). Les façades fuient vers la droite
-         * ([RueGrund]), chaque maison montre son toit et, quand elle dépasse sa
+         * horizontales qui se succèdent »). Les façades fuient selon [f]
+         * ([Fuite]), chaque maison montre son toit et, quand elle dépasse sa
          * voisine de devant, son pignon ; la première montre le sien en entier.
          * Peintes du fond vers l'avant, comme on colle des cartons.
          */
-        fun rue3q(maisons: Array<FloatArray>, murs: IntArray, rnd: Alea) = mineral {
-            val r = RueGrund
+        fun rue3q(r: Fuite, maisons: Array<FloatArray>, murs: IntArray, rnd: Alea, ecart: Float = 0f) = mineral {
+            val tl = r.taille
             val toit = ardoise()
             val faitage = mix(toit, 0xFFFFFFFF.toInt(), 0.18f)
             val poutre = duJour(0xFF4A3A2E.toInt())
             val debuts = FloatArray(maisons.size)
             var u = 0f
-            for (i in maisons.indices) { debuts[i] = u; u += maisons[i][0] }
+            // [ecart] : des maisons séparées, dont on voit chaque pignon, comme
+            // dans un village ; sans écart, une rangée mitoyenne de ville.
+            for (i in maisons.indices) { debuts[i] = u; u += maisons[i][0] + ecart }
+            u -= ecart
             // Le pignon fuit vers la gauche, d'autant moins que la maison est loin.
             fun profondeur(x: Float, y: Float, e: Float): FloatArray {
-                val dx = r.fuiteGauche[0] - x
-                val dy = r.fuiteGauche[1] - y
-                val k = 9f * e / sqrt(dx * dx + dy * dy)
+                val dx = r.fuiteCote[0] - x
+                val dy = r.fuiteCote[1] - y
+                val k = 9f * tl * e / sqrt(dx * dx + dy * dy)
                 return floatArrayOf(dx * k, dy * k)
             }
             for (i in maisons.indices.reversed()) {
@@ -3224,25 +3267,26 @@ object Paysages {
                 val ua = debuts[i]; val ub = ua + w
                 val ax = r.x(ua); val ay = r.y(ua); val ea = r.echelle(ua)
                 val bx = r.x(ub); val by = r.y(ub); val eb = r.echelle(ub)
-                val hautA = ay - h * ea; val hautB = by - h * eb
+                val hautA = ay - h * tl * ea; val hautB = by - h * tl * eb
                 val pa = profondeur(ax, ay, ea)
                 val pb = profondeur(bx, by, eb)
                 // Le pignon, à l'ombre, et son triangle sous le toit.
                 val pignon = sombre(mur, 0.28f)
                 val cote = floatArrayOf(ax + pa[0], hautA + pa[1], ax, hautA, ax, ay, ax + pa[0], ay + pa[1])
                 piece(quad(cote), pignon, 0.5f)
-                val sommetA = floatArrayOf(ax + pa[0] * 0.5f, hautA + pa[1] * 0.5f - toitH * ea)
+                val sommetA = floatArrayOf(ax + pa[0] * 0.5f, hautA + pa[1] * 0.5f - toitH * tl * ea)
                 piece(Path().apply {
                     moveTo(ax, hautA); lineTo(sommetA[0], sommetA[1]); lineTo(ax + pa[0], hautA + pa[1]); close()
                 }, pignon, 0.3f)
-                surQuad(6f, h, cote) {
+                val fin = h * tl * ea < 4.5f
+                if (!fin) surQuad(6f, h, cote) {
                     var fy = 3f
                     while (fy < h - 3f) { fenetre(2.4f, fy, 1.2f, 2.4f, rnd); fy += 5.2f }
                 }
                 // La façade, peinte à plat puis posée en perspective.
                 val facade = floatArrayOf(ax, hautA, bx, hautB, bx, by, ax, ay)
                 piece(quad(facade), mur, 0.6f)
-                surQuad(w, h, facade) {
+                if (!fin) surQuad(w, h, facade) {
                     if (m[3] > 0f) {
                         var px = 0.4f
                         while (px <= w) { ligne(px, 0f, px, h, poutre, 0.3f); px += 2.6f }
@@ -3258,11 +3302,11 @@ object Paysages {
                     rect(w * 0.42f, h - 3.6f, 1.8f, 3.6f, sombre(mur, 0.55f))
                 }
                 // Le pan du toit, qui monte vers le faîte en reculant.
-                val sommetB = floatArrayOf(bx + pb[0] * 0.5f, hautB + pb[1] * 0.5f - toitH * eb)
-                val pan = floatArrayOf(sommetA[0], sommetA[1], sommetB[0], sommetB[1], bx + 0.4f * eb, hautB + 0.3f, ax - 0.4f * ea, hautA + 0.3f)
+                val sommetB = floatArrayOf(bx + pb[0] * 0.5f, hautB + pb[1] * 0.5f - toitH * tl * eb)
+                val pan = floatArrayOf(sommetA[0], sommetA[1], sommetB[0], sommetB[1], bx + 0.4f * tl * eb, hautB + 0.3f * tl, ax - 0.4f * tl * ea, hautA + 0.3f * tl)
                 piece(quad(pan), toit, 0.6f)
-                ligne(sommetA[0], sommetA[1], sommetB[0], sommetB[1], faitage, 0.35f * (ea + eb))
-                if (m[5] > 0f) surQuad(w, 6f, pan) {
+                ligne(sommetA[0], sommetA[1], sommetB[0], sommetB[1], faitage, 0.35f * tl * (ea + eb))
+                if (m[5] > 0f && !fin) surQuad(w, 6f, pan) {
                     var lx = 2.2f
                     while (lx < w - 3f) {
                         feuille(lx, 2.4f, 2f, 2.6f, mur, 0.3f)
@@ -3273,15 +3317,16 @@ object Paysages {
                 }
             }
             // Le quai, sous les façades, jusqu'au bord de l'eau.
+            if (r.quai <= 0f) return@mineral
             val pierre = duJour(0xFFA59A86.toInt())
             piece(Path().apply {
-                moveTo(r.x(0f) - 12f, r.y(0f) + 1f)
+                moveTo(r.x(0f) - 12f * tl, r.y(0f) + 1f * tl)
                 var v = 0f
                 while (v <= u) { lineTo(r.x(v), r.y(v)); v += 2f }
                 lineTo(r.x(u), r.eau(r.x(u)))
                 v = u
                 while (v >= 0f) { lineTo(r.x(v), r.eau(r.x(v))); v -= 2f }
-                lineTo(r.x(0f) - 12f, r.eau(r.x(0f) - 12f))
+                lineTo(r.x(0f) - 12f * tl, r.eau(r.x(0f) - 12f * tl))
                 close()
             }, pierre, 0.5f)
         }
@@ -3394,22 +3439,16 @@ object Paysages {
             mineral {
                 feuille(29.2f, 23.5f, 2.4f, 6f, blanc)
                 pieceD("M28.9 23.7L30.4 18.5L31.9 23.7Z", ardoise())
-                val rangs = arrayOf(
-                    floatArrayOf(39f, 44f, 49f, 63f, 68f),
-                    floatArrayOf(44f, 38f, 43.5f, 49f, 61f, 66.5f, 72f, 77.5f, 83f, 88.5f, 94f)
-                )
-                for (rg in rangs) for (i in 1 until rg.size) {
-                    maisonArdoise(rg[i], rg[0], 4.4f + r() * 1.2f, 3.2f + r() * 1.4f, 2.2f + r(), if (r() < 0.75f) blanc else creme, r)
-                }
-                // L'église et sa flèche d'ardoise.
-                feuille(56.5f, 35f, 3f, 9f, blanc)
-                pieceD("M56.1 35.2L58 26.5L59.9 35.2Z", ardoise())
-                var x = 34f
-                while (x < 96f) {
-                    maisonArdoise(x, 50.5f, 4.4f + r() * 1.2f, 3.2f + r() * 1.4f, 2.2f + r(), if (r() < 0.75f) blanc else creme, r)
-                    x += 6f
-                }
             }
+            // Le village en deux rues de trois quarts, qui fuient vers le
+            // fond de la boucle de la Sûre, l'église entre les deux.
+            val murs = intArrayOf(blanc, creme, blanc, blanc)
+            rue3q(RUE_ESCH_HAUT, MAISONS_ESCH_HAUT, murs, r, ecart = 6f)
+            mineral {
+                feuille(56.5f, 33.5f, 3f, 9f, blanc)
+                pieceD("M56.1 33.7L58 25L59.9 33.7Z", ardoise())
+            }
+            rue3q(RUE_ESCH_BAS, MAISONS_ESCH_BAS, murs, r, ecart = 6f)
             riviere(51.5f, 56f, 118, 44f, 52f, 58f)
             c.restore()
             plan(2)
@@ -3632,14 +3671,14 @@ object Paysages {
             plan(1)
             val murs = intArrayOf(duJour(0xFFE9DDC5.toInt()), duJour(0xFFD9C6A0.toInt()), duJour(0xFFF3EFE7.toInt()),
                 duJour(0xFFE3E1DA.toInt()))
-            rue3q(MAISONS_GRUND_3Q, murs, r)
+            rue3q(RUE_GRUND, MAISONS_GRUND_3Q, murs, r)
             touffe(vert(0.6f), 58f, 43.5f, 2.6f, 62f, 42.5f, 3f, 66f, 43.4f, 2.2f)
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
             // L'Alzette, qui fuit avec le quai : son bord monte vers la droite.
             val eau = mix(P.eau, 0xFF5F7046.toInt(), if (P.nuit) 0.25f else 0.45f)
-            val g = RueGrund
+            val g = RUE_GRUND
             piece(Path().apply {
                 moveTo(-2f, BAS); lineTo(-2f, g.eau(-2f))
                 var x = -2f
@@ -4701,8 +4740,10 @@ object Paysages {
             plan(1)
             lisiere(-2f, 102f, { x -> 53f + sin(x * 0.3f) }, 1.4f, 2f, 348, vert(0.4f))
             val r = Alea(349)
-            var x = 2f
-            while (x < 70f) { maisonArdoise(x, 54f, 3.6f, 2.4f + r() * 1.6f, 1.6f, duJour(0xFFE8E0D0.toInt()), r); x += 4.4f }
+            // La ville basse, en rue qui fuit vers le pied du monument.
+            val murs = intArrayOf(duJour(0xFFE8E0D0.toInt()), duJour(0xFFE9D6B4.toInt()), duJour(0xFFF1ECE2.toInt()),
+                duJour(0xFFDCD3C4.toInt()))
+            rue3q(RUE_GELLE_FRA, MAISONS_GELLE_FRA, murs, r)
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
