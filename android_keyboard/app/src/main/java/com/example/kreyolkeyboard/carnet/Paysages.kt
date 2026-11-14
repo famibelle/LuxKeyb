@@ -1255,6 +1255,11 @@ object Paysages {
     /** La passerelle de l'étang du Dumongshaff, de trois quarts : le quadrilatère où son dessin de face est posé. */
     private val PASSERELLE_DUMONGSHAFF = floatArrayOf(4f, 22f, 98f, 32.5f, 98f, 47f, 4f, 55f)
 
+    /** Le pont Adolphe vu de la Pétrusse, de trois quarts : où son dessin de face (-3, 0, 89 × 46) est posé. */
+    private val PONT_PEITRUSDALL = floatArrayOf(-5f, -2f, 89f, 5f, 89f, 35f, -5f, 51f)
+    private const val PONT_PEITRUSDALL_L = 89f
+    private const val PONT_PEITRUSDALL_H = 46f
+
     /** La rue du Grund, au bord de l'Alzette : elle fuit vers la droite. */
     internal val RUE_GRUND = Fuite(floatArrayOf(13f, 50.5f), floatArrayOf(178f, 34f), floatArrayOf(-140f, 40f), 150f, quai = 3f)
 
@@ -1479,9 +1484,12 @@ object Paysages {
                     ronds(p, vol, 41f, 22f, 48f, 70f)
                 }
                 Lieu.PEITRUSDALL -> if (calque == 3) {
+                    // Sur le tablier qui fuit : le tram suit la perspective du pont.
                     val x = ((54f + temps * 5f + elan(temps) * 30f + 20f) % 140f) - 20f
-                    p.tram(x, 2.2f)
-                    sonnerie(p, x + 15f, 2.2f, raf)
+                    p.surQuad(PONT_PEITRUSDALL_L, PONT_PEITRUSDALL_H, PONT_PEITRUSDALL, x0 = -3f, y0 = 0f) {
+                        p.tram(x, 2.2f)
+                        sonnerie(p, x + 15f, 2.2f, raf)
+                    }
                 } else envol(p, vol, 6f, 30f, 1f)
                 Lieu.WOLLEFSSCHLUCHT -> { feuillesQuiTombent(p, temps, raf); envol(p, vol, 50f, 10f, 1f) }
                 Lieu.PRIEDEGTSTULL -> { feuillesQuiTombent(p, temps, raf); envol(p, vol, 20f, 20f, 1f) }
@@ -4715,7 +4723,9 @@ object Paysages {
             lisiere(16f, 84f, { x -> 34f + 2f * sin(x * 0.2f) }, 2f, 3f, 296, mix(vert(0.4f), P.loin, 0.35f))
             plan(1)
             val pierre = duJour(0xFFD3C29C.toInt())
-            mineral {
+            // Le pont Adolphe dessiné de face, posé de trois quarts : son pied
+            // gauche tout près, son tablier qui fuit vers la droite.
+            surQuad(PONT_PEITRUSDALL_L, PONT_PEITRUSDALL_H, PONT_PEITRUSDALL, x0 = -3f, y0 = 0f) { mineral {
                 pieceD("M-3 6L86 5L86 10L-3 11Z", pierre)
                 feuille(-3f, 5f, 89f, 0.8f, sombre(pierre, 0.25f), 0f)
                 pieceD("M-3 10.6L50 10.2L46 13C30 14 14 26 8 46L-3 46Z", pierre)
@@ -4726,7 +4736,8 @@ object Paysages {
                 }
                 for (lx in floatArrayOf(14f, 40f, 66f)) { ligne(lx, 1f, lx, 5f, duJour(0xFF55585E.toInt()), 0.25f); if (P.allume) rond(lx, 0.8f, 0.6f, P.fenetre) }
             }
-            if (!vivant) tram(54f, 2.2f)
+                if (!vivant) tram(54f, 2.2f)
+            }
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
