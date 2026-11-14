@@ -1245,6 +1245,10 @@ object Paysages {
     internal val RUE_PAFENDALL = Fuite(floatArrayOf(18f, 48f), floatArrayOf(150f, 41f), floatArrayOf(-100f, 45f), taille = 0.3f)
     private val MAISONS_PAFENDALL = maisonsAuHasard(30, 218, 12f, 19f)
 
+    /** Conzefenn de trois quarts : la lisière de la forêt et la clôture fuient vers la droite. */
+    internal val LISIERE_CONZEFENN = Fuite(floatArrayOf(-4f, 37f), floatArrayOf(200f, 22f), floatArrayOf(-150f, 30f), taille = 1f)
+    internal val CLOTURE_CONZEFENN = Fuite(floatArrayOf(-2f, 62f), floatArrayOf(200f, 36f), floatArrayOf(-150f, 50f), taille = 1f)
+
     /** La rue du Grund, au bord de l'Alzette : elle fuit vers la droite. */
     internal val RUE_GRUND = Fuite(floatArrayOf(13f, 50.5f), floatArrayOf(178f, 34f), floatArrayOf(-140f, 40f), 150f, quai = 3f)
 
@@ -4436,32 +4440,78 @@ object Paysages {
 
         fun conzefenn() {
             val r = Alea(255)
+            // De trois quarts : la lisière de la forêt fuit vers la droite,
+            // ses épicéas rapetissent au loin, et la prairie la suit.
+            val f = LISIERE_CONZEFENN
+            val fin = 300f
             val epiceas = sombre(vert(0.15f), 0.25f)
             val foret = Path()
             foret.moveTo(-3f, BAS + 2f)
-            var x = -3f
-            while (x <= 103f) {
-                val base = 26f + (if (x < 40f) -4f * sin(x * 0.08f) else 1.5f * sin(x * 0.1f))
-                foret.lineTo(x, base); foret.lineTo(x + 0.8f, base - 2.6f - r() * 1.2f)
-                x += 1.6f
+            foret.lineTo(-3f, f.y(0f) - 4f)
+            var u = -4f
+            while (u <= fin) {
+                val e = f.echelle(u)
+                val x = f.x(u); val base = f.y(u)
+                val h = (7f + r() * 5f) * e
+                val l = (1.6f + r() * 0.8f) * e
+                foret.lineTo(x - l, base - h * 0.25f)
+                foret.lineTo(x, base - h)
+                foret.lineTo(x + l, base - h * 0.25f)
+                u += 2.4f + r() * 1.6f
             }
+            foret.lineTo(103f, f.y(fin) - 2f)
             foret.lineTo(103f, BAS + 2f); foret.close()
             piece(foret, epiceas)
             plan(1)
-            pieceD("M-2 66L-2 31C30 29.5 70 29.5 102 30.5L102 66Z", vert(0.85f), 0.4f)
-            touffe(vert(0.45f), 22f, 30f, 2.4f, 26f, 29f, 2.6f, 74f, 30f, 2.4f, 78f, 30.5f, 2f)
-            for (k in 0 until 18) mouton(r() * 100f, 33f + r() * 7f, 0.45f + r() * 0.15f, r(), r() < 0.5f)
-            for (k in 0 until 10) rond(r() * 100f, 36f + r() * 6f, 0.4f, duJour(0xFFF2C230.toInt()))
+            // La prairie, son bord le long de la lisière.
+            piece(Path().apply {
+                moveTo(-2f, 66f); lineTo(-2f, f.y(-4f) + 0.6f)
+                var v = 0f
+                while (v <= fin) { lineTo(f.x(v), f.y(v) + 0.6f * f.echelle(v)); v += 8f }
+                lineTo(102f, f.y(fin)); lineTo(102f, 66f); close()
+            }, vert(0.85f), 0.4f)
+            // Les moutons et les fleurs posés sur la prairie qui fuit : plus
+            // petits et plus serrés au loin, contre la lisière.
+            fun auSol(uu: Float, recul: Float): FloatArray {
+                val e = f.echelle(uu)
+                return floatArrayOf(f.x(uu) - recul * 0.9f * e, f.y(uu) + recul * e, e)
+            }
+            for (k in 0 until 18) {
+                val p = auSol(10f + r() * 220f, 3f + r() * 9f)
+                mouton(p[0], p[1], (0.75f + r() * 0.2f) * p[2], r(), r() < 0.5f)
+            }
+            for (k in 0 until 14) {
+                val p = auSol(r() * 240f, 2f + r() * 12f)
+                rond(p[0], p[1], 0.55f * p[2], duJour(0xFFF2C230.toInt()))
+            }
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
-            pieceD("M-2 66L-2 44C30 42 70 42 102 44L102 66Z", vert(0.7f), 0.4f)
+            pieceD("M-2 66L-2 47C30 44.5 70 41.5 102 40L102 66Z", vert(0.7f), 0.4f)
             if (!vivant) for ((k, mx) in MOUTONS.withIndex()) mouton(mx, 47f + (k % 2) * 3f, 1f, if (k % 2 == 0) 1f else 0f, k % 3 != 0)
+            // La clôture, qui fuit avec la lisière : ses piquets rapetissent
+            // et ses lisses se rejoignent vers le fond.
+            val c2 = CLOTURE_CONZEFENN
             val bois = duJour(0xFF7A6248.toInt())
-            for (px in floatArrayOf(10f, 46f, 70f, 92f)) feuille(px, 46f, 1.4f, 12.5f, bois, 0.6f)
-            pieceD("M-2 51L102 48L102 49.2L-2 52.4Z", bois, 0.6f)
-            pieceD("M60 55L102 52L102 53L60 56.2Z", bois, 0.6f)
-            for (k in 0 until 14) rond(r() * 100f, 53f + r() * 5f, 0.5f, duJour(0xFFF2C230.toInt()))
+            val piquets = floatArrayOf(0f, 18f, 40f, 66f, 96f, 132f, 176f)
+            val bout = piquets.last()
+            for (hl in floatArrayOf(9f, 5f)) {
+                piece(Path().apply {
+                    moveTo(c2.x(0f), c2.y(0f) - hl)
+                    lineTo(c2.x(bout), c2.y(bout) - hl * c2.echelle(bout))
+                    lineTo(c2.x(bout), c2.y(bout) - (hl - 1.2f) * c2.echelle(bout))
+                    lineTo(c2.x(0f), c2.y(0f) - (hl - 1.2f))
+                    close()
+                }, bois, 0.6f)
+            }
+            for (pu in piquets) {
+                val e = c2.echelle(pu)
+                feuille(c2.x(pu) - 0.7f * e, c2.y(pu) - 12.5f * e, 1.4f * e, 12.5f * e, bois, 0.6f)
+            }
+            for (k in 0 until 14) {
+                val e = 0.8f + r() * 0.2f
+                rond(r() * 100f, 53f + r() * 5f, 0.5f * e, duJour(0xFFF2C230.toInt()))
+            }
             c.restore()
         }
 
