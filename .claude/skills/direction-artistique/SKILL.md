@@ -289,7 +289,11 @@ gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
   la ville basse de la Gëlle Fra, le village d'Esch-Sauer, l'autre rive de
   la Musel, la ville haute et le rempart de Neimënster, la Spuerkeess (Nei
   Bréck), les châteaux de Vianden et d'Ansembourg (tours et terrasse
-  comprises). Ce qui est rond (une tour, un dôme) reste de face ; le fond
+  comprises), puis les ouvrages seuls : le pont couvert du Haff Réimech, qui
+  fuit avec ses piles, la passerelle et la tour de l'ascenseur du
+  Pafendall, la charpente du haut fourneau et la tour de charge de Belval,
+  le socle de la tour du Napoleonsgaart (`Peintre.boite3q` : une face, son
+  côté à l'ombre, son dessus). Ce qui est rond (une tour, un dôme) reste de face ; le fond
   (ciel, collines, rochers) aussi. Le Breedewee reste de face : c'est une
   ruelle vue dans l'axe, sous sa porte.
 - **Une deuxième vague de lieux** (`Lieu.choix`) : un champ peut en avoir
