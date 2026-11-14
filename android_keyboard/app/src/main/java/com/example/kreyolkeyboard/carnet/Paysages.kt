@@ -522,12 +522,16 @@ object Paysages {
     /**
      * Des couleurs plus vives et plus chaudes (essai du 2026-11-14 : « on m'a
      * dit que les couleurs paraissaient un peu ternes »), de 0 (le rendu
-     * d'aujourd'hui) à 1 : plus de saturation, un peu plus de contraste, et
-     * la lumière tirée vers l'or, posées une fois sur chaque calque rendu.
+     * d'avant) à 1 et au-delà : plus de saturation, un peu plus de contraste,
+     * et la lumière tirée vers l'or, posées une fois sur chaque calque rendu.
      * Le grain du papier et le kraft pâlissent les aplats ; ce réglage leur
-     * rend leur éclat sans repeindre les palettes une à une.
+     * rend leur éclat sans repeindre les palettes une à une. Le propriétaire
+     * a retenu le cran fort, [VIF_RETENU], sur une commune, une rare et une
+     * très rare côte à côte (2026-11-14).
      */
-    @Volatile internal var VIF = 0f
+    const val VIF_RETENU = 1.8f
+
+    @Volatile internal var VIF = VIF_RETENU
 
     private fun raviver(b: Bitmap) {
         val v = VIF

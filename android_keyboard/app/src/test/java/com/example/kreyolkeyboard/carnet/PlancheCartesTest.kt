@@ -129,7 +129,7 @@ class PlancheCartesTest {
         val ctx = RuntimeEnvironment.getApplication()
         dossier!!.mkdirs()
         val cases = ArrayList<Pair<String, Bitmap>>()
-        for (rarete in listOf(Rarete.RARE, Rarete.TRES_RARE)) for (vif in floatArrayOf(0f, 1f, 1.8f)) {
+        for (rarete in listOf(Rarete.COMMUN, Rarete.RARE, Rarete.TRES_RARE)) for (vif in floatArrayOf(Paysages.VIF_RETENU)) {
             Paysages.VIF = vif
             val carte = CarteMot("Bréck", date(Calendar.JUNE), 1, 1, setOf(JeuCarte.WUERTPLAZ))
             val contenu = ContenuCarte(
@@ -138,7 +138,7 @@ class PlancheCartesTest {
             )
             cases += "${rarete.name} · vif $vif" to PartageCarte.dessiner(ctx, contenu)
         }
-        Paysages.VIF = 0f
+        Paysages.VIF = Paysages.VIF_RETENU
         planche(cases, 3, File(dossier, "planche_vif.png"), reduire = 1)
     }
 

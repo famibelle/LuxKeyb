@@ -5999,10 +5999,11 @@ private class Porcelet(heure: Heure) : Sujet(heure, RectF(30f, 6f, 70f, 58f)) {
  *
  * Voyelle en haut, consonne en bas, la hauteur affinée par le code du
  * caractère ; un nœud sur chaque voyelle, qui donne la scansion. Le pas est
- * **constant et calé à gauche**, jamais étiré sur la largeur : deux formes qui
- * partagent leur début partagent alors leurs points *exactement*, au lieu de
- * seulement se ressembler. Dans une grille, `Woch`, `Wochen` et `Woche` se
- * lisent comme un seul mot à trois états.
+ * **constant**, jamais étiré sur la largeur : deux formes qui partagent leur
+ * début partagent la même courbe, et dans une grille `Woch`, `Wochen` et
+ * `Woche` se lisent comme un seul mot à trois états. Le tracé est **centré**
+ * sur la carte (demande du propriétaire, 2026-11-14) : calé à gauche
+ * jusque-là, un mot court penchait d'un côté de la fenêtre.
  *
  * La règle n'a pas changé avec les paysages, seule la matière du trait a
  * changé : nacre de l'heure, ombre portée, fil de lumière, et à partir de
@@ -6098,11 +6099,10 @@ private class Trace private constructor(
         private const val VOYELLES = "aeiouyäëéèêîïôöüû"
 
         /**
-         * Où tombe le tracé dans la boîte 100 × 66 du paysage : entre l'arche
-         * des paliers hauts et le sol, et dans la largeur qu'une vignette
-         * garde une fois rognée sur les côtés.
+         * Où tombe le tracé dans la boîte 100 × 66 du paysage : centré, entre
+         * l'arche des paliers hauts et le sol, et dans la largeur qu'une
+         * vignette garde une fois rognée sur les côtés (de 16 à 84).
          */
-        private const val X0 = 16f
         private const val LARGEUR = 68f
         private const val MILIEU = 35f
         private const val AMPLITUDE = 17f
@@ -6119,7 +6119,7 @@ private class Trace private constructor(
             for (i in 0 until n) {
                 val ch = lettres[i]
                 voyelle[i] = ch.lowercaseChar() in VOYELLES
-                xs[i] = if (n == 1) 50f else X0 + pas * i
+                xs[i] = if (n == 1) 50f else 50f + pas * (i - (n - 1) / 2f)
                 ys[i] = MILIEU + (if (voyelle[i]) -1f else 1f) *
                     AMPLITUDE * (0.42f + 0.58f * ((ch.code % 7) / 6f))
             }
