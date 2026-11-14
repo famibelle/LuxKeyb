@@ -722,6 +722,31 @@ object Paysages {
 
     @Volatile internal var VIF = VIF_RETENU
 
+    /**
+     * La couleur à peindre pour que [col] ressorte telle quelle après
+     * [raviver] : l'inverse exact de son réchauffement (gains et décalages
+     * par canal, contraste compris) et de sa saturation. Pour la pierre et
+     * les enduits des bâtiments, que le réchauffement faisait tous virer au
+     * jaune paille (propriétaire, 2026-11-14 : « ce jaune IA ») ; le ciel et
+     * la végétation gardent leur chaleur.
+     */
+    internal fun neutre(col: Int): Int {
+        val v = VIF
+        if (v <= 0f) return col
+        val contraste = 1f + 0.1f * v
+        val decale = (1f - contraste) * 128f
+        val gains = floatArrayOf(contraste * (1f + 0.07f * v), contraste * (1f + 0.015f * v), contraste * (1f - 0.09f * v))
+        val decales = floatArrayOf(decale + 6f * v, decale + 2f * v, decale - 4f * v)
+        val c = floatArrayOf(((col shr 16) and 0xFF).toFloat(), ((col shr 8) and 0xFF).toFloat(), (col and 0xFF).toFloat())
+        for (i in 0..2) c[i] = (c[i] - decales[i]) / gains[i]
+        // La saturation inverse, autour de la même luminance que setSaturation.
+        val sat = 1f + 0.45f * v
+        val lum = 0.213f * c[0] + 0.715f * c[1] + 0.072f * c[2]
+        for (i in 0..2) c[i] = lum + (c[i] - lum) / sat
+        fun o(x: Float) = x.roundToInt().coerceIn(0, 255)
+        return (col and 0xFF000000.toInt()) or (o(c[0]) shl 16) or (o(c[1]) shl 8) or o(c[2])
+    }
+
     private fun raviver(b: Bitmap) {
         val v = VIF
         if (v <= 0f) return
@@ -3245,6 +3270,24 @@ object Paysages {
         /** L'ardoise des toits du pays. */
         fun ardoise(): Int = duJour(0xFF4A5468.toInt())
 
+        /**
+         * [col] à l'ombre, mais une ombre froide : vers un bleu-gris qui suit
+         * l'heure, au lieu du brun de [sombre]. Lumière chaude, ombre froide.
+         */
+        fun ombreFroide(col: Int, t: Float): Int =
+            mix(col, mix(0xFF4E5E86.toInt(), P.pres, ATTENUE[P.rang] * 0.6f), t)
+
+        /**
+         * Les enduits des façades du pays, comme au Grund, à Clervaux ou à
+         * Vianden : gris perle, vieux rose, blanc cassé froid, bleu-gris pâle,
+         * ocre rouge, vert sauge, dans l'ordre où [rue3q] les fait se suivre
+         * (jamais deux pareils côte à côte), peints avec [neutre].
+         */
+        fun facades(): IntArray = intArrayOf(
+            duJour(0xFFD8DAD8.toInt()), duJour(0xFFD69482.toInt()), duJour(0xFFF0EFE8.toInt()),
+            duJour(0xFF9DB3D2.toInt()), duJour(0xFFC66E40.toInt()), duJour(0xFFA3B985.toInt())
+        )
+
         /** Un vert de feuillage, de [nuance] 0 (sombre) à 1 (clair), dans la palette de l'heure. */
         fun vert(nuance: Float): Int =
             mix(mix(P.pres, P.milieu, nuance), 0xFF6FA845.toInt(), if (P.nuit) 0.05f else 0.22f)
@@ -3344,11 +3387,16 @@ object Paysages {
          * voisine de devant, son pignon ; la première montre le sien en entier.
          * Peintes du fond vers l'avant, comme on colle des cartons.
          */
-        fun rue3q(r: Fuite, maisons: Array<FloatArray>, murs: IntArray, rnd: Alea, ecart: Float = 0f, debut: Float = 0f) = mineral {
+        fun rue3q(r: Fuite, maisons: Array<FloatArray>, murs: IntArray, rnd: Alea, ecart: Float = 0f, debut: Float = 0f,
+                  froid: Boolean = false) = mineral {
             val tl = r.taille
-            val toit = ardoise()
-            val faitage = mix(toit, 0xFFFFFFFF.toInt(), 0.18f)
-            val poutre = duJour(0xFF4A3A2E.toInt())
+            // [froid] : contre la dominante jaune, des couleurs que le
+            // réglage des couleurs vives ne réchauffe pas ([neutre]), des
+            // murs qui alternent sans se répéter, et des ombres froides.
+            val n: (Int) -> Int = if (froid) { col -> neutre(col) } else { col -> col }
+            val toit = n(ardoise())
+            val faitage = n(mix(ardoise(), 0xFFFFFFFF.toInt(), 0.18f))
+            val poutre = n(duJour(0xFF4A3A2E.toInt()))
             val debuts = FloatArray(maisons.size)
             var u = debut
             // [ecart] : des maisons séparées, dont on voit chaque pignon, comme
@@ -3364,15 +3412,17 @@ object Paysages {
             }
             for (i in maisons.indices.reversed()) {
                 val m = maisons[i]
-                val w = m[0]; val h = m[1]; val mur = murs[m[2].toInt()]; val toitH = m[4]
+                val w = m[0]; val h = m[1]; val toitH = m[4]
+                val mur = if (froid) n(murs[i % murs.size]) else murs[m[2].toInt()]
                 val ua = debuts[i]; val ub = ua + w
                 val ax = r.x(ua); val ay = r.y(ua); val ea = r.echelle(ua)
                 val bx = r.x(ub); val by = r.y(ub); val eb = r.echelle(ub)
                 val hautA = ay - h * tl * ea; val hautB = by - h * tl * eb
                 val pa = profondeur(ax, ay, ea)
                 val pb = profondeur(bx, by, eb)
-                // Le pignon, à l'ombre, et son triangle sous le toit.
-                val pignon = sombre(mur, 0.28f)
+                // Le pignon, à l'ombre, et son triangle sous le toit. Froid :
+                // une ombre bleutée, la complémentaire de la lumière chaude.
+                val pignon = if (froid) n(ombreFroide(murs[i % murs.size], 0.42f)) else sombre(mur, 0.28f)
                 val cote = floatArrayOf(ax + pa[0], hautA + pa[1], ax, hautA, ax, ay, ax + pa[0], ay + pa[1])
                 piece(quad(cote), pignon, 0.5f)
                 val sommetA = floatArrayOf(ax + pa[0] * 0.5f, hautA + pa[1] * 0.5f - toitH * tl * ea)
@@ -3400,7 +3450,7 @@ object Paysages {
                         fy += 4.8f
                     }
                     // La porte au rez-de-chaussée.
-                    rect(w * 0.42f, h - 3.6f, 1.8f, 3.6f, sombre(mur, 0.55f))
+                    rect(w * 0.42f, h - 3.6f, 1.8f, 3.6f, if (froid) n(ombreFroide(murs[i % murs.size], 0.7f)) else sombre(mur, 0.55f))
                 }
                 // Le pan du toit, qui monte vers le faîte en reculant.
                 val sommetB = floatArrayOf(bx + pb[0] * 0.5f, hautB + pb[1] * 0.5f - toitH * tl * eb)
@@ -3907,7 +3957,7 @@ object Paysages {
             plan(1)
             val murs = intArrayOf(duJour(0xFFE9DDC5.toInt()), duJour(0xFFD9C6A0.toInt()), duJour(0xFFF3EFE7.toInt()),
                 duJour(0xFFE3E1DA.toInt()))
-            rue3q(RUE_GRUND, MAISONS_GRUND_3Q, murs, r)
+            rue3q(RUE_GRUND, MAISONS_GRUND_3Q, facades(), r, froid = true)
             touffe(vert(0.6f), 58f, 43.5f, 2.6f, 62f, 42.5f, 3f, 66f, 43.4f, 2.2f)
             plan(2)
             plancher(DEVANT, BAS)
