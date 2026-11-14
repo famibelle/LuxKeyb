@@ -151,7 +151,8 @@ se compense par sa limite (une fois par partie) et se vérifie en simulation
 - **Le cadre ne mange pas l'image** : l'ornement vit sur le bord, la fenêtre
   reste à au moins la moitié de la hauteur de la carte.
 - **La série se reconnaît d'un coup d'œil** : un même langage (métal, gemme,
-  paysage aux trois plans) sur toutes les cartes.
+  paysage en papier découpé, vu de trois quarts, sur un sol en vraie matière)
+  sur toutes les cartes.
 - **Les meubles viennent du domaine public** (propriétaire, 2026-10-31). Les
   silhouettes dessinées à la main, d'après des emoji puis point par point, ne
   tenaient pas la comparaison avec les banques d'images (le lion lisait comme
@@ -224,7 +225,7 @@ et la skill `imprimeur` (format, fond perdu, budget, licences, imprimeurs).
 |---|---|
 | Recto d'une carte (pastille, nom, panneau, écus, ligne de série) | `carnet/CarteCarnet.kt` (`complete`, `panneau`) |
 | Cadre, métal, joyaux, sujets dessinés (`Porcelet`…) | `carnet/CadreOrne.kt` |
-| Paysages (27 lieux, 9 champs × 3, album de 90 cases), meubles, mot gravé | `carnet/Paysages.kt`, `Meubles.kt` (et `MeublesDomaine.kt`, généré), `MotGrave.kt` |
+| Paysages (27 lieux, 9 champs × 3, album de 90 cases), meubles, mot gravé | `carnet/Paysages.kt`, `Meubles.kt` (et `MeublesDomaine.kt`, généré), `MotGrave.kt` ; pour peindre ou retoucher un lieu (trois quarts, bâti sans jaune, sol en vraie matière, eau, planches de relecture) : skill `direction-artistique`, § 4 règles 9 à 11 et § 8 |
 | Raretés (4 paliers), natures, champs | `carnet/CarnetModels.kt` (`Rarete`) |
 | Carte spéciale | `carnet/CarteFierkelsmaart.kt` (modèle à suivre) |
 | Version imprimée (écus COÛT et TYPE, pouvoir) | `carnet/ImpressionCarte.kt`, `complete(…, impression = true)` |

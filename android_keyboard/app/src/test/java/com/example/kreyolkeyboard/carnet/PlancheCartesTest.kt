@@ -61,6 +61,10 @@ class PlancheCartesTest {
         }
     }
 
+    /** Les lieux des planches : tous, ou ceux de `-PplancheLieux=STAD,GELLE_FRA`. */
+    private fun lieuxChoisis(): List<Lieu> = System.getProperty("planche.lieux")?.takeIf { it.isNotBlank() }
+        ?.split(',')?.map { Lieu.valueOf(it.trim()) } ?: Lieu.values().toList()
+
     @Test
     fun lieux() {
         assumeTrue(dossier != null)
@@ -73,7 +77,7 @@ class PlancheCartesTest {
         val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
         for (rarete in Rarete.values()) {
             val cases = ArrayList<Pair<String, Bitmap>>()
-            for (lieu in Lieu.values()) {
+            for (lieu in lieuxChoisis()) {
                 val motif = Motif("Bréck", rarete, zone, blason(lieu)).apply { profondeur = true }
                 for (regard in floatArrayOf(-1f, 0f, 1f)) {
                     val b = Bitmap.createBitmap((visible.width() * echelle).toInt(), (visible.height() * echelle).toInt(),
@@ -187,7 +191,9 @@ class PlancheCartesTest {
         val echelle = 5f
         val decoupe = android.graphics.Path().apply { addRect(visible, android.graphics.Path.Direction.CW) }
         val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
-        val films = listOf(Triple(Lieu.VEIANEN, Rarete.COMMUN, 1), Triple(Lieu.STAD, Rarete.RARE, 1))
+        // Avec -PplancheLieux, un film de chacun de ces lieux, à l'heure de la commune, au printemps.
+        val films = System.getProperty("planche.lieux")?.takeIf { it.isNotBlank() }?.let { lieuxChoisis().map { Triple(it, Rarete.COMMUN, 4) } }
+            ?: listOf(Triple(Lieu.VEIANEN, Rarete.COMMUN, 1), Triple(Lieu.STAD, Rarete.RARE, 1))
         for ((lieu, rarete, mois) in films) {
             val images = if (lieu == Lieu.BREEDEWEE) 110 else 80
             val choc = if (lieu == Lieu.BREEDEWEE) 75 else 30

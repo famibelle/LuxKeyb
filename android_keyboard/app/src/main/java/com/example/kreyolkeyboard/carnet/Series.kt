@@ -147,6 +147,27 @@ object Series {
     }
 
     /**
+     * Les rangées d'une page de série, [colonnes] cases par rangée.
+     *
+     * L'album des paysages se range **une rangée par lieu**, du matin à la
+     * nuit, chaque case sous la colonne de son heure : un lieu sans nuit
+     * ([Lieu.ALBUM_SANS_NUIT]) laisse sa quatrième place vide (`null`). Sans
+     * cela, les lieux de trois cases glissaient d'une rangée à l'autre et la
+     * grille de 9 × 3 ne se lisait plus. Sur un écran à huit colonnes, deux
+     * lieux par rangée. Les autres séries se coupent simplement en rangées.
+     */
+    fun <C> rangees(serie: Serie, emplacements: List<Emplacement<C>>, colonnes: Int): List<List<Emplacement<C>?>> {
+        if (serie != Serie.PAYSAGES) return emplacements.chunked(colonnes)
+        val heures = Rarete.values().size
+        val lieux = emplacements.groupBy { paysageDe(it.cle)?.first }.values.map { cases ->
+            val ligne = arrayOfNulls<Emplacement<C>>(heures)
+            cases.forEach { e -> paysageDe(e.cle)?.let { ligne[it.second.ordinal] = e } }
+            ligne.toList()
+        }
+        return lieux.chunked((colonnes / heures).coerceAtLeast(1)).map { it.flatten() }
+    }
+
+    /**
      * La case d'une carte : le lieu de son champ, à l'heure de sa rareté.
      *
      * Le lieu que la carte montre, sauf pour une carte venue du jeu imprimé :
