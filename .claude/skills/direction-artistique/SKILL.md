@@ -276,6 +276,22 @@ gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
   oblique qui garde les verticales), une tour montre deux faces, une roue
   se voit en ellipse. Ce qui vit sur un objet penché (le tram du pont
   Adolphe) est posé dans la même oblique.
+- **Les bâtiments peints de trois quarts** (demande du propriétaire,
+  2026-11-14) : « représentés peints sur une planche de trois quarts », sans
+  « bandes blanches horizontales qui se succèdent ». Une rangée de maisons
+  n'est plus une bande de façades de face : elle fuit vers un point de fuite
+  (`Paysages.Fuite`), en vraie perspective (`Peintre.surQuad`,
+  `Matrix.setPolyToPoly`), chaque maison avec sa façade, son toit, ses
+  lucarnes et le pignon qui dépasse de sa voisine (`Peintre.rue3q`). Une
+  ville est mitoyenne ; un village laisse un `ecart` qui montre chaque
+  pignon. Le recul de la fuite se règle sur la taille de la rangée, sinon
+  une rangée lointaine s'allonge en barres basses. Faits : le Grund (Stad),
+  la ville basse de la Gëlle Fra, le village d'Esch-Sauer, l'autre rive de
+  la Musel, la ville haute et le rempart de Neimënster, la Spuerkeess (Nei
+  Bréck), les châteaux de Vianden et d'Ansembourg (tours et terrasse
+  comprises). Ce qui est rond (une tour, un dôme) reste de face ; le fond
+  (ciel, collines, rochers) aussi. Le Breedewee reste de face : c'est une
+  ruelle vue dans l'axe, sous sa porte.
 - **Une deuxième vague de lieux** (`Lieu.choix`) : un champ peut en avoir
   deux, tirés sur le mot (`Lieu.pour`). Pafendall (mouvement), Ansebuerg
   (temps), Belval (économie), Nei Bréck, le pont Adolphe (chose publique),

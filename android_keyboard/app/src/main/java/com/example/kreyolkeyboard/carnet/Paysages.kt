@@ -1215,6 +1215,27 @@ object Paysages {
     internal val RUE_PALAIS = Fuite(floatArrayOf(78f, 9.5f), floatArrayOf(190f, 1f), floatArrayOf(-60f, 6f), taille = 0.32f)
     private val PALAIS = arrayOf(floatArrayOf(70f, 20f, 0f, 0f, 5f, 1f))
 
+    /** Le château de Vianden sur son éperon : le palais, la tour carrée, l'aile basse. */
+    internal val FUITE_VEIANEN = Fuite(floatArrayOf(41f, 31f), floatArrayOf(175f, 22f), floatArrayOf(-90f, 27f), taille = 1f)
+    private val CHATEAU_VEIANEN = arrayOf(
+        floatArrayOf(40f, 17f, 0f, 0f, 6.5f, 1f), floatArrayOf(8f, 20f, 0f, 0f, 7f, 0f), floatArrayOf(18f, 9.5f, 0f, 0f, 4f, 0f)
+    )
+
+    /** La Spuerkeess derrière le pont Adolphe : l'aile gauche, le pavillon, l'aile droite ; et sa tour. */
+    internal val FUITE_SPUERKEESS = Fuite(floatArrayOf(13f, 33f), floatArrayOf(200f, 21f), floatArrayOf(-110f, 29f), taille = 1f)
+    private val SPUERKEESS = arrayOf(
+        floatArrayOf(26f, 15f, 0f, 0f, 3.6f, 1f), floatArrayOf(13f, 20f, 0f, 0f, 1.5f, 0f), floatArrayOf(34f, 15f, 0f, 0f, 3.6f, 1f)
+    )
+    internal val FUITE_TOUR_SPUERKEESS = Fuite(floatArrayOf(3f, 33f), floatArrayOf(200f, 21f), floatArrayOf(-110f, 29f), taille = 1f)
+    private val TOUR_SPUERKEESS = arrayOf(floatArrayOf(7f, 24f, 0f, 0f, 0.6f, 0f))
+
+    /** Le château d'Ansembourg : l'aile ocre, le corps central, l'aile blanche, et ses deux tours. */
+    internal val FUITE_ANSEBUERG = Fuite(floatArrayOf(22f, 32f), floatArrayOf(190f, 23f), floatArrayOf(-100f, 28f), 165f)
+    private val CHATEAU_ANSEBUERG = arrayOf(
+        floatArrayOf(22f, 10f, 0f, 0f, 3.4f, 0f), floatArrayOf(34f, 16f, 0f, 0f, 4f, 1f), floatArrayOf(30f, 14f, 1f, 0f, 3.4f, 1f)
+    )
+    private val TOUR_ANSEBUERG = floatArrayOf(7f, 22f, 0f, 0f, 8f, 0f)
+
     /** La rue du Grund, au bord de l'Alzette : elle fuit vers la droite. */
     internal val RUE_GRUND = Fuite(floatArrayOf(13f, 50.5f), floatArrayOf(178f, 34f), floatArrayOf(-140f, 40f), 150f, quai = 3f)
 
@@ -3253,13 +3274,13 @@ object Paysages {
          * voisine de devant, son pignon ; la première montre le sien en entier.
          * Peintes du fond vers l'avant, comme on colle des cartons.
          */
-        fun rue3q(r: Fuite, maisons: Array<FloatArray>, murs: IntArray, rnd: Alea, ecart: Float = 0f) = mineral {
+        fun rue3q(r: Fuite, maisons: Array<FloatArray>, murs: IntArray, rnd: Alea, ecart: Float = 0f, debut: Float = 0f) = mineral {
             val tl = r.taille
             val toit = ardoise()
             val faitage = mix(toit, 0xFFFFFFFF.toInt(), 0.18f)
             val poutre = duJour(0xFF4A3A2E.toInt())
             val debuts = FloatArray(maisons.size)
-            var u = 0f
+            var u = debut
             // [ecart] : des maisons séparées, dont on voit chaque pignon, comme
             // dans un village ; sans écart, une rangée mitoyenne de ville.
             for (i in maisons.indices) { debuts[i] = u; u += maisons[i][0] + ecart }
@@ -3374,33 +3395,38 @@ object Paysages {
             val mur = duJour(0xFFEADDBE.toInt())
             val ombre = mix(mur, P.pres, 0.28f)
             val toit = ardoise()
-            enPerspective(60f, 30f, 0.07f) {
-                mineral {
-                    pieceD("M33 36L37 30L88 30L91 36Z", duJour(0xFFA39377.toInt()))
-                    // La tour ronde de gauche et sa flèche.
-                    feuille(33.5f, 17f, 4.2f, 14f, mur)
-                    feuille(36.1f, 17f, 1.6f, 14f, ombre, 0f)
-                    pieceD("M32.8 17.2L35.6 8.4L38.4 17.2Z", toit)
-                    feuille(37.6f, 24f, 7f, 7f, mur)
-                    // Le palais et ses grands toits d'ardoise.
-                    feuille(44f, 14f, 26f, 17f, mur)
-                    feuille(63f, 14f, 7f, 17f, ombre, 0f)
-                    pieceD("M43 14.4L46 8L68 8L71 14.4Z", toit)
-                    // La chapelle et son clocher.
-                    feuille(55.6f, 4.5f, 2.8f, 4f, mur)
-                    pieceD("M55.1 4.8L57 0.4L58.9 4.8Z", toit)
-                    // La tour carrée de droite et l'aile basse.
-                    feuille(70f, 12f, 5.4f, 19f, mur)
-                    feuille(73.4f, 12f, 2f, 19f, ombre, 0f)
-                    pieceD("M69.4 12.2L72.7 5.6L76 12.2Z", toit)
-                    feuille(75.4f, 22f, 12.6f, 9f, mur)
-                    pieceD("M74.8 22.2L77.2 18.6L86 18.6L88.6 22.2Z", toit)
-                    for (fx in floatArrayOf(46.2f, 49.8f, 53.4f, 60.6f, 64.2f, 67.4f)) {
-                        fenetre(fx, 17.5f, 1.2f, 2f, r); fenetre(fx, 23f, 1.2f, 2f, r)
-                    }
-                    fenetre(35f, 21f, 1f, 1.8f, r); fenetre(71.6f, 16f, 1.1f, 2f, r); fenetre(71.6f, 22f, 1.1f, 2f, r)
-                    for (fx in floatArrayOf(77.5f, 80.5f, 83.5f)) fenetre(fx, 25f, 1.1f, 1.8f, r)
-                }
+            // Le château en volumes de trois quarts : le palais, la tour
+            // carrée et l'aile basse fuient vers la droite, chacun avec sa
+            // façade, son toit et le pignon qui dépasse de sa voisine.
+            val f = FUITE_VEIANEN
+            val fin = CHATEAU_VEIANEN.sumOf { it[0].toDouble() }.toFloat()
+            mineral {
+                piece(Path().apply {
+                    moveTo(f.x(0f) - 8f, f.y(0f) + 6f)
+                    lineTo(f.x(0f) - 5f, f.y(0f))
+                    var u = 0f
+                    while (u <= fin) { lineTo(f.x(u), f.y(u)); u += 4f }
+                    lineTo(f.x(fin) + 3f, f.y(fin) + 6f * f.echelle(fin))
+                    close()
+                }, duJour(0xFFA39377.toInt()))
+            }
+            rue3q(f, CHATEAU_VEIANEN, intArrayOf(mur), r)
+            mineral {
+                // Le clocher de la chapelle, sur le faîte du palais.
+                val u = 22f
+                val e = f.echelle(u)
+                val cx = f.x(u) - 2.6f * e
+                val cy = f.y(u) - (CHATEAU_VEIANEN[0][1] + CHATEAU_VEIANEN[0][4]) * e - 0.6f * e
+                feuille(cx - 1.4f * e, cy - 4f * e, 2.8f * e, 4.6f * e, mur)
+                pieceD("M${cx - 1.9f * e} ${cy - 3.7f * e}L$cx ${cy - 8.4f * e}L${cx + 1.9f * e} ${cy - 3.7f * e}Z", toit)
+                // La tour ronde de gauche, devant le pignon du palais : ronde,
+                // elle se voit de même sous tous les angles.
+                val tx = f.x(0f) - 6f
+                val ty = f.y(0f)
+                feuille(tx, ty - 15f, 4.4f, 15f, mur)
+                feuille(tx + 2.7f, ty - 15f, 1.7f, 15f, ombre, 0f)
+                pieceD("M${tx - 0.7f} ${ty - 14.8f}L${tx + 2.2f} ${ty - 23.8f}L${tx + 5.1f} ${ty - 14.8f}Z", toit)
+                fenetre(tx + 1.4f, ty - 10f, 1f, 1.8f, r)
             }
             if (!vivant) brumeDeVeianen(0f)
             plan(2)
@@ -3883,21 +3909,24 @@ object Paysages {
             val creme = duJour(0xFFE6DAC0.toInt())
             val toit = ardoise()
             val cuivre = duJour(0xFF5FA88A.toInt())
-            enPerspective(30f, 25f, 0.06f) {
-                mineral {
-                    // La tour de la Spuerkeess et son dôme de cuivre, à gauche.
-                    feuille(3.5f, 9f, 5.4f, 24f, creme)
-                    pieceD("M3 9.2C3 4.8 9.4 4.8 9.4 9.2Z", cuivre)
-                    feuille(5.7f, 2.4f, 1f, 2.6f, cuivre, 0.3f)
-                    fenetre(5.4f, 13f, 1.4f, 2.4f, r); fenetre(5.4f, 19f, 1.4f, 2.4f, r)
-                    // Le grand bâtiment et son pavillon central.
-                    feuille(12f, 18f, 50f, 15f, creme)
-                    pieceD("M11.4 18.2L13.4 14.6L60.6 14.6L62.6 18.2Z", toit)
-                    feuille(32f, 13f, 10f, 20f, creme)
-                    pieceD("M31.4 13.2C32 9 42 9 42.6 13.2Z", toit)
-                    var fx = 13.5f
-                    while (fx < 61f) { fenetre(fx, 21f, 1.1f, 1.9f, r); fenetre(fx, 26f, 1.1f, 1.9f, r); fx += 3f }
+            // La Spuerkeess de trois quarts, qui fuit vers la droite comme le
+            // pont : sa tour au dôme de cuivre, puis le grand bâtiment et son
+            // pavillon central, plus haut, dont le pignon dépasse.
+            val murs = intArrayOf(creme)
+            rue3q(FUITE_SPUERKEESS, SPUERKEESS, murs, r)
+            rue3q(FUITE_TOUR_SPUERKEESS, TOUR_SPUERKEESS, murs, r)
+            mineral {
+                fun dome(f: Fuite, u0: Float, u1: Float, haut: Float, rayon: Float) {
+                    val um = (u0 + u1) / 2f
+                    val e = f.echelle(um)
+                    val x = f.x(um); val y = f.y(um) - haut * e
+                    val l = (f.x(u1) - f.x(u0)) / 2f + 0.4f
+                    pieceD("M${x - l} ${y + 0.3f}C${x - l} ${y - rayon * e} ${x + l} ${y - rayon * e} ${x + l} ${y + 0.3f}Z", cuivre)
+                    feuille(x - 0.4f * e, y - rayon * e - 2.2f * e, 0.8f * e, 2.6f * e, cuivre, 0.3f)
                 }
+                dome(FUITE_TOUR_SPUERKEESS, 0f, TOUR_SPUERKEESS[0][0], TOUR_SPUERKEESS[0][1], 5.6f)
+                val u0 = SPUERKEESS[0][0]
+                dome(FUITE_SPUERKEESS, u0, u0 + SPUERKEESS[1][0], SPUERKEESS[1][1], 5f)
             }
             lisiere(56f, 102f, { x -> 27f + sin(x * 0.3f) }, 1.4f, 2f, 176, mix(P.loin, P.milieu, 0.3f))
             plan(1)
@@ -4034,42 +4063,49 @@ object Paysages {
             val aile = duJour(0xFFEDE9E0.toInt())
             val toit = ardoise()
             val terrasse = duJour(0xFFD8CCAE.toInt())
-            enPerspective(50f, 31f, 0.08f) {
-                mineral {
-                    feuille(16f, 22f, 18f, 10f, ocre)
-                    pieceD("M15.4 22.2L17.6 19L32.4 19L34.6 22.2Z", toit)
-                    feuille(62f, 18f, 26f, 14f, aile)
-                    pieceD("M61.4 18.2L63.6 15L86 15L88.6 18.2Z", toit)
-                    feuille(34f, 16f, 28f, 16f, ocre)
-                    pieceD("M33.4 16.2L36 12.6L60 12.6L62.6 16.2Z", toit)
-                    for (x in floatArrayOf(36f, 54f)) {
-                        feuille(x, 10f, 6f, 22f, ocre)
-                        pieceD("M${x - 0.6f} 10.2L${x + 3f} 2.4L${x + 6.6f} 10.2Z", toit)
-                        ligne(x + 3f, 2.4f, x + 3f, 0.4f, toit, 0.25f)
-                        for (y in floatArrayOf(14f, 20f, 26f)) fenetre(x + 2.4f, y, 1.2f, 2f, r)
-                    }
-                    for (fx in floatArrayOf(17.6f, 21f, 24.4f, 27.8f, 31.2f)) fenetre(fx, 25f, 1f, 1.8f, r)
-                    for (fx in floatArrayOf(43.5f, 47f, 50.5f)) { fenetre(fx, 19f, 1.1f, 2f, r); fenetre(fx, 25f, 1.1f, 2f, r) }
-                    var fx = 64f
-                    while (fx < 87f) { fenetre(fx, 21f, 1f, 1.8f, r); fenetre(fx, 26f, 1f, 1.8f, r); fx += 3f }
-                    // La terrasse, ses arcades et sa balustrade.
-                    feuille(6f, 32f, 88f, 8f, terrasse)
-                    var ax = 38f
-                    while (ax < 62f) {
-                        pieceD("M$ax 40L$ax 36C$ax 34.2 ${ax + 3.2f} 34.2 ${ax + 3.2f} 36L${ax + 3.2f} 40Z", mix(terrasse, P.pres, 0.45f), 0f)
+            // Le château de trois quarts : l'aile ocre, le corps central et
+            // ses deux tours carrées, l'aile blanche, sur la terrasse à
+            // arcades qui fuit avec eux.
+            val f = FUITE_ANSEBUERG
+            val fin = CHATEAU_ANSEBUERG.sumOf { it[0].toDouble() }.toFloat()
+            val terrasseH = 8f
+            val bord = floatArrayOf(f.x(-14f), f.y(-14f), f.x(fin + 8f), f.y(fin + 8f),
+                f.x(fin + 8f), f.y(fin + 8f) + terrasseH * f.echelle(fin + 8f), f.x(-14f), f.y(-14f) + terrasseH * f.echelle(-14f))
+            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[0]), intArrayOf(ocre), r)
+            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[1]), intArrayOf(ocre), r, debut = CHATEAU_ANSEBUERG[0][0])
+            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[2]), intArrayOf(ocre, aile), r, debut = CHATEAU_ANSEBUERG[0][0] + CHATEAU_ANSEBUERG[1][0])
+            for (d in floatArrayOf(3f, 24f)) rue3q(f, arrayOf(TOUR_ANSEBUERG), intArrayOf(ocre), r, debut = CHATEAU_ANSEBUERG[0][0] + d)
+            mineral {
+                piece(Path().apply {
+                    moveTo(bord[0], bord[1]); lineTo(bord[2], bord[3]); lineTo(bord[4], bord[5]); lineTo(bord[6], bord[7]); close()
+                }, terrasse)
+                val largeur = fin + 22f
+                surQuad(largeur, terrasseH, bord) {
+                    val creux = mix(terrasse, P.pres, 0.45f)
+                    var ax = 14f + CHATEAU_ANSEBUERG[0][0] + 2f
+                    while (ax < 14f + CHATEAU_ANSEBUERG[0][0] + CHATEAU_ANSEBUERG[1][0] - 3f) {
+                        pieceD("M$ax 8L$ax 4C$ax 2.2 ${ax + 3.2f} 2.2 ${ax + 3.2f} 4L${ax + 3.2f} 8Z", creux, 0f)
                         ax += 5f
                     }
-                    ligne(6f, 32.4f, 94f, 32.4f, mix(terrasse, P.pres, 0.3f), 0.4f)
-                    var bx = 7f
-                    while (bx < 94f) { ligne(bx, 31f, bx, 32.4f, terrasse, 0.3f); bx += 1.6f }
-                    ligne(6f, 31f, 94f, 31f, terrasse, 0.4f)
+                    ligne(0f, 0.4f, largeur, 0.4f, mix(terrasse, P.pres, 0.3f), 0.4f)
                 }
+                // La balustrade, qui se serre en fuyant.
+                var u = -14f
+                while (u < fin + 8f) {
+                    val e = f.echelle(u)
+                    ligne(f.x(u), f.y(u), f.x(u), f.y(u) - 1.4f * e, terrasse, 0.3f * e)
+                    u += 1.8f
+                }
+                ligne(f.x(-14f), f.y(-14f) - 1.4f, f.x(fin + 8f), f.y(fin + 8f) - 1.4f * f.echelle(fin + 8f), terrasse, 0.4f)
             }
             for (x in floatArrayOf(12f, 88f)) {
                 pieceD("M$x 40L${x - 1.6f} 34C${x - 1.4f} 30 ${x - 0.4f} 27 $x 26C${x + 0.4f} 27 ${x + 1.4f} 30 ${x + 1.6f} 34Z", vert(0.15f))
             }
             touffe(vert(0.4f), 4f, 30f, 4f, 96f, 30f, 4f)
-            pieceD("M-2 66L-2 40L102 40L102 66Z", duJour(0xFF8BAA4A.toInt()), 0.4f)
+            // La pelouse, qui part du pied de la terrasse et fuit avec elle.
+            val pente = (bord[5] - bord[7]) / (bord[4] - bord[6])
+            fun pied(x: Float) = bord[7] + (x - bord[6]) * pente - 0.4f
+            pieceD("M-2 66L-2 ${pied(-2f)}L102 ${pied(102f)}L102 66Z", duJour(0xFF8BAA4A.toInt()), 0.4f)
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
