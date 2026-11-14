@@ -142,6 +142,40 @@ class PlancheCartesTest {
         planche(cases, 3, File(dossier, "planche_vif.png"), reduire = 1)
     }
 
+    /**
+     * Le surcadrage qui bouge : la fenêtre d'une carte image par image, à
+     * l'horloge d'essai, d'abord au repos puis secouée, dans
+     * `secousse/<lieu>/image_NNN.png` (dix images par seconde), pour en faire
+     * une animation. Ne tourne qu'avec `-PplancheSecousse`.
+     */
+    @Test
+    fun secousse() {
+        assumeTrue(dossier != null && System.getProperty("planche.secousse") != null)
+        val zone = Ornement.FENETRE
+        val visible = android.graphics.RectF(zone.left, zone.top, zone.right, Ornement.PLAQUE.top + 4f)
+        val echelle = 5f
+        val decoupe = android.graphics.Path().apply { addRect(visible, android.graphics.Path.Direction.CW) }
+        val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
+        for (lieu in listOf(Lieu.NEI_BRECK, Lieu.HAFF_REIMECH)) {
+            val sortie = File(dossier, "secousse/${lieu.name.lowercase()}").apply { mkdirs() }
+            val motif = Motif("Bréck", Rarete.COMMUN, zone, blason(lieu), Souvenir.du(2026, 7, 15)).apply { profondeur = true }
+            for (k in 0 until 80) {
+                val t = 4f + k * 0.1f
+                Paysages.horlogeEssai = t
+                if (k == 30) motif.secouer(1f)
+                val b = Bitmap.createBitmap((visible.width() * echelle).toInt(), (visible.height() * echelle).toInt(),
+                    Bitmap.Config.ARGB_8888)
+                val c = Canvas(b)
+                c.scale(echelle, echelle)
+                c.translate(-visible.left, -visible.top)
+                motif.peindre(c, pinceau, 0f, decoupe, echelle, avecIris = false, avecSujet = true, regardX = 0f, regardY = 0f)
+                File(sortie, "image_%03d.png".format(k)).outputStream().use { b.compress(Bitmap.CompressFormat.PNG, 100, it) }
+                b.recycle()
+            }
+        }
+        Paysages.horlogeEssai = null
+    }
+
     private fun planche(cases: List<Pair<String, Bitmap>>, colonnes: Int, sortie: File, reduire: Int) {
         val l = cases[0].second.width / reduire
         val h = cases[0].second.height / reduire

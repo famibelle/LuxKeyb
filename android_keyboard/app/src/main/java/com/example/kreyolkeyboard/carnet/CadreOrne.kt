@@ -5009,7 +5009,74 @@ class Motif(
                 vie?.takeIf { it.vitDans(i) }?.let { v -> peindreVie(c, v, i, l, h, sx, sy) }
             }
         }
+        val brins = brinsAPeindre(l, h) ?: return
+        if (brins.isEmpty()) return
+        // Le second rang du pied, planté dans la rainure du proche, glisse avec
+        // lui ; le rang de devant glisse le moins, juste derrière la vitre.
+        peindreBrins(c, brins, 4, l, h, sx, sy, regardX, regardY)
+        peindreBrins(c, brins, 5, l, h, sx, sy, regardX, regardY)
     }
+
+    /** Les brins du surcadrage ([Paysages.Brin]) de la fenêtre de [l] × [h] pixels. */
+    private var brins: Array<Paysages.Brin>? = null
+    private var brinsPour = 0L
+
+    private fun brinsAPeindre(l: Int, h: Int): Array<Paysages.Brin>? {
+        val taille = l.toLong() shl 32 or h.toLong()
+        brins?.takeIf { brinsPour == taille && it.none { b -> b.image.isRecycled || b.ombre.isRecycled } }?.let { return it }
+        return Paysages.brins(lieu, heure, teinteChamp, l, h, souvenir)?.also { brins = it; brinsPour = taille }
+    }
+
+    private val ouBrin = RectF()
+    private val penche = android.graphics.Matrix()
+
+    /**
+     * Les brins du rang [plan], chacun balancé autour de son point fixe : la
+     * branche tourne autour de son attache dans le coin, le tronc du bouleau
+     * autour de son pied, à peine ; les roseaux, les fougères et les herbes
+     * ploient depuis leur pied, tous du même côté, comme sous le même vent.
+     * L'ombre bouge avec le brin qui la porte.
+     */
+    private fun peindreBrins(c: Canvas, brins: Array<Paysages.Brin>, plan: Int, l: Int, h: Int, sx: Float, sy: Float,
+                             regardX: Float, regardY: Float) {
+        val dx = Paysages.GLISSEMENT[plan] * visible.width() * regardX
+        val dy = Paysages.GLISSEMENT[plan] * visible.height() * regardY
+        val mx = Paysages.marge(plan, l) * sx
+        val my = Paysages.marge(plan, h) * sy
+        val k = Paysages.cadrage((l + 2 * Paysages.marge(plan, l)).toFloat(), (h + 2 * Paysages.marge(plan, h)).toFloat())
+        val temps = maintenant(c)
+        c.save()
+        c.translate(visible.left - mx + dx + k[1] * sx, visible.top - my + dy + k[2] * sy)
+        c.scale(k[0] * sx, k[0] * sy)
+        for (b in brins) {
+            if (b.plan != plan) continue
+            val m = vie?.balancement(temps, b.phase) ?: 0f
+            val signe = if (b.droite) -1f else 1f
+            c.save()
+            when (b.sorte) {
+                Paysages.Brin.Sorte.BRANCHE -> c.rotate(m * 7f * signe, b.px, b.py)
+                Paysages.Brin.Sorte.TRONC -> c.rotate(m * 1.2f * signe, b.px, b.py)
+                Paysages.Brin.Sorte.PIED -> {
+                    penche.setSkew(m * (if (plan == 4) 0.16f else 0.22f), 0f, b.px, b.py)
+                    c.concat(penche)
+                }
+            }
+            ouBrin.set(b.boite)
+            ouBrin.offset(Paysages.OMBRE_PORTEE_X, Paysages.OMBRE_PORTEE_Y)
+            c.drawBitmap(b.ombre, null, ouBrin, peintureOmbre)
+            c.drawBitmap(b.image, null, b.boite, peinture)
+            c.restore()
+        }
+        c.restore()
+    }
+
+    /**
+     * L'heure des choses qui bougent, en secondes : l'horloge sur la carte
+     * ouverte, zéro sur une image figée (canevas logiciel), ou l'horloge
+     * d'essai des planches de relecture ([Paysages.horlogeEssai]).
+     */
+    private fun maintenant(c: Canvas?): Float = Paysages.horlogeEssai
+        ?: if (c == null || c.isHardwareAccelerated) android.os.SystemClock.uptimeMillis() / 1000f else 0f
 
     /**
      * Ce qui vit dans le lieu ([Paysages.Vie]) : la roue, le tram, la brume…
@@ -5023,7 +5090,7 @@ class Motif(
 
     /** Une secousse du téléphone, de [force] entre 0 et 1 : le lieu y répond. */
     fun secouer(force: Float) {
-        vie?.secouer(force, android.os.SystemClock.uptimeMillis() / 1000f)
+        vie?.secouer(force, maintenant(null))
     }
 
     /**
@@ -5037,7 +5104,7 @@ class Motif(
         c.save()
         c.translate(ouPlan.left + k[1] * sx, ouPlan.top + k[2] * sy)
         c.scale(k[0] * sx, k[0] * sy)
-        v.dessiner(c, i, if (c.isHardwareAccelerated) android.os.SystemClock.uptimeMillis() / 1000f else 0f)
+        v.dessiner(c, i, maintenant(c))
         c.restore()
     }
 

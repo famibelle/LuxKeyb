@@ -464,8 +464,8 @@ object Paysages {
      * glisse quand l'œil change d'angle. Les valeurs sont celles de la
      * maquette `cinq_plans.html` (skill `direction-artistique`, règle 8).
      *
-     * Le sixième plan n'existe que dans les lieux qui ont un surcadrage
-     * ([Surcadre]), juste derrière la vitre (voir [nombreDePlans]).
+     * Le sixième rang est celui du surcadrage ([Surcadre], [brins]), juste
+     * derrière la vitre : il n'a pas de calque, ses brins sont posés un à un.
      */
     val GLISSEMENT = floatArrayOf(0.05f, 0.04f, 0.03f, 0.017f, 0.007f, 0.003f)
 
@@ -474,17 +474,16 @@ object Paysages {
 
     /**
      * Cinq cartons pour toutes les cartes (décision du propriétaire,
-     * 2026-11-01, règle 8 de la skill `direction-artistique`), six là où le
-     * lieu a son surcadrage naturel ([Surcadre], 2026-11-14), quelle que
+     * 2026-11-01, règle 8 de la skill `direction-artistique`), quelle que
      * soit la rareté : une commune, la carte qu'on manipule le plus, a le
      * plein effet de théâtre. La rareté se dit par l'heure, le métal et la
-     * plaque, qu'on voit sans pencher la carte. Les coulisses des rares
-     * (deux arbres en boule) ont laissé la place au surcadrage.
+     * plaque, qu'on voit sans pencher la carte. Le surcadrage ([brins]) vient
+     * en plus, devant.
      */
-    fun nombreDePlans(lieu: Lieu): Int = if (Surcadre.de(lieu) != null) 6 else 5
+    const val PLANS = 5
 
     /**
-     * Le lieu en cinq calques, six avec un surcadrage ([nombreDePlans]), pour la
+     * Le lieu en cinq calques ([PLANS]), pour la
      * carte ouverte : voir [GLISSEMENT]. Le premier est le ciel et ne laisse
      * rien de vide ; le deuxième est la bande des nuages ([NUAGES]), que
      * [CadreOrne] fait traverser le ciel ; les autres sont transparents autour
@@ -508,15 +507,139 @@ object Paysages {
               souvenir: Souvenir? = null): Array<Bitmap>? {
         if (largeurPx <= 0 || hauteurPx <= 0 || souvenir?.fete != null) return null
         val cle = cle(lieu, heure, teinte, largeurPx, hauteurPx, souvenir)
-        val n = nombreDePlans(lieu)
+        val n = PLANS
         val caches = Array(n) { CACHE.get("${cle}_p$it")?.takeIf { b -> !b.isRecycled } }
         val ombresOk = !PAPIER || (2 until n).all { CACHE.get("${cle}_o$it")?.isRecycled == false }
-        if (caches.all { it != null } && ombresOk) return caches.requireNoNulls()
+        val nBrins = gabarits(lieu, souvenir?.saison).size
+        val brinsOk = (0 until nBrins).all {
+            CACHE.get("${cle}_b$it")?.isRecycled == false && CACHE.get("${cle}_c$it")?.isRecycled == false
+        }
+        if (caches.all { it != null } && ombresOk && brinsOk) return caches.requireNoNulls()
         val ombres = arrayOfNulls<Bitmap>(n)
         val rendus = rendrePlans(lieu, heure, largeurPx, hauteurPx, souvenir, ombres)
         rendus.forEachIndexed { i, b -> CACHE.put("${cle}_p$i", b) }
         ombres.forEachIndexed { i, b -> if (b != null) CACHE.put("${cle}_o$i", b) }
+        gabarits(lieu, souvenir?.saison).forEachIndexed { i, g ->
+            val (image, ombre) = rendreBrin(g, heure, echelleDuPlan(g.plan, largeurPx, hauteurPx))
+            CACHE.put("${cle}_b$i", image)
+            CACHE.put("${cle}_c$i", ombre)
+        }
         return rendus
+    }
+
+    /**
+     * Un brin du surcadrage ([Surcadre]) : une branche, ou ce qui pousse au
+     * pied de la scène, découpé à part avec son ombre pour que la carte
+     * ouverte le fasse bouger à chaque trame (2026-11-14) : les branches se
+     * balancent autour de leur attache, hors champ dans le coin ; les
+     * roseaux, les fougères et les herbes ploient depuis leur pied. Une
+     * brise lente au repos, un vrai coup de vent quand on secoue le
+     * téléphone (voir [Vie.balancement]).
+     *
+     * [boite] est en unités de la boîte 100 × 66 du calque [plan] (4 le
+     * proche, 5 le rang de devant, qui glisse comme le sixième plan de
+     * [GLISSEMENT]) ; ([px], [py]) est le point qui ne bouge pas.
+     */
+    class Brin internal constructor(
+        val image: Bitmap, val ombre: Bitmap, val plan: Int, val boite: RectF,
+        val px: Float, val py: Float, val sorte: Sorte, val droite: Boolean, val phase: Float
+    ) {
+        enum class Sorte { BRANCHE, TRONC, PIED }
+    }
+
+    /** Les brins du surcadrage de la carte, s'ils sont rendus ; `null` sinon, vide sans surcadrage. */
+    fun brins(lieu: Lieu, heure: Heure, teinte: Float?, largeurPx: Int, hauteurPx: Int,
+              souvenir: Souvenir? = null): Array<Brin>? {
+        if (largeurPx <= 0 || hauteurPx <= 0 || souvenir?.fete != null) return null
+        val cle = cle(lieu, heure, teinte, largeurPx, hauteurPx, souvenir)
+        val g = gabarits(lieu, souvenir?.saison)
+        val out = ArrayList<Brin>(g.size)
+        for ((i, b) in g.withIndex()) {
+            val image = CACHE.get("${cle}_b$i")?.takeIf { !it.isRecycled } ?: return null
+            val ombre = CACHE.get("${cle}_c$i")?.takeIf { !it.isRecycled } ?: return null
+            out += Brin(image, ombre, b.plan, b.boite, b.px, b.py, b.sorte, b.droite, b.phase)
+        }
+        return out.toTypedArray()
+    }
+
+    /** Les pixels par unité du calque [plan] d'une fenêtre de [l] × [h] pixels. */
+    private fun echelleDuPlan(plan: Int, l: Int, h: Int): Float =
+        cadrage((l + 2 * marge(plan, l)).toFloat(), (h + 2 * marge(plan, h)).toFloat())[0]
+
+    /** Le pied de ce qui monte de hors champ, sous le bas de la fenêtre. */
+    private const val PIED_HORS_CHAMP = HAUTEUR + 2f
+
+    /**
+     * Ce qu'il faut découper pour le surcadrage de [lieu] : chaque brin, sa
+     * boîte (côté droit en miroir du gauche), son point fixe et son dessin.
+     */
+    private class Gabarit(
+        val plan: Int, val droite: Boolean, val sorte: Brin.Sorte, val boite: RectF,
+        val px: Float, val py: Float, val phase: Float, val dessin: Peintre.() -> Unit
+    )
+
+    private fun gabarits(lieu: Lieu, saison: Saison?): List<Gabarit> {
+        val s = Surcadre.de(lieu) ?: return emptyList()
+        val g = ArrayList<Gabarit>()
+        for (droite in booleanArrayOf(false, true)) {
+            val cote = if (droite) Surcadre.DROITE else Surcadre.GAUCHE
+            val graine = if (droite) 2 else 1
+            fun x(v: Float) = if (droite) LARGEUR - v else v
+            fun boite(l: Float, t: Float, r: Float, b: Float) =
+                if (droite) RectF(LARGEUR - r, t, LARGEUR - l, b) else RectF(l, t, r, b)
+            val pied = s.pied
+            if (pied != null && s.piedCotes and cote != 0) {
+                // Le second rang, à demi-taille, planté dans la rainure du proche.
+                val base = DEVANT + 0.6f
+                g += Gabarit(4, droite, Brin.Sorte.PIED, boite(9f, 36.5f, 26.5f, base + 1.5f), x(15f), base,
+                    graine * 1.3f + 0.9f) {
+                    c.translate(12.5f, base - PIED_HORS_CHAMP * 0.5f)
+                    c.scale(0.5f, 0.5f)
+                    pied(pied, saison, graine + 10, lointain = true)
+                }
+                g += Gabarit(5, droite, Brin.Sorte.PIED, boite(-6f, 23f, 27f, PIED_HORS_CHAMP + 1f), x(5f),
+                    PIED_HORS_CHAMP, graine * 1.3f) { pied(pied, saison, graine, lointain = false) }
+            }
+            val haut = s.haut
+            if (haut != null && s.hautCotes and cote != 0) {
+                val p = s.portee
+                val ph = graine * 2.1f + 0.4f
+                g += when (haut) {
+                    Surcadre.Essence.FEUILLU -> Gabarit(5, droite, Brin.Sorte.BRANCHE, boite(-10f, -7f, p + 8f, 27f),
+                        x(-4f), 2f, ph) { feuillu(saison, p, graine) }
+                    Surcadre.Essence.SAULE -> Gabarit(5, droite, Brin.Sorte.BRANCHE, boite(-8f, -6f, p * 0.8f + 9f, 43f),
+                        x(-4f), 1.5f, ph) { saule(saison, p, graine) }
+                    Surcadre.Essence.VIGNE -> Gabarit(5, droite, Brin.Sorte.BRANCHE, boite(-8f, -7f, p + 8f, 24f),
+                        x(-4f), 3f, ph) { vigne(saison, p, graine) }
+                    Surcadre.Essence.BOULEAU -> Gabarit(5, droite, Brin.Sorte.TRONC,
+                        boite(-6f, -6f, p + 6f, PIED_HORS_CHAMP + 1f), x(0.5f), PIED_HORS_CHAMP, ph) { bouleau(saison, p, graine) }
+                }
+            }
+        }
+        return g
+    }
+
+    /**
+     * Découpe un brin dans sa propre feuille, à [k] pixels par unité : la
+     * tranche de kraft, le grain, les couleurs ravivées comme les cartons,
+     * et son ombre à part.
+     */
+    private fun rendreBrin(g: Gabarit, heure: Heure, k: Float): Pair<Bitmap, Bitmap> {
+        val w = ceil(g.boite.width() * k).toInt().coerceAtLeast(1)
+        val h = ceil(g.boite.height() * k).toInt().coerceAtLeast(1)
+        val b = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val c = Canvas(b)
+        c.scale(k, k)
+        c.translate(-g.boite.left, -g.boite.top)
+        if (g.droite) { c.translate(LARGEUR, 0f); c.scale(-1f, 1f) }
+        Peintre(c, heure, facture = Facture.GOUACHE, echelle = k).apply(g.dessin)
+        val forme = b.extractAlpha()
+        krafter(b, forme, k, heure)
+        val ombre = flouter(forme, k)
+        forme.recycle()
+        Grain.poser(b)
+        raviver(b)
+        return b to ombre
     }
 
     /**
@@ -530,6 +653,9 @@ object Paysages {
      * très rare côte à côte (2026-11-14).
      */
     const val VIF_RETENU = 1.8f
+
+    /** L'horloge des planches de relecture, en secondes ; `null` pour la vraie. */
+    @Volatile internal var horlogeEssai: Float? = null
 
     @Volatile internal var VIF = VIF_RETENU
 
@@ -578,7 +704,7 @@ object Paysages {
                souvenir: Souvenir? = null): Array<Bitmap?>? {
         if (!PAPIER || largeurPx <= 0 || hauteurPx <= 0 || souvenir?.fete != null) return null
         val cle = cle(lieu, heure, teinte, largeurPx, hauteurPx, souvenir)
-        return Array(nombreDePlans(lieu)) { CACHE.get("${cle}_o$it")?.takeIf { b -> !b.isRecycled } }
+        return Array(PLANS) { CACHE.get("${cle}_o$it")?.takeIf { b -> !b.isRecycled } }
     }
 
     /**
@@ -611,8 +737,8 @@ object Paysages {
     private val PROFONDEUR = intArrayOf(0, -1, 1, 2, 3, 4)
 
     private fun rendrePlans(lieu: Lieu, heure: Heure, l: Int, h: Int, souvenir: Souvenir?,
-                            ombres: Array<Bitmap?> = arrayOfNulls(nombreDePlans(lieu))): Array<Bitmap> {
-        val n = nombreDePlans(lieu)
+                            ombres: Array<Bitmap?> = arrayOfNulls(PLANS)): Array<Bitmap> {
+        val n = PLANS
         val tailles = Array(n) { i -> intArrayOf(l + 2 * marge(i, l), h + 2 * marge(i, h)) }
         val ks = Array(n) { i ->
             cadrage(tailles[i][0].toFloat(), tailles[i][1].toFloat())
@@ -655,25 +781,9 @@ object Paysages {
         // Après la saison, qui reconnaît la végétation à ses couleurs d'origine.
         eclaircir(loin, formes[0], heure.cielBas, ESTOMPE[0])
         eclaircir(milieu, formes[1], heure.cielBas, ESTOMPE[1])
-        // Le surcadrage naturel, posé après la saison, qu'il peint lui-même
-        // (ses feuilles et ses roseaux sont ceux du jour où la carte a été
-        // gagnée) : les branches et le pied de devant sur un sixième carton,
-        // tout contre la vitre, et un second rang du pied, plus petit et plus
-        // clair, planté dans la rainure du proche. Deux rangs étagés entre le
-        // devant et le lieu : c'est ce qui creuse la scène.
-        val cadre = Surcadre.de(lieu)
-        val saison = souvenir?.saison
-        val devant = if (cadre == null) null else {
-            val fond2 = peindre(4) { surcadrage(cadre, saison, fond = true) }
-            Canvas(proche).drawBitmap(fond2, 0f, 0f, null)
-            val forme2 = Bitmap.createBitmap(tailles[4][0], tailles[4][1], Bitmap.Config.ALPHA_8)
-            Canvas(forme2).apply { drawBitmap(formes[2], 0f, 0f, null); drawBitmap(fond2, 0f, 0f, null) }
-            formes[2].recycle()
-            formes[2] = forme2
-            fond2.recycle()
-            peindre(5) { surcadrage(cadre, saison, fond = false) }
-        }
-        val plans = listOfNotNull(ciel, nuages(heure, l, h), loin, milieu, proche, devant).toTypedArray()
+        // Le surcadrage naturel n'est pas peint dans les cartons : ses brins
+        // sont découpés à part ([gabarits]) pour bouger à chaque trame.
+        val plans = arrayOf(ciel, nuages(heure, l, h), loin, milieu, proche)
         // Le plancher, là où un lieu en a un : il reçoit les ombres sans en
         // porter, et sans bordure, ce n'est pas un carton.
         val planchers = Array(plans.size) { i ->
@@ -683,7 +793,6 @@ object Paysages {
         silhouettes[2] = formes[0]
         silhouettes[3] = formes[1]
         silhouettes[4] = formes[2]
-        if (devant != null) silhouettes[5] = devant.extractAlpha()
         if (PAPIER) {
             // Le papier découpé : chaque carton a sa tranche de kraft tout
             // autour et son ombre à part, posée à chaque trame ; le plancher
@@ -1039,6 +1148,22 @@ object Paysages {
         }
 
         private fun elan(temps: Float) = acquis + poussee(temps)
+
+        /**
+         * Le balancement d'un brin du surcadrage ([Brin]) à l'instant [temps],
+         * environ de -1 à 1 : une brise lente au repos, à peine visible, faite
+         * de deux ondes qui ne se répètent pas ; et à la secousse, un coup de
+         * vent qui oscille et s'amortit en trois secondes environ. [phase]
+         * décale chaque brin, pour que le vent passe de l'un à l'autre au
+         * lieu de tout pousser d'un bloc. Rien sur une image figée.
+         */
+        fun balancement(temps: Float, phase: Float): Float {
+            if (temps <= 0f) return 0f
+            val brise = 0.1f * sin(temps * 0.8f + phase) + 0.06f * sin(temps * 0.31f + phase * 1.7f)
+            val d = temps - secousse - phase * 0.04f
+            val coup = if (d < 0f || d > 6f) 0f else force * exp(-d * 1.3f) * sin(d * 8f)
+            return brise + coup
+        }
 
         /**
          * Pose ce qui vit dans le carton [calque], sur un canevas déjà à
@@ -2133,36 +2258,9 @@ object Paysages {
         // floues à peindre. Les tracés tournent tous dans le même sens, si
         // bien que leurs morceaux se réunissent au lieu de se trouer.
 
-        /** Le pied des éléments du bas, sous le bord de la fenêtre : ils montent de hors champ. */
-        private val PIED = HAUTEUR + 2f
+        private val PIED = PIED_HORS_CHAMP
 
-        fun surcadrage(s: Surcadre, saison: Saison?, fond: Boolean) {
-            for (droite in booleanArrayOf(false, true)) {
-                val cote = if (droite) Surcadre.DROITE else Surcadre.GAUCHE
-                val graine = if (droite) 2 else 1
-                c.save()
-                if (droite) { c.translate(LARGEUR, 0f); c.scale(-1f, 1f) }
-                if (s.pied != null && s.piedCotes and cote != 0) {
-                    if (fond) {
-                        // Le second rang, à demi-taille, planté dans la rainure du proche.
-                        c.save()
-                        c.translate(12.5f, DEVANT + 0.6f - PIED * 0.5f)
-                        c.scale(0.5f, 0.5f)
-                        pied(s.pied, saison, graine + 10, lointain = true)
-                        c.restore()
-                    } else pied(s.pied, saison, graine, lointain = false)
-                }
-                if (!fond && s.haut != null && s.hautCotes and cote != 0) when (s.haut) {
-                    Surcadre.Essence.FEUILLU -> feuillu(saison, s.portee, graine)
-                    Surcadre.Essence.SAULE -> saule(saison, s.portee, graine)
-                    Surcadre.Essence.BOULEAU -> bouleau(saison, s.portee, graine)
-                    Surcadre.Essence.VIGNE -> vigne(saison, s.portee, graine)
-                }
-                c.restore()
-            }
-        }
-
-        private fun pied(pied: Surcadre.Pied, saison: Saison?, graine: Int, lointain: Boolean) = when (pied) {
+        fun pied(pied: Surcadre.Pied, saison: Saison?, graine: Int, lointain: Boolean) = when (pied) {
             Surcadre.Pied.ROSEAUX -> roseaux(saison, graine, lointain)
             Surcadre.Pied.FOUGERES -> fougeres(saison, graine, lointain)
             Surcadre.Pied.HERBES -> herbes(saison, graine, lointain, 0)
@@ -2372,7 +2470,7 @@ object Paysages {
          * [portee] unités, ses rameaux et ses feuilles qui pendent. L'hiver,
          * nue, la neige posée dessus.
          */
-        private fun feuillu(saison: Saison?, portee: Float, graine: Int) {
+        fun feuillu(saison: Saison?, portee: Float, graine: Int) {
             val r = Alea(graine * 7 + 600)
             val tons = feuilles(saison)
             val cx = portee * 0.45f; val cy = 0.5f
@@ -2417,7 +2515,7 @@ object Paysages {
         }
 
         /** Une branche de saule pleureur au-dessus de l'eau : un rideau de brins qui pendent. */
-        private fun saule(saison: Saison?, portee: Float, graine: Int) {
+        fun saule(saison: Saison?, portee: Float, graine: Int) {
             val r = Alea(graine * 7 + 700)
             val tons = feuilles(saison)
             val x1 = portee * 0.8f
@@ -2455,7 +2553,7 @@ object Paysages {
         }
 
         /** Un bouleau au bord de la scène : le tronc blanc tout du long, une branche et ses rameaux qui pendent. */
-        private fun bouleau(saison: Saison?, portee: Float, graine: Int) {
+        fun bouleau(saison: Saison?, portee: Float, graine: Int) {
             val r = Alea(graine * 7 + 800)
             val tons = feuilles(saison)
             val tronc = Path().apply {
@@ -2499,7 +2597,7 @@ object Paysages {
         }
 
         /** Un sarment de vigne de la Moselle : ses feuilles et, l'été et l'automne, une grappe. */
-        private fun vigne(saison: Saison?, portee: Float, graine: Int) {
+        fun vigne(saison: Saison?, portee: Float, graine: Int) {
             val r = Alea(graine * 7 + 900)
             val tons = feuilles(saison)
             val cep = sombre(duJour(0xFF7A5634.toInt()), 0.2f)

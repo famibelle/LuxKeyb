@@ -173,6 +173,7 @@ android {
             if (project.hasProperty('plancheCartes')) systemProperty 'planche.cartes', 'oui'
             if (project.hasProperty('plancheSaisons')) systemProperty 'planche.saisons', 'oui'
             if (project.hasProperty('plancheVif')) systemProperty 'planche.vif', 'oui'
+            if (project.hasProperty('plancheSecousse')) systemProperty 'planche.secousse', 'oui'
         }
     }
 
