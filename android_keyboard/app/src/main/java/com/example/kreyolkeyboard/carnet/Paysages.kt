@@ -3418,6 +3418,53 @@ object Paysages {
          * voisine de devant, son pignon ; la première montre le sien en entier.
          * Peintes du fond vers l'avant, comme on colle des cartons.
          */
+        /**
+         * La matière d'une façade de [w] sur [h], peinte à plat dans
+         * `surQuad` : l'enduit un peu irrégulier, la corniche sous le toit,
+         * les bandeaux entre les étages, les chaînes d'angle de pierre et le
+         * socle de pierre au rez-de-chaussée, avec ses joints. Une maison à
+         * [colombages] n'a ni enduit taché ni chaînes : le bois les remplace.
+         */
+        private fun matiere(w: Float, h: Float, mur: Int, pierre: Int, r: Alea, colombages: Boolean) {
+            val clair = neutre(mix(mur, 0xFFFFFFFF.toInt(), 0.35f))
+            val ombre = neutre(ombreFroide(mur, 0.3f))
+            if (!colombages) {
+                // L'enduit : quelques taches plus claires et plus sombres, comme un badigeon.
+                for (k in 0 until 7) {
+                    val x = r() * w; val y = 1f + r() * (h - 5f)
+                    ovalePapierPlat(x, y, 1.2f + r() * 2.4f, 0.8f + r() * 1.6f, if (k % 2 == 0) clair else ombre, 0.16f)
+                }
+            }
+            // La corniche, et l'ombre qu'elle pose sur le mur.
+            rect(0f, 0f, w, 0.75f, pierre)
+            rect(0f, 0.75f, w, 0.45f, ombre, 0.5f)
+            // Les bandeaux entre les étages.
+            var y = 2.6f + 4.8f - 1.1f
+            while (y < h - 4.4f) { rect(0f, y, w, 0.3f, clair, 0.8f); y += 4.8f }
+            // Le socle de pierre au rez-de-chaussée, et ses joints.
+            val socle = h - 3.9f
+            rect(0f, socle, w, 3.9f, pierre)
+            rect(0f, socle - 0.25f, w, 0.25f, ombre, 0.6f)
+            val joint = neutre(sombre(pierre, 0.25f))
+            for (k in 1..2) rect(0f, socle + k * 1.3f, w, 0.1f, joint, 0.7f)
+            if (!colombages) {
+                // Les chaînes d'angle, une pierre longue, une pierre courte.
+                var cy = 1.2f
+                var k = 0
+                while (cy < socle - 1f) {
+                    val l = if (k % 2 == 0) 1.5f else 0.95f
+                    rect(0f, cy, l, 1.15f, pierre)
+                    rect(w - l, cy, l, 1.15f, pierre)
+                    cy += 1.35f; k++
+                }
+            }
+        }
+
+        /** Un ovale de couleur posée à plat, sans carton ni ombre : une tache d'enduit. */
+        private fun ovalePapierPlat(cx: Float, cy: Float, rx: Float, ry: Float, col: Int, o: Float) {
+            forme(Path().apply { addOval(cx - rx, cy - ry, cx + rx, cy + ry, Path.Direction.CW) }, col, o)
+        }
+
         fun rue3q(r: Fuite, maisons: Array<FloatArray>, murs: IntArray, rnd: Alea, ecart: Float = 0f, debut: Float = 0f,
                   froid: Boolean = false) = mineral {
             val tl = r.taille
@@ -3428,6 +3475,9 @@ object Paysages {
             val toit = n(ardoise())
             val faitage = n(mix(ardoise(), 0xFFFFFFFF.toInt(), 0.18f))
             val poutre = n(duJour(0xFF4A3A2E.toInt()))
+            // La pierre de taille des socles, des chaînes d'angle et des
+            // encadrements : un grès gris, pas le jaune paille.
+            val pierreDeTaille = n(duJour(0xFFB9B3A6.toInt()))
             // Froid : des vitres de vrai verre, au lieu des rectangles olive.
             val vitre: (Float, Float, Float, Float) -> Unit =
                 if (froid) { x, y, w, h -> fenetreVerre(x, y, w, h, rnd) } else { x, y, w, h -> fenetre(x, y, w, h, rnd) }
@@ -3472,6 +3522,7 @@ object Paysages {
                 val facade = floatArrayOf(ax, hautA, bx, hautB, bx, by, ax, ay)
                 piece(quad(facade), mur, 0.6f)
                 if (!fin) surQuad(w, h, facade) {
+                    if (froid) matiere(w, h, murs[i % murs.size], pierreDeTaille, Alea(400 + i), m[3] > 0f)
                     if (m[3] > 0f) {
                         var px = 0.4f
                         while (px <= w) { ligne(px, 0f, px, h, poutre, 0.3f); px += 2.6f }
@@ -3480,7 +3531,15 @@ object Paysages {
                     var fy = 2.6f
                     while (fy < h - 4f) {
                         var fx = 1.6f
-                        while (fx < w - 2f) { vitre(fx, fy, 1.3f, 2.4f); fx += 3.3f }
+                        while (fx < w - 2f) {
+                            if (froid) {
+                                // Le linteau et l'appui de pierre.
+                                rect(fx - 0.3f, fy - 0.62f, 1.9f, 0.36f, pierreDeTaille)
+                                rect(fx - 0.42f, fy + 2.66f, 2.14f, 0.42f, pierreDeTaille)
+                                rect(fx - 0.42f, fy + 3.08f, 2.14f, 0.16f, n(ombreFroide(murs[i % murs.size], 0.5f)), 0.6f)
+                            }
+                            vitre(fx, fy, 1.3f, 2.4f); fx += 3.3f
+                        }
                         fy += 4.8f
                     }
                     // La porte au rez-de-chaussée.
@@ -3491,6 +3550,20 @@ object Paysages {
                 val pan = floatArrayOf(sommetA[0], sommetA[1], sommetB[0], sommetB[1], bx + 0.4f * tl * eb, hautB + 0.3f * tl, ax - 0.4f * tl * ea, hautA + 0.3f * tl)
                 piece(quad(pan), toit, 0.6f)
                 ligne(sommetA[0], sommetA[1], sommetB[0], sommetB[1], faitage, 0.35f * tl * (ea + eb))
+                // Les rangs d'ardoises, plus clairs, qui suivent la pente du pan.
+                if (froid && !fin) surQuad(w, 6f, pan) {
+                    val rang = n(mix(ardoise(), 0xFFFFFFFF.toInt(), 0.22f))
+                    var y = 0.9f
+                    while (y < 6f) { ligne(0f, y, w, y, rang, 0.16f, 0.55f); y += 0.95f }
+                    val joint = n(sombre(ardoise(), 0.3f))
+                    var k = 0
+                    y = 0.9f
+                    while (y < 5.6f) {
+                        var x = if (k % 2 == 0) 0.6f else 1.3f
+                        while (x < w) { ligne(x, y, x, y + 0.95f, joint, 0.1f, 0.4f); x += 1.4f }
+                        y += 0.95f; k++
+                    }
+                }
                 if (m[5] > 0f && !fin) surQuad(w, 6f, pan) {
                     var lx = 2.2f
                     while (lx < w - 3f) {
