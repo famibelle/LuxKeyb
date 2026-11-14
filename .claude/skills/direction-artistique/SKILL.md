@@ -294,10 +294,17 @@ gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
 - **Un élément vivant par lieu** (`Paysages.Vie`), qui assouplit la règle 7 :
   la brume de l'Our, le drapeau, la roue et les chevaux de bois, les chutes,
   les reflets de l'Alzette, la péniche, le tram, les bannières de Belval, la
-  cabine de l'ascenseur, le bus de la Rout Bréck. Lents, en boucle longue,
-  leurs lumières allumées le soir et la nuit. **Secouer le téléphone** fait
-  répondre le lieu (oiseaux qui s'envolent, roue qui s'emballe, chutes qui
-  éclaboussent). Ce que `Vie` dessine n'est pas peint dans les cartons
+  cabine de l'ascenseur, le bus de la Rout Bréck, et depuis le 2026-11-14
+  les lanternes du Breedewee, dont la flamme vacille de jour comme de nuit,
+  et le chat roux qui traverse sa ruelle toutes les vingt secondes. Lents,
+  en boucle longue, leurs lumières allumées le soir et la nuit. **Secouer le
+  téléphone** fait répondre chaque lieu à sa manière, pas seulement par des
+  oiseaux qui s'envolent (2026-11-14) : la roue s'emballe, les chutes
+  éclaboussent, le tram et le bus filent et sonnent, des ronds s'élargissent
+  sur l'eau, la source de tuf déborde, la grotte Hohllay lâche ses gouttes
+  et ses chauves-souris, la balise du Napoleonsgaart s'affole, une pluie
+  d'éclats d'or court sur la Gëlle Fra, les lanternes du Breedewee tanguent
+  et son chat détale. Ce que `Vie` dessine n'est pas peint dans les cartons
   (`Peintre.vivant`) ; une image figée le pose à l'instant zéro.
 - **Le surcadrage naturel** (demande du propriétaire, 2026-11-14) : « du
   surcadrage naturel quand c'est possible, par exemple les branches d'arbres
@@ -332,7 +339,30 @@ gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
   - **les règles** : rien dans la boîte du dessin du mot (17 à 83 ×
     12,5 à 58,5) qui y fasse du détail fort ; la branche reste dans la
     bande du haut, le pied dans les coins du bas ; jamais sur le sujet du
-    lieu, qu'il doit encadrer et non cacher.
+    lieu, qu'il doit encadrer et non cacher ;
+  - **il bouge** (2026-11-14) : chaque brin est découpé à part avec son
+    ombre (`Paysages.brins`) et posé à chaque trame. Au repos, une brise
+    lente et à peine visible ; à la secousse, un coup de vent qui oscille
+    et s'amortit en trois secondes (`Vie.balancement`). Les branches
+    tournent autour de leur attache, hors champ dans le coin ; les roseaux,
+    les fougères et les herbes ploient depuis leur pied, tous du même côté ;
+    le bouleau frémit à peine depuis son pied.
+- **La neige qui s'accumule et qui tombe** (demande du propriétaire,
+  2026-11-14) : sur une carte d'hiver, une couche épaisse et bombée sur le
+  haut de chaque carton (crêtes, toits, haies), avec une ombre bleutée
+  dessous. `Habillage` la rend à part (`Paysages.neiges`) et la carte la
+  pose par-dessus chaque carton : une secousse en fait tomber des paquets
+  depuis les bords, il reste un givre, puis elle se reforme en une
+  vingtaine de secondes sous les flocons de l'ambiance (`Vie.neige`). La
+  vignette et l'image partagée gardent toute leur neige.
+- **Des couleurs plus vives et plus chaudes** (2026-11-14, « on m'a dit que
+  les couleurs paraissaient un peu ternes ») : le propriétaire a choisi, sur
+  une commune, une rare et une très rare côte à côte, le cran fort
+  (`Paysages.VIF_RETENU`, 1,8) : saturation, un peu de contraste, lumière
+  tirée vers l'or, posés une fois sur chaque calque rendu. À surveiller :
+  la grotte Hohllay vire à l'orange et la source de tuf au vert citron.
+- **Le tracé de sonorité est centré** sur la carte (2026-11-14) : calé à
+  gauche jusque-là, un mot court penchait d'un côté de la fenêtre.
 
 **Voir les cartes sans téléphone** : `PlancheCartesTest` (Robolectric, rendu
 natif du canevas) rend la fenêtre de chaque lieu aux quatre heures, droite
