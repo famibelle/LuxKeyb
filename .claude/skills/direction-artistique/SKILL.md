@@ -300,7 +300,15 @@ gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
   posés sur leur quadrilatère, `surQuad` avec son origine ; Kallektuffquell :
   le mur de tuf et le bord du bassin ; Felsmillen : les strates du rocher).
   Ce qui vit dessus (le tram du pont Adolphe, les gouttes de la source) est
-  posé dans la même perspective par la Vie. Ce qui est rond (une tour, un dôme) reste de face ; le fond
+  posé dans la même perspective par la Vie. Le Mëllerdall est redessiné d'après la photo
+  du Schiessentümpel (2026-11-14) : la forêt ferme le ciel, le pont de
+  pierre en arche est vu de trois quarts en haut à droite avec sa rambarde
+  de branches, trois chutes tombent entre des rochers moussus. **L'eau du
+  bassin est transparente** : une teinte posée en voile (`forme` à 0,42)
+  sur le lit et ses galets, qu'on voit au travers ; les chutes sont des
+  voiles d'un blanc bleuté (le grain chaud jaunirait un blanc pur), et une
+  **brume d'eau** (`Peintre.brume`, un ovale blanc qui s'efface) monte de
+  chaque point de chute, plus haute et plus épaisse à la secousse. Ce qui est rond (une tour, un dôme) reste de face ; le fond
   (ciel, collines, rochers) aussi. Le Breedewee reste de face : c'est une
   ruelle vue dans l'axe, sous sa porte.
 - **Une deuxième vague de lieux** (`Lieu.choix`) : un champ peut en avoir

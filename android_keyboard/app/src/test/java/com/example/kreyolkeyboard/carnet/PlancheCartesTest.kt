@@ -191,7 +191,9 @@ class PlancheCartesTest {
         val echelle = 5f
         val decoupe = android.graphics.Path().apply { addRect(visible, android.graphics.Path.Direction.CW) }
         val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
-        val films = listOf(Triple(Lieu.VEIANEN, Rarete.COMMUN, 1), Triple(Lieu.STAD, Rarete.RARE, 1))
+        // Avec -PplancheLieux, un film de chacun de ces lieux, à l'heure de la commune, au printemps.
+        val films = System.getProperty("planche.lieux")?.takeIf { it.isNotBlank() }?.let { lieuxChoisis().map { Triple(it, Rarete.COMMUN, 4) } }
+            ?: listOf(Triple(Lieu.VEIANEN, Rarete.COMMUN, 1), Triple(Lieu.STAD, Rarete.RARE, 1))
         for ((lieu, rarete, mois) in films) {
             val images = if (lieu == Lieu.BREEDEWEE) 110 else 80
             val choc = if (lieu == Lieu.BREEDEWEE) 75 else 30

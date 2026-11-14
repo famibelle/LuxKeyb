@@ -17,6 +17,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Les cartes déjà gagnées gardent leur paysage.
 - **Les bâtiments peints de trois quarts** : les maisons du Grund, la ville basse sous la Gëlle Fra, le village d'Esch-sur-Sûre, l'autre rive de la Moselle, la ville haute vue de Neimënster, la Spuerkeess, les châteaux de Vianden et d'Ansembourg, le pont couvert du Haff Réimech, l'ascenseur du Pfaffenthal et le haut fourneau de Belval fuient maintenant en perspective, avec leurs toits, leurs lucarnes et leurs pignons, au lieu de s'aligner de face en bandes.
 - **Les paysages naturels aussi** : la lisière et la clôture de Conzefenn, le pont du Mëllerdall, la passerelle du Dumongshaff, le pont Adolphe vu de la Pétrusse, le mur de tuf du Kallektuffquell et le rocher de Felsmillen fuient en perspective.
+- **Le Mëllerdall d'après photo** : le Schiessentümpel dans sa forêt, son pont de pierre en arche, ses trois chutes animées entre les rochers moussus, une brume d'eau qui monte des points de chute, et un bassin transparent où l'on voit les galets.
 - **Une rangée par lieu dans l'album** : chaque heure garde sa colonne, du matin à la nuit, et la place de la nuit reste vide pour les lieux qui n'en ont pas.
 
 ## [39.0.0] - 2026-11-13
