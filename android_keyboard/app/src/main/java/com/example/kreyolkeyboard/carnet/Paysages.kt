@@ -1260,6 +1260,16 @@ object Paysages {
     private const val PONT_PEITRUSDALL_L = 89f
     private const val PONT_PEITRUSDALL_H = 46f
 
+    /** Le mur de tuf du Kallektuffquell, de trois quarts : où son dessin de face (-3, -3, 106 × 41) est posé. */
+    private val MUR_TUF = floatArrayOf(-3f, -3f, 103f, -3f, 103f, 31f, -3f, 42f)
+
+    /** Le point ([x], [y]) du mur de tuf dessiné de face, là où le pose [MUR_TUF]. */
+    private fun surMurTuf(x: Float, y: Float): FloatArray {
+        val m = Matrix()
+        m.setPolyToPoly(floatArrayOf(-3f, -3f, 103f, -3f, 103f, 38f, -3f, 38f), 0, MUR_TUF, 0, 4)
+        return floatArrayOf(x, y).also { m.mapPoints(it) }
+    }
+
     /** La rue du Grund, au bord de l'Alzette : elle fuit vers la droite. */
     internal val RUE_GRUND = Fuite(floatArrayOf(13f, 50.5f), floatArrayOf(178f, 34f), floatArrayOf(-140f, 40f), 150f, quai = 3f)
 
@@ -1475,8 +1485,9 @@ object Paysages {
                     chauvesSouris(p, vol, 50f, 26f)
                 }
                 Lieu.NAPOLEONSGAART -> { balise(p, temps, raf); envol(p, vol, 100f, 44f, -1f) }
-                Lieu.KALLEKTUFFQUELL -> {
-                    // La source déborde : les gouttes se pressent et se multiplient.
+                Lieu.KALLEKTUFFQUELL -> p.surQuad(106f, 41f, MUR_TUF, x0 = -3f, y0 = -3f) {
+                    // La source déborde : les gouttes se pressent et se multiplient,
+                    // le long du mur qui fuit.
                     val n = 5 + (raf * 9f).toInt()
                     for (k in 0 until n) {
                         goutte(p, temps * (1f + raf * 1.5f) + k * 0.7f, 12f + (k * 17 % 76), 26f, 40f, rond = true)
@@ -4695,19 +4706,26 @@ object Paysages {
             val r = Alea(287)
             val tuf = duJour(0xFF8C7458.toInt())
             val mousse = duJour(0xFF8FB040.toInt())
-            mineral {
-                pieceD("M-3 -3L70 -3C78 6 86 14 96 18L103 20L103 38L-3 38Z", tuf)
-                var x = 2f
-                while (x < 98f) { ligne(x, 24f + r() * 4f, x + r(), 36f, sombre(tuf, 0.5f), 0.5f, 0.6f); x += 3f }
-                feuille(-3f, 24f, 106f, 2.4f, sombre(tuf, 0.45f), 0f)
+            // Le mur de tuf dessiné de face, posé de trois quarts : il fuit
+            // vers la droite, ses filets d'eau se serrant au loin.
+            surQuad(106f, 41f, MUR_TUF, x0 = -3f, y0 = -3f) {
+                mineral {
+                    pieceD("M-3 -3L70 -3C78 6 86 14 96 18L103 20L103 38L-3 38Z", tuf)
+                    var x = 2f
+                    while (x < 98f) { ligne(x, 24f + r() * 4f, x + r(), 36f, sombre(tuf, 0.5f), 0.5f, 0.6f); x += 3f }
+                    feuille(-3f, 24f, 106f, 2.4f, sombre(tuf, 0.45f), 0f)
+                }
+                pieceD("M-3 -3L66 -3C70 6 64 14 56 20C44 26 24 24 10 26C4 27 0 26 -3 27Z", mousse)
             }
-            pieceD("M-3 -3L66 -3C70 6 64 14 56 20C44 26 24 24 10 26C4 27 0 26 -3 27Z", mousse)
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
             val bassin = mix(duJour(0xFF6FB8B0.toInt()), P.eau, 0.2f)
-            pieceD("M-3 66L-3 37L103 37L103 66Z", bassin, 0.4f)
-            rect(-3f, 38f, 106f, 0.5f, mix(bassin, 0xFFFFFFFF.toInt(), 0.5f), 0.7f)
+            // Le bassin, dont le bord suit le pied du mur qui fuit.
+            val bordL = surMurTuf(-3f, 37f); val bordR = surMurTuf(103f, 37f)
+            pieceD("M-3 66L-3 ${bordL[1]}L103 ${bordR[1]}L103 66Z", bassin, 0.4f)
+            val reflet = mix(bassin, 0xFFFFFFFF.toInt(), 0.5f)
+            ligne(-3f, bordL[1] + 1.2f, 103f, bordR[1] + 1.2f * (bordR[1] / bordL[1]), reflet, 0.5f, 0.7f)
             val galet = duJour(0xFFD8D2C4.toInt())
             for (k in 0 until 10) {
                 val u = k / 9f
