@@ -311,6 +311,35 @@ gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
   chaque point de chute, plus haute et plus épaisse à la secousse. Ce qui est rond (une tour, un dôme) reste de face ; le fond
   (ciel, collines, rochers) aussi. Le Breedewee reste de face : c'est une
   ruelle vue dans l'axe, sous sa porte.
+- **Contre la dominante jaune des bâtiments** (propriétaire, 2026-11-14 :
+  « ce jaune IA »). Le réglage des couleurs vives réchauffe tout ; les
+  crèmes et les sables des façades viraient au jaune paille. Pour tout ce
+  qui est bâti (`rue3q`, `boite3q`, sols de pierre) :
+  - les couleurs sont peintes avec `Paysages.neutre`, l'inverse exact du
+    réchauffement et de la saturation de `raviver` : elles ressortent telles
+    quelles, le ciel et la végétation gardent leur chaleur ;
+  - six enduits du pays alternent sans se répéter (`Peintre.facades` : gris
+    perle, vieux rose, blanc cassé, bleu-gris, ocre rouge, vert sauge) ; un
+    village garde surtout du blanc, un château sa pierre ;
+  - l'ombre est froide (`ombreFroide`, un bleu-gris qui suit l'heure), pas
+    un brun : lumière chaude, ombre froide ;
+  - les fenêtres sont de verre (`fenetreVerre` : cadre clair, vitre bleu-gris
+    foncé, reflet du ciel en biais, croisillon ; l'or le soir) ;
+  - la matière des façades (`matiere`) : socle de pierre et ses joints,
+    chaînes d'angle, corniche, bandeaux, appuis et linteaux, enduit
+    badigeonné, rangs d'ardoises ; les détails ne se dessinent que sur les
+    maisons assez grandes pour les montrer.
+- **Un premier plan en vraie matière** au lieu du plancher orange, quand le
+  lieu s'y prête (`Peintre.solDePierre`) : pavés de grès gris (le quai du
+  Grund avec sa bordure de pierre de taille, la place d'Esch-Sauer, la rue du
+  Pfaffenthal, le Glacis de la Fouer), dalles (l'esplanade de la Gëlle Fra,
+  le parvis des stèles de Schengen, la cour de Neimënster, Belval), gravier
+  (les allées d'Ansembourg, du parc de la Pétrusse sous la Nei Bréck, du
+  Napoleonsgaart, le chemin de l'Our à Vianden). Les rangs grossissent en
+  approchant et suivent la fuite du lieu. L'Alzette du Grund reflète ses
+  façades en traits couchés qui tremblent. Les paysages naturels gardent le
+  plancher ; le Breedewee aussi (sa chaussée pavée a été retirée le
+  2026-10-30).
 - **Une deuxième vague de lieux** (`Lieu.choix`) : un champ peut en avoir
   deux, tirés sur le mot (`Lieu.pour`). Pafendall (mouvement), Ansebuerg
   (temps), Belval (économie), Nei Bréck, le pont Adolphe (chose publique),

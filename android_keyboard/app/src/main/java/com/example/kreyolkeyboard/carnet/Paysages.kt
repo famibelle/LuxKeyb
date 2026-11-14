@@ -3466,7 +3466,7 @@ object Paysages {
         }
 
         fun rue3q(r: Fuite, maisons: Array<FloatArray>, murs: IntArray, rnd: Alea, ecart: Float = 0f, debut: Float = 0f,
-                  froid: Boolean = false) = mineral {
+                  froid: Boolean = true) = mineral {
             val tl = r.taille
             // [froid] : contre la dominante jaune, des couleurs que le
             // réglage des couleurs vives ne réchauffe pas ([neutre]), des
@@ -3610,6 +3610,10 @@ object Paysages {
         fun boite3q(x: Float, bas: Float, w: Float, h: Float, p: Float, col: Int, versDroite: Boolean = true,
                     pente: Float = 0.08f, dessus: Boolean = true, dessin: (() -> Unit)? = null) = mineral {
             val s = if (versDroite) 1f else -1f
+            // Comme les maisons de [rue3q] : une couleur que les couleurs vives
+            // ne jaunissent pas, et un côté dans une ombre froide.
+            val brut = col
+            @Suppress("NAME_SHADOWING") val col = neutre(brut)
             // La face fuit un peu : son bord du côté de la profondeur est plus court.
             val xa = if (versDroite) x else x + w
             val xb = if (versDroite) x + w else x
@@ -3622,12 +3626,12 @@ object Paysages {
             val haut = bas - h + dy
             val pied = bas - dy * 0.3f
             val cote = floatArrayOf(bord, haut, bord + dx, haut + dyc + dy * 0.2f, bord + dx, pied + dyc * 0.4f, bord, pied)
-            piece(quad(cote), sombre(col, 0.3f), 0.5f)
+            piece(quad(cote), neutre(ombreFroide(brut, 0.4f)), 0.5f)
             if (dessus) {
                 val ha = bas - h
                 val toit = if (versDroite) floatArrayOf(xa + dx * 0.9f, ha + dyc, bord + dx, haut + dyc + dy * 0.2f, bord, haut, xa, ha)
                     else floatArrayOf(bord + dx, haut + dyc + dy * 0.2f, xa + dx * 0.9f, ha + dyc, xa, ha, bord, haut)
-                piece(quad(toit), mix(col, 0xFFFFFFFF.toInt(), 0.12f), 0.3f)
+                piece(quad(toit), neutre(mix(brut, 0xFFFFFFFF.toInt(), 0.12f)), 0.3f)
             }
             piece(quad(face), col, 0.6f)
             // La face est déjà rangée haut gauche, haut droit, bas droit, bas gauche.
@@ -3682,7 +3686,7 @@ object Paysages {
                     close()
                 }, duJour(0xFFA39377.toInt()))
             }
-            rue3q(f, CHATEAU_VEIANEN, intArrayOf(mur), r)
+            rue3q(f, CHATEAU_VEIANEN, intArrayOf(duJour(0xFFD6CFC2.toInt())), r)
             mineral {
                 // Le clocher de la chapelle, sur le faîte du palais.
                 val u = 22f
@@ -3702,7 +3706,7 @@ object Paysages {
             }
             if (!vivant) brumeDeVeianen(0f)
             plan(2)
-            plancher(DEVANT, BAS)
+            solDePierre(SolDePierre.GRAVIER, DEVANT)  // le chemin au bord de l'Our
             poser(DEVANT)
             val tronc = duJour(0xFF5A4030.toInt())
             feuille(5f, 30f, 1.6f, 30f, tronc, 0.6f)
@@ -3750,7 +3754,7 @@ object Paysages {
             }
             // Le village en deux rues de trois quarts, qui fuient vers le
             // fond de la boucle de la Sûre, l'église entre les deux.
-            val murs = intArrayOf(blanc, creme, blanc, blanc)
+            val murs = intArrayOf(blanc, duJour(0xFFD8DAD8.toInt()), blanc, duJour(0xFFDDB2A4.toInt()), blanc, duJour(0xFFB9C6D6.toInt()))
             rue3q(RUE_ESCH_HAUT, MAISONS_ESCH_HAUT, murs, r, ecart = 6f)
             mineral {
                 feuille(56.5f, 33.5f, 3f, 9f, blanc)
@@ -3760,7 +3764,7 @@ object Paysages {
             riviere(51.5f, 56f, 118, 44f, 52f, 58f)
             c.restore()
             plan(2)
-            plancher(DEVANT, BAS)
+            solDePierre(SolDePierre.PAVES, DEVANT, -0.02f)  // la place au bord de la Sûre
             poser(DEVANT)
             val roc = duJour(0xFFB09670.toInt())
             mineral {
@@ -3814,17 +3818,17 @@ object Paysages {
         fun neimensterPapier() {
             val r = Alea(125)
             val toit = ardoise()
-            val facades = intArrayOf(duJour(0xFFF1E6CF.toInt()), duJour(0xFFE9C9B8.toInt()), duJour(0xFFF3DC96.toInt()),
+            val enduits = intArrayOf(duJour(0xFFF1E6CF.toInt()), duJour(0xFFE9C9B8.toInt()), duJour(0xFFF3DC96.toInt()),
                 duJour(0xFFE6E2D6.toInt()))
             mineral {
                 // Une tourelle à flèche bleue, au-dessus des toits.
-                feuille(33f, 9.5f, 2.2f, 8f, facades[3])
+                feuille(33f, 9.5f, 2.2f, 8f, enduits[3])
                 pieceD("M32.6 9.7L34.1 5.2L35.6 9.7Z", duJour(0xFF4E6E9A.toInt()))
             }
             // La ville haute en rangée de trois quarts, posée sur le rempart
             // qui fuit avec elle vers le rocher.
             val f = RUE_NEIMENSTER
-            rue3q(f, MAISONS_NEIMENSTER, facades, r)
+            rue3q(f, MAISONS_NEIMENSTER, facades(), r)
             mineral {
                 val rempart = duJour(0xFFBDB29A.toInt())
                 val fin = 120f
@@ -3870,7 +3874,7 @@ object Paysages {
             rue3q(RUE_PALAIS, PALAIS, intArrayOf(duJour(0xFFE9C05A.toInt())), r)
             touffe(vert(0.35f), 64f, 31f, 2.4f, 68f, 30.5f, 2f, 98f, 28.5f, 2.6f)
             plan(2)
-            plancher(DEVANT, BAS)
+            solDePierre(SolDePierre.DALLES, DEVANT)  // la cour sous la voûte
             poser(DEVANT)
             // La voûte de la casemate, en cadre de scène : sa face, et dedans
             // le creux plus sombre de la galerie.
@@ -4073,7 +4077,7 @@ object Paysages {
             feuille(71.4f, 10f, 1.2f, 12f, duJour(0xFF5A4030.toInt()), 0.5f)
             touffe(vert(0.5f), 72f, 11f, 4.6f, 68f, 14f, 3.8f, 76f, 14.5f, 3.8f, 72f, 6.5f, 3.6f)
             plan(1)
-            rue3q(RUE_GRUND, MAISONS_GRUND_3Q, facades(), r, froid = true)
+            rue3q(RUE_GRUND, MAISONS_GRUND_3Q, facades(), r)
             touffe(vert(0.6f), 58f, 43.5f, 2.6f, 62f, 42.5f, 3f, 66f, 43.4f, 2.2f)
             plan(2)
             // L'Alzette, entre les deux quais qui fuient : son bord lointain
@@ -4128,52 +4132,84 @@ object Paysages {
         /** Le bord du quai d'où l'on regarde le Grund, à l'abscisse [x] : il monte vers la droite. */
         private fun quaiProche(x: Float) = 59.6f - (x + 2f) * 0.042f
 
+        /** La matière d'un sol de pierre ([solDePierre]). */
+        enum class SolDePierre { PAVES, DALLES, GRAVIER }
+
+        /** Le premier plan du Grund : le quai pavé, parallèle à l'Alzette, et sa bordure. */
+        private fun quaiPave() = solDePierre(SolDePierre.PAVES, quaiProche(-2f), -0.042f, bordure = true)
+
         /**
-         * Le premier plan du Grund en vraie matière, au lieu du plancher de
-         * la scène : le quai pavé de grès gris, parallèle à l'Alzette, ses
-         * rangs de pavés qui grossissent en approchant, et la bordure de
-         * pierre de taille au bord de l'eau. Peint avec [neutre].
+         * Un premier plan en vraie matière, au lieu du plancher de la scène
+         * (propriétaire, 2026-11-14) : des pavés de grès gris, de grandes
+         * dalles ou une allée de gravier, posés à plat puis penchés de
+         * [pente] pour suivre la fuite du lieu, depuis [haut] (à gauche)
+         * jusqu'au bas de la fenêtre. Les rangs grossissent en approchant ;
+         * [bordure] : une rangée de pierres de taille au bord, contre l'eau
+         * ou le gazon. Peint avec [neutre], et compté comme le plancher pour
+         * les saisons.
          */
-        private fun quaiPave() {
+        fun solDePierre(sorte: SolDePierre, haut: Float = DEVANT, pente: Float = 0f, bordure: Boolean = false) {
             dansLePlancher = true
-            val joint = neutre(duJour(0xFF5C5A56.toInt()))
+            val joint = neutre(duJour(if (sorte == SolDePierre.GRAVIER) 0xFF9E978A.toInt() else 0xFF5C5A56.toInt()))
             val pierres = intArrayOf(duJour(0xFFA9A59C.toInt()), duJour(0xFFB9B3A6.toInt()), duJour(0xFF9D9991.toInt()), duJour(0xFFC3BCAD.toInt()))
                 .map { neutre(it) }
-            val sol = Path().apply {
-                moveTo(-2f, BAS + 2f); lineTo(-2f, quaiProche(-2f)); lineTo(102f, quaiProche(102f)); lineTo(102f, BAS + 2f); close()
-            }
-            piece(sol, joint, 0.3f)
-            // Les rangs de pavés, posés à plat puis penchés comme le bord du quai.
-            enPerspective(-2f, quaiProche(-2f), -0.042f) {
+            val y0 = haut
+            fun bord(x: Float) = y0 + (x + 2f) * pente
+            piece(Path().apply {
+                moveTo(-2f, BAS + 2f); lineTo(-2f, bord(-2f)); lineTo(102f, bord(102f)); lineTo(102f, BAS + 2f); close()
+            }, joint, 0.3f)
+            enPerspective(-2f, y0, pente) {
                 val r = Alea(151)
-                val y0 = quaiProche(-2f)
-                // La bordure : de grandes pierres de taille, leur dessus clair.
-                val bord = neutre(duJour(0xFFC9C2B2.toInt()))
-                var bx = -2f
-                while (bx < 112f) {
-                    val l = 7f + r() * 3f
-                    piece(Path().apply { addRoundRect(bx + 0.15f, y0 + 0.1f, bx + l - 0.15f, y0 + 1.9f, 0.3f, 0.3f, Path.Direction.CW) }, bord, 0.4f)
-                    rect(bx + 0.4f, y0 + 0.2f, l - 0.8f, 0.45f, neutre(mix(bord, 0xFFFFFFFF.toInt(), 0.35f)), 0.7f)
-                    bx += l
-                }
-                var y = y0 + 2.1f
-                var h = 1.1f
-                var k = 0
-                while (y < BAS + 8f) {
-                    var x = -2f - (if (k % 2 == 0) 0f else h * 0.9f)
-                    while (x < 112f) {
-                        val w = h * (1.5f + r() * 0.5f)
-                        val pierre = pierres[(r() * 4f).toInt().coerceAtMost(3)]
-                        piece(Path().apply {
-                            addRoundRect(x + 0.12f * h, y + 0.1f * h, x + w - 0.12f * h, y + h - 0.1f * h, 0.35f * h, 0.35f * h, Path.Direction.CW)
-                        }, pierre, 0.25f)
-                        // L'usure : le haut de chaque pavé, poli et plus clair.
-                        rect(x + 0.3f * h, y + 0.2f * h, w * 0.5f, 0.18f * h, neutre(mix(pierre, 0xFFFFFFFF.toInt(), 0.3f)), 0.6f)
-                        x += w
+                var y = y0
+                if (bordure) {
+                    val pierreBord = neutre(duJour(0xFFC9C2B2.toInt()))
+                    var bx = -2f
+                    while (bx < 112f) {
+                        val l = 7f + r() * 3f
+                        piece(Path().apply { addRoundRect(bx + 0.15f, y0 + 0.1f, bx + l - 0.15f, y0 + 1.9f, 0.3f, 0.3f, Path.Direction.CW) }, pierreBord, 0.4f)
+                        rect(bx + 0.4f, y0 + 0.2f, l - 0.8f, 0.45f, neutre(mix(pierreBord, 0xFFFFFFFF.toInt(), 0.35f)), 0.7f)
+                        bx += l
                     }
-                    y += h
-                    h *= 1.22f
-                    k++
+                    y += 2.1f
+                }
+                when (sorte) {
+                    SolDePierre.PAVES, SolDePierre.DALLES -> {
+                        val dalles = sorte == SolDePierre.DALLES
+                        var h = if (dalles) 1.6f else 1.1f
+                        var k = 0
+                        while (y < BAS + 8f) {
+                            var x = -2f - (if (k % 2 == 0) 0f else h * (if (dalles) 1.4f else 0.9f))
+                            while (x < 112f) {
+                                val w = h * (if (dalles) 2.4f + r() * 1.2f else 1.5f + r() * 0.5f)
+                                val pierre = pierres[(r() * 4f).toInt().coerceAtMost(3)]
+                                val arrondi = if (dalles) 0.08f * h else 0.35f * h
+                                val retrait = if (dalles) 0.05f * h else 0.12f * h
+                                piece(Path().apply {
+                                    addRoundRect(x + retrait, y + retrait, x + w - retrait, y + h - retrait, arrondi, arrondi, Path.Direction.CW)
+                                }, pierre, 0.25f)
+                                // L'usure : le haut de chaque pierre, poli et plus clair.
+                                rect(x + 0.3f * h, y + 0.2f * h, w * 0.5f, 0.14f * h, neutre(mix(pierre, 0xFFFFFFFF.toInt(), 0.3f)), 0.55f)
+                                x += w
+                            }
+                            y += h
+                            h *= 1.22f
+                            k++
+                        }
+                    }
+                    SolDePierre.GRAVIER -> {
+                        // Le gravier : des grains qui grossissent en approchant.
+                        var gy = y
+                        while (gy < BAS + 4f) {
+                            val t = ((gy - y0) / (BAS - y0)).coerceIn(0f, 1.3f)
+                            val g = 0.18f + 0.3f * t
+                            var gx = -2f + r() * g * 3f
+                            while (gx < 112f) {
+                                rond(gx, gy + r() * g, g * (0.6f + r() * 0.6f), pierres[(r() * 4f).toInt().coerceAtMost(3)], 0.9f)
+                                gx += g * (2.2f + r() * 2f)
+                            }
+                            gy += g * 1.6f
+                        }
+                    }
                 }
             }
             dansLePlancher = false
@@ -4185,8 +4221,7 @@ object Paysages {
             val r = Alea(155)
             lisiere(-2f, 102f, { x -> 29f + 2f * sin(x * 0.08f) }, 1.4f, 2.2f, 156, mix(P.loin, P.milieu, 0.3f))
             // Le village de l'autre rive, en rue qui longe la Moselle en fuyant.
-            val enduit = duJour(0xFFEDE3C8.toInt())
-            rue3q(RUE_MUSEL, MAISONS_MUSEL, intArrayOf(enduit, duJour(0xFFE6D2B0.toInt()), enduit, duJour(0xFFF2EEE4.toInt())), r, ecart = 4f)
+            rue3q(RUE_MUSEL, MAISONS_MUSEL, facades(), r, ecart = 4f)
             plan(1)
             plancher(56f, DEVANT)
             poser(56f)
@@ -4197,7 +4232,7 @@ object Paysages {
             pieceD("M-2 66L-2 46L102 46L102 66Z", vert(0.6f), 0.5f)
             c.restore()
             plan(2)
-            plancher(DEVANT, BAS)
+            solDePierre(SolDePierre.DALLES, DEVANT, -0.02f)  // le parvis des stèles
             poser(DEVANT)
             touffe(vert(0.35f), -2f, 8f, 8f, 7f, 3f, 7f, 15f, 6f, 6f, -1f, 16f, 6f)
             // Les trois stèles d'acier corten, leur étoile évidée et leur plaque.
@@ -4252,7 +4287,7 @@ object Paysages {
                 if (!vivant) grandeRoue(0f)
             }
             plan(2)
-            plancher(DEVANT, BAS)
+            solDePierre(SolDePierre.PAVES, DEVANT, -0.02f)  // le Glacis
             poser(DEVANT)
             val or = duJour(0xFFE2B04A.toInt())
             val rouge = duJour(0xFFC23B3B.toInt())
@@ -4377,7 +4412,7 @@ object Paysages {
                 if (!vivant) tram(4f)
             }
             plan(2)
-            plancher(DEVANT, BAS)
+            solDePierre(SolDePierre.GRAVIER, DEVANT)  // l'allée du parc de la Pétrusse
             poser(DEVANT)
             pieceD("M1 58.5L4 46L1.5 46L6 34L3.5 34L8 20L12.5 34L10 34L14.5 46L12 46L15 58.5Z", vert(0.05f))
             lisiere(-2f, 102f, { x -> 48f + 4f * sin(x * 0.09f) - max(0f, x - 66f) * 0.25f }, 2f, 3.2f, 177, vert(0.7f))
@@ -4441,7 +4476,7 @@ object Paysages {
                 if (P.allume) for (k in 0 until 9) rond(38f + r() * 56f, 14f + r() * 40f, 0.4f, P.fenetre)
             }
             plan(2)
-            plancher(DEVANT, BAS)
+            solDePierre(SolDePierre.DALLES, DEVANT, -0.02f)  // le parvis des hauts fourneaux
             poser(DEVANT)
             pieceD("M-2 60L-2 54L102 54L102 60Z", vert(0.6f), 0.4f)
             if (!vivant) for ((k, x) in BANNIERES.withIndex()) banniere(x, 0f, k)
@@ -4544,7 +4579,7 @@ object Paysages {
             fun pied(x: Float) = bord[7] + (x - bord[6]) * pente - 0.4f
             pieceD("M-2 66L-2 ${pied(-2f)}L102 ${pied(102f)}L102 66Z", duJour(0xFF8BAA4A.toInt()), 0.4f)
             plan(2)
-            plancher(DEVANT, BAS)
+            solDePierre(SolDePierre.GRAVIER, DEVANT)  // l'allée du jardin
             poser(DEVANT)
             // La charmille taillée en arche, cadre de scène de feuillage.
             val haie = vert(0.25f)
@@ -4586,12 +4621,11 @@ object Paysages {
             val r = Alea(215)
             lisiere(-2f, 102f, { x -> 40f + 2.4f * sin(x * 0.08f) }, 1.6f, 2.4f, 216, mix(P.loin, P.milieu, 0.3f))
             // Le Pfaffenthal au fond de la vallée, en rue de trois quarts.
-            val enduit = duJour(0xFFEFE2C8.toInt())
-            rue3q(RUE_PAFENDALL, MAISONS_PAFENDALL, intArrayOf(enduit, duJour(0xFFE6D4B4.toInt()), enduit, duJour(0xFFF3EEE6.toInt())), r, ecart = 3f)
+            rue3q(RUE_PAFENDALL, MAISONS_PAFENDALL, facades(), r, ecart = 3f)
             plan(1)
             lisiere(-2f, 102f, { x -> 49f + 2f * sin(x * 0.2f) }, 1.8f, 2.8f, 217, vert(0.4f))
             plan(2)
-            plancher(DEVANT, BAS)
+            solDePierre(SolDePierre.PAVES, DEVANT, -0.02f)  // la rue du Pfaffenthal
             poser(DEVANT)
             val beton = duJour(0xFFEDEDEB.toInt())
             val gris = duJour(0xFF55595F.toInt())
@@ -5026,7 +5060,7 @@ object Paysages {
             while (gx < 102f) { ligne(gx, 37.6f, gx, 42f, grille, 0.15f); gx += 3f }
             ligne(40f, 38f, 102f, 37.4f, grille, 0.15f)
             plan(2)
-            plancher(DEVANT, BAS)
+            solDePierre(SolDePierre.GRAVIER, DEVANT)  // le chemin du parc
             poser(DEVANT)
             pieceD("M30 58.5C44 52 64 48 80 46L86 46C78 50 66 54 58 58.5Z", duJour(0xFF4A4C50.toInt()), 0.4f)
             val pierre = duJour(0xFF6E6862.toInt())
@@ -5348,9 +5382,9 @@ object Paysages {
             // La ville basse, en rue qui fuit vers le pied du monument.
             val murs = intArrayOf(duJour(0xFFE8E0D0.toInt()), duJour(0xFFE9D6B4.toInt()), duJour(0xFFF1ECE2.toInt()),
                 duJour(0xFFDCD3C4.toInt()))
-            rue3q(RUE_GELLE_FRA, MAISONS_GELLE_FRA, murs, r)
+            rue3q(RUE_GELLE_FRA, MAISONS_GELLE_FRA, facades(), r)
             plan(2)
-            plancher(DEVANT, BAS)
+            solDePierre(SolDePierre.DALLES, DEVANT, -0.03f)  // l'esplanade du monument
             poser(DEVANT)
             val granit = duJour(0xFF3A3A40.toInt())
             mineral {
