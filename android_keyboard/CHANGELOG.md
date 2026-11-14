@@ -15,6 +15,7 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - **Un album des paysages en grille de 9 × 3** : chaque champ de sens a maintenant trois lieux, et les mots sans champ aussi. On voit d'un coup d'œil ce qui manque (« le troisième lieu du savoir »). La falaise du Priedegtstull rejoint le savoir et la parole, la vallée de la Pétrusse la chose publique, la passerelle du Dumongshaff la société, et la ruelle du Breedewee devient un lieu de la ville que l'on peut gagner en jouant. L'album compte 90 cases, et chacune reste atteignable dans les quatre langues.
 - Les cartes déjà gagnées gardent leur paysage.
+- **Une rangée par lieu dans l'album** : chaque heure garde sa colonne, du matin à la nuit, et la place de la nuit reste vide pour les lieux qui n'en ont pas.
 
 ## [39.0.0] - 2026-11-13
 

@@ -1323,7 +1323,7 @@ class CarnetFragment : DialogFragment() {
             // rangée de trois couperait 20 de 21 et mêlerait les dizaines.
             val (colonnesSerie, coteSerie) = caseDeSerie(a.serie)
             val ordre = a.emplacements.mapNotNull { it.cartes.firstOrNull() }
-            a.emplacements.chunked(colonnesSerie).forEach { rangee ->
+            Series.rangees(a.serie, a.emplacements, colonnesSerie).forEach { rangee ->
                 etapes += (coteSerie + gouttiere) to {
                     val ligne = LinearLayout(ctx).apply {
                         orientation = LinearLayout.HORIZONTAL
@@ -1335,8 +1335,12 @@ class CarnetFragment : DialogFragment() {
                     }
                     conteneurGrille.addView(ligne)
                     rangee.forEachIndexed { posColonne, e ->
-                        val premiere = e.cartes.firstOrNull()
-                        val vue = if (premiere != null) {
+                        val premiere = e?.cartes?.firstOrNull()
+                        val vue = if (e == null) {
+                            // La nuit d'un lieu qui n'en a pas : une place vide,
+                            // pour que chaque heure garde sa colonne.
+                            View(ctx)
+                        } else if (premiere != null) {
                             CarteCarnet.vignette(ctx, premiere, coteSerie).apply {
                                 isClickable = true
                                 setOnClickListener { montrerCarte(premiere, ordre) }

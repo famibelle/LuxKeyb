@@ -59,6 +59,10 @@ class CaptureCarnetTest {
         ctx.getSharedPreferences(VisiteGuidee.PREFS, Context.MODE_PRIVATE).edit()
             .putBoolean(VisiteGuidee.VISITE_CARNET, true).commit()
         Carnet.vider(ctx)
+        // Les bascules des lieux notées sur un carnet vide : toutes les cartes
+        // suivent la grille de 9 × 3, comme pour un joueur qui commence.
+        Carnet.basculeDesLieux(ctx)
+        Carnet.basculeDeLaGrille(ctx)
         val grilles = JSONObject(File("src/main/assets/luxemburgish_chassecroise.json").readText()).getJSONArray("grilles")
         var n = 0
         for (g in 0 until 8) {

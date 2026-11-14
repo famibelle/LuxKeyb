@@ -87,6 +87,26 @@ class SeriesPaysagesAssetTest {
     }
 
     /**
+     * Une rangée par lieu, chaque heure dans sa colonne : la nuit d'un lieu
+     * qui n'en a pas reste une place vide, et deux lieux par rangée sur un
+     * écran à huit colonnes.
+     */
+    @Test
+    fun lAlbumSeRangeUneRangeeParLieu() {
+        val emplacements = Series.PAYSAGES.map { com.example.kreyolkeyboard.carnet.Emplacement<String>(it, emptyList()) }
+        val rangees = Series.rangees(com.example.kreyolkeyboard.carnet.Serie.PAYSAGES, emplacements, 4)
+        assertEquals(27, rangees.size)
+        rangees.forEach { r ->
+            assertEquals(4, r.size)
+            val cases = r.filterNotNull().map { Series.paysageDe(it.cle)!! }
+            assertEquals(1, cases.map { it.first }.toSet().size)
+            cases.forEach { (_, rarete) -> assertEquals(r.indexOfFirst { e -> e != null && Series.paysageDe(e.cle)!!.second == rarete }, rarete.ordinal) }
+            assertEquals(cases.first().first in Lieu.ALBUM_SANS_NUIT, r[3] == null)
+        }
+        assertEquals(14, Series.rangees(com.example.kreyolkeyboard.carnet.Serie.PAYSAGES, emplacements, 8).size)
+    }
+
+    /**
      * La grille de 9 × 3 : trois lieux par champ et pour la ville, chaque lieu
      * dans un seul champ, et tous les lieux dans l'album.
      */
