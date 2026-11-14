@@ -22,14 +22,15 @@ import java.util.Calendar
  *
  * Ne tourne que sur demande, avec le dossier où poser les images :
  *
- *     ./gradlew :app:testDebugUnitTest --tests '*PlancheCartesTest*' -Pplanche=/chemin/du/dossier [-PplancheCartes] [-PplancheSaisons]
+ *     ./gradlew :app:testDebugUnitTest --tests '*PlancheCartesTest*' -Pplanche=/chemin/du/dossier [-PplancheCartes] [-PplancheSaisons] [-PplancheAlbum]
  *
  * - `planche_cartes_<lieu>.png` : les cartes entières d'un lieu aux quatre
  *   raretés, telles que l'image de partage les fige (le théâtre de papier) ;
  * - `planche_lieux_<heure>.png` : la fenêtre de chaque lieu à une heure,
  *   droite puis penchée à gauche et à droite, pour voir glisser les cartons
  *   et leurs ombres ;
- * - `planche_saisons.png` : le surcadrage de quelques lieux aux quatre saisons.
+ * - `planche_saisons.png` : le surcadrage de quelques lieux aux quatre saisons ;
+ * - `planche_album.png` : l'album en grille de 9 × 3, un champ par rangée.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [35], application = Application::class)
@@ -87,6 +88,36 @@ class PlancheCartesTest {
             }
             planche(cases, 3, File(dossier, "planche_lieux_${rarete.name.lowercase()}.png"), reduire = 1)
         }
+    }
+
+    /**
+     * L'album des paysages en grille de 9 × 3 : une rangée par champ (la
+     * ville des mots sans champ en dernier), ses trois lieux à l'heure de la
+     * commune. Ne tourne qu'avec `-PplancheAlbum`.
+     */
+    @Test
+    fun album() {
+        assumeTrue(dossier != null && System.getProperty("planche.album") != null)
+        dossier!!.mkdirs()
+        val zone = Ornement.FENETRE
+        val visible = android.graphics.RectF(zone.left, zone.top, zone.right, Ornement.PLAQUE.top + 4f)
+        val echelle = 2f
+        val decoupe = android.graphics.Path().apply { addRect(visible, android.graphics.Path.Direction.CW) }
+        val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
+        val cases = ArrayList<Pair<String, Bitmap>>()
+        for (champ in Champ.values().toList() + null) {
+            for (lieu in Lieu.choix(champ)) {
+                val motif = Motif("Bréck", Rarete.COMMUN, zone, blason(lieu)).apply { profondeur = true }
+                val b = Bitmap.createBitmap((visible.width() * echelle).toInt(), (visible.height() * echelle).toInt(),
+                    Bitmap.Config.ARGB_8888)
+                val c = Canvas(b)
+                c.scale(echelle, echelle)
+                c.translate(-visible.left, -visible.top)
+                motif.peindre(c, pinceau, 0f, decoupe, echelle, avecIris = false, avecSujet = false, regardX = 0f, regardY = 0f)
+                cases += "${champ?.nom ?: "Ville"} · ${lieu.nom}" to b
+            }
+        }
+        planche(cases, 3, File(dossier, "planche_album.png"), reduire = 1)
     }
 
     /**

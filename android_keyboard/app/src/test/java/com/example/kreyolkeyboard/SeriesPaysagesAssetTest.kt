@@ -60,8 +60,8 @@ class SeriesPaysagesAssetTest {
                 if (!vus.add(forme)) continue
                 val tete = representant[forme] ?: forme
                 val champ = champs[tete]
-                // Une carte gagnée après la deuxième vague de lieux : son lieu
-                // est tiré sur son représentant parmi ceux du champ.
+                // Une carte gagnée depuis la grille de 9 × 3 : son lieu est
+                // tiré sur son représentant parmi les trois du champ.
                 val rarete = Rarete.pourRang(rangs[forme])
                 val cle = Series.cleDePaysage(Lieu.pour(champ, tete, rarete), rarete)
                 compte[cle] = (compte[cle] ?: 0) + 1
@@ -71,11 +71,11 @@ class SeriesPaysagesAssetTest {
     }
 
     @Test
-    fun lAlbumCompteQuatreVingtSeptCasesDistinctes() {
+    fun lAlbumCompteQuatreVingtDixCasesDistinctes() {
         // Le premier lieu de chacun des neuf champs (avec la ville des mots
-        // sans champ) aux quatre heures, les dix-sept ajoutés sans la nuit.
-        assertEquals(87, Series.PAYSAGES.size)
-        assertEquals(87, Series.PAYSAGES.toSet().size)
+        // sans champ) aux quatre heures, les dix-huit autres sans la nuit.
+        assertEquals(90, Series.PAYSAGES.size)
+        assertEquals(90, Series.PAYSAGES.toSet().size)
         Series.PAYSAGES.forEach { assertTrue(it, Series.paysageDe(it) != null) }
     }
 
@@ -86,12 +86,37 @@ class SeriesPaysagesAssetTest {
         (Champ.values().toList() + null).forEach { assertEquals(Lieu.de(it), Lieu.choix(it)[0]) }
     }
 
-    /** Aucun champ ne mène au Breedewee : sa case ne se remplirait jamais. */
+    /**
+     * La grille de 9 × 3 : trois lieux par champ et pour la ville, chaque lieu
+     * dans un seul champ, et tous les lieux dans l'album.
+     */
     @Test
-    fun leBreedeweeEstHorsDeLAlbum() {
-        assertTrue(Lieu.BREEDEWEE !in Lieu.ALBUM)
-        assertTrue((Champ.values().toList() + null).none { Lieu.BREEDEWEE in Lieu.choix(it) })
-        assertTrue(Series.PAYSAGES.none { it.startsWith(Lieu.BREEDEWEE.name) })
+    fun chaqueChampATroisLieuxEtChaqueLieuUnChamp() {
+        val champs = Champ.values().toList() + null
+        champs.forEach { assertEquals("$it", 3, Lieu.choix(it).size) }
+        assertEquals(27, champs.flatMap { Lieu.choix(it) }.toSet().size)
+        assertEquals(Lieu.values().toSet(), Lieu.ALBUM.toSet())
+        assertEquals(18, Lieu.ALBUM_SANS_NUIT.size)
+        // Le Breedewee, lieu des cartes imprimées, est aussi celui de la ville.
+        assertTrue(Lieu.BREEDEWEE in Lieu.choix(null))
+    }
+
+    /**
+     * Une carte gagnée sous la 39.0.0 garde son tirage d'alors : deux lieux
+     * au savoir, cinq à la ville. Le tirage de la grille en diffère.
+     */
+    @Test
+    fun leTirageDeLa39EstGarde() {
+        val ville39 = setOf(Lieu.STAD, Lieu.PEITRUSDALL, Lieu.WOLLEFSSCHLUCHT, Lieu.PRIEDEGTSTULL, Lieu.DUMONGSHAFF)
+        val mots = representant.values.toSet().take(400)
+        assertEquals(ville39, mots.map { Lieu.pour39(null, it, Rarete.COMMUN) }.toSet())
+        assertEquals(setOf(Lieu.NEIMENSTER, Lieu.HOHLLAY), mots.map { Lieu.pour39(Champ.SAVOIR, it, Rarete.RARE) }.toSet())
+        assertEquals(Lieu.choix(null).toSet(), mots.map { Lieu.pour(null, it, Rarete.COMMUN) }.toSet())
+        // Les champs que la grille n'a pas touchés gardent aussi leur table.
+        assertEquals(Lieu.choix(Champ.VIE).toSet(), mots.map { Lieu.pour39(Champ.VIE, it, Rarete.PEU_COMMUN) }.toSet())
+        // La nuit reste au premier lieu, avant comme après.
+        assertEquals(Lieu.STAD, Lieu.pour39(null, mots.first(), Rarete.TRES_RARE))
+        assertEquals(Lieu.STAD, Lieu.pour(null, mots.first(), Rarete.TRES_RARE))
     }
 
     @Test

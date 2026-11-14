@@ -224,7 +224,7 @@ et la skill `imprimeur` (format, fond perdu, budget, licences, imprimeurs).
 |---|---|
 | Recto d'une carte (pastille, nom, panneau, écus, ligne de série) | `carnet/CarteCarnet.kt` (`complete`, `panneau`) |
 | Cadre, métal, joyaux, sujets dessinés (`Porcelet`…) | `carnet/CadreOrne.kt` |
-| Paysages (9 lieux × 4 heures), meubles, mot gravé | `carnet/Paysages.kt`, `Meubles.kt` (et `MeublesDomaine.kt`, généré), `MotGrave.kt` |
+| Paysages (27 lieux, 9 champs × 3, album de 90 cases), meubles, mot gravé | `carnet/Paysages.kt`, `Meubles.kt` (et `MeublesDomaine.kt`, généré), `MotGrave.kt` |
 | Raretés (4 paliers), natures, champs | `carnet/CarnetModels.kt` (`Rarete`) |
 | Carte spéciale | `carnet/CarteFierkelsmaart.kt` (modèle à suivre) |
 | Version imprimée (écus COÛT et TYPE, pouvoir) | `carnet/ImpressionCarte.kt`, `complete(…, impression = true)` |

@@ -149,6 +149,15 @@ object Carnet {
         if (charge) return
         charge = true
         try {
+            chargerCartes(context)
+        } finally {
+            basculeDesLieux(context)
+            basculeDeLaGrille(context)
+        }
+    }
+
+    private fun chargerCartes(context: Context) {
+        try {
             val brut = lireBrut(context) ?: return
             val tableau = JSONArray(brut)
             for (i in 0 until tableau.length()) {
@@ -424,7 +433,8 @@ object Carnet {
     }
 
     private const val CLE_BASCULE = "bascule_lieux"
-    private var bascule = -1L
+    private const val CLE_BASCULE_GRILLE = "bascule_grille_lieux"
+    private val bascules = HashMap<String, Long>()
 
     /**
      * L'instant où ce carnet a connu la deuxième vague de lieux (2026-11-13),
@@ -435,17 +445,29 @@ object Carnet {
      * bascule est à zéro. Rangée avec les cartes, elle les suit dans une
      * sauvegarde.
      */
+    fun basculeDesLieux(context: Context): Long = bascule(context, CLE_BASCULE)
+
+    /**
+     * L'instant où ce carnet a connu la grille de 9 × 3 (2026-11-14), noté
+     * comme [basculeDesLieux] : une carte gagnée entre les deux bascules
+     * garde le tirage de la 39.0.0 ([Lieu.pour39]). Les deux sont notées au
+     * chargement du carnet, avant toute nouvelle carte : notée plus tard,
+     * à la première carte affichée, une bascule ferait passer pour anciennes
+     * les cartes gagnées entre-temps.
+     */
+    fun basculeDeLaGrille(context: Context): Long = bascule(context, CLE_BASCULE_GRILLE)
+
     @Synchronized
-    fun basculeDesLieux(context: Context): Long {
-        if (bascule >= 0) return bascule
+    private fun bascule(context: Context, cle: String): Long {
+        bascules[cle]?.let { return it }
         charger(context)
         val p = prefs(context)
-        var b = p.getLong(CLE_BASCULE, -1L)
+        var b = p.getLong(cle, -1L)
         if (b < 0) {
             b = if (cartes.isEmpty()) 0L else System.currentTimeMillis()
-            p.edit().putLong(CLE_BASCULE, b).apply()
+            p.edit().putLong(cle, b).apply()
         }
-        bascule = b
+        bascules[cle] = b
         return b
     }
 
