@@ -1123,7 +1123,7 @@ object Paysages {
             Lieu.VEIANEN, Lieu.MUSEL, Lieu.NEI_BRECK, Lieu.NEIMENSTER, Lieu.ANSEBUERG, Lieu.OURDALL,
             Lieu.HAFF_REIMECH, Lieu.PEITRUSDALL, Lieu.DUMONGSHAFF -> calque == 3 || calque == 4
             Lieu.FOUER -> calque == 3 || calque == 4
-            Lieu.BREEDEWEE -> false
+            Lieu.BREEDEWEE -> calque == 3 || calque == 4
             Lieu.GELLE_FRA -> calque == 4 || (calque == 3 && !PAPIER)
             else -> calque == 4
         }
@@ -1220,7 +1220,8 @@ object Paysages {
                     pluieDOr(p, temps, raf)
                     envol(p, vol, 10f, 52f, 1f)
                 }
-                Lieu.BREEDEWEE -> Unit
+                Lieu.BREEDEWEE -> if (calque == 3) lanterneVivante(p, temps, 81f, 36f, false, 1)
+                    else { lanterneVivante(p, temps, 30f, 31f, true, 0); chat(p, temps, vol) }
                 Lieu.FELSMILLEN -> { feuillesQuiTombent(p, temps, raf); envol(p, vol, 12f, 30f, 1f) }
                 Lieu.OURDALL -> if (calque == 3) {
                     reflets(p, temps, 0f, 62f, 37f, 50f, raf)
@@ -1371,6 +1372,41 @@ object Paysages {
             }
         }
 
+        /**
+         * Une lanterne du Breedewee : sa flamme vacille sans cesse, de jour
+         * comme de nuit (plus discrète le jour), et une secousse la fait
+         * tanguer au bout de sa potence, puis elle se calme en quelques
+         * secondes.
+         */
+        private fun lanterneVivante(p: Peintre, temps: Float, x: Float, y: Float, versDroite: Boolean, k: Int) {
+            val flamme = if (temps <= 0f) 0.5f else
+                (0.55f + 0.3f * sin(temps * 13f + k * 2f) + 0.15f * sin(temps * 7.3f + k) + 0.1f * sin(temps * 23f)).coerceIn(0f, 1f)
+            val d = temps - secousse - k * 0.08f
+            val tangue = if (d < 0f || d > 7f) 0f else 22f * force * exp(-d * 0.9f) * sin(d * 5.5f)
+            val brise = if (temps <= 0f) 0f else 1.2f * sin(temps * 0.9f + k)
+            p.lanterne(x, y, versDroite, tangue + brise, flamme)
+        }
+
+        /**
+         * Le chat du Breedewee : toutes les vingt secondes il traverse la
+         * ruelle au petit trot, de gauche à droite ; une secousse le fait
+         * détaler dans l'autre sens, ventre à terre.
+         */
+        private fun chat(p: Peintre, temps: Float, vol: Float) {
+            if (temps <= 0f) return
+            val sol = DEVANT - 0.4f
+            if (vol in 0f..2.2f) {
+                val x = 108f - vol * 60f
+                p.chat(x, sol, versDroite = false, foulee = vol * 22f, galop = 1f)
+                return
+            }
+            // Effrayé, il ne revient pas tout de suite.
+            if (vol in 0f..12f) return
+            val u = (temps + 18f) % 22f
+            if (u > 7f) return
+            p.chat(-8f + u / 7f * 116f, sol, versDroite = true, foulee = u * 11f, galop = 0f)
+        }
+
         /** Les chauves-souris qui sortent de la grotte à la secousse, en zigzag. */
         private fun chauvesSouris(p: Peintre, vol: Float, x: Float, y: Float) {
             if (vol < 0f || vol > 4f) return
@@ -1486,7 +1522,7 @@ object Paysages {
 
         companion object {
             /** La vie de [lieu] à l'heure dite, `null` pour un lieu sans rien qui bouge. */
-            fun pour(lieu: Lieu, heure: Heure): Vie? = if (lieu == Lieu.BREEDEWEE) null else Vie(lieu, heure)
+            fun pour(lieu: Lieu, heure: Heure): Vie? = Vie(lieu, heure)
         }
     }
 
@@ -2863,16 +2899,61 @@ object Paysages {
          * Une lanterne sur sa potence, scellée en ([x], [y]) dans le flanc d'un
          * pilier et tournée vers la droite ou vers la gauche. Allumée le soir.
          */
-        fun lanterne(x: Float, y: Float, versDroite: Boolean) {
+        fun lanterne(x: Float, y: Float, versDroite: Boolean, angle: Float = 0f, flamme: Float = -1f) {
             val s = if (versDroite) 1f else -1f
             val fer = mix(P.toit, 0xFF000000.toInt(), 0.45f)
             ligne(x, y, x + 3.6f * s, y, fer, 0.55f)
             trait("M$x ${y + 2.2f}Q${x + 1.6f * s} ${y + 2f} ${x + 2.6f * s} $y", fer, 0.4f)
-            if (P.allume) rond(x + 3.6f * s, y + 2.3f, 2.6f, P.fenetre, 0.25f)
+            // La lanterne pend à sa potence : elle tourne autour du crochet.
+            c.save()
+            c.rotate(angle, x + 3.6f * s, y)
+            val allumee = P.allume || flamme >= 0f
+            if (allumee) {
+                val f = if (flamme >= 0f) flamme else 0.5f
+                rond(x + 3.6f * s, y + 2.3f, 2.6f + 0.5f * f, P.fenetre, (if (P.allume) 0.18f else 0.1f) + 0.14f * f)
+            }
             ligne(x + 3.6f * s, y, x + 3.6f * s, y + 0.9f, fer, 0.4f)
-            forme("M${x + 2.8f * s} ${y + 0.9f}L${x + 4.4f * s} ${y + 0.9f}L${x + 4.1f * s} ${y + 3.6f}L${x + 3.1f * s} ${y + 3.6f}Z",
-                if (P.allume) P.fenetre else mix(P.pierre, P.pres, 0.55f))
+            val verre = when {
+                flamme >= 0f -> mix(P.fenetre, 0xFFFFFFFF.toInt(), 0.15f + 0.35f * flamme)
+                P.allume -> P.fenetre
+                else -> mix(P.pierre, P.pres, 0.55f)
+            }
+            forme("M${x + 2.8f * s} ${y + 0.9f}L${x + 4.4f * s} ${y + 0.9f}L${x + 4.1f * s} ${y + 3.6f}L${x + 3.1f * s} ${y + 3.6f}Z", verre)
             rect(x + 2.6f * s - (if (versDroite) 0f else 2f), y + 0.5f, 2f, 0.5f, fer)
+            c.restore()
+        }
+
+        /**
+         * Un chat roux qui court sur le plancher, les pattes en ([x], [y]),
+         * vers la droite ou vers la gauche ; [foulee] fait tourner ses pattes,
+         * [galop] l'allonge et le fait bondir.
+         */
+        fun chat(x: Float, y: Float, versDroite: Boolean, foulee: Float, galop: Float) {
+            val roux = duJour(0xFFD9822B.toInt())
+            val fonce = sombre(roux, 0.35f)
+            val clair = duJour(0xFFF3D9B0.toInt())
+            c.save()
+            if (!versDroite) c.scale(-1f, 1f, x, y)
+            val bond = abs(sin(foulee)) * (0.2f + 0.6f * galop)
+            val yy = y - bond
+            // Les pattes : deux paires qui se croisent, plus écartées au galop.
+            val ecart = 0.5f + 0.5f * galop
+            for ((dx, ph) in listOf(-1.7f to 0f, -1.3f to PI.toFloat(), 1.5f to PI.toFloat() * 0.5f, 1.9f to PI.toFloat() * 1.5f)) {
+                val a = sin(foulee + ph) * ecart
+                ligne(x + dx, yy - 1.4f, x + dx + a * 1.3f, y - 0.1f, fonce, 0.55f)
+            }
+            // La queue, dressée, qui ondule.
+            trait("M${x - 2.4f} ${yy - 2.2f}Q${x - 4.4f} ${yy - 2.6f + sin(foulee * 0.5f)} ${x - 4.2f} ${yy - 4.8f}", roux, 0.55f)
+            ovalePapier(x, yy - 2.3f, 2.8f + 0.4f * galop, 1.15f, roux, 0f)
+            // Deux rayures, la tête, les oreilles, le museau clair.
+            ligne(x - 0.6f, yy - 3.3f, x - 0.3f, yy - 2.2f, fonce, 0.35f)
+            ligne(x + 0.6f, yy - 3.4f, x + 0.9f, yy - 2.3f, fonce, 0.35f)
+            rond(x + 2.9f, yy - 3.1f, 1.05f, roux)
+            triangle(x + 2.1f, yy - 3.7f, x + 2.5f, yy - 5f, x + 3f, yy - 3.9f, roux)
+            triangle(x + 3f, yy - 3.9f, x + 3.6f, yy - 5f, x + 3.8f, yy - 3.6f, roux)
+            rond(x + 3.6f, yy - 2.8f, 0.45f, clair)
+            rond(x + 3.2f, yy - 3.3f, 0.16f, if (P.nuit) 0xFFE8F070.toInt() else 0xFF1E2A10.toInt())
+            c.restore()
         }
 
         // ------------------------------------------- les lieux en papier découpé
@@ -4351,6 +4432,7 @@ object Paysages {
                 }
             }
             pieceD("M64 52L64 43C64 40 69 40 69 43L69 52Z", sombre(ocre, 0.5f), 0.3f)
+            if (!vivant) lanterne(81f, 36f, false)
             for (y in floatArrayOf(46f, 49f, 52f, 55f)) ligne(81f, y, 103f, y, sombre(enduit, 0.35f), 0.3f)
             ligne(81f, -3f, 81f, 58.5f, sombre(enduit, 0.5f), 0.4f)
             // La rue pavée qui monte vers le fond.
@@ -4376,7 +4458,8 @@ object Paysages {
                 ligne(20f + cos(a) * 6f, 25f + sin(a) * 6f, 20f + cos(a) * 10f, 25f + sin(a) * 10f, sombre(pierre, 0.35f), 0.2f)
             }
             mineraux--
-            lanterne(30f, 31f, true)
+            // Les lanternes vacillent sur la carte ouverte : [Vie] les y pose.
+            if (!vivant) lanterne(30f, 31f, true)
             touffe(vert(0.5f), 4f, 57f, 2.4f, 9f, 57.5f, 2f)
             c.restore()
         }

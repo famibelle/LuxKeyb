@@ -156,13 +156,15 @@ class PlancheCartesTest {
         val echelle = 5f
         val decoupe = android.graphics.Path().apply { addRect(visible, android.graphics.Path.Direction.CW) }
         val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
-        for (lieu in listOf(Lieu.NEI_BRECK, Lieu.HOHLLAY, Lieu.KALLEKTUFFQUELL, Lieu.STAUSEI, Lieu.GELLE_FRA)) {
-            val sortie = File(dossier, "secousse/${lieu.name.lowercase()}").apply { mkdirs() }
-            val motif = Motif("Bréck", Rarete.COMMUN, zone, blason(lieu), Souvenir.du(2026, 7, 15)).apply { profondeur = true }
-            for (k in 0 until 80) {
+        for ((lieu, rarete) in listOf(Lieu.BREEDEWEE to Rarete.COMMUN, Lieu.BREEDEWEE to Rarete.RARE)) {
+            val images = if (lieu == Lieu.BREEDEWEE) 110 else 80
+            val choc = if (lieu == Lieu.BREEDEWEE) 75 else 30
+            val sortie = File(dossier, "secousse/${lieu.name.lowercase()}_${rarete.name.lowercase()}").apply { mkdirs() }
+            val motif = Motif("Bréck", rarete, zone, blason(lieu), Souvenir.du(2026, 7, 15)).apply { profondeur = true }
+            for (k in 0 until images) {
                 val t = 4f + k * 0.1f
                 Paysages.horlogeEssai = t
-                if (k == 30) motif.secouer(1f)
+                if (k == choc) motif.secouer(1f)
                 val b = Bitmap.createBitmap((visible.width() * echelle).toInt(), (visible.height() * echelle).toInt(),
                     Bitmap.Config.ARGB_8888)
                 val c = Canvas(b)
