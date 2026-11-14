@@ -2630,6 +2630,37 @@ object Paysages {
             }
         }
 
+        /**
+         * Une fenêtre de vrai verre : un cadre clair, une vitre bleu-gris
+         * foncé où le jour pose un reflet du ciel en biais, un croisillon.
+         * Allumée le soir et la nuit, elle prend l'or des fenêtres comme
+         * [fenetre]. Peinte avec [neutre] : le réglage des couleurs vives ne
+         * la jaunit pas.
+         */
+        fun fenetreVerre(x: Float, y: Float, w: Float, h: Float, rnd: Alea?) = mineral {
+            val allumee = P.allume && (rnd == null || rnd() < 0.7f)
+            val cadre = neutre(duJour(0xFFF1F1EC.toInt()))
+            rect(x - 0.22f, y - 0.22f, w + 0.44f, h + 0.44f, cadre)
+            if (allumee) {
+                rect(x - w * 0.6f, y - h * 0.4f, w * 2.2f, h * 1.8f, P.fenetre, 0.22f)
+                rect(x, y, w, h, P.fenetre)
+            } else {
+                val verre = neutre(mix(duJour(0xFF34445E.toInt()), P.cielHaut, if (P.nuit) 0.1f else 0.22f))
+                rect(x, y, w, h, verre)
+                if (!P.nuit) {
+                    // Le reflet du ciel, en biais dans le haut de la vitre.
+                    val reflet = neutre(mix(verre, P.cielBas, 0.6f))
+                    forme(Path().apply {
+                        moveTo(x + w * 0.35f, y); lineTo(x + w, y); lineTo(x + w, y + h * 0.18f); lineTo(x + w * 0.1f, y + h * 0.62f); lineTo(x, y + h * 0.62f)
+                        lineTo(x, y + h * 0.42f); close()
+                    }, reflet, 0.55f)
+                }
+            }
+            // Le croisillon.
+            rect(x + w * 0.5f - 0.09f, y, 0.18f, h, cadre, 0.9f)
+            rect(x, y + h * 0.4f - 0.09f, w, 0.18f, cadre, 0.9f)
+        }
+
         fun fenetre(x: Float, y: Float, w: Float, h: Float, rnd: Alea?) = mineral {
             val allumee = P.allume && (rnd == null || rnd() < 0.7f)
             if (allumee) rect(x - w * 0.6f, y - h * 0.4f, w * 2.2f, h * 1.8f, P.fenetre, 0.22f)
@@ -3397,6 +3428,9 @@ object Paysages {
             val toit = n(ardoise())
             val faitage = n(mix(ardoise(), 0xFFFFFFFF.toInt(), 0.18f))
             val poutre = n(duJour(0xFF4A3A2E.toInt()))
+            // Froid : des vitres de vrai verre, au lieu des rectangles olive.
+            val vitre: (Float, Float, Float, Float) -> Unit =
+                if (froid) { x, y, w, h -> fenetreVerre(x, y, w, h, rnd) } else { x, y, w, h -> fenetre(x, y, w, h, rnd) }
             val debuts = FloatArray(maisons.size)
             var u = debut
             // [ecart] : des maisons séparées, dont on voit chaque pignon, comme
@@ -3432,7 +3466,7 @@ object Paysages {
                 val fin = h * tl * ea < 4.5f
                 if (!fin) surQuad(6f, h, cote) {
                     var fy = 3f
-                    while (fy < h - 3f) { fenetre(2.4f, fy, 1.2f, 2.4f, rnd); fy += 5.2f }
+                    while (fy < h - 3f) { vitre(2.4f, fy, 1.2f, 2.4f); fy += 5.2f }
                 }
                 // La façade, peinte à plat puis posée en perspective.
                 val facade = floatArrayOf(ax, hautA, bx, hautB, bx, by, ax, ay)
@@ -3446,7 +3480,7 @@ object Paysages {
                     var fy = 2.6f
                     while (fy < h - 4f) {
                         var fx = 1.6f
-                        while (fx < w - 2f) { fenetre(fx, fy, 1.3f, 2.4f, rnd); fx += 3.3f }
+                        while (fx < w - 2f) { vitre(fx, fy, 1.3f, 2.4f); fx += 3.3f }
                         fy += 4.8f
                     }
                     // La porte au rez-de-chaussée.
@@ -3461,7 +3495,7 @@ object Paysages {
                     var lx = 2.2f
                     while (lx < w - 3f) {
                         feuille(lx, 2.4f, 2f, 2.6f, mur, 0.3f)
-                        fenetre(lx + 0.5f, 3f, 1f, 1.6f, rnd)
+                        vitre(lx + 0.5f, 3f, 1f, 1.6f)
                         pieceD("M${lx - 0.4f} 2.6L${lx + 1f} 0.9L${lx + 2.4f} 2.6Z", toit, 0f)
                         lx += 4.6f
                     }
