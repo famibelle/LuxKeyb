@@ -800,7 +800,7 @@ object Paysages {
             val aPart = if (neiges != null) arrayOfNulls<Bitmap>(4) else null
             Habillage.appliquerPlans(arrayOf(ciel, loin, milieu, proche), arrayOf(null, loin, milieu, proche),
                 lieu, heure, souvenir, arrayOf(ks[0], ks[2], ks[3], ks[4]), arrayOf(null, releves[2], releves[3], releves[4]), aPart)
-            aPart?.forEachIndexed { i, b -> if (b != null) neiges[i + 1] = b }
+            aPart?.forEachIndexed { i, b -> if (b != null) neiges!![i + 1] = b }
         }
         releves.forEach { it?.recycle() }
         // Après la saison, qui reconnaît la végétation à ses couleurs d'origine.
