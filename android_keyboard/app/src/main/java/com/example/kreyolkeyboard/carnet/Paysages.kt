@@ -45,10 +45,10 @@ import kotlin.math.sqrt
  * Les noms sont ceux du pays, en luxembourgeois. Ils restent à faire relire
  * par quelqu'un qui parle la langue ; ils n'apparaissent pour l'instant qu'ici.
  *
- * Le dernier, [BREEDEWEE], n'est la fenêtre d'aucun champ : c'est le lieu des
- * cartes venues du jeu imprimé (voir [CartesPapier.corriger]), qui le portent
- * à la place de celui de leur champ. Il reste hors de l'album des paysages
- * ([ALBUM]) : l'album ne propose pas une case qu'aucun jeu ne remplit.
+ * Le [BREEDEWEE], la ruelle du Grund, est le lieu des cartes venues du jeu
+ * imprimé (voir [CartesPapier.corriger]), qui le portent à la place de celui
+ * de leur champ. Depuis la grille de 9 × 3 (2026-11-14), il est aussi l'un
+ * des trois lieux de la ville, pour les mots sans champ.
  */
 enum class Lieu(val nom: String) {
     ROUT_BRECK("Rout Bréck"),
@@ -85,12 +85,15 @@ enum class Lieu(val nom: String) {
     PRIEDEGTSTULL("Priedegtstull"),
     DUMONGSHAFF("Dumongshaff");
 
-    /** Le champ dont ce lieu est une fenêtre, `null` pour la ville des mots sans champ et le Breedewee. */
+    /** Le champ dont ce lieu est une fenêtre, `null` pour les lieux de la ville des mots sans champ. */
     fun champ(): Champ? = Champ.values().firstOrNull { this in choix(it) }
 
     companion object {
-        /** Les lieux des champs, ceux de l'album des paysages. */
-        val ALBUM: List<Lieu> = values().filter { it != BREEDEWEE }
+        /**
+         * Les lieux de l'album des paysages : tous, rangés par champ comme
+         * leur grille de 9 × 3 ([choix]), le premier de chaque champ d'abord.
+         */
+        val ALBUM: List<Lieu> by lazy { (Champ.values().toList() + null).flatMap { choix(it) } }
 
         /** Les lieux ajoutés à un champ, qui n'ont pas de nuit : voir [pour]. */
         val ALBUM_SANS_NUIT: Set<Lieu> by lazy { ALBUM.filter { it != choix(it.champ())[0] }.toSet() }
@@ -99,27 +102,61 @@ enum class Lieu(val nom: String) {
         fun de(blason: Blasonnement): Lieu = blason.lieu ?: de(blason.champ)
 
         /**
-         * Les lieux d'un champ, le premier d'abord : celui que montraient
-         * toutes ses cartes avant la deuxième vague.
+         * Les trois lieux d'un champ, le premier d'abord : celui que
+         * montraient toutes ses cartes avant la deuxième vague.
+         *
+         * **La grille de 9 × 3** (2026-11-14) : les huit champs et la ville
+         * des mots sans champ ont chacun trois lieux, pour qu'un enfant sache
+         * d'un coup d'œil ce qui manque à l'album (« le troisième lieu du
+         * savoir »). Le Priedegtstull, la chaire de pierre, passe au savoir
+         * et à la parole ; le Péitrusdall, sous le pont Adolphe, rejoint la
+         * Nei Bréck à la chose publique ; la passerelle du Dumongshaff va à la
+         * société, et le Breedewee, ruelle du Grund, entre dans la ville. Les
+         * cartes gagnées avant gardent leur lieu ([choix39], [Carnet.basculeDeLaGrille]).
          */
         fun choix(champ: Champ?): List<Lieu> = when (champ) {
             Champ.MOUVEMENT -> listOf(ROUT_BRECK, PAFENDALL, FELSMILLEN)
             Champ.TEMPS -> listOf(VEIANEN, ANSEBUERG, OURDALL)
             Champ.TERRITOIRE -> listOf(ESCH_SAUER, STAUSEI, CONZEFENN)
             Champ.ECONOMIE -> listOf(MUSEL, BELVAL, HAFF_REIMECH)
-            Champ.SAVOIR -> listOf(NEIMENSTER, HOHLLAY)
-            Champ.PUBLIC -> listOf(GELLE_FRA, NEI_BRECK)
-            Champ.SOCIETE -> listOf(FOUER, NAPOLEONSGAART)
+            Champ.SAVOIR -> listOf(NEIMENSTER, HOHLLAY, PRIEDEGTSTULL)
+            Champ.PUBLIC -> listOf(GELLE_FRA, NEI_BRECK, PEITRUSDALL)
+            Champ.SOCIETE -> listOf(FOUER, NAPOLEONSGAART, DUMONGSHAFF)
             Champ.VIE -> listOf(MELLERDALL, BAERDREF, KALLEKTUFFQUELL)
-            null -> listOf(STAD, PEITRUSDALL, WOLLEFSSCHLUCHT, PRIEDEGTSTULL, DUMONGSHAFF)
+            null -> listOf(STAD, WOLLEFSSCHLUCHT, BREEDEWEE)
         }
 
         /**
-         * Le lieu d'un mot de [champ] gagné après la deuxième vague : parmi
+         * La répartition de la 39.0.0, d'avant la grille de 9 × 3 : deux
+         * lieux au savoir, à la chose publique et à la société, cinq à la
+         * ville. Elle ne sert plus qu'aux cartes gagnées entre les deux
+         * bascules ([pour39]). **Ne plus la changer.**
+         */
+        private fun choix39(champ: Champ?): List<Lieu> = when (champ) {
+            Champ.SAVOIR -> listOf(NEIMENSTER, HOHLLAY)
+            Champ.PUBLIC -> listOf(GELLE_FRA, NEI_BRECK)
+            Champ.SOCIETE -> listOf(FOUER, NAPOLEONSGAART)
+            null -> listOf(STAD, PEITRUSDALL, WOLLEFSSCHLUCHT, PRIEDEGTSTULL, DUMONGSHAFF)
+            else -> choix(champ)
+        }
+
+        /**
+         * Le sel du tirage de la grille de 9 × 3, cherché par
+         * `scripts/sel_des_lieux.py` : celui qui laisse au moins trois
+         * mots de Wuertplaz à chaque case de l'album dans les quatre langues
+         * (`SeriesPaysagesAssetTest`). Le sel `lieu:` de la 39.0.0 n'en
+         * laissait qu'un à la case rare du Péitrusdall dans les grilles
+         * anglaises : le champ public n'y a que quatorze rares.
+         */
+        private const val SEL = "lieu:9x3:2779:"
+
+        /**
+         * Le lieu d'un mot de [champ] gagné depuis la grille de 9 × 3 : parmi
          * les [choix] du champ, tiré une fois pour toutes sur le mot
          * (son représentant de famille), si bien que le même mot montre
-         * toujours le même lieu. Les cartes gagnées avant gardent le premier
-         * (voir [Carnet.basculeDesLieux]).
+         * toujours le même lieu. Les cartes gagnées avant la deuxième vague
+         * gardent le premier lieu de leur champ, celles gagnées sous la
+         * 39.0.0 leur tirage d'alors ([pour39], [Carnet.basculeDesLieux]).
          *
          * La nuit des très rares reste au premier lieu du champ : il y a trop
          * peu de très rares par champ pour remplir deux cases (trois mots du
@@ -127,14 +164,18 @@ enum class Lieu(val nom: String) {
          * doit rester complétable dans chaque langue ([ALBUM_SANS_NUIT]).
          *
          * **Ne pas changer le sel ni le hachage** : ils fixent le lieu des
-         * cartes déjà gagnées. Le sel `lieu:` laisse au moins trois mots de
-         * Wuertplaz à chaque case de l'album, dans les quatre langues.
+         * cartes déjà gagnées. Une nouvelle répartition se fait comme
+         * celle-ci : une bascule de plus, l'ancienne table gardée.
          */
-        fun pour(champ: Champ?, mot: String, rarete: Rarete): Lieu {
-            val l = choix(champ)
+        fun pour(champ: Champ?, mot: String, rarete: Rarete): Lieu = tirer(choix(champ), SEL, mot, rarete)
+
+        /** Le tirage de la 39.0.0, pour les cartes gagnées sous cette version : voir [pour]. */
+        fun pour39(champ: Champ?, mot: String, rarete: Rarete): Lieu = tirer(choix39(champ), "lieu:", mot, rarete)
+
+        private fun tirer(l: List<Lieu>, sel: String, mot: String, rarete: Rarete): Lieu {
             if (l.size == 1 || rarete == Rarete.TRES_RARE) return l[0]
             var h = 0x811C9DC5.toInt()
-            for (ch in "lieu:$mot") { h = h xor ch.code; h *= 0x01000193 }
+            for (ch in "$sel$mot") { h = h xor ch.code; h *= 0x01000193 }
             return l[(h ushr 1) % l.size]
         }
 

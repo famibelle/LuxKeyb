@@ -150,13 +150,17 @@ object CarteCarnet {
     /**
      * Le lieu de la carte, s'il ne lui est pas imposé (le Breedewee des
      * cartes imprimées) : le premier de son champ pour une carte gagnée
-     * avant la deuxième vague de lieux, sinon celui que son [mot] tire parmi
-     * les lieux du champ (voir [Lieu.pour], [Carnet.basculeDesLieux]).
+     * avant la deuxième vague de lieux, le tirage de la 39.0.0 pour une carte
+     * gagnée avant la grille de 9 × 3, sinon celui que son [mot] tire parmi
+     * les trois lieux du champ (voir [Lieu.pour], [Carnet.basculeDesLieux]).
      */
     private fun avecLieu(context: Context, carte: CarteMot, mot: String, c: ContenuCarte): ContenuCarte {
         if (c.blason.lieu != null) return c
-        val lieu = if (carte.premiereFois < Carnet.basculeDesLieux(context)) Lieu.de(c.blason.champ)
-            else Lieu.pour(c.blason.champ, mot, c.rarete)
+        val lieu = when {
+            carte.premiereFois < Carnet.basculeDesLieux(context) -> Lieu.de(c.blason.champ)
+            carte.premiereFois < Carnet.basculeDeLaGrille(context) -> Lieu.pour39(c.blason.champ, mot, c.rarete)
+            else -> Lieu.pour(c.blason.champ, mot, c.rarete)
+        }
         return c.copy(blason = c.blason.copy(lieu = lieu))
     }
 

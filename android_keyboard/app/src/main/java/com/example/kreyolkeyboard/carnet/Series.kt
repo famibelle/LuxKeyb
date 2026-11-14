@@ -25,9 +25,10 @@ import org.json.JSONObject
  *   langues de glose, lus dans `luxemburgish_series.json`
  *   (`Dictionnaires/generate_series.py`, qui fait la preuve) ;
  * - [JEUX] : une carte de chacun des sept jeux ;
- * - [PAYSAGES] : chaque lieu des cartes à chacune de ses heures, soit
- *   neuf lieux par quatre raretés, et depuis la 39.0.0 dix-sept lieux
- *   ajoutés aux champs, sans la nuit (voir [Lieu.pour]), 87 cases. Les grilles de Wuertplaz suffisent à la
+ * - [PAYSAGES] : chaque lieu des cartes à chacune de ses heures, en grille
+ *   de 9 × 3 : trois lieux par champ (et pour la ville des mots sans champ),
+ *   le premier aux quatre raretés, les deux autres sans la nuit (voir
+ *   [Lieu.pour]), 90 cases. Les grilles de Wuertplaz suffisent à la
  *   remplir dans les quatre langues de glose : `SeriesPaysagesAssetTest`
  *   compte, case par case, les mots qui y mènent ;
  * - [ESSENTIELS] : le vocabulaire de base, une page par thème (voir
@@ -126,10 +127,10 @@ object Series {
     val NOMBRES: List<Int> = (0..ZuelenSpeller.MAXIMUM).toList()
 
     /**
-     * Les quatre-vingt-sept cases de l'album des paysages, rangées lieu par
-     * lieu, du matin à la nuit : le premier lieu de chaque champ aux quatre
-     * heures, puis les dix-sept ajoutés, sans la nuit ([Lieu.ALBUM_SANS_NUIT]).
-     * Le Breedewee n'y est pas : aucun jeu ne le donne (voir [Lieu.ALBUM]).
+     * Les quatre-vingt-dix cases de l'album des paysages, rangées champ par
+     * champ et lieu par lieu, du matin à la nuit : le premier lieu de chaque
+     * champ aux quatre heures, les deux autres sans la nuit
+     * ([Lieu.ALBUM_SANS_NUIT]).
      */
     val PAYSAGES: List<String> = Lieu.ALBUM.flatMap { l ->
         Rarete.values().filter { r -> r != Rarete.TRES_RARE || l !in Lieu.ALBUM_SANS_NUIT }.map { r -> cleDePaysage(l, r) }
@@ -148,12 +149,18 @@ object Series {
     /**
      * La case d'une carte : le lieu de son champ, à l'heure de sa rareté.
      *
-     * Le champ, et non le lieu que la carte montre : une carte venue du jeu
-     * imprimé montre le Breedewee mais remplit toujours la case de son champ.
-     * Scanner une carte en papier n'a pas à faire perdre une case gagnée.
+     * Le lieu que la carte montre, sauf pour une carte venue du jeu imprimé :
+     * elle montre le Breedewee mais remplit toujours la case du premier lieu
+     * de son champ. Scanner une carte en papier n'a pas à faire perdre une
+     * case gagnée. Le Breedewee est aussi un lieu de la ville depuis la
+     * grille de 9 × 3 : c'est la provenance qui les distingue, comme dans
+     * [CartesPapier.corriger].
      */
-    fun paysage(contenu: ContenuCarte): String =
-        cleDePaysage(contenu.blason.lieu?.takeIf { it != Lieu.BREEDEWEE } ?: Lieu.de(contenu.blason.champ), contenu.rarete)
+    fun paysage(contenu: ContenuCarte): String {
+        val imprime = contenu.blason.lieu == Lieu.BREEDEWEE && JeuCarte.PAPIER in contenu.carte.jeux
+        val lieu = contenu.blason.lieu?.takeUnless { imprime } ?: Lieu.de(contenu.blason.champ)
+        return cleDePaysage(lieu, contenu.rarete)
+    }
 
     @Volatile
     private var enluminures: List<String>? = null

@@ -173,6 +173,21 @@ class CartesPapierTest {
         assertEquals(Series.cleDePaysage(Lieu.MELLERDALL, Rarete.COMMUN), Series.paysage(c))
     }
 
+    /**
+     * Le Breedewee est aussi un lieu de la ville depuis la grille de 9 × 3 :
+     * un mot sans champ qui le tire en jouant remplit la case du Breedewee,
+     * la même carte scannée celle du premier lieu de la ville.
+     */
+    @Test
+    fun leBreedeweeTireEnJouantRemplitSaCase() {
+        val tire = contenu("Kaz", setOf(JeuCarte.WUERTPLAZ), champ = null).let {
+            it.copy(blason = it.blason.copy(lieu = Lieu.BREEDEWEE))
+        }
+        assertEquals(Series.cleDePaysage(Lieu.BREEDEWEE, Rarete.COMMUN), Series.paysage(tire))
+        val scannee = CartesPapier.corriger(contenu("Kaz", setOf(JeuCarte.WUERTPLAZ, JeuCarte.PAPIER), champ = null))
+        assertEquals(Series.cleDePaysage(Lieu.STAD, Rarete.COMMUN), Series.paysage(scannee))
+    }
+
     @Test
     fun laFierkelsmaartGardeSaFoire() {
         val c = CartesPapier.corriger(

@@ -57,7 +57,8 @@ La **mécanique** :
   Neimënster, Gëlle Fra, Schueberfouer, Mëllerdall, Stad) × **quatre heures**
   sont dessinés par le code, sans fichier image ;
 - un **dixième lieu, le Breedewee** (2026-10-30), est celui des cartes venues
-  du jeu imprimé (`CartesPapier.corriger`), hors de l'album : une porte de
+  du jeu imprimé (`CartesPapier.corriger`), et depuis la grille de 9 × 3
+  (39.1.0) aussi un lieu de la ville, dans l'album : une porte de
   pierre en **cadre de scène dans la fenêtre**, la ruelle derrière, la ville
   haute au loin, posées sur le plancher de la scène (la chaussée pavée des
   débuts a disparu le 2026-10-30). Ses coulisses de rare sont deux piliers de
@@ -283,14 +284,26 @@ gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
   Réimech (économie), Hohllay (savoir), Napoleonsgaart (société),
   Kallektuffquell (vie), et pour les mots sans champ, qui sont les plus
   nombreux, Péitrusdall, Wollefsschlucht, Priedegtstull et Dumongshaff.
-  87 cases d'album en tout. Les cartes gagnées avant la bascule
-  (`Carnet.basculeDesLieux`) gardent leur lieu ; la nuit des très rares
-  reste au premier lieu du champ, faute de très rares pour remplir deux
-  cases. Chaque lieu ajouté à un champ doit garder trois mots de Wuertplaz
-  par case dans les quatre langues (`SeriesPaysagesAssetTest`) : avec la
-  répartition d'aujourd'hui, la case la plus mince en a trois. Les champs
-  sont pleins ; un nouveau lieu ira d'abord aux mots sans champ, qui ont de
-  la marge (plus de 160 rares par langue).
+  Les cartes gagnées avant la bascule (`Carnet.basculeDesLieux`) gardent
+  leur lieu ; la nuit des très rares reste au premier lieu du champ, faute
+  de très rares pour remplir deux cases.
+- **La grille de 9 × 3** (2026-11-14, 39.1.0) : trois lieux par champ, et
+  trois pour la ville des mots sans champ, 27 lieux et 90 cases d'album.
+  Un enfant voit d'un coup d'œil ce qui manque ; une collection en 2, 3 ou
+  5 lieux selon le champ paraissait arbitraire. Le Priedegtstull (la
+  chaire de pierre) passe au savoir et à la parole, le Péitrusdall (sous le
+  pont Adolphe) à la chose publique, le Dumongshaff à la société, et le
+  Breedewee, ruelle du Grund, devient le troisième lieu de la ville : il
+  reste le lieu de toute carte imprimée, mais n'en est plus l'exclusivité.
+  L'album est rangé par champ (`Lieu.ALBUM`). Les cartes gagnées sous la
+  39.0.0 gardent leur tirage (`Lieu.pour39`, `Carnet.basculeDeLaGrille`).
+  Le sel du tirage (`Lieu.SEL`) est cherché par `scripts/sel_des_lieux.py`
+  pour garder trois mots de Wuertplaz par case dans les quatre langues
+  (`SeriesPaysagesAssetTest`) : la case la plus mince en a trois (la Gëlle
+  Fra rare en allemand, sa nuit en anglais). Le champ public est le plus
+  mince. **La grille est pleine** : la suite se fait par vagues de neuf
+  lieux, un par champ, avec une nouvelle bascule et un nouveau sel, jamais
+  en déplaçant un lieu déjà donné.
 - **Un élément vivant par lieu** (`Paysages.Vie`), qui assouplit la règle 7 :
   la brume de l'Our, le drapeau, la roue et les chevaux de bois, les chutes,
   les reflets de l'Alzette, la péniche, le tram, les bannières de Belval, la
