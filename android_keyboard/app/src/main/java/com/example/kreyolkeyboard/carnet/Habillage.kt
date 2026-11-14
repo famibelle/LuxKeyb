@@ -343,7 +343,7 @@ internal object Habillage {
                 // Une couche qui s'est accumulée : épaisse, bombée en ondes
                 // douces le long de la crête, pas un liseré de colonne en colonne.
                 val xm = x / u.coerceAtLeast(0.1f)
-                val ep = max(1, (u * (4.2f + 1.6f * sin(xm / 5.5f) + 1f * sin(xm / 2.1f + 1.3f) + 0.5f * alea())).roundToInt())
+                val ep = max(1, (u * (7.5f + 2.8f * sin(xm / 6.5f) + 1.6f * sin(xm / 2.4f + 1.3f) + 0.6f * alea())).roundToInt())
                 var avant = false
                 for (y in 1 until h) {
                     val a = objet(mk, y * w + x)
