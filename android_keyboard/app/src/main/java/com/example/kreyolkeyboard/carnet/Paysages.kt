@@ -1252,6 +1252,9 @@ object Paysages {
     /** Le pont du Schiessentümpel, de trois quarts : le quadrilatère où son dessin de face est posé. */
     private val PONT_MELLERDALL = floatArrayOf(7f, 16.4f, 93f, 23.6f, 93f, 40.2f, 7f, 48.6f)
 
+    /** La passerelle de l'étang du Dumongshaff, de trois quarts : le quadrilatère où son dessin de face est posé. */
+    private val PASSERELLE_DUMONGSHAFF = floatArrayOf(4f, 22f, 98f, 32.5f, 98f, 47f, 4f, 55f)
+
     /** La rue du Grund, au bord de l'Alzette : elle fuit vers la droite. */
     internal val RUE_GRUND = Fuite(floatArrayOf(13f, 50.5f), floatArrayOf(178f, 34f), floatArrayOf(-140f, 40f), 150f, quai = 3f)
 
@@ -4824,7 +4827,9 @@ object Paysages {
             poser(DEVANT)
             val bois = duJour(0xFF9C8A70.toInt())
             fun pont(x: Float) = 46f - 18f * (1f - ((x - 53f) / 43f).pow(2))
-            enPerspective(53f, 40f, 0.1f) {
+            // La passerelle dessinée de face, posée de trois quarts : plus haute
+            // à gauche, ses barreaux qui se serrent vers la rive d'en face.
+            surQuad(90f, 25f, PASSERELLE_DUMONGSHAFF, x0 = 7.5f, y0 = 25.5f) {
                 pieceD("M10 46C30 36 70 34 96 40L96 42.4C70 37 30 39 10 48.4Z", sombre(bois, 0.2f))
                 pieceD("M10 38C30 28 70 26 96 32L96 33.6C70 27.8 30 29.8 10 39.6Z", bois)
                 var x = 12f
