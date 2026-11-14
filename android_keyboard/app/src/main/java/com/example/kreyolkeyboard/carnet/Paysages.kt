@@ -1249,6 +1249,9 @@ object Paysages {
     internal val LISIERE_CONZEFENN = Fuite(floatArrayOf(-4f, 37f), floatArrayOf(200f, 22f), floatArrayOf(-150f, 30f), taille = 1f)
     internal val CLOTURE_CONZEFENN = Fuite(floatArrayOf(-2f, 62f), floatArrayOf(200f, 36f), floatArrayOf(-150f, 50f), taille = 1f)
 
+    /** Le pont du Schiessentümpel, de trois quarts : le quadrilatère où son dessin de face est posé. */
+    private val PONT_MELLERDALL = floatArrayOf(7f, 16.4f, 93f, 23.6f, 93f, 40.2f, 7f, 48.6f)
+
     /** La rue du Grund, au bord de l'Alzette : elle fuit vers la droite. */
     internal val RUE_GRUND = Fuite(floatArrayOf(13f, 50.5f), floatArrayOf(178f, 34f), floatArrayOf(-140f, 40f), 150f, quai = 3f)
 
@@ -3259,15 +3262,15 @@ object Paysages {
         }
 
         /**
-         * Peint [bloc], dessiné à plat dans le rectangle (0, 0, [l], [h]), sur
+         * Peint [bloc], dessiné à plat dans le rectangle ([x0], [y0], [l], [h]), sur
          * le quadrilatère [q] (haut gauche, haut droit, bas droit, bas gauche,
          * huit coordonnées) en vraie perspective : les fenêtres d'une façade
          * qui fuit rapetissent et se serrent vers le fond, comme peintes sur
          * une planche vue de trois quarts.
          */
-        fun surQuad(l: Float, h: Float, q: FloatArray, bloc: () -> Unit) {
+        fun surQuad(l: Float, h: Float, q: FloatArray, x0: Float = 0f, y0: Float = 0f, bloc: () -> Unit) {
             val m = Matrix()
-            if (!m.setPolyToPoly(floatArrayOf(0f, 0f, l, 0f, l, h, 0f, h), 0, q, 0, 4)) return
+            if (!m.setPolyToPoly(floatArrayOf(x0, y0, x0 + l, y0, x0 + l, y0 + h, x0, y0 + h), 0, q, 0, 4)) return
             c.save()
             c.concat(m)
             releve?.let { it.save(); it.concat(m) }
@@ -3706,7 +3709,9 @@ object Paysages {
             pieceD("M102 22C94 19 86 22 81 27C87 25 95 25 102 26Z", mousse, 0.4f)
             touffe(mousse, 6f, 34f, 3f, 12f, 40f, 3.4f, 4f, 48f, 3f, 94f, 33f, 3f, 88f, 41f, 3.4f, 96f, 48f, 3f)
             val pont = duJour(0xFF928D78.toInt())
-            enPerspective(50f, 30f, 0.06f) {
+            // Le pont peint de face, posé de trois quarts : son bout gauche plus
+            // grand, ses croix de Saint-André qui se serrent vers la droite.
+            surQuad(70f, 25f, PONT_MELLERDALL, x0 = 15f, y0 = 19.6f) {
                 mineral {
                     pieceD("M16 26L84 26L84 31C80 33 76 37 73 44L66 44C65 37 59 32 50 32C41 32 35 37 34 44L27 44C24 37 20 33 16 31Z", pont)
                     trait("M34 44C35 37 41 32 50 32C59 32 65 37 66 44", mix(pont, P.pres, 0.35f), 0.7f)
@@ -3729,7 +3734,8 @@ object Paysages {
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
-            pieceD("M-2 60L-2 50C20 48 80 48 102 50L102 60Z", mix(P.eau, 0xFFC9A562.toInt(), if (P.nuit) 0.2f else 0.5f), 0.4f)
+            // Le bassin fuit avec le pont : son bord lointain monte vers la droite.
+            pieceD("M-2 60L-2 51.5C20 50 80 47.5 102 47L102 60Z", mix(P.eau, 0xFFC9A562.toInt(), if (P.nuit) 0.2f else 0.5f), 0.4f)
             val rocher = duJour(0xFF7F806E.toInt())
             mineral {
                 pieceD("M38 50.5C38 42 42 38 50 38C58 38 62 42 62 50.5Z", rocher)
