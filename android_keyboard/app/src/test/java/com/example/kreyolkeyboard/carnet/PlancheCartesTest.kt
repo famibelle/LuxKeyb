@@ -129,7 +129,7 @@ class PlancheCartesTest {
         val ctx = RuntimeEnvironment.getApplication()
         dossier!!.mkdirs()
         val cases = ArrayList<Pair<String, Bitmap>>()
-        for (rarete in listOf(Rarete.COMMUN)) for (vif in floatArrayOf(0f, 1f, 1.8f)) {
+        for (rarete in listOf(Rarete.RARE, Rarete.TRES_RARE)) for (vif in floatArrayOf(0f, 1f, 1.8f)) {
             Paysages.VIF = vif
             val carte = CarteMot("Bréck", date(Calendar.JUNE), 1, 1, setOf(JeuCarte.WUERTPLAZ))
             val contenu = ContenuCarte(
