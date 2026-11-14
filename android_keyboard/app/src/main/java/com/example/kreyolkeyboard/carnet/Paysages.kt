@@ -1128,12 +1128,45 @@ object Paysages {
     private val GONDOLES = intArrayOf(0xFFD6453A.toInt(), 0xFFE9B02F.toInt(), 0xFF2F9C95.toInt(),
         0xFF5A6FD1.toInt(), 0xFFD4569A.toInt(), 0xFF3F9A4F.toInt())
 
-    /** Les maisons du Grund au bord de l'Alzette : x, largeur, haut du mur, couleur, colombages. */
-    private val MAISONS_GRUND = arrayOf(
-        floatArrayOf(-2f, 13f, 33f, 0f, 0f), floatArrayOf(11f, 11f, 31f, 1f, 0f), floatArrayOf(22f, 12f, 32f, 2f, 1f),
-        floatArrayOf(34f, 15f, 27f, 2f, 0f), floatArrayOf(49f, 12f, 30f, 3f, 0f), floatArrayOf(61f, 15f, 28f, 2f, 0f),
-        floatArrayOf(76f, 13f, 31f, 0f, 0f), floatArrayOf(89f, 14f, 30f, 2f, 1f)
+    /**
+     * Les maisons du Grund vues de trois quarts ([Peintre.rue3q]), de la plus
+     * proche à la plus lointaine : largeur et hauteur à l'échelle du premier
+     * plan, mur, colombages (1), hauteur du toit, lucarnes (1).
+     */
+    private val MAISONS_GRUND_3Q = arrayOf(
+        floatArrayOf(13f, 25f, 2f, 0f, 6f, 1f), floatArrayOf(10f, 21f, 1f, 1f, 5f, 0f),
+        floatArrayOf(12f, 27f, 0f, 0f, 6.5f, 1f), floatArrayOf(9f, 20f, 3f, 0f, 5f, 0f),
+        floatArrayOf(12f, 24f, 2f, 1f, 6f, 1f), floatArrayOf(10f, 22f, 1f, 0f, 5.5f, 0f),
+        floatArrayOf(12f, 26f, 3f, 0f, 6f, 1f), floatArrayOf(11f, 22f, 0f, 1f, 5.5f, 0f),
+        floatArrayOf(12f, 24f, 2f, 0f, 6f, 1f)
     )
+
+    /**
+     * La perspective de la rue du Grund : la base des façades part de
+     * [proche] et fuit vers [fuite], hors de la fenêtre à droite ; les
+     * pignons fuient vers [fuiteGauche]. Une longueur réelle [u] le long de la
+     * rue tombe à `u / (u + RECUL)` du chemin vers le point de fuite, et
+     * tout y est réduit d'autant.
+     */
+    internal object RueGrund {
+        val proche = floatArrayOf(13f, 50.5f)
+        val fuite = floatArrayOf(178f, 34f)
+        val fuiteGauche = floatArrayOf(-140f, 40f)
+        const val RECUL = 58f
+        /** La hauteur du mur du quai sous les façades, au premier plan. */
+        const val QUAI = 3f
+
+        fun t(u: Float) = u / (u + RECUL)
+        fun x(u: Float) = proche[0] + t(u) * (fuite[0] - proche[0])
+        fun y(u: Float) = proche[1] + t(u) * (fuite[1] - proche[1])
+        fun echelle(u: Float) = 1f - t(u)
+
+        /** Le bord de l'eau au pied du quai, à l'abscisse [x] de la fenêtre. */
+        fun eau(x: Float): Float {
+            val t = ((x - proche[0]) / (fuite[0] - proche[0])).coerceAtLeast(-0.2f)
+            return proche[1] + t * (fuite[1] - proche[1]) + QUAI * (1f - t)
+        }
+    }
 
     /** La pente du tablier de la Rout Bréck, vu d'en bas. */
     private const val TABLIER_PENTE = 0.17f
@@ -1573,12 +1606,13 @@ object Paysages {
             for (k in 0 until 9) {
                 val x = 4f + k * 11f + sin(temps * 0.4f + k * 1.3f) * 2.5f
                 val o = 0.35f + 0.35f * sin(temps * 1.1f + k * 2.3f)
-                p.rect(x, 53.4f + (k % 3) * 1.4f, 3f + (k % 2) * 2f, 0.3f, if (heure.allume && k % 2 == 0) heure.fenetre else clair, o)
+                p.rect(x, RueGrund.eau(x) + 1.6f + (k % 3) * 1.2f, 3f + (k % 2) * 2f, 0.3f, if (heure.allume && k % 2 == 0) heure.fenetre else clair, o)
             }
             if (vol in 0f..3f) for (k in 0..1) {
                 val d = vol - k * 0.5f
                 if (d < 0f) continue
-                p.anneau(30f + k * 44f, 55.5f, 0.6f + d * 2.2f, p.mix(clair, eau, (d / 2.5f).coerceIn(0f, 1f)), 0.25f)
+                val ax = 30f + k * 44f
+                p.anneau(ax, RueGrund.eau(ax) + 2.4f, 0.6f + d * 2.2f, p.mix(clair, eau, (d / 2.5f).coerceIn(0f, 1f)), 0.25f)
             }
         }
 
@@ -3140,6 +3174,118 @@ object Paysages {
             try { bloc() } finally { c.restore(); releve?.restore() }
         }
 
+        /**
+         * Peint [bloc], dessiné à plat dans le rectangle (0, 0, [l], [h]), sur
+         * le quadrilatère [q] (haut gauche, haut droit, bas droit, bas gauche,
+         * huit coordonnées) en vraie perspective : les fenêtres d'une façade
+         * qui fuit rapetissent et se serrent vers le fond, comme peintes sur
+         * une planche vue de trois quarts.
+         */
+        fun surQuad(l: Float, h: Float, q: FloatArray, bloc: () -> Unit) {
+            val m = Matrix()
+            if (!m.setPolyToPoly(floatArrayOf(0f, 0f, l, 0f, l, h, 0f, h), 0, q, 0, 4)) return
+            c.save()
+            c.concat(m)
+            releve?.let { it.save(); it.concat(m) }
+            try { bloc() } finally { c.restore(); releve?.restore() }
+        }
+
+        private fun quad(q: FloatArray) = Path().apply {
+            moveTo(q[0], q[1]); lineTo(q[2], q[3]); lineTo(q[4], q[5]); lineTo(q[6], q[7]); close()
+        }
+
+        /**
+         * Une rangée de maisons vue de trois quarts, au lieu d'une bande de
+         * façades de face (demande du propriétaire, 2026-11-14 : « peintes
+         * sur une planche de trois quarts », sans « bandes blanches
+         * horizontales qui se succèdent »). Les façades fuient vers la droite
+         * ([RueGrund]), chaque maison montre son toit et, quand elle dépasse sa
+         * voisine de devant, son pignon ; la première montre le sien en entier.
+         * Peintes du fond vers l'avant, comme on colle des cartons.
+         */
+        fun rue3q(maisons: Array<FloatArray>, murs: IntArray, rnd: Alea) = mineral {
+            val r = RueGrund
+            val toit = ardoise()
+            val faitage = mix(toit, 0xFFFFFFFF.toInt(), 0.18f)
+            val poutre = duJour(0xFF4A3A2E.toInt())
+            val debuts = FloatArray(maisons.size)
+            var u = 0f
+            for (i in maisons.indices) { debuts[i] = u; u += maisons[i][0] }
+            // Le pignon fuit vers la gauche, d'autant moins que la maison est loin.
+            fun profondeur(x: Float, y: Float, e: Float): FloatArray {
+                val dx = r.fuiteGauche[0] - x
+                val dy = r.fuiteGauche[1] - y
+                val k = 9f * e / sqrt(dx * dx + dy * dy)
+                return floatArrayOf(dx * k, dy * k)
+            }
+            for (i in maisons.indices.reversed()) {
+                val m = maisons[i]
+                val w = m[0]; val h = m[1]; val mur = murs[m[2].toInt()]; val toitH = m[4]
+                val ua = debuts[i]; val ub = ua + w
+                val ax = r.x(ua); val ay = r.y(ua); val ea = r.echelle(ua)
+                val bx = r.x(ub); val by = r.y(ub); val eb = r.echelle(ub)
+                val hautA = ay - h * ea; val hautB = by - h * eb
+                val pa = profondeur(ax, ay, ea)
+                val pb = profondeur(bx, by, eb)
+                // Le pignon, à l'ombre, et son triangle sous le toit.
+                val pignon = sombre(mur, 0.28f)
+                val cote = floatArrayOf(ax + pa[0], hautA + pa[1], ax, hautA, ax, ay, ax + pa[0], ay + pa[1])
+                piece(quad(cote), pignon, 0.5f)
+                val sommetA = floatArrayOf(ax + pa[0] * 0.5f, hautA + pa[1] * 0.5f - toitH * ea)
+                piece(Path().apply {
+                    moveTo(ax, hautA); lineTo(sommetA[0], sommetA[1]); lineTo(ax + pa[0], hautA + pa[1]); close()
+                }, pignon, 0.3f)
+                surQuad(6f, h, cote) {
+                    var fy = 3f
+                    while (fy < h - 3f) { fenetre(2.4f, fy, 1.2f, 2.4f, rnd); fy += 5.2f }
+                }
+                // La façade, peinte à plat puis posée en perspective.
+                val facade = floatArrayOf(ax, hautA, bx, hautB, bx, by, ax, ay)
+                piece(quad(facade), mur, 0.6f)
+                surQuad(w, h, facade) {
+                    if (m[3] > 0f) {
+                        var px = 0.4f
+                        while (px <= w) { ligne(px, 0f, px, h, poutre, 0.3f); px += 2.6f }
+                        for (k in 1..2) { val y = h * k / 3f; ligne(0f, y, w, y, poutre, 0.3f) }
+                    }
+                    var fy = 2.6f
+                    while (fy < h - 4f) {
+                        var fx = 1.6f
+                        while (fx < w - 2f) { fenetre(fx, fy, 1.3f, 2.4f, rnd); fx += 3.3f }
+                        fy += 4.8f
+                    }
+                    // La porte au rez-de-chaussée.
+                    rect(w * 0.42f, h - 3.6f, 1.8f, 3.6f, sombre(mur, 0.55f))
+                }
+                // Le pan du toit, qui monte vers le faîte en reculant.
+                val sommetB = floatArrayOf(bx + pb[0] * 0.5f, hautB + pb[1] * 0.5f - toitH * eb)
+                val pan = floatArrayOf(sommetA[0], sommetA[1], sommetB[0], sommetB[1], bx + 0.4f * eb, hautB + 0.3f, ax - 0.4f * ea, hautA + 0.3f)
+                piece(quad(pan), toit, 0.6f)
+                ligne(sommetA[0], sommetA[1], sommetB[0], sommetB[1], faitage, 0.35f * (ea + eb))
+                if (m[5] > 0f) surQuad(w, 6f, pan) {
+                    var lx = 2.2f
+                    while (lx < w - 3f) {
+                        feuille(lx, 2.4f, 2f, 2.6f, mur, 0.3f)
+                        fenetre(lx + 0.5f, 3f, 1f, 1.6f, rnd)
+                        pieceD("M${lx - 0.4f} 2.6L${lx + 1f} 0.9L${lx + 2.4f} 2.6Z", toit, 0f)
+                        lx += 4.6f
+                    }
+                }
+            }
+            // Le quai, sous les façades, jusqu'au bord de l'eau.
+            val pierre = duJour(0xFFA59A86.toInt())
+            piece(Path().apply {
+                moveTo(r.x(0f) - 12f, r.y(0f) + 1f)
+                var v = 0f
+                while (v <= u) { lineTo(r.x(v), r.y(v)); v += 2f }
+                lineTo(r.x(u), r.eau(r.x(u)))
+                v = u
+                while (v >= 0f) { lineTo(r.x(v), r.eau(r.x(v))); v -= 2f }
+                lineTo(r.x(0f) - 12f, r.eau(r.x(0f) - 12f))
+                close()
+            }, pierre, 0.5f)
+        }
+
         /** Une étoile à cinq branches de rayon [r]. */
         fun etoile(cx: Float, cy: Float, r: Float): Path {
             val t = Path()
@@ -3486,47 +3632,30 @@ object Paysages {
             plan(1)
             val murs = intArrayOf(duJour(0xFFE9DDC5.toInt()), duJour(0xFFD9C6A0.toInt()), duJour(0xFFF3EFE7.toInt()),
                 duJour(0xFFE3E1DA.toInt()))
-            val toit = ardoise()
-            val poutre = duJour(0xFF4A3A2E.toInt())
-            enPerspective(50f, 40f, 0.06f) {
-                mineral {
-                    for (m in MAISONS_GRUND) {
-                        val x = m[0]; val w = m[1]; val haut = m[2]; val mur = murs[m[3].toInt()]
-                        feuille(x, haut, w, 50f - haut, mur)
-                        pieceD("M${x - 0.5f} ${haut + 0.2f}L${x + 1.4f} ${haut - 5.2f}L${x + w - 1.4f} ${haut - 5.2f}L${x + w + 0.5f} ${haut + 0.2f}Z", toit, 0.6f)
-                        var lx = x + 2f
-                        while (lx < x + w - 2.5f) {
-                            feuille(lx, haut - 3.8f, 1.8f, 2.6f, mur, 0.3f)
-                            pieceD("M${lx - 0.3f} ${haut - 3.7f}L${lx + 0.9f} ${haut - 4.9f}L${lx + 2.1f} ${haut - 3.7f}Z", toit, 0f)
-                            lx += 5f
-                        }
-                        if (m[4] > 0f) {
-                            // Les colombages.
-                            var px = x + 0.4f
-                            while (px <= x + w) { ligne(px, haut, px, 50f, poutre, 0.3f); px += 2.6f }
-                            for (k in 1..2) { val y = haut + (50f - haut) * k / 3f; ligne(x, y, x + w, y, poutre, 0.3f) }
-                        }
-                        var fy = haut + 2.4f
-                        while (fy < 47f) {
-                            var fx = x + 1.6f
-                            while (fx < x + w - 1.6f) { fenetre(fx, fy, 1.1f, 1.8f, r); fx += 3.2f }
-                            fy += 4.6f
-                        }
-                    }
-                    feuille(-2f, 50f, 104f, 2.2f, duJour(0xFFA59A86.toInt()), 0.5f)
-                }
-            }
-            touffe(vert(0.5f), 4f, 44f, 4.4f, 11f, 46.5f, 3.6f, 0f, 48f, 3f)
-            touffe(vert(0.6f), 58f, 46f, 3f, 63f, 44.5f, 3.6f, 67f, 47f, 2.6f)
+            rue3q(MAISONS_GRUND_3Q, murs, r)
+            touffe(vert(0.6f), 58f, 43.5f, 2.6f, 62f, 42.5f, 3f, 66f, 43.4f, 2.2f)
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
+            // L'Alzette, qui fuit avec le quai : son bord monte vers la droite.
             val eau = mix(P.eau, 0xFF5F7046.toInt(), if (P.nuit) 0.25f else 0.45f)
-            pieceD("M-2 60L-2 52L102 52L102 60Z", eau, 0.4f)
+            val g = RueGrund
+            piece(Path().apply {
+                moveTo(-2f, BAS); lineTo(-2f, g.eau(-2f))
+                var x = -2f
+                while (x <= 102f) { lineTo(x, g.eau(x)); x += 4f }
+                lineTo(102f, BAS); close()
+            }, eau, 0.4f)
+            // Les reflets des façades, couchés dans la fuite.
             val reflet = mix(eau, 0xFFFFFFFF.toInt(), if (P.nuit) 0.12f else 0.3f)
-            for (m in MAISONS_GRUND) rect(m[0] + 1f, 52.8f, m[1] - 2f, 0.5f, reflet, 0.5f)
-            if (P.allume) for (m in MAISONS_GRUND) rect(m[0] + m[1] * 0.5f - 0.3f, 52.6f, 0.6f, 5f, P.fenetre, 0.4f)
-            touffe(vert(0.7f), 1f, 51f, 4f, 7f, 52.5f, 3f)
+            var u = 1f
+            for (m in MAISONS_GRUND_3Q) {
+                val x0 = g.x(u); val x1 = g.x(u + m[0] - 2f)
+                ligne(x0, g.eau(x0) + 1f, x1, g.eau(x1) + 1f, reflet, 0.5f * g.echelle(u), 0.5f)
+                if (P.allume) rect((x0 + x1) / 2f - 0.3f, g.eau((x0 + x1) / 2f) + 0.5f, 0.6f, 5f * g.echelle(u), P.fenetre, 0.4f)
+                u += m[0]
+            }
+            touffe(vert(0.7f), 1f, 55f, 4f, 7f, 56.5f, 3f)
             c.restore()
         }
 
