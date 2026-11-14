@@ -20,6 +20,7 @@ import android.util.LruCache
 import java.util.concurrent.Executors
 import kotlin.math.PI
 import kotlin.math.abs
+import kotlin.math.atan2
 import kotlin.math.ceil
 import kotlin.math.cos
 import kotlin.math.exp
@@ -28,6 +29,7 @@ import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sin
+import kotlin.math.sqrt
 
 /**
  * Le lieu que la fenêtre d'une carte montre : un par champ de sens.
@@ -452,7 +454,7 @@ object Paysages {
     /**
      * De combien chaque plan glisse au plus quand la carte penche à fond, en
      * part de la largeur (de la hauteur pour le tangage) : le ciel, les
-     * nuages, le lointain, le milieu, le proche, puis les coulisses.
+     * nuages, le lointain, le milieu, le proche, puis le surcadrage.
      *
      * C'est le fond qui bouge le plus, comme derrière une vitre : le cadre de
      * la carte est ce qu'il y a de plus près, le dessin du mot est posé
@@ -460,8 +462,8 @@ object Paysages {
      * glisse quand l'œil change d'angle. Les valeurs sont celles de la
      * maquette `cinq_plans.html` (skill `direction-artistique`, règle 8).
      *
-     * Le sixième plan n'existe que sur les rares et les très rares : les
-     * coulisses, juste derrière la vitre (voir [nombreDePlans]).
+     * Le sixième plan n'existe que dans les lieux qui ont un surcadrage
+     * ([Surcadre]), juste derrière la vitre (voir [nombreDePlans]).
      */
     val GLISSEMENT = floatArrayOf(0.05f, 0.04f, 0.03f, 0.017f, 0.007f, 0.003f)
 
@@ -469,18 +471,18 @@ object Paysages {
     const val NUAGES = 1
 
     /**
-     * Cinq cartons pour toutes les cartes, six à partir de rare (décision du
-     * propriétaire, 2026-11-01, règle 8 de la skill `direction-artistique`) :
-     * une commune, la carte qu'on manipule le plus, a le plein effet de
-     * théâtre. Les rares et les très rares gardent en plus leurs coulisses,
-     * la seule différence de profondeur qui reste entre les paliers ; la
-     * rareté se dit par l'heure, le métal et la plaque, qu'on voit sans
-     * pencher la carte.
+     * Cinq cartons pour toutes les cartes (décision du propriétaire,
+     * 2026-11-01, règle 8 de la skill `direction-artistique`), six là où le
+     * lieu a son surcadrage naturel ([Surcadre], 2026-11-14), quelle que
+     * soit la rareté : une commune, la carte qu'on manipule le plus, a le
+     * plein effet de théâtre. La rareté se dit par l'heure, le métal et la
+     * plaque, qu'on voit sans pencher la carte. Les coulisses des rares
+     * (deux arbres en boule) ont laissé la place au surcadrage.
      */
-    fun nombreDePlans(heure: Heure): Int = if (heure.rang >= Rarete.RARE.ordinal) 6 else 5
+    fun nombreDePlans(lieu: Lieu): Int = if (Surcadre.de(lieu) != null) 6 else 5
 
     /**
-     * Le lieu en cinq calques, six pour une rare ([nombreDePlans]), pour la
+     * Le lieu en cinq calques, six avec un surcadrage ([nombreDePlans]), pour la
      * carte ouverte : voir [GLISSEMENT]. Le premier est le ciel et ne laisse
      * rien de vide ; le deuxième est la bande des nuages ([NUAGES]), que
      * [CadreOrne] fait traverser le ciel ; les autres sont transparents autour
@@ -504,7 +506,7 @@ object Paysages {
               souvenir: Souvenir? = null): Array<Bitmap>? {
         if (largeurPx <= 0 || hauteurPx <= 0 || souvenir?.fete != null) return null
         val cle = cle(lieu, heure, teinte, largeurPx, hauteurPx, souvenir)
-        val n = nombreDePlans(heure)
+        val n = nombreDePlans(lieu)
         val caches = Array(n) { CACHE.get("${cle}_p$it")?.takeIf { b -> !b.isRecycled } }
         val ombresOk = !PAPIER || (2 until n).all { CACHE.get("${cle}_o$it")?.isRecycled == false }
         if (caches.all { it != null } && ombresOk) return caches.requireNoNulls()
@@ -539,7 +541,7 @@ object Paysages {
                souvenir: Souvenir? = null): Array<Bitmap?>? {
         if (!PAPIER || largeurPx <= 0 || hauteurPx <= 0 || souvenir?.fete != null) return null
         val cle = cle(lieu, heure, teinte, largeurPx, hauteurPx, souvenir)
-        return Array(nombreDePlans(heure)) { CACHE.get("${cle}_o$it")?.takeIf { b -> !b.isRecycled } }
+        return Array(nombreDePlans(lieu)) { CACHE.get("${cle}_o$it")?.takeIf { b -> !b.isRecycled } }
     }
 
     /**
@@ -572,8 +574,8 @@ object Paysages {
     private val PROFONDEUR = intArrayOf(0, -1, 1, 2, 3, 4)
 
     private fun rendrePlans(lieu: Lieu, heure: Heure, l: Int, h: Int, souvenir: Souvenir?,
-                            ombres: Array<Bitmap?> = arrayOfNulls(nombreDePlans(heure))): Array<Bitmap> {
-        val n = nombreDePlans(heure)
+                            ombres: Array<Bitmap?> = arrayOfNulls(nombreDePlans(lieu))): Array<Bitmap> {
+        val n = nombreDePlans(lieu)
         val tailles = Array(n) { i -> intArrayOf(l + 2 * marge(i, l), h + 2 * marge(i, h)) }
         val ks = Array(n) { i ->
             cadrage(tailles[i][0].toFloat(), tailles[i][1].toFloat())
@@ -616,22 +618,25 @@ object Paysages {
         // Après la saison, qui reconnaît la végétation à ses couleurs d'origine.
         eclaircir(loin, formes[0], heure.cielBas, ESTOMPE[0])
         eclaircir(milieu, formes[1], heure.cielBas, ESTOMPE[1])
-        // Les coulisses des rares, posées après la saison : ce sont des
-        // châssis de théâtre, pas des arbres du lieu. Au Breedewee, des
-        // piliers et des pignons : des arbres n'auraient rien à faire dans la
-        // ruelle. Deux rangées, étagées : la seconde, un pas en retrait, est
-        // collée au carton du proche, dont elle partage la course.
-        val coulisses = if (n < 6) null else {
-            val fond2 = peindre(4) { if (lieu in ENCADRES) Unit else if (lieu == Lieu.BREEDEWEE) pignons() else coulissesDuFond() }
+        // Le surcadrage naturel, posé après la saison, qu'il peint lui-même
+        // (ses feuilles et ses roseaux sont ceux du jour où la carte a été
+        // gagnée) : les branches et le pied de devant sur un sixième carton,
+        // tout contre la vitre, et un second rang du pied, plus petit et plus
+        // clair, planté dans la rainure du proche. Deux rangs étagés entre le
+        // devant et le lieu : c'est ce qui creuse la scène.
+        val cadre = Surcadre.de(lieu)
+        val saison = souvenir?.saison
+        val devant = if (cadre == null) null else {
+            val fond2 = peindre(4) { surcadrage(cadre, saison, fond = true) }
             Canvas(proche).drawBitmap(fond2, 0f, 0f, null)
             val forme2 = Bitmap.createBitmap(tailles[4][0], tailles[4][1], Bitmap.Config.ALPHA_8)
             Canvas(forme2).apply { drawBitmap(formes[2], 0f, 0f, null); drawBitmap(fond2, 0f, 0f, null) }
             formes[2].recycle()
             formes[2] = forme2
             fond2.recycle()
-            peindre(5) { if (lieu in ENCADRES) Unit else if (lieu == Lieu.BREEDEWEE) piliers() else coulisses() }
+            peindre(5) { surcadrage(cadre, saison, fond = false) }
         }
-        val plans = listOfNotNull(ciel, nuages(heure, l, h), loin, milieu, proche, coulisses).toTypedArray()
+        val plans = listOfNotNull(ciel, nuages(heure, l, h), loin, milieu, proche, devant).toTypedArray()
         // Le plancher, là où un lieu en a un : il reçoit les ombres sans en
         // porter, et sans bordure, ce n'est pas un carton.
         val planchers = Array(plans.size) { i ->
@@ -641,7 +646,7 @@ object Paysages {
         silhouettes[2] = formes[0]
         silhouettes[3] = formes[1]
         silhouettes[4] = formes[2]
-        if (coulisses != null) silhouettes[5] = coulisses.extractAlpha()
+        if (devant != null) silhouettes[5] = devant.extractAlpha()
         if (PAPIER) {
             // Le papier découpé : chaque carton a sa tranche de kraft tout
             // autour et son ombre à part, posée à chaque trame ; le plancher
@@ -1217,19 +1222,63 @@ object Paysages {
     private const val OMBRE = 0xFF0B1020.toInt()
 
     /**
-     * Les lieux sans coulisses, même rares : ceux qui ont déjà leur cadre de
-     * scène au premier plan (la voûte des casemates du Bock, l'arche de grès
-     * de Berdorf, la charmille d'Ansembourg), et ceux dont le sujet se tient
-     * sur un bord de la scène, là où les coulisses le cacheraient (la tour
-     * d'Esch, la grande roue, l'ascenseur, les stèles de Schengen, la
-     * cheminée de Belval, la statue de la Gëlle Fra). Le dessin du mot tient
-     * le centre, si bien que les bords sont la seule place d'un sujet ;
-     * KreyolKeyb a renoncé aux coulisses pour la même raison (2026-11-07).
+     * Le surcadrage naturel d'un lieu (demande du propriétaire, 2026-11-14) :
+     * « les branches d'arbres sur les côtés et les roseaux au premier plan
+     * encadrent le pont et ajoutent de la profondeur entre le premier plan et
+     * l'arrière-plan ». Des branches qui entrent par un coin du haut ([haut],
+     * sur les côtés [hautCotes]), et au pied de la scène des roseaux, des
+     * fougères ou des herbes ([pied], sur les côtés [piedCotes]), sur le
+     * carton le plus proche de la vitre ; un second rang du pied, plus petit
+     * et plus clair, est planté dans la rainure du proche.
+     *
+     * Chaque lieu a le sien, choisi d'après sa photo : du côté où le sujet ne
+     * se tient pas (la tour d'Esch à gauche, la branche à droite), de la
+     * vigne à la Moselle, des saules sur l'eau, des bouleaux et des
+     * linaigrettes dans la tourbière, des fougères sous le grès. Pas de
+     * surcadrage là où le lieu a déjà son cadre de scène (la voûte du Bock,
+     * la charmille d'Ansembourg, la porte du Breedewee) ni là où les deux
+     * bords sont pris (la roue et le carrousel de la Schueberfouer).
      */
-    private val ENCADRES = setOf(Lieu.NEIMENSTER, Lieu.BAERDREF, Lieu.ANSEBUERG, Lieu.ESCH_SAUER, Lieu.FOUER,
-        Lieu.PAFENDALL, Lieu.MUSEL, Lieu.BELVAL, Lieu.GELLE_FRA, Lieu.HOHLLAY, Lieu.WOLLEFSSCHLUCHT,
-        Lieu.NAPOLEONSGAART, Lieu.PRIEDEGTSTULL, Lieu.FELSMILLEN, Lieu.KALLEKTUFFQUELL,
-        *(if (PAPIER) arrayOf(Lieu.BREEDEWEE) else emptyArray()))
+    internal class Surcadre(
+        val haut: Essence?, val hautCotes: Int,
+        val pied: Pied?, val piedCotes: Int,
+        /** Jusqu'où la branche avance vers le milieu, en unités : moins là où un sujet tient le haut. */
+        val portee: Float = 30f
+    ) {
+        enum class Essence { FEUILLU, SAULE, BOULEAU, VIGNE }
+        enum class Pied { ROSEAUX, FOUGERES, HERBES, LINAIGRETTES, FLEURS }
+
+        companion object {
+            const val GAUCHE = 1
+            const val DROITE = 2
+            const val DEUX = 3
+
+            fun de(lieu: Lieu): Surcadre? = when (lieu) {
+                Lieu.ROUT_BRECK -> Surcadre(Essence.FEUILLU, DROITE, Pied.FOUGERES, DEUX)
+                Lieu.NEI_BRECK -> Surcadre(Essence.FEUILLU, DROITE, Pied.ROSEAUX, DEUX)
+                Lieu.PEITRUSDALL -> Surcadre(Essence.FEUILLU, DEUX, Pied.HERBES, GAUCHE, portee = 24f)
+                Lieu.PAFENDALL -> Surcadre(Essence.FEUILLU, GAUCHE, Pied.FOUGERES, GAUCHE, portee = 26f)
+                Lieu.VEIANEN -> Surcadre(Essence.FEUILLU, DEUX, Pied.HERBES, DEUX, portee = 25f)
+                Lieu.OURDALL -> Surcadre(Essence.SAULE, GAUCHE, Pied.ROSEAUX, GAUCHE)
+                Lieu.ESCH_SAUER -> Surcadre(Essence.SAULE, DROITE, Pied.ROSEAUX, DROITE)
+                Lieu.STAD -> Surcadre(Essence.SAULE, GAUCHE, Pied.ROSEAUX, DROITE)
+                Lieu.HAFF_REIMECH -> Surcadre(Essence.SAULE, GAUCHE, Pied.ROSEAUX, DEUX)
+                Lieu.DUMONGSHAFF -> Surcadre(Essence.SAULE, DROITE, Pied.ROSEAUX, DEUX)
+                Lieu.STAUSEI -> Surcadre(Essence.FEUILLU, GAUCHE, Pied.ROSEAUX, GAUCHE)
+                Lieu.MUSEL -> Surcadre(Essence.VIGNE, DROITE, null, 0, portee = 32f)
+                Lieu.GELLE_FRA -> Surcadre(Essence.FEUILLU, GAUCHE, Pied.FLEURS, GAUCHE, portee = 28f)
+                Lieu.BELVAL -> Surcadre(Essence.BOULEAU, DROITE, Pied.HERBES, DEUX, portee = 22f)
+                Lieu.CONZEFENN -> Surcadre(Essence.BOULEAU, GAUCHE, Pied.LINAIGRETTES, DEUX)
+                Lieu.NAPOLEONSGAART -> Surcadre(null, 0, Pied.HERBES, DEUX)
+                Lieu.MELLERDALL -> Surcadre(Essence.FEUILLU, DEUX, Pied.FOUGERES, DEUX, portee = 24f)
+                Lieu.FELSMILLEN -> Surcadre(Essence.FEUILLU, DROITE, Pied.FOUGERES, GAUCHE)
+                Lieu.PRIEDEGTSTULL -> Surcadre(Essence.FEUILLU, GAUCHE, Pied.FOUGERES, DROITE, portee = 26f)
+                Lieu.KALLEKTUFFQUELL, Lieu.WOLLEFSSCHLUCHT, Lieu.HOHLLAY, Lieu.BAERDREF ->
+                    Surcadre(null, 0, Pied.FOUGERES, DEUX)
+                Lieu.NEIMENSTER, Lieu.ANSEBUERG, Lieu.BREEDEWEE, Lieu.FOUER -> null
+            }
+        }
+    }
 
     /** Le blanc cassé du papier, vers lequel pâlit le ciel. */
     private const val CREME = 0xFFFCF5EC.toInt()
@@ -1379,32 +1428,12 @@ object Paysages {
     }
 
     /**
-     * Le feuillage d'une coulisse, côté gauche, en unités du paysage : x, y,
-     * rayon. Il passe sous l'arche du cadre des rares, qui mange les coins
-     * hauts, et ne descend pas sous la moitié de la fenêtre ; la droite en
-     * est le miroir.
-     */
-    private val FEUILLES = floatArrayOf(
-        0f, 12f, 7.5f, 6f, 9.5f, 6f, 11f, 13f, 4.6f, 14.5f, 17.5f, 3.4f,
-        2f, 19.5f, 6.5f, 8f, 21f, 4.6f, 1f, 27f, 5.5f, 5.5f, 29.5f, 3.6f, 11.5f, 25f, 2.8f
-    )
-
-    /**
-     * La seconde rangée de coulisses ([Peintre.coulissesDuFond]), côté
-     * gauche, comme [FEUILLES] : un arbre plus petit, un pas en retrait, qui
-     * dépasse sous et à côté du feuillage de devant.
-     */
-    /**
      * La rainure du devant de la scène, où le carton du proche de chaque
      * lieu se pose sur le plancher. Le bandeau du nom cache le bas de la
      * fenêtre ouverte, sous 62 unités environ : plus bas, le plancher ne se
      * verrait que dans la vignette.
      */
     private const val DEVANT = 58.5f
-
-    private val FEUILLES_DU_FOND = floatArrayOf(
-        13f, 27f, 4.6f, 18.5f, 29.5f, 4f, 15.5f, 33.5f, 4.4f, 20.5f, 35f, 3f, 11.5f, 32f, 3.4f, 16.5f, 23.5f, 3.4f
-    )
 
     /**
      * Comment les grandes pièces d'un lieu sont peintes.
@@ -2058,74 +2087,413 @@ object Paysages {
             if (P.allume) for (lx in lumieres) rect(lx - 0.3f, y + 1f, 0.6f, bas - y - 1.3f, P.fenetre, 0.45f)
         }
 
-        /**
-         * Les coulisses : deux châssis de feuillage, un de chaque côté, qui
-         * encadrent la scène sans entrer dans son milieu, où se tient le
-         * dessin du mot. Une silhouette sombre en aplat, comme un décor de
-         * théâtre de papier vu à contre-jour.
-         */
-        fun coulisses() {
-            val feuillage = mix(P.pres, 0xFF000000.toInt(), if (P.nuit) 0.25f else 0.38f)
-            val tronc = mix(P.sol, 0xFF000000.toInt(), 0.3f)
+        // ------------------------------------------------- le surcadrage naturel
+        //
+        // Les branches et le pied de la scène ([Surcadre]), dessinés pour le
+        // côté gauche : la droite est leur miroir. Chaque élément est fait de
+        // quelques feuilles de papier seulement (toutes les feuilles d'un même
+        // ton découpées d'un seul tenant), pour ne pas multiplier les ombres
+        // floues à peindre. Les tracés tournent tous dans le même sens, si
+        // bien que leurs morceaux se réunissent au lieu de se trouer.
+
+        /** Le pied des éléments du bas, sous le bord de la fenêtre : ils montent de hors champ. */
+        private val PIED = HAUTEUR + 2f
+
+        fun surcadrage(s: Surcadre, saison: Saison?, fond: Boolean) {
             for (droite in booleanArrayOf(false, true)) {
-                fun x(v: Float) = if (droite) LARGEUR - v else v
-                val t = Path()
-                t.moveTo(x(0.6f), BAS); t.lineTo(x(1.8f), 34f); t.lineTo(x(3.4f), 26f)
-                t.lineTo(x(4.6f), 35f); t.lineTo(x(5.6f), BAS); t.close()
-                forme(t, tronc)
-                trait("M${x(3.8f)} 39Q${x(8.5f)} 35 ${x(12.5f)} 28.5", tronc, 1f)
-                val r = Alea(if (droite) 62 else 61)
-                feuillage(FEUILLES, ::x, r, feuillage)
+                val cote = if (droite) Surcadre.DROITE else Surcadre.GAUCHE
+                val graine = if (droite) 2 else 1
+                c.save()
+                if (droite) { c.translate(LARGEUR, 0f); c.scale(-1f, 1f) }
+                if (s.pied != null && s.piedCotes and cote != 0) {
+                    if (fond) {
+                        // Le second rang, à demi-taille, planté dans la rainure du proche.
+                        c.save()
+                        c.translate(12.5f, DEVANT + 0.6f - PIED * 0.5f)
+                        c.scale(0.5f, 0.5f)
+                        pied(s.pied, saison, graine + 10, lointain = true)
+                        c.restore()
+                    } else pied(s.pied, saison, graine, lointain = false)
+                }
+                if (!fond && s.haut != null && s.hautCotes and cote != 0) when (s.haut) {
+                    Surcadre.Essence.FEUILLU -> feuillu(saison, s.portee, graine)
+                    Surcadre.Essence.SAULE -> saule(saison, s.portee, graine)
+                    Surcadre.Essence.BOULEAU -> bouleau(saison, s.portee, graine)
+                    Surcadre.Essence.VIGNE -> vigne(saison, s.portee, graine)
+                }
+                c.restore()
+            }
+        }
+
+        private fun pied(pied: Surcadre.Pied, saison: Saison?, graine: Int, lointain: Boolean) = when (pied) {
+            Surcadre.Pied.ROSEAUX -> roseaux(saison, graine, lointain)
+            Surcadre.Pied.FOUGERES -> fougeres(saison, graine, lointain)
+            Surcadre.Pied.HERBES -> herbes(saison, graine, lointain, 0)
+            Surcadre.Pied.FLEURS -> herbes(saison, graine, lointain, 1)
+            Surcadre.Pied.LINAIGRETTES -> herbes(saison, graine, lointain, 2)
+        }
+
+        /** Le point de la courbe (x0, y0)–(cx, cy)–(x1, y1) à [t] dans [o][0..1], sa tangente dans [o][2..3]. */
+        private fun bezier(t: Float, x0: Float, y0: Float, cx: Float, cy: Float, x1: Float, y1: Float, o: FloatArray) {
+            val u = 1f - t
+            o[0] = u * u * x0 + 2f * u * t * cx + t * t * x1
+            o[1] = u * u * y0 + 2f * u * t * cy + t * t * y1
+            o[2] = 2f * u * (cx - x0) + 2f * t * (x1 - cx)
+            o[3] = 2f * u * (cy - y0) + 2f * t * (y1 - cy)
+        }
+
+        /** Un ruban effilé le long de la courbe (x0, y0)–(cx, cy)–(x1, y1), large de [l0] au départ et de [l1] au bout. */
+        private fun ruban(x0: Float, y0: Float, cx: Float, cy: Float, x1: Float, y1: Float, l0: Float, l1: Float): Path {
+            val n = 16
+            val o = FloatArray(4)
+            val gx = FloatArray(n + 1); val gy = FloatArray(n + 1)
+            val dx = FloatArray(n + 1); val dy = FloatArray(n + 1)
+            for (i in 0..n) {
+                val t = i / n.toFloat()
+                bezier(t, x0, y0, cx, cy, x1, y1, o)
+                val long = max(1e-4f, sqrt(o[2] * o[2] + o[3] * o[3]))
+                val w = (l0 + (l1 - l0) * t) / 2f
+                val nx = -o[3] / long * w; val ny = o[2] / long * w
+                gx[i] = o[0] + nx; gy[i] = o[1] + ny; dx[i] = o[0] - nx; dy[i] = o[1] - ny
+            }
+            val t = Path()
+            t.moveTo(gx[0], gy[0])
+            for (i in 1..n) t.lineTo(gx[i], gy[i])
+            for (i in n downTo 0) t.lineTo(dx[i], dy[i])
+            t.close()
+            return t
+        }
+
+        /** Une feuille en amande attachée en ([x], [y]), longue de [l], large de 2 × [w], tournée de [a]. */
+        private fun amande(x: Float, y: Float, l: Float, w: Float, a: Float): Path {
+            val ca = cos(a); val sa = sin(a)
+            val mx = x + l * 0.5f * ca; val my = y + l * 0.5f * sa
+            val nx = -sa * w * 2f; val ny = ca * w * 2f
+            return Path().apply {
+                moveTo(x, y)
+                quadTo(mx + nx, my + ny, x + l * ca, y + l * sa)
+                quadTo(mx - nx, my - ny, x, y)
+                close()
+            }
+        }
+
+        /** Une feuille de vigne à cinq lobes, de rayon [rr], la queue vers [a0]. */
+        private fun pampre(cx: Float, cy: Float, rr: Float, a0: Float): Path {
+            val t = Path()
+            val n = 48
+            for (i in 0..n) {
+                val th = 0.3f + (2f * PI.toFloat() - 0.6f) * i / n
+                val rad = rr * (0.58f + 0.42f * abs(cos(2.5f * (th - PI.toFloat()))))
+                val a = a0 - th
+                if (i == 0) t.moveTo(cx + rad * cos(a), cy + rad * sin(a)) else t.lineTo(cx + rad * cos(a), cy + rad * sin(a))
+            }
+            t.lineTo(cx, cy)
+            t.close()
+            return t
+        }
+
+        private fun noir(col: Int, t: Float) = mix(col, 0xFF000000.toInt(), t)
+
+        /** Le bois des branches, à contre-jour. */
+        private fun bois(): Int = sombre(duJour(0xFF6B4B33.toInt()), 0.3f)
+
+        /**
+         * Les deux tons des feuilles d'une branche selon la saison où la carte
+         * a été gagnée, un peu à contre-jour : c'est le plus proche de la vitre.
+         * `null` l'hiver, où les branches sont nues sous la neige.
+         */
+        private fun feuilles(saison: Saison?): IntArray? {
+            val t = when (saison) {
+                Saison.WANTER -> return null
+                Saison.HIERSCHT -> intArrayOf(duJour(0xFFB4501E.toInt()), duJour(0xFFE39A2E.toInt()))
+                Saison.FREIJOER -> intArrayOf(vert(0.35f), mix(vert(0.75f), 0xFFC2E070.toInt(), 0.4f))
+                else -> intArrayOf(vert(0.05f), vert(0.32f))
+            }
+            val o = if (P.nuit) 0.1f else 0.16f
+            return IntArray(2) { noir(t[it], o) }
+        }
+
+        /** Les tons du pied de la scène : sombre, clair, sec. Le second rang ([lointain]) prend la couleur du milieu. */
+        private fun tonsDuPied(saison: Saison?, lointain: Boolean): IntArray {
+            val t = when (saison) {
+                Saison.HIERSCHT -> intArrayOf(duJour(0xFF9A5A22.toInt()), duJour(0xFFD08A34.toInt()), duJour(0xFFC9A869.toInt()))
+                Saison.WANTER -> intArrayOf(duJour(0xFF7A6448.toInt()), duJour(0xFFB59A72.toInt()), duJour(0xFFCDB894.toInt()))
+                Saison.FREIJOER -> intArrayOf(vert(0.25f), mix(vert(0.7f), 0xFFB8DC6A.toInt(), 0.35f), duJour(0xFFC9B87A.toInt()))
+                else -> intArrayOf(vert(0.1f), vert(0.42f), duJour(0xFFC9B06A.toInt()))
+            }
+            return IntArray(3) {
+                if (lointain) mix(t[it], P.milieu, 0.28f) else noir(t[it], if (P.nuit) 0.12f else 0.2f)
+            }
+        }
+
+        /** Des roseaux qui montent de hors champ : tiges, massettes, et de longues feuilles qui retombent. */
+        private fun roseaux(saison: Saison?, graine: Int, lointain: Boolean) {
+            val r = Alea(graine * 7 + 300)
+            val (fonce, clair, sec) = tonsDuPied(saison, lointain)
+            val sechees = saison == Saison.HIERSCHT || saison == Saison.WANTER
+            val tige = if (sechees) sec else mix(fonce, sec, 0.35f)
+            val brun = sombre(duJour(0xFF6E4527.toInt()), if (lointain) 0f else 0.15f)
+            val tiges = Path(); val lames = Path(); val lames2 = Path(); val massettes = Path()
+            for (i in 0 until 7) {
+                val xb = -1.5f + i * 2f + r() * 0.8f
+                val yt = 27f + i * 1.7f + r() * 5f
+                val xt = xb + (r() - 0.25f) * 4f
+                tiges.addPath(ruban(xb, PIED, xb + (xt - xb) * 0.3f, (PIED + yt) / 2f, xt, yt, 0.75f, 0.3f))
+                if (i % 2 == 0) massettes.addRoundRect(xt - 0.8f, yt + 1.4f, xt + 0.8f, yt + 6.4f, 0.8f, 0.8f, Path.Direction.CCW)
+            }
+            for (i in 0 until 8) {
+                val xb = -1f + i * 1.8f + r()
+                val haut = 34f + r() * 14f
+                val penche = (if (i % 3 == 2) -1f else 1f) * (3f + r() * 6f)
+                (if (i % 2 == 0) lames else lames2).addPath(
+                    ruban(xb, PIED, xb + penche * 0.2f, haut - 4f, xb + penche, haut + abs(penche) * 0.5f, 1.5f, 0.05f))
+            }
+            piece(lames2, clair, 0.8f)
+            piece(tiges, tige, 0.8f)
+            piece(massettes, brun, 0.8f)
+            piece(lames, fonce, 0.8f)
+        }
+
+        /** Des fougères dont les frondes s'ouvrent en éventail depuis le coin. */
+        private fun fougeres(saison: Saison?, graine: Int, lointain: Boolean) {
+            val r = Alea(graine * 7 + 400)
+            val (fonce, clair, _) = tonsDuPied(saison, lointain)
+            // Le bout et le point de contrôle de chaque fronde.
+            val frondes = floatArrayOf(-3f, 37f, -2f, 45f, 4f, 33f, 3f, 41f, 13f, 40f, 8f, 39f, 19f, 51f, 12f, 45f)
+            val o = FloatArray(4)
+            for (k in 0 until 4) {
+                val x0 = 3f + r() * 1.5f
+                val xt = frondes[k * 4] + (r() - 0.5f) * 2f; val yt = frondes[k * 4 + 1] + (r() - 0.5f) * 2f
+                val cx = frondes[k * 4 + 2]; val cy = frondes[k * 4 + 3]
+                val f = ruban(x0, PIED, cx, cy, xt, yt, 0.7f, 0.15f)
+                var t = 0.24f
+                while (t < 0.97f) {
+                    bezier(t, x0, PIED, cx, cy, xt, yt, o)
+                    val a = atan2(o[3], o[2])
+                    val l = 0.8f + 3.6f * (1f - t)
+                    val w = 0.38f + 0.2f * (1f - t)
+                    f.addPath(amande(o[0], o[1], l, w, a - 1.15f))
+                    f.addPath(amande(o[0], o[1], l, w, a + 1.15f))
+                    t += 0.07f
+                }
+                piece(f, if (k % 2 == 0) fonce else clair, 0.8f)
             }
         }
 
         /**
-         * Un feuillage de ronds ([ronds] : x, y, rayon), découpé d'un seul
-         * carton : tous les ronds réunis, peints d'un coup, le bord de carton
-         * à l'extérieur seulement.
+         * De hautes herbes, avec des épis ([fleurs] 0), des fleurs des champs
+         * (1) ou les houppes blanches des linaigrettes de la tourbière (2).
          */
-        private fun feuillage(ronds: FloatArray, x: (Float) -> Float, r: Alea, col: Int) {
-            val f = Path()
-            for (i in ronds.indices step 3) {
-                val rr = ronds[i + 2] * (0.9f + 0.2f * r())
-                f.addCircle(x(ronds[i]), ronds[i + 1], rr, Path.Direction.CW)
+        private fun herbes(saison: Saison?, graine: Int, lointain: Boolean, fleurs: Int) {
+            val r = Alea(graine * 7 + 500)
+            val (fonce, clair, sec) = tonsDuPied(saison, lointain)
+            val g = Array(3) { Path() }
+            val tiges = Path(); val tetes = Path(); val tetes2 = Path()
+            val hMin = if (fleurs > 0) 44f else 38f
+            for (i in 0 until 14) {
+                val xb = -2f + i * 1.15f + r() * 0.8f
+                val haut = hMin + r() * 12f
+                val penche = (r() - 0.3f) * 9f
+                g[i % 3].addPath(ruban(xb, PIED, xb + penche * 0.25f, haut - 2f, xb + penche, haut + abs(penche) * 0.45f, 1.1f, 0.05f))
             }
-            f.computeBounds(boite, true)
-            peint(f, col, -0.6f, boite, 0.8f, union = true)
+            val hiver = saison == Saison.WANTER
+            for (i in 0 until (if (fleurs > 0) 5 else 4)) {
+                val xb = i * 2.6f + r()
+                val yt = (if (fleurs > 0) 40f else 31f) + r() * 7f
+                val xt = xb + (r() - 0.2f) * 5f
+                tiges.addPath(ruban(xb, PIED, xb + (xt - xb) * 0.2f, (PIED + yt) / 2f, xt, yt, 0.4f, 0.2f))
+                when {
+                    fleurs == 0 -> for (j in 0 until 5) tetes.addPath(amande(xt, yt + j * 1.1f, 1.6f, 0.4f, if (j % 2 == 0) 0.9f else 2.2f))
+                    hiver -> {}
+                    fleurs == 1 -> {
+                        val t = if (i % 2 == 0) tetes else tetes2
+                        for (k in 0 until 5) {
+                            val a = k * 2f * PI.toFloat() / 5f
+                            t.addCircle(xt + 0.8f * cos(a), yt + 0.8f * sin(a), 0.75f, Path.Direction.CCW)
+                        }
+                    }
+                    else -> {
+                        tetes.addCircle(xt, yt, 1.1f, Path.Direction.CCW)
+                        tetes.addCircle(xt - 0.7f, yt + 0.6f, 0.9f, Path.Direction.CCW)
+                        tetes.addCircle(xt + 0.7f, yt + 0.5f, 0.9f, Path.Direction.CCW)
+                    }
+                }
+            }
+            piece(g[1], clair, 0.8f)
+            piece(g[2], sec, 0.8f)
+            piece(tiges, if (fleurs == 0) sec else fonce, 0.6f)
+            when (fleurs) {
+                0 -> piece(tetes, sec, 0.6f)
+                1 -> { piece(tetes, duJour(0xFFD8443A.toInt()), 0.6f); piece(tetes2, duJour(0xFFF2C12E.toInt()), 0.6f) }
+                else -> piece(tetes, mix(CREME, P.cielBas, if (P.nuit) 0.5f else 0.1f), 0.6f)
+            }
+            piece(g[0], fonce, 0.8f)
         }
 
         /**
-         * La seconde rangée de coulisses des rares, un pas en retrait de la
-         * première : un arbre de chaque côté, plus petit, plus clair, qui
-         * dépasse de derrière le feuillage de devant. Deux châssis étagés au
-         * lieu d'un seul : c'est la boîte d'un théâtre, pas un cadre.
+         * Une branche de feuillu qui entre par le coin du haut et avance de
+         * [portee] unités, ses rameaux et ses feuilles qui pendent. L'hiver,
+         * nue, la neige posée dessus.
          */
-        fun coulissesDuFond() {
-            val feuillage = mix(P.pres, 0xFF000000.toInt(), if (P.nuit) 0.12f else 0.22f)
-            val tronc = mix(P.sol, 0xFF000000.toInt(), 0.15f)
-            for (droite in booleanArrayOf(false, true)) {
-                fun x(v: Float) = if (droite) LARGEUR - v else v
-                val t = Path()
-                t.moveTo(x(13.4f), BAS); t.lineTo(x(14.3f), 40f); t.lineTo(x(15.4f), 33f)
-                t.lineTo(x(16.5f), 40f); t.lineTo(x(17.4f), BAS); t.close()
-                forme(t, tronc)
-                val r = Alea(if (droite) 64 else 63)
-                feuillage(FEUILLES_DU_FOND, ::x, r, feuillage)
+        private fun feuillu(saison: Saison?, portee: Float, graine: Int) {
+            val r = Alea(graine * 7 + 600)
+            val tons = feuilles(saison)
+            val cx = portee * 0.45f; val cy = 0.5f
+            val branche = ruban(-4f, 2f, cx, cy, portee, 9f, 2.8f, 0.45f)
+            val bouts = arrayListOf(floatArrayOf(-4f, 2f, cx, cy, portee, 9f))
+            val o = FloatArray(4)
+            val rameaux = floatArrayOf(0.3f, 4f, 10f, 0.45f, 2f, 7f, 0.55f, 6f, 8f, 0.78f, 2f, 9f, 0.92f, 4f, 5f, 0.16f, 7f, -6f, 0.05f, 3f, 13f)
+            for (i in rameaux.indices step 3) {
+                bezier(rameaux[i], -4f, 2f, cx, cy, portee, 9f, o)
+                val xa = o[0]; val ya = o[1]
+                val b = floatArrayOf(xa, ya, xa + rameaux[i + 1] * 0.6f, ya + rameaux[i + 2] * 0.2f,
+                    xa + rameaux[i + 1], ya + rameaux[i + 2])
+                branche.addPath(ruban(b[0], b[1], b[2], b[3], b[4], b[5], 0.9f, 0.25f))
+                bouts += b
             }
+            if (tons == null) {
+                piece(branche, bois(), 0.9f)
+                piece(ruban(-4f, 0.9f, cx, cy - 1.1f, portee * 0.85f, 7f, 1f, 0.15f),
+                    mix(0xFFFFFFFF.toInt(), P.cielBas, 0.12f), 0.5f)
+                return
+            }
+            val f1 = Path(); val f2 = Path()
+            for (b in bouts) {
+                var t = 0.12f
+                while (t <= 1f) {
+                    bezier(t, b[0], b[1], b[2], b[3], b[4], b[5], o)
+                    for (k in 0 until 2) {
+                        val a = PI.toFloat() / 2f + (r() - 0.5f) * 2f
+                        (if (r() < 0.5f) f1 else f2).addPath(amande(o[0], o[1], 3.4f + r() * 1.6f, 0.6f + r() * 0.2f, a))
+                    }
+                    t += 0.1f
+                }
+            }
+            // La masse du feuillage dans le coin, d'où sort la branche.
+            for (k in 0 until 16) {
+                val x = -2f + r() * 9f; val y = r() * 15f
+                (if (r() < 0.55f) f1 else f2).addPath(amande(x, y, 3.6f + r() * 1.6f, 0.65f + r() * 0.2f, r() * 2f * PI.toFloat()))
+            }
+            piece(f1, tons[0], 0.7f)
+            piece(branche, bois(), 0.9f)
+            piece(f2, tons[1], 0.7f)
         }
 
-        /**
-         * La seconde rangée du Breedewee : deux pignons de maison derrière les
-         * piliers, posés sur le plancher, une fenêtre allumée le soir.
-         */
-        fun pignons() {
-            val enduit = mix(P.pierre, 0xFF000000.toInt(), if (P.nuit) 0.12f else 0.22f)
-            for (droite in booleanArrayOf(false, true)) {
-                fun x(v: Float) = if (droite) LARGEUR - v else v
-                forme("M${x(-1f)} 61L${x(-1f)} 31L${x(6f)} 24.5L${x(13f)} 31L${x(13f)} 61Z", enduit)
-                forme("M${x(-1.6f)} 31.4L${x(6f)} 23.6L${x(13.6f)} 31.4L${x(13.6f)} 32.6L${x(6f)} 25L${x(-1.6f)} 32.6Z", P.toit)
-                fenetre(min(x(8.2f), x(10.6f)), 36f, 2.4f, 3.4f, null)
-                fenetre(min(x(8.2f), x(10.6f)), 44f, 2.4f, 3.4f, null)
+        /** Une branche de saule pleureur au-dessus de l'eau : un rideau de brins qui pendent. */
+        private fun saule(saison: Saison?, portee: Float, graine: Int) {
+            val r = Alea(graine * 7 + 700)
+            val tons = feuilles(saison)
+            val x1 = portee * 0.8f
+            val branche = ruban(-4f, 1.5f, x1 * 0.5f, -0.5f, x1, 3.5f, 2.4f, 0.5f)
+            val brins = Path(); val f1 = Path(); val f2 = Path()
+            val o = FloatArray(4)
+            for (k in 0 until 10) {
+                bezier(0.05f + k * 0.095f, -4f, 1.5f, x1 * 0.5f, -0.5f, x1, 3.5f, o)
+                val xa = o[0]; val ya = o[1]
+                val long = 26f - k * 1.9f + r() * 5f
+                val xb = xa + 0.5f + r() * 2.5f; val yb = ya + long
+                val bx = xa + 2f + r() * 2f; val by = ya + long * 0.25f
+                brins.addPath(ruban(xa, ya, bx, by, xb, yb, 0.45f, 0.2f))
+                if (tons == null) continue
+                var u = 0.12f + r() * 0.05f
+                var sens = 1f
+                while (u <= 1f) {
+                    bezier(u, xa, ya, bx, by, xb, yb, o)
+                    (if (r() < 0.5f) f1 else f2).addPath(
+                        amande(o[0], o[1], 3f + r(), 0.24f, PI.toFloat() / 2f + sens * (0.25f + 0.2f * r())))
+                    sens = -sens
+                    u += 0.1f + r() * 0.03f
+                }
+            }
+            if (tons == null) {
+                // L'hiver, les brins nus du saule, couleur de paille.
+                piece(branche, bois(), 0.9f)
+                piece(brins, duJour(0xFFC9A23A.toInt()), 0.5f)
+                return
+            }
+            piece(f1, tons[0], 0.7f)
+            piece(branche, bois(), 0.9f)
+            piece(brins, tons[0], 0.5f)
+            piece(f2, tons[1], 0.7f)
+        }
+
+        /** Un bouleau au bord de la scène : le tronc blanc tout du long, une branche et ses rameaux qui pendent. */
+        private fun bouleau(saison: Saison?, portee: Float, graine: Int) {
+            val r = Alea(graine * 7 + 800)
+            val tons = feuilles(saison)
+            val tronc = Path().apply {
+                moveTo(-3f, -3f); lineTo(3.6f, -3f); quadTo(3.9f, 30f, 5f, PIED); lineTo(-3f, PIED); close()
+            }
+            piece(tronc, duJour(0xFFEDE6D6.toInt()), 1f)
+            val marque = sombre(ardoise(), 0.4f)
+            // Les taches noires de l'écorce, mordant sur les bords, et les lenticelles.
+            var y = 1f
+            while (y < 62f) {
+                val bord = 3.6f + y * 0.02f
+                if (r() < 0.6f) forme(amande(bord + 0.3f, y, 1.2f + r() * 1.6f, 0.35f + r() * 0.3f, PI.toFloat() + (r() - 0.5f) * 0.5f), marque)
+                else forme(amande(-0.6f + r() * 2.6f, y, 0.8f + r() * 1.2f, 0.12f, (r() - 0.5f) * 0.2f), marque)
+                y += 1.6f + r() * 3.2f
+            }
+            val gris = sombre(duJour(0xFF5A4A40.toInt()), 0.2f)
+            val branche = ruban(3.4f, 9f, portee * 0.4f, 3.5f, portee, 7f, 1.3f, 0.3f)
+            val f1 = Path(); val f2 = Path()
+            val o = FloatArray(4)
+            for (k in 0 until 7) {
+                bezier(0.12f + k * 0.13f, 3.4f, 9f, portee * 0.4f, 3.5f, portee, 7f, o)
+                val xa = o[0]; val ya = o[1]
+                val long = 6f + r() * 6f
+                val xb = xa + 1f + r(); val yb = ya + long
+                branche.addPath(ruban(xa, ya, xa + 1.2f, ya + long * 0.3f, xb, yb, 0.35f, 0.15f))
+                if (tons == null) continue
+                var u = 0.2f + r() * 0.1f
+                var sens = 1f
+                while (u <= 1f) {
+                    bezier(u, xa, ya, xa + 1.2f, ya + long * 0.3f, xb, yb, o)
+                    (if (r() < 0.5f) f1 else f2).addPath(
+                        amande(o[0], o[1], 2f + r() * 0.6f, 0.6f, PI.toFloat() / 2f + sens * (0.9f + 0.5f * r())))
+                    sens = -sens
+                    u += 0.17f + r() * 0.06f
+                }
+            }
+            piece(branche, gris, 0.9f)
+            if (tons == null) return
+            piece(f1, tons[0], 0.7f)
+            piece(f2, mix(tons[1], 0xFFE6D84A.toInt(), if (saison == Saison.HIERSCHT) 0.3f else 0f), 0.7f)
+        }
+
+        /** Un sarment de vigne de la Moselle : ses feuilles et, l'été et l'automne, une grappe. */
+        private fun vigne(saison: Saison?, portee: Float, graine: Int) {
+            val r = Alea(graine * 7 + 900)
+            val tons = feuilles(saison)
+            val cep = sombre(duJour(0xFF7A5634.toInt()), 0.2f)
+            val x0 = -4f; val y0 = 3f; val cx = portee * 0.5f; val cy = -1.5f; val x1 = portee; val y1 = 6f
+            piece(ruban(x0, y0, cx, cy, x1, y1, 1.4f, 0.4f), cep, 0.9f)
+            val o = FloatArray(4)
+            for (t in floatArrayOf(0.3f, 0.8f)) {
+                bezier(t, x0, y0, cx, cy, x1, y1, o)
+                val x = o[0]; val yy = o[1]
+                trait("M$x ${yy}Q${x + 2f} ${yy + 1f} ${x + 1.5f} ${yy + 2.6f}Q${x + 0.8f} ${yy + 3.3f} ${x + 0.5f} ${yy + 2.4f}", cep, 0.25f)
+            }
+            if (tons == null) return
+            val f1 = Path(); val f2 = Path()
+            for ((i, t) in floatArrayOf(0.15f, 0.38f, 0.72f, 0.93f).withIndex()) {
+                bezier(t, x0, y0, cx, cy, x1, y1, o)
+                val rr = 4.6f - 0.4f * i + r() * 0.5f
+                val a0 = -PI.toFloat() / 2f + (r() - 0.5f) * 0.6f
+                (if (i % 2 == 0) f1 else f2).addPath(pampre(o[0] + (r() - 0.5f), o[1] + rr * 0.95f, rr, a0))
+            }
+            piece(f1, tons[0], 0.7f)
+            piece(f2, tons[1], 0.7f)
+            if (saison == Saison.SUMMER || saison == Saison.HIERSCHT || saison == null) {
+                bezier(0.55f, x0, y0, cx, cy, x1, y1, o)
+                val grappe = Path()
+                val rangs = intArrayOf(4, 3, 3, 2, 1)
+                for ((j, n) in rangs.withIndex()) for (i in 0 until n) {
+                    grappe.addCircle(o[0] + (i - (n - 1) / 2f) * 1.55f + (if (j % 2 == 0) 0f else 0.3f),
+                        o[1] + 2f + j * 1.4f, 0.85f, Path.Direction.CCW)
+                }
+                val grain = if (saison == Saison.HIERSCHT) duJour(0xFF6A3E72.toInt()) else duJour(0xFFA8C25A.toInt())
+                piece(grappe, noir(grain, 0.1f), 0.7f)
             }
         }
 
@@ -2244,27 +2612,6 @@ object Paysages {
             while (balayage > 0f) balayage -= 2f * PI.toFloat()
             t.arcTo(RectF(cx - r, cy - r, cx + r, cy + r),
                 Math.toDegrees(de.toDouble()).toFloat(), Math.toDegrees(balayage.toDouble()).toFloat())
-        }
-
-        /**
-         * Les coulisses du Breedewee : deux piliers de pierre à contre-jour, une
-         * lanterne tournée vers la scène. Le même emplacement que le feuillage
-         * des [coulisses], sous l'arche du cadre des rares.
-         */
-        fun piliers() {
-            val pierre = mix(P.pierre, 0xFF000000.toInt(), if (P.nuit) 0.3f else 0.45f)
-            val joint = mix(pierre, 0xFF000000.toInt(), 0.3f)
-            val fer = mix(pierre, 0xFF000000.toInt(), 0.35f)
-            for (droite in booleanArrayOf(false, true)) {
-                fun x(v: Float) = if (droite) LARGEUR - v else v
-                forme("M${x(-1f)} 66L${x(-1f)} 24L${x(7.2f)} 24L${x(7.2f)} 26.2L${x(6.4f)} 26.2L${x(6.4f)} 66Z", pierre)
-                rect(min(x(-1f), x(8f)), 22.4f, 9f, 1.8f, pierre)
-                var y = 29.6f
-                while (y < BAS) { ligne(x(-1f), y, x(6.4f), y, joint, 0.4f); y += 3.4f }
-                if (P.allume) rond(x(9.8f), 33.5f, 2.8f, P.fenetre, 0.25f)
-                ligne(x(6.4f), 31f, x(10f), 31f, fer, 0.6f)
-                forme("M${x(9f)} 32L${x(10.6f)} 32L${x(10.3f)} 35L${x(9.3f)} 35Z", if (P.allume) P.fenetre else joint)
-            }
         }
 
         /**

@@ -299,10 +299,40 @@ gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
   répondre le lieu (oiseaux qui s'envolent, roue qui s'emballe, chutes qui
   éclaboussent). Ce que `Vie` dessine n'est pas peint dans les cartons
   (`Peintre.vivant`) ; une image figée le pose à l'instant zéro.
-- **Pas de coulisses** là où le lieu a déjà son cadre (voûte du Bock, arche
-  de Berdorf, charmille d'Ansembourg) ni là où le sujet tient un bord
-  (`ENCADRES`) : des arbres de coulisse cacheraient la tour, la roue ou la
-  statue.
+- **Le surcadrage naturel** (demande du propriétaire, 2026-11-14) : « du
+  surcadrage naturel quand c'est possible, par exemple les branches d'arbres
+  sur les côtés et les roseaux au premier plan encadrent le pont et ajoutent
+  de la profondeur entre le premier plan et l'arrière-plan ». Il remplace
+  les coulisses des rares (deux arbres en boule), qui cachaient les sujets
+  tenus sur un bord. Chaque lieu a le sien (`Paysages.Surcadre`), choisi
+  d'après sa photo et la place de son sujet :
+  - **en haut**, une branche qui entre par un coin et pend dans la bande du
+    haut : feuillu, saule pleureur sur l'eau, bouleau au tronc blanc
+    (Belval, Conzefenn), sarment de vigne à la Moselle ; du côté où le sujet
+    ne se tient pas, et plus courte (`portee`) quand un sujet tient le haut
+    (le château de Vianden) ;
+  - **en bas**, ce qui pousse au pied de la scène, montant de hors champ
+    dans les coins : roseaux et massettes au bord de l'eau, fougères sous
+    le grès et dans les gorges, hautes herbes, fleurs des champs (Gëlle
+    Fra), linaigrettes de la tourbière (Conzefenn) ;
+  - **deux rangs** : le premier sur un sixième carton, tout contre la
+    vitre, qui glisse le moins ; le second, à demi-taille et plus clair,
+    planté dans la rainure du proche. C'est l'étagement entre les deux qui
+    creuse la scène ;
+  - **la saison** de la carte se lit dedans : feuilles rousses et roseaux
+    secs l'automne, branches nues sous la neige l'hiver, vert tendre au
+    printemps, la grappe mûre à la Moselle ;
+  - **pour toutes les raretés** : une commune, la carte qu'on manipule le
+    plus, a le plein effet ;
+  - **pas de surcadrage** là où le lieu a déjà son cadre de scène (voûte
+    du Bock, charmille d'Ansembourg, porte du Breedewee) ni là où les deux
+    bords sont pris (la roue et le carrousel de la Schueberfouer) ; seules
+    des fougères au pied de l'arche de Berdorf, de la grotte de la Hohllay,
+    des gorges du Loup et de la source de tuf ;
+  - **les règles** : rien dans la boîte du dessin du mot (17 à 83 ×
+    12,5 à 58,5) qui y fasse du détail fort ; la branche reste dans la
+    bande du haut, le pied dans les coins du bas ; jamais sur le sujet du
+    lieu, qu'il doit encadrer et non cacher.
 
 **Voir les cartes sans téléphone** : `PlancheCartesTest` (Robolectric, rendu
 natif du canevas) rend la fenêtre de chaque lieu aux quatre heures, droite
@@ -386,13 +416,13 @@ puis penchée, et les cartes entières :
    | 3. Le lointain | crête, ville au loin, tours | 3 % |
    | 4. Le milieu | collines, façades, bâti | 1,7 % |
    | 5. Le proche | le premier plan du lieu, posé sur le plancher | 0,7 % |
-   | 6. Les coulisses (rare et très rare seulement) | deux châssis sur les côtés : arbres, ou piliers et pignons au Breedewee | 0,3 % |
+   | 6. Le surcadrage (là où le lieu en a un) | les branches d'un coin du haut et ce qui pousse au pied de la scène (roseaux, fougères, herbes) | 0,3 % |
 
-   Les cinq plans viennent **du lieu lui-même**. Les **rares et les très
-   rares gardent en plus leurs coulisses** (décision du propriétaire,
-   2026-11-01) : un sixième carton sur les côtés, devant tous les autres, qui
-   glisse le moins (0,3 %) et porte son ombre sur eux. C'est la seule
-   différence de profondeur qui reste entre les paliers. Les nuages
+   Les cinq plans viennent **du lieu lui-même**. Le sixième est le
+   **surcadrage naturel** du lieu (2026-11-14, voir § 2), pour toutes les
+   raretés : il a remplacé les coulisses que les rares et les très rares
+   avaient seules depuis le 2026-11-01. Le nombre de cartons ne dit donc
+   plus du tout la rareté. Les nuages
    portent leur ombre sur leur propre carton, pour qu'elle voyage avec eux.
    C'est le seul élément qui bouge seul (règle 7) ; les cartes de fête,
    rendues à plat, n'en ont pas.

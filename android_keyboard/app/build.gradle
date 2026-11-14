@@ -171,6 +171,7 @@ android {
         unitTests.all {
             if (project.hasProperty('planche')) systemProperty 'planche', project.property('planche')
             if (project.hasProperty('plancheCartes')) systemProperty 'planche.cartes', 'oui'
+            if (project.hasProperty('plancheSaisons')) systemProperty 'planche.saisons', 'oui'
         }
     }
 

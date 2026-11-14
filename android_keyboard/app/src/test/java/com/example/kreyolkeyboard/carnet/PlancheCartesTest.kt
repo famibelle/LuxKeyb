@@ -22,13 +22,14 @@ import java.util.Calendar
  *
  * Ne tourne que sur demande, avec le dossier où poser les images :
  *
- *     ./gradlew :app:testDebugUnitTest --tests '*PlancheCartesTest*' -Pplanche=/chemin/du/dossier [-PplancheCartes]
+ *     ./gradlew :app:testDebugUnitTest --tests '*PlancheCartesTest*' -Pplanche=/chemin/du/dossier [-PplancheCartes] [-PplancheSaisons]
  *
  * - `planche_cartes_<lieu>.png` : les cartes entières d'un lieu aux quatre
  *   raretés, telles que l'image de partage les fige (le théâtre de papier) ;
  * - `planche_lieux_<heure>.png` : la fenêtre de chaque lieu à une heure,
  *   droite puis penchée à gauche et à droite, pour voir glisser les cartons
- *   et leurs ombres.
+ *   et leurs ombres ;
+ * - `planche_saisons.png` : le surcadrage de quelques lieux aux quatre saisons.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [35], application = Application::class)
@@ -86,6 +87,36 @@ class PlancheCartesTest {
             }
             planche(cases, 3, File(dossier, "planche_lieux_${rarete.name.lowercase()}.png"), reduire = 1)
         }
+    }
+
+    /**
+     * Les saisons du surcadrage (`Paysages.Surcadre`) : quelques lieux, un
+     * par essence de branche et par pied, aux quatre saisons, à l'heure de
+     * la commune. Ne tourne qu'avec `-PplancheSaisons`.
+     */
+    @Test
+    fun saisons() {
+        assumeTrue(dossier != null && System.getProperty("planche.saisons") != null)
+        dossier!!.mkdirs()
+        val zone = Ornement.FENETRE
+        val visible = android.graphics.RectF(zone.left, zone.top, zone.right, Ornement.PLAQUE.top + 4f)
+        val echelle = 3f
+        val decoupe = android.graphics.Path().apply { addRect(visible, android.graphics.Path.Direction.CW) }
+        val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
+        val cases = ArrayList<Pair<String, Bitmap>>()
+        val lieux = listOf(Lieu.NEI_BRECK, Lieu.HAFF_REIMECH, Lieu.CONZEFENN, Lieu.MUSEL, Lieu.MELLERDALL, Lieu.GELLE_FRA)
+        for (lieu in lieux) for (mois in intArrayOf(4, 7, 10, 1)) {
+            val souvenir = Souvenir.du(2026, mois, 15)
+            val motif = Motif("Bréck", Rarete.COMMUN, zone, blason(lieu), souvenir).apply { profondeur = true }
+            val b = Bitmap.createBitmap((visible.width() * echelle).toInt(), (visible.height() * echelle).toInt(),
+                Bitmap.Config.ARGB_8888)
+            val c = Canvas(b)
+            c.scale(echelle, echelle)
+            c.translate(-visible.left, -visible.top)
+            motif.peindre(c, pinceau, 0f, decoupe, echelle, avecIris = false, avecSujet = true, regardX = 0f, regardY = 0f)
+            cases += "${lieu.nom} · ${souvenir.saison.nom}" to b
+        }
+        planche(cases, 4, File(dossier, "planche_saisons.png"), reduire = 1)
     }
 
     private fun planche(cases: List<Pair<String, Bitmap>>, colonnes: Int, sortie: File, reduire: Int) {
