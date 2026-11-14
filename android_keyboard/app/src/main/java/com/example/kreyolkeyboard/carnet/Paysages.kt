@@ -1270,6 +1270,9 @@ object Paysages {
         return floatArrayOf(x, y).also { m.mapPoints(it) }
     }
 
+    /** Le rocher de Felsmillen, de trois quarts : où son dessin de face (-3, -3, 41 × 69) est posé. */
+    private val ROCHER_FELSMILLEN = floatArrayOf(-3f, -5f, 38f, 2.4f, 38f, 61.6f, -3f, 68f)
+
     /** La rue du Grund, au bord de l'Alzette : elle fuit vers la droite. */
     internal val RUE_GRUND = Fuite(floatArrayOf(13f, 50.5f), floatArrayOf(178f, 34f), floatArrayOf(-140f, 40f), 150f, quai = 3f)
 
@@ -4382,14 +4385,18 @@ object Paysages {
             pieceD("M-2 66L-2 40C30 36 70 34 102 36L102 66Z", vert(0.75f), 0.5f)
             val gres = duJour(0xFFB7A889.toInt())
             val clair = mix(gres, 0xFFFFFFFF.toInt(), 0.18f)
-            mineral {
-                pieceD("M-3 66L-3 -3L34 -3C38 4 36 10 31 13C35 17 34 24 28 27C31 31 30 38 25 42L24 66Z", gres)
-                pieceD("M8 6C16 3 26 4 31 10C25 11 16 11 8 9Z", clair, 0.4f)
-                pieceD("M6 20C14 17 24 18 29 24C22 25 14 25 6 23Z", clair, 0.4f)
-                pieceD("M4 34C12 31 20 32 25 38C19 39 11 39 4 37Z", clair, 0.4f)
-                pieceD("M40 30C42 26 50 25 56 27C58 30 56 34 50 35C44 35 40 34 40 30Z", gres)
+            // Le rocher de gauche dessiné de face, posé de trois quarts : ses
+            // strates fuient vers la droite, comme le caillebotis.
+            surQuad(41f, 69f, ROCHER_FELSMILLEN, x0 = -3f, y0 = -3f) {
+                mineral {
+                    pieceD("M-3 66L-3 -3L34 -3C38 4 36 10 31 13C35 17 34 24 28 27C31 31 30 38 25 42L24 66Z", gres)
+                    pieceD("M8 6C16 3 26 4 31 10C25 11 16 11 8 9Z", clair, 0.4f)
+                    pieceD("M6 20C14 17 24 18 29 24C22 25 14 25 6 23Z", clair, 0.4f)
+                    pieceD("M4 34C12 31 20 32 25 38C19 39 11 39 4 37Z", clair, 0.4f)
+                }
+                touffe(duJour(0xFF6E8A44.toInt()), 30f, 13f, 1.6f, 27f, 27f, 1.6f, 22f, 42f, 2f)
             }
-            touffe(duJour(0xFF6E8A44.toInt()), 30f, 13f, 1.6f, 27f, 27f, 1.6f, 22f, 42f, 2f)
+            mineral { pieceD("M40 30C42 26 50 25 56 27C58 30 56 34 50 35C44 35 40 34 40 30Z", gres) }
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)

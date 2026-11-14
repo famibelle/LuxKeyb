@@ -293,7 +293,14 @@ gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
   fuit avec ses piles, la passerelle et la tour de l'ascenseur du
   Pafendall, la charpente du haut fourneau et la tour de charge de Belval,
   le socle de la tour du Napoleonsgaart (`Peintre.boite3q` : une face, son
-  côté à l'ombre, son dessus). Ce qui est rond (une tour, un dôme) reste de face ; le fond
+  côté à l'ombre, son dessus). Puis les paysages naturels : on fait fuir
+  ce qui a une ligne, lisière, rive, clôture, passerelle, mur ou strate
+  (Conzefenn : la lisière, la prairie et la clôture ; Mëllerdall,
+  Dumongshaff, Péitrusdall : le pont ou la passerelle dessinés de face puis
+  posés sur leur quadrilatère, `surQuad` avec son origine ; Kallektuffquell :
+  le mur de tuf et le bord du bassin ; Felsmillen : les strates du rocher).
+  Ce qui vit dessus (le tram du pont Adolphe, les gouttes de la source) est
+  posé dans la même perspective par la Vie. Ce qui est rond (une tour, un dôme) reste de face ; le fond
   (ciel, collines, rochers) aussi. Le Breedewee reste de face : c'est une
   ruelle vue dans l'axe, sous sa porte.
 - **Une deuxième vague de lieux** (`Lieu.choix`) : un champ peut en avoir
