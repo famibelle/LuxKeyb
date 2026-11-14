@@ -514,11 +514,15 @@ object Paysages {
         val brinsOk = (0 until nBrins).all {
             CACHE.get("${cle}_b$it")?.isRecycled == false && CACHE.get("${cle}_c$it")?.isRecycled == false
         }
-        if (caches.all { it != null } && ombresOk && brinsOk) return caches.requireNoNulls()
+        val hiver = souvenir?.saison == Saison.WANTER
+        val neigeOk = !hiver || (2 until n).all { CACHE.get("${cle}_n$it")?.isRecycled == false }
+        if (caches.all { it != null } && ombresOk && brinsOk && neigeOk) return caches.requireNoNulls()
         val ombres = arrayOfNulls<Bitmap>(n)
-        val rendus = rendrePlans(lieu, heure, largeurPx, hauteurPx, souvenir, ombres)
+        val neiges = arrayOfNulls<Bitmap>(n)
+        val rendus = rendrePlans(lieu, heure, largeurPx, hauteurPx, souvenir, ombres, neiges)
         rendus.forEachIndexed { i, b -> CACHE.put("${cle}_p$i", b) }
         ombres.forEachIndexed { i, b -> if (b != null) CACHE.put("${cle}_o$i", b) }
+        neiges.forEachIndexed { i, b -> if (b != null) CACHE.put("${cle}_n$i", b) }
         gabarits(lieu, souvenir?.saison).forEachIndexed { i, g ->
             val (image, ombre) = rendreBrin(g, heure, echelleDuPlan(g.plan, largeurPx, hauteurPx))
             CACHE.put("${cle}_b$i", image)
@@ -546,6 +550,24 @@ object Paysages {
     ) {
         enum class Sorte { BRANCHE, TRONC, PIED }
     }
+
+    /**
+     * La neige des crêtes d'une carte d'hiver, une couche par calque (à
+     * partir du lointain), de la taille de son calque : un masque, 255 sous
+     * la neige. Elle s'est accumulée sur le haut de chaque carton ;
+     * [CadreOrne] la pose à part, par-dessus le carton, pour qu'une secousse
+     * la fasse tomber et qu'elle se reforme peu à peu. `null` hors de
+     * l'hiver ; une case `null` si le cache l'a perdue.
+     */
+    fun neiges(lieu: Lieu, heure: Heure, teinte: Float?, largeurPx: Int, hauteurPx: Int,
+               souvenir: Souvenir? = null): Array<Bitmap?>? {
+        if (largeurPx <= 0 || hauteurPx <= 0 || souvenir?.fete != null || souvenir?.saison != Saison.WANTER) return null
+        val cle = cle(lieu, heure, teinte, largeurPx, hauteurPx, souvenir)
+        return Array(PLANS) { CACHE.get("${cle}_n$it")?.takeIf { b -> !b.isRecycled } }
+    }
+
+    /** La couleur de la neige des crêtes, à l'heure de la carte. */
+    fun couleurNeige(heure: Heure): Int = if (heure.nuit) 0xFFBECCE4.toInt() else 0xFFFAFCFF.toInt()
 
     /** Les brins du surcadrage de la carte, s'ils sont rendus ; `null` sinon, vide sans surcadrage. */
     fun brins(lieu: Lieu, heure: Heure, teinte: Float?, largeurPx: Int, hauteurPx: Int,
@@ -737,7 +759,8 @@ object Paysages {
     private val PROFONDEUR = intArrayOf(0, -1, 1, 2, 3, 4)
 
     private fun rendrePlans(lieu: Lieu, heure: Heure, l: Int, h: Int, souvenir: Souvenir?,
-                            ombres: Array<Bitmap?> = arrayOfNulls(PLANS)): Array<Bitmap> {
+                            ombres: Array<Bitmap?> = arrayOfNulls(PLANS),
+                            neiges: Array<Bitmap?>? = null): Array<Bitmap> {
         val n = PLANS
         val tailles = Array(n) { i -> intArrayOf(l + 2 * marge(i, l), h + 2 * marge(i, h)) }
         val ks = Array(n) { i ->
@@ -774,8 +797,10 @@ object Paysages {
         val unite = ks[0][0]
         if (souvenir != null) {
             // Le ciel aussi, sans masque : l'hiver le pâlit, l'été le réchauffe.
+            val aPart = if (neiges != null) arrayOfNulls<Bitmap>(4) else null
             Habillage.appliquerPlans(arrayOf(ciel, loin, milieu, proche), arrayOf(null, loin, milieu, proche),
-                lieu, heure, souvenir, arrayOf(ks[0], ks[2], ks[3], ks[4]), arrayOf(null, releves[2], releves[3], releves[4]))
+                lieu, heure, souvenir, arrayOf(ks[0], ks[2], ks[3], ks[4]), arrayOf(null, releves[2], releves[3], releves[4]), aPart)
+            aPart?.forEachIndexed { i, b -> if (b != null) neiges[i + 1] = b }
         }
         releves.forEach { it?.recycle() }
         // Après la saison, qui reconnaît la végétation à ses couleurs d'origine.
@@ -1130,6 +1155,11 @@ object Paysages {
 
         /** Une secousse de [f] (0 à 1) à l'instant [temps]. */
         fun secouer(f: Float, temps: Float) {
+            neigeAvant = neige(temps)
+            neigeApres = max(0.12f, neigeAvant - f.coerceIn(0f, 1f) * 0.9f)
+            // Pendant qu'on secoue, les secousses se suivent : ce qui tombe s'additionne.
+            val perte = neigeAvant - neigeApres
+            chute = if (temps - secousse in 0f..2.5f) min(1f, chute + perte) else perte
             acquis += poussee(temps)
             secousse = temps
             force = f.coerceIn(0f, 1f)
@@ -1148,6 +1178,32 @@ object Paysages {
         }
 
         private fun elan(temps: Float) = acquis + poussee(temps)
+
+        /** Le niveau de la neige des crêtes juste avant et juste après la dernière secousse. */
+        private var neigeAvant = 1f
+        private var neigeApres = 1f
+
+        /**
+         * Ce qui reste de la neige accumulée sur les cartons à l'instant
+         * [temps], de 1 (toute) à presque rien : une secousse en fait tomber
+         * selon sa force, en une demi-seconde, puis elle se reforme en une
+         * vingtaine de secondes, sous la neige qui continue de tomber.
+         */
+        fun neige(temps: Float): Float {
+            if (temps <= 0f) return 1f
+            val d = temps - secousse
+            if (d < 0f) return 1f
+            if (d < 0.5f) return neigeAvant + (neigeApres - neigeAvant) * (d / 0.5f)
+            return min(1f, neigeApres + (d - 0.5f) / 20f)
+        }
+
+        private var chute = 0f
+
+        /** Ce que les dernières secousses ont fait tomber de neige, de 0 à 1. */
+        fun chuteDeNeige(): Float = chute
+
+        /** Les secondes depuis la dernière secousse (négatif s'il n'y en a pas eu). */
+        fun depuisSecousse(temps: Float): Float = if (temps <= 0f) -1f else temps - secousse
 
         /**
          * Le balancement d'un brin du surcadrage ([Brin]) à l'instant [temps],

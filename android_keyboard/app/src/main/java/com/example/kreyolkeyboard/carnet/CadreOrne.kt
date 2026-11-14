@@ -5006,6 +5006,7 @@ class Motif(
             else {
                 ombres?.getOrNull(i)?.let { o -> peindreOmbre(c, o, i, regardX, regardY) }
                 c.drawBitmap(etages[i], null, ouPlan, peinture)
+                neigesAPeindre(l, h)?.getOrNull(i)?.let { n -> peindreNeige(c, n, i, sx, sy) }
                 vie?.takeIf { it.vitDans(i) }?.let { v -> peindreVie(c, v, i, l, h, sx, sy) }
             }
         }
@@ -5015,6 +5016,102 @@ class Motif(
         // lui ; le rang de devant glisse le moins, juste derrière la vitre.
         peindreBrins(c, brins, 4, l, h, sx, sy, regardX, regardY)
         peindreBrins(c, brins, 5, l, h, sx, sy, regardX, regardY)
+    }
+
+    /** La neige des crêtes d'une carte d'hiver ([Paysages.neiges]), et ses points d'où elle tombe. */
+    private var neiges: Array<Bitmap?>? = null
+    private var neigesPour = 0L
+    private var bordsDeNeige: Array<FloatArray?> = arrayOfNulls(Paysages.PLANS)
+
+    private fun neigesAPeindre(l: Int, h: Int): Array<Bitmap?>? {
+        if (souvenir?.saison != Saison.WANTER) return null
+        val taille = l.toLong() shl 32 or h.toLong()
+        neiges?.takeIf { neigesPour == taille && it.none { b -> b?.isRecycled == true } }?.let { return it }
+        val n = Paysages.neiges(lieu, heure, teinteChamp, l, h, souvenir) ?: return null
+        neiges = n
+        neigesPour = taille
+        bordsDeNeige = Array(n.size) { i -> n[i]?.let { bords(it) } }
+        return n
+    }
+
+    /**
+     * Les points d'où la neige tombe, en unités de la boîte du calque : le
+     * haut de chaque couche de neige, une colonne sur cinquante environ,
+     * jusqu'à deux par colonne (une crête, et un toit plus bas).
+     */
+    private fun bords(masque: Bitmap): FloatArray {
+        val w = masque.width
+        val h = masque.height
+        val ligne = masque.rowBytes
+        val octets = ByteArray(ligne * h)
+        masque.copyPixelsToBuffer(java.nio.ByteBuffer.wrap(octets))
+        val k = Paysages.cadrage(w.toFloat(), h.toFloat())
+        val pas = maxOf(1, w / 50)
+        val sortie = ArrayList<Float>()
+        var x = pas / 2
+        while (x < w) {
+            var avant = false
+            var trouves = 0
+            for (y in 0 until h) {
+                val dedans = octets[y * ligne + x].toInt() != 0
+                if (dedans && !avant) {
+                    sortie += (x - k[1]) / k[0]
+                    sortie += (y - k[2]) / k[0]
+                    if (++trouves == 2) break
+                }
+                avant = dedans
+            }
+            x += pas
+        }
+        return sortie.toFloatArray()
+    }
+
+    private val pinceauNeige = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
+
+    /**
+     * La neige accumulée sur le haut du carton [i], posée par-dessus lui, avec
+     * une ombre bleutée dessous : ce qu'il en reste ([Paysages.Vie.neige]).
+     * Juste après une secousse, des paquets s'en détachent et tombent.
+     */
+    private fun peindreNeige(c: Canvas, masque: Bitmap, i: Int, sx: Float, sy: Float) {
+        val temps = maintenant(c)
+        val v = vie
+        val niveau = v?.neige(temps) ?: 1f
+        val k = cadrage[0]
+        pinceauNeige.color = 0xFF3A4A6A.toInt()
+        pinceauNeige.alpha = (0.22f * niveau * 255f).toInt()
+        ouBrin.set(ouPlan)
+        ouBrin.offset(0f, 0.35f * k)
+        c.drawBitmap(masque, null, ouBrin, pinceauNeige)
+        pinceauNeige.color = Paysages.couleurNeige(heure)
+        pinceauNeige.alpha = (niveau * 255f).toInt()
+        c.drawBitmap(masque, null, ouPlan, pinceauNeige)
+        // Les paquets qui tombent, dans la boîte du calque : ils glissent avec lui.
+        val vol = v?.depuisSecousse(temps) ?: return
+        val chute = v.chuteDeNeige()
+        val bords = bordsDeNeige.getOrNull(i) ?: return
+        if (vol < 0f || vol > 2.4f || chute <= 0.02f || bords.isEmpty()) return
+        val lp = (ouPlan.width() / sx).toInt()
+        val hp = (ouPlan.height() / sy).toInt()
+        val kb = Paysages.cadrage(lp.toFloat(), hp.toFloat())
+        c.save()
+        c.translate(ouPlan.left + kb[1] * sx, ouPlan.top + kb[2] * sy)
+        c.scale(kb[0] * sx, kb[0] * sy)
+        pinceauNeige.style = Paint.Style.FILL
+        val n = bords.size / 2
+        for (j in 0 until n) {
+            if ((j * 0.618f) % 1f > chute) continue
+            val d = vol - ((j * 7) % 11) * 0.025f
+            if (d < 0f || d > 2.2f) continue
+            val y = bords[2 * j + 1] + 0.4f + 27f * d * d
+            if (y > Paysages.HAUTEUR + 4f) continue
+            val x = bords[2 * j] + sin(j * 1.7f) * 1.2f * d
+            val r = 0.45f + ((j * 5) % 7) / 7f * 0.55f
+            pinceauNeige.alpha = ((1f - d / 2.2f) * 255f).toInt().coerceIn(0, 255)
+            c.drawCircle(x, y, r, pinceauNeige)
+            c.drawCircle(x + r * 0.7f, y - r * 0.3f, r * 0.6f, pinceauNeige)
+        }
+        c.restore()
     }
 
     /** Les brins du surcadrage ([Paysages.Brin]) de la fenêtre de [l] × [h] pixels. */

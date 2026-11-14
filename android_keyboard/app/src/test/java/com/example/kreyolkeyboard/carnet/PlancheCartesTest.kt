@@ -156,11 +156,14 @@ class PlancheCartesTest {
         val echelle = 5f
         val decoupe = android.graphics.Path().apply { addRect(visible, android.graphics.Path.Direction.CW) }
         val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
-        for ((lieu, rarete) in listOf(Lieu.BREEDEWEE to Rarete.COMMUN, Lieu.BREEDEWEE to Rarete.RARE)) {
+        val films = listOf(Triple(Lieu.VEIANEN, Rarete.COMMUN, 1), Triple(Lieu.STAD, Rarete.RARE, 1))
+        for ((lieu, rarete, mois) in films) {
             val images = if (lieu == Lieu.BREEDEWEE) 110 else 80
             val choc = if (lieu == Lieu.BREEDEWEE) 75 else 30
-            val sortie = File(dossier, "secousse/${lieu.name.lowercase()}_${rarete.name.lowercase()}").apply { mkdirs() }
-            val motif = Motif("Bréck", rarete, zone, blason(lieu), Souvenir.du(2026, 7, 15)).apply { profondeur = true }
+            val souvenir = Souvenir.du(2026, mois, 15)
+            val sortie = File(dossier, "secousse/${lieu.name.lowercase()}_${rarete.name.lowercase()}_${souvenir.saison.name.lowercase()}")
+                .apply { mkdirs() }
+            val motif = Motif("Bréck", rarete, zone, blason(lieu), souvenir).apply { profondeur = true }
             for (k in 0 until images) {
                 val t = 4f + k * 0.1f
                 Paysages.horlogeEssai = t
