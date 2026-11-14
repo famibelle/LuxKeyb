@@ -3576,7 +3576,7 @@ object Paysages {
             }
             // Le quai, sous les façades, jusqu'au bord de l'eau.
             if (r.quai <= 0f) return@mineral
-            val pierre = duJour(0xFFA59A86.toInt())
+            val pierre = if (froid) n(duJour(0xFF9A968C.toInt())) else duJour(0xFFA59A86.toInt())
             piece(Path().apply {
                 moveTo(r.x(0f) - 12f * tl, r.y(0f) + 1f * tl)
                 var v = 0f
@@ -3587,6 +3587,17 @@ object Paysages {
                 lineTo(r.x(0f) - 12f * tl, r.eau(r.x(0f) - 12f * tl))
                 close()
             }, pierre, 0.5f)
+            if (froid) {
+                // L'appareil du mur de quai : une assise, et des joints qui se serrent au loin.
+                val joint = n(sombre(duJour(0xFF9A968C.toInt()), 0.3f))
+                ligne(r.x(0f) - 12f * tl, (r.y(0f) + r.eau(r.x(0f))) / 2f, r.x(u), (r.y(u) + r.eau(r.x(u))) / 2f, joint, 0.15f * tl, 0.7f)
+                var v = 0f
+                while (v < u) {
+                    val x = r.x(v)
+                    ligne(x, r.y(v) + 0.2f, x, r.eau(x) - 0.2f, joint, 0.12f * tl * r.echelle(v), 0.6f)
+                    v += 4.5f
+                }
+            }
         }
 
         /**
@@ -4062,33 +4073,110 @@ object Paysages {
             feuille(71.4f, 10f, 1.2f, 12f, duJour(0xFF5A4030.toInt()), 0.5f)
             touffe(vert(0.5f), 72f, 11f, 4.6f, 68f, 14f, 3.8f, 76f, 14.5f, 3.8f, 72f, 6.5f, 3.6f)
             plan(1)
-            val murs = intArrayOf(duJour(0xFFE9DDC5.toInt()), duJour(0xFFD9C6A0.toInt()), duJour(0xFFF3EFE7.toInt()),
-                duJour(0xFFE3E1DA.toInt()))
             rue3q(RUE_GRUND, MAISONS_GRUND_3Q, facades(), r, froid = true)
             touffe(vert(0.6f), 58f, 43.5f, 2.6f, 62f, 42.5f, 3f, 66f, 43.4f, 2.2f)
             plan(2)
-            plancher(DEVANT, BAS)
-            poser(DEVANT)
-            // L'Alzette, qui fuit avec le quai : son bord monte vers la droite.
+            // L'Alzette, entre les deux quais qui fuient : son bord lointain
+            // et le bord du quai d'où l'on regarde montent vers la droite.
             val eau = mix(P.eau, 0xFF5F7046.toInt(), if (P.nuit) 0.25f else 0.45f)
             val g = RUE_GRUND
-            piece(Path().apply {
-                moveTo(-2f, BAS); lineTo(-2f, g.eau(-2f))
+            val riviere = Path().apply {
+                moveTo(-2f, quaiProche(-2f) + 0.6f); lineTo(-2f, g.eau(-2f))
                 var x = -2f
                 while (x <= 102f) { lineTo(x, g.eau(x)); x += 4f }
-                lineTo(102f, BAS); close()
-            }, eau, 0.4f)
-            // Les reflets des façades, couchés dans la fuite.
-            val reflet = mix(eau, 0xFFFFFFFF.toInt(), if (P.nuit) 0.12f else 0.3f)
-            var u = 1f
-            for (m in MAISONS_GRUND_3Q) {
-                val x0 = g.x(u); val x1 = g.x(u + m[0] - 2f)
-                ligne(x0, g.eau(x0) + 1f, x1, g.eau(x1) + 1f, reflet, 0.5f * g.echelle(u), 0.5f)
-                if (P.allume) rect((x0 + x1) / 2f - 0.3f, g.eau((x0 + x1) / 2f) + 0.5f, 0.6f, 5f * g.echelle(u), P.fenetre, 0.4f)
+                lineTo(102f, quaiProche(102f) + 0.6f); close()
+            }
+            piece(riviere, eau, 0.4f)
+            // Les façades se reflètent : leurs couleurs tremblent dans l'eau,
+            // coupées de rides claires, plus courtes vers le fond.
+            c.save()
+            c.clipPath(riviere)
+            val murs = facades()
+            var u = 0f
+            for ((i, m) in MAISONS_GRUND_3Q.withIndex()) {
+                val x0 = g.x(u); val x1 = g.x(u + m[0])
+                val e = g.echelle(u)
+                val haut = g.eau(x0) + 0.3f
+                val long = m[1] * 0.55f * e
+                // Le reflet en traits couchés qui tremblent, de plus en plus
+                // pâles en s'éloignant de la façade.
+                val teinteReflet = neutre(mix(murs[i % murs.size], eau, 0.3f))
+                var dy = 0f
+                var j = 0
+                while (dy < long) {
+                    val decale = sin(j * 2.3f + i) * 0.5f * e
+                    val o = (if (P.nuit) 0.22f else 0.42f) * (1f - dy / long * 0.7f)
+                    ligne(x0 + 0.3f + decale, haut + dy, x1 - 0.3f + decale, g.eau(x1) + 0.3f + dy * 0.9f, teinteReflet, 0.55f * e + 0.15f, o)
+                    dy += 0.85f * e + 0.2f; j++
+                }
+                if (P.allume) rect((x0 + x1) / 2f - 0.3f, haut + 0.4f, 0.6f, long * 0.8f, P.fenetre, 0.35f)
                 u += m[0]
             }
-            touffe(vert(0.7f), 1f, 55f, 4f, 7f, 56.5f, 3f)
+            val ride = mix(eau, 0xFFFFFFFF.toInt(), if (P.nuit) 0.18f else 0.42f)
+            val ra = Alea(149)
+            for (k in 0 until 26) {
+                val x = ra() * 100f
+                val y = g.eau(x) + 0.8f + ra() * (quaiProche(x) - g.eau(x) - 1f)
+                val l = 1.5f + ra() * 4f * (y - 40f) / 18f
+                ligne(x, y, x + l, y - l * 0.09f, ride, 0.22f, 0.55f)
+            }
             c.restore()
+            quaiPave()
+            touffe(vert(0.7f), 1f, 59f, 3.4f, 6f, 60.5f, 2.6f)
+        }
+
+        /** Le bord du quai d'où l'on regarde le Grund, à l'abscisse [x] : il monte vers la droite. */
+        private fun quaiProche(x: Float) = 59.6f - (x + 2f) * 0.042f
+
+        /**
+         * Le premier plan du Grund en vraie matière, au lieu du plancher de
+         * la scène : le quai pavé de grès gris, parallèle à l'Alzette, ses
+         * rangs de pavés qui grossissent en approchant, et la bordure de
+         * pierre de taille au bord de l'eau. Peint avec [neutre].
+         */
+        private fun quaiPave() {
+            dansLePlancher = true
+            val joint = neutre(duJour(0xFF5C5A56.toInt()))
+            val pierres = intArrayOf(duJour(0xFFA9A59C.toInt()), duJour(0xFFB9B3A6.toInt()), duJour(0xFF9D9991.toInt()), duJour(0xFFC3BCAD.toInt()))
+                .map { neutre(it) }
+            val sol = Path().apply {
+                moveTo(-2f, BAS + 2f); lineTo(-2f, quaiProche(-2f)); lineTo(102f, quaiProche(102f)); lineTo(102f, BAS + 2f); close()
+            }
+            piece(sol, joint, 0.3f)
+            // Les rangs de pavés, posés à plat puis penchés comme le bord du quai.
+            enPerspective(-2f, quaiProche(-2f), -0.042f) {
+                val r = Alea(151)
+                val y0 = quaiProche(-2f)
+                // La bordure : de grandes pierres de taille, leur dessus clair.
+                val bord = neutre(duJour(0xFFC9C2B2.toInt()))
+                var bx = -2f
+                while (bx < 112f) {
+                    val l = 7f + r() * 3f
+                    piece(Path().apply { addRoundRect(bx + 0.15f, y0 + 0.1f, bx + l - 0.15f, y0 + 1.9f, 0.3f, 0.3f, Path.Direction.CW) }, bord, 0.4f)
+                    rect(bx + 0.4f, y0 + 0.2f, l - 0.8f, 0.45f, neutre(mix(bord, 0xFFFFFFFF.toInt(), 0.35f)), 0.7f)
+                    bx += l
+                }
+                var y = y0 + 2.1f
+                var h = 1.1f
+                var k = 0
+                while (y < BAS + 8f) {
+                    var x = -2f - (if (k % 2 == 0) 0f else h * 0.9f)
+                    while (x < 112f) {
+                        val w = h * (1.5f + r() * 0.5f)
+                        val pierre = pierres[(r() * 4f).toInt().coerceAtMost(3)]
+                        piece(Path().apply {
+                            addRoundRect(x + 0.12f * h, y + 0.1f * h, x + w - 0.12f * h, y + h - 0.1f * h, 0.35f * h, 0.35f * h, Path.Direction.CW)
+                        }, pierre, 0.25f)
+                        // L'usure : le haut de chaque pavé, poli et plus clair.
+                        rect(x + 0.3f * h, y + 0.2f * h, w * 0.5f, 0.18f * h, neutre(mix(pierre, 0xFFFFFFFF.toInt(), 0.3f)), 0.6f)
+                        x += w
+                    }
+                    y += h
+                    h *= 1.22f
+                    k++
+                }
+            }
+            dansLePlancher = false
         }
 
         // ---- Musel, le monument de Schengen (photo du propriétaire)
