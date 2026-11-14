@@ -324,7 +324,7 @@ object Paysages {
 
     private fun cle(lieu: Lieu, heure: Heure, teinte: Float?, l: Int, h: Int, souvenir: Souvenir?,
                     facture: Facture = Facture.VIGNETTE) =
-        "${lieu.ordinal}_${heure.rang}_${teinte}_${souvenir?.saison}_${souvenir?.fete}_${facture.ordinal}_${l}x$h"
+        "${lieu.ordinal}_${heure.rang}_${teinte}_${souvenir?.saison}_${souvenir?.fete}_${facture.ordinal}_${l}x${h}_$VIF"
 
     /** Le rendu s'il est déjà en cache, sans rien calculer. */
     fun enCache(lieu: Lieu, heure: Heure, teinte: Float?, largeurPx: Int, hauteurPx: Int,
@@ -430,6 +430,7 @@ object Paysages {
             dessiner(c, lieu, heure, facture = facture, echelle = k[0])
             c.restore()
             if (PAPIER && facture == Facture.GOUACHE) Grain.poser(bitmap)
+            raviver(bitmap)
             return bitmap
         }
         // Avec une saison, le lieu est peint à part sur un calque transparent,
@@ -448,6 +449,7 @@ object Paysages {
         calque.recycle()
         releve.recycle()
         if (PAPIER && facture == Facture.GOUACHE) Grain.poser(bitmap)
+        raviver(bitmap)
         return bitmap
     }
 
@@ -515,6 +517,37 @@ object Paysages {
         rendus.forEachIndexed { i, b -> CACHE.put("${cle}_p$i", b) }
         ombres.forEachIndexed { i, b -> if (b != null) CACHE.put("${cle}_o$i", b) }
         return rendus
+    }
+
+    /**
+     * Des couleurs plus vives et plus chaudes (essai du 2026-11-14 : « on m'a
+     * dit que les couleurs paraissaient un peu ternes »), de 0 (le rendu
+     * d'aujourd'hui) à 1 : plus de saturation, un peu plus de contraste, et
+     * la lumière tirée vers l'or, posées une fois sur chaque calque rendu.
+     * Le grain du papier et le kraft pâlissent les aplats ; ce réglage leur
+     * rend leur éclat sans repeindre les palettes une à une.
+     */
+    @Volatile internal var VIF = 0f
+
+    private fun raviver(b: Bitmap) {
+        val v = VIF
+        if (v <= 0f) return
+        val m = android.graphics.ColorMatrix().apply { setSaturation(1f + 0.45f * v) }
+        val contraste = 1f + 0.1f * v
+        val decale = (1f - contraste) * 128f
+        m.postConcat(android.graphics.ColorMatrix(floatArrayOf(
+            contraste * (1f + 0.07f * v), 0f, 0f, 0f, decale + 6f * v,
+            0f, contraste * (1f + 0.015f * v), 0f, 0f, decale + 2f * v,
+            0f, 0f, contraste * (1f - 0.09f * v), 0f, decale - 4f * v,
+            0f, 0f, 0f, 1f, 0f
+        )))
+        val copie = b.copy(Bitmap.Config.ARGB_8888, false)
+        val p = Paint().apply {
+            colorFilter = android.graphics.ColorMatrixColorFilter(m)
+            xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC)
+        }
+        Canvas(b).drawBitmap(copie, 0f, 0f, p)
+        copie.recycle()
     }
 
     /**
@@ -662,7 +695,7 @@ object Paysages {
                 }
             }
             silhouettes.forEach { it?.recycle() }
-            plans.forEach { Grain.poser(it) }
+            plans.forEach { Grain.poser(it); raviver(it) }
             return plans
         }
         // Chaque carton porte son ombre sur tous ceux de derrière : là où un

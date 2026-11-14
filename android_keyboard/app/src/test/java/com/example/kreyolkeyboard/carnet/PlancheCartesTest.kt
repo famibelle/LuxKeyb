@@ -119,6 +119,29 @@ class PlancheCartesTest {
         planche(cases, 4, File(dossier, "planche_saisons.png"), reduire = 1)
     }
 
+    /**
+     * Une même carte avant et après un réglage des couleurs (`Paysages.VIF`),
+     * pour juger côte à côte. Ne tourne qu'avec `-PplancheVif`.
+     */
+    @Test
+    fun vif() {
+        assumeTrue(dossier != null && System.getProperty("planche.vif") != null)
+        val ctx = RuntimeEnvironment.getApplication()
+        dossier!!.mkdirs()
+        val cases = ArrayList<Pair<String, Bitmap>>()
+        for (rarete in listOf(Rarete.COMMUN, Rarete.RARE)) for (vif in floatArrayOf(0f, 1f)) {
+            Paysages.VIF = vif
+            val carte = CarteMot("Bréck", date(Calendar.JUNE), 1, 1, setOf(JeuCarte.WUERTPLAZ))
+            val contenu = ContenuCarte(
+                carte = carte, rarete = rarete, rang = null, glose = "pont",
+                autresFormes = emptyList(), exemple = "D'Bréck ass rout.", blason = blason(Lieu.NEI_BRECK)
+            )
+            cases += "${rarete.name} · ${if (vif > 0f) "plus vif" else "aujourd'hui"}" to PartageCarte.dessiner(ctx, contenu)
+        }
+        Paysages.VIF = 0f
+        planche(cases, 2, File(dossier, "planche_vif.png"), reduire = 2)
+    }
+
     private fun planche(cases: List<Pair<String, Bitmap>>, colonnes: Int, sortie: File, reduire: Int) {
         val l = cases[0].second.width / reduire
         val h = cases[0].second.height / reduire
