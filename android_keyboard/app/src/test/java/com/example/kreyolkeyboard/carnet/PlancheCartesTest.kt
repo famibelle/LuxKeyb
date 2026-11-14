@@ -156,7 +156,7 @@ class PlancheCartesTest {
         val echelle = 5f
         val decoupe = android.graphics.Path().apply { addRect(visible, android.graphics.Path.Direction.CW) }
         val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
-        for (lieu in listOf(Lieu.NEI_BRECK, Lieu.HAFF_REIMECH)) {
+        for (lieu in listOf(Lieu.NEI_BRECK, Lieu.HOHLLAY, Lieu.KALLEKTUFFQUELL, Lieu.STAUSEI, Lieu.GELLE_FRA)) {
             val sortie = File(dossier, "secousse/${lieu.name.lowercase()}").apply { mkdirs() }
             val motif = Motif("Bréck", Rarete.COMMUN, zone, blason(lieu), Souvenir.du(2026, 7, 15)).apply { profondeur = true }
             for (k in 0 until 80) {

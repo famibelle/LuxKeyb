@@ -1190,8 +1190,11 @@ object Paysages {
                 } else envol(p, vol, 6f, 10f, 1f)
                 Lieu.FOUER -> if (calque == 3) p.grandeRoue(temps * 0.12f + elan(temps) * 2f, temps)
                     else p.chevaux(temps * (1f + raf * 2f))
-                Lieu.NEI_BRECK -> if (calque == 3) p.enPerspective(50f, 30f, 0.12f) { p.tram(((4f + temps * 5f + 20f) % 140f) - 20f) }
-                    else envol(p, vol, 8f, 30f, 1f)
+                Lieu.NEI_BRECK -> if (calque == 3) p.enPerspective(50f, 30f, 0.12f) {
+                    val x = ((4f + temps * 5f + elan(temps) * 30f + 20f) % 140f) - 20f
+                    p.tram(x)
+                    sonnerie(p, x + 15f, 25.4f, raf)
+                } else envol(p, vol, 8f, 30f, 1f)
                 Lieu.BELVAL -> for ((k, x) in BANNIERES.withIndex()) {
                     p.banniere(x, sin(temps * 1.4f + k) * 0.4f + raf * 1.6f * sin(temps * 9f + k), k)
                 }
@@ -1199,28 +1202,66 @@ object Paysages {
                 Lieu.ANSEBUERG -> if (calque == 3) {
                     for (k in 0..1) {
                         val a = temps * 0.25f + k * PI.toFloat()
-                        p.oiseau(50f + cos(a) * 26f, 6f + sin(a * 2f) * 1.6f, 1.4f, 0.5f + 0.5f * sin(temps * 3f + k), oiseaux(p))
+                        // Une secousse les égaille au-dessus du château, puis ils reprennent leur ronde.
+                        val r = 26f + raf * 18f
+                        p.oiseau(50f + cos(a * (1f + raf)) * r, 6f + sin(a * 2f) * 1.6f - raf * 5f, 1.4f,
+                            0.5f + 0.5f * sin(temps * (3f + raf * 12f) + k), oiseaux(p))
                     }
                 } else { envol(p, vol, 20f, 40f, 1f); envol(p, vol, 80f, 42f, -1f) }
                 Lieu.PAFENDALL -> p.cabine(16f + (1f - cos(temps * 0.35f)) * 0.5f * 34f + raf * sin(temps * 24f) * 0.8f)
-                Lieu.ROUT_BRECK -> { p.bus(((6f + temps * 6f + 14f) % 128f) - 14f); envol(p, vol, 90f, 44f, -1f) }
-                Lieu.GELLE_FRA -> if (calque == 3) lampes(p, temps) else { eclat(p, temps); envol(p, vol, 10f, 52f, 1f) }
+                Lieu.ROUT_BRECK -> {
+                    val x = ((6f + temps * 6f + elan(temps) * 30f + 14f) % 128f) - 14f
+                    p.bus(x)
+                    sonnerie(p, x + 9f, p.tablier(x + 9f) - 4.6f, raf)
+                    envol(p, vol, 90f, 44f, -1f)
+                }
+                Lieu.GELLE_FRA -> if (calque == 3) lampes(p, temps) else {
+                    eclat(p, temps)
+                    pluieDOr(p, temps, raf)
+                    envol(p, vol, 10f, 52f, 1f)
+                }
                 Lieu.BREEDEWEE -> Unit
                 Lieu.FELSMILLEN -> { feuillesQuiTombent(p, temps, raf); envol(p, vol, 12f, 30f, 1f) }
-                Lieu.OURDALL -> if (calque == 3) reflets(p, temps, 0f, 62f, 37f, 50f) else envol(p, vol, 90f, 10f, -1f)
-                Lieu.STAUSEI -> { reflets(p, temps, 0f, 72f, 48f, 57f); envol(p, vol, 96f, 36f, -1f) }
+                Lieu.OURDALL -> if (calque == 3) {
+                    reflets(p, temps, 0f, 62f, 37f, 50f, raf)
+                    ronds(p, vol, 43f, 12f, 34f, 52f)
+                } else envol(p, vol, 90f, 10f, -1f)
+                Lieu.STAUSEI -> {
+                    reflets(p, temps, 0f, 72f, 48f, 57f, raf)
+                    ronds(p, vol, 52f, 20f, 44f, 62f)
+                    envol(p, vol, 96f, 36f, -1f)
+                }
                 Lieu.CONZEFENN -> for ((k, mx) in MOUTONS.withIndex()) {
                     val leve = raf > 0.1f
                     val saut = raf * 1.2f * abs(sin(temps * 12f + k))
                     p.mouton(mx, 47f + (k % 2) * 3f - saut, 1f,
                         if (leve) 0f else 0.5f + 0.5f * sin(temps * 0.8f + k * 1.7f), k % 3 != 0)
                 }
-                Lieu.HAFF_REIMECH -> if (calque == 3) reflets(p, temps, 0f, 100f, 48f, 60f) else envol(p, vol, 4f, 30f, 1f)
-                Lieu.HOHLLAY -> { goutte(p, temps, 50f, 12f, 54f); goutte(p, temps + 1.3f, 70f, 13f, 55f); envol(p, vol, 50f, 22f, -1f) }
-                Lieu.NAPOLEONSGAART -> { balise(p, temps); envol(p, vol, 100f, 44f, -1f) }
-                Lieu.KALLEKTUFFQUELL -> for (k in 0 until 5) goutte(p, temps + k * 0.7f, 12f + k * 17f, 26f, 40f, rond = true)
-                Lieu.PEITRUSDALL -> if (calque == 3) p.tram(((54f + temps * 5f + 20f) % 140f) - 20f, 2.2f)
-                    else envol(p, vol, 6f, 30f, 1f)
+                Lieu.HAFF_REIMECH -> if (calque == 3) {
+                    reflets(p, temps, 0f, 100f, 48f, 60f, raf)
+                    ronds(p, vol, 54f, 24f, 50f, 76f)
+                } else envol(p, vol, 4f, 30f, 1f)
+                Lieu.HOHLLAY -> {
+                    // Une secousse fait tomber une pluie de gouttes de la voûte, et
+                    // sortir les chauves-souris de la grotte.
+                    goutte(p, temps, 50f, 12f, 54f); goutte(p, temps + 1.3f, 70f, 13f, 55f)
+                    for (k in 0 until (raf * 8f).toInt()) goutte(p, temps * 1.7f + k * 0.37f, 30f + (k * 23 % 46), 12f, 55f)
+                    chauvesSouris(p, vol, 50f, 26f)
+                }
+                Lieu.NAPOLEONSGAART -> { balise(p, temps, raf); envol(p, vol, 100f, 44f, -1f) }
+                Lieu.KALLEKTUFFQUELL -> {
+                    // La source déborde : les gouttes se pressent et se multiplient.
+                    val n = 5 + (raf * 9f).toInt()
+                    for (k in 0 until n) {
+                        goutte(p, temps * (1f + raf * 1.5f) + k * 0.7f, 12f + (k * 17 % 76), 26f, 40f, rond = true)
+                    }
+                    ronds(p, vol, 41f, 22f, 48f, 70f)
+                }
+                Lieu.PEITRUSDALL -> if (calque == 3) {
+                    val x = ((54f + temps * 5f + elan(temps) * 30f + 20f) % 140f) - 20f
+                    p.tram(x, 2.2f)
+                    sonnerie(p, x + 15f, 2.2f, raf)
+                } else envol(p, vol, 6f, 30f, 1f)
                 Lieu.WOLLEFSSCHLUCHT -> { feuillesQuiTombent(p, temps, raf); envol(p, vol, 50f, 10f, 1f) }
                 Lieu.PRIEDEGTSTULL -> { feuillesQuiTombent(p, temps, raf); envol(p, vol, 20f, 20f, 1f) }
                 Lieu.DUMONGSHAFF -> if (calque == 3) canards(p, temps, raf) else envol(p, vol, 94f, 20f, -1f)
@@ -1228,13 +1269,14 @@ object Paysages {
         }
 
         /** Des reflets qui jouent sur une eau, de [x0] à [x1], entre [y0] et [y1]. */
-        private fun reflets(p: Peintre, temps: Float, x0: Float, x1: Float, y0: Float, y1: Float) {
+        private fun reflets(p: Peintre, temps: Float, x0: Float, x1: Float, y0: Float, y1: Float, raf: Float = 0f) {
             val clair = p.mix(heure.eau, 0xFFFFFFFF.toInt(), if (heure.nuit) 0.2f else 0.5f)
             val n = ((x1 - x0) / 10f).toInt().coerceAtLeast(3)
             for (k in 0 until n) {
-                val x = x0 + (k + 0.5f) * (x1 - x0) / n + sin(temps * 0.4f + k * 1.3f) * 2f
+                // Une secousse ride l'eau : les reflets dansent plus vite et plus loin.
+                val x = x0 + (k + 0.5f) * (x1 - x0) / n + sin(temps * (0.4f + raf * 5f) + k * 1.3f) * (2f + raf * 3f)
                 val y = y0 + ((k * 7) % 5) / 4f * (y1 - y0)
-                val o = 0.3f + 0.35f * sin(temps * 1.1f + k * 2.3f)
+                val o = 0.3f + 0.35f * sin(temps * (1.1f + raf * 6f) + k * 2.3f) + raf * 0.3f
                 p.rect(x - 1.5f, y, 3f + (k % 2) * 2f, 0.3f, clair, o.coerceAtLeast(0f))
             }
         }
@@ -1256,8 +1298,10 @@ object Paysages {
         }
 
         /** Le feu rouge de l'antenne de Napoleonsgaart, qui clignote, plus vif le soir et la nuit. */
-        private fun balise(p: Peintre, temps: Float) {
-            if ((temps % 1.6f) > 0.5f && temps > 0f) return
+        private fun balise(p: Peintre, temps: Float, raf: Float = 0f) {
+            // Une secousse l'affole : elle clignote vite le temps que ça se calme.
+            val periode = if (raf > 0.08f) 0.3f else 1.6f
+            if ((temps % periode) > periode * 0.32f && temps > 0f) return
             val rouge = 0xFFFF3B30.toInt()
             if (heure.allume) p.rond(86f, 0.2f, 1.4f, rouge, 0.3f)
             p.rond(86f, 0.2f, 0.5f, rouge, 1f)
@@ -1272,6 +1316,72 @@ object Paysages {
                 val y = 50f + k * 3f + sin(temps * 1.5f + k) * 0.2f
                 p.ovalePapier(x, y, 1.6f, 0.7f, brun, 0f)
                 p.rond(x + 1.3f, y - 0.9f, 0.55f, vert)
+            }
+        }
+
+        /**
+         * Des ronds qui s'élargissent sur l'eau, à la hauteur [y], un par
+         * abscisse de [xs], l'un après l'autre après la secousse ; aplatis,
+         * l'eau étant vue de trois quarts.
+         */
+        private fun ronds(p: Peintre, vol: Float, y: Float, vararg xs: Float) {
+            if (vol < 0f || vol > 3f) return
+            val clair = p.mix(heure.eau, 0xFFFFFFFF.toInt(), if (heure.nuit) 0.25f else 0.55f)
+            for ((k, x) in xs.withIndex()) {
+                val d = vol - k * 0.35f
+                if (d < 0f) continue
+                val yy = y + (k % 2) * 1.5f
+                p.c.save()
+                p.c.scale(1f, 0.38f, x, yy)
+                p.anneau(x, yy, 0.6f + d * 2.6f, p.mix(clair, heure.eau, (d / 2.6f).coerceIn(0f, 1f)), 0.45f)
+                p.c.restore()
+            }
+        }
+
+        /**
+         * Le tram ou le bus qui sonne en filant, l'avant en ([x], [y]) : son
+         * phare s'allume et deux traits de son en partent, le temps que la
+         * secousse retombe.
+         */
+        private fun sonnerie(p: Peintre, x: Float, y: Float, raf: Float) {
+            if (raf < 0.06f) return
+            val o = (raf * 1.4f).coerceAtMost(1f)
+            p.rond(x, y + 2f, 1.6f, 0xFFFFF4C8.toInt(), 0.35f * o)
+            p.rond(x, y + 2f, 0.5f, 0xFFFFF4C8.toInt(), o)
+            val col = if (heure.nuit) 0xFFFFF4C8.toInt() else p.mix(heure.pres, 0xFF000000.toInt(), 0.45f)
+            for (k in 0..1) {
+                val r = 1.6f + k * 1.2f
+                p.trait("M${x + r * 0.7f} ${y - r * 0.7f}Q${x + r * 1.1f} ${y + 0.2f} ${x + r * 0.7f} ${y + r * 0.9f}", col, 0.25f, o)
+            }
+        }
+
+        /** Une pluie d'éclats d'or le long de la Gëlle Fra, à la secousse. */
+        private fun pluieDOr(p: Peintre, temps: Float, raf: Float) {
+            if (raf < 0.05f) return
+            val x0 = if (PAPIER) 83f else 82f
+            for (k in 0 until 7) {
+                val o = (raf * (0.5f + 0.5f * sin(temps * 9f + k * 1.7f))).coerceIn(0f, 1f)
+                if (o < 0.05f) continue
+                val x = x0 + sin(k * 2.1f) * 3f
+                val y = 6f + k * 4.2f
+                val r = 0.8f + 0.8f * o
+                p.ligne(x - r, y, x + r, y, 0xFFFFF8D8.toInt(), 0.25f, o)
+                p.ligne(x, y - r, x, y + r, 0xFFFFF8D8.toInt(), 0.25f, o)
+                p.rond(x, y, 0.35f, 0xFFFFFFFF.toInt(), o)
+            }
+        }
+
+        /** Les chauves-souris qui sortent de la grotte à la secousse, en zigzag. */
+        private fun chauvesSouris(p: Peintre, vol: Float, x: Float, y: Float) {
+            if (vol < 0f || vol > 4f) return
+            val col = if (heure.nuit) 0xFF0E0A14.toInt() else 0xFF2A2230.toInt()
+            for (k in 0 until 5) {
+                val d = vol - k * 0.15f
+                if (d < 0f) continue
+                val sens = if (k % 2 == 0) 1f else -1f
+                val bx = x + sens * (d * 8f + k) + sin(d * 7f + k) * 1.5f
+                val by = y - d * 6f + cos(d * 9f + k) * 1.2f
+                p.oiseau(bx, by, 1.1f, 0.5f + 0.5f * sin(vol * 30f + k), col)
             }
         }
 
