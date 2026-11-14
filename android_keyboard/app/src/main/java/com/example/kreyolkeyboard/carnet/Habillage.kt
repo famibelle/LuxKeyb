@@ -93,7 +93,9 @@ internal object Habillage {
      */
     fun appliquerPlans(
         couches: Array<Bitmap>, masques: Array<Bitmap?>, lieu: Lieu, heure: Heure, s: Souvenir, ks: Array<FloatArray>,
-        releves: Array<Bitmap?> = arrayOfNulls(couches.size)
+        releves: Array<Bitmap?> = arrayOfNulls(couches.size),
+        /** Rempli l'hiver : la neige des crêtes de chaque calque, à part (voir [fond]). */
+        neiges: Array<Bitmap?>? = null
     ) {
         val graine = lieu.ordinal * 1009 + s.saison.ordinal * 101 + heure.rang
         val alea = Paysages.Alea(graine)
@@ -107,8 +109,17 @@ internal object Habillage {
             masques[i]?.getPixels(mk, 0, w, 0, 0, w, h)
             val px = IntArray(w * h)
             b.getPixels(px, 0, w, 0, 0, w, h)
-            val fleurs = fond(px, mk, w, h, u, heure, s.saison, alea, lire(releves[i], w, h))
+            val aPart = neiges != null && s.saison == Saison.WANTER && masques[i] != null
+            val neige = if (aPart) ByteArray(w * h) else null
+            val fleurs = fond(px, mk, w, h, u, heure, s.saison, alea, lire(releves[i], w, h), neige)
             b.setPixels(px, 0, w, 0, 0, w, h)
+            if (neige != null) neiges!![i] = Bitmap.createBitmap(w, h, Bitmap.Config.ALPHA_8).also { nb ->
+                val ligne = nb.rowBytes
+                val octets = if (ligne == w) neige else ByteArray(ligne * h).also { o ->
+                    for (y in 0 until h) System.arraycopy(neige, y * w, o, y * ligne, w)
+                }
+                nb.copyPixelsFromBuffer(java.nio.ByteBuffer.wrap(octets))
+            }
             fleurir(Canvas(b), p, u, alea, fleurs)
         }
         val devant = couches.last()
@@ -177,7 +188,13 @@ internal object Habillage {
      */
     private fun fond(
         px: IntArray, mk: IntArray, w: Int, h: Int, u: Float,
-        P: Heure, saison: Saison, alea: Paysages.Alea, releve: IntArray? = null
+        P: Heure, saison: Saison, alea: Paysages.Alea, releve: IntArray? = null,
+        /**
+         * L'hiver, où poser la neige des crêtes au lieu de la peindre : 255
+         * sous la neige, pour que la carte ouverte la pose à part et la fasse
+         * tomber à la secousse ([Paysages.Neige]).
+         */
+        neige: ByteArray? = null
     ): FloatArray {
         val nuit = if (P.nuit) 0.55f else 1f
         val sg = segments(P)
@@ -323,12 +340,19 @@ internal object Habillage {
         if (saison == Saison.WANTER) {
             val blanc = if (P.nuit) 0xFFBECCE4.toInt() else 0xFFFAFCFF.toInt()
             for (x in 0 until w) {
+                // Une couche qui s'est accumulée : épaisse, bombée en ondes
+                // douces le long de la crête, pas un liseré de colonne en colonne.
+                val xm = x / u.coerceAtLeast(0.1f)
+                val ep = max(1, (u * (7.5f + 2.8f * sin(xm / 6.5f) + 1.6f * sin(xm / 2.4f + 1.3f) + 0.6f * alea())).roundToInt())
                 var avant = false
                 for (y in 1 until h) {
                     val a = objet(mk, y * w + x)
                     if (a && !avant) {
-                        val ep = max(1, ((3f + (alea() * 2f).roundToInt()) * u).roundToInt())
-                        for (k in 0 until min(ep, h - y)) px[(y + k) * w + x] = blanc
+                        for (k in 0 until min(ep, h - y)) {
+                            val j = (y + k) * w + x
+                            if (!objet(mk, j)) break
+                            if (neige != null) neige[j] = 0xFF.toByte() else px[j] = blanc
+                        }
                     }
                     avant = a
                 }

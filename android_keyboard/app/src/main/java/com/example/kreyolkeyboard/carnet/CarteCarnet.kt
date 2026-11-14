@@ -111,7 +111,7 @@ object CarteCarnet {
         // Un numéral n'a pas de fiche au dictionnaire : sa leçon est sa
         // décomposition, qui est exactement ce que Zuelwuert enseigne.
         carte.nombre?.let { valeur ->
-            return CartesPapier.corriger(ContenuCarte(
+            return avecLieu(context, carte, carte.forme, CartesPapier.corriger(ContenuCarte(
                 carte = carte,
                 rarete = Rarete.pourNombre(valeur),
                 rang = null,
@@ -124,11 +124,11 @@ object CarteCarnet {
                 // couleur, au lieu du semis aléatoire qu'elles étaient.
                 blason = Blasonnement(champ = Champ.TEMPS, nature = Nature.AUTRE, chiffres = valeur.toString()),
                 plume = PreuveDeFrappe.aLaPlume(context, carte.forme)
-            ))
+            )))
         }
         val fiche = TranslationDictionary.fiche(context, carte.forme)
         val exemple = TranslationDictionary.exemplesTraduits(context, fiche).firstOrNull()
-        return CartesPapier.corriger(CarteFierkelsmaart.corriger(context, CarteAccueil.corriger(context, ContenuCarte(
+        return avecLieu(context, carte, fiche.mot, CartesPapier.corriger(CarteFierkelsmaart.corriger(context, CarteAccueil.corriger(context, ContenuCarte(
             carte = carte,
             rarete = Carnet.rarete(context, carte),
             rang = Carnet.rang(context, carte.forme),
@@ -144,7 +144,20 @@ object CarteCarnet {
             traductionExemple = exemple?.traduction,
             categorie = TranslationDictionary.categorie(context, fiche.mot),
             plume = PreuveDeFrappe.aLaPlume(context, carte.forme)
-        ))))
+        )))))
+    }
+
+    /**
+     * Le lieu de la carte, s'il ne lui est pas imposé (le Breedewee des
+     * cartes imprimées) : le premier de son champ pour une carte gagnée
+     * avant la deuxième vague de lieux, sinon celui que son [mot] tire parmi
+     * les lieux du champ (voir [Lieu.pour], [Carnet.basculeDesLieux]).
+     */
+    private fun avecLieu(context: Context, carte: CarteMot, mot: String, c: ContenuCarte): ContenuCarte {
+        if (c.blason.lieu != null) return c
+        val lieu = if (carte.premiereFois < Carnet.basculeDesLieux(context)) Lieu.de(c.blason.champ)
+            else Lieu.pour(c.blason.champ, mot, c.rarete)
+        return c.copy(blason = c.blason.copy(lieu = lieu))
     }
 
     /**

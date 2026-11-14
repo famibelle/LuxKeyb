@@ -243,6 +243,132 @@ build release (sur l'émulateur, le rendu des plans d'une carte ouverte est
 passé de 760 à environ 590 ms, et une carte feuilletée est prête en 100 ms
 au lieu de 750).
 
+### Le papier découpé, et les lieux d'après photos (2026-11-13)
+
+Repris de KreyolKeyb, où le propriétaire l'a choisi le 2026-11-07 après la
+gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
+
+- **Des feuilles de papier opaques** à la place du carton peint
+  (`Paysages.PAPIER`, faux pour retrouver la gouache) : aplats sans coups de
+  pinceau, **grain** posé une fois sur chaque calque (`Grain`), **tranche de
+  kraft tout autour** de chaque découpe (`krafter`), et sous chaque pièce une
+  ombre douce que la rampe porte vers le haut. Le ciel est fait de bandes de
+  papier aux bords ondulés (`cielPapier`).
+- **L'ombre portée vit** : chaque carton a son ombre à part
+  (`Paysages.ombres`), que `Motif.peindreOmbre` pose à chaque trame et qui
+  glisse avec le carton de derrière. Pencher la carte fait varier l'écart
+  entre une découpe et son ombre. Avant, l'ombre était peinte une fois dans
+  le carton de derrière et restait collée.
+- **Chaque lieu est redessiné d'après une photo du propriétaire**, sa
+  silhouette la plus reconnaissable sur un bord ou dans la bande du haut
+  (le dessin du mot tient le centre). Demande les photos au propriétaire
+  plutôt que de dessiner de mémoire. Fait : Veianen (le château dans la
+  brume), Esch-Sauer (la tour et son drapeau), Neimënster (vu des casemates
+  du Bock), Mëllerdall (le Schiessentümpel), Stad (le Grund sur l'Alzette),
+  Musel (le monument de Schengen), Schueberfouer (la roue et le carrousel),
+  Rout Bréck (le pont rouge vu d'en bas), Breedewee (la porte de la rue
+  Large), Gëlle Fra (la statue au couchant, grande, sur le bord droit).
+- **Vus de trois quarts** (demande du propriétaire, 2026-11-14) : « dans la
+  mesure du possible, les images affichées dans les cartes seront en prise
+  de vue de trois quarts paysage ». Une façade, un pont ou une tour ne se
+  présente pas de face : ses horizontales penchent (`enPerspective`, une
+  oblique qui garde les verticales), une tour montre deux faces, une roue
+  se voit en ellipse. Ce qui vit sur un objet penché (le tram du pont
+  Adolphe) est posé dans la même oblique.
+- **Une deuxième vague de lieux** (`Lieu.choix`) : un champ peut en avoir
+  deux, tirés sur le mot (`Lieu.pour`). Pafendall (mouvement), Ansebuerg
+  (temps), Belval (économie), Nei Bréck, le pont Adolphe (chose publique),
+  Bäerdref (vie) ; puis la troisième vague (2026-11-14) : Felsmillen
+  (mouvement), Ourdall (temps), Stauséi et Conzefenn (territoire), Haff
+  Réimech (économie), Hohllay (savoir), Napoleonsgaart (société),
+  Kallektuffquell (vie), et pour les mots sans champ, qui sont les plus
+  nombreux, Péitrusdall, Wollefsschlucht, Priedegtstull et Dumongshaff.
+  87 cases d'album en tout. Les cartes gagnées avant la bascule
+  (`Carnet.basculeDesLieux`) gardent leur lieu ; la nuit des très rares
+  reste au premier lieu du champ, faute de très rares pour remplir deux
+  cases. Chaque lieu ajouté à un champ doit garder trois mots de Wuertplaz
+  par case dans les quatre langues (`SeriesPaysagesAssetTest`) : avec la
+  répartition d'aujourd'hui, la case la plus mince en a trois. Les champs
+  sont pleins ; un nouveau lieu ira d'abord aux mots sans champ, qui ont de
+  la marge (plus de 160 rares par langue).
+- **Un élément vivant par lieu** (`Paysages.Vie`), qui assouplit la règle 7 :
+  la brume de l'Our, le drapeau, la roue et les chevaux de bois, les chutes,
+  les reflets de l'Alzette, la péniche, le tram, les bannières de Belval, la
+  cabine de l'ascenseur, le bus de la Rout Bréck, et depuis le 2026-11-14
+  les lanternes du Breedewee, dont la flamme vacille de jour comme de nuit,
+  et le chat roux qui traverse sa ruelle toutes les vingt secondes. Lents,
+  en boucle longue, leurs lumières allumées le soir et la nuit. **Secouer le
+  téléphone** fait répondre chaque lieu à sa manière, pas seulement par des
+  oiseaux qui s'envolent (2026-11-14) : la roue s'emballe, les chutes
+  éclaboussent, le tram et le bus filent et sonnent, des ronds s'élargissent
+  sur l'eau, la source de tuf déborde, la grotte Hohllay lâche ses gouttes
+  et ses chauves-souris, la balise du Napoleonsgaart s'affole, une pluie
+  d'éclats d'or court sur la Gëlle Fra, les lanternes du Breedewee tanguent
+  et son chat détale. Ce que `Vie` dessine n'est pas peint dans les cartons
+  (`Peintre.vivant`) ; une image figée le pose à l'instant zéro.
+- **Le surcadrage naturel** (demande du propriétaire, 2026-11-14) : « du
+  surcadrage naturel quand c'est possible, par exemple les branches d'arbres
+  sur les côtés et les roseaux au premier plan encadrent le pont et ajoutent
+  de la profondeur entre le premier plan et l'arrière-plan ». Il remplace
+  les coulisses des rares (deux arbres en boule), qui cachaient les sujets
+  tenus sur un bord. Chaque lieu a le sien (`Paysages.Surcadre`), choisi
+  d'après sa photo et la place de son sujet :
+  - **en haut**, une branche qui entre par un coin et pend dans la bande du
+    haut : feuillu, saule pleureur sur l'eau, bouleau au tronc blanc
+    (Belval, Conzefenn), sarment de vigne à la Moselle ; du côté où le sujet
+    ne se tient pas, et plus courte (`portee`) quand un sujet tient le haut
+    (le château de Vianden) ;
+  - **en bas**, ce qui pousse au pied de la scène, montant de hors champ
+    dans les coins : roseaux et massettes au bord de l'eau, fougères sous
+    le grès et dans les gorges, hautes herbes, fleurs des champs (Gëlle
+    Fra), linaigrettes de la tourbière (Conzefenn) ;
+  - **deux rangs** : le premier sur un sixième carton, tout contre la
+    vitre, qui glisse le moins ; le second, à demi-taille et plus clair,
+    planté dans la rainure du proche. C'est l'étagement entre les deux qui
+    creuse la scène ;
+  - **la saison** de la carte se lit dedans : feuilles rousses et roseaux
+    secs l'automne, branches nues sous la neige l'hiver, vert tendre au
+    printemps, la grappe mûre à la Moselle ;
+  - **pour toutes les raretés** : une commune, la carte qu'on manipule le
+    plus, a le plein effet ;
+  - **pas de surcadrage** là où le lieu a déjà son cadre de scène (voûte
+    du Bock, charmille d'Ansembourg, porte du Breedewee) ni là où les deux
+    bords sont pris (la roue et le carrousel de la Schueberfouer) ; seules
+    des fougères au pied de l'arche de Berdorf, de la grotte de la Hohllay,
+    des gorges du Loup et de la source de tuf ;
+  - **les règles** : rien dans la boîte du dessin du mot (17 à 83 ×
+    12,5 à 58,5) qui y fasse du détail fort ; la branche reste dans la
+    bande du haut, le pied dans les coins du bas ; jamais sur le sujet du
+    lieu, qu'il doit encadrer et non cacher ;
+  - **il bouge** (2026-11-14) : chaque brin est découpé à part avec son
+    ombre (`Paysages.brins`) et posé à chaque trame. Au repos, une brise
+    lente et à peine visible ; à la secousse, un coup de vent qui oscille
+    et s'amortit en trois secondes (`Vie.balancement`). Les branches
+    tournent autour de leur attache, hors champ dans le coin ; les roseaux,
+    les fougères et les herbes ploient depuis leur pied, tous du même côté ;
+    le bouleau frémit à peine depuis son pied.
+- **La neige qui s'accumule et qui tombe** (demande du propriétaire,
+  2026-11-14) : sur une carte d'hiver, une couche épaisse et bombée sur le
+  haut de chaque carton (crêtes, toits, haies), avec une ombre bleutée
+  dessous. `Habillage` la rend à part (`Paysages.neiges`) et la carte la
+  pose par-dessus chaque carton : une secousse en fait tomber des paquets
+  depuis les bords, il reste un givre, puis elle se reforme en une
+  vingtaine de secondes sous les flocons de l'ambiance (`Vie.neige`). La
+  vignette et l'image partagée gardent toute leur neige.
+- **Des couleurs plus vives et plus chaudes** (2026-11-14, « on m'a dit que
+  les couleurs paraissaient un peu ternes ») : le propriétaire a choisi, sur
+  une commune, une rare et une très rare côte à côte, le cran fort
+  (`Paysages.VIF_RETENU`, 1,8) : saturation, un peu de contraste, lumière
+  tirée vers l'or, posés une fois sur chaque calque rendu. À surveiller :
+  la grotte Hohllay vire à l'orange et la source de tuf au vert citron.
+- **Le tracé de sonorité est centré** sur la carte (2026-11-14) : calé à
+  gauche jusque-là, un mot court penchait d'un côté de la fenêtre.
+
+**Voir les cartes sans téléphone** : `PlancheCartesTest` (Robolectric, rendu
+natif du canevas) rend la fenêtre de chaque lieu aux quatre heures, droite
+puis penchée, et les cartes entières :
+`./gradlew :app:testDebugUnitTest --tests '*PlancheCartesTest*' -Pplanche=<dossier> [-PplancheCartes]`.
+
 ## 3. Pourquoi cette direction
 
 ### Pour l'expérience
@@ -320,13 +446,13 @@ au lieu de 750).
    | 3. Le lointain | crête, ville au loin, tours | 3 % |
    | 4. Le milieu | collines, façades, bâti | 1,7 % |
    | 5. Le proche | le premier plan du lieu, posé sur le plancher | 0,7 % |
-   | 6. Les coulisses (rare et très rare seulement) | deux châssis sur les côtés : arbres, ou piliers et pignons au Breedewee | 0,3 % |
+   | 6. Le surcadrage (là où le lieu en a un) | les branches d'un coin du haut et ce qui pousse au pied de la scène (roseaux, fougères, herbes) | 0,3 % |
 
-   Les cinq plans viennent **du lieu lui-même**. Les **rares et les très
-   rares gardent en plus leurs coulisses** (décision du propriétaire,
-   2026-11-01) : un sixième carton sur les côtés, devant tous les autres, qui
-   glisse le moins (0,3 %) et porte son ombre sur eux. C'est la seule
-   différence de profondeur qui reste entre les paliers. Les nuages
+   Les cinq plans viennent **du lieu lui-même**. Le sixième est le
+   **surcadrage naturel** du lieu (2026-11-14, voir § 2), pour toutes les
+   raretés : il a remplacé les coulisses que les rares et les très rares
+   avaient seules depuis le 2026-11-01. Le nombre de cartons ne dit donc
+   plus du tout la rareté. Les nuages
    portent leur ombre sur leur propre carton, pour qu'elle voyage avec eux.
    C'est le seul élément qui bouge seul (règle 7) ; les cartes de fête,
    rendues à plat, n'en ont pas.

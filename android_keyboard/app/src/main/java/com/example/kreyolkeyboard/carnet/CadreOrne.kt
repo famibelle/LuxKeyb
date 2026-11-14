@@ -4429,14 +4429,17 @@ class CarteOrnee(
      */
     private val ecouteSecousse = object : android.hardware.SensorEventListener {
         override fun onSensorChanged(e: android.hardware.SensorEvent) {
-            val a = ambiance ?: return
+            val a = ambiance
+            if (a == null && !motif.vit) return
             val v = e.values
             val m = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2])
             if (m < SEUIL_SECOUSSE) return
             val maintenant = android.os.SystemClock.uptimeMillis()
             if (maintenant - derniereSecousse < 120L) return
             derniereSecousse = maintenant
-            a.secouer(((m - SEUIL_SECOUSSE) / 20f).coerceIn(0.3f, 1f))
+            val force = ((m - SEUIL_SECOUSSE) / 20f).coerceIn(0.3f, 1f)
+            a?.secouer(force)
+            motif.secouer(force)
             invalidate()
         }
 
@@ -4444,7 +4447,7 @@ class CarteOrnee(
     }
 
     private fun armerSecousse() {
-        if (ambiance == null || secousses != null) return
+        if ((ambiance == null && !motif.vit) || secousses != null) return
         val m = context.getSystemService(Context.SENSOR_SERVICE) as? android.hardware.SensorManager ?: return
         val capteur = m.getDefaultSensor(android.hardware.Sensor.TYPE_LINEAR_ACCELERATION) ?: return
         m.registerListener(ecouteSecousse, capteur, android.hardware.SensorManager.SENSOR_DELAY_GAME)
@@ -4989,6 +4992,7 @@ class Motif(
     private fun peindrePlans(c: Canvas, etages: Array<Bitmap>, l: Int, h: Int, regardX: Float, regardY: Float) {
         val sx = visible.width() / l
         val sy = visible.height() / h
+        val ombres = Paysages.ombres(lieu, heure, teinteChamp, l, h, souvenir)
         for (i in etages.indices) {
             val dx = Paysages.GLISSEMENT[i] * visible.width() * regardX
             val dy = Paysages.GLISSEMENT[i] * visible.height() * regardY
@@ -4999,8 +5003,229 @@ class Motif(
                 visible.right + mx + dx, visible.bottom + my + dy
             )
             if (i == Paysages.NUAGES) peindreNuages(c, etages[i], regardX, regardY)
-            else c.drawBitmap(etages[i], null, ouPlan, peinture)
+            else {
+                ombres?.getOrNull(i)?.let { o -> peindreOmbre(c, o, i, regardX, regardY) }
+                c.drawBitmap(etages[i], null, ouPlan, peinture)
+                neigesAPeindre(l, h)?.getOrNull(i)?.let { n -> peindreNeige(c, n, i, sx, sy) }
+                vie?.takeIf { it.vitDans(i) }?.let { v -> peindreVie(c, v, i, l, h, sx, sy) }
+            }
         }
+        val brins = brinsAPeindre(l, h) ?: return
+        if (brins.isEmpty()) return
+        // Le second rang du pied, planté dans la rainure du proche, glisse avec
+        // lui ; le rang de devant glisse le moins, juste derrière la vitre.
+        peindreBrins(c, brins, 4, l, h, sx, sy, regardX, regardY)
+        peindreBrins(c, brins, 5, l, h, sx, sy, regardX, regardY)
+    }
+
+    /** La neige des crêtes d'une carte d'hiver ([Paysages.neiges]), et ses points d'où elle tombe. */
+    private var neiges: Array<Bitmap?>? = null
+    private var neigesPour = 0L
+    private var bordsDeNeige: Array<FloatArray?> = arrayOfNulls(Paysages.PLANS)
+
+    private fun neigesAPeindre(l: Int, h: Int): Array<Bitmap?>? {
+        if (souvenir?.saison != Saison.WANTER) return null
+        val taille = l.toLong() shl 32 or h.toLong()
+        neiges?.takeIf { neigesPour == taille && it.none { b -> b?.isRecycled == true } }?.let { return it }
+        val n = Paysages.neiges(lieu, heure, teinteChamp, l, h, souvenir) ?: return null
+        neiges = n
+        neigesPour = taille
+        bordsDeNeige = Array(n.size) { i -> n[i]?.let { bords(it) } }
+        return n
+    }
+
+    /**
+     * Les points d'où la neige tombe, en unités de la boîte du calque : le
+     * haut de chaque couche de neige, une colonne sur cinquante environ,
+     * jusqu'à deux par colonne (une crête, et un toit plus bas).
+     */
+    private fun bords(masque: Bitmap): FloatArray {
+        val w = masque.width
+        val h = masque.height
+        val ligne = masque.rowBytes
+        val octets = ByteArray(ligne * h)
+        masque.copyPixelsToBuffer(java.nio.ByteBuffer.wrap(octets))
+        val k = Paysages.cadrage(w.toFloat(), h.toFloat())
+        val pas = maxOf(1, w / 50)
+        val sortie = ArrayList<Float>()
+        var x = pas / 2
+        while (x < w) {
+            var avant = false
+            var trouves = 0
+            for (y in 0 until h) {
+                val dedans = octets[y * ligne + x].toInt() != 0
+                if (dedans && !avant) {
+                    sortie += (x - k[1]) / k[0]
+                    sortie += (y - k[2]) / k[0]
+                    if (++trouves == 2) break
+                }
+                avant = dedans
+            }
+            x += pas
+        }
+        return sortie.toFloatArray()
+    }
+
+    private val pinceauNeige = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
+
+    /**
+     * La neige accumulée sur le haut du carton [i], posée par-dessus lui, avec
+     * une ombre bleutée dessous : ce qu'il en reste ([Paysages.Vie.neige]).
+     * Juste après une secousse, des paquets s'en détachent et tombent.
+     */
+    private fun peindreNeige(c: Canvas, masque: Bitmap, i: Int, sx: Float, sy: Float) {
+        val temps = maintenant(c)
+        val v = vie
+        val niveau = v?.neige(temps) ?: 1f
+        val k = cadrage[0]
+        pinceauNeige.color = 0xFF3A4A6A.toInt()
+        pinceauNeige.alpha = (0.22f * niveau * 255f).toInt()
+        ouBrin.set(ouPlan)
+        ouBrin.offset(0f, 0.35f * k)
+        c.drawBitmap(masque, null, ouBrin, pinceauNeige)
+        pinceauNeige.color = Paysages.couleurNeige(heure)
+        pinceauNeige.alpha = (niveau * 255f).toInt()
+        c.drawBitmap(masque, null, ouPlan, pinceauNeige)
+        // Les paquets qui tombent, dans la boîte du calque : ils glissent avec lui.
+        val vol = v?.depuisSecousse(temps) ?: return
+        val chute = v.chuteDeNeige()
+        val bords = bordsDeNeige.getOrNull(i) ?: return
+        if (vol < 0f || vol > 2.4f || chute <= 0.02f || bords.isEmpty()) return
+        val lp = (ouPlan.width() / sx).toInt()
+        val hp = (ouPlan.height() / sy).toInt()
+        val kb = Paysages.cadrage(lp.toFloat(), hp.toFloat())
+        c.save()
+        c.translate(ouPlan.left + kb[1] * sx, ouPlan.top + kb[2] * sy)
+        c.scale(kb[0] * sx, kb[0] * sy)
+        pinceauNeige.style = Paint.Style.FILL
+        val n = bords.size / 2
+        for (j in 0 until n) {
+            if ((j * 0.618f) % 1f > chute) continue
+            val d = vol - ((j * 7) % 11) * 0.025f
+            if (d < 0f || d > 2.2f) continue
+            val y = bords[2 * j + 1] + 0.4f + 27f * d * d
+            if (y > Paysages.HAUTEUR + 4f) continue
+            val x = bords[2 * j] + sin(j * 1.7f) * 1.2f * d
+            val r = 0.45f + ((j * 5) % 7) / 7f * 0.55f
+            pinceauNeige.alpha = ((1f - d / 2.2f) * 255f).toInt().coerceIn(0, 255)
+            c.drawCircle(x, y, r, pinceauNeige)
+            c.drawCircle(x + r * 0.7f, y - r * 0.3f, r * 0.6f, pinceauNeige)
+        }
+        c.restore()
+    }
+
+    /** Les brins du surcadrage ([Paysages.Brin]) de la fenêtre de [l] × [h] pixels. */
+    private var brins: Array<Paysages.Brin>? = null
+    private var brinsPour = 0L
+
+    private fun brinsAPeindre(l: Int, h: Int): Array<Paysages.Brin>? {
+        val taille = l.toLong() shl 32 or h.toLong()
+        brins?.takeIf { brinsPour == taille && it.none { b -> b.image.isRecycled || b.ombre.isRecycled } }?.let { return it }
+        return Paysages.brins(lieu, heure, teinteChamp, l, h, souvenir)?.also { brins = it; brinsPour = taille }
+    }
+
+    private val ouBrin = RectF()
+    private val penche = android.graphics.Matrix()
+
+    /**
+     * Les brins du rang [plan], chacun balancé autour de son point fixe : la
+     * branche tourne autour de son attache dans le coin, le tronc du bouleau
+     * autour de son pied, à peine ; les roseaux, les fougères et les herbes
+     * ploient depuis leur pied, tous du même côté, comme sous le même vent.
+     * L'ombre bouge avec le brin qui la porte.
+     */
+    private fun peindreBrins(c: Canvas, brins: Array<Paysages.Brin>, plan: Int, l: Int, h: Int, sx: Float, sy: Float,
+                             regardX: Float, regardY: Float) {
+        val dx = Paysages.GLISSEMENT[plan] * visible.width() * regardX
+        val dy = Paysages.GLISSEMENT[plan] * visible.height() * regardY
+        val mx = Paysages.marge(plan, l) * sx
+        val my = Paysages.marge(plan, h) * sy
+        val k = Paysages.cadrage((l + 2 * Paysages.marge(plan, l)).toFloat(), (h + 2 * Paysages.marge(plan, h)).toFloat())
+        val temps = maintenant(c)
+        c.save()
+        c.translate(visible.left - mx + dx + k[1] * sx, visible.top - my + dy + k[2] * sy)
+        c.scale(k[0] * sx, k[0] * sy)
+        for (b in brins) {
+            if (b.plan != plan) continue
+            val m = vie?.balancement(temps, b.phase) ?: 0f
+            val signe = if (b.droite) -1f else 1f
+            c.save()
+            when (b.sorte) {
+                Paysages.Brin.Sorte.BRANCHE -> c.rotate(m * 7f * signe, b.px, b.py)
+                Paysages.Brin.Sorte.TRONC -> c.rotate(m * 1.2f * signe, b.px, b.py)
+                Paysages.Brin.Sorte.PIED -> {
+                    penche.setSkew(m * (if (plan == 4) 0.16f else 0.22f), 0f, b.px, b.py)
+                    c.concat(penche)
+                }
+            }
+            ouBrin.set(b.boite)
+            ouBrin.offset(Paysages.OMBRE_PORTEE_X, Paysages.OMBRE_PORTEE_Y)
+            c.drawBitmap(b.ombre, null, ouBrin, peintureOmbre)
+            c.drawBitmap(b.image, null, b.boite, peinture)
+            c.restore()
+        }
+        c.restore()
+    }
+
+    /**
+     * L'heure des choses qui bougent, en secondes : l'horloge sur la carte
+     * ouverte, zéro sur une image figée (canevas logiciel), ou l'horloge
+     * d'essai des planches de relecture ([Paysages.horlogeEssai]).
+     */
+    private fun maintenant(c: Canvas?): Float = Paysages.horlogeEssai
+        ?: if (c == null || c.isHardwareAccelerated) android.os.SystemClock.uptimeMillis() / 1000f else 0f
+
+    /**
+     * Ce qui vit dans le lieu ([Paysages.Vie]) : la roue, le tram, la brume…
+     * Seulement sur la carte ouverte, où le lieu est en cartons ; une image
+     * figée le pose à l'instant zéro.
+     */
+    private val vie: Paysages.Vie? = if (zone == Ornement.FENETRE) Paysages.Vie.pour(lieu, heure) else null
+
+    /** Vrai quand le lieu a quelque chose à faire d'une secousse. */
+    val vit: Boolean get() = vie != null && profondeur
+
+    /** Une secousse du téléphone, de [force] entre 0 et 1 : le lieu y répond. */
+    fun secouer(force: Float) {
+        vie?.secouer(force, maintenant(null))
+    }
+
+    /**
+     * Pose ce qui vit dans le carton [i], juste après lui, dans la boîte du
+     * paysage de ce carton : il glisse donc avec lui quand on penche la carte.
+     */
+    private fun peindreVie(c: Canvas, v: Paysages.Vie, i: Int, l: Int, h: Int, sx: Float, sy: Float) {
+        val lp = l + 2 * Paysages.marge(i, l)
+        val hp = h + 2 * Paysages.marge(i, h)
+        val k = Paysages.cadrage(lp.toFloat(), hp.toFloat())
+        c.save()
+        c.translate(ouPlan.left + k[1] * sx, ouPlan.top + k[2] * sy)
+        c.scale(k[0] * sx, k[0] * sy)
+        v.dessiner(c, i, maintenant(c))
+        c.restore()
+    }
+
+    private val peintureOmbre by lazy {
+        Paint(Paint.FILTER_BITMAP_FLAG).apply { color = Paysages.couleurOmbrePortee(heure) }
+    }
+    private val ouOmbre = RectF()
+
+    /**
+     * L'ombre portée du carton [i] ([Paysages.ombres]), juste avant lui : elle
+     * tombe sur le carton de derrière et glisse avec lui, pas avec celui qui
+     * la porte. Pencher la carte fait donc varier l'écart entre la découpe et
+     * son ombre, comme dans un théâtre de papier (repris de KreyolKeyb).
+     */
+    private fun peindreOmbre(c: Canvas, ombre: Bitmap, i: Int, regardX: Float, regardY: Float) {
+        val derriere = if (i - 1 == Paysages.NUAGES) 0 else i - 1
+        val k = cadrage[0]
+        val ecart = Paysages.GLISSEMENT[derriere] - Paysages.GLISSEMENT[i]
+        ouOmbre.set(ouPlan)
+        ouOmbre.offset(
+            ecart * visible.width() * regardX + Paysages.OMBRE_PORTEE_X * k,
+            ecart * visible.height() * regardY + Paysages.OMBRE_PORTEE_Y * k
+        )
+        c.drawBitmap(ombre, null, ouOmbre, peintureOmbre)
     }
 
     /**
@@ -5938,10 +6163,11 @@ private class Porcelet(heure: Heure) : Sujet(heure, RectF(30f, 6f, 70f, 58f)) {
  *
  * Voyelle en haut, consonne en bas, la hauteur affinée par le code du
  * caractère ; un nœud sur chaque voyelle, qui donne la scansion. Le pas est
- * **constant et calé à gauche**, jamais étiré sur la largeur : deux formes qui
- * partagent leur début partagent alors leurs points *exactement*, au lieu de
- * seulement se ressembler. Dans une grille, `Woch`, `Wochen` et `Woche` se
- * lisent comme un seul mot à trois états.
+ * **constant**, jamais étiré sur la largeur : deux formes qui partagent leur
+ * début partagent la même courbe, et dans une grille `Woch`, `Wochen` et
+ * `Woche` se lisent comme un seul mot à trois états. Le tracé est **centré**
+ * sur la carte (demande du propriétaire, 2026-11-14) : calé à gauche
+ * jusque-là, un mot court penchait d'un côté de la fenêtre.
  *
  * La règle n'a pas changé avec les paysages, seule la matière du trait a
  * changé : nacre de l'heure, ombre portée, fil de lumière, et à partir de
@@ -6037,11 +6263,10 @@ private class Trace private constructor(
         private const val VOYELLES = "aeiouyäëéèêîïôöüû"
 
         /**
-         * Où tombe le tracé dans la boîte 100 × 66 du paysage : entre l'arche
-         * des paliers hauts et le sol, et dans la largeur qu'une vignette
-         * garde une fois rognée sur les côtés.
+         * Où tombe le tracé dans la boîte 100 × 66 du paysage : centré, entre
+         * l'arche des paliers hauts et le sol, et dans la largeur qu'une
+         * vignette garde une fois rognée sur les côtés (de 16 à 84).
          */
-        private const val X0 = 16f
         private const val LARGEUR = 68f
         private const val MILIEU = 35f
         private const val AMPLITUDE = 17f
@@ -6058,7 +6283,7 @@ private class Trace private constructor(
             for (i in 0 until n) {
                 val ch = lettres[i]
                 voyelle[i] = ch.lowercaseChar() in VOYELLES
-                xs[i] = if (n == 1) 50f else X0 + pas * i
+                xs[i] = if (n == 1) 50f else 50f + pas * (i - (n - 1) / 2f)
                 ys[i] = MILIEU + (if (voyelle[i]) -1f else 1f) *
                     AMPLITUDE * (0.42f + 0.58f * ((ch.code % 7) / 6f))
             }
