@@ -175,6 +175,7 @@ android {
             if (project.hasProperty('plancheVif')) systemProperty 'planche.vif', 'oui'
             if (project.hasProperty('plancheSecousse')) systemProperty 'planche.secousse', 'oui'
             if (project.hasProperty('plancheAlbum')) systemProperty 'planche.album', 'oui'
+            if (project.hasProperty('plancheCarnet')) systemProperty 'planche.carnet', 'oui'
         }
     }
 
