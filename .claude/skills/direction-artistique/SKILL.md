@@ -1,6 +1,6 @@
 ---
 name: direction-artistique
-description: Direction artistique de LuxKeyb — la ligne visuelle des cartes et de leurs décors, en particulier le « théâtre de papier » (décor en cartons découpés superposés, parallaxe multi-plans dans la fenêtre de la carte). À utiliser quand on discute de l'univers visuel, du style des paysages et des décors, de la profondeur et du mouvement dans la fenêtre d'une carte (inclinaison, parallaxe, profondeur de champ), quand on dessine un nouveau lieu ou un nouveau plan de décor, quand on ajoute une animation au décor, ou quand on se demande si un choix graphique « fait LuxKeyb ». Couvre la direction décidée le 2026-11-01 : couleurs vives peintes à la gouache sur carton, et le dessin du mot en plaque épaisse sur un pied de métal, dont seule la lumière bouge.
+description: Direction artistique de LuxKeyb — la ligne visuelle des cartes et de leurs décors, en particulier le « théâtre de papier » (décor en cartons découpés superposés, parallaxe multi-plans dans la fenêtre de la carte). À utiliser quand on discute de l'univers visuel, du style des paysages et des décors, de la profondeur et du mouvement dans la fenêtre d'une carte (inclinaison, parallaxe, profondeur de champ), quand on dessine un nouveau lieu ou un nouveau plan de décor, quand on ajoute une animation au décor, ou quand on se demande si un choix graphique « fait LuxKeyb ». Couvre la direction décidée le 2026-11-01 : couleurs vives peintes à la gouache sur carton, et le dessin du mot en plaque épaisse sur un pied de métal, dont seule la lumière bouge ; puis le papier découpé d'après photos (2026-11-13), les lieux vus de trois quarts, le bâti sans dominante jaune et le premier plan en vraie matière (2026-11-14), avec la boîte à outils pour peindre un lieu (§ 8).
 ---
 
 # Direction artistique — le théâtre de papier
@@ -105,7 +105,11 @@ La **mécanique** :
    Moselle ont leur propre rainure plus haut. Les rivières sont des rangées de
    vagues découpées (`riviere`), pas une eau qui descend jusqu'au bord. Le
    plancher est peint par bandes, une par carton, et reçoit les ombres sans
-   en porter ni avoir de bordure.
+   en porter ni avoir de bordure. **Depuis le 2026-11-14, le plancher n'est
+   plus visible que sous le Breedewee** : les autres lieux posent leur
+   premier plan sur un sol en vraie matière (pavés, dalles, gravier, herbe,
+   terre, mousse, berge ; voir § 2 et § 8). `DEVANT` reste la rainure où ce
+   sol commence.
 
 Tout est peint une fois au rendu des calques ; seul le nuage se place à chaque
 trame. La vignette de la grille garde son rendu à plat. **Reste à faire** :
@@ -444,13 +448,35 @@ gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
   (`Paysages.VIF_RETENU`, 1,8) : saturation, un peu de contraste, lumière
   tirée vers l'or, posés une fois sur chaque calque rendu. À surveiller :
   la grotte Hohllay vire à l'orange et la source de tuf au vert citron.
+  **Ce réchauffement ne vaut pas pour le bâti** : il faisait virer tous les
+  enduits au jaune paille. Pierre, enduits, ardoises, vitres, pavés, terre et
+  galets sont peints avec `Paysages.neutre`, qui l'annule exactement.
 - **Le tracé de sonorité est centré** sur la carte (2026-11-14) : calé à
   gauche jusque-là, un mot court penchait d'un côté de la fenêtre.
 
 **Voir les cartes sans téléphone** : `PlancheCartesTest` (Robolectric, rendu
 natif du canevas) rend la fenêtre de chaque lieu aux quatre heures, droite
-puis penchée, et les cartes entières :
-`./gradlew :app:testDebugUnitTest --tests '*PlancheCartesTest*' -Pplanche=<dossier> [-PplancheCartes]`.
+puis penchée (`planche_lieux_<heure>.png`), et sur demande :
+
+```bash
+./gradlew :app:testDebugUnitTest --tests '*PlancheCartesTest*' -Pplanche=<dossier> \
+    [-PplancheLieux=STAD,MELLERDALL] [-PplancheCartes] [-PplancheSaisons] [-PplancheVif] \
+    [-PplancheSecousse] [-PplancheAlbum]
+```
+
+- `-PplancheLieux` : seulement ces lieux (noms de `Lieu`), et pour
+  `-PplancheSecousse` un film de chacun (80 images, secoué à la 30e, en
+  `secousse/<lieu>_commun_<saison>/`, à assembler en GIF avec ImageMagick) ;
+- `-PplancheCartes` : les cartes entières telles que l'image de partage ;
+- `-PplancheSaisons` : le surcadrage aux quatre saisons ;
+- `-PplancheVif` : une commune, une rare, une très rare aux couleurs vives ;
+- `-PplancheAlbum` : l'album en grille de 9 × 3 ;
+- `CaptureCarnetTest` avec `-PplancheCarnet` : le vrai carnet d'un joueur
+  (grille, séries, carte ouverte) dans un téléphone de 360 × 800 dp.
+
+Comparer un avant et un après : rendre la planche, `git stash`, la rendre
+encore, `git stash pop`. Montrer au propriétaire la commune en grand, puis
+les quatre heures côte à côte.
 
 ## 3. Pourquoi cette direction
 
@@ -498,7 +524,7 @@ puis penchée, et les cartes entières :
    scène sur toutes les cartes, celle de la rampe, qui porte les ombres vers
    le haut et un peu à droite. C'est le vide qu'on voit derrière chaque
    découpe qui fait le théâtre de papier.
-4 bis. **Chaque carton est posé.** Il s'arrête net sur le plancher, dans sa
+4 bis. **Chaque carton est posé.** Il s'arrête net sur son sol, dans sa
    rainure ; rien ne descend jusqu'au bas de la fenêtre. Un carton qui se
    perd sous le cadre est une affiche, pas un décor.
 5. **Le mot reste l'acteur.** Le décor ne rivalise jamais avec le dessin du
@@ -539,6 +565,22 @@ puis penchée, et les cartes entières :
    portent leur ombre sur leur propre carton, pour qu'elle voyage avec eux.
    C'est le seul élément qui bouge seul (règle 7) ; les cartes de fête,
    rendues à plat, n'en ont pas.
+
+9. **De trois quarts, jamais en bande de face** (2026-11-14). Une rangée de
+   maisons, un pont, une passerelle, une lisière, une rive, une clôture fuient
+   vers un point de fuite ; une façade montre son toit et, si elle dépasse sa
+   voisine, son pignon. Seul ce qui est vu dans l'axe (une ruelle sous sa
+   porte, une gorge, une arche, une grotte) et ce qui est rond (une tour, un
+   dôme) restent de face. Ce qui vit sur un objet qui fuit (un tram, des
+   gouttes) est posé dans la même perspective.
+10. **Pas de dominante jaune dans le bâti** (« ce jaune IA », 2026-11-14).
+   Couleurs du bâti avec `neutre` ; des enduits variés qui ne se répètent pas
+   côte à côte ; l'ombre d'un mur est froide (bleu-gris), jamais un brun ;
+   des fenêtres de verre, pas des rectangles de couleur.
+11. **Une vraie matière au premier plan** (2026-11-14). Pavés, dalles,
+   gravier, herbe, terre, mousse ou berge, selon le lieu ; les rangs
+   grossissent en approchant. Une eau se voit à travers (le lit, les galets)
+   ou reflète ce qui la borde ; elle n'est jamais un aplat bleu.
 
 ## 5. Les points de vigilance
 
@@ -604,7 +646,10 @@ Avant de valider un nouveau lieu ou une modification de décor :
       chercher.
 - [ ] L'ombre entre les plans est présente, nette, du même côté que les autres
       cartes.
-- [ ] Chaque carton s'arrête net sur le plancher, au-dessus du bandeau du nom.
+- [ ] Chaque carton s'arrête net sur son sol, au-dessus du bandeau du nom.
+- [ ] Rien n'est en bande de face qui pourrait fuir : rangées, ponts, rives, lisières sont de trois quarts (règle 9).
+- [ ] Le bâti n'est pas jaune : `neutre`, enduits variés, ombres froides, fenêtres de verre (règle 10).
+- [ ] Le premier plan a une vraie matière, et l'eau laisse voir son fond ou reflète ses bords (règle 11).
 - [ ] Le lointain s'efface par la couleur ; rien n'est flou.
 - [ ] Le dessin du mot reste ce qu'on voit en premier.
 - [ ] La plaque est posée et fixe : son pied descend jusqu'au socle, sur le plancher ; seul son reflet bouge à l'inclinaison.
@@ -617,3 +662,43 @@ Avant de valider un nouveau lieu ou une modification de décor :
 Rends la revue en quatre parties : **Verdict** (une phrase), **Ce qui fait
 théâtre de papier**, **À corriger** (concret, avec la règle du § 4 concernée),
 **Prochain test**.
+
+## 8. Peindre un lieu : la boîte à outils
+
+Tout est dans `carnet/Paysages.kt` (le `Peintre`), en unités de fenêtre :
+100 de large, 66 de haut, `DEVANT` (58,5) pour la rainure du premier plan.
+Un lieu se peint de son fond vers l'avant : `plan(0)` le lointain, `plan(1)`
+le milieu, `plan(2)` le proche, puis le sol.
+
+| Besoin | Outil | Remarques |
+|---|---|---|
+| Une pièce de papier découpé | `piece`, `pieceD` (chemin SVG), `feuille`, `touffe`, `lisiere`, `ovalePapier` | Grain, tranche de kraft et ombre portée viennent seuls. `mineral { }` : ce n'est pas de la végétation (les saisons n'y touchent pas). |
+| Une couleur posée à plat, transparente | `forme(chemin, couleur, opacité)`, `rect(…, o)`, `ligne(…, o)` | Sans carton ni ombre : un voile d'eau, un reflet, une tache d'enduit. |
+| Une perspective de trois quarts | `Fuite(proche, fuite, fuiteCote, recul, taille, quai)` | La base des façades part de `proche` et fuit vers `fuite`. Sans `recul`, il est réglé sur `taille` pour garder des façades à leurs proportions. |
+| Une rangée de maisons, un château | `rue3q(fuite, maisons, murs, alea, ecart, debut)` | `maisons` : largeur, hauteur, mur, colombages, toit, lucarnes (`maisonsAuHasard` pour une ville). `ecart` : un village aux maisons séparées. `debut` : poser une tour au milieu d'une façade. |
+| Un ouvrage seul (tour, socle, bureau) | `boite3q(x, bas, l, h, profondeur, couleur, versDroite, pente) { détails }` | La face, son côté à l'ombre froide, son dessus ; les détails se peignent à plat sur la face. |
+| Poser un dessin de face en perspective | `surQuad(l, h, quadrilatère, x0, y0) { … }` | Vraie perspective (`Matrix.setPolyToPoly`). Sert aux ponts, passerelles, murs ; aussi dans la `Vie` pour ce qui roule ou coule dessus. |
+| Le bâti sans jaune | `neutre(c)`, `facades()`, `ombreFroide(c, t)`, `fenetreVerre` | `rue3q` et `boite3q` les appliquent déjà ; à appeler soi-même pour une pièce de bâti dessinée à la main. |
+| La matière d'une façade | `matiere` (dans `rue3q`) | Socle, chaînes d'angle, corniche, bandeaux, appuis et linteaux, enduit ; rangs d'ardoises sur le toit. Rien sur une maison trop petite pour le montrer. |
+| Un premier plan bâti | `solDePierre(PAVES / DALLES / GRAVIER, haut, pente, bordure)` | `bordure` : une rangée de pierres de taille contre l'eau. |
+| Un premier plan naturel | `solNaturel(HERBE / TERRE / MOUSSE / BERGE, haut, pente)` | L'herbe et la mousse restent de la végétation pour les saisons. |
+| Une eau | une teinte en voile (`forme`, 0,4) sur un lit de galets ; ou des reflets en traits couchés qui tremblent | Jamais un aplat bleu opaque. |
+| Une brume, une écume | `brume(x, y, rx, ry, opacité)` | Un ovale blanc qui s'efface ; animée dans la `Vie`. |
+| Ce qui vit (Vie) | `Paysages.Vie.dessiner` : une branche par lieu, et le calque où elle vit (`vitDans`) | Lent, en boucle longue ; une réponse propre à la secousse (`raf`, `vol`, `elan`). |
+| Le surcadrage | `Surcadre.de(lieu)` | Branches d'un coin du haut, pied de roseaux, de fougères, d'herbes. |
+
+**Pour un nouveau lieu, dans cet ordre** :
+1. Partir d'une photo du propriétaire ; en relever le sujet, la direction
+   dans laquelle les choses fuient, les matières (pierre, enduit, eau, sol)
+   et les couleurs réelles.
+2. Poser les plans (`plan(0..2)`), le sujet sur le milieu, en silhouettes
+   lisibles (règle 1).
+3. Donner sa fuite à tout ce qui a une ligne (`Fuite`, `rue3q`, `boite3q`,
+   `surQuad`), règle 9.
+4. Les matières : bâti froid (règle 10), sol (règle 11), eau.
+5. La `Vie` et sa réponse à la secousse, le `Surcadre`.
+6. Rendre les quatre heures avec `-PplancheLieux=<LIEU>` et les relire
+   (la nuit surtout), puis un film `-PplancheSecousse` si quelque chose
+   bouge ; montrer au propriétaire avant / après et les quatre heures.
+7. La revue du § 7, les tests (`./gradlew :app:testDebugUnitTest`), puis
+   cette skill et le changelog.
