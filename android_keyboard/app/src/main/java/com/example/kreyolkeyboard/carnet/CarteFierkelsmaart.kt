@@ -14,8 +14,8 @@ import com.example.kreyolkeyboard.R
  * ## Ultra rare sans cinquième palier
  *
  * [Rarete] a quatre paliers et tout le carnet en dépend : le métal, l'heure du
- * paysage, les trente-six cases de la série des paysages. Un cinquième palier
- * ouvrirait neuf cases de série qu'aucune carte ne pourrait remplir. La carte
+ * paysage, les cases de la série des paysages. Un cinquième palier ouvrirait
+ * des cases de série qu'aucune carte ne pourrait remplir. La carte
  * est donc **très rare** pour tout ce qui compte (métal d'or, nuit, irisation),
  * et ce qui la fait ultra rare tient en deux choses qu'elle est seule à avoir :
  * son dessin en couleurs ([Ornement] : `Porcelet`) et la mention « Ultra rare »
@@ -64,8 +64,10 @@ object CarteFierkelsmaart {
     /**
      * La règle seule, sans ressources : testable hors appareil.
      *
-     * Le champ est la société, dont le lieu est la Schueberfouer : une foire
-     * pour une foire.
+     * Le champ est la société, dont le premier lieu est la Schueberfouer : une
+     * foire pour une foire. Très rare, elle y reste, quel que soit le mot
+     * ([Lieu.pour] garde la nuit au premier lieu du champ) : jamais le
+     * Napoleonsgaart.
      */
     fun corriger(contenu: ContenuCarte, glose: String, traduction: String): ContenuCarte =
         if (est(contenu.carte.forme) && contenu.carte.nombre == null) {
