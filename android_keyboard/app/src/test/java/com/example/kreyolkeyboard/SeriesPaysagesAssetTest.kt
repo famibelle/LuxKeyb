@@ -71,10 +71,11 @@ class SeriesPaysagesAssetTest {
     }
 
     @Test
-    fun lAlbumCompteCinquanteEtUneCasesDistinctes() {
-        // Neuf lieux aux quatre heures, cinq de la deuxième vague sans la nuit.
-        assertEquals(51, Series.PAYSAGES.size)
-        assertEquals(51, Series.PAYSAGES.toSet().size)
+    fun lAlbumCompteQuatreVingtSeptCasesDistinctes() {
+        // Le premier lieu de chacun des neuf champs (avec la ville des mots
+        // sans champ) aux quatre heures, les dix-sept ajoutés sans la nuit.
+        assertEquals(87, Series.PAYSAGES.size)
+        assertEquals(87, Series.PAYSAGES.toSet().size)
         Series.PAYSAGES.forEach { assertTrue(it, Series.paysageDe(it) != null) }
     }
 

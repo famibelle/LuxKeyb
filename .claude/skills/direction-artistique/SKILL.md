@@ -265,19 +265,32 @@ gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
   plutôt que de dessiner de mémoire. Fait : Veianen (le château dans la
   brume), Esch-Sauer (la tour et son drapeau), Neimënster (vu des casemates
   du Bock), Mëllerdall (le Schiessentümpel), Stad (le Grund sur l'Alzette),
-  Musel (le monument de Schengen), Schueberfouer (la roue et le carrousel).
-  Restent sans photo : Rout Bréck, Gëlle Fra, Breedewee.
+  Musel (le monument de Schengen), Schueberfouer (la roue et le carrousel),
+  Rout Bréck (le pont rouge vu d'en bas), Breedewee (la porte de la rue
+  Large), Gëlle Fra (la statue au couchant, grande, sur le bord droit).
+- **Vus de trois quarts** (demande du propriétaire, 2026-11-14) : « dans la
+  mesure du possible, les images affichées dans les cartes seront en prise
+  de vue de trois quarts paysage ». Une façade, un pont ou une tour ne se
+  présente pas de face : ses horizontales penchent (`enPerspective`, une
+  oblique qui garde les verticales), une tour montre deux faces, une roue
+  se voit en ellipse. Ce qui vit sur un objet penché (le tram du pont
+  Adolphe) est posé dans la même oblique.
 - **Une deuxième vague de lieux** (`Lieu.choix`) : un champ peut en avoir
   deux, tirés sur le mot (`Lieu.pour`). Pafendall (mouvement), Ansebuerg
   (temps), Belval (économie), Nei Bréck, le pont Adolphe (chose publique),
-  Bäerdref (vie). Les cartes gagnées avant la bascule
+  Bäerdref (vie) ; puis la troisième vague (2026-11-14) : Felsmillen
+  (mouvement), Ourdall (temps), Stauséi et Conzefenn (territoire), Haff
+  Réimech (économie), Hohllay (savoir), Napoleonsgaart (société),
+  Kallektuffquell (vie), et pour les mots sans champ, qui sont les plus
+  nombreux, Péitrusdall, Wollefsschlucht, Priedegtstull et Dumongshaff.
+  87 cases d'album en tout. Les cartes gagnées avant la bascule
   (`Carnet.basculeDesLieux`) gardent leur lieu ; la nuit des très rares
   reste au premier lieu du champ, faute de très rares pour remplir deux
-  cases. Photos reçues pour une vague suivante : barrage d'Esch-sur-Sûre
-  (dit de Rosport), Wollefsschlucht, Hohllay, Haff Réimech, vallée de la
-  Pétrusse, Kallektuffquell, Priedegtstull, promenade de l'Ourdall. Chaque
-  lieu ajouté à un champ doit garder trois mots de Wuertplaz par case dans
-  les quatre langues (`SeriesPaysagesAssetTest`).
+  cases. Chaque lieu ajouté à un champ doit garder trois mots de Wuertplaz
+  par case dans les quatre langues (`SeriesPaysagesAssetTest`) : avec la
+  répartition d'aujourd'hui, la case la plus mince en a trois. Les champs
+  sont pleins ; un nouveau lieu ira d'abord aux mots sans champ, qui ont de
+  la marge (plus de 160 rares par langue).
 - **Un élément vivant par lieu** (`Paysages.Vie`), qui assouplit la règle 7 :
   la brume de l'Our, le drapeau, la roue et les chevaux de bois, les chutes,
   les reflets de l'Alzette, la péniche, le tram, les bannières de Belval, la

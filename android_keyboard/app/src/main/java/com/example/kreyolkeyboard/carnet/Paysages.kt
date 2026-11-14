@@ -19,6 +19,7 @@ import android.os.Looper
 import android.util.LruCache
 import java.util.concurrent.Executors
 import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.cos
 import kotlin.math.exp
@@ -66,7 +67,21 @@ enum class Lieu(val nom: String) {
     ANSEBUERG("Ansebuerg"),
     BELVAL("Belval"),
     BAERDREF("Bäerdref"),
-    NEI_BRECK("Nei Bréck");
+    NEI_BRECK("Nei Bréck"),
+
+    // La troisième vague (2026-11-14), d'après les photos du propriétaire.
+    FELSMILLEN("Felsmillen"),
+    OURDALL("Ourdall"),
+    STAUSEI("Stauséi"),
+    CONZEFENN("Conzefenn"),
+    HAFF_REIMECH("Haff Réimech"),
+    HOHLLAY("Hohllay"),
+    NAPOLEONSGAART("Napoleonsgaart"),
+    KALLEKTUFFQUELL("Kallektuffquell"),
+    PEITRUSDALL("Péitrusdall"),
+    WOLLEFSSCHLUCHT("Wollefsschlucht"),
+    PRIEDEGTSTULL("Priedegtstull"),
+    DUMONGSHAFF("Dumongshaff");
 
     /** Le champ dont ce lieu est une fenêtre, `null` pour la ville des mots sans champ et le Breedewee. */
     fun champ(): Champ? = Champ.values().firstOrNull { this in choix(it) }
@@ -75,8 +90,8 @@ enum class Lieu(val nom: String) {
         /** Les lieux des champs, ceux de l'album des paysages. */
         val ALBUM: List<Lieu> = values().filter { it != BREEDEWEE }
 
-        /** Les lieux de la deuxième vague, qui n'ont pas de nuit : voir [pour]. */
-        val ALBUM_SANS_NUIT: Set<Lieu> = setOf(PAFENDALL, ANSEBUERG, BELVAL, BAERDREF, NEI_BRECK)
+        /** Les lieux ajoutés à un champ, qui n'ont pas de nuit : voir [pour]. */
+        val ALBUM_SANS_NUIT: Set<Lieu> by lazy { ALBUM.filter { it != choix(it.champ())[0] }.toSet() }
 
         /** Le lieu d'une carte : celui qu'elle impose, sinon le premier de son champ. */
         fun de(blason: Blasonnement): Lieu = blason.lieu ?: de(blason.champ)
@@ -86,12 +101,15 @@ enum class Lieu(val nom: String) {
          * toutes ses cartes avant la deuxième vague.
          */
         fun choix(champ: Champ?): List<Lieu> = when (champ) {
-            Champ.MOUVEMENT -> listOf(ROUT_BRECK, PAFENDALL)
-            Champ.TEMPS -> listOf(VEIANEN, ANSEBUERG)
-            Champ.ECONOMIE -> listOf(MUSEL, BELVAL)
+            Champ.MOUVEMENT -> listOf(ROUT_BRECK, PAFENDALL, FELSMILLEN)
+            Champ.TEMPS -> listOf(VEIANEN, ANSEBUERG, OURDALL)
+            Champ.TERRITOIRE -> listOf(ESCH_SAUER, STAUSEI, CONZEFENN)
+            Champ.ECONOMIE -> listOf(MUSEL, BELVAL, HAFF_REIMECH)
+            Champ.SAVOIR -> listOf(NEIMENSTER, HOHLLAY)
             Champ.PUBLIC -> listOf(GELLE_FRA, NEI_BRECK)
-            Champ.VIE -> listOf(MELLERDALL, BAERDREF)
-            else -> listOf(de(champ))
+            Champ.SOCIETE -> listOf(FOUER, NAPOLEONSGAART)
+            Champ.VIE -> listOf(MELLERDALL, BAERDREF, KALLEKTUFFQUELL)
+            null -> listOf(STAD, PEITRUSDALL, WOLLEFSSCHLUCHT, PRIEDEGTSTULL, DUMONGSHAFF)
         }
 
         /**
@@ -604,14 +622,14 @@ object Paysages {
         // ruelle. Deux rangées, étagées : la seconde, un pas en retrait, est
         // collée au carton du proche, dont elle partage la course.
         val coulisses = if (n < 6) null else {
-            val fond2 = peindre(4) { if (lieu == Lieu.BREEDEWEE) pignons() else if (lieu !in ENCADRES) coulissesDuFond() }
+            val fond2 = peindre(4) { if (lieu in ENCADRES) Unit else if (lieu == Lieu.BREEDEWEE) pignons() else coulissesDuFond() }
             Canvas(proche).drawBitmap(fond2, 0f, 0f, null)
             val forme2 = Bitmap.createBitmap(tailles[4][0], tailles[4][1], Bitmap.Config.ALPHA_8)
             Canvas(forme2).apply { drawBitmap(formes[2], 0f, 0f, null); drawBitmap(fond2, 0f, 0f, null) }
             formes[2].recycle()
             formes[2] = forme2
             fond2.recycle()
-            peindre(5) { if (lieu == Lieu.BREEDEWEE) piliers() else if (lieu !in ENCADRES) coulisses() }
+            peindre(5) { if (lieu in ENCADRES) Unit else if (lieu == Lieu.BREEDEWEE) piliers() else coulisses() }
         }
         val plans = listOfNotNull(ciel, nuages(heure, l, h), loin, milieu, proche, coulisses).toTypedArray()
         // Le plancher, là où un lieu en a un : il reçoit les ombres sans en
@@ -900,6 +918,12 @@ object Paysages {
         floatArrayOf(76f, 13f, 31f, 0f, 0f), floatArrayOf(89f, 14f, 30f, 2f, 1f)
     )
 
+    /** La pente du tablier de la Rout Bréck, vu d'en bas. */
+    private const val TABLIER_PENTE = 0.17f
+
+    /** Les moutons du premier plan de Conzefenn, en x. */
+    private val MOUTONS = floatArrayOf(6f, 13f, 88f, 95f)
+
     /** Les mâts des bannières devant les hauts fourneaux de Belval, en x. */
     private val BANNIERES = floatArrayOf(4f, 16f, 30f, 70f, 84f, 97f)
 
@@ -945,10 +969,11 @@ object Paysages {
 
         /** Vrai si [calque] porte quelque chose de vivant. */
         fun vitDans(calque: Int): Boolean = when (lieu) {
-            Lieu.VEIANEN, Lieu.MUSEL, Lieu.NEI_BRECK, Lieu.NEIMENSTER, Lieu.ANSEBUERG -> calque == 3 || calque == 4
+            Lieu.VEIANEN, Lieu.MUSEL, Lieu.NEI_BRECK, Lieu.NEIMENSTER, Lieu.ANSEBUERG, Lieu.OURDALL,
+            Lieu.HAFF_REIMECH, Lieu.PEITRUSDALL, Lieu.DUMONGSHAFF -> calque == 3 || calque == 4
             Lieu.FOUER -> calque == 3 || calque == 4
             Lieu.BREEDEWEE -> false
-            Lieu.GELLE_FRA -> calque == 3 || calque == 4
+            Lieu.GELLE_FRA -> calque == 4 || (calque == 3 && !PAPIER)
             else -> calque == 4
         }
 
@@ -998,7 +1023,7 @@ object Paysages {
                 } else envol(p, vol, 6f, 10f, 1f)
                 Lieu.FOUER -> if (calque == 3) p.grandeRoue(temps * 0.12f + elan(temps) * 2f, temps)
                     else p.chevaux(temps * (1f + raf * 2f))
-                Lieu.NEI_BRECK -> if (calque == 3) p.tram(((4f + temps * 5f + 20f) % 140f) - 20f)
+                Lieu.NEI_BRECK -> if (calque == 3) p.enPerspective(50f, 30f, 0.12f) { p.tram(((4f + temps * 5f + 20f) % 140f) - 20f) }
                     else envol(p, vol, 8f, 30f, 1f)
                 Lieu.BELVAL -> for ((k, x) in BANNIERES.withIndex()) {
                     p.banniere(x, sin(temps * 1.4f + k) * 0.4f + raf * 1.6f * sin(temps * 9f + k), k)
@@ -1011,9 +1036,75 @@ object Paysages {
                     }
                 } else { envol(p, vol, 20f, 40f, 1f); envol(p, vol, 80f, 42f, -1f) }
                 Lieu.PAFENDALL -> p.cabine(16f + (1f - cos(temps * 0.35f)) * 0.5f * 34f + raf * sin(temps * 24f) * 0.8f)
-                Lieu.ROUT_BRECK -> { p.bus(((6f + temps * 6f + 14f) % 128f) - 14f); envol(p, vol, 50f, 56f, 1f) }
+                Lieu.ROUT_BRECK -> { p.bus(((6f + temps * 6f + 14f) % 128f) - 14f); envol(p, vol, 90f, 44f, -1f) }
                 Lieu.GELLE_FRA -> if (calque == 3) lampes(p, temps) else { eclat(p, temps); envol(p, vol, 10f, 52f, 1f) }
                 Lieu.BREEDEWEE -> Unit
+                Lieu.FELSMILLEN -> { feuillesQuiTombent(p, temps, raf); envol(p, vol, 12f, 30f, 1f) }
+                Lieu.OURDALL -> if (calque == 3) reflets(p, temps, 0f, 62f, 37f, 50f) else envol(p, vol, 90f, 10f, -1f)
+                Lieu.STAUSEI -> { reflets(p, temps, 0f, 72f, 48f, 57f); envol(p, vol, 96f, 36f, -1f) }
+                Lieu.CONZEFENN -> for ((k, mx) in MOUTONS.withIndex()) {
+                    val leve = raf > 0.1f
+                    val saut = raf * 1.2f * abs(sin(temps * 12f + k))
+                    p.mouton(mx, 47f + (k % 2) * 3f - saut, 1f,
+                        if (leve) 0f else 0.5f + 0.5f * sin(temps * 0.8f + k * 1.7f), k % 3 != 0)
+                }
+                Lieu.HAFF_REIMECH -> if (calque == 3) reflets(p, temps, 0f, 100f, 48f, 60f) else envol(p, vol, 4f, 30f, 1f)
+                Lieu.HOHLLAY -> { goutte(p, temps, 50f, 12f, 54f); goutte(p, temps + 1.3f, 70f, 13f, 55f); envol(p, vol, 50f, 22f, -1f) }
+                Lieu.NAPOLEONSGAART -> { balise(p, temps); envol(p, vol, 100f, 44f, -1f) }
+                Lieu.KALLEKTUFFQUELL -> for (k in 0 until 5) goutte(p, temps + k * 0.7f, 12f + k * 17f, 26f, 40f, rond = true)
+                Lieu.PEITRUSDALL -> if (calque == 3) p.tram(((54f + temps * 5f + 20f) % 140f) - 20f, 2.2f)
+                    else envol(p, vol, 6f, 30f, 1f)
+                Lieu.WOLLEFSSCHLUCHT -> { feuillesQuiTombent(p, temps, raf); envol(p, vol, 50f, 10f, 1f) }
+                Lieu.PRIEDEGTSTULL -> { feuillesQuiTombent(p, temps, raf); envol(p, vol, 20f, 20f, 1f) }
+                Lieu.DUMONGSHAFF -> if (calque == 3) canards(p, temps, raf) else envol(p, vol, 94f, 20f, -1f)
+            }
+        }
+
+        /** Des reflets qui jouent sur une eau, de [x0] à [x1], entre [y0] et [y1]. */
+        private fun reflets(p: Peintre, temps: Float, x0: Float, x1: Float, y0: Float, y1: Float) {
+            val clair = p.mix(heure.eau, 0xFFFFFFFF.toInt(), if (heure.nuit) 0.2f else 0.5f)
+            val n = ((x1 - x0) / 10f).toInt().coerceAtLeast(3)
+            for (k in 0 until n) {
+                val x = x0 + (k + 0.5f) * (x1 - x0) / n + sin(temps * 0.4f + k * 1.3f) * 2f
+                val y = y0 + ((k * 7) % 5) / 4f * (y1 - y0)
+                val o = 0.3f + 0.35f * sin(temps * 1.1f + k * 2.3f)
+                p.rect(x - 1.5f, y, 3f + (k % 2) * 2f, 0.3f, clair, o.coerceAtLeast(0f))
+            }
+        }
+
+        /**
+         * Une goutte qui tombe de ([x], [haut]) jusqu'à [bas] toutes les trois
+         * secondes, et le rond qu'elle fait en arrivant si [rond].
+         */
+        private fun goutte(p: Peintre, temps: Float, x: Float, haut: Float, bas: Float, rond: Boolean = false) {
+            val u = (temps % 3f) / 3f
+            val eau = if (heure.nuit) 0xFFB8C8E8.toInt() else 0xFFE8F4FF.toInt()
+            if (u < 0.5f) {
+                val y = haut + (bas - haut) * (u / 0.5f).pow(2)
+                p.rond(x, y, 0.35f, eau, 0.9f)
+            } else if (rond) {
+                val d = (u - 0.5f) / 0.5f
+                p.anneau(x, bas, 0.4f + d * 2.6f, p.mix(eau, heure.eau, d), 0.2f)
+            }
+        }
+
+        /** Le feu rouge de l'antenne de Napoleonsgaart, qui clignote, plus vif le soir et la nuit. */
+        private fun balise(p: Peintre, temps: Float) {
+            if ((temps % 1.6f) > 0.5f && temps > 0f) return
+            val rouge = 0xFFFF3B30.toInt()
+            if (heure.allume) p.rond(86f, 0.2f, 1.4f, rouge, 0.3f)
+            p.rond(86f, 0.2f, 0.5f, rouge, 1f)
+        }
+
+        /** Deux canards qui glissent sur l'étang de Dumongshaff ; une secousse les fait filer. */
+        private fun canards(p: Peintre, temps: Float, raf: Float) {
+            val brun = p.duJour(0xFF7A5A3A.toInt())
+            val vert = p.duJour(0xFF2F6A4A.toInt())
+            for (k in 0..1) {
+                val x = 4f + ((temps * (0.8f + raf * 4f) + k * 9f) % 30f)
+                val y = 50f + k * 3f + sin(temps * 1.5f + k) * 0.2f
+                p.ovalePapier(x, y, 1.6f, 0.7f, brun, 0f)
+                p.rond(x + 1.3f, y - 0.9f, 0.55f, vert)
             }
         }
 
@@ -1109,8 +1200,8 @@ object Paysages {
             val u = (temps % 8f) / 8f
             val o = (sin(u * PI.toFloat())).pow(8)
             if (o < 0.02f) return
-            val x = 82f
-            val y = 5f + u * 4f
+            val x = if (PAPIER) 83f else 82f
+            val y = if (PAPIER) 6f + u * 26f else 5f + u * 4f
             p.ligne(x - 1.6f, y, x + 1.6f, y, 0xFFFFF8D8.toInt(), 0.3f, o)
             p.ligne(x, y - 1.6f, x, y + 1.6f, 0xFFFFF8D8.toInt(), 0.3f, o)
             p.rond(x, y, 0.5f, 0xFFFFFFFF.toInt(), o)
@@ -1136,7 +1227,9 @@ object Paysages {
      * KreyolKeyb a renoncé aux coulisses pour la même raison (2026-11-07).
      */
     private val ENCADRES = setOf(Lieu.NEIMENSTER, Lieu.BAERDREF, Lieu.ANSEBUERG, Lieu.ESCH_SAUER, Lieu.FOUER,
-        Lieu.PAFENDALL, Lieu.MUSEL, Lieu.BELVAL, Lieu.GELLE_FRA)
+        Lieu.PAFENDALL, Lieu.MUSEL, Lieu.BELVAL, Lieu.GELLE_FRA, Lieu.HOHLLAY, Lieu.WOLLEFSSCHLUCHT,
+        Lieu.NAPOLEONSGAART, Lieu.PRIEDEGTSTULL, Lieu.FELSMILLEN, Lieu.KALLEKTUFFQUELL,
+        *(if (PAPIER) arrayOf(Lieu.BREEDEWEE) else emptyArray()))
 
     /** Le blanc cassé du papier, vers lequel pâlit le ciel. */
     private const val CREME = 0xFFFCF5EC.toInt()
@@ -1218,6 +1311,18 @@ object Paysages {
             Lieu.BELVAL -> p.belval()
             Lieu.BAERDREF -> p.baerdref()
             Lieu.NEI_BRECK -> p.neiBreck()
+            Lieu.FELSMILLEN -> p.felsmillen()
+            Lieu.OURDALL -> p.ourdall()
+            Lieu.STAUSEI -> p.stausei()
+            Lieu.CONZEFENN -> p.conzefenn()
+            Lieu.HAFF_REIMECH -> p.haffReimech()
+            Lieu.HOHLLAY -> p.hohllay()
+            Lieu.NAPOLEONSGAART -> p.napoleonsgaart()
+            Lieu.KALLEKTUFFQUELL -> p.kallektuffquell()
+            Lieu.PEITRUSDALL -> p.peitrusdall()
+            Lieu.WOLLEFSSCHLUCHT -> p.wollefsschlucht()
+            Lieu.PRIEDEGTSTULL -> p.priedegtstull()
+            Lieu.DUMONGSHAFF -> p.dumongshaff()
         }
     }
 
@@ -2251,6 +2356,20 @@ object Paysages {
             if (w > 4f && h > 2.2f) fenetre(x + w * 0.6f, bas - h * 0.62f, w * 0.2f, h * 0.26f, rnd)
         }
 
+        /**
+         * Peint [bloc] vu de trois quarts, comme le propriétaire veut ses
+         * prises de vue (2026-11-14) : ses horizontales penchent de [pente]
+         * autour de ([px], [py]), si bien qu'une façade ou un pont fuit au lieu
+         * de se présenter de face. Le relevé de la végétation suit.
+         */
+        fun enPerspective(px: Float, py: Float, pente: Float, bloc: () -> Unit) {
+            val m = Matrix().apply { setSkew(0f, pente, px, py) }
+            c.save()
+            c.concat(m)
+            releve?.let { it.save(); it.concat(m) }
+            try { bloc() } finally { c.restore(); releve?.restore() }
+        }
+
         /** Une étoile à cinq branches de rayon [r]. */
         fun etoile(cx: Float, cy: Float, r: Float): Path {
             val t = Path()
@@ -2284,31 +2403,33 @@ object Paysages {
             val mur = duJour(0xFFEADDBE.toInt())
             val ombre = mix(mur, P.pres, 0.28f)
             val toit = ardoise()
-            mineral {
-                pieceD("M33 36L37 30L88 30L91 36Z", duJour(0xFFA39377.toInt()))
-                // La tour ronde de gauche et sa flèche.
-                feuille(33.5f, 17f, 4.2f, 14f, mur)
-                feuille(36.1f, 17f, 1.6f, 14f, ombre, 0f)
-                pieceD("M32.8 17.2L35.6 8.4L38.4 17.2Z", toit)
-                feuille(37.6f, 24f, 7f, 7f, mur)
-                // Le palais et ses grands toits d'ardoise.
-                feuille(44f, 14f, 26f, 17f, mur)
-                feuille(63f, 14f, 7f, 17f, ombre, 0f)
-                pieceD("M43 14.4L46 8L68 8L71 14.4Z", toit)
-                // La chapelle et son clocher.
-                feuille(55.6f, 4.5f, 2.8f, 4f, mur)
-                pieceD("M55.1 4.8L57 0.4L58.9 4.8Z", toit)
-                // La tour carrée de droite et l'aile basse.
-                feuille(70f, 12f, 5.4f, 19f, mur)
-                feuille(73.4f, 12f, 2f, 19f, ombre, 0f)
-                pieceD("M69.4 12.2L72.7 5.6L76 12.2Z", toit)
-                feuille(75.4f, 22f, 12.6f, 9f, mur)
-                pieceD("M74.8 22.2L77.2 18.6L86 18.6L88.6 22.2Z", toit)
-                for (fx in floatArrayOf(46.2f, 49.8f, 53.4f, 60.6f, 64.2f, 67.4f)) {
-                    fenetre(fx, 17.5f, 1.2f, 2f, r); fenetre(fx, 23f, 1.2f, 2f, r)
+            enPerspective(60f, 30f, 0.07f) {
+                mineral {
+                    pieceD("M33 36L37 30L88 30L91 36Z", duJour(0xFFA39377.toInt()))
+                    // La tour ronde de gauche et sa flèche.
+                    feuille(33.5f, 17f, 4.2f, 14f, mur)
+                    feuille(36.1f, 17f, 1.6f, 14f, ombre, 0f)
+                    pieceD("M32.8 17.2L35.6 8.4L38.4 17.2Z", toit)
+                    feuille(37.6f, 24f, 7f, 7f, mur)
+                    // Le palais et ses grands toits d'ardoise.
+                    feuille(44f, 14f, 26f, 17f, mur)
+                    feuille(63f, 14f, 7f, 17f, ombre, 0f)
+                    pieceD("M43 14.4L46 8L68 8L71 14.4Z", toit)
+                    // La chapelle et son clocher.
+                    feuille(55.6f, 4.5f, 2.8f, 4f, mur)
+                    pieceD("M55.1 4.8L57 0.4L58.9 4.8Z", toit)
+                    // La tour carrée de droite et l'aile basse.
+                    feuille(70f, 12f, 5.4f, 19f, mur)
+                    feuille(73.4f, 12f, 2f, 19f, ombre, 0f)
+                    pieceD("M69.4 12.2L72.7 5.6L76 12.2Z", toit)
+                    feuille(75.4f, 22f, 12.6f, 9f, mur)
+                    pieceD("M74.8 22.2L77.2 18.6L86 18.6L88.6 22.2Z", toit)
+                    for (fx in floatArrayOf(46.2f, 49.8f, 53.4f, 60.6f, 64.2f, 67.4f)) {
+                        fenetre(fx, 17.5f, 1.2f, 2f, r); fenetre(fx, 23f, 1.2f, 2f, r)
+                    }
+                    fenetre(35f, 21f, 1f, 1.8f, r); fenetre(71.6f, 16f, 1.1f, 2f, r); fenetre(71.6f, 22f, 1.1f, 2f, r)
+                    for (fx in floatArrayOf(77.5f, 80.5f, 83.5f)) fenetre(fx, 25f, 1.1f, 1.8f, r)
                 }
-                fenetre(35f, 21f, 1f, 1.8f, r); fenetre(71.6f, 16f, 1.1f, 2f, r); fenetre(71.6f, 22f, 1.1f, 2f, r)
-                for (fx in floatArrayOf(77.5f, 80.5f, 83.5f)) fenetre(fx, 25f, 1.1f, 1.8f, r)
             }
             if (!vivant) brumeDeVeianen(0f)
             plan(2)
@@ -2531,23 +2652,25 @@ object Paysages {
             pieceD("M102 22C94 19 86 22 81 27C87 25 95 25 102 26Z", mousse, 0.4f)
             touffe(mousse, 6f, 34f, 3f, 12f, 40f, 3.4f, 4f, 48f, 3f, 94f, 33f, 3f, 88f, 41f, 3.4f, 96f, 48f, 3f)
             val pont = duJour(0xFF928D78.toInt())
-            mineral {
-                pieceD("M16 26L84 26L84 31C80 33 76 37 73 44L66 44C65 37 59 32 50 32C41 32 35 37 34 44L27 44C24 37 20 33 16 31Z", pont)
-                trait("M34 44C35 37 41 32 50 32C59 32 65 37 66 44", mix(pont, P.pres, 0.35f), 0.7f)
-            }
-            pieceD("M16 26L84 26L84 27.6C70 28.6 30 28.6 16 27.6Z", mousse, 0.3f)
-            // La rambarde de bois, en croix de Saint-André.
-            val bois = duJour(0xFF6B4A2E.toInt())
-            mineral {
-                ligne(16.5f, 20.6f, 83.5f, 20.6f, bois, 0.5f)
-                var x = 17f
-                while (x < 83f) {
-                    ligne(x, 20.4f, x, 26f, bois, 0.45f)
-                    ligne(x, 21f, x + 8.25f, 25.6f, bois, 0.25f)
-                    ligne(x, 25.6f, x + 8.25f, 21f, bois, 0.25f)
-                    x += 8.25f
+            enPerspective(50f, 30f, 0.06f) {
+                mineral {
+                    pieceD("M16 26L84 26L84 31C80 33 76 37 73 44L66 44C65 37 59 32 50 32C41 32 35 37 34 44L27 44C24 37 20 33 16 31Z", pont)
+                    trait("M34 44C35 37 41 32 50 32C59 32 65 37 66 44", mix(pont, P.pres, 0.35f), 0.7f)
                 }
-                ligne(83f, 20.4f, 83f, 26f, bois, 0.45f)
+                pieceD("M16 26L84 26L84 27.6C70 28.6 30 28.6 16 27.6Z", mousse, 0.3f)
+                // La rambarde de bois, en croix de Saint-André.
+                val bois = duJour(0xFF6B4A2E.toInt())
+                mineral {
+                    ligne(16.5f, 20.6f, 83.5f, 20.6f, bois, 0.5f)
+                    var x = 17f
+                    while (x < 83f) {
+                        ligne(x, 20.4f, x, 26f, bois, 0.45f)
+                        ligne(x, 21f, x + 8.25f, 25.6f, bois, 0.25f)
+                        ligne(x, 25.6f, x + 8.25f, 21f, bois, 0.25f)
+                        x += 8.25f
+                    }
+                    ligne(83f, 20.4f, 83f, 26f, bois, 0.45f)
+                }
             }
             plan(2)
             plancher(DEVANT, BAS)
@@ -2595,31 +2718,33 @@ object Paysages {
                 duJour(0xFFE3E1DA.toInt()))
             val toit = ardoise()
             val poutre = duJour(0xFF4A3A2E.toInt())
-            mineral {
-                for (m in MAISONS_GRUND) {
-                    val x = m[0]; val w = m[1]; val haut = m[2]; val mur = murs[m[3].toInt()]
-                    feuille(x, haut, w, 50f - haut, mur)
-                    pieceD("M${x - 0.5f} ${haut + 0.2f}L${x + 1.4f} ${haut - 5.2f}L${x + w - 1.4f} ${haut - 5.2f}L${x + w + 0.5f} ${haut + 0.2f}Z", toit, 0.6f)
-                    var lx = x + 2f
-                    while (lx < x + w - 2.5f) {
-                        feuille(lx, haut - 3.8f, 1.8f, 2.6f, mur, 0.3f)
-                        pieceD("M${lx - 0.3f} ${haut - 3.7f}L${lx + 0.9f} ${haut - 4.9f}L${lx + 2.1f} ${haut - 3.7f}Z", toit, 0f)
-                        lx += 5f
+            enPerspective(50f, 40f, 0.06f) {
+                mineral {
+                    for (m in MAISONS_GRUND) {
+                        val x = m[0]; val w = m[1]; val haut = m[2]; val mur = murs[m[3].toInt()]
+                        feuille(x, haut, w, 50f - haut, mur)
+                        pieceD("M${x - 0.5f} ${haut + 0.2f}L${x + 1.4f} ${haut - 5.2f}L${x + w - 1.4f} ${haut - 5.2f}L${x + w + 0.5f} ${haut + 0.2f}Z", toit, 0.6f)
+                        var lx = x + 2f
+                        while (lx < x + w - 2.5f) {
+                            feuille(lx, haut - 3.8f, 1.8f, 2.6f, mur, 0.3f)
+                            pieceD("M${lx - 0.3f} ${haut - 3.7f}L${lx + 0.9f} ${haut - 4.9f}L${lx + 2.1f} ${haut - 3.7f}Z", toit, 0f)
+                            lx += 5f
+                        }
+                        if (m[4] > 0f) {
+                            // Les colombages.
+                            var px = x + 0.4f
+                            while (px <= x + w) { ligne(px, haut, px, 50f, poutre, 0.3f); px += 2.6f }
+                            for (k in 1..2) { val y = haut + (50f - haut) * k / 3f; ligne(x, y, x + w, y, poutre, 0.3f) }
+                        }
+                        var fy = haut + 2.4f
+                        while (fy < 47f) {
+                            var fx = x + 1.6f
+                            while (fx < x + w - 1.6f) { fenetre(fx, fy, 1.1f, 1.8f, r); fx += 3.2f }
+                            fy += 4.6f
+                        }
                     }
-                    if (m[4] > 0f) {
-                        // Les colombages.
-                        var px = x + 0.4f
-                        while (px <= x + w) { ligne(px, haut, px, 50f, poutre, 0.3f); px += 2.6f }
-                        for (k in 1..2) { val y = haut + (50f - haut) * k / 3f; ligne(x, y, x + w, y, poutre, 0.3f) }
-                    }
-                    var fy = haut + 2.4f
-                    while (fy < 47f) {
-                        var fx = x + 1.6f
-                        while (fx < x + w - 1.6f) { fenetre(fx, fy, 1.1f, 1.8f, r); fx += 3.2f }
-                        fy += 4.6f
-                    }
+                    feuille(-2f, 50f, 104f, 2.2f, duJour(0xFFA59A86.toInt()), 0.5f)
                 }
-                feuille(-2f, 50f, 104f, 2.2f, duJour(0xFFA59A86.toInt()), 0.5f)
             }
             touffe(vert(0.5f), 4f, 44f, 4.4f, 11f, 46.5f, 3.6f, 0f, 48f, 3f)
             touffe(vert(0.6f), 58f, 46f, 3f, 63f, 44.5f, 3.6f, 67f, 47f, 2.6f)
@@ -2739,6 +2864,13 @@ object Paysages {
         /** La grande roue, tournée de [angle] radians ; la nuit, ses ampoules courent au [temps]. */
         fun grandeRoue(angle: Float, temps: Float = 0f) {
             val cx = ROUE[0]; val cy = ROUE[1]; val rr = ROUE[2]
+            // De trois quarts : la roue se voit en ellipse.
+            c.save()
+            c.scale(0.78f, 1f, cx, cy)
+            try { roue(cx, cy, rr, angle, temps) } finally { c.restore() }
+        }
+
+        private fun roue(cx: Float, cy: Float, rr: Float, angle: Float, temps: Float) {
             val structure = duJour(0xFFE8E8E4.toInt())
             for (k in 0 until 24) {
                 val a = angle + k / 24f * 2f * PI.toFloat()
@@ -2786,37 +2918,41 @@ object Paysages {
             val creme = duJour(0xFFE6DAC0.toInt())
             val toit = ardoise()
             val cuivre = duJour(0xFF5FA88A.toInt())
-            mineral {
-                // La tour de la Spuerkeess et son dôme de cuivre, à gauche.
-                feuille(3.5f, 9f, 5.4f, 24f, creme)
-                pieceD("M3 9.2C3 4.8 9.4 4.8 9.4 9.2Z", cuivre)
-                feuille(5.7f, 2.4f, 1f, 2.6f, cuivre, 0.3f)
-                fenetre(5.4f, 13f, 1.4f, 2.4f, r); fenetre(5.4f, 19f, 1.4f, 2.4f, r)
-                // Le grand bâtiment et son pavillon central.
-                feuille(12f, 18f, 50f, 15f, creme)
-                pieceD("M11.4 18.2L13.4 14.6L60.6 14.6L62.6 18.2Z", toit)
-                feuille(32f, 13f, 10f, 20f, creme)
-                pieceD("M31.4 13.2C32 9 42 9 42.6 13.2Z", toit)
-                var fx = 13.5f
-                while (fx < 61f) { fenetre(fx, 21f, 1.1f, 1.9f, r); fenetre(fx, 26f, 1.1f, 1.9f, r); fx += 3f }
+            enPerspective(30f, 25f, 0.06f) {
+                mineral {
+                    // La tour de la Spuerkeess et son dôme de cuivre, à gauche.
+                    feuille(3.5f, 9f, 5.4f, 24f, creme)
+                    pieceD("M3 9.2C3 4.8 9.4 4.8 9.4 9.2Z", cuivre)
+                    feuille(5.7f, 2.4f, 1f, 2.6f, cuivre, 0.3f)
+                    fenetre(5.4f, 13f, 1.4f, 2.4f, r); fenetre(5.4f, 19f, 1.4f, 2.4f, r)
+                    // Le grand bâtiment et son pavillon central.
+                    feuille(12f, 18f, 50f, 15f, creme)
+                    pieceD("M11.4 18.2L13.4 14.6L60.6 14.6L62.6 18.2Z", toit)
+                    feuille(32f, 13f, 10f, 20f, creme)
+                    pieceD("M31.4 13.2C32 9 42 9 42.6 13.2Z", toit)
+                    var fx = 13.5f
+                    while (fx < 61f) { fenetre(fx, 21f, 1.1f, 1.9f, r); fenetre(fx, 26f, 1.1f, 1.9f, r); fx += 3f }
+                }
             }
             lisiere(56f, 102f, { x -> 27f + sin(x * 0.3f) }, 1.4f, 2f, 176, mix(P.loin, P.milieu, 0.3f))
             plan(1)
             val pierre = duJour(0xFFD8C8A2.toInt())
-            mineral {
-                pieceD("M-2 29.6L102 29.6L102 46L95.4 46C95.4 42.4 93 40.4 90.4 40.4C87.8 40.4 85.4 42.4 85.4 46L81.6 46" +
-                    "C79.6 37.6 67.6 33.6 55 33.6C42.4 33.6 30.4 37.6 28.4 46L24.6 46C24.6 42.4 22.2 40.4 19.6 40.4" +
-                    "C17 40.4 14.6 42.4 14.6 46L10.8 46C10.8 42.4 8.4 40.4 5.8 40.4C3.2 40.4 -2 42.4 -2 46Z", pierre)
-                feuille(24.6f, 46f, 3.8f, 20f, pierre)
-                feuille(81.6f, 46f, 3.8f, 20f, pierre)
-                feuille(-2f, 28.4f, 104f, 1.6f, mix(pierre, P.pres, 0.25f), 0.5f)
-                trait("M28.4 46C30.4 37.6 42.4 33.6 55 33.6C67.6 33.6 79.6 37.6 81.6 46", mix(pierre, P.pres, 0.35f), 0.5f)
-                for (lx in floatArrayOf(70f, 82f, 94f)) {
-                    ligne(lx, 22.6f, lx, 28.4f, duJour(0xFF55585E.toInt()), 0.3f)
-                    if (P.allume) rond(lx, 22.4f, 0.6f, P.fenetre)
+            enPerspective(50f, 30f, 0.12f) {
+                mineral {
+                    pieceD("M-2 29.6L102 29.6L102 46L95.4 46C95.4 42.4 93 40.4 90.4 40.4C87.8 40.4 85.4 42.4 85.4 46L81.6 46" +
+                        "C79.6 37.6 67.6 33.6 55 33.6C42.4 33.6 30.4 37.6 28.4 46L24.6 46C24.6 42.4 22.2 40.4 19.6 40.4" +
+                        "C17 40.4 14.6 42.4 14.6 46L10.8 46C10.8 42.4 8.4 40.4 5.8 40.4C3.2 40.4 -2 42.4 -2 46Z", pierre)
+                    feuille(24.6f, 46f, 3.8f, 20f, pierre)
+                    feuille(81.6f, 46f, 3.8f, 20f, pierre)
+                    feuille(-2f, 28.4f, 104f, 1.6f, mix(pierre, P.pres, 0.25f), 0.5f)
+                    trait("M28.4 46C30.4 37.6 42.4 33.6 55 33.6C67.6 33.6 79.6 37.6 81.6 46", mix(pierre, P.pres, 0.35f), 0.5f)
+                    for (lx in floatArrayOf(70f, 82f, 94f)) {
+                        ligne(lx, 22.6f, lx, 28.4f, duJour(0xFF55585E.toInt()), 0.3f)
+                        if (P.allume) rond(lx, 22.4f, 0.6f, P.fenetre)
+                    }
                 }
+                if (!vivant) tram(4f)
             }
-            if (!vivant) tram(4f)
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
@@ -2827,8 +2963,7 @@ object Paysages {
         }
 
         /** Le tram sur le pont, son nez en [x]. */
-        fun tram(x: Float) {
-            val y = 25.4f
+        fun tram(x: Float, y: Float = 25.4f) {
             feuille(x, y, 15f, 3f, duJour(0xFF2C3A58.toInt()), 0.4f)
             rect(x + 0.8f, y + 0.5f, 13.4f, 1.1f, if (P.allume) P.fenetre else duJour(0xFFB8C8D8.toInt()))
             rect(x, y + 2.2f, 15f, 0.4f, duJour(0xFFC9D2DC.toInt()))
@@ -2934,34 +3069,36 @@ object Paysages {
             val aile = duJour(0xFFEDE9E0.toInt())
             val toit = ardoise()
             val terrasse = duJour(0xFFD8CCAE.toInt())
-            mineral {
-                feuille(16f, 22f, 18f, 10f, ocre)
-                pieceD("M15.4 22.2L17.6 19L32.4 19L34.6 22.2Z", toit)
-                feuille(62f, 18f, 26f, 14f, aile)
-                pieceD("M61.4 18.2L63.6 15L86 15L88.6 18.2Z", toit)
-                feuille(34f, 16f, 28f, 16f, ocre)
-                pieceD("M33.4 16.2L36 12.6L60 12.6L62.6 16.2Z", toit)
-                for (x in floatArrayOf(36f, 54f)) {
-                    feuille(x, 10f, 6f, 22f, ocre)
-                    pieceD("M${x - 0.6f} 10.2L${x + 3f} 2.4L${x + 6.6f} 10.2Z", toit)
-                    ligne(x + 3f, 2.4f, x + 3f, 0.4f, toit, 0.25f)
-                    for (y in floatArrayOf(14f, 20f, 26f)) fenetre(x + 2.4f, y, 1.2f, 2f, r)
+            enPerspective(50f, 31f, 0.08f) {
+                mineral {
+                    feuille(16f, 22f, 18f, 10f, ocre)
+                    pieceD("M15.4 22.2L17.6 19L32.4 19L34.6 22.2Z", toit)
+                    feuille(62f, 18f, 26f, 14f, aile)
+                    pieceD("M61.4 18.2L63.6 15L86 15L88.6 18.2Z", toit)
+                    feuille(34f, 16f, 28f, 16f, ocre)
+                    pieceD("M33.4 16.2L36 12.6L60 12.6L62.6 16.2Z", toit)
+                    for (x in floatArrayOf(36f, 54f)) {
+                        feuille(x, 10f, 6f, 22f, ocre)
+                        pieceD("M${x - 0.6f} 10.2L${x + 3f} 2.4L${x + 6.6f} 10.2Z", toit)
+                        ligne(x + 3f, 2.4f, x + 3f, 0.4f, toit, 0.25f)
+                        for (y in floatArrayOf(14f, 20f, 26f)) fenetre(x + 2.4f, y, 1.2f, 2f, r)
+                    }
+                    for (fx in floatArrayOf(17.6f, 21f, 24.4f, 27.8f, 31.2f)) fenetre(fx, 25f, 1f, 1.8f, r)
+                    for (fx in floatArrayOf(43.5f, 47f, 50.5f)) { fenetre(fx, 19f, 1.1f, 2f, r); fenetre(fx, 25f, 1.1f, 2f, r) }
+                    var fx = 64f
+                    while (fx < 87f) { fenetre(fx, 21f, 1f, 1.8f, r); fenetre(fx, 26f, 1f, 1.8f, r); fx += 3f }
+                    // La terrasse, ses arcades et sa balustrade.
+                    feuille(6f, 32f, 88f, 8f, terrasse)
+                    var ax = 38f
+                    while (ax < 62f) {
+                        pieceD("M$ax 40L$ax 36C$ax 34.2 ${ax + 3.2f} 34.2 ${ax + 3.2f} 36L${ax + 3.2f} 40Z", mix(terrasse, P.pres, 0.45f), 0f)
+                        ax += 5f
+                    }
+                    ligne(6f, 32.4f, 94f, 32.4f, mix(terrasse, P.pres, 0.3f), 0.4f)
+                    var bx = 7f
+                    while (bx < 94f) { ligne(bx, 31f, bx, 32.4f, terrasse, 0.3f); bx += 1.6f }
+                    ligne(6f, 31f, 94f, 31f, terrasse, 0.4f)
                 }
-                for (fx in floatArrayOf(17.6f, 21f, 24.4f, 27.8f, 31.2f)) fenetre(fx, 25f, 1f, 1.8f, r)
-                for (fx in floatArrayOf(43.5f, 47f, 50.5f)) { fenetre(fx, 19f, 1.1f, 2f, r); fenetre(fx, 25f, 1.1f, 2f, r) }
-                var fx = 64f
-                while (fx < 87f) { fenetre(fx, 21f, 1f, 1.8f, r); fenetre(fx, 26f, 1f, 1.8f, r); fx += 3f }
-                // La terrasse, ses arcades et sa balustrade.
-                feuille(6f, 32f, 88f, 8f, terrasse)
-                var ax = 38f
-                while (ax < 62f) {
-                    pieceD("M$ax 40L$ax 36C$ax 34.2 ${ax + 3.2f} 34.2 ${ax + 3.2f} 36L${ax + 3.2f} 40Z", mix(terrasse, P.pres, 0.45f), 0f)
-                    ax += 5f
-                }
-                ligne(6f, 32.4f, 94f, 32.4f, mix(terrasse, P.pres, 0.3f), 0.4f)
-                var bx = 7f
-                while (bx < 94f) { ligne(bx, 31f, bx, 32.4f, terrasse, 0.3f); bx += 1.6f }
-                ligne(6f, 31f, 94f, 31f, terrasse, 0.4f)
             }
             for (x in floatArrayOf(12f, 88f)) {
                 pieceD("M$x 40L${x - 1.6f} 34C${x - 1.4f} 30 ${x - 0.4f} 27 $x 26C${x + 0.4f} 27 ${x + 1.4f} 30 ${x + 1.6f} 34Z", vert(0.15f))
@@ -3020,22 +3157,24 @@ object Paysages {
             val beton = duJour(0xFFEDEDEB.toInt())
             val gris = duJour(0xFF55595F.toInt())
             val verre = duJour(0xFF9FD3EC.toInt())
-            mineral {
-                // La passerelle vers la ville haute.
-                feuille(-3f, 9.2f, 82f, 5.6f, mix(beton, P.pres, 0.1f))
-                feuille(-3f, 9.2f, 82f, 2.6f, verre, 0.3f)
-                feuille(-3f, 13.6f, 82f, 1.2f, gris, 0f)
-                var mx = 0f
-                while (mx < 79f) { ligne(mx, 9.2f, mx, 11.8f, gris, 0.18f); mx += 3f }
-                // La tour, ses lames, sa plateforme vitrée.
-                feuille(80f, -3f, 14f, 61.5f, beton)
-                feuille(91f, -3f, 3f, 61.5f, mix(beton, P.pres, 0.18f), 0f)
-                feuille(84.5f, 0f, 5f, 14f, mix(beton, gris, 0.35f), 0.2f)
-                var ly = 0.8f
-                while (ly < 14f) { ligne(84.5f, ly, 89.5f, ly, gris, 0.2f); ly += 1.1f }
-                feuille(94f, 17f, 9f, 7f, verre, 0.5f)
-                feuille(94f, 24f, 9f, 1.2f, gris, 0f)
-                ligne(79.3f, 14.8f, 79.3f, DEVANT, gris, 0.5f)
+            enPerspective(80f, 12f, 0.07f) {
+                mineral {
+                    // La passerelle vers la ville haute.
+                    feuille(-3f, 9.2f, 82f, 5.6f, mix(beton, P.pres, 0.1f))
+                    feuille(-3f, 9.2f, 82f, 2.6f, verre, 0.3f)
+                    feuille(-3f, 13.6f, 82f, 1.2f, gris, 0f)
+                    var mx = 0f
+                    while (mx < 79f) { ligne(mx, 9.2f, mx, 11.8f, gris, 0.18f); mx += 3f }
+                    // La tour, ses lames, sa plateforme vitrée.
+                    feuille(80f, -3f, 14f, 61.5f, beton)
+                    feuille(91f, -3f, 3f, 61.5f, mix(beton, P.pres, 0.18f), 0f)
+                    feuille(84.5f, 0f, 5f, 14f, mix(beton, gris, 0.35f), 0.2f)
+                    var ly = 0.8f
+                    while (ly < 14f) { ligne(84.5f, ly, 89.5f, ly, gris, 0.2f); ly += 1.1f }
+                    feuille(94f, 17f, 9f, 7f, verre, 0.5f)
+                    feuille(94f, 24f, 9f, 1.2f, gris, 0f)
+                    ligne(79.3f, 14.8f, 79.3f, DEVANT, gris, 0.5f)
+                }
             }
             if (!vivant) cabine(30f)
             touffe(vert(0.55f), 1f, 52f, 7f, 10f, 55f, 5f, -2f, 42f, 6f, 6f, 46f, 4f)
@@ -3053,7 +3192,18 @@ object Paysages {
 
         /** Le bus qui passe sur la Rout Bréck, son nez en [x]. */
         fun bus(x: Float) {
-            val y = 26.8f
+            if (PAPIER) {
+                // Sur le tablier qui monte : le bus suit la pente.
+                c.save()
+                c.rotate(Math.toDegrees(kotlin.math.atan(TABLIER_PENTE.toDouble())).toFloat(), x, tablier(x))
+                busDroit(x, tablier(x) - 1.4f - 3.2f)
+                c.restore()
+                return
+            }
+            busDroit(x, 26.8f)
+        }
+
+        private fun busDroit(x: Float, y: Float) {
             feuille(x, y, 11f, 3.2f, duJour(0xFFF2F4F6.toInt()), 0.4f)
             rect(x + 0.6f, y + 0.6f, 9.8f, 1f, if (P.allume) P.fenetre else duJour(0xFF5A7896.toInt()))
             rect(x, y + 2.2f, 11f, 0.45f, duJour(0xFF2F6FB0.toInt()))
@@ -3074,6 +3224,613 @@ object Paysages {
             c.drawPath(v, p)
             p.style = Paint.Style.FILL
             p.strokeCap = Paint.Cap.BUTT
+        }
+
+        // ------------------------------------------- la troisième vague (2026-11-14)
+
+        /** Un cumulus de papier : des bosses rondes sur une base plate, la face à l'ombre dessous. */
+        fun cumulus(x: Float, y: Float, l: Float, graine: Int, teinte: Int? = null) {
+            val r = Alea(graine)
+            val t = Path()
+            t.addRoundRect(RectF(x, y - l * 0.12f, x + l, y), l * 0.06f, l * 0.06f, Path.Direction.CW)
+            var cx = x + l * 0.12f
+            while (cx < x + l * 0.9f) {
+                val rr = l * (0.1f + 0.14f * sin(PI.toFloat() * (cx - x) / l) + r() * 0.05f)
+                t.addCircle(cx, y - rr * 0.8f, rr, Path.Direction.CW)
+                cx += rr * (0.9f + r() * 0.3f)
+            }
+            val blanc = teinte ?: if (P.nuit) mix(P.cielHaut, 0xFFFFFFFF.toInt(), 0.3f) else 0xFFFFFFFF.toInt()
+            piece(Path().apply { addRoundRect(RectF(x + l * 0.05f, y - l * 0.08f, x + l * 0.95f, y), l * 0.04f, l * 0.04f, Path.Direction.CW) },
+                mix(blanc, P.cielHaut, 0.3f), 0.3f)
+            piece(t, blanc, 0.4f)
+        }
+
+        /** Un pylône en treillis posé en [x] sur [bas], jusqu'à [haut], large de [w] au pied. */
+        fun pylone(x: Float, bas: Float, haut: Float, w: Float, col: Int) {
+            fun g(y: Float) = x - w / 2f + (w * 0.35f) * (bas - y) / (bas - haut)
+            fun d(y: Float) = x + w / 2f - (w * 0.35f) * (bas - y) / (bas - haut)
+            ligne(g(bas), bas, g(haut), haut, col, 0.35f)
+            ligne(d(bas), bas, d(haut), haut, col, 0.35f)
+            var y = bas
+            val pas = 2.6f
+            while (y - pas >= haut) {
+                ligne(g(y), y, d(y - pas), y - pas, col, 0.18f)
+                ligne(d(y), y, g(y - pas), y - pas, col, 0.18f)
+                y -= pas
+            }
+            ligne(g(haut) - 0.8f, haut + 2f, d(haut) + 0.8f, haut + 2f, col, 0.3f)
+        }
+
+        /** Un mouton à tête noire en ([x], [y]), de taille [s] ; [broute] de 0 (tête levée) à 1 (tête dans l'herbe). */
+        fun mouton(x: Float, y: Float, s: Float, broute: Float, versDroite: Boolean = true) {
+            val laine = duJour(0xFFF1ECE0.toInt())
+            val tete = duJour(0xFF2E2A28.toInt())
+            val k = if (versDroite) 1f else -1f
+            ligne(x - 1.2f * s, y + 0.8f * s, x - 1.2f * s, y + 2f * s, tete, 0.3f * s)
+            ligne(x + 1.2f * s, y + 0.8f * s, x + 1.2f * s, y + 2f * s, tete, 0.3f * s)
+            ovalePapier(x, y, 2.2f * s, 1.4f * s, laine, 0.3f)
+            ovalePapier(x + k * 2.4f * s, y - 0.6f * s + broute * 1.4f * s, 0.8f * s, 0.6f * s, tete, 0f)
+        }
+
+        /**
+         * Les lames d'un caillebotis qui fuit, entre ses bords [g] et [d]
+         * (x selon y), de [bas] à [haut] : plus serrées au loin.
+         */
+        fun lames(g: (Float) -> Float, d: (Float) -> Float, bas: Float, haut: Float, col: Int) {
+            for (k in 1..14) {
+                val y = haut + (bas - haut) * (k / 14f).pow(1.7f)
+                ligne(g(y), y, d(y), y, col, 0.15f + 0.2f * k / 14f, 0.8f)
+            }
+        }
+
+        // ---- Felsmillen, les rochers de grès et le caillebotis (photo du propriétaire)
+
+        fun felsmillen() {
+            val r = Alea(225)
+            val fond = mix(vert(0.8f), P.cielBas, 0.25f)
+            lisiere(-2f, 102f, { x -> 8f + 3f * sin(x * 0.17f) }, 2.2f, 3.4f, 226, fond)
+            for (k in 0 until 10) feuille(30f + r() * 72f, 4f + r() * 8f, 0.6f + r() * 0.5f, 40f, sombre(fond, 0.4f), 0.3f)
+            plan(1)
+            pieceD("M-2 66L-2 40C30 36 70 34 102 36L102 66Z", vert(0.75f), 0.5f)
+            val gres = duJour(0xFFB7A889.toInt())
+            val clair = mix(gres, 0xFFFFFFFF.toInt(), 0.18f)
+            mineral {
+                pieceD("M-3 66L-3 -3L34 -3C38 4 36 10 31 13C35 17 34 24 28 27C31 31 30 38 25 42L24 66Z", gres)
+                pieceD("M8 6C16 3 26 4 31 10C25 11 16 11 8 9Z", clair, 0.4f)
+                pieceD("M6 20C14 17 24 18 29 24C22 25 14 25 6 23Z", clair, 0.4f)
+                pieceD("M4 34C12 31 20 32 25 38C19 39 11 39 4 37Z", clair, 0.4f)
+                pieceD("M40 30C42 26 50 25 56 27C58 30 56 34 50 35C44 35 40 34 40 30Z", gres)
+            }
+            touffe(duJour(0xFF6E8A44.toInt()), 30f, 13f, 1.6f, 27f, 27f, 1.6f, 22f, 42f, 2f)
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            val bois = duJour(0xFFB08A60.toInt())
+            pieceD("M58 58.5C66 48 78 40 84 34L90 34C88 40 96 50 102 54L102 58.5Z", bois)
+            lames({ y -> 58f + (58.5f - y) / 24.5f * 26f }, { y -> min(102f, 102f - (58.5f - y) / 24.5f * 12f) }, 58.5f, 34f, sombre(bois, 0.35f))
+            touffe(vert(0.65f), -2f, 56f, 4f, 6f, 57f, 3.4f, 14f, 57.5f, 3f, 24f, 58f, 2.6f)
+            c.restore()
+        }
+
+        // ---- Ourdall, la passerelle le long du lac de l'Our (photos du propriétaire)
+
+        fun ourdall() {
+            val r = Alea(235)
+            lisiere(-2f, 102f, { x -> 22f + 4f * sin(x * 0.05f + 0.5f) }, 2f, 3f, 236, mix(vert(0.4f), P.loin, 0.3f))
+            pylone(8f, 26f, 15f, 3f, duJour(0xFF6A6E74.toInt()))
+            plan(1)
+            pieceD("M-2 66L-2 34C30 33 70 33 102 35L102 66Z", mix(P.eau, 0xFF6F8A60.toInt(), 0.35f), 0.4f)
+            val clair = mix(P.eau, 0xFFFFFFFF.toInt(), if (P.nuit) 0.18f else 0.4f)
+            for (k in 0 until 8) rect(r() * 60f, 36f + r() * 14f, 3f + r() * 6f, 0.3f, clair, 0.7f)
+            lisiere(62f, 102f, { x -> 32f - (x - 62f) * 0.05f }, 1.6f, 2.4f, 237, vert(0.35f))
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            val bois = duJour(0xFFB9A07A.toInt())
+            val gris = duJour(0xFF8A8E92.toInt())
+            pieceD("M30 58.5L64 36L69 36L84 58.5Z", bois)
+            lames({ y -> 30f + (58.5f - y) / 22.5f * 34f }, { y -> 84f - (58.5f - y) / 22.5f * 15f }, 58.5f, 36f, sombre(bois, 0.3f))
+            // Le garde-corps de gauche : le grillage, puis la main courante.
+            var x = 16f
+            while (x < 64f) {
+                val t = (x - 16f) / 48f
+                ligne(x, 45f - t * 11.6f, x + 2.4f, 58.5f - t * 22f, gris, 0.12f)
+                ligne(x + 2.4f, 45f - (t + 0.05f) * 11.6f, x, 58.5f - t * 22f, gris, 0.12f)
+                x += 2.4f
+            }
+            pieceD("M14 42.6L64 32.4L64 33.6L16 45.2Z", bois)
+            for (px in floatArrayOf(16f, 32f, 46f, 57f)) ligne(px, 45f - (px - 16f) / 48f * 11.6f, px, 58.5f - (px - 16f) / 48f * 22f, sombre(bois, 0.3f), 0.5f)
+            // Celui de droite, et les arbres qui surplombent.
+            pieceD("M98 41L70 32.6L70 33.8L98 43.4Z", bois)
+            for (px in floatArrayOf(96f, 86f, 77f)) ligne(px, 42f - (98f - px) * 0.3f, px, 58.5f - (98f - px) * 0.85f, sombre(bois, 0.3f), 0.5f)
+            touffe(vert(0.5f), 84f, 4f, 8f, 94f, 10f, 7f, 100f, 2f, 8f, 76f, -2f, 6f)
+            c.restore()
+        }
+
+        // ---- Stauséi, le barrage de la Haute-Sûre et ses anses boisées (photos du propriétaire)
+
+        fun stausei() {
+            lisiere(-2f, 102f, { x -> 14f + 5f * cos((x - 55f) * 0.05f) }, 2f, 3f, 246, mix(P.loin, vert(0.3f), 0.4f))
+            pieceD("M18 40L18 29C34 27.4 64 27.4 82 29L82 40Z", mix(P.eau, 0xFF4F9A80.toInt(), 0.35f), 0.3f)
+            lisiere(-2f, 46f, { x -> 20f + x * 0.1f }, 1.8f, 2.6f, 247, vert(0.25f))
+            lisiere(56f, 102f, { x -> 24f - (x - 56f) * 0.12f }, 1.8f, 2.6f, 248, vert(0.35f))
+            plan(1)
+            val beton = duJour(0xFFD8CDB4.toInt())
+            mineral {
+                pieceD("M14 36C30 33 60 33 92 36L92 44C60 40 30 40 14 44Z", beton)
+                pieceD("M14 35C30 32 60 32 92 35L92 36.4C60 33.4 30 33.4 14 36.4Z", sombre(beton, 0.18f))
+                for (x in floatArrayOf(28f, 42f, 56f, 70f, 84f)) ligne(x, 34.6f, x, 41.4f, sombre(beton, 0.25f), 0.25f)
+                pieceD("M-2 50C6 46 14 44 20 46C24 47 26 50 24 52L-2 52Z", duJour(0xFFB9B0A0.toInt()))
+            }
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            pieceD("M-2 66L-2 46C30 44 70 44 102 46L102 66Z", mix(P.eau, 0xFF3F8A6A.toInt(), 0.45f), 0.4f)
+            // La passerelle d'Insenborn, en bas à droite.
+            val bois = duJour(0xFFC9B79A.toInt())
+            pieceD("M74 58.5L84 47L90 47L92 58.5Z", bois)
+            pieceD("M72 55L83 44.4L83 46.4L74 57Z", sombre(bois, 0.15f))
+            pieceD("M94 55L91 44.4L91 46.4L93 57Z", sombre(bois, 0.15f))
+            touffe(vert(0.55f), 96f, 40f, 7f, 100f, 50f, 7f, 90f, 34f, 5f)
+            touffe(vert(0.4f), -2f, 56f, 6f, 6f, 58f, 5f)
+            c.restore()
+        }
+
+        // ---- Conzefenn, les tourbières de Troisvierges et leurs moutons (photo du propriétaire)
+
+        fun conzefenn() {
+            val r = Alea(255)
+            val epiceas = sombre(vert(0.15f), 0.25f)
+            val foret = Path()
+            foret.moveTo(-3f, BAS + 2f)
+            var x = -3f
+            while (x <= 103f) {
+                val base = 26f + (if (x < 40f) -4f * sin(x * 0.08f) else 1.5f * sin(x * 0.1f))
+                foret.lineTo(x, base); foret.lineTo(x + 0.8f, base - 2.6f - r() * 1.2f)
+                x += 1.6f
+            }
+            foret.lineTo(103f, BAS + 2f); foret.close()
+            piece(foret, epiceas)
+            plan(1)
+            pieceD("M-2 66L-2 31C30 29.5 70 29.5 102 30.5L102 66Z", vert(0.85f), 0.4f)
+            touffe(vert(0.45f), 22f, 30f, 2.4f, 26f, 29f, 2.6f, 74f, 30f, 2.4f, 78f, 30.5f, 2f)
+            for (k in 0 until 18) mouton(r() * 100f, 33f + r() * 7f, 0.45f + r() * 0.15f, r(), r() < 0.5f)
+            for (k in 0 until 10) rond(r() * 100f, 36f + r() * 6f, 0.4f, duJour(0xFFF2C230.toInt()))
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            pieceD("M-2 66L-2 44C30 42 70 42 102 44L102 66Z", vert(0.7f), 0.4f)
+            if (!vivant) for ((k, mx) in MOUTONS.withIndex()) mouton(mx, 47f + (k % 2) * 3f, 1f, if (k % 2 == 0) 1f else 0f, k % 3 != 0)
+            val bois = duJour(0xFF7A6248.toInt())
+            for (px in floatArrayOf(10f, 46f, 70f, 92f)) feuille(px, 46f, 1.4f, 12.5f, bois, 0.6f)
+            pieceD("M-2 51L102 48L102 49.2L-2 52.4Z", bois, 0.6f)
+            pieceD("M60 55L102 52L102 53L60 56.2Z", bois, 0.6f)
+            for (k in 0 until 14) rond(r() * 100f, 53f + r() * 5f, 0.5f, duJour(0xFFF2C230.toInt()))
+            c.restore()
+        }
+
+        // ---- Haff Réimech, le pont couvert (photo du propriétaire)
+
+        fun haffReimech() {
+            lisiere(-2f, 102f, { x -> 16f + 3f * sin(x * 0.09f) }, 2f, 3.2f, 266, mix(vert(0.4f), P.loin, 0.35f))
+            plan(1)
+            pieceD("M-2 66L-2 46L102 46L102 66Z", mix(P.eau, 0xFF5F7046.toInt(), 0.4f), 0.4f)
+            val pierre = duJour(0xFFA8A090.toInt())
+            val bois = duJour(0xFF8C6A48.toInt())
+            enPerspective(50f, 22f, 0.08f) {
+                mineral {
+                    for ((px, w) in listOf(10f to 10f, 78f to 12f)) {
+                        feuille(px, 27f, w, 22f, pierre)
+                        feuille(px + w * 0.65f, 27f, w * 0.35f, 22f, sombre(pierre, 0.2f), 0f)
+                    }
+                    pieceD("M-3 17L102 14L102 18.6L-3 21.6Z", sombre(duJour(0xFF7A6A58.toInt()), 0.25f))
+                    pieceD("M-3 21.6L102 18.6L102 26L-3 28Z", bois)
+                    var x = -2f
+                    while (x < 101f) {
+                        val y = 21.6f - (x + 3f) * 0.0286f
+                        rect(x + 0.8f, y + 1.2f, 3f, 3.2f, sombre(bois, 0.6f))
+                        if (P.allume && x.toInt() % 3 == 0) rect(x + 1.2f, y + 1.6f, 2.2f, 2.4f, P.fenetre, 0.5f)
+                        x += 5f
+                    }
+                    pieceD("M-3 28L102 26L102 27.6L-3 29.6Z", sombre(bois, 0.35f))
+                }
+            }
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            pieceD("M-3 4C20 2 40 6 60 3C70 2 84 6 103 2L103 4.4C84 8 70 4.4 60 5.4C40 8.6 20 4.6 -3 6.6Z", duJour(0xFF7A7048.toInt()), 0.5f)
+            touffe(vert(0.5f), 0f, 30f, 6f, 4f, 44f, 6f, -2f, 54f, 5f, 96f, 36f, 6f, 100f, 48f, 6f, 92f, 54f, 5f)
+            c.restore()
+        }
+
+        // ---- Hohllay, la grotte de Berdorf (photo du propriétaire)
+
+        fun hohllay() {
+            val gres = duJour(0xFFC9895A.toInt())
+            val rose = duJour(0xFFD9A58A.toInt())
+            val creux = sombre(gres, 0.8f)
+            mineral {
+                feuille(-3f, -3f, 106f, 72f, creux, 0f)
+                pieceD("M-3 10L103 10L103 52L-3 52Z", rose, 0.4f)
+                for ((ax, w) in listOf(6f to 10f, 30f to 16f, 56f to 16f, 88f to 10f)) {
+                    pieceD("M$ax 52L$ax ${44f - w * 0.4f}C$ax ${30f - w * 0.3f} ${ax + w} ${30f - w * 0.3f} ${ax + w} ${44f - w * 0.4f}L${ax + w} 52Z", creux, 0.3f)
+                }
+            }
+            plan(1)
+            mineral {
+                for (px in floatArrayOf(18f, 76f)) {
+                    pieceD("M$px 58L${px + 1f} 20C${px - 2f} 16 ${px + 10f} 16 ${px + 7f} 20L${px + 8f} 58Z", rose)
+                    pieceD("M$px 58L${px + 0.6f} 46C${px + 3f} 44 ${px + 6f} 44 ${px + 8f} 46L${px + 8f} 58Z", duJour(0xFF8AA04A.toInt()), 0.3f)
+                }
+                pieceD("M-3 -3L103 -3L103 12C80 16 60 10 50 12C40 14 20 10 -3 14Z", gres)
+            }
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            mineral {
+                piece(cadre("M8 60L8 30C8 16 26 8 50 8C74 8 92 16 92 30L92 60Z"), gres)
+                val trace = sombre(gres, 0.25f)
+                for (k in 0 until 6) {
+                    val x0 = -2f + k * 18f
+                    trait("M$x0 6Q${x0 + 8f} -1 ${x0 + 16f} 6", trace, 0.35f, 0.8f)
+                    trait("M${x0 + 2f} 4Q${x0 + 8f} -1.6 ${x0 + 14f} 4", trace, 0.25f, 0.7f)
+                }
+                for (y in floatArrayOf(20f, 30f, 40f)) { trait("M0 ${y}Q4 ${y - 4f} 8 $y", trace, 0.3f); trait("M92 ${y}Q96 ${y - 4f} 100 $y", trace, 0.3f) }
+                pieceD("M-2 58.5C10 52 30 52 40 56L40 58.5Z", duJour(0xFF8E9A6A.toInt()))
+                pieceD("M60 58.5C70 53 90 52 102 55L102 58.5Z", duJour(0xFF8E9A6A.toInt()))
+            }
+            c.restore()
+        }
+
+        // ---- Napoleonsgaart, la tour sur la butte (photo du propriétaire)
+
+        fun napoleonsgaart() {
+            cumulus(2f, 24f, 28f, 276)
+            cumulus(38f, 16f, 32f, 277)
+            cumulus(68f, 28f, 30f, 278)
+            plan(1)
+            pieceD("M-2 66L-2 44C20 42 40 40 54 38C64 36 76 36 86 38C94 40 98 42 102 43L102 66Z", vert(0.85f), 0.4f)
+            pieceD("M56 44C66 35 80 33 92 35C96 37 100 41 102 44Z", vert(0.65f), 0.4f)
+            val grille = duJour(0xFF9AA0A6.toInt())
+            var gx = 40f
+            while (gx < 102f) { ligne(gx, 37.6f, gx, 42f, grille, 0.15f); gx += 3f }
+            ligne(40f, 38f, 102f, 37.4f, grille, 0.15f)
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            pieceD("M30 58.5C44 52 64 48 80 46L86 46C78 50 66 54 58 58.5Z", duJour(0xFF4A4C50.toInt()), 0.4f)
+            val pierre = duJour(0xFF6E6862.toInt())
+            mineral {
+                feuille(74f, 48f, 24f, 10.5f, sombre(pierre, 0.1f))
+                feuille(77f, 40f, 18f, 9f, pierre)
+                // Vue de trois quarts : la face éclairée, puis celle de côté qui fuit.
+                pieceD("M78.6 58.5L79.6 6L86 5L86.4 58.5Z", mix(pierre, 0xFFFFFFFF.toInt(), 0.08f))
+                pieceD("M86.4 58.5L86 5L92 6.6L93 58.5Z", sombre(pierre, 0.3f))
+                pieceD("M79 4.4L86 3.2L92.6 5L86 6.4Z", sombre(pierre, 0.15f), 0.4f)
+                val joint = sombre(pierre, 0.3f)
+                var y = 8f
+                while (y < 40f) { ligne(79.8f, y, 86f, y - 0.9f, joint, 0.12f, 0.7f); ligne(86f, y - 0.9f, 92.4f, y + 0.7f, joint, 0.12f, 0.5f); y += 1.8f }
+                for (fy in floatArrayOf(15f, 27f)) {
+                    for (fx in floatArrayOf(81f, 83.4f)) rect(fx, fy - (fx - 79f) * 0.15f, 1.3f, 1.6f, if (P.allume) P.fenetre else sombre(pierre, 0.6f))
+                    for (fx in floatArrayOf(87.6f, 90f)) rect(fx, fy - 0.9f + (fx - 86f) * 0.27f, 1.1f, 1.6f, if (P.allume) P.fenetre else sombre(pierre, 0.7f))
+                }
+                feuille(84.4f, 50f, 3.2f, 8.5f, duJour(0xFF2F5FB0.toInt()), 0.3f)
+                val fer = duJour(0xFF55595F.toInt())
+                ligne(80f, 2.4f, 92f, 2.4f, fer, 0.2f)
+                for (fx in floatArrayOf(80f, 83f, 86f, 89f, 92f)) ligne(fx, 2.4f, fx, 4.6f, fer, 0.15f)
+                ligne(86f, 4.6f, 86f, -1f, fer, 0.25f)
+            }
+            pylone(5f, DEVANT, -2f, 4f, duJour(0xFF55595F.toInt()))
+            touffe(vert(0.4f), 100f, 44f, 5f, 96f, 50f, 4f)
+            c.restore()
+        }
+
+        // ---- Kallektuffquell, la source de tuf (photo du propriétaire)
+
+        fun kallektuffquell() {
+            lisiere(40f, 102f, { x -> 10f + 3f * sin(x * 0.2f) }, 2f, 3f, 286, vert(0.6f))
+            plan(1)
+            val r = Alea(287)
+            val tuf = duJour(0xFF8C7458.toInt())
+            val mousse = duJour(0xFF8FB040.toInt())
+            mineral {
+                pieceD("M-3 -3L70 -3C78 6 86 14 96 18L103 20L103 38L-3 38Z", tuf)
+                var x = 2f
+                while (x < 98f) { ligne(x, 24f + r() * 4f, x + r(), 36f, sombre(tuf, 0.5f), 0.5f, 0.6f); x += 3f }
+                feuille(-3f, 24f, 106f, 2.4f, sombre(tuf, 0.45f), 0f)
+            }
+            pieceD("M-3 -3L66 -3C70 6 64 14 56 20C44 26 24 24 10 26C4 27 0 26 -3 27Z", mousse)
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            val bassin = mix(duJour(0xFF6FB8B0.toInt()), P.eau, 0.2f)
+            pieceD("M-3 66L-3 37L103 37L103 66Z", bassin, 0.4f)
+            rect(-3f, 38f, 106f, 0.5f, mix(bassin, 0xFFFFFFFF.toInt(), 0.5f), 0.7f)
+            val galet = duJour(0xFFD8D2C4.toInt())
+            for (k in 0 until 10) {
+                val u = k / 9f
+                ovalePapier(-1f + u * 40f, 50f + u * u * 8f, 2.6f, 1.6f, galet)
+            }
+            touffe(vert(0.5f), 96f, 40f, 4f, 100f, 46f, 5f)
+            c.restore()
+        }
+
+        // ---- Péitrusdall, la vallée de la Pétrusse sous le pont Adolphe (photo du propriétaire)
+
+        fun peitrusdall() {
+            lisiere(16f, 84f, { x -> 34f + 2f * sin(x * 0.2f) }, 2f, 3f, 296, mix(vert(0.4f), P.loin, 0.35f))
+            plan(1)
+            val pierre = duJour(0xFFD3C29C.toInt())
+            mineral {
+                pieceD("M-3 6L86 5L86 10L-3 11Z", pierre)
+                feuille(-3f, 5f, 89f, 0.8f, sombre(pierre, 0.25f), 0f)
+                pieceD("M-3 10.6L50 10.2L46 13C30 14 14 26 8 46L-3 46Z", pierre)
+                pieceD("M8 46C14 26 30 13 46 12.6C62 12 76 18 86 28L82 30C74 21 62 16 46 16.4C32 17 18 28 12 46Z", sombre(pierre, 0.12f))
+                for (ax in floatArrayOf(2f, 10f, 18f, 26f)) {
+                    val h = 12f + (30f - ax) * 0.3f
+                    pieceD("M$ax ${h + 6f}L$ax ${h + 2f}C$ax ${h - 0.6f} ${ax + 5f} ${h - 0.6f} ${ax + 5f} ${h + 2f}L${ax + 5f} ${h + 6f}Z", sombre(pierre, 0.45f), 0f)
+                }
+                for (lx in floatArrayOf(14f, 40f, 66f)) { ligne(lx, 1f, lx, 5f, duJour(0xFF55585E.toInt()), 0.25f); if (P.allume) rond(lx, 0.8f, 0.6f, P.fenetre) }
+            }
+            if (!vivant) tram(54f, 2.2f)
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            pieceD("M-3 58.5L-3 44C30 40 70 40 103 42L103 58.5Z", vert(0.8f), 0.4f)
+            pieceD("M60 58.5C66 50 70 44 72 38L75 38C76 44 84 52 96 58.5Z", duJour(0xFF6A6C70.toInt()), 0.4f)
+            mineral { pieceD("M90 58.5L92 40C96 38 100 38 103 39L103 58.5Z", duJour(0xFFA59A86.toInt())) }
+            touffe(vert(0.3f), -2f, 20f, 8f, 6f, 30f, 9f, 2f, 44f, 8f, 14f, 40f, 6f)
+            touffe(vert(0.45f), 98f, 10f, 8f, 90f, 20f, 9f, 100f, 32f, 8f, 84f, 30f, 6f)
+            c.restore()
+        }
+
+        // ---- Wollefsschlucht, la gorge du Loup (photo du propriétaire)
+
+        fun wollefsschlucht() {
+            val r = Alea(305)
+            feuille(-3f, -3f, 106f, 72f, mix(P.cielBas, 0xFFFFF8D8.toInt(), if (P.nuit) 0.05f else 0.4f), 0f)
+            val houppier = mix(vert(0.8f), 0xFFE8E070.toInt(), if (P.nuit) 0.05f else 0.3f)
+            for (k in 0 until 7) feuille(30f + r() * 40f, 4f, 0.6f + r() * 0.5f, 36f, mix(houppier, P.pres, 0.4f), 0.3f)
+            lisiere(-2f, 102f, { x -> 6f + 3f * sin(x * 0.2f) }, 2f, 3f, 306, houppier)
+            plan(1)
+            val gres = duJour(0xFF9C8460.toInt())
+            val mousse = duJour(0xFF5F8A3C.toInt())
+            val rouille = duJour(0xFFC9784A.toInt())
+            mineral {
+                pieceD("M-3 -3L30 -3C28 10 34 20 30 30C27 40 32 50 34 66L-3 66Z", gres)
+                pieceD("M103 -3L70 -3C72 10 66 22 70 32C73 42 68 52 66 66L103 66Z", gres)
+                pieceD("M6 44C12 40 20 42 26 48C20 50 12 50 6 48Z", rouille, 0.3f)
+                pieceD("M80 34C86 30 94 32 100 38C94 40 86 40 80 38Z", rouille, 0.3f)
+            }
+            pieceD("M-3 20C8 16 20 18 28 26C20 28 8 30 -3 32Z", mousse, 0.4f)
+            pieceD("M103 12C92 8 80 12 72 20C80 22 92 24 103 26Z", mousse, 0.4f)
+            touffe(mousse, 4f, 56f, 4f, 12f, 60f, 4f, 96f, 52f, 4f, 88f, 58f, 4f)
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            val bois = duJour(0xFFB0805A.toInt())
+            pieceD("M30 58.5L47 30L53 30L70 58.5Z", bois)
+            lames({ y -> 30f + (58.5f - y) / 28.5f * 17f }, { y -> 70f - (58.5f - y) / 28.5f * 17f }, 58.5f, 30f, sombre(bois, 0.3f))
+            for (s in floatArrayOf(1f, -1f)) {
+                fun x(v: Float) = if (s > 0f) v else 100f - v
+                pieceD("M${x(16f)} 44L${x(46f)} 25L${x(46f)} 26.4L${x(18f)} 46.6Z", sombre(bois, 0.1f))
+                for (k in 0..4) {
+                    val t = k / 4f
+                    val px = 17f + t * 29f
+                    val haut = 45f - t * 19f
+                    val bas = 58.5f - t * 28.5f
+                    ligne(x(px), haut, x(px), bas, sombre(bois, 0.25f), 0.5f - t * 0.25f)
+                    if (k < 4) {
+                        val nx = 17f + (t + 0.25f) * 29f
+                        ligne(x(px), haut, x(nx), 58.5f - (t + 0.25f) * 28.5f, sombre(bois, 0.2f), 0.25f)
+                    }
+                }
+            }
+            c.restore()
+        }
+
+        // ---- Priedegtstull, la falaise et ses escaliers (photo du propriétaire)
+
+        fun priedegtstull() {
+            val r = Alea(315)
+            val foret = mix(vert(0.6f), P.cielBas, 0.25f)
+            lisiere(-2f, 64f, { x -> 8f + 3f * sin(x * 0.15f) }, 2f, 3f, 316, foret)
+            for (k in 0 until 9) feuille(r() * 60f, 2f, 0.5f + r() * 0.4f, 40f, sombre(foret, 0.35f), 0.3f)
+            plan(1)
+            pieceD("M-3 66L-3 30C10 28 26 34 40 40C46 44 50 52 50 66Z", duJour(0xFF8A6A50.toInt()), 0.4f)
+            val marche = duJour(0xFF6A6058.toInt())
+            mineral { for (k in 0 until 12) feuille(16f + k * 1.2f, 56f - k * 2.2f, 6f, 0.9f, marche, 0.3f) }
+            pieceD("M-3 66L-3 36C4 34 10 38 14 44L16 66Z", duJour(0xFF5F8A3C.toInt()))
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            val gres = duJour(0xFFC8B89A.toInt())
+            mineral {
+                pieceD("M58 58.5L60 -3L103 -3L103 58.5Z", gres)
+                for (y in floatArrayOf(4f, 10f, 17f, 25f, 34f, 44f)) {
+                    ligne(59.6f, y, 103f, y + 0.6f, sombre(gres, 0.2f), 0.25f, 0.7f)
+                    ligne(59.6f, y + 1.2f, 103f, y + 1.8f, mix(gres, 0xFFFFFFFF.toInt(), 0.2f), 0.4f, 0.6f)
+                }
+                pieceD("M78 58.5L80 24C81 20 83 18 84 22L86 58.5Z", sombre(gres, 0.7f))
+                pieceD("M94 20C98 18 102 18 103 20L103 30C99 29 96 26 94 20Z", duJour(0xFFC9A060.toInt()), 0.3f)
+            }
+            c.restore()
+        }
+
+        // ---- Dumongshaff, la passerelle sur l'étang (photo du propriétaire)
+
+        fun dumongshaff() {
+            lisiere(-2f, 102f, { x -> 30f + 2f * sin(x * 0.1f) }, 1.6f, 2.4f, 326, mix(vert(0.5f), P.loin, 0.4f))
+            val ecorce = duJour(0xFF6A5A4A.toInt())
+            trait("M6 40L7 12M7 22L2 14M7 18L12 8M7 28L13 22", ecorce, 0.6f)
+            plan(1)
+            pieceD("M-3 66L-3 40C30 38 70 38 103 40L103 66Z", vert(0.85f), 0.4f)
+            pieceD("M-3 58.5L-3 44C10 42 30 44 50 47C70 50 80 54 90 58.5Z", mix(P.eau, 0xFF6A7A50.toInt(), 0.45f), 0.4f)
+            feuille(95f, 18f, 1.4f, 24f, ecorce, 0.5f)
+            touffe(vert(0.55f), 92f, 14f, 7f, 100f, 22f, 8f, 86f, 24f, 6f)
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            val bois = duJour(0xFF9C8A70.toInt())
+            fun pont(x: Float) = 46f - 18f * (1f - ((x - 53f) / 43f).pow(2))
+            enPerspective(53f, 40f, 0.1f) {
+                pieceD("M10 46C30 36 70 34 96 40L96 42.4C70 37 30 39 10 48.4Z", sombre(bois, 0.2f))
+                pieceD("M10 38C30 28 70 26 96 32L96 33.6C70 27.8 30 29.8 10 39.6Z", bois)
+                var x = 12f
+                while (x < 96f) { ligne(x, pont(x) - 8f + 0.6f, x, pont(x), bois, 0.45f); x += 2.4f }
+                feuille(8f, 36f, 2f, 14f, sombre(bois, 0.1f))
+                feuille(95f, 30f, 2f, 14f, sombre(bois, 0.1f))
+            }
+            val roseau = vert(0.6f)
+            val rr = Alea(327)
+            for (k in 0 until 40) {
+                val rx = rr() * 100f
+                if (rx in 30f..70f && rr() < 0.6f) continue
+                val h = 4f + rr() * 6f
+                ligne(rx, DEVANT, rx + (rr() - 0.5f) * 2f, DEVANT - h, roseau, 0.3f)
+            }
+            c.restore()
+        }
+        // ---- Rout Bréck, le pont Grande-Duchesse Charlotte vu d'en bas (photo du propriétaire)
+
+        /** Le haut du garde-corps de la Rout Bréck en [x] : le tablier monte vers la droite. */
+        fun tablier(x: Float) = (x + 3f) * TABLIER_PENTE
+
+        fun routBreckPapier() {
+            val r = Alea(335)
+            mineral {
+                feuille(89f, 26f, 4f, 12f, mix(P.loin, P.cielBas, 0.3f), 0.4f)
+                feuille(94.5f, 29f, 3f, 9f, mix(P.loin, P.cielBas, 0.4f), 0.4f)
+            }
+            lisiere(-2f, 102f, { x -> 34f + 3f * sin(x * 0.07f) }, 2f, 3f, 336, mix(vert(0.3f), P.loin, 0.35f))
+            plan(1)
+            lisiere(-2f, 102f, { x -> 42f + 4f * sin(x * 0.09f + 1f) }, 2.4f, 3.6f, 337, vert(0.45f))
+            maisonArdoise(30f, 50f, 5f, 3f, 2f, duJour(0xFFE8E2D6.toInt()), r)
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            val rouge = duJour(0xFFC94459.toInt())
+            val fer = duJour(0xFF55595F.toInt())
+            mineral {
+                // Les jambes en V, à gauche, sous le tablier.
+                pieceD("M14 58.5L22 58.5L6 8L-1 9Z", sombre(rouge, 0.22f))
+                pieceD("M-3 51L4 58.5L40 14L33 9.5Z", rouge)
+                // Le tablier, sa face et son dessous.
+                pieceD("M-3 0L103 ${tablier(103f)}L103 ${tablier(103f) + 6f}L-3 6.5Z", rouge)
+                pieceD("M-3 6.5L103 ${tablier(103f) + 6f}L103 ${tablier(103f) + 8.6f}L-3 9.4Z", sombre(rouge, 0.4f))
+                ligne(-3f, tablier(-3f) - 1.4f, 103f, tablier(103f) - 1.4f, fer, 0.3f)
+                var x = 0f
+                while (x <= 100f) { ligne(x, tablier(x) - 1.4f, x, tablier(x), fer, 0.12f); x += 1.6f }
+                for (k in 0..7) {
+                    val lx = 6f + k * 13f
+                    ligne(lx, tablier(lx) - 1.4f, lx, tablier(lx) - 3.6f, fer, 0.2f)
+                    if (P.allume) rond(lx, tablier(lx) - 3.8f, 1.6f, P.fenetre, 0.3f)
+                    rond(lx, tablier(lx) - 3.8f, 0.45f, if (P.allume) 0xFFFFF4C8.toInt() else duJour(0xFFE8E2D0.toInt()))
+                }
+            }
+            touffe(vert(0.55f), 86f, 46f, 8f, 96f, 40f, 8f, 100f, 52f, 6f, 78f, 54f, 6f)
+            c.restore()
+        }
+
+        // ---- Breedewee, la rue Large et sa porte (photo du propriétaire)
+
+        fun breedeweePapier() {
+            val r = Alea(355)
+            val enduit = duJour(0xFFB9B2A6.toInt())
+            val ocre = duJour(0xFFD3C29A.toInt())
+            val creme = duJour(0xFFEDE4D0.toInt())
+            mineraux++
+            // La grande façade du fond, ses fenêtres cintrées et son oculus.
+            feuille(22f, -3f, 42f, 46f, enduit)
+            for (fx in floatArrayOf(28f, 38f, 52f)) for (fy in floatArrayOf(3f, 14f)) {
+                pieceD("M$fx ${fy + 6f}L$fx ${fy + 1.6f}C$fx ${fy - 0.4f} ${fx + 3.2f} ${fy - 0.4f} ${fx + 3.2f} ${fy + 1.6f}L${fx + 3.2f} ${fy + 6f}Z",
+                    if (P.allume && r() < 0.6f) P.fenetre else creme, 0.3f)
+                ligne(fx + 1.6f, fy + 0.2f, fx + 1.6f, fy + 6f, sombre(enduit, 0.4f), 0.15f)
+            }
+            anneau(46f, 27f, 1.6f, creme, 0.5f)
+            plan(1)
+            // Les façades de droite, qui montent avec la rue.
+            feuille(60f, -3f, 21f, 61.5f, ocre)
+            feuille(81f, -3f, 22f, 61.5f, enduit)
+            for (fy in floatArrayOf(4f, 16f, 28f)) {
+                for (fx in floatArrayOf(64f, 72f, 85f, 94f)) {
+                    feuille(fx, fy, 3.6f, 6f, creme, 0.3f)
+                    rect(fx + 0.5f, fy + 0.5f, 2.6f, 5f, if (P.allume && r() < 0.5f) P.fenetre else sombre(enduit, 0.45f))
+                }
+            }
+            pieceD("M64 52L64 43C64 40 69 40 69 43L69 52Z", sombre(ocre, 0.5f), 0.3f)
+            for (y in floatArrayOf(46f, 49f, 52f, 55f)) ligne(81f, y, 103f, y, sombre(enduit, 0.35f), 0.3f)
+            ligne(81f, -3f, 81f, 58.5f, sombre(enduit, 0.5f), 0.4f)
+            // La rue pavée qui monte vers le fond.
+            pieceD("M14 66C30 52 44 45 54 41L60 41C60 47 62 55 64 66Z", duJour(0xFF8C8478.toInt()), 0.3f)
+            for (k in 0 until 30) rond(20f + r() * 40f, 44f + r() * 14f, 0.35f, sombre(duJour(0xFF8C8478.toInt()), 0.3f), 0.7f)
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            val pierre = duJour(0xFFB7AA90.toInt())
+            val mur = duJour(0xFFA89A80.toInt())
+            pieceD("M-3 -3L8 -3L12 58.5L-3 58.5Z", mur)
+            for (y in floatArrayOf(6f, 14f, 22f, 30f, 38f, 46f, 54f)) ligne(-3f, y, 8f + y * 0.065f, y + 0.4f, sombre(mur, 0.3f), 0.2f)
+            // La porte : son passage sombre, ses piédroits, son arc à bossages.
+            pieceD("M14 58.5L14 25C14 18 26 18 26 25L26 58.5Z", sombre(enduit, 0.65f), 0f)
+            feuille(10f, 24f, 4f, 34.5f, pierre)
+            feuille(26f, 24f, 4f, 34.5f, pierre)
+            for (y in floatArrayOf(28f, 33f, 38f, 43f, 48f, 53f)) {
+                ligne(10f, y, 14f, y, sombre(pierre, 0.3f), 0.2f); ligne(26f, y, 30f, y, sombre(pierre, 0.3f), 0.2f)
+            }
+            pieceD("M10 25C10 13 30 13 30 25L26 25C26 18 14 18 14 25Z", pierre)
+            for (k in 0..6) {
+                val a = PI.toFloat() * (1f + k / 6f)
+                ligne(20f + cos(a) * 6f, 25f + sin(a) * 6f, 20f + cos(a) * 10f, 25f + sin(a) * 10f, sombre(pierre, 0.35f), 0.2f)
+            }
+            mineraux--
+            lanterne(30f, 31f, true)
+            touffe(vert(0.5f), 4f, 57f, 2.4f, 9f, 57.5f, 2f)
+            c.restore()
+        }
+
+        // ---- Gëlle Fra, la statue dorée sur son obélisque, au couchant (photo du propriétaire)
+
+        fun gelleFraPapier() {
+            val rose = mix(P.cielBas, 0xFFF0A070.toInt(), if (P.nuit) 0.05f else 0.35f)
+            val mauve = mix(P.cielHaut, 0xFFB08AA8.toInt(), if (P.nuit) 0.1f else 0.35f)
+            cumulus(-8f, 30f, 46f, 345, mauve)
+            cumulus(30f, 18f, 44f, 346, rose)
+            cumulus(58f, 40f, 50f, 347, mauve)
+            plan(1)
+            lisiere(-2f, 102f, { x -> 53f + sin(x * 0.3f) }, 1.4f, 2f, 348, vert(0.4f))
+            val r = Alea(349)
+            var x = 2f
+            while (x < 70f) { maisonArdoise(x, 54f, 3.6f, 2.4f + r() * 1.6f, 1.6f, duJour(0xFFE8E0D0.toInt()), r); x += 4.4f }
+            plan(2)
+            plancher(DEVANT, BAS)
+            poser(DEVANT)
+            val granit = duJour(0xFF3A3A40.toInt())
+            mineral {
+                pieceD("M76 58.5L77.4 38L88.6 38L90 58.5Z", granit)
+                feuille(84.6f, 38f, 4f, 20.5f, sombre(granit, 0.25f), 0f)
+                feuille(76.4f, 36.6f, 13.2f, 1.6f, mix(granit, 0xFFFFFFFF.toInt(), 0.1f), 0.5f)
+                statue(83f, 36.6f)
+            }
+            c.restore()
+        }
+
+        /** La Gëlle Fra, les pieds en ([x], [pied]) : sa robe qui flotte, ses bras levés, la couronne. */
+        fun statue(x: Float, pied: Float) {
+            val or = if (P.nuit) 0xFFFFD36A.toInt() else 0xFFE2AC36.toInt()
+            val pli = mix(or, 0xFF6A4A10.toInt(), 0.35f)
+            if (P.allume) rond(x, pied - 18f, 14f, or, 0.12f)
+            pieceD("M${x - 2.2f} ${pied}C${x - 3f} ${pied - 6f} ${x - 2.6f} ${pied - 14f} ${x - 1.8f} ${pied - 20f}" +
+                "L${x + 1.8f} ${pied - 20f}C${x + 2.4f} ${pied - 14f} ${x + 4.4f} ${pied - 6f} ${x + 3.8f} ${pied}Z", or, 0.5f)
+            trait("M${x - 0.6f} ${pied - 18f}C${x - 1f} ${pied - 10f} ${x - 0.4f} ${pied - 4f} ${x - 0.8f} ${pied}", pli, 0.25f)
+            trait("M${x + 1f} ${pied - 17f}C${x + 1.6f} ${pied - 10f} ${x + 2.4f} ${pied - 4f} ${x + 2.6f} ${pied}", pli, 0.25f)
+            pieceD("M${x - 1.8f} ${pied - 19.8f}L${x - 1.4f} ${pied - 25f}L${x + 1.4f} ${pied - 25f}L${x + 1.8f} ${pied - 19.8f}Z", or, 0.4f)
+            rond(x, pied - 26.6f, 1.3f, or)
+            for (s in floatArrayOf(-1f, 1f)) {
+                ligne(x + s * 1.3f, pied - 24.6f, x + s * 2.6f, pied - 29.5f, or, 0.9f)
+                ligne(x + s * 2.6f, pied - 29.5f, x + s * 1.2f, pied - 31.4f, or, 0.75f)
+            }
+            trait("M${x - 2.4f} ${pied - 31.8f}Q$x ${pied - 33.6f} ${x + 2.4f} ${pied - 31.8f}Q$x ${pied - 30.4f} ${x - 2.4f} ${pied - 31.8f}", pli, 0.5f)
         }
 
         // ------------------------------------------------------ les lieux
@@ -3119,6 +3876,7 @@ object Paysages {
 
         /** La Rout Bréck : le pont rouge au-dessus de la Pétrusse, le Kirchberg derrière. */
         fun routBreck() {
+            if (PAPIER) { routBreckPapier(); return }
             val r = Alea(4)
             val fl = mix(P.loin, P.cielBas, 0.25f)
             val tours = floatArrayOf(8f, 4f, 15f, 13f, 3f, 11f, 18f, 5f, 19f, 26f, 3.4f, 13f, 31f, 4.2f, 16f, 86f, 4f, 12f, 92f, 3f, 9f)
@@ -3271,6 +4029,7 @@ object Paysages {
 
         /** La Gëlle Fra : l'obélisque et sa statue dorée, le pont Adolphe derrière. */
         fun gelleFra() {
+            if (PAPIER) { gelleFraPapier(); return }
             crete(34f, 1.4f, 27, P.loin)
             plan(1)
             val pi = mix(P.pierre, P.pres, 0.22f)
@@ -3490,6 +4249,7 @@ object Paysages {
          * descend jusqu'au bas de la fenêtre).
          */
         fun breedewee() {
+            if (PAPIER) { breedeweePapier(); return }
             val r = Alea(12)
             val pierre = P.pierre
             val joint = mix(pierre, P.pres, 0.42f)
