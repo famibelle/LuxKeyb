@@ -4813,29 +4813,32 @@ object Paysages {
                 // belvédère est posé sur la même poutre, dans la continuité.
                 val passerelle = floatArrayOf(-3f, 13.4f, 36f, 14.8f, 36f, 20.4f, -3f, 19.6f)
                 piece(quad(passerelle), mix(betonN, gris, 0.16f), 0.6f)
+                // Tout se dessine dans la perspective de la passerelle, le
+                // belvédère compris : il a donc exactement la hauteur de son
+                // garde-corps, comme sur la photo, et il fuit avec elle. Posé
+                // par-dessus en rectangle droit, il dépassait d'une tête et
+                // ne suivait pas la fuite (jugement du propriétaire,
+                // 2026-11-15).
                 surQuad(39f, 6.2f, passerelle) {
-                    rect(0f, 0.5f, 39f, 2.9f, mix(betonN, gris, 0.3f))
-                    ligne(0f, 0.5f, 39f, 0.5f, gris, 0.3f)
+                    // Le garde-corps en résille, jusqu'au belvédère.
+                    rect(0f, 0.5f, 29f, 2.9f, mix(betonN, gris, 0.3f))
+                    ligne(0f, 0.5f, 29f, 0.5f, gris, 0.3f)
                     var mx = 1.5f
-                    while (mx < 39f) { ligne(mx, 0.9f, mx, 3.4f, gris, 0.12f); mx += 3.4f }
+                    while (mx < 29f) { ligne(mx, 0.9f, mx, 3.4f, gris, 0.12f); mx += 3.4f }
+                    // Le belvédère : la même bande, mais tout en verre. En
+                    // transparence, donc sous 0,95 : on voit le ciel et la
+                    // vallée au travers, et ce sont ses montants qui le
+                    // dessinent.
+                    rect(29f, 0.5f, 10f, 2.9f, verre, 0.3f)
+                    rect(29f, 0.5f, 10f, 0.8f, mix(verre, 0xFFFFFFFF.toInt(), 0.45f), 0.3f)
+                    ligne(29f, 0.5f, 39f, 0.5f, gris, 0.4f)
+                    ligne(29f, 3.4f, 39f, 3.4f, gris, 0.4f)
+                    ligne(29f, 0.5f, 29f, 3.4f, gris, 0.3f)
+                    ligne(39f, 0.5f, 39f, 3.4f, gris, 0.4f)
+                    ligne(34f, 0.5f, 34f, 3.4f, gris, 0.16f)
+                    // Le tablier, sous les deux.
                     rect(0f, 4.2f, 39f, 2f, gris)
                 }
-                // Le belvédère vitré, au bout : il repose sur le tablier et
-                // dépasse d'une tête, comme sur la photo.
-                //
-                // En verre, donc posé à plat et transparent ([rect] sous 0,95,
-                // pas [feuille]) : en pièce de papier il prenait son bord de
-                // kraft et son ombre, et se lisait comme un carton collé sur
-                // le décor (jugement du propriétaire, 2026-11-15). On voit le
-                // ciel au travers, et ce sont ses montants d'acier qui le
-                // dessinent.
-                rect(26f, 11.2f, 10f, 9.6f, verre, 0.3f)
-                rect(26f, 11.2f, 10f, 2.2f, mix(verre, 0xFFFFFFFF.toInt(), 0.45f), 0.35f)
-                ligne(26f, 11.2f, 36f, 11.2f, gris, 0.4f)
-                ligne(26f, 20.8f, 36f, 20.8f, gris, 0.5f)
-                ligne(26f, 11.2f, 26f, 20.8f, gris, 0.3f)
-                ligne(36f, 11.2f, 36f, 20.8f, gris, 0.4f)
-                ligne(31f, 11.2f, 31f, 20.8f, gris, 0.16f)
                 // Le mât d'acier sous la tour, et son pied sur la rue.
                 ligne(8.4f, 21f, 8.4f, DEVANT, gris, 0.5f)
                 ligne(20.3f, 22f, 20.3f, DEVANT, gris, 0.4f)
