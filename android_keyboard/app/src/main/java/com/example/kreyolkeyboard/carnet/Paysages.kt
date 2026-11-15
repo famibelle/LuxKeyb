@@ -3827,10 +3827,6 @@ object Paysages {
             lisiere(-2f, 102f, { x -> 31f - x * 0.04f + sin(x * 0.15f) }, 1.6f, 2.6f, 117, nappe(P.milieu))
             val blanc = duJour(0xFFF4F0E8.toInt())
             val creme = duJour(0xFFE6D8BE.toInt())
-            mineral {
-                feuille(29.2f, 23.5f, 2.4f, 6f, blanc)
-                pieceD("M28.9 23.7L30.4 18.5L31.9 23.7Z", ardoise())
-            }
             // Un second versant boisé, plus sombre et plus près : sur la
             // photo la forêt descend par ressauts jusqu'aux toits, elle ne
             // s'arrête pas sur une seule crête.
@@ -3838,15 +3834,14 @@ object Paysages {
             // La Sûre : le village est sur la rive proche, devant elle, et
             // non posé dessus.
             riviere(45.5f, 50f, 118, 20f, 30f)
-            // Le village en deux planches de trois quarts, le clocher entre
-            // les deux. L'église du bas est au premier plan, donc dessinée
-            // après la planche du haut.
+            // Le village en deux planches de trois quarts. Les deux tourelles
+            // pâles à toit d'ardoise qui l'accompagnaient — la chapelle du
+            // versant et le clocher — ont été retirées à la demande du
+            // propriétaire (2026-11-15) : posées sans bâtiment sous elles,
+            // elles se lisaient comme deux petits donjons flottants et
+            // faisaient concurrence à la vraie tour.
             val murs = intArrayOf(blanc, duJour(0xFFD8DAD8.toInt()), blanc, duJour(0xFFDDB2A4.toInt()), blanc, duJour(0xFFB9C6D6.toInt()))
             rue3q(RUE_ESCH_HAUT, MAISONS_ESCH_HAUT, murs, r, ecart = 5f)
-            mineral {
-                feuille(76f, 34f, 3.4f, 11f, blanc)
-                pieceD("M75.5 34.2L77.7 24.5L79.9 34.2Z", ardoise())
-            }
             rue3q(RUE_ESCH_BAS, MAISONS_ESCH_BAS, murs, r, ecart = 5f)
             c.restore()
             plan(2)
