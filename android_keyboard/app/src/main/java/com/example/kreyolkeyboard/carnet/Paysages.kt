@@ -1296,6 +1296,9 @@ object Paysages {
     private const val PILE_REIMECH = 21f
 
     /** Le Pfaffenthal, au fond de la vallée sous l'ascenseur. */
+    /** La hauteur de la tour de l'ascenseur du Pfaffenthal : elle s'arrête sous le haut de la fenêtre. */
+    private const val HAUT_PAFENDALL = 52f
+
     internal val RUE_PAFENDALL = Fuite(floatArrayOf(18f, 48f), floatArrayOf(150f, 41f), floatArrayOf(-100f, 45f), taille = 0.3f)
     private val MAISONS_PAFENDALL = maisonsAuHasard(30, 218, 12f, 19f)
 
@@ -4768,21 +4771,31 @@ object Paysages {
                 // sont ses arêtes d'acier qui la détachent. Son béton blanc
                 // seul se perdait dans le ciel pâle du matin, là où la photo
                 // le détache sur un bleu franc.
-                boite3q(9f, DEVANT, 11f, 63f, 6f, beton, versDroite = true, pente = 0.05f, dessus = false) {
+                // La tour s'arrête, elle ne sort pas du cadre : sur la photo
+                // du propriétaire, son sommet est net, surmonté de son local
+                // de machinerie et de ses garde-corps, avec du ciel au-dessus.
+                // Montant jusqu'au bord, elle ne lisait plus comme une tour
+                // mais comme un pilier (jugement du propriétaire, 2026-11-15).
+                boite3q(9f, DEVANT, 11f, HAUT_PAFENDALL, 6f, beton,
+                        versDroite = true, pente = 0.05f, dessus = true) {
                     // Le local de machinerie, en haut, plus sombre.
-                    rect(0f, 0f, 11f, 2.4f, mix(beton, gris, 0.42f))
+                    rect(0f, 0f, 11f, 2.6f, mix(beton, gris, 0.42f))
                     // La gaine vitrée où monte la cabine, et ses lames d'acier.
-                    rect(3.4f, 3.2f, 4.4f, 24f, mix(beton, gris, 0.62f))
-                    var ly = 4f
+                    rect(3.4f, 3.4f, 4.4f, 24f, mix(beton, gris, 0.62f))
+                    var ly = 4.2f
                     while (ly < 27f) { ligne(3.4f, ly, 7.8f, ly, gris, 0.26f); ly += 1.1f }
                     // Les deux arêtes, qui donnent sa silhouette à la tour.
-                    rect(0f, 0f, 0.75f, 63f, mix(beton, gris, 0.55f))
-                    rect(10.25f, 0f, 0.75f, 63f, mix(beton, gris, 0.3f))
+                    rect(0f, 0f, 0.75f, HAUT_PAFENDALL, mix(beton, gris, 0.55f))
+                    rect(10.25f, 0f, 0.75f, HAUT_PAFENDALL, mix(beton, gris, 0.3f))
                 }
+                // Les garde-corps du belvédère, au sommet.
+                var gx = 9.6f
+                while (gx < 19.6f) { ligne(gx, DEVANT - HAUT_PAFENDALL - 2.2f, gx, DEVANT - HAUT_PAFENDALL, gris, 0.16f); gx += 1.3f }
+                ligne(9.4f, DEVANT - HAUT_PAFENDALL - 2.2f, 19.8f, DEVANT - HAUT_PAFENDALL - 2.2f, gris, 0.28f)
                 // La passerelle vers la ville haute : elle arrive de la gauche,
                 // plus épaisse au premier plan, et traverse la tour jusqu'au
                 // bord droit, où elle s'achève sur sa cabine vitrée.
-                val passerelle = floatArrayOf(-3f, 7.2f, 103f, 11.6f, 103f, 16.6f, -3f, 14.8f)
+                val passerelle = floatArrayOf(-3f, 12.4f, 103f, 16.8f, 103f, 21.8f, -3f, 20f)
                 piece(quad(passerelle), mix(beton, P.pres, 0.12f), 0.6f)
                 surQuad(106f, 6f, passerelle) {
                     rect(0f, 0f, 106f, 2.8f, verre, 0.9f)
@@ -4791,8 +4804,8 @@ object Paysages {
                     while (mx < 106f) { ligne(mx, 0f, mx, 2.8f, gris, 0.18f); mx += 3f }
                 }
                 // Le mât d'acier sous la tour, et son pied sur la rue.
-                ligne(8.4f, 16f, 8.4f, DEVANT, gris, 0.5f)
-                ligne(20.3f, 17f, 20.3f, DEVANT, gris, 0.4f)
+                ligne(8.4f, 21f, 8.4f, DEVANT, gris, 0.5f)
+                ligne(20.3f, 22f, 20.3f, DEVANT, gris, 0.4f)
             }
             if (!vivant) cabine(30f)
             touffe(vert(0.55f), 99f, 52f, 7f, 90f, 55f, 5f, 102f, 42f, 6f, 94f, 46f, 4f)
