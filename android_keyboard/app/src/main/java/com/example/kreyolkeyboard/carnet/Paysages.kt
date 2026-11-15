@@ -4813,23 +4813,34 @@ object Paysages {
                 for (ax in floatArrayOf(10.4f, 13f, 15.8f, 18.4f))
                     ligne(ax, DEVANT - HAUT_PAFENDALL - 5.6f, ax, DEVANT - HAUT_PAFENDALL - 2.2f, gris, 0.12f)
 
-                // Le belvédère vitré, au bout de la passerelle et à droite de
-                // la tour : une boîte haute de 0,97 largeur de tour, centrée
-                // sur le tablier, donc bien au-dessus et au-dessous de lui.
-                val bh = 10.5f
-                val cg = 16f; val cd = 15.2f
-                val boite = floatArrayOf(26f, cg - bh / 2f, 36f, cd - bh / 2f, 36f, cd + bh / 2f, 26f, cg + bh / 2f)
-                forme(quad(boite), verre, 0.3f)
-                surQuad(10f, bh, boite) {
-                    rect(0f, 0f, 10f, 1.8f, mix(verre, 0xFFFFFFFF.toInt(), 0.5f), 0.35f)
-                    ligne(0f, 0.25f, 10f, 0.25f, gris, 0.42f)
-                    ligne(0f, bh - 0.25f, 10f, bh - 0.25f, gris, 0.5f)
-                    ligne(0.2f, 0f, 0.2f, bh, gris, 0.3f)
-                    ligne(9.8f, 0f, 9.8f, bh, gris, 0.42f)
-                    ligne(5f, 0.25f, 5f, bh - 0.25f, gris, 0.16f)
-                    // Le plancher du belvédère, dans l'épaisseur du tablier.
-                    rect(0f, bh * 0.62f, 10f, 0.8f, gris)
+                // Le belvédère, au bout de la passerelle et à droite de la
+                // tour. Les 0,97 largeur de tour mesurés sur la photo
+                // couvrent **toute la structure** : la cabine vitrée, puis
+                // la plateforme ouverte et ses supports dessous. En faire un
+                // seul bloc plein donnait un gros cube vert qui n'existe pas
+                // sur la photo (jugement du propriétaire, 2026-11-15).
+                //
+                // La cabine ne pèse donc qu'un tiers de cette hauteur, elle
+                // est largement transparente, et tout le reste est du vide
+                // traversé d'acier.
+                val ch = 4.6f
+                val cg = 13.9f; val cd = 13.1f          // le haut du tablier à ses deux bouts
+                val cabine = floatArrayOf(26f, cg - ch, 36f, cd - ch, 36f, cd + 0.6f, 26f, cg + 0.6f)
+                forme(quad(cabine), verre, 0.18f)
+                surQuad(10f, ch + 0.6f, cabine) {
+                    // Le bandeau du toit, les montants, et le ciel au travers.
+                    rect(0f, 0f, 10f, 0.75f, gris)
+                    ligne(0f, ch + 0.45f, 10f, ch + 0.45f, gris, 0.3f)
+                    for (vx in floatArrayOf(0.25f, 3.4f, 6.6f, 9.75f)) ligne(vx, 0.6f, vx, ch + 0.45f, gris, 0.16f)
+                    rect(0f, 0.9f, 10f, 1.1f, mix(verre, 0xFFFFFFFF.toInt(), 0.55f), 0.3f)
                 }
+                // La plateforme ouverte sous la cabine : sa lisse, son
+                // plancher ajouré, et les deux tirants qui la tiennent.
+                ligne(26f, 20.6f, 38.5f, 19.6f, gris, 0.4f)
+                ligne(31f, 18.6f, 38.5f, 18f, gris, 0.16f)
+                ligne(38.5f, 18f, 38.5f, 19.6f, gris, 0.16f)
+                ligne(27.5f, 16.6f, 29.5f, 20.5f, gris, 0.2f)
+                ligne(35.5f, 15.9f, 33.5f, 20f, gris, 0.2f)
 
                 // Le mât d'acier sous la tour, et son pied sur la rue.
                 ligne(8.4f, 19.4f, 8.4f, DEVANT, gris, 0.5f)
