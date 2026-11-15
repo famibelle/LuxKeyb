@@ -4792,21 +4792,50 @@ object Paysages {
                 var gx = 9.6f
                 while (gx < 19.6f) { ligne(gx, DEVANT - HAUT_PAFENDALL - 2.2f, gx, DEVANT - HAUT_PAFENDALL, gris, 0.16f); gx += 1.3f }
                 ligne(9.4f, DEVANT - HAUT_PAFENDALL - 2.2f, 19.8f, DEVANT - HAUT_PAFENDALL - 2.2f, gris, 0.28f)
-                // La passerelle vers la ville haute : elle arrive de la gauche,
-                // plus épaisse au premier plan, et traverse la tour jusqu'au
-                // bord droit, où elle s'achève sur sa cabine vitrée.
-                val passerelle = floatArrayOf(-3f, 12.4f, 103f, 16.8f, 103f, 21.8f, -3f, 20f)
+                // Les quatre tiges d'antenne qui dépassent du belvédère.
+                for (ax in floatArrayOf(10.6f, 13.2f, 16.2f, 18.8f))
+                    ligne(ax, DEVANT - HAUT_PAFENDALL - 5.6f, ax, DEVANT - HAUT_PAFENDALL - 2.2f, gris, 0.12f)
+                // La passerelle vers la ville haute : elle arrive de la
+                // gauche, plus épaisse au premier plan, traverse la tour et
+                // **s'arrête** peu après, sur le belvédère vitré. Elle courait
+                // jusqu'au bord droit, alors que sur la photo du propriétaire
+                // elle finit là, et le ciel occupe tout le reste.
+                val passerelle = floatArrayOf(-3f, 12.4f, 34f, 13.9f, 34f, 20.6f, -3f, 20f)
                 piece(quad(passerelle), mix(beton, P.pres, 0.12f), 0.6f)
-                surQuad(106f, 6f, passerelle) {
-                    rect(0f, 0f, 106f, 2.8f, verre, 0.9f)
-                    rect(0f, 4.7f, 106f, 1.3f, gris)
+                surQuad(37f, 7f, passerelle) {
+                    // Le garde-corps est une résille d'acier, pas une vitre :
+                    // un gris clair translucide, serré de montants fins, et
+                    // la poutre sombre du tablier dessous.
+                    rect(0f, 0f, 37f, 3.2f, mix(verre, gris, 0.45f), 0.55f)
+                    ligne(0f, 0.2f, 37f, 0.2f, gris, 0.22f)
+                    ligne(0f, 3f, 37f, 3f, gris, 0.3f)
+                    rect(0f, 4.6f, 37f, 2.4f, gris)
                     var mx = 0f
-                    while (mx < 106f) { ligne(mx, 0f, mx, 2.8f, gris, 0.18f); mx += 3f }
+                    while (mx < 37f) { ligne(mx, 0.2f, mx, 3f, gris, 0.1f); mx += 1.5f }
                 }
+                // Le belvédère au bout : une boîte de verre un peu plus haute
+                // que la passerelle, son cadre d'acier, et son plancher.
+                feuille(24.5f, 10.6f, 8.6f, 10.4f, verre, 0.5f)
+                ligne(24.5f, 10.6f, 33.1f, 10.6f, gris, 0.45f)
+                ligne(24.5f, 21f, 33.1f, 21f, gris, 0.55f)
+                ligne(33.1f, 10.6f, 33.1f, 21f, gris, 0.4f)
+                ligne(28.8f, 10.6f, 28.8f, 21f, gris, 0.18f)
+                // La plateforme ajourée qui prolonge le belvédère, avec sa
+                // lisse : sur la photo elle avance seule au-dessus du vide.
+                rect(33.1f, 19.4f, 7.4f, 0.55f, gris)
+                ligne(33.1f, 15.6f, 40.5f, 15.6f, gris, 0.22f)
+                for (px in floatArrayOf(35f, 37.2f, 39.4f, 40.5f)) ligne(px, 15.6f, px, 19.4f, gris, 0.14f)
                 // Le mât d'acier sous la tour, et son pied sur la rue.
                 ligne(8.4f, 21f, 8.4f, DEVANT, gris, 0.5f)
                 ligne(20.3f, 22f, 20.3f, DEVANT, gris, 0.4f)
+                // Les obliques d'acier sous la passerelle : celle qui descend
+                // à gauche de la tour, et le mât qui tient le belvédère.
+                ligne(6.2f, 20.4f, -3f, 34f, gris, 0.3f)
+                ligne(31.4f, 21f, 26f, DEVANT, gris, 0.3f)
             }
+            // Les arbres du pied : sur la photo ils mangent le bas de la
+            // tour, et c'est leur vert sombre qui détache son béton blanc.
+            touffe(sombre(vert(0.25f), 0.3f), 4f, 44f, 7f, 13f, 47f, 6f, 21f, 45f, 5.5f, -1f, 48f, 6f)
             if (!vivant) cabine(30f)
             touffe(vert(0.55f), 99f, 52f, 7f, 90f, 55f, 5f, 102f, 42f, 6f, 94f, 46f, 4f)
             c.restore()
