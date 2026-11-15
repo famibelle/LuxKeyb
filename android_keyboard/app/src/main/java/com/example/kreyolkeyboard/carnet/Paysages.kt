@@ -1326,7 +1326,7 @@ object Paysages {
      * La ville haute sur la corniche du Bock, à droite : petite, loin, au
      * sommet du rocher, comme sur la photo du propriétaire.
      */
-    internal val RUE_NEIMENSTER = Fuite(floatArrayOf(104f, 13f), floatArrayOf(52f, 6.5f), floatArrayOf(190f, 10f), taille = 0.24f)
+    internal val RUE_NEIMENSTER = Fuite(floatArrayOf(101f, 11f), floatArrayOf(74f, 23.5f), floatArrayOf(190f, 16f), recul = 33f, taille = 0.35f)
     private val MAISONS_NEIMENSTER = maisonsAuHasard(20, 127, 13f, 20f)
 
     /**
@@ -4073,6 +4073,18 @@ object Paysages {
                         mix(roche, 0xFFFFFFFF.toInt(), 0.26f), 0f)
                 }
                 c.restore()
+            }
+            // La ville haute, debout sur la corniche, et dessinée AVANT le
+            // rempart : posée après et plus haut que lui, elle se lisait comme
+            // une rangée de maisons suspendues au-dessus du vide
+            // (propriétaire, 2026-11-15). C'est maintenant le mur qui lui cache
+            // le pied, comme il le fait en vrai.
+            // Des enduits pâles, pas les couleurs du Grund : vue d'en bas et
+            // à contre-jour, la ville haute est une ligne claire sur le ciel.
+            rue3q(RUE_NEIMENSTER, MAISONS_NEIMENSTER, intArrayOf(
+                duJour(0xFFEDE8DC.toInt()), duJour(0xFFDAD6CC.toInt()), duJour(0xFFE7DBCB.toInt())
+            ), r)
+            mineral {
                 // Le rempart sur la corniche : du moellon assisé, pas un aplat.
                 val mur = neutre(duJour(0xFFC3BBA8.toInt()))
                 val remp = chemin("M79 27.5C86 21 94 16.5 103 14L103 8.4C93 10.9 85 15.4 77 23Z")
@@ -4121,8 +4133,6 @@ object Paysages {
                 touffe(if (r() < 0.5f) sombre(bois, 0.22f) else mix(bois, 0xFFFFFFFF.toInt(), if (P.nuit) 0.03f else 0.1f),
                     ax, ay, ar, ax + ar * 0.9f, ay + ar * 0.45f, ar * 0.75f, ax - ar * 0.85f, ay + ar * 0.5f, ar * 0.7f)
             }
-            // La ville haute, petite et loin, au sommet du rocher.
-            rue3q(RUE_NEIMENSTER, MAISONS_NEIMENSTER, facades(), r)
             plan(1)
             // Le versant boisé qui tapisse le pied du rocher.
             val versant = nappe(P.milieu, 0.74f)
