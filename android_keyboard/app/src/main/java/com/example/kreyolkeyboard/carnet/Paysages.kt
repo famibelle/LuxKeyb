@@ -1185,7 +1185,29 @@ object Paysages {
     )
 
     /** La grande roue de la Schueberfouer : centre x, y, rayon. */
-    private val ROUE = floatArrayOf(20f, 22f, 19f)
+    private val ROUE = floatArrayOf(10f, 26f, 23f)
+
+    /** La rosace du moyeu de la grande roue, du bord vers le centre. */
+    private val ROSACE = intArrayOf(0xFF2E74B5.toInt(), 0xFF4FA85C.toInt(),
+        0xFFF2C230.toInt(), 0xFFD6453A.toInt())
+
+    /** L'abscisse du mât du carrousel, au bord droit de la fenêtre. */
+    private const val CARROUSEL = 103f
+
+    /** Les trois chevaux du carrousel que l'on voit passer. */
+    private val CHEVAUX = floatArrayOf(86f, 94.5f, 102f)
+
+    /** Les pattes d'un cheval de bois : attache, genou, sabot, en unités. */
+    private val PATTES = arrayOf(
+        floatArrayOf(-2.6f, 0.6f, -3.8f, 1.8f, -3f, 3.4f),
+        floatArrayOf(-1.6f, 0.9f, -2.4f, 2.3f, -1.8f, 3.9f),
+        floatArrayOf(2.2f, 0.2f, 3.6f, 1.6f, 3f, 3.4f),
+        floatArrayOf(1.2f, 0.8f, 2f, 2.2f, 1.4f, 3.8f))
+
+    /** Les guirlandes au-dessus de l'allée : départ, sommet de la courbe, arrivée. */
+    private val GUIRLANDES = arrayOf(
+        floatArrayOf(-4f, 3.4f, 34f, 14f, 68f, 4.2f),
+        floatArrayOf(12f, 7f, 58f, 17f, 104f, 8f))
 
     /** Les couleurs des nacelles de la grande roue. */
     private val GONDOLES = intArrayOf(0xFFD6453A.toInt(), 0xFFE9B02F.toInt(), 0xFF2F9C95.toInt(),
@@ -3399,6 +3421,13 @@ object Paysages {
         /** [col] dans l'ombre, de [t] : un brun de terre, qui prend la nuit la couleur de l'heure. */
         fun sombre(col: Int, t: Float): Int = mix(col, mix(0xFF2E2418.toInt(), P.pres, ATTENUE[P.rang]), t)
 
+        /**
+         * [col] quand les lampes sont allumées : une surface que ses propres
+         * ampoules éclairent ne s'éteint pas avec le jour. Sans cela une fête
+         * foraine de nuit est une fête foraine grise.
+         */
+        fun eclaire(col: Int, t: Float): Int = if (P.allume) mix(col, P.fenetre, t) else col
+
         /** L'ardoise des toits du pays. */
         fun ardoise(): Int = duJour(0xFF4A5468.toInt())
 
@@ -4895,97 +4924,483 @@ object Paysages {
 
         // ---- Schueberfouer, la grande roue et le carrousel (photo du propriétaire)
 
+        /**
+         * La fête vue d'en bas, dans l'angle de la photo : on est debout dans
+         * l'allée, la roue penche au-dessus de l'épaule gauche et l'on regarde
+         * **sous** la coupole du carrousel, dont le bord proche descend vers
+         * nous. La contre-plongée ne laisse presque pas de sol et pousse tout
+         * ce qui compte dans la bande libre du haut, là où la plaque du mot
+         * ne va pas.
+         */
         fun fouerPapier() {
-            lisiere(-2f, 102f, { x -> 46f + sin(x * 0.1f) }, 1.2f, 1.8f, 165, nappe(P.loin, 0.3f, VERT_CALME))
+            // Au loin, la masse sombre des autres métiers : très basse, la
+            // contre-plongée ne laisse presque pas d'horizon.
+            lisiere(-2f, 102f, { x -> 52.5f + 1.1f * sin(x * 0.13f) }, 1.2f, 2f, 165,
+                mix(nappe(P.loin, 0.5f, VERT_CALME), P.cielBas, if (P.nuit) 0.1f else 0.3f))
             plan(1)
-            val treillis = duJour(0xFF3FA05A.toInt())
-            val blanc = duJour(0xFFF2F2EE.toInt())
-            mineral {
-                for (x0 in floatArrayOf(8f, 32f)) {
-                    ligne(x0, 57f, ROUE[0], ROUE[1] + 1f, treillis, 1.3f)
-                    p.pathEffect = DashPathEffect(floatArrayOf(0.6f, 0.9f), 0f)
-                    ligne(x0, 57f, ROUE[0], ROUE[1] + 1f, blanc, 0.5f)
-                    p.pathEffect = null
-                }
-                if (!vivant) grandeRoue(0f)
-            }
+            metiers()
+            pylonesDeRoue()
+            if (!vivant) grandeRoue(0f)
             plan(2)
             solDePierre(SolDePierre.PAVES, DEVANT, -0.02f)  // le Glacis
             poser(DEVANT)
-            val or = duJour(0xFFE2B04A.toInt())
-            val rouge = duJour(0xFFC23B3B.toInt())
-            val creme = duJour(0xFFF6EAD0.toInt())
-            mineral {
-                pieceD("M64 25C68 16 80 11.5 92 11.5C100 11.5 104 15 104 25Z", or)
-                trait("M68 21C72 16.5 80 14 90 14", mix(or, 0xFFFFFFFF.toInt(), 0.35f), 0.4f)
-                feuille(64f, 25f, 40f, 2.6f, rouge, 0.5f)
-                val t = Path()
-                t.moveTo(64f, 27.4f)
-                var x = 64f
-                while (x < 104f) { t.quadTo(x + 1.5f, 30.4f, x + 3f, 27.4f); x += 3f }
-                t.lineTo(104f, 27f); t.lineTo(64f, 27f); t.close()
-                piece(t, or, 0.4f)
-                for (px in floatArrayOf(68f, 74f, 80f, 86f, 92f, 98f)) ligne(px, 29f, px, 52f, duJour(0xFFD9B45A.toInt()), 0.4f)
-                pieceD("M62 52L104 52L104 55.5L62 55.5Z", rouge)
-                feuille(62f, 52f, 42f, 0.9f, or, 0f)
-                var bx = 65.5f
-                while (bx < 104f) { rond(bx, 26.3f, 0.36f, if (P.allume) P.fenetre else creme); bx += 2.2f }
-                // Une baraque, en bas à gauche.
-                feuille(-2f, 44f, 15f, 14.5f, duJour(0xFFF3D9E2.toInt()))
-                pieceD("M-3 44.4L5.5 40L14 44.4Z", rouge)
-                feuille(0f, 46f, 11f, 3f, if (P.allume) P.fenetre else duJour(0xFFE8E2D0.toInt()), 0.3f)
-            }
+            carrousel()
             if (!vivant) chevaux(0f)
+            baraque()
+            foule()
+            guirlande()
             c.restore()
+        }
+
+        /**
+         * Les deux chevalets en treillis de la grande roue, vert vif comme sur
+         * la photo : vus d'en bas ils s'écartent largement au pied et se
+         * rejoignent sous le moyeu.
+         */
+        private fun pylonesDeRoue() {
+            val cx = ROUE[0]; val cy = ROUE[1]
+            val vert = neutre(duJour(0xFF2F9C5A.toInt()))
+            mineral {
+                for (pied in floatArrayOf(-6f, 26f)) chevalet(pied + 3f, 55.5f, cx + 1.7f, cy + 2.4f, sombre(vert, 0.45f), 0.85f, false)
+                for (pied in floatArrayOf(-6f, 26f)) chevalet(pied, 57.5f, cx, cy + 1.4f, vert, 1.1f, true)
+                rond(cx, cy, 2.4f, neutre(duJour(0xFF9AA3AC.toInt())))
+                rond(cx, cy, 1.1f, neutre(duJour(0xFF6E767E.toInt())))
+            }
+        }
+
+        /**
+         * Les autres métiers, au fond de l'allée : une file de toiles rayées
+         * dont on ne voit que les toits, la foule en cache le pied.
+         */
+        private fun metiers() {
+            val r = Alea(167)
+            val toiles = intArrayOf(eclaire(duJour(0xFFC8402F.toInt()), 0.26f), eclaire(duJour(0xFF3E6FA8.toInt()), 0.26f),
+                eclaire(duJour(0xFF2F9C5A.toInt()), 0.26f), eclaire(duJour(0xFFE2B04A.toInt()), 0.26f))
+            mineral {
+                var x = -8f
+                var k = 0
+                while (x < 106f) {
+                    val l = 9f + r() * 7f
+                    val y = 47.5f + r() * 2f
+                    val col = toiles[k % toiles.size]
+                    pieceD("M$x ${y + 5}L$x ${y + 1}L${x + l / 2f} ${y - 2.4f}L${x + l} ${y + 1}L${x + l} ${y + 5}Z",
+                        neutre(mix(col, 0xFFF2EADA.toInt(), 0.55f)), 0.5f)
+                    // Le lambrequin rayé sous l'égout du toit, à plat.
+                    var sx = x
+                    var j = 0
+                    while (sx < x + l - 0.2f) {
+                        val w = min(1.5f, x + l - sx)
+                        rect(sx, y + 1f, w, 1.6f, if (j % 2 == 0) col else mix(col, 0xFFFFF4E2.toInt(), 0.7f), 0.95f)
+                        sx += w; j++
+                    }
+                    rect(x + l * 0.2f, y + 3f, l * 0.6f, 1.6f,
+                        if (P.allume) mix(P.fenetre, col, 0.3f) else mix(col, 0xFFFFF4E2.toInt(), 0.45f), 0.9f)
+                    if (P.allume) {
+                        var bx = x + 0.7f
+                        while (bx < x + l) { rond(bx, y + 2.8f, 0.34f, P.fenetre); bx += 2.2f }
+                    }
+                    x += l + 0.6f + r() * 2f
+                    k++
+                }
+            }
+        }
+
+        /** Un chevalet de treillis, du pied ([x0], [y0]) au moyeu ([x1], [y1]). */
+        private fun chevalet(x0: Float, y0: Float, x1: Float, y1: Float, col: Int, large: Float, ampoules: Boolean) {
+            val e0 = 3.2f; val e1 = 0.8f   // l'écartement des deux membrures, au pied puis en haut
+            ligne(x0 - e0, y0, x1 - e1, y1, col, large)
+            ligne(x0 + e0, y0, x1 + e1, y1, col, large)
+            var t = 0.06f; var k = 0
+            while (t < 0.97f) {
+                val t2 = min(t + 0.105f, 1f)
+                val ax = x0 - e0 + (x1 - e1 - x0 + e0) * t;   val ay = y0 + (y1 - y0) * t
+                val bx = x0 + e0 + (x1 + e1 - x0 - e0) * t
+                val ax2 = x0 - e0 + (x1 - e1 - x0 + e0) * t2; val ay2 = y0 + (y1 - y0) * t2
+                val bx2 = x0 + e0 + (x1 + e1 - x0 - e0) * t2
+                ligne(ax, ay, bx, ay, col, large * 0.5f)
+                if (k % 2 == 0) ligne(ax, ay, bx2, ay2, col, large * 0.42f)
+                else ligne(bx, ay, ax2, ay2, col, large * 0.42f)
+                if (ampoules && P.allume) { rond(ax, ay, 0.38f, P.fenetre); rond(bx, ay, 0.38f, P.fenetre) }
+                t = t2; k++
+            }
         }
 
         /** La grande roue, tournée de [angle] radians ; la nuit, ses ampoules courent au [temps]. */
         fun grandeRoue(angle: Float, temps: Float = 0f) {
             val cx = ROUE[0]; val cy = ROUE[1]; val rr = ROUE[2]
-            // De trois quarts : la roue se voit en ellipse.
+            // Vue d'en bas et de biais comme sur la photo : elle se voit en
+            // ellipse, et son axe penche en arrière.
             c.save()
+            c.rotate(-9f, cx, cy)
             c.scale(0.78f, 1f, cx, cy)
-            try { roue(cx, cy, rr, angle, temps) } finally { c.restore() }
+            try { mineral { roue(cx, cy, rr, angle, temps) } } finally { c.restore() }
         }
 
         private fun roue(cx: Float, cy: Float, rr: Float, angle: Float, temps: Float) {
-            val structure = duJour(0xFFE8E8E4.toInt())
+            val acier = if (P.allume) sombre(neutre(duJour(0xFF8B96A4.toInt())), 0.4f) else neutre(duJour(0xFF8B96A4.toInt()))
+            // La nuit, la roue est la lumière de la fête : le halo d'abord.
+            if (P.allume && actif) {
+                p.style = Paint.Style.FILL
+                p.shader = RadialGradient(cx, cy, rr * 1.35f,
+                    intArrayOf((0x7A shl 24) or (P.fenetre and 0xFFFFFF), P.fenetre and 0x00FFFFFF),
+                    null, Shader.TileMode.CLAMP)
+                c.drawCircle(cx, cy, rr * 1.35f, p)
+                p.shader = null
+            }
+            val moyeu = rr * 0.4f
+            // Les haubans, du moyeu à la jante.
             for (k in 0 until 24) {
                 val a = angle + k / 24f * 2f * PI.toFloat()
-                ligne(cx, cy, cx + rr * cos(a), cy + rr * sin(a), structure, 0.3f)
+                ligne(cx + moyeu * cos(a), cy + moyeu * sin(a), cx + rr * cos(a), cy + rr * sin(a), acier, 0.26f)
             }
-            anneau(cx, cy, rr, structure, 0.8f)
-            anneau(cx, cy, rr - 2f, structure, 0.35f)
-            val disques = intArrayOf(duJour(0xFFF2C230.toInt()), duJour(0xFFE0483A.toInt()), duJour(0xFF3FA05A.toInt()))
-            for ((i, d) in floatArrayOf(8f, 5.6f, 3.2f).withIndex()) rond(cx, cy, d, disques[i])
-            if (P.allume) {
-                val pas = (temps * 4f).toInt()
-                for (k in 0 until 40) {
-                    if ((k + pas) % 3 == 0) continue
-                    val a = angle + k / 40f * 2f * PI.toFloat()
-                    rond(cx + rr * cos(a), cy + rr * sin(a), 0.38f, if (k % 2 == 0) P.fenetre else 0xFFFF8FB8.toInt())
-                }
+            // La jante : deux cercles reliés par des traverses.
+            anneau(cx, cy, rr, acier, 1f)
+            anneau(cx, cy, rr - 2.2f, acier, 0.55f)
+            for (k in 0 until 12) {
+                val a = angle + (k + 0.5f) / 12f * 2f * PI.toFloat()
+                ligne(cx + (rr - 2f) * cos(a), cy + (rr - 2f) * sin(a), cx + rr * cos(a), cy + rr * sin(a), acier, 0.38f)
             }
+            // La rosace du moyeu : les anneaux de couleur de la photo, découpés en quartiers.
+            // La rosace est faite de panneaux lumineux : la nuit elle garde
+            // ses couleurs pleines, elle ne vire pas à l'ambre comme une
+            // surface simplement éclairée.
+            for ((i, f) in floatArrayOf(1f, 0.76f, 0.54f, 0.32f).withIndex())
+                rond(cx, cy, moyeu * f,
+                    if (P.allume) mix(ROSACE[i], 0xFFFFFFFF.toInt(), 0.14f) else duJour(ROSACE[i]))
+            val joint = if (P.allume) mix(ROSACE[0], 0xFF000000.toInt(), 0.45f) else sombre(duJour(ROSACE[0]), 0.4f)
+            for (k in 0 until 16) {
+                val a = angle + k / 16f * 2f * PI.toFloat()
+                ligne(cx + moyeu * 0.3f * cos(a), cy + moyeu * 0.3f * sin(a),
+                    cx + moyeu * cos(a), cy + moyeu * sin(a), joint, 0.3f, 0.55f)
+            }
+            rond(cx, cy, moyeu * 0.17f, acier)
+            // Les nacelles, suspendues sous la jante.
             for (k in 0 until 12) {
                 val a = angle + k / 12f * 2f * PI.toFloat()
-                val x = cx + rr * cos(a)
-                val y = cy + rr * sin(a)
-                ligne(x, y, x, y + 1.3f, structure, 0.25f)
-                rect(x - 1.3f, y + 1.2f, 2.6f, 2f, duJour(GONDOLES[k % GONDOLES.size]))
+                val x = cx + (rr - 0.9f) * cos(a)
+                val y = cy + (rr - 0.9f) * sin(a)
+                val col = if (P.allume) mix(GONDOLES[k % GONDOLES.size], 0xFFFFFFFF.toInt(), 0.1f)
+                    else duJour(GONDOLES[k % GONDOLES.size])
+                // L'étrier, puis la cabine : sans l'étrier les nacelles ont
+                // l'air de flotter à côté de la jante.
+                ligne(x - 1.5f, y + 1.9f, x, y, acier, 0.4f)
+                ligne(x + 1.5f, y + 1.9f, x, y, acier, 0.4f)
+                rect(x - 1.8f, y + 1.7f, 3.6f, 2.8f, col)
+                rect(x - 1.8f, y + 1.7f, 3.6f, 0.6f, mix(col, 0xFFFFFFFF.toInt(), 0.4f), 0.9f)
+                rect(x - 1.3f, y + 2.6f, 2.6f, 1.3f,
+                    if (P.allume) P.fenetre else mix(col, 0xFFFFFFFF.toInt(), 0.6f), 0.9f)
             }
+            if (P.allume) {
+                val pas = (temps * 4f).toInt()
+                for (k in 0 until 44) {
+                    if ((k + pas) % 3 == 0) continue
+                    val a = angle + k / 44f * 2f * PI.toFloat()
+                    val bx = cx + (rr - 0.85f) * cos(a); val by = cy + (rr - 0.85f) * sin(a)
+                    val col = if (k % 2 == 0) P.fenetre else 0xFFFF8FB8.toInt()
+                    if (k % 2 == 0) rond(bx, by, 1.3f, col, 0.22f)
+                    rond(bx, by, 0.52f, col)
+                }
+            }
+        }
+
+        /**
+         * L'ordonnée du bord **proche** d'un cercle du carrousel vu d'en bas :
+         * le bord qui descend vers nous, et sur lequel se posent la corniche,
+         * les barres de cuivre et les chevaux.
+         */
+        private fun bordProche(x: Float, cy: Float, rx: Float, ry: Float): Float {
+            val u = ((x - CARROUSEL) / rx).coerceIn(-1f, 1f)
+            return cy + ry * sqrt(1f - u * u)
+        }
+
+        /**
+         * Le chemin du bord proche, de [x0] à [x1]. Sans [vers] il commence
+         * un tracé ; avec, il poursuit celui qu'on lui donne.
+         */
+        private fun arcProche(x0: Float, x1: Float, cy: Float, rx: Float, ry: Float, vers: Path? = null): Path {
+            val t = vers ?: Path()
+            if (vers == null) t.moveTo(x0, bordProche(x0, cy, rx, ry))
+            var x = x0 + 1.5f
+            while (x < x1) { t.lineTo(x, bordProche(x, cy, rx, ry)); x += 1.5f }
+            t.lineTo(x1, bordProche(x1, cy, rx, ry))
+            return t
+        }
+
+        /**
+         * Le carrousel à deux étages, vu d'en dessous comme sur la photo : le
+         * bord de la coupole descend vers nous, on voit son plafond peint et
+         * ses miroirs, et les chevaux passent au-dessus du regard. Son mât est
+         * au bord droit de la fenêtre, là où la plaque du mot ne va pas.
+         */
+        private fun carrousel() {
+            val cx = CARROUSEL
+            val ivoire = eclaire(neutre(duJour(0xFFF6EFDF.toInt())), 0.45f)
+            val plafond = eclaire(neutre(duJour(0xFFE9DBBE.toInt())), 0.34f)
+            val or = eclaire(duJour(0xFFE2B04A.toInt()), 0.4f)
+            val rouge = eclaire(duJour(0xFFC8402F.toInt()), 0.2f)
+            val laiton = eclaire(duJour(0xFFD3A64E.toInt()), 0.35f)
+            val ampoule = if (P.allume) P.fenetre else 0xFFFFF0CF.toInt()
+            val x0 = 70f
+            val cyC = 26f; val rxC = 33f; val ryC = 8.4f
+            mineral {
+                // Vue d'en dessous, la coupole ne montre qu'un croissant de
+                // son dessus, au-delà du bord lointain du plafond. Ce qui fait
+                // la masse en l'air, c'est le second étage, au-dessus.
+                // La même parabole sert au contour de la calotte, au bord
+                // lointain du plafond et à la guirlande : un seul tracé, donc
+                // rien qui flotte à côté de rien.
+                val calotte = chemin("M${cx - rxC} ${cyC}Q$cx 0.8 ${cx + rxC} ${cyC}Q$cx 10 ${cx - rxC} ${cyC}Z")
+                piece(calotte, ivoire, 0.45f)
+                c.save(); c.clipPath(calotte)
+                for (k in 0 until 13) {
+                    val a = PI.toFloat() * (0.5f + k * 0.0435f)
+                    val a2 = PI.toFloat() * (0.5f + (k + 1) * 0.0435f)
+                    if (k % 2 == 0) triangle(cx, 12.6f, cx + 38f * cos(a), cyC + 2f,
+                        cx + 38f * cos(a2), cyC + 2f, mix(ivoire, rouge, 0.3f), 0.95f)
+                    ligne(cx, 12.6f, cx + 38f * cos(a), cyC + 2f, or, 0.4f, 0.8f)
+                }
+                c.restore()
+                // La guirlande du bord de coupole : c'est elle qui dit que
+                // cette masse en l'air est un toit allumé, et non une colline.
+                for (k in 1 until 11) {
+                    val t = k / 22f
+                    val u = 1f - t
+                    rond(u * u * (cx - rxC) + 2f * u * t * cx + t * t * (cx + rxC),
+                        u * u * cyC + 2f * u * t * 0.8f + t * t * cyC, 0.44f, ampoule)
+                }
+                // Le second étage : son tambour peint, ses panneaux et ses
+                // deux couronnes d'ampoules, comme sur la photo.
+                // Le tambour s'assoit dans la coupole : ses coins bas rejoignent
+                // la parabole de la calotte, sinon il a l'air posé dans le ciel.
+                val rT = 13.5f
+                pieceD("M${cx - rT} 8.6C${cx - rT} 4.2 ${cx + rT} 4.2 ${cx + rT} 8.6" +
+                    "L${cx + rT} 15.2C${cx + rT} 20 ${cx - rT} 20 ${cx - rT} 15.2Z", ivoire, 0.45f)
+                for (k in 0 until 6) {
+                    val bx = cx - 12.3f + k * 4.1f
+                    val d = (bx + 1.6f - cx) / rT
+                    rect(bx, 7.4f - 2.6f * (1f - d * d), 3.2f, 6.4f + 5.4f * (1f - d * d),
+                        if (k % 2 == 0) rouge else mix(ivoire, or, 0.5f), 0.95f)
+                }
+                for (k in 0 until 12) {
+                    val bx = cx - 12.4f + k * 2.25f
+                    val d = (bx - cx) / rT
+                    rond(bx, 15.5f + 3.6f * (1f - d * d), 0.46f, ampoule)
+                    rond(bx, 8.3f - 3.3f * (1f - d * d), 0.4f, ampoule, 0.9f)
+                }
+                // Le petit dôme qui coiffe le tout, et son épi.
+                pieceD("M${cx - 11} 4.4C${cx - 8.4f} -1.4 ${cx + 8.4f} -1.4 ${cx + 11} 4.4" +
+                    "C${cx + 6} 2.4 ${cx - 6} 2.4 ${cx - 11} 4.4Z", mix(ivoire, rouge, 0.35f), 0.3f)
+
+                // Le plafond : on le voit entier, il remplit le disque proche.
+                val disque = Path()
+                disque.moveTo(cx - rxC, cyC)
+                arcProche(cx - rxC, cx + rxC, cyC, rxC, ryC, disque)
+                disque.quadTo(cx, 10f, cx - rxC, cyC)
+                disque.close()
+                piece(disque, plafond, 0.3f)
+                c.save(); c.clipPath(disque)
+                // Les panneaux peints entre les nervures dorées.
+                for (k in 0 until 13) {
+                    val a = PI.toFloat() * (0.5f + k * 0.0435f)
+                    val a2 = PI.toFloat() * (0.5f + (k + 1) * 0.0435f)
+                    if (k % 2 == 0) triangle(cx, cyC - 2.4f, cx + 36f * cos(a), cyC + 10f * sin(a),
+                        cx + 36f * cos(a2), cyC + 10f * sin(a2), mix(plafond, rouge, 0.3f), 0.9f)
+                    ligne(cx, cyC - 2.4f, cx + 36f * cos(a), cyC + 10f * sin(a), or, 0.45f, 0.85f)
+                }
+                // L'anneau de miroirs autour du mât, et le tambour central.
+                for (k in 0 until 6) {
+                    val a = PI.toFloat() * (0.52f + k * 0.08f)
+                    val mx = cx + 13f * cos(a); val my = cyC - 0.8f + 3.6f * sin(a)
+                    rond(mx, my, 0.58f, mix(ivoire, 0xFFFFFFFF.toInt(), 0.5f))
+                    if (P.allume) rond(mx, my, 0.34f, P.fenetre, 0.85f)
+                }
+                pieceD("M${cx - 6} ${cyC - 4.6f}C${cx - 6} ${cyC - 7} ${cx + 6} ${cyC - 7} ${cx + 6} ${cyC - 4.6f}" +
+                    "L${cx + 6} ${cyC - 1.6f}C${cx + 6} ${cyC + 0.8f} ${cx - 6} ${cyC + 0.8f} ${cx - 6} ${cyC - 1.6f}Z",
+                    mix(plafond, rouge, 0.45f), 0.3f)
+                c.restore()
+
+                // La corniche du bord proche, son liseré et ses ampoules.
+                val corniche = arcProche(x0 - 1f, cx + 34f, cyC, rxC, ryC)
+                longDe(corniche, or, 2.1f)
+                longDe(corniche, mix(or, 0xFFFFFFFF.toInt(), 0.5f), 0.45f)
+                // Les festons du lambrequin, accrochés sous la corniche.
+                var bx = x0
+                while (bx < cx + 3f) {
+                    val by = bordProche(bx, cyC, rxC, ryC) + 1.1f
+                    val by2 = bordProche(bx + 3.6f, cyC, rxC, ryC) + 1.1f
+                    val t = Path()
+                    t.moveTo(bx, by); t.quadTo(bx + 1.8f, by + 4f, bx + 3.6f, by2)
+                    t.lineTo(bx + 3.6f, by2 - 1.3f); t.quadTo(bx + 1.8f, by + 1.6f, bx, by - 1.3f); t.close()
+                    forme(t, rouge, 0.95f)
+                    rond(bx + 1.8f, (by + by2) / 2f + 3.1f, 0.46f, ampoule)
+                    bx += 3.6f
+                }
+                bx = x0 + 0.5f
+                while (bx < cx + 3f) { rond(bx, bordProche(bx, cyC, rxC, ryC) - 0.2f, 0.5f, ampoule); bx += 2.6f }
+
+                // Le mât central, en miroir.
+                feuille(cx - 1.8f, cyC, 3.6f, 26f, mix(ivoire, 0xFFFFFFFF.toInt(), 0.25f), 0.4f)
+                ligne(cx - 0.6f, cyC + 1f, cx - 0.6f, cyC + 25f, mix(ivoire, 0xFFFFFFFF.toInt(), 0.8f), 0.5f, 0.7f)
+
+                // Le plancher tournant, vu lui aussi par en dessous : on n'en
+                // voit que la ceinture peinte et sa guirlande.
+                val ceinture = arcProche(x0 + 5f, cx + 31f, 47f, 30f, 6.6f)
+                for (k in 14 downTo 0) {
+                    val xx = x0 + 5f + (cx + 31f - x0 - 5f) * k / 14f
+                    ceinture.lineTo(xx, bordProche(xx, 47f, 30f, 6.6f) + 3.8f)
+                }
+                ceinture.close()
+                piece(ceinture, rouge, 0.5f)
+                bx = x0 + 6f
+                while (bx < cx + 3f) {
+                    val by = bordProche(bx, 47f, 30f, 6.6f)
+                    rect(bx, by + 1.1f, 2.1f, 2.1f, mix(rouge, or, 0.6f), 0.85f)
+                    rond(bx + 1.05f, by + 0.4f, 0.42f, ampoule)
+                    bx += 3.4f
+                }
+
+                // Les barres de cuivre : elles s'écartent vers le bas, comme
+                // tout ce qu'on regarde d'en bas.
+                for (hx in CHEVAUX) {
+                    val h = bordProche(hx, cyC, rxC, ryC) + 1.4f
+                    val b = bordProche(hx, 47f, 30f, 6.6f) + 0.8f
+                    val bx2 = cx + (hx - cx) * 1.07f
+                    ligne(hx, h, bx2, b, laiton, 0.6f)
+                    ligne(hx - 0.2f, h, bx2 - 0.2f, b, mix(laiton, 0xFFFFFFFF.toInt(), 0.6f), 0.2f, 0.8f)
+                }
+            }
+        }
+
+        /** Un trait le long d'un [chemin] déjà tracé. */
+        private fun longDe(chemin: Path, col: Int, largeur: Float) {
+            if (!actif) return
+            p.style = Paint.Style.STROKE; p.strokeWidth = largeur; teinte(col, 1f)
+            c.drawPath(chemin, p)
+            p.style = Paint.Style.FILL
         }
 
         /** Les chevaux de bois du carrousel, qui montent et descendent au [temps]. */
         fun chevaux(temps: Float) {
-            val blanc = duJour(0xFFF7F3EA.toInt())
-            val selle = duJour(0xFFC23B3B.toInt())
-            for ((k, x) in floatArrayOf(74f, 86f, 98f).withIndex()) {
-                val y = 43f + sin(temps * 2f + k * 2.1f) * 1.4f
-                pieceD("M${x - 3f} ${y}C${x - 3f} ${y - 1.6f} ${x + 2f} ${y - 1.8f} ${x + 2.6f} ${y - 0.8f}L${x + 3.6f} ${y - 3.4f}" +
-                    "L${x + 4.6f} ${y - 3f}L${x + 3.6f} ${y + 0.2f}C${x + 3.2f} ${y + 1.4f} ${x - 2.4f} ${y + 1.6f} ${x - 3f} ${y}Z", blanc, 0.4f)
-                ligne(x - 2f, y + 1f, x - 2.6f, y + 3.2f, blanc, 0.45f)
-                ligne(x + 2f, y + 1f, x + 2.6f, y + 3.2f, blanc, 0.45f)
-                rect(x - 1f, y - 1.5f, 1.8f, 0.8f, selle)
+            val robe = eclaire(mix(neutre(duJour(0xFFF7F1E4.toInt())), 0xFFFFFFFF.toInt(), 0.4f), 0.4f)
+            val creux = eclaire(neutre(duJour(0xFFBFB4A0.toInt())), 0.3f)
+            val selle = eclaire(duJour(0xFFC8402F.toInt()), 0.2f)
+            val or = eclaire(duJour(0xFFE2B04A.toInt()), 0.4f)
+            val laiton = eclaire(duJour(0xFFD3A64E.toInt()), 0.35f)
+            mineral {
+                for ((k, x) in CHEVAUX.withIndex()) {
+                    val h = bordProche(x, 26f, 33f, 8.4f) + 8f
+                    val b = bordProche(x, 47f, 30f, 6.6f) - 5.5f
+                    val y = (h + b) / 2f + sin(temps * 2f + k * 2.1f) * (b - h) * 0.3f
+                    // La barre traverse le cheval : on la revoit au-dessus du garrot.
+                    ligne(x + 0.3f, y - 7.4f, x + 0.6f, y + 4.4f, laiton, 0.6f)
+                    // Les jambes : des membres épais, pas des fils, sinon le
+                    // cheval se lit comme un oiseau.
+                    for (j in PATTES) {
+                        ligne(x + j[0], y + j[1], x + j[2], y + j[3], creux, 1.5f)
+                        ligne(x + j[2], y + j[3], x + j[4], y + j[5], creux, 1.15f)
+                        rond(x + j[4], y + j[5], 0.6f, sombre(creux, 0.25f))
+                    }
+                    // Le corps trapu, l'encolure et la tête, d'un seul tenant.
+                    pieceD("M${x - 4.6f} ${y + 0.4f}C${x - 5f} ${y - 1.8f} ${x - 2.6f} ${y - 3.2f} ${x - 0.2f} ${y - 3.1f}" +
+                        "C${x + 1.2f} ${y - 3.1f} ${x + 1.9f} ${y - 3.8f} ${x + 2.6f} ${y - 4.6f}" +
+                        "C${x + 3.2f} ${y - 5.2f} ${x + 4.2f} ${y - 5.6f} ${x + 5.2f} ${y - 5.3f}" +
+                        "L${x + 6.9f} ${y - 4.2f}L${x + 6.5f} ${y - 2.8f}L${x + 4.8f} ${y - 2.7f}" +
+                        "C${x + 4.2f} ${y - 1.8f} ${x + 3.9f} ${y - 0.9f} ${x + 3.2f} ${y - 0.2f}" +
+                        "C${x + 1.6f} ${y + 2f} ${x - 2.8f} ${y + 2.2f} ${x - 4.6f} ${y + 0.4f}Z", robe, 0.5f)
+                    // La crinière, la queue, le harnais et l'œil.
+                    forme("M${x + 2.6f} ${y - 4.6f}C${x + 3.4f} ${y - 5.4f} ${x + 4.4f} ${y - 5.8f} ${x + 5.2f} ${y - 5.4f}" +
+                        "L${x + 4.6f} ${y - 4.2f}C${x + 3.8f} ${y - 4.4f} ${x + 3.2f} ${y - 3.8f} ${x + 2.4f} ${y - 2.8f}" +
+                        "L${x + 1.4f} ${y - 2.3f}C${x + 1.9f} ${y - 3.3f} ${x + 2.2f} ${y - 4f} ${x + 2.6f} ${y - 4.6f}Z", or)
+                    forme("M${x - 4.5f} ${y - 1.2f}C${x - 6.2f} ${y - 1f} ${x - 7f} ${y + 0.8f} ${x - 6.4f} ${y + 2.8f}" +
+                        "L${x - 5.2f} ${y + 2.4f}C${x - 5.6f} ${y + 0.8f} ${x - 5.2f} ${y - 0.2f} ${x - 4.1f} ${y - 0.4f}Z", or)
+                    rond(x + 5.4f, y - 4.2f, 0.3f, sombre(creux, 0.45f))
+                    ligne(x + 5.9f, y - 3.9f, x + 6.7f, y - 3.6f, or, 0.3f)
+                    // La selle et sa dorure.
+                    pieceD("M${x - 2.6f} ${y - 2.6f}L${x + 0.7f} ${y - 2.9f}L${x + 1.2f} ${y - 0.4f}L${x - 2.8f} ${y - 0.1f}Z", selle, 0.4f)
+                    ligne(x - 2.7f, y - 0.5f, x + 1.15f, y - 0.8f, or, 0.35f)
+                    if (P.allume) rond(x - 0.8f, y - 1.6f, 0.32f, P.fenetre)
+                }
+            }
+        }
+
+        /**
+         * La baraque du premier plan, devant le pied de la roue, comme celle
+         * du coin gauche de la photo : sa marquise à rayures, son comptoir et
+         * son enseigne allumée.
+         */
+        private fun baraque() {
+            val creme = eclaire(neutre(duJour(0xFFEFE8DA.toInt())), 0.4f)
+            val rouge = eclaire(duJour(0xFFC23B3B.toInt()), 0.22f)
+            val or = eclaire(duJour(0xFFE2B04A.toInt()), 0.4f)
+            val bleu = eclaire(neutre(duJour(0xFF3E6FA8.toInt())), 0.2f)
+            val ampoule = if (P.allume) P.fenetre else mix(0xFFFFF4D8.toInt(), creme, 0.4f)
+            mineral {
+                feuille(-7f, 41.5f, 22f, 17f, creme)
+                rect(-7f, 49f, 22f, 1.1f, bleu, 0.9f)
+                rect(-7f, 52.5f, 22f, 5.5f, bleu, 0.85f)
+                // L'enseigne, vue d'en bas : son bandeau penche vers nous.
+                pieceD("M-8 41.8L15.6 40L15.6 44.4L-8 45.6Z", rouge)
+                var sx = -7f
+                while (sx < 15f) { rond(sx, 42.6f - (sx + 7f) * 0.078f, 0.42f, ampoule); sx += 2.4f }
+                // La marquise à rayures, par en dessous.
+                var mx = -8f
+                var k = 0
+                while (mx < 16f) {
+                    val l = min(2.6f, 16f - mx)
+                    rect(mx, 45.4f - (mx + 8f) * 0.07f, l, 2.4f, if (k % 2 == 0) rouge else creme, 0.95f)
+                    mx += l; k++
+                }
+                // Le guichet et son comptoir.
+                rect(-2f, 48.6f, 11f, 4.2f, if (P.allume) mix(P.fenetre, or, 0.35f) else neutre(duJour(0xFFCFC4AE.toInt())))
+                rect(-2f, 52.2f, 11f, 1.2f, or, 0.9f)
+                ligne(3.4f, 48.6f, 3.4f, 52.2f, creme, 0.4f)
+            }
+        }
+
+        /**
+         * La foule, en silhouettes découpées, comme au bas de la photo : une
+         * ligne irrégulière, jamais une haie, et assez basse pour laisser
+         * voir le pied des métiers.
+         */
+        private fun foule() {
+            val encre = neutre(duJour(if (P.nuit) 0xFF191520.toInt() else 0xFF36291E.toInt()))
+            val r = Alea(166)
+            mineral {
+                var x = -7f
+                while (x < 106f) {
+                    val h = 3.4f + r() * 3.4f
+                    val y = 58.5f - h
+                    val l = 1.9f + r() * 1.1f
+                    val t = Path()
+                    t.moveTo(x, 58.5f)
+                    t.lineTo(x, y + 1.9f)
+                    t.quadTo(x + l * 0.5f, y + 0.5f, x + l, y + 1.9f)
+                    t.lineTo(x + l, 58.5f)
+                    t.close()
+                    forme(t, encre, 1f)
+                    rond(x + l / 2f, y + 0.5f, l * 0.37f, encre)
+                    // Elles se chevauchent par endroits, et s'espacent ailleurs.
+                    x += if (r() < 0.55f) l * 0.72f else l + 0.5f + r() * 3.4f
+                }
+            }
+        }
+
+        /** Les guirlandes d'ampoules tendues au-dessus de l'allée. */
+        private fun guirlande() {
+            val fil = if (P.nuit) mix(P.pres, 0xFF000000.toInt(), 0.5f) else mix(P.pres, 0xFF2A2118.toInt(), 0.45f)
+            val ampoule = if (P.allume) P.fenetre else 0xFFFFF0CF.toInt()
+            for (g in GUIRLANDES) {
+                val x0 = g[0]; val y0 = g[1]; val xm = g[2]; val ym = g[3]; val x1 = g[4]; val y1 = g[5]
+                trait("M$x0 ${y0}Q$xm $ym $x1 $y1", fil, 0.28f, 0.8f)
+                for (k in 1 until 13) {
+                    val t = k / 13f
+                    val u = 1f - t
+                    val bx = u * u * x0 + 2f * u * t * xm + t * t * x1
+                    val by = u * u * y0 + 2f * u * t * ym + t * t * y1
+                    ligne(bx, by, bx, by + 0.7f, fil, 0.2f, 0.8f)
+                    rond(bx, by + 1.1f, 0.48f, if (k % 2 == 0) ampoule else mix(ampoule, 0xFFFF9EC0.toInt(), 0.5f),
+                        if (P.allume) 1f else 0.85f)
+                }
             }
         }
 
