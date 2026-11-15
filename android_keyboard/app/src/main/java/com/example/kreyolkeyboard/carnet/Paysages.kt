@@ -1299,6 +1299,9 @@ object Paysages {
     /** La hauteur de la tour de l'ascenseur du Pfaffenthal : elle s'arrête sous le haut de la fenêtre. */
     private const val HAUT_PAFENDALL = 52f
 
+    /** Où monte le versant d'en face du Pfaffenthal, la ville haute sur sa crête. */
+    private const val CRETE_PAFENDALL = 26f
+
     internal val RUE_PAFENDALL = Fuite(floatArrayOf(18f, 48f), floatArrayOf(150f, 41f), floatArrayOf(-100f, 45f), taille = 0.3f)
     private val MAISONS_PAFENDALL = maisonsAuHasard(30, 218, 12f, 19f)
 
@@ -4749,7 +4752,66 @@ object Paysages {
 
         fun pafendall() {
             val r = Alea(215)
-            lisiere(-2f, 102f, { x -> 40f + 2.4f * sin(x * 0.08f) }, 1.6f, 2.4f, 216, mix(P.loin, P.milieu, 0.3f))
+            // Le versant d'en face. Le Pfaffenthal est une vallée encaissée :
+            // depuis le fond on ne voit pas un horizon dégagé mais la pente
+            // boisée qui monte, et la ville haute sur sa crête. Sans elle, le
+            // ciel occupait 60 % de la fenêtre et ses bandes jaunes de
+            // l'horizon ne représentaient rien (propriétaire, 2026-11-15).
+            val crete = CRETE_PAFENDALL
+            lisiere(-2f, 102f, { x -> crete + 3.4f * sin(x * 0.055f + 1.2f) }, 2.2f, 3.4f, 213,
+                mix(vert(0.08f), P.cielBas, 0.44f))
+            // La ville haute sur la crête, **en silhouette** : à ce plan, des
+            // maisons dessinées une à une, avec leurs fenêtres et leurs
+            // toits, se lisaient comme des étiquettes posées sur la ligne
+            // (propriétaire, 2026-11-15). Un lointain se lit en silhouette
+            // (règle 1) et s'efface par la couleur (règle 3) : c'est donc un
+            // seul découpage, d'un seul ton proche de l'horizon, avec deux ou
+            // trois clochers pour qu'on y reconnaisse une ville.
+            mineral {
+                fun cr(x: Float) = crete + 3.4f * sin(x * 0.055f + 1.2f)
+                val rh = Alea(212)
+                val ville = neutre(mix(P.loin, P.cielBas, 0.42f))
+                val t = Path()
+                t.moveTo(-3f, cr(-3f))
+                var hx = -3f
+                while (hx <= 103f) {
+                    val hw = 2.6f + rh() * 3.4f
+                    val hh = 1.4f + rh() * 2.6f
+                    t.lineTo(hx, cr(hx) - hh)
+                    if (rh() < 0.16f) {
+                        // Un clocher, de loin en loin.
+                        val cx = hx + hw * 0.5f
+                        t.lineTo(cx - 0.5f, cr(cx) - hh)
+                        t.lineTo(cx - 0.5f, cr(cx) - hh - 3.4f - rh() * 2f)
+                        t.lineTo(cx, cr(cx) - hh - 5.4f - rh() * 2f)
+                        t.lineTo(cx + 0.5f, cr(cx) - hh - 3.4f - rh() * 2f)
+                        t.lineTo(cx + 0.5f, cr(cx) - hh)
+                    }
+                    t.lineTo(hx + hw, cr(hx + hw) - hh)
+                    hx += hw
+                }
+                t.lineTo(103f, cr(103f) + 5f)
+                var bx = 103f
+                while (bx >= -3f) { t.lineTo(bx, cr(bx) + 5f); bx -= 4f }
+                t.close()
+                piece(t, ville, 0.25f)
+            }
+            // Les bois du versant, en nappes de plus en plus vertes à
+            // mesure qu'elles approchent : la vallée du Pfaffenthal est
+            // boisée de haut en bas, et le fond ne doit pas être une bande de
+            // ciel jaune (propriétaire, 2026-11-15).
+            lisiere(-2f, 102f, { x -> crete + 5.4f + 2.8f * sin(x * 0.07f + 0.4f) }, 2.4f, 3.6f, 218,
+                mix(vert(0.16f), P.cielBas, 0.3f))
+            lisiere(-2f, 102f, { x -> crete + 10.2f + 2.4f * sin(x * 0.09f + 2.1f) }, 2.6f, 3.8f, 219,
+                mix(vert(0.3f), P.cielBas, 0.16f))
+            // Quelques bouquets détachés sur la pente, pour qu'elle ne soit
+            // pas qu'une succession de lignes.
+            touffe(mix(vert(0.22f), P.cielBas, 0.24f), 12f, crete + 8f, 3.4f, 30f, crete + 7f, 3f,
+                52f, crete + 8.6f, 3.6f, 74f, crete + 7.4f, 3.2f, 92f, crete + 8.8f, 3f)
+            touffe(mix(vert(0.38f), P.cielBas, 0.1f), 4f, crete + 13f, 3.8f, 24f, crete + 14f, 3.4f,
+                46f, crete + 13.2f, 4f, 66f, crete + 14.4f, 3.6f, 86f, crete + 13f, 3.8f)
+            // La pente boisée qui descend vers le fond de la vallée.
+            lisiere(-2f, 102f, { x -> 40f + 2.4f * sin(x * 0.08f) }, 1.6f, 2.4f, 216, mix(P.milieu, P.loin, 0.25f))
             // Le Pfaffenthal au fond de la vallée, en rue de trois quarts.
             rue3q(RUE_PAFENDALL, MAISONS_PAFENDALL, facades(), r, ecart = 3f)
             plan(1)
