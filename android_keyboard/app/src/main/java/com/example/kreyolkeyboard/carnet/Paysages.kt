@@ -1288,10 +1288,39 @@ object Paysages {
     internal val RUE_MUSEL = Fuite(floatArrayOf(63f, 32.5f), floatArrayOf(175f, 28.5f), floatArrayOf(-80f, 31f), taille = 0.2f)
     private val MAISONS_MUSEL = maisonsAuHasard(26, 157, 12f, 18f)
 
-    /** Les trois stèles de Schengen : abscisse du bord gauche, haut de la tôle. */
-    internal val STELES_MUSEL = arrayOf(
-        floatArrayOf(5f, 26f), floatArrayOf(44f, 20f), floatArrayOf(82f, 18f)
+    /**
+     * Le parvis de Schengen fuit vers la gauche, la stèle la plus proche à
+     * droite. Sur la photo du propriétaire les trois tôles ne sont pas
+     * étalées de face sur toute la largeur : c'est un groupe serré vu de
+     * biais, dont chacune montre sa tranche et sa seconde tôle à droite.
+     */
+    internal val FUITE_STELES = Fuite(
+        floatArrayOf(90f, 57f), floatArrayOf(4f, 41f), floatArrayOf(190f, 46f), recul = 34f
     )
+
+    /** Où commence le bord droit de chaque stèle le long de la rangée. */
+    private val PAS_STELES = floatArrayOf(0f, 7f, 14f)
+    private const val LARGE_STELE = 4.4f      // en unités de rangée, soit ~10 à l'avant
+    private const val HAUT_STELE = 42f
+    private const val TOLE_L = 11f            // les cotes à plat, pour surQuad
+    private const val ETOILE_Y = 11.5f
+
+    /**
+     * Le centre de l'étoile de chaque stèle dans la fenêtre, et son rayon :
+     * le halo de la nuit est un rond de lumière, il reste dans le plan de
+     * l'image au lieu de suivre la perspective de la tôle.
+     */
+    internal val ETOILES_MUSEL: Array<FloatArray> = Array(PAS_STELES.size) { i ->
+        val f = FUITE_STELES
+        val ud = PAS_STELES[i]
+        val ug = ud + LARGE_STELE
+        val e = (f.echelle(ud) + f.echelle(ug)) / 2f
+        floatArrayOf(
+            (f.x(ud) + f.x(ug)) / 2f,
+            (f.y(ud) + f.y(ug)) / 2f - (HAUT_STELE - ETOILE_Y) * e,
+            4.8f * e
+        )
+    }
 
     /** La ville haute vue par la voûte de Neimënster, sur son rempart, et le palais de la crête. */
     internal val RUE_NEIMENSTER = Fuite(floatArrayOf(18f, 26f), floatArrayOf(135f, 15f), floatArrayOf(-120f, 22f), taille = 0.34f)
@@ -1510,7 +1539,7 @@ object Paysages {
                 Lieu.MELLERDALL -> chutes(p, temps, raf)
                 Lieu.STAD -> alzette(p, temps, vol)
                 Lieu.MUSEL -> if (calque == 3) {
-                    val x = ((60f + temps * 1.6f + 24f) % 150f) - 24f
+                    val x = ((20f + temps * 1.6f + 24f) % 150f) - 24f
                     p.peniche(x, sin(temps * 1.3f) * 0.2f * (1f + raf * 5f))
                 } else {
                     etoilesDeSchengen(p, temps)
@@ -1717,11 +1746,11 @@ object Paysages {
          * secousse les ravive un instant, comme on souffle sur une braise.
          */
         private fun etoilesDeSchengen(p: Peintre, temps: Float) {
-            for ((k, s) in STELES_MUSEL.withIndex()) {
+            for ((k, s) in ETOILES_MUSEL.withIndex()) {
                 val e = if (temps <= 0f) 0.6f else
                     (0.6f + 0.11f * sin(temps * 1.15f + k * 2.1f) + 0.06f * sin(temps * 3.1f + k * 0.9f) +
                         0.035f * sin(temps * 7.7f + k * 1.7f) + rafale(temps) * 0.25f).coerceIn(0f, 1f)
-                p.etoileDeSchengen(s[0], s[1], e)
+                p.etoileDeSchengen(s[0], s[1], s[2], e)
             }
         }
 
@@ -4510,7 +4539,7 @@ object Paysages {
                 rect(-2f + r() * 102f, 34f + u * 12.5f, 2f + r() * (3f + u * 9f), 0.2f + u * 0.35f, clair, 0.3f + u * 0.45f)
             }
             c.restore()
-            if (!vivant) peniche(60f, 0f)
+            if (!vivant) peniche(14f, 0f)
             // La pelouse de la rive, rayée par la tonte : un aplat vert la
             // faisait lire comme du feutre de table.
             val pelouse = nappe(P.milieu, 0.7f)
@@ -4519,7 +4548,7 @@ object Paysages {
             var bande = true
             while (py < 58f) {
                 val ph = 1.6f + r() * 1.1f
-                if (bande) rect(-2f, py, 104f, ph, mix(pelouse, 0xFFFFFFFF.toInt(), if (P.nuit) 0.04f else 0.1f), 0.5f)
+                if (bande) rect(-2f, py, 104f, ph, mix(pelouse, 0xFFFFFFFF.toInt(), if (P.nuit) 0.05f else 0.14f), 0.6f)
                 py += ph
                 bande = !bande
             }
@@ -4537,62 +4566,81 @@ object Paysages {
             // tirait vers l'orange de signalisation (règle 10) — c'est ce qu'on
             // voyait, trois panneaux de chantier au bord de la Moselle.
             val corten = neutre(duJour(0xFF8C4A2B.toInt()))
-            val arriere = neutre(duJour(0xFFBE8F63.toInt()))   // la tôle de derrière, au soleil
+            val arriere = neutre(duJour(0xFFD9A978.toInt()))   // la tôle de derrière, au soleil
             val coulure = neutre(duJour(0xFF63341A.toInt()))
             val plaque = neutre(duJour(0xFFD9D3C5.toInt()))
             val bronze = neutre(duJour(0xFF9A7A46.toInt()))
+            val fuite = FUITE_STELES
             mineral {
-                for ((sx, y0) in STELES_MUSEL.map { it[0] to it[1] }) {
-                    val w = 10f
-                    val y1 = 56f
-                    val cx = sx + w / 2f
-                    val cy = y0 + 8.5f
-                    // La tôle de derrière : elle dépasse à droite et c'est elle
-                    // qu'on voit par l'étoile, d'où sa couleur plus claire.
-                    feuille(sx + 1f, y0 - 1.8f, w + 3.4f, y1 - y0 + 1.3f, arriere, 0.6f)
-                    // La tranche de la tôle de devant, vue de trois quarts.
-                    pieceD("M${sx + w} ${y0}L${sx + w + 2.2f} ${y0 + 0.8f}L${sx + w + 2.2f} ${y1 - 0.5f}L${sx + w} ${y1}Z",
-                        sombre(corten, 0.45f))
-                    // La tôle de devant : l'étoile est retirée du papier, pas posée dessus.
-                    val tole = Path().apply { addRect(sx, y0, sx + w, y1, Path.Direction.CW) }
-                    tole.op(etoile(cx, cy, 3.5f), Path.Op.DIFFERENCE)
-                    piece(tole, corten)
-                    // La rouille ne couvre pas d'un aplat : elle coule en traînées
-                    // verticales, plus sombres au pied où l'eau s'accumule, plus
-                    // claires en haut où la pluie l'a lavée.
-                    c.save()
-                    c.clipPath(tole)
-                    var tx = sx
-                    while (tx < sx + w) {
-                        val tw = 0.5f + r() * 1.3f
-                        val d = r()
-                        val teinte = when {
-                            d < 0.34f -> sombre(corten, 0.1f + r() * 0.2f)
-                            d < 0.68f -> mix(corten, 0xFFFFFFFF.toInt(), 0.04f + r() * 0.1f)
-                            else -> mix(corten, coulure, 0.45f)
+                // Du fond vers l'avant, comme on colle des cartons : la stèle
+                // la plus proche recouvre celle qui la précède.
+                for (u0 in PAS_STELES.reversed()) {
+                    val ud = u0                       // le bord droit, le plus proche
+                    val ug = u0 + LARGE_STELE         // le bord gauche, qui fuit
+                    val xd = fuite.x(ud); val yd = fuite.y(ud); val ed = fuite.echelle(ud)
+                    val xg = fuite.x(ug); val yg = fuite.y(ug); val eg = fuite.echelle(ug)
+                    val hd = yd - HAUT_STELE * ed
+                    val hg = yg - HAUT_STELE * eg
+                    // La tôle de derrière : elle dépasse à droite, monte un peu
+                    // plus haut, et c'est elle qu'on voit par l'étoile — d'où sa
+                    // couleur plus claire, elle prend le soleil.
+                    val dx = 4.2f * ed
+                    val dy = -1.8f * ed
+                    piece(quad(floatArrayOf(
+                        xg + dx * eg / ed, hg + dy, xd + dx, hd + dy, xd + dx, yd - 0.8f, xg + dx * eg / ed, yg - 0.8f
+                    )), arriere, 0.6f)
+                    // La tranche de la tôle de devant : c'est elle qui dit le
+                    // trois quarts, avec la fuite de la rangée.
+                    val tr = 2.2f * ed
+                    piece(quad(floatArrayOf(
+                        xd, hd, xd + tr, hd + 0.7f * ed, xd + tr, yd - 0.4f * ed, xd, yd
+                    )), sombre(corten, 0.45f))
+                    // La tôle de devant, peinte à plat dans un rectangle de
+                    // TOLE_L × HAUT_STELE puis posée sur son quadrilatère : la
+                    // rouille, l'étoile et la plaque fuient avec elle.
+                    val face = floatArrayOf(xg, hg, xd, hd, xd, yd, xg, yg)
+                    surQuad(TOLE_L, HAUT_STELE, face) {
+                        // L'étoile est retirée du papier, pas posée dessus.
+                        val tole = Path().apply { addRect(0f, 0f, TOLE_L, HAUT_STELE, Path.Direction.CW) }
+                        tole.op(etoile(TOLE_L / 2f, ETOILE_Y, 4.8f), Path.Op.DIFFERENCE)
+                        piece(tole, corten)
+                        // La rouille ne couvre pas d'un aplat : elle coule en
+                        // traînées verticales, plus sombres au pied où l'eau
+                        // s'accumule, plus claires en haut où la pluie l'a lavée.
+                        c.save()
+                        c.clipPath(tole)
+                        var tx = 0f
+                        while (tx < TOLE_L) {
+                            val tw = 0.5f + r() * 1.4f
+                            val d = r()
+                            val teinte = when {
+                                d < 0.34f -> sombre(corten, 0.1f + r() * 0.2f)
+                                d < 0.68f -> mix(corten, 0xFFFFFFFF.toInt(), 0.04f + r() * 0.1f)
+                                else -> mix(corten, coulure, 0.45f)
+                            }
+                            val haut = r() * HAUT_STELE * 0.55f
+                            rect(tx, haut, tw, HAUT_STELE - haut, teinte, 0.4f)
+                            tx += tw
                         }
-                        val haut = y0 + r() * (y1 - y0) * 0.55f
-                        rect(tx, haut, tw, y1 - haut, teinte, 0.4f)
-                        tx += tw
-                    }
-                    rect(sx, y1 - 4.5f, w, 4.5f, sombre(corten, 0.32f), 0.45f)
-                    rect(sx, y0, w, 1.1f, mix(corten, 0xFFFFFFFF.toInt(), 0.14f), 0.4f)
-                    c.restore()
-                    // La plaque de texte dans son cadre de bronze.
-                    feuille(sx + 1.3f, y0 + 15f, w - 2.6f, 9f, bronze, 0.4f)
-                    rect(sx + 1.9f, y0 + 15.6f, w - 3.8f, 7.8f, plaque)
-                    for (k in 0 until 5) {
-                        ligne(sx + 2.5f, y0 + 16.8f + k * 1.4f, sx + w - 2.5f - r() * 1.8f, y0 + 16.8f + k * 1.4f,
-                            sombre(plaque, 0.45f), 0.2f)
+                        rect(0f, HAUT_STELE - 6.5f, TOLE_L, 6.5f, sombre(corten, 0.32f), 0.45f)
+                        rect(0f, 0f, TOLE_L, 1.2f, mix(corten, 0xFFFFFFFF.toInt(), 0.14f), 0.4f)
+                        c.restore()
+                        // La plaque de texte dans son cadre de bronze.
+                        feuille(1.4f, 20.5f, TOLE_L - 2.8f, 11f, bronze, 0.4f)
+                        rect(2f, 21.2f, TOLE_L - 4f, 9.6f, plaque)
+                        for (k in 0 until 5) {
+                            ligne(2.7f, 22.5f + k * 1.7f, TOLE_L - 2.7f - r() * 1.8f, 22.5f + k * 1.7f,
+                                sombre(plaque, 0.45f), 0.2f)
+                        }
                     }
                 }
             }
-            if (!vivant) for (s in STELES_MUSEL) etoileDeSchengen(s[0], s[1], 0.6f)
+            if (!vivant) for (e in ETOILES_MUSEL) etoileDeSchengen(e[0], e[1], e[2], 0.6f)
             // La haie de buis qui ferme le parvis. C'étaient deux blocs verts à
             // angles droits ; sur la photo c'est une haie basse taillée, au
             // sommet bombé et feuillu, qui passe devant le pied des stèles.
             val buis = nappe(duJour(0xFF436B2A.toInt()), 0.6f)
-            for ((x0, x1, haut) in listOf(Triple(-3f, 36.4f, 47.8f), Triple(66f, 103f, 49.2f))) {
+            for ((x0, x1, haut) in listOf(Triple(-3f, 36.4f, 47.8f), Triple(64f, 103f, 52.4f))) {
                 val t = Path().apply { moveTo(x0, DEVANT + 0.2f); lineTo(x0, haut) }
                 var hx = x0
                 while (hx <= x1) { t.lineTo(hx, haut + 0.8f * sin(hx * 0.55f)); hx += 1.5f }
@@ -4623,18 +4671,17 @@ object Paysages {
         }
 
         /**
-         * L'étoile évidée de la stèle de Schengen posée en ([sx], [y0]),
-         * éclairée par-derrière une fois la nuit tombée : [eclat] de 0 à 1 la
+         * L'étoile évidée d'une stèle de Schengen, centrée en ([cx], [cy]) et
+         * de [rayon] unités, éclairée par-derrière une fois la nuit tombée :
+         * [eclat] de 0 à 1 la
          * fait respirer, comme une étoile qui scintille. Rien de jour — le
          * trou se lit alors tout seul, sur la tôle de derrière au soleil.
          */
-        fun etoileDeSchengen(sx: Float, y0: Float, eclat: Float) {
+        fun etoileDeSchengen(cx: Float, cy: Float, rayon: Float, eclat: Float) {
             if (!actif || !P.allume) return
-            val cx = sx + 5f
-            val cy = y0 + 8.5f
             // Le halo en vrai dégradé : un rond plat posait sur la tôle un
             // disque à bord net, qu'on lisait comme une pièce de papier de plus.
-            val rr = 6f + 2.4f * eclat
+            val rr = (1.7f + 0.65f * eclat) * rayon
             p.style = Paint.Style.FILL
             p.color = 0xFF000000.toInt()
             p.alpha = ((0.15f + 0.22f * eclat) * 255f).roundToInt()
@@ -4645,7 +4692,7 @@ object Paysages {
             )
             c.drawCircle(cx, cy, rr, p)
             p.shader = null
-            forme(etoile(cx, cy, 3.4f), mix(P.fenetre, 0xFFFFFFFF.toInt(), 0.3f * eclat), 0.32f + 0.5f * eclat)
+            forme(etoile(cx, cy, rayon * 0.95f), mix(P.fenetre, 0xFFFFFFFF.toInt(), 0.3f * eclat), 0.32f + 0.5f * eclat)
         }
 
         /** La péniche sur la Moselle, sa proue en [x], [tangage] en unités. */
