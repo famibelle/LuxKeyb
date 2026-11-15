@@ -6123,50 +6123,162 @@ object Paysages {
             c.restore()
         }
 
-        // ---- Gëlle Fra, la statue dorée sur son obélisque, au couchant (photo du propriétaire)
+        // ---- Gëlle Fra, la statue dorée sur son obélisque, au couchant
 
         fun gelleFraPapier() {
-            val rose = mix(P.cielBas, 0xFFF0A070.toInt(), if (P.nuit) 0.05f else 0.35f)
-            val mauve = mix(P.cielHaut, 0xFFB08AA8.toInt(), if (P.nuit) 0.1f else 0.35f)
-            cumulus(-8f, 30f, 46f, 345, mauve)
-            cumulus(30f, 18f, 44f, 346, rose)
-            cumulus(58f, 40f, 50f, 347, mauve)
+            // Des nuages du couchant, bas sur l'horizon. Ils faisaient avant
+            // 46 à 50 unités de large sur une fenêtre de 100 : trois masses
+            // grises qui mangeaient tout le ciel et se lisaient comme de la
+            // fumée.
+            // Mêlés au bas du ciel, qui est chaud, et non au haut, qui est
+            // bleu : mélangés au bleu ils sortaient gris, comme de l'orage.
+            val rose = mix(P.cielBas, 0xFFFFE2C4.toInt(), if (P.nuit) 0.12f else 0.55f)
+            val mauve = mix(P.cielBas, 0xFFF6CEAC.toInt(), if (P.nuit) 0.1f else 0.45f)
+            cumulus(-6f, 20f, 26f, 345, mauve)
+            cumulus(26f, 13f, 22f, 346, rose)
+            cumulus(52f, 24f, 30f, 347, mauve)
+            cumulus(2f, 29f, 20f, 351, rose)
             plan(1)
-            lisiere(-2f, 102f, { x -> 53f + sin(x * 0.3f) }, 1.4f, 2f, 348, vert(0.4f))
+            lisiere(-2f, 102f, { x -> 53f + sin(x * 0.3f) }, 1.4f, 2f, 348, nappe(P.milieu, 0.82f))
             val r = Alea(349)
             // La ville basse, en rue qui fuit vers le pied du monument.
-            val murs = intArrayOf(duJour(0xFFE8E0D0.toInt()), duJour(0xFFE9D6B4.toInt()), duJour(0xFFF1ECE2.toInt()),
-                duJour(0xFFDCD3C4.toInt()))
             rue3q(RUE_GELLE_FRA, MAISONS_GELLE_FRA, facades(), r)
             plan(2)
             solDePierre(SolDePierre.DALLES, DEVANT, -0.03f)  // l'esplanade du monument
             poser(DEVANT)
-            val granit = duJour(0xFF3A3A40.toInt())
-            mineral {
-                pieceD("M76 58.5L77.4 38L88.6 38L90 58.5Z", granit)
-                feuille(84.6f, 38f, 4f, 20.5f, sombre(granit, 0.25f), 0f)
-                feuille(76.4f, 36.6f, 13.2f, 1.6f, mix(granit, 0xFFFFFFFF.toInt(), 0.1f), 0.5f)
-                statue(83f, 36.6f)
-            }
+            obelisque(84.5f, 93.5f, 27.5f)
             c.restore()
         }
 
-        /** La Gëlle Fra, les pieds en ([x], [pied]) : sa robe qui flotte, ses bras levés, la couronne. */
-        fun statue(x: Float, pied: Float) {
-            val or = if (P.nuit) 0xFFFFD36A.toInt() else 0xFFE2AC36.toInt()
-            val pli = mix(or, 0xFF6A4A10.toInt(), 0.35f)
-            if (P.allume) rond(x, pied - 18f, 14f, or, 0.12f)
-            pieceD("M${x - 2.2f} ${pied}C${x - 3f} ${pied - 6f} ${x - 2.6f} ${pied - 14f} ${x - 1.8f} ${pied - 20f}" +
-                "L${x + 1.8f} ${pied - 20f}C${x + 2.4f} ${pied - 14f} ${x + 4.4f} ${pied - 6f} ${x + 3.8f} ${pied}Z", or, 0.5f)
-            trait("M${x - 0.6f} ${pied - 18f}C${x - 1f} ${pied - 10f} ${x - 0.4f} ${pied - 4f} ${x - 0.8f} ${pied}", pli, 0.25f)
-            trait("M${x + 1f} ${pied - 17f}C${x + 1.6f} ${pied - 10f} ${x + 2.4f} ${pied - 4f} ${x + 2.6f} ${pied}", pli, 0.25f)
-            pieceD("M${x - 1.8f} ${pied - 19.8f}L${x - 1.4f} ${pied - 25f}L${x + 1.4f} ${pied - 25f}L${x + 1.8f} ${pied - 19.8f}Z", or, 0.4f)
-            rond(x, pied - 26.6f, 1.3f, or)
-            for (s in floatArrayOf(-1f, 1f)) {
-                ligne(x + s * 1.3f, pied - 24.6f, x + s * 2.6f, pied - 29.5f, or, 0.9f)
-                ligne(x + s * 2.6f, pied - 29.5f, x + s * 1.2f, pied - 31.4f, or, 0.75f)
+        /**
+         * L'obélisque du Monument du Souvenir, de [x0] à [x1] au sol et dont
+         * le sommet est en [haut]. C'était un trapèze presque noir d'un seul
+         * tenant : un tuyau de cheminée. Sur la photo du propriétaire c'est un
+         * fût de granit rose-beige, lisse, à peine fuyant, dont on ne voit
+         * presque pas les joints — donc pas de moellon apparent ici : la
+         * matière vient du grain du granit, des arêtes et de la face à l'ombre.
+         */
+        fun obelisque(x0: Float, x1: Float, haut: Float) = mineral {
+            val r = Alea(352)
+            val granit = neutre(duJour(0xFFB8A79C.toInt()))
+            val bas = DEVANT + 1f
+            val rentrant = (x1 - x0) * 0.14f
+            val fut = chemin("M$x0 ${bas}L${x0 + rentrant} ${haut}L${x1 - rentrant} ${haut}L$x1 ${bas}Z")
+            piece(fut, granit)
+            c.save()
+            c.clipPath(fut)
+            // Le grain du granit : des mouchetures et quelques veines, pas des
+            // assises. Les joints sont rares et fins, comme sur la photo.
+            for (k in 0 until 220) {
+                val gx = x0 - 1f + r() * (x1 - x0 + 2f)
+                val gy = haut + r() * (bas - haut)
+                val t = r()
+                rond(gx, gy, 0.14f + r() * 0.2f,
+                    if (t < 0.5f) sombre(granit, 0.2f + r() * 0.2f) else mix(granit, 0xFFFFFFFF.toInt(), 0.14f + r() * 0.16f), 0.5f)
             }
-            trait("M${x - 2.4f} ${pied - 31.8f}Q$x ${pied - 33.6f} ${x + 2.4f} ${pied - 31.8f}Q$x ${pied - 30.4f} ${x - 2.4f} ${pied - 31.8f}", pli, 0.5f)
+            val joint = sombre(granit, 0.3f)
+            for (jy in floatArrayOf(0.22f, 0.47f, 0.73f)) {
+                val y = haut + jy * (bas - haut)
+                ligne(x0 - 1f, y, x1 + 1f, y - 0.2f, joint, 0.16f, 0.55f)
+            }
+            // L'arête de gauche prend le couchant, la face de droite reste à
+            // l'ombre : c'est elle qui donne son volume au fût.
+            forme(chemin("M${x1 - (x1 - x0) * 0.36f} ${bas}L${x1 - rentrant - (x1 - x0) * 0.22f} ${haut}" +
+                "L${x1 - rentrant} ${haut}L$x1 ${bas}Z"), neutre(ombreFroide(0xFFB8A79C.toInt(), 0.42f)), 0.5f)
+            rect(x0 + rentrant * 0.2f, haut, 1.3f, bas - haut, mix(granit, 0xFFFFF0D8.toInt(), 0.3f), 0.35f)
+            c.restore()
+            // Le couronnement, à peine saillant, qui porte la statue.
+            val clair = mix(granit, 0xFFFFFFFF.toInt(), 0.14f)
+            feuille(x0 + rentrant - 0.9f, haut - 1.2f, (x1 - x0) - 2f * rentrant + 1.8f, 1.3f, clair, 0.5f)
+            rect(x0 + rentrant - 0.4f, haut + 0.1f, (x1 - x0) - 2f * rentrant + 0.8f, 0.4f, sombre(granit, 0.3f), 0.6f)
+            // Le socle à ressauts, au pied.
+            for ((dy, dx) in listOf(0f to 0f, 3f to 1.5f, 6f to 3f)) {
+                feuille(x0 - dx, bas - 7.5f + dy, (x1 - x0) + 2f * dx, 3.2f, if (dy == 0f) clair else granit, 0.4f)
+            }
+            statue((x0 + x1) / 2f + 0.7f, haut - 1.2f, 0.74f)
+        }
+
+        /**
+         * La Gëlle Fra, les pieds en ([x], [pied]), à [echelle] de sa taille
+         * de référence (33 unités du socle au sommet de la couronne). Dessinée
+         * pleine taille, elle dépassait son propre obélisque.
+         */
+        fun statue(x: Float, pied: Float, echelle: Float = 1f) {
+            c.save()
+            c.translate(x, pied)
+            c.scale(echelle, echelle)
+            c.translate(-x, -pied)
+            try { statueEntiere(x, pied) } finally { c.restore() }
+        }
+
+        /**
+         * Le bronze doré, de profil, tourné vers la gauche. La photo du
+         * propriétaire corrige ce qu'on dessinait de mémoire : elle ne tient
+         * pas une couronne *au-dessus* de sa tête, bras en arche. Elle est
+         * penchée en avant et **tend la couronne de laurier devant elle, à
+         * deux mains**, bras tendus vers le haut — c'est cette silhouette-là
+         * qu'on reconnaît de loin.
+         */
+        private fun statueEntiere(x: Float, pied: Float) {
+            val or = if (P.nuit) 0xFFFFD36A.toInt() else 0xFFE2AC36.toInt()
+            val clair = mix(or, 0xFFFFF4C8.toInt(), 0.5f)
+            val ombre = mix(or, 0xFF5A3A08.toInt(), 0.42f)
+            val pli = mix(or, 0xFF6A4A10.toInt(), 0.3f)
+            // Le halo du soir, en vrai dégradé : un rond plat posait derrière
+            // elle un disque à bord net.
+            if (P.allume) {
+                val rr = 15f
+                p.style = Paint.Style.FILL
+                p.color = 0xFF000000.toInt()
+                p.alpha = 42
+                p.shader = RadialGradient(x, pied - 17f, rr,
+                    intArrayOf((0xFF shl 24) or (or and 0xFFFFFF), or and 0x00FFFFFF), null, Shader.TileMode.CLAMP)
+                c.drawCircle(x, pied - 17f, rr, p)
+                p.shader = null
+            }
+            // La robe : longue et ample, collée au buste, qui s'évase au bas
+            // en traîne derrière elle. Un cône étroit en faisait une quille.
+            val robe = chemin("M${x - 3.2f} ${pied}C${x - 2.7f} ${pied - 9f} ${x - 2.6f} ${pied - 15f} ${x - 2.2f} ${pied - 19.5f}" +
+                "L${x + 1.2f} ${pied - 20f}C${x + 1.6f} ${pied - 15f} ${x + 2f} ${pied - 9f} ${x + 4.6f} ${pied}Z")
+            piece(robe, or, 0.5f)
+            c.save()
+            c.clipPath(robe)
+            forme(chemin("M${x - 3.2f} ${pied}C${x - 2.7f} ${pied - 9f} ${x - 2.6f} ${pied - 15f} ${x - 2.2f} ${pied - 19.5f}" +
+                "L${x - 0.7f} ${pied - 19.8f}L${x - 1.4f} ${pied}Z"), clair, 0.55f)
+            forme(chemin("M${x + 0.5f} ${pied - 19.7f}C${x + 1.2f} ${pied - 14f} ${x + 1.8f} ${pied - 8f} ${x + 4.6f} ${pied}" +
+                "L${x + 2f} ${pied}Z"), ombre, 0.5f)
+            for (k in 0 until 7) {
+                val fx = x - 2.6f + k * 1.05f
+                trait("M$fx ${pied - 18.5f}C${fx - 0.3f} ${pied - 12f} ${fx + 0.7f} ${pied - 5f} ${fx + 1f} ${pied}", pli, 0.2f, 0.7f)
+            }
+            c.restore()
+            // Le buste penché en avant, l'épaule, puis la tête inclinée.
+            val buste = chemin("M${x - 2.2f} ${pied - 19.5f}L${x - 2f} ${pied - 24.4f}L${x + 0.9f} ${pied - 24.8f}" +
+                "L${x + 1.2f} ${pied - 20f}Z")
+            piece(buste, or, 0.4f)
+            forme(chemin("M${x - 2.2f} ${pied - 19.5f}L${x - 2f} ${pied - 24.4f}L${x - 0.8f} ${pied - 24.6f}L${x - 1f} ${pied - 19.7f}Z"), clair, 0.5f)
+            rect(x - 1.3f, pied - 25.4f, 1.3f, 1.4f, ombre, 0.8f)
+            rond(x - 0.7f, pied - 26.2f, 1.5f, or)
+            rond(x - 1.2f, pied - 26.6f, 0.9f, clair, 0.5f)
+            // Les deux bras tendus en avant et vers le haut, coudes à peine
+            // pliés, qui tiennent la couronne à deux mains devant son visage.
+            // Elle ne la lève pas au-dessus de sa tête en arche : c'est ce que
+            // je dessinais de mémoire, et la photo du propriétaire le corrige.
+            for ((d2, ep, col) in listOf(
+                Triple(0.5f, 1.2f, ombre), Triple(-0.5f, 1f, or)
+            )) {
+                ligne(x - 1.4f, pied - 23.8f + d2, x - 3.5f, pied - 25.4f + d2, col, ep)
+                ligne(x - 3.5f, pied - 25.4f + d2, x - 4.7f, pied - 27.4f + d2, col, ep * 0.85f)
+            }
+            ligne(x - 1.4f, pied - 24.3f, x - 3.5f, pied - 25.9f, clair, 0.35f, 0.6f)
+            // La couronne de laurier, vue presque de profil : un anneau
+            // allongé, et non un trait.
+            val cour = Path().apply {
+                addOval(x - 7.2f, pied - 30.2f, x - 4.4f, pied - 26.6f, Path.Direction.CW)
+                addOval(x - 6.5f, pied - 29.5f, x - 5.1f, pied - 27.3f, Path.Direction.CCW)
+            }
+            piece(cour, or, 0f)
+            forme(chemin("M${x - 7.2f} ${pied - 28.6f}Q${x - 6.9f} ${pied - 30.2f} ${x - 5.8f} ${pied - 30.2f}"), clair, 0.6f)
         }
 
         // ------------------------------------------------------ les lieux
