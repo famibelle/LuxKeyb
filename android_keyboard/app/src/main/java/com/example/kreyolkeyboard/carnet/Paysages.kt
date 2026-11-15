@@ -4468,40 +4468,133 @@ object Paysages {
             plan(1)
             plancher(56f, DEVANT)
             poser(56f)
-            pieceD("M-2 47L-2 32.5L102 32.5L102 47Z", P.eau, 0.4f)
+            val moselle = chemin("M-2 47L-2 32.5L102 32.5L102 47Z")
+            piece(moselle, P.eau, 0.4f)
+            // La Moselle n'est pas un aplat de bleu : la rive d'en face y pose
+            // son ombre, les façades y tremblent en traits couchés, et les rides
+            // s'élargissent en approchant.
+            c.save()
+            c.clipPath(moselle)
+            rect(-2f, 32.5f, 104f, 2.4f, sombre(P.eau, 0.38f), 0.5f)
+            val murs = facades()
+            for (k in 0 until 20) {
+                rect(-2f + r() * 104f, 32.8f + r() * 2.6f, 1.4f + r() * 3f, 0.4f + r() * 0.7f,
+                    mix(murs[k % murs.size], P.eau, 0.55f), 0.4f)
+            }
             val clair = mix(P.eau, 0xFFFFFFFF.toInt(), if (P.nuit) 0.18f else 0.4f)
-            for (k in 0 until 10) rect(r() * 92f, 34f + r() * 11f, 3f + r() * 7f, 0.3f, clair, 0.7f)
+            for (k in 0 until 30) {
+                val u = r()
+                rect(-2f + r() * 102f, 34f + u * 12.5f, 2f + r() * (3f + u * 9f), 0.2f + u * 0.35f, clair, 0.3f + u * 0.45f)
+            }
+            c.restore()
             if (!vivant) peniche(60f, 0f)
-            pieceD("M-2 66L-2 46L102 46L102 66Z", vert(0.6f), 0.5f)
+            // La pelouse de la rive, rayée par la tonte : un aplat vert la
+            // faisait lire comme du feutre de table.
+            val pelouse = nappe(P.milieu, 0.7f)
+            pieceD("M-2 66L-2 46L102 46L102 66Z", pelouse, 0.5f)
+            var py = 46.6f
+            var bande = true
+            while (py < 58f) {
+                val ph = 1.6f + r() * 1.1f
+                if (bande) rect(-2f, py, 104f, ph, mix(pelouse, 0xFFFFFFFF.toInt(), if (P.nuit) 0.04f else 0.1f), 0.5f)
+                py += ph
+                bande = !bande
+            }
             c.restore()
             plan(2)
             solDePierre(SolDePierre.DALLES, DEVANT, -0.02f)  // le parvis des stèles
             poser(DEVANT)
             touffe(vert(0.35f), -2f, 8f, 8f, 7f, 3f, 7f, 15f, 6f, 6f, -1f, 16f, 6f)
-            // Les trois stèles d'acier corten, leur étoile évidée et leur plaque.
-            val rouille = duJour(0xFFA8502A.toInt())
-            val tranche = mix(rouille, P.pres, 0.4f)
-            val or = duJour(0xFFE6C15A.toInt())
-            val plaque = duJour(0xFFDAD6CC.toInt())
+            // Les trois stèles de Schengen. Sur la photo du propriétaire, chacune
+            // est une double tôle d'acier corten : la plaque de devant porte
+            // l'étoile *évidée*, et c'est la plaque de derrière, décalée et au
+            // soleil, qu'on voit par le trou. L'étoile d'or posée sur la tôle
+            // qu'on dessinait avant ratait tout le monument. Le corten est de la
+            // matière bâtie : il passe par neutre(), sans quoi raviver() le
+            // tirait vers l'orange de signalisation (règle 10) — c'est ce qu'on
+            // voyait, trois panneaux de chantier au bord de la Moselle.
+            val corten = neutre(duJour(0xFF8C4A2B.toInt()))
+            val arriere = neutre(duJour(0xFFBE8F63.toInt()))   // la tôle de derrière, au soleil
+            val coulure = neutre(duJour(0xFF63341A.toInt()))
+            val plaque = neutre(duJour(0xFFD9D3C5.toInt()))
+            val bronze = neutre(duJour(0xFF9A7A46.toInt()))
             mineral {
                 for ((sx, y0) in listOf(5f to 26f, 44f to 20f, 82f to 18f)) {
                     val w = 10f
                     val y1 = 56f
-                    pieceD("M${sx + w} ${y0}L${sx + w + 3f} ${y0 + 1f}L${sx + w + 3f} ${y1 - 0.6f}L${sx + w} ${y1}Z", tranche)
-                    feuille(sx, y0, w, y1 - y0, rouille)
                     val cx = sx + w / 2f
-                    val cy = y0 + 8f
-                    piece(etoile(cx + 0.5f, cy + 0.4f, 3.4f), mix(rouille, 0xFF000000.toInt(), 0.45f), 0f)
-                    piece(etoile(cx, cy, 2.6f), or, 0.4f)
-                    feuille(sx + 1.5f, y0 + 14f, w - 3f, 8f, plaque, 0.4f)
-                    for (k in 0 until 4) {
-                        ligne(sx + 2.4f, y0 + 16f + k * 1.4f, sx + w - 2.4f, y0 + 16f + k * 1.4f, mix(plaque, P.pres, 0.5f), 0.2f)
+                    val cy = y0 + 8.5f
+                    // La tôle de derrière : elle dépasse à droite et c'est elle
+                    // qu'on voit par l'étoile, d'où sa couleur plus claire.
+                    feuille(sx + 1f, y0 - 1.8f, w + 3.4f, y1 - y0 + 1.3f, arriere, 0.6f)
+                    // La tranche de la tôle de devant, vue de trois quarts.
+                    pieceD("M${sx + w} ${y0}L${sx + w + 2.2f} ${y0 + 0.8f}L${sx + w + 2.2f} ${y1 - 0.5f}L${sx + w} ${y1}Z",
+                        sombre(corten, 0.45f))
+                    // La tôle de devant : l'étoile est retirée du papier, pas posée dessus.
+                    val tole = Path().apply { addRect(sx, y0, sx + w, y1, Path.Direction.CW) }
+                    tole.op(etoile(cx, cy, 3.5f), Path.Op.DIFFERENCE)
+                    piece(tole, corten)
+                    // La rouille ne couvre pas d'un aplat : elle coule en traînées
+                    // verticales, plus sombres au pied où l'eau s'accumule, plus
+                    // claires en haut où la pluie l'a lavée.
+                    c.save()
+                    c.clipPath(tole)
+                    var tx = sx
+                    while (tx < sx + w) {
+                        val tw = 0.5f + r() * 1.3f
+                        val d = r()
+                        val teinte = when {
+                            d < 0.34f -> sombre(corten, 0.1f + r() * 0.2f)
+                            d < 0.68f -> mix(corten, 0xFFFFFFFF.toInt(), 0.04f + r() * 0.1f)
+                            else -> mix(corten, coulure, 0.45f)
+                        }
+                        val haut = y0 + r() * (y1 - y0) * 0.55f
+                        rect(tx, haut, tw, y1 - haut, teinte, 0.4f)
+                        tx += tw
+                    }
+                    rect(sx, y1 - 4.5f, w, 4.5f, sombre(corten, 0.32f), 0.45f)
+                    rect(sx, y0, w, 1.1f, mix(corten, 0xFFFFFFFF.toInt(), 0.14f), 0.4f)
+                    c.restore()
+                    // La plaque de texte dans son cadre de bronze.
+                    feuille(sx + 1.3f, y0 + 15f, w - 2.6f, 9f, bronze, 0.4f)
+                    rect(sx + 1.9f, y0 + 15.6f, w - 3.8f, 7.8f, plaque)
+                    for (k in 0 until 5) {
+                        ligne(sx + 2.5f, y0 + 16.8f + k * 1.4f, sx + w - 2.5f - r() * 1.8f, y0 + 16.8f + k * 1.4f,
+                            sombre(plaque, 0.45f), 0.2f)
                     }
                 }
             }
-            val buis = duJour(0xFF4F7A35.toInt())
-            pieceD("M-2 58.5L-2 50C-2 48.4 -0.6 47.6 1.4 47.6L33 47.6C35 47.6 36.4 48.6 36.4 50L36.4 58.5Z", buis)
-            pieceD("M66 58.5L66 51C66 49.6 67 49 68.6 49L102 49L102 58.5Z", buis)
+            // La haie de buis qui ferme le parvis. C'étaient deux blocs verts à
+            // angles droits ; sur la photo c'est une haie basse taillée, au
+            // sommet bombé et feuillu, qui passe devant le pied des stèles.
+            val buis = nappe(duJour(0xFF436B2A.toInt()), 0.6f)
+            for ((x0, x1, haut) in listOf(Triple(-3f, 36.4f, 47.8f), Triple(66f, 103f, 49.2f))) {
+                val t = Path().apply { moveTo(x0, DEVANT + 0.2f); lineTo(x0, haut) }
+                var hx = x0
+                while (hx <= x1) { t.lineTo(hx, haut + 0.8f * sin(hx * 0.55f)); hx += 1.5f }
+                t.lineTo(x1, DEVANT + 0.2f); t.close()
+                val f = Path()
+                var fx = x0
+                while (fx <= x1) {
+                    f.addCircle(fx, haut + 0.8f * sin(fx * 0.55f) + 0.5f, 0.85f + r() * 0.9f, Path.Direction.CW)
+                    fx += 1.3f
+                }
+                t.op(f, Path.Op.UNION)
+                piece(t, buis)
+                // Le dessus taillé prend le jour, le flanc reste dans l'ombre :
+                // sans ces deux valeurs la haie reste un aplat découpé.
+                c.save()
+                c.clipPath(t)
+                val dessus = mix(buis, 0xFFFFFFFF.toInt(), if (P.nuit) 0.05f else 0.17f)
+                var bx = x0
+                while (bx <= x1) {
+                    val by = haut + 0.8f * sin(bx * 0.55f)
+                    rect(bx, by, 1.6f, 1.6f + r() * 1.4f, dessus, 0.6f)
+                    rond(bx + r() * 1.4f, by + 2.5f + r() * 7f, 0.5f + r() * 0.6f, sombre(buis, 0.3f), 0.45f)
+                    bx += 1.3f
+                }
+                c.restore()
+            }
             c.restore()
         }
 
