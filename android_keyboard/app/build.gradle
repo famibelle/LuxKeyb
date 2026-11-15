@@ -177,6 +177,7 @@ android {
             if (project.hasProperty('plancheAlbum')) systemProperty 'planche.album', 'oui'
             if (project.hasProperty('plancheCarnet')) systemProperty 'planche.carnet', 'oui'
             if (project.hasProperty('plancheLieux')) systemProperty 'planche.lieux', project.property('plancheLieux')
+            if (project.hasProperty('plancheRarete')) systemProperty 'planche.rarete', project.property('plancheRarete')
         }
     }
 

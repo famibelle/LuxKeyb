@@ -193,7 +193,11 @@ class PlancheCartesTest {
         val decoupe = android.graphics.Path().apply { addRect(visible, android.graphics.Path.Direction.CW) }
         val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
         // Avec -PplancheLieux, un film de chacun de ces lieux, à l'heure de la commune, au printemps.
-        val films = System.getProperty("planche.lieux")?.takeIf { it.isNotBlank() }?.let { lieuxChoisis().map { Triple(it, Rarete.COMMUN, 4) } }
+        // -PplancheRarete=TRES_RARE filme la scène de nuit : sans quoi tout ce
+        // qui ne vit qu'une fois les lumières allumées reste invisible.
+        val rang = System.getProperty("planche.rarete")?.takeIf { it.isNotBlank() }
+            ?.let { n -> Rarete.entries.first { it.name == n } } ?: Rarete.COMMUN
+        val films = System.getProperty("planche.lieux")?.takeIf { it.isNotBlank() }?.let { lieuxChoisis().map { Triple(it, rang, 4) } }
             ?: listOf(Triple(Lieu.VEIANEN, Rarete.COMMUN, 1), Triple(Lieu.STAD, Rarete.RARE, 1))
         for ((lieu, rarete, mois) in films) {
             val images = if (lieu == Lieu.BREEDEWEE) 110 else 80

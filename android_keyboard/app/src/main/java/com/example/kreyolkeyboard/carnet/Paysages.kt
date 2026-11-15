@@ -1288,6 +1288,11 @@ object Paysages {
     internal val RUE_MUSEL = Fuite(floatArrayOf(63f, 32.5f), floatArrayOf(175f, 28.5f), floatArrayOf(-80f, 31f), taille = 0.2f)
     private val MAISONS_MUSEL = maisonsAuHasard(26, 157, 12f, 18f)
 
+    /** Les trois stèles de Schengen : abscisse du bord gauche, haut de la tôle. */
+    internal val STELES_MUSEL = arrayOf(
+        floatArrayOf(5f, 26f), floatArrayOf(44f, 20f), floatArrayOf(82f, 18f)
+    )
+
     /** La ville haute vue par la voûte de Neimënster, sur son rempart, et le palais de la crête. */
     internal val RUE_NEIMENSTER = Fuite(floatArrayOf(18f, 26f), floatArrayOf(135f, 15f), floatArrayOf(-120f, 22f), taille = 0.34f)
     private val MAISONS_NEIMENSTER = maisonsAuHasard(26, 127, 13f, 20f)
@@ -1507,7 +1512,10 @@ object Paysages {
                 Lieu.MUSEL -> if (calque == 3) {
                     val x = ((60f + temps * 1.6f + 24f) % 150f) - 24f
                     p.peniche(x, sin(temps * 1.3f) * 0.2f * (1f + raf * 5f))
-                } else envol(p, vol, 6f, 10f, 1f)
+                } else {
+                    etoilesDeSchengen(p, temps)
+                    envol(p, vol, 6f, 10f, 1f)
+                }
                 Lieu.FOUER -> if (calque == 3) p.grandeRoue(temps * 0.12f + elan(temps) * 2f, temps)
                     else p.chevaux(temps * (1f + raf * 2f))
                 Lieu.NEI_BRECK -> if (calque == 3) p.enPerspective(50f, 30f, 0.12f) {
@@ -1702,6 +1710,21 @@ object Paysages {
          * tanguer au bout de sa potence, puis elle se calme en quelques
          * secondes.
          */
+        /**
+         * Les trois étoiles évidées de Schengen, éclairées par-derrière la nuit
+         * venue : chacune respire à son rythme, deux ondes lentes décalées d'une
+         * stèle à l'autre, pour qu'elles scintillent sans battre ensemble. Une
+         * secousse les ravive un instant, comme on souffle sur une braise.
+         */
+        private fun etoilesDeSchengen(p: Peintre, temps: Float) {
+            for ((k, s) in STELES_MUSEL.withIndex()) {
+                val e = if (temps <= 0f) 0.6f else
+                    (0.6f + 0.11f * sin(temps * 1.15f + k * 2.1f) + 0.06f * sin(temps * 3.1f + k * 0.9f) +
+                        0.035f * sin(temps * 7.7f + k * 1.7f) + rafale(temps) * 0.25f).coerceIn(0f, 1f)
+                p.etoileDeSchengen(s[0], s[1], e)
+            }
+        }
+
         private fun lanterneVivante(p: Peintre, temps: Float, x: Float, y: Float, versDroite: Boolean, k: Int) {
             val flamme = if (temps <= 0f) 0.5f else
                 (0.55f + 0.3f * sin(temps * 13f + k * 2f) + 0.15f * sin(temps * 7.3f + k) + 0.1f * sin(temps * 23f)).coerceIn(0f, 1f)
@@ -4519,7 +4542,7 @@ object Paysages {
             val plaque = neutre(duJour(0xFFD9D3C5.toInt()))
             val bronze = neutre(duJour(0xFF9A7A46.toInt()))
             mineral {
-                for ((sx, y0) in listOf(5f to 26f, 44f to 20f, 82f to 18f)) {
+                for ((sx, y0) in STELES_MUSEL.map { it[0] to it[1] }) {
                     val w = 10f
                     val y1 = 56f
                     val cx = sx + w / 2f
@@ -4564,6 +4587,7 @@ object Paysages {
                     }
                 }
             }
+            if (!vivant) for (s in STELES_MUSEL) etoileDeSchengen(s[0], s[1], 0.6f)
             // La haie de buis qui ferme le parvis. C'étaient deux blocs verts à
             // angles droits ; sur la photo c'est une haie basse taillée, au
             // sommet bombé et feuillu, qui passe devant le pied des stèles.
@@ -4596,6 +4620,32 @@ object Paysages {
                 c.restore()
             }
             c.restore()
+        }
+
+        /**
+         * L'étoile évidée de la stèle de Schengen posée en ([sx], [y0]),
+         * éclairée par-derrière une fois la nuit tombée : [eclat] de 0 à 1 la
+         * fait respirer, comme une étoile qui scintille. Rien de jour — le
+         * trou se lit alors tout seul, sur la tôle de derrière au soleil.
+         */
+        fun etoileDeSchengen(sx: Float, y0: Float, eclat: Float) {
+            if (!actif || !P.allume) return
+            val cx = sx + 5f
+            val cy = y0 + 8.5f
+            // Le halo en vrai dégradé : un rond plat posait sur la tôle un
+            // disque à bord net, qu'on lisait comme une pièce de papier de plus.
+            val rr = 6f + 2.4f * eclat
+            p.style = Paint.Style.FILL
+            p.color = 0xFF000000.toInt()
+            p.alpha = ((0.15f + 0.22f * eclat) * 255f).roundToInt()
+            p.shader = RadialGradient(
+                cx, cy, rr,
+                intArrayOf((0xFF shl 24) or (P.fenetre and 0xFFFFFF), P.fenetre and 0x00FFFFFF),
+                null, Shader.TileMode.CLAMP
+            )
+            c.drawCircle(cx, cy, rr, p)
+            p.shader = null
+            forme(etoile(cx, cy, 3.4f), mix(P.fenetre, 0xFFFFFFFF.toInt(), 0.3f * eclat), 0.32f + 0.5f * eclat)
         }
 
         /** La péniche sur la Moselle, sa proue en [x], [tangage] en unités. */
