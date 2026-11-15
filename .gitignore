@@ -280,6 +280,10 @@ banc-emulateur/*.mp4
 
 # Fichiers d impression des cartes (jamais publics)
 impression/
+# Les photos de référence des paysages : des photos de tiers, gardées hors
+# du dépôt public. Seul leur index (references/paysages/README.md) est suivi.
+references/paysages/*
+!references/paysages/README.md
 
 # Démarches et administratif : contacts dans les communes, factures, statuts,
 # dossiers de subvention, autorisations photo. Données personnelles, jamais
