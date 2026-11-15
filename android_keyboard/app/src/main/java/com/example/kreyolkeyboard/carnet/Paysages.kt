@@ -3820,6 +3820,13 @@ object Paysages {
             mineral {
                 pieceD("M-2 58.5L-2 41C4 39 12 38 20 40C26 42 31 50 35 58.5Z", roc)
                 pieceD("M8 58.5C10 52 16 48 22 47C26 50 28 54 29 58.5Z", sombre(roc, 0.25f), 0.6f)
+                // Les lits du schiste dans l'éperon, parallèles à sa crête :
+                // sans eux le rocher restait un aplat sous une tour appareillée.
+                for (dy in floatArrayOf(3f, 7f, 11.5f, 16.5f)) {
+                    val fin = 20f - dy * 0.35f
+                    pieceD("M-2 ${41f + dy}C4 ${39.4f + dy} 12 ${38.4f + dy} $fin ${40.2f + dy}" +
+                        "L$fin ${41.2f + dy}C12 ${39.4f + dy} 4 ${40.4f + dy} -2 ${42f + dy}Z", sombre(roc, 0.2f), 0f)
+                }
             }
             pieceD("M-2 43C4 40 12 39 20 41C24 42 27 45 29 48L26 48C22 44.5 14 42.5 -2 45.5Z", neutre(duJour(0xFF9A8C58.toInt())), 0.5f)
             // Le donjon est en **moellon de schiste**, la pierre de l'Ardenne :
@@ -3856,7 +3863,31 @@ object Paysages {
                     }
                     y += h
                 }
+                // Les chaînes d'angle, en grès taillé. Sur un mur de moellon,
+                // les angles et les baies sont montés en pierre de taille :
+                // c'est ce qui dit que la tour est un ouvrage et non un tas,
+                // et c'est la même leçon que les façades du Grund, où la
+                // matière vient des chaînes, des encadrements et des appuis.
+                val gres = neutre(duJour(0xFFC9BCA4.toInt()))
+                for (gauche in booleanArrayOf(true, false)) {
+                    val col = if (gauche) mix(gres, 0xFFFFFFFF.toInt(), 0.04f) else sombre(gres, 0.34f)
+                    var qy = 9.4f
+                    var longue = true
+                    while (qy < 41.6f) {
+                        val qh = min(if (longue) 2.2f else 1.4f, 42f - qy)
+                        val qw = if (longue) 2.4f else 1.6f
+                        rect(if (gauche) 3.1f else 22.6f - qw, qy, qw, qh - 0.24f, col)
+                        qy += qh
+                        longue = !longue
+                    }
+                }
                 feuille(2.6f, 7.8f, 20.8f, 1.6f, sombre(pierre, 0.18f), 0.5f)
+                // Les baies dans leur encadrement : la fenêtre haute à linteau
+                // cintré, deux archères plus bas.
+                val encadre = sombre(gres, 0.14f)
+                rect(9.6f, 12.3f, 3.6f, 4.6f, encadre); rond(11.4f, 12.3f, 1.8f, encadre)
+                rect(14.5f, 24.8f, 2.9f, 4.4f, encadre)
+                rect(5.8f, 31.3f, 2.7f, 4f, encadre)
                 val trou = sombre(pierre, 0.8f)
                 rect(10.4f, 13f, 2f, 3.2f, trou); rond(11.4f, 13f, 1f, trou)
                 rect(15.2f, 25.5f, 1.5f, 3f, trou); rect(6.5f, 32f, 1.3f, 2.6f, trou)
