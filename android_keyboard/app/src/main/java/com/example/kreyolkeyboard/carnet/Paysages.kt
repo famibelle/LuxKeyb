@@ -3367,6 +3367,25 @@ object Paysages {
             return mix(v, neutre(v), VERT_CALME)
         }
 
+        /**
+         * La nappe de végétation d'un plan : la couleur du plan ramenée dans
+         * la famille de [VERDURE], de [force] (plus faible au loin, pour que
+         * la perspective aérienne tienne).
+         *
+         * Les grandes masses d'herbe et les crêtes boisées étaient peintes
+         * avec la couleur du plan telle quelle, et le ravivage en faisait un
+         * vert pomme presque fluorescent : `#5DBB63` sort en `#27E912` au
+         * matin, `#9CC43F` en `#ABEC00` l'après-midi. Le propriétaire les a
+         * écartées le 2026-11-15 : « le vert pomme ne convient pas à la
+         * scène, ce qu'il faut c'est un vert qui reflète réellement le côté
+         * luxuriant et verdoyant de la nature au Luxembourg. » La nuit, les
+         * plans sont bleus : on n'y verdit presque pas, comme dans [vert].
+         */
+        fun nappe(col: Int, force: Float = 0.62f, calme: Float = 0.42f): Int {
+            val v = mix(col, VERDURE, if (P.nuit) 0.09f else force)
+            return mix(v, neutre(v), calme)
+        }
+
         /** Des bosses de feuillage posées sur la ligne [crete], de [x0] à [x1]. */
         private fun bosses(x0: Float, x1: Float, crete: (Float) -> Float, rMin: Float, rMax: Float, r: Alea): Path {
             val t = Path()
@@ -3707,9 +3726,9 @@ object Paysages {
             val r = Alea(103)
             lisiere(-2f, 102f, { x -> 27f - 3f * sin(x * 0.06f + 1f) - max(0f, x - 55f) * 0.1f }, 1.2f, 1.9f, 104,
                 mix(P.loin, P.cielBas, 0.12f))
-            lisiere(-2f, 102f, { x -> 33f + 2f * sin(x * 0.09f) }, 1.4f, 2.2f, 105, mix(P.loin, P.milieu, 0.35f))
+            lisiere(-2f, 102f, { x -> 33f + 2f * sin(x * 0.09f) }, 1.4f, 2.2f, 105, nappe(mix(P.loin, P.milieu, 0.35f), 0.3f, VERT_CALME))
             plan(1)
-            pieceD("M-2 66L-2 43C12 40 26 36 36 33C50 30 70 30 84 33C92 35 98 37 102 38L102 66Z", P.milieu)
+            pieceD("M-2 66L-2 43C12 40 26 36 36 33C50 30 70 30 84 33C92 35 98 37 102 38L102 66Z", nappe(P.milieu))
             touffe(vert(0.3f), 24f, 34f, 3f, 28f, 32.5f, 3.2f, 32f, 33.5f, 2.6f)
             touffe(vert(0.3f), 90f, 34.5f, 3f, 95f, 33f, 3.2f, 99f, 35f, 2.8f)
             val mur = duJour(0xFFEADDBE.toInt())
@@ -3784,12 +3803,12 @@ object Paysages {
         fun eschSauerPapier() {
             val r = Alea(115)
             lisiere(-2f, 102f, { x -> 12f + 5f * cos(x * 0.028f) + sin(x * 0.2f) * 0.6f }, 1.5f, 2.4f, 116,
-                mix(P.loin, P.milieu, 0.45f))
+                nappe(mix(P.loin, P.milieu, 0.45f), 0.3f, VERT_CALME))
             pieceD("M80 22C84 18 90 17 95 20L99 36L78 38Z", neutre(duJour(0xFF9C7C56.toInt())), 0.5f)
             plan(1)
             plancher(56f, DEVANT)
             poser(56f)
-            lisiere(-2f, 102f, { x -> 31f - x * 0.04f + sin(x * 0.15f) }, 1.6f, 2.6f, 117, P.milieu)
+            lisiere(-2f, 102f, { x -> 31f - x * 0.04f + sin(x * 0.15f) }, 1.6f, 2.6f, 117, nappe(P.milieu))
             val blanc = duJour(0xFFF4F0E8.toInt())
             val creme = duJour(0xFFE6D8BE.toInt())
             mineral {
@@ -4170,7 +4189,7 @@ object Paysages {
 
         fun stadPapier() {
             val r = Alea(145)
-            lisiere(-2f, 34f, { x -> 22f + 3f * sin(x * 0.2f) }, 1.8f, 2.6f, 146, mix(P.loin, P.milieu, 0.4f))
+            lisiere(-2f, 34f, { x -> 22f + 3f * sin(x * 0.2f) }, 1.8f, 2.6f, 146, nappe(mix(P.loin, P.milieu, 0.4f), 0.3f, VERT_CALME))
             val rocher = duJour(0xFFB7AA8C.toInt())
             val rempart = duJour(0xFFCFC3A5.toInt())
             mineral {
@@ -4425,7 +4444,7 @@ object Paysages {
 
         fun muselPapier() {
             val r = Alea(155)
-            lisiere(-2f, 102f, { x -> 29f + 2f * sin(x * 0.08f) }, 1.4f, 2.2f, 156, mix(P.loin, P.milieu, 0.3f))
+            lisiere(-2f, 102f, { x -> 29f + 2f * sin(x * 0.08f) }, 1.4f, 2.2f, 156, nappe(mix(P.loin, P.milieu, 0.3f), 0.3f, VERT_CALME))
             // Le village de l'autre rive, en rue qui longe la Moselle en fuyant.
             rue3q(RUE_MUSEL, MAISONS_MUSEL, facades(), r, ecart = 4f)
             plan(1)
@@ -4479,7 +4498,7 @@ object Paysages {
         // ---- Schueberfouer, la grande roue et le carrousel (photo du propriétaire)
 
         fun fouerPapier() {
-            lisiere(-2f, 102f, { x -> 46f + sin(x * 0.1f) }, 1.2f, 1.8f, 165, P.loin)
+            lisiere(-2f, 102f, { x -> 46f + sin(x * 0.1f) }, 1.2f, 1.8f, 165, nappe(P.loin, 0.3f, VERT_CALME))
             plan(1)
             val treillis = duJour(0xFF3FA05A.toInt())
             val blanc = duJour(0xFFF2F2EE.toInt())
@@ -4598,7 +4617,7 @@ object Paysages {
                 val u0 = SPUERKEESS[0][0]
                 dome(FUITE_SPUERKEESS, u0, u0 + SPUERKEESS[1][0], SPUERKEESS[1][1], 5f)
             }
-            lisiere(56f, 102f, { x -> 27f + sin(x * 0.3f) }, 1.4f, 2f, 176, mix(P.loin, P.milieu, 0.3f))
+            lisiere(56f, 102f, { x -> 27f + sin(x * 0.3f) }, 1.4f, 2f, 176, nappe(mix(P.loin, P.milieu, 0.3f), 0.3f, VERT_CALME))
             plan(1)
             val pierre = duJour(0xFFD8C8A2.toInt())
             enPerspective(50f, 30f, 0.12f) {
@@ -4735,7 +4754,7 @@ object Paysages {
 
         fun ansebuerg() {
             val r = Alea(205)
-            lisiere(-2f, 102f, { x -> 24f + 2.4f * sin(x * 0.07f + 0.6f) }, 1.6f, 2.4f, 206, mix(P.loin, P.milieu, 0.3f))
+            lisiere(-2f, 102f, { x -> 24f + 2.4f * sin(x * 0.07f + 0.6f) }, 1.6f, 2.4f, 206, nappe(mix(P.loin, P.milieu, 0.3f), 0.3f, VERT_CALME))
             plan(1)
             val ocre = duJour(0xFFDDB05A.toInt())
             val aile = duJour(0xFFEDE9E0.toInt())
@@ -4788,7 +4807,7 @@ object Paysages {
             // La pelouse, qui part du pied de la terrasse et fuit avec elle.
             val pente = (bord[5] - bord[7]) / (bord[4] - bord[6])
             fun pied(x: Float) = bord[7] + (x - bord[6]) * pente - 0.4f
-            pieceD("M-2 66L-2 ${pied(-2f)}L102 ${pied(102f)}L102 66Z", duJour(0xFF8BAA4A.toInt()), 0.4f)
+            pieceD("M-2 66L-2 ${pied(-2f)}L102 ${pied(102f)}L102 66Z", nappe(duJour(0xFFA9C566.toInt()), 0.5f), 0.4f)
             plan(2)
             solDePierre(SolDePierre.GRAVIER, DEVANT)  // l'allée du jardin
             poser(DEVANT)
@@ -4799,7 +4818,7 @@ object Paysages {
             // dans les bandes que le dessin du mot ne prend pas (x < 17 et
             // x > 83) et sous la ligne du toit, en s'abaissant vers le
             // centre comme une charmille taillée en berceau.
-            val haie = vert(0.25f)
+            val haie = vert(0.1f)
             for ((bord, dedans) in listOf(-3f to 15f, 103f to 85f)) {
                 val massif = Path().apply {
                     moveTo(bord, DEVANT + 0.2f); lineTo(bord, 31f); lineTo(dedans, 39f)
@@ -4892,7 +4911,7 @@ object Paysages {
             touffe(mix(vert(0.38f), P.cielBas, 0.1f), 4f, crete + 13f, 3.8f, 24f, crete + 14f, 3.4f,
                 46f, crete + 13.2f, 4f, 66f, crete + 14.4f, 3.6f, 86f, crete + 13f, 3.8f)
             // La pente boisée qui descend vers le fond de la vallée.
-            lisiere(-2f, 102f, { x -> 40f + 2.4f * sin(x * 0.08f) }, 1.6f, 2.4f, 216, mix(P.milieu, P.loin, 0.25f))
+            lisiere(-2f, 102f, { x -> 40f + 2.4f * sin(x * 0.08f) }, 1.6f, 2.4f, 216, nappe(mix(P.milieu, P.loin, 0.25f), 0.3f, VERT_CALME))
             // Le Pfaffenthal au fond de la vallée, en rue de trois quarts.
             rue3q(RUE_PAFENDALL, MAISONS_PAFENDALL, facades(), r, ecart = 3f)
             plan(1)
