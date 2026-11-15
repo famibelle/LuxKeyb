@@ -717,6 +717,13 @@ object Paysages {
      */
     const val VIF_RETENU = 1.8f
 
+    /**
+     * De combien la végétation est ramenée vers son [neutre] : 0 la laisse
+     * sous tout le `raviver` de [VIF_RETENU], 1 l'en sort complètement.
+     * Voir [Peintre.vert].
+     */
+    const val VERT_CALME = 0.55f
+
     /** L'horloge des planches de relecture, en secondes ; `null` pour la vraie. */
     @Volatile internal var horlogeEssai: Float? = null
 
@@ -3320,8 +3327,25 @@ object Paysages {
         )
 
         /** Un vert de feuillage, de [nuance] 0 (sombre) à 1 (clair), dans la palette de l'heure. */
-        fun vert(nuance: Float): Int =
-            mix(mix(P.pres, P.milieu, nuance), 0xFF6FA845.toInt(), if (P.nuit) 0.05f else 0.22f)
+        /**
+         * Le vert de la végétation, ramené à mi-chemin de son propre [neutre].
+         *
+         * La végétation n'est pas protégée comme le bâti (règle 10) : elle
+         * prend `raviver` en plein, et montait au chartreuse. Elle devenait
+         * alors la chose la plus saturée de la fenêtre, devant le sujet qui
+         * est posé dessus — contraire à la règle 5, où le mot reste l'acteur
+         * (jugé en main sur un A21s le 2026-11-15, sur la Rout Bréck).
+         *
+         * Le mélange ne touche qu'à la **saturation**, pas à la teinte : le
+         * vert reste donc dans la végétation que [Habillage] doit reconnaître
+         * pour la blanchir l'hiver et la rouiller l'automne, ce qu'un relevé
+         * des quatre saisons confirme sur la Rout Bréck, le Péitrusdall et le
+         * Conzefenn.
+         */
+        fun vert(nuance: Float): Int {
+            val v = mix(mix(P.pres, P.milieu, nuance), 0xFF6FA845.toInt(), if (P.nuit) 0.05f else 0.22f)
+            return mix(v, neutre(v), VERT_CALME)
+        }
 
         /** Des bosses de feuillage posées sur la ligne [crete], de [x0] à [x1]. */
         private fun bosses(x0: Float, x1: Float, crete: (Float) -> Float, rMin: Float, rMax: Float, r: Alea): Path {
