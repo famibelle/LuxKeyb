@@ -4665,10 +4665,15 @@ object Paysages {
             val terrasseH = 8f
             val bord = floatArrayOf(f.x(-14f), f.y(-14f), f.x(fin + 8f), f.y(fin + 8f),
                 f.x(fin + 8f), f.y(fin + 8f) + terrasseH * f.echelle(fin + 8f), f.x(-14f), f.y(-14f) + terrasseH * f.echelle(-14f))
-            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[0]), intArrayOf(ocre), r)
-            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[1]), intArrayOf(ocre), r, debut = CHATEAU_ANSEBUERG[0][0])
-            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[2]), intArrayOf(ocre, aile), r, debut = CHATEAU_ANSEBUERG[0][0] + CHATEAU_ANSEBUERG[1][0])
-            for (d in floatArrayOf(3f, 24f)) rue3q(f, arrayOf(TOUR_ANSEBUERG), intArrayOf(ocre), r, debut = CHATEAU_ANSEBUERG[0][0] + d)
+            // Le château d'Ansembourg garde son ocre : [froid] protège du
+            // « jaune IA » des enduits ordinaires, mais ici la pierre est
+            // vraiment d'un miel chaud (photo du propriétaire), et la
+            // neutraliser rendait le sujet plus terne que le feuillage autour
+            // de lui — c'est ce que le propriétaire avait relevé en main.
+            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[0]), intArrayOf(ocre), r, froid = false)
+            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[1]), intArrayOf(ocre), r, debut = CHATEAU_ANSEBUERG[0][0], froid = false)
+            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[2]), intArrayOf(ocre, aile), r, debut = CHATEAU_ANSEBUERG[0][0] + CHATEAU_ANSEBUERG[1][0], froid = false)
+            for (d in floatArrayOf(3f, 24f)) rue3q(f, arrayOf(TOUR_ANSEBUERG), intArrayOf(ocre), r, debut = CHATEAU_ANSEBUERG[0][0] + d, froid = false)
             mineral {
                 piece(Path().apply {
                     moveTo(bord[0], bord[1]); lineTo(bord[2], bord[3]); lineTo(bord[4], bord[5]); lineTo(bord[6], bord[7]); close()
@@ -5132,8 +5137,13 @@ object Paysages {
         // ---- Hohllay, la grotte de Berdorf (photo du propriétaire)
 
         fun hohllay() {
-            val gres = duJour(0xFFC9895A.toInt())
-            val rose = duJour(0xFFD9A58A.toInt())
+            // Le grès de la Hohllay est gris-beige, et la grotte est éclairée
+            // du dehors : sa pierre passe par [neutre], comme tout le bâti
+            // dessiné à la main (règle 10). Sans cela `raviver` la poussait à
+            // l'orange vif sur les quatre heures, ce que la skill signalait
+            // déjà « à surveiller » et que la photo du propriétaire confirme.
+            val gres = neutre(duJour(0xFFBFAE97.toInt()))
+            val rose = neutre(duJour(0xFFCFC2AE.toInt()))
             val creux = sombre(gres, 0.8f)
             mineral {
                 feuille(-3f, -3f, 106f, 72f, creux, 0f)
