@@ -3403,6 +3403,14 @@ object Paysages {
         fun ardoise(): Int = duJour(0xFF4A5468.toInt())
 
         /**
+         * Le grès gris des socles, des chaînes d'angle, des encadrements et
+         * des appuis — pas le jaune paille. C'est le même que celui dont
+         * [rue3q] habille ses façades : la matière d'un mur vient de ces
+         * pierres-là, posées à la bonne échelle, et non d'une texture.
+         */
+        fun pierreDeTaille(): Int = neutre(duJour(0xFFB9B3A6.toInt()))
+
+        /**
          * [col] à l'ombre, mais une ombre froide : vers un bleu-gris qui suit
          * l'heure, au lieu du brun de [sombre]. Lumière chaude, ombre froide.
          */
@@ -4045,18 +4053,73 @@ object Paysages {
                     trait("M54 ${50f + dy}C62 ${42f + dy} 70 ${33f + dy} 82 ${24f + dy}C90 ${18f + dy} 97 ${15f + dy} 106 ${13f + dy}",
                         if (k % 2 == 0) lit else haut, 1.7f, 0.85f)
                 }
+                // Les diaclases : le grès du Bock se débite en gros blocs, et
+                // la falaise est coupée de fentes verticales d'où sort la
+                // verdure. Sans elles les lits seuls faisaient une dune rayée.
+                val fente = sombre(roche, 0.55f)
+                for (k in 0 until 11) {
+                    val fx = 62f + k * 4f + (k % 3) * 1.6f
+                    val fy = 46f - (fx - 60f) * 0.78f
+                    val fh = 4f + (k % 4) * 3.2f
+                    rect(fx, fy, 0.5f + (k % 2) * 0.35f, fh, fente, 0.75f)
+                    rect(fx + 0.6f, fy, 0.35f, fh * 0.8f, mix(roche, 0xFFFFFFFF.toInt(), 0.22f), 0.5f)
+                }
+                // Les ressauts : la tranche éclairée d'un banc qui avance.
+                for (k in 0 until 5) {
+                    val rx = 64f + k * 7.5f
+                    val ry = 44f - (rx - 60f) * 0.78f
+                    pieceD("M$rx ${ry}C${rx + 4f} ${ry - 2.6f} ${rx + 8f} ${ry - 4.4f} ${rx + 12f} ${ry - 5.4f}" +
+                        "L${rx + 12f} ${ry - 4.2f}C${rx + 8f} ${ry - 3.2f} ${rx + 4f} ${ry - 1.4f} $rx ${ry + 1.2f}Z",
+                        mix(roche, 0xFFFFFFFF.toInt(), 0.26f), 0f)
+                }
                 c.restore()
-                // Le rempart sur la corniche, et ses créneaux.
+                // Le rempart sur la corniche : du moellon assisé, pas un aplat.
                 val mur = neutre(duJour(0xFFC3BBA8.toInt()))
-                pieceD("M79 27.5C86 21 94 16.5 103 14L103 8.4C93 10.9 85 15.4 77 23Z", mur)
-                trait("M77 23C85 15.4 93 10.9 103 8.4", mix(mur, 0xFFFFFFFF.toInt(), 0.2f), 0.5f, 0.8f)
-                trait("M79 27.5C86 21 94 16.5 103 14", sombre(mur, 0.4f), 0.6f, 0.7f)
+                val remp = chemin("M79 27.5C86 21 94 16.5 103 14L103 8.4C93 10.9 85 15.4 77 23Z")
+                piece(remp, mur)
+                c.save()
+                c.clipPath(remp)
+                val jointM = sombre(mur, 0.42f)
+                for (dy in floatArrayOf(1.6f, 3.2f, 4.8f, 6.4f)) {
+                    trait("M77 ${23f + dy}C85 ${15.4f + dy} 93 ${10.9f + dy} 103 ${8.4f + dy}", jointM, 0.22f, 0.7f)
+                }
+                var jk = 0
+                while (jk < 16) {
+                    val u = jk / 16f
+                    val jx = 77f + u * 26f
+                    val jy = 23f - u * 14.6f
+                    ligne(jx, jy, jx + 1.4f, jy + 4.6f, jointM, 0.2f, 0.6f)
+                    jk++
+                }
+                c.restore()
+                trait("M77 23C85 15.4 93 10.9 103 8.4", mix(mur, 0xFFFFFFFF.toInt(), 0.22f), 0.5f, 0.8f)
                 var k = 0
                 while (k < 9) {
                     val u = k / 9f
                     rect(78f + u * 24f, 24.6f - u * 11.4f, 1.3f, 1.1f, mur)
                     k++
                 }
+            }
+            // La verdure qui sort des fentes du rocher, comme sur la photo.
+            for (k in 0 until 9) {
+                val gx = 64f + k * 4.2f
+                val gy = 45f - (gx - 60f) * 0.78f
+                touffe(nappe(duJour(0xFF4C7A30.toInt()), 0.6f), gx, gy, 1.2f + (k % 3) * 0.6f,
+                    gx + 1.4f, gy + 0.8f, 1f, gx - 1.2f, gy + 0.7f, 0.9f)
+            }
+            // Les grands arbres derrière l'abbaye, au pied du rocher : sans
+            // eux il restait entre les toits et la falaise une large bande de
+            // ciel pâle qui se lisait comme un terrain vague.
+            // Reculés par l'air : un bois de fond se tire vers la couleur du
+            // ciel, sinon il vient au même plan que la friche du devant.
+            val bois = mix(sombre(nappe(P.milieu, 0.78f), 0.1f), P.cielBas, if (P.nuit) 0.1f else 0.26f)
+            lisiere(18f, 62f, { x -> 31f - (x - 18f) * 0.09f }, 2.2f, 3.4f, 133, bois)
+            for (k in 0 until 12) {
+                val ax = 20f + r() * 42f
+                val ay = 28f + r() * 10f
+                val ar = 1.8f + r() * 2.4f
+                touffe(if (r() < 0.5f) sombre(bois, 0.22f) else mix(bois, 0xFFFFFFFF.toInt(), if (P.nuit) 0.03f else 0.1f),
+                    ax, ay, ar, ax + ar * 0.9f, ay + ar * 0.45f, ar * 0.75f, ax - ar * 0.85f, ay + ar * 0.5f, ar * 0.7f)
             }
             // La ville haute, petite et loin, au sommet du rocher.
             rue3q(RUE_NEIMENSTER, MAISONS_NEIMENSTER, facades(), r)
@@ -4077,12 +4140,18 @@ object Paysages {
             // pentue sur sa nef, le clocher à gauche, et l'aiguille.
             mineral {
                 val rose = neutre(duJour(0xFFEBD5C6.toInt()))
+                val taille = pierreDeTaille()
                 // Les maisons du Grund à l'extrême gauche, sous leurs mansardes.
                 feuille(-4f, 33f, 11f, 15f, rose)
+                c.save(); c.translate(-4f, 33f); matiere(11f, 15f, rose, taille, r, false); c.restore()
                 pieceD("M-5 33.4L-3 25.6L8 25.6L10 33.4Z", ard)
-                for (fx in floatArrayOf(-2.4f, 1.4f, 5.2f)) fenetreVerre(fx, 36f, 1.8f, 2.8f, r)
+                for (fx in floatArrayOf(-2.4f, 1.4f, 5.2f)) {
+                    rect(fx - 0.35f, 35.65f, 2.5f, 3.5f, taille)
+                    fenetreVerre(fx, 36f, 1.8f, 2.8f, r)
+                }
                 // La nef et son toit en pavillon, le plus gros volume de la scène.
                 feuille(16f, 34f, 20f, 13f, neutre(creme))
+                c.save(); c.translate(16f, 34f); matiere(20f, 13f, neutre(creme), taille, r, false); c.restore()
                 pieceD("M14.6 34.4L20.5 21.2L32 21.2L37.4 34.4Z", ard)
                 pieceD("M20.5 21.2L32 21.2L32 22.2L20.5 22.2Z", mix(ard, 0xFFFFFFFF.toInt(), 0.2f), 0f)
                 for (lx in floatArrayOf(18.6f, 24.4f, 30.2f)) {
@@ -4090,12 +4159,21 @@ object Paysages {
                     rect(lx + 0.8f, 30.4f, 1f, 1.4f, neutre(sombre(creme, 0.7f)))
                     if (P.allume) rect(lx + 0.8f, 30.4f, 1f, 1.4f, P.fenetre, 0.85f)
                 }
-                for (fx in floatArrayOf(18f, 23f, 28f, 33f)) fenetreVerre(fx, 37f, 2f, 4.4f, r)
+                // Les baies de la nef dans leur encadrement de grès, avec appui.
+                for (fx in floatArrayOf(18f, 23f, 28f, 33f)) {
+                    rect(fx - 0.4f, 36.6f, 2.8f, 5.2f, taille)
+                    rect(fx - 0.7f, 41.5f, 3.4f, 0.45f, mix(taille, 0xFFFFFFFF.toInt(), 0.2f))
+                    fenetreVerre(fx, 37f, 2f, 4.4f, r)
+                }
             }
             // Le clocher. Sa flèche est une aiguille d'ardoise très élancée,
             // sur un petit bulbe : c'est la silhouette qu'on reconnaît du
             // Grund, et non le bulbe trapu que j'avais dessiné de mémoire.
             boite3q(7.5f, 46f, 9f, 26f, 4f, creme, versDroite = true, pente = 0.1f, dessus = false) {
+                // L'enduit, la corniche, le socle de pierre et les chaînes
+                // d'angle : c'est d'eux que vient la matière d'un mur, pas
+                // d'une texture posée dessus (leçon de la tour d'Esch-Sauer).
+                matiere(9f, 26f, neutre(creme), pierreDeTaille(), r, false)
                 val encadre = neutre(sombre(duJour(0xFFB4AEA1.toInt()), 0.2f))
                 rond(4.3f, 9.6f, 2.4f, encadre)
                 rond(4.3f, 9.6f, 1.8f, neutre(duJour(0xFFE8E2D2.toInt())))
