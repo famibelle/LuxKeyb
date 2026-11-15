@@ -4779,21 +4779,35 @@ object Paysages {
                 // Proportions mesurées sur la photo, rapportées à la largeur
                 // dessinée de la tour (sa face **plus** le flanc que
                 // [boite3q] projette, `p` × 0,62, soit 9 + 2 = 11) : la tour
-                // fait 3,5 fois plus haut que large, la passerelle 0,39 de
-                // cette largeur, et le belvédère vitré 0,97 — presque un
-                // carré, bien plus haut que la passerelle qu'il termine.
-                val passerelle = floatArrayOf(-3f, 16.2f, 36f, 13.3f, 36f, 17.2f, -3f, 20.5f)
+                // fait 3,5 fois plus haut que large, et la passerelle court
+                // sur 4,8 fois cette largeur. Elle n'en faisait que 3,5, et
+                // paraissait courte et basse (propriétaire, 2026-11-15).
+                val passerelle = floatArrayOf(-3f, 17f, 50f, 12.6f, 50f, 17.5f, -3f, 22.5f)
                 piece(quad(passerelle), mix(betonN, gris, 0.16f), 0.6f)
-                surQuad(39f, 4.3f, passerelle) {
+                surQuad(53f, 5.5f, passerelle) {
                     // Le garde-corps en résille, et le tablier sombre dessous.
-                    rect(0f, 0.3f, 39f, 2.2f, mix(betonN, gris, 0.3f))
-                    ligne(0f, 0.3f, 39f, 0.3f, gris, 0.26f)
-                    var mx = 1.5f
-                    while (mx < 39f) { ligne(mx, 0.6f, mx, 2.5f, gris, 0.1f); mx += 3.4f }
-                    rect(0f, 3f, 39f, 1.3f, gris)
+                    rect(0f, 0.4f, 41f, 2.8f, mix(betonN, gris, 0.3f))
+                    ligne(0f, 0.4f, 41f, 0.4f, gris, 0.3f)
+                    var mx = 1.8f
+                    while (mx < 41f) { ligne(mx, 0.8f, mx, 3.2f, gris, 0.12f); mx += 4f }
+                    // Le bout vitré : la passerelle s'achève sur ses fenêtres,
+                    // dans sa propre hauteur. Il n'y a pas de cube de verre
+                    // sur la photo du propriétaire, c'était une invention
+                    // (jugement du propriétaire, 2026-11-15).
+                    rect(41f, 0.4f, 12f, 2.8f, verre, 0.22f)
+                    rect(41f, 0.4f, 12f, 0.7f, mix(verre, 0xFFFFFFFF.toInt(), 0.5f), 0.3f)
+                    ligne(41f, 0.4f, 53f, 0.4f, gris, 0.42f)
+                    ligne(41f, 3.2f, 53f, 3.2f, gris, 0.42f)
+                    ligne(41f, 0.4f, 41f, 3.2f, gris, 0.3f)
+                    ligne(52.9f, 0.4f, 52.9f, 3.2f, gris, 0.42f)
+                    for (vx in floatArrayOf(45f, 49f)) ligne(vx, 0.4f, vx, 3.2f, gris, 0.16f)
+                    // Le tablier, sous toute la longueur.
+                    rect(0f, 3.8f, 53f, 1.7f, gris)
                 }
 
                 // La tour par-dessus : elle masque la passerelle derrière elle.
+                // Rien sur son toit : les garde-corps et les antennes y
+                // faisaient du bruit sans rien dire (propriétaire, 2026-11-15).
                 boite3q(9f, DEVANT, 9f, HAUT_PAFENDALL, 3.2f, beton,
                         versDroite = true, pente = 0.05f, dessus = true) {
                     // Le local de machinerie, en haut, plus sombre.
@@ -4806,48 +4820,13 @@ object Paysages {
                     rect(0f, 0f, 0.65f, HAUT_PAFENDALL, mix(beton, gris, 0.55f))
                     rect(8.35f, 0f, 0.65f, HAUT_PAFENDALL, mix(beton, gris, 0.3f))
                 }
-                // Les garde-corps du sommet, et ses antennes.
-                var gx = 9.6f
-                while (gx < 19.4f) { ligne(gx, DEVANT - HAUT_PAFENDALL - 2.2f, gx, DEVANT - HAUT_PAFENDALL, gris, 0.16f); gx += 1.3f }
-                ligne(9.3f, DEVANT - HAUT_PAFENDALL - 2.2f, 19.9f, DEVANT - HAUT_PAFENDALL - 2.2f, gris, 0.28f)
-                for (ax in floatArrayOf(10.4f, 13f, 15.8f, 18.4f))
-                    ligne(ax, DEVANT - HAUT_PAFENDALL - 5.6f, ax, DEVANT - HAUT_PAFENDALL - 2.2f, gris, 0.12f)
-
-                // Le belvédère, au bout de la passerelle et à droite de la
-                // tour. Les 0,97 largeur de tour mesurés sur la photo
-                // couvrent **toute la structure** : la cabine vitrée, puis
-                // la plateforme ouverte et ses supports dessous. En faire un
-                // seul bloc plein donnait un gros cube vert qui n'existe pas
-                // sur la photo (jugement du propriétaire, 2026-11-15).
-                //
-                // La cabine ne pèse donc qu'un tiers de cette hauteur, elle
-                // est largement transparente, et tout le reste est du vide
-                // traversé d'acier.
-                val ch = 4.6f
-                val cg = 13.9f; val cd = 13.1f          // le haut du tablier à ses deux bouts
-                val cabine = floatArrayOf(26f, cg - ch, 36f, cd - ch, 36f, cd + 0.6f, 26f, cg + 0.6f)
-                forme(quad(cabine), verre, 0.18f)
-                surQuad(10f, ch + 0.6f, cabine) {
-                    // Le bandeau du toit, les montants, et le ciel au travers.
-                    rect(0f, 0f, 10f, 0.75f, gris)
-                    ligne(0f, ch + 0.45f, 10f, ch + 0.45f, gris, 0.3f)
-                    for (vx in floatArrayOf(0.25f, 3.4f, 6.6f, 9.75f)) ligne(vx, 0.6f, vx, ch + 0.45f, gris, 0.16f)
-                    rect(0f, 0.9f, 10f, 1.1f, mix(verre, 0xFFFFFFFF.toInt(), 0.55f), 0.3f)
-                }
-                // La plateforme ouverte sous la cabine : sa lisse, son
-                // plancher ajouré, et les deux tirants qui la tiennent.
-                ligne(26f, 20.6f, 38.5f, 19.6f, gris, 0.4f)
-                ligne(31f, 18.6f, 38.5f, 18f, gris, 0.16f)
-                ligne(38.5f, 18f, 38.5f, 19.6f, gris, 0.16f)
-                ligne(27.5f, 16.6f, 29.5f, 20.5f, gris, 0.2f)
-                ligne(35.5f, 15.9f, 33.5f, 20f, gris, 0.2f)
 
                 // Le mât d'acier sous la tour, et son pied sur la rue.
-                ligne(8.4f, 19.4f, 8.4f, DEVANT, gris, 0.5f)
-                ligne(19.6f, 18.4f, 19.6f, DEVANT, gris, 0.4f)
+                ligne(8.4f, 21.4f, 8.4f, DEVANT, gris, 0.5f)
+                ligne(19.6f, 20.4f, 19.6f, DEVANT, gris, 0.4f)
                 // Les obliques sous la passerelle.
-                ligne(6.2f, 19.6f, -3f, 34f, gris, 0.3f)
-                ligne(31.4f, 20.4f, 26f, DEVANT, gris, 0.3f)
+                ligne(6.2f, 21.6f, -3f, 34f, gris, 0.3f)
+                ligne(44f, 18.1f, 38f, DEVANT, gris, 0.3f)
             }
             // Les arbres du pied : sur la photo ils mangent le bas de la
             // tour, et c'est leur vert sombre qui détache son béton blanc.
