@@ -4800,31 +4800,27 @@ object Paysages {
                 // **s'arrête** peu après, sur le belvédère vitré. Elle courait
                 // jusqu'au bord droit, alors que sur la photo du propriétaire
                 // elle finit là, et le ciel occupe tout le reste.
-                val passerelle = floatArrayOf(-3f, 12.4f, 34f, 13.9f, 34f, 20.6f, -3f, 20f)
-                piece(quad(passerelle), mix(beton, P.pres, 0.12f), 0.6f)
-                surQuad(37f, 7f, passerelle) {
-                    // Le garde-corps est une résille d'acier, pas une vitre :
-                    // un gris clair translucide, serré de montants fins, et
-                    // la poutre sombre du tablier dessous.
-                    rect(0f, 0f, 37f, 3.2f, mix(verre, gris, 0.45f), 0.55f)
-                    ligne(0f, 0.2f, 37f, 0.2f, gris, 0.22f)
-                    ligne(0f, 3f, 37f, 3f, gris, 0.3f)
-                    rect(0f, 4.6f, 37f, 2.4f, gris)
-                    var mx = 0f
-                    while (mx < 37f) { ligne(mx, 0.2f, mx, 3f, gris, 0.1f); mx += 1.5f }
+                // Un seul objet, et peu de traits : à la taille d'une carte,
+                // une résille fine et une plateforme ajourée se brouillaient
+                // en rayures et en petite échelle (jugement du propriétaire,
+                // 2026-11-15). Le garde-corps est un bandeau clair sur sa
+                // lisse, le tablier une poutre sombre dessous, et le
+                // belvédère est posé sur la même poutre, dans la continuité.
+                val passerelle = floatArrayOf(-3f, 13.4f, 36f, 14.8f, 36f, 20.4f, -3f, 19.6f)
+                piece(quad(passerelle), mix(beton, gris, 0.16f), 0.6f)
+                surQuad(39f, 6.2f, passerelle) {
+                    rect(0f, 0.5f, 39f, 2.9f, mix(beton, gris, 0.3f))
+                    ligne(0f, 0.5f, 39f, 0.5f, gris, 0.3f)
+                    var mx = 1.5f
+                    while (mx < 39f) { ligne(mx, 0.9f, mx, 3.4f, gris, 0.12f); mx += 3.4f }
+                    rect(0f, 4.2f, 39f, 2f, gris)
                 }
-                // Le belvédère au bout : une boîte de verre un peu plus haute
-                // que la passerelle, son cadre d'acier, et son plancher.
-                feuille(24.5f, 10.6f, 8.6f, 10.4f, verre, 0.5f)
-                ligne(24.5f, 10.6f, 33.1f, 10.6f, gris, 0.45f)
-                ligne(24.5f, 21f, 33.1f, 21f, gris, 0.55f)
-                ligne(33.1f, 10.6f, 33.1f, 21f, gris, 0.4f)
-                ligne(28.8f, 10.6f, 28.8f, 21f, gris, 0.18f)
-                // La plateforme ajourée qui prolonge le belvédère, avec sa
-                // lisse : sur la photo elle avance seule au-dessus du vide.
-                rect(33.1f, 19.4f, 7.4f, 0.55f, gris)
-                ligne(33.1f, 15.6f, 40.5f, 15.6f, gris, 0.22f)
-                for (px in floatArrayOf(35f, 37.2f, 39.4f, 40.5f)) ligne(px, 15.6f, px, 19.4f, gris, 0.14f)
+                // Le belvédère vitré, au bout : il repose sur le tablier et
+                // dépasse d'une tête, comme sur la photo.
+                feuille(26f, 11.2f, 10f, 9.6f, verre, 0.5f)
+                ligne(26f, 11.2f, 36f, 11.2f, gris, 0.42f)
+                ligne(36f, 11.2f, 36f, 20.8f, gris, 0.42f)
+                ligne(31f, 11.6f, 31f, 20.4f, gris, 0.16f)
                 // Le mât d'acier sous la tour, et son pied sur la rue.
                 ligne(8.4f, 21f, 8.4f, DEVANT, gris, 0.5f)
                 ligne(20.3f, 22f, 20.3f, DEVANT, gris, 0.4f)
