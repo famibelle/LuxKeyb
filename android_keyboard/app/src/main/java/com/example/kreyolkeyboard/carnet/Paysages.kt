@@ -1869,7 +1869,7 @@ object Paysages {
                 Lieu.ROUT_BRECK -> Surcadre(Essence.FEUILLU, DROITE, Pied.FOUGERES, DEUX)
                 Lieu.NEI_BRECK -> Surcadre(Essence.FEUILLU, DROITE, Pied.ROSEAUX, DEUX)
                 Lieu.PEITRUSDALL -> Surcadre(Essence.FEUILLU, DEUX, Pied.HERBES, GAUCHE, portee = 24f)
-                Lieu.PAFENDALL -> Surcadre(Essence.FEUILLU, GAUCHE, Pied.FOUGERES, GAUCHE, portee = 26f)
+                Lieu.PAFENDALL -> Surcadre(Essence.FEUILLU, DROITE, Pied.FOUGERES, DROITE, portee = 26f)
                 Lieu.VEIANEN -> Surcadre(Essence.FEUILLU, DEUX, Pied.HERBES, DEUX, portee = 25f)
                 Lieu.OURDALL -> Surcadre(Essence.SAULE, GAUCHE, Pied.ROSEAUX, GAUCHE)
                 Lieu.ESCH_SAUER -> Surcadre(Essence.SAULE, DROITE, Pied.ROSEAUX, DROITE)
@@ -4768,7 +4768,7 @@ object Paysages {
                 // sont ses arêtes d'acier qui la détachent. Son béton blanc
                 // seul se perdait dans le ciel pâle du matin, là où la photo
                 // le détache sur un bleu franc.
-                boite3q(72f, DEVANT, 11f, 63f, 6f, beton, versDroite = false, pente = 0.05f, dessus = false) {
+                boite3q(9f, DEVANT, 11f, 63f, 6f, beton, versDroite = true, pente = 0.05f, dessus = false) {
                     // Le local de machinerie, en haut, plus sombre.
                     rect(0f, 0f, 11f, 2.4f, mix(beton, gris, 0.42f))
                     // La gaine vitrée où monte la cabine, et ses lames d'acier.
@@ -4791,20 +4791,20 @@ object Paysages {
                     while (mx < 106f) { ligne(mx, 0f, mx, 2.8f, gris, 0.18f); mx += 3f }
                 }
                 // Le mât d'acier sous la tour, et son pied sur la rue.
-                ligne(71.4f, 16f, 71.4f, DEVANT, gris, 0.5f)
-                ligne(83.3f, 17f, 83.3f, DEVANT, gris, 0.4f)
+                ligne(8.4f, 16f, 8.4f, DEVANT, gris, 0.5f)
+                ligne(20.3f, 17f, 20.3f, DEVANT, gris, 0.4f)
             }
             if (!vivant) cabine(30f)
-            touffe(vert(0.55f), 1f, 52f, 7f, 10f, 55f, 5f, -2f, 42f, 6f, 6f, 46f, 4f)
+            touffe(vert(0.55f), 99f, 52f, 7f, 90f, 55f, 5f, 102f, 42f, 6f, 94f, 46f, 4f)
             c.restore()
         }
 
         /** La cabine vitrée de l'ascenseur, son haut en [y]. */
         fun cabine(y: Float) {
             val gris = duJour(0xFF55595F.toInt())
-            feuille(75.4f, y, 4.4f, 6f, duJour(0xFF9FD3EC.toInt()), 0.4f)
-            ligne(75.4f, y, 79.8f, y, gris, 0.35f)
-            ligne(75.4f, y + 6f, 79.8f, y + 6f, gris, 0.35f)
+            feuille(12.4f, y, 4.4f, 6f, duJour(0xFF9FD3EC.toInt()), 0.4f)
+            ligne(12.4f, y, 16.8f, y, gris, 0.35f)
+            ligne(12.4f, y + 6f, 16.8f, y + 6f, gris, 0.35f)
             if (P.allume) rect(74.8f, y + 0.6f, 3.8f, 4.8f, P.fenetre, 0.6f)
         }
 
