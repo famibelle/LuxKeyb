@@ -724,6 +724,15 @@ object Paysages {
      */
     const val VERT_CALME = 0.55f
 
+    /**
+     * Le vert de référence de la végétation : un feuillage franc et profond,
+     * vers lequel [Peintre.vert] tire toutes ses nuances. Il était plus clair
+     * et plus jaune (`#6FA845`), et les lieux paraissaient secs. C'est un
+     * vert de forêt, demandé par le propriétaire le 2026-11-15 : « je
+     * voudrais un vert forêt, végétation ».
+     */
+    private const val VERDURE = 0xFF35772E.toInt()
+
     /** L'horloge des planches de relecture, en secondes ; `null` pour la vraie. */
     @Volatile internal var horlogeEssai: Float? = null
 
@@ -3349,7 +3358,12 @@ object Paysages {
          * Conzefenn.
          */
         fun vert(nuance: Float): Int {
-            val v = mix(mix(P.pres, P.milieu, nuance), 0xFF6FA845.toInt(), if (P.nuit) 0.05f else 0.22f)
+            // Le Luxembourg est très vert, et la carte doit le dire (demande
+            // du propriétaire, 2026-11-15) : la référence est un vert de
+            // feuillage franc et profond, et elle pèse plus lourd qu'avant
+            // dans le mélange. Plus vert ne veut pas dire plus acide : c'est
+            // [VERT_CALME] qui tient la saturation, et il ne bouge pas.
+            val v = mix(mix(P.pres, P.milieu, nuance), VERDURE, if (P.nuit) 0.09f else 0.52f)
             return mix(v, neutre(v), VERT_CALME)
         }
 
