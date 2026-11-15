@@ -1323,10 +1323,18 @@ object Paysages {
     }
 
     /** La ville haute vue par la voûte de Neimënster, sur son rempart, et le palais de la crête. */
-    internal val RUE_NEIMENSTER = Fuite(floatArrayOf(18f, 26f), floatArrayOf(135f, 15f), floatArrayOf(-120f, 22f), taille = 0.34f)
+    internal val RUE_NEIMENSTER = Fuite(floatArrayOf(4f, 19f), floatArrayOf(132f, 10f), floatArrayOf(-120f, 15f), taille = 0.32f)
     private val MAISONS_NEIMENSTER = maisonsAuHasard(26, 127, 13f, 20f)
-    internal val RUE_PALAIS = Fuite(floatArrayOf(78f, 9.5f), floatArrayOf(190f, 1f), floatArrayOf(-60f, 6f), taille = 0.32f)
-    private val PALAIS = arrayOf(floatArrayOf(70f, 20f, 0f, 0f, 5f, 1f))
+
+    /**
+     * L'aile de l'abbaye de Neimënster : une longue bâtisse qui fuit vers la
+     * gauche depuis son clocher, sous un seul grand toit d'ardoise à lucarnes.
+     */
+    internal val RUE_ABBAYE = Fuite(floatArrayOf(85f, 42f), floatArrayOf(6f, 33f), floatArrayOf(190f, 38f), recul = 56f)
+    private val ABBAYE = arrayOf(
+        floatArrayOf(17f, 11f, 0f, 0f, 7.4f, 1f), floatArrayOf(15f, 10.5f, 0f, 0f, 7f, 1f),
+        floatArrayOf(18f, 11f, 0f, 0f, 7.6f, 1f), floatArrayOf(14f, 10f, 0f, 0f, 6.8f, 1f)
+    )
 
     /** Le château de Vianden sur son éperon : le palais, la tour carrée, l'aile basse. */
     internal val FUITE_VEIANEN = Fuite(floatArrayOf(41f, 31f), floatArrayOf(175f, 22f), floatArrayOf(-90f, 27f), taille = 1f)
@@ -4010,31 +4018,27 @@ object Paysages {
             }
         }
 
-        // ---- Neimënster, vu des casemates du Bock (photo du propriétaire)
+        // ---- Neimënster, l'abbaye du Grund vue des casemates du Bock
 
         fun neimensterPapier() {
             val r = Alea(125)
-            val toit = ardoise()
-            val enduits = intArrayOf(duJour(0xFFF1E6CF.toInt()), duJour(0xFFE9C9B8.toInt()), duJour(0xFFF3DC96.toInt()),
-                duJour(0xFFE6E2D6.toInt()))
-            mineral {
-                // Une tourelle à flèche bleue, au-dessus des toits.
-                feuille(33f, 9.5f, 2.2f, 8f, enduits[3])
-                pieceD("M32.6 9.7L34.1 5.2L35.6 9.7Z", duJour(0xFF4E6E9A.toInt()))
-            }
-            // La ville haute en rangée de trois quarts, posée sur le rempart
-            // qui fuit avec elle vers le rocher.
+            // La ville haute sur la crête du Rham ferme le ciel au-dessus de
+            // la boîte du dessin du mot, pas dedans : c'est la seule bande
+            // que la plaque ne prend jamais.
+            lisiere(-3f, 103f, { x -> 21f + 1.4f * sin(x * 0.12f) }, 1.4f, 2.2f, 126,
+                nappe(mix(P.loin, P.milieu, 0.35f), 0.3f, VERT_CALME))
             val f = RUE_NEIMENSTER
             rue3q(f, MAISONS_NEIMENSTER, facades(), r)
+            // Le rempart qui porte la ville haute, et qui fuit avec elle.
             mineral {
-                val rempart = duJour(0xFFBDB29A.toInt())
+                val rempart = neutre(duJour(0xFFB4AEA1.toInt()))
                 val fin = 120f
                 piece(Path().apply {
                     moveTo(f.x(0f), f.y(0f))
                     var u = 0f
                     while (u <= fin) { lineTo(f.x(u), f.y(u)); u += 4f }
                     u = fin
-                    while (u >= 0f) { lineTo(f.x(u), f.y(u) + 9f * f.echelle(u)); u -= 4f }
+                    while (u >= 0f) { lineTo(f.x(u), f.y(u) + 7f * f.echelle(u)); u -= 4f }
                     close()
                 }, rempart)
                 // Les créneaux, qui se serrent en fuyant.
@@ -4045,57 +4049,110 @@ object Paysages {
                     u += 3.4f
                 }
                 // Le pied du rempart, à l'ombre, sous le parement.
-                val ombre = sombre(rempart, 0.3f)
                 piece(Path().apply {
-                    moveTo(f.x(0f), f.y(0f) + 9f)
+                    moveTo(f.x(0f), f.y(0f) + 7f)
                     var v = 0f
-                    while (v <= fin) { lineTo(f.x(v), f.y(v) + 9f * f.echelle(v)); v += 4f }
+                    while (v <= fin) { lineTo(f.x(v), f.y(v) + 7f * f.echelle(v)); v += 4f }
                     v = fin
-                    while (v >= 0f) { lineTo(f.x(v), f.y(v) + 10.5f * f.echelle(v)); v -= 4f }
+                    while (v >= 0f) { lineTo(f.x(v), f.y(v) + 8.4f * f.echelle(v)); v -= 4f }
                     close()
-                }, ombre, 0.3f)
+                }, sombre(rempart, 0.3f), 0.3f)
             }
             plan(1)
-            lisiere(12f, 70f, { x -> 37f + 2.4f * sin(x * 0.21f) }, 2f, 3.2f, 126, vert(0.45f))
-            val roc = duJour(0xFFBFAD86.toInt())
-            val maconnerie = duJour(0xFFCFC1A0.toInt())
-            mineral {
-                pieceD("M57 66L59 42C60 36 62 32 63 28L102 27L102 66Z", roc)
-                pieceD("M62 30L63.5 11L102 8.5L102 30C88 31.5 74 31.5 62 30Z", maconnerie)
-                val joint = mix(maconnerie, P.pres, 0.3f)
-                for (y in floatArrayOf(14f, 18f, 22f, 26f)) ligne(63.4f, y, 102f, y - 1.4f, joint, 0.16f, 0.6f)
-                val strate = mix(roc, P.pres, 0.3f)
-                for (x in floatArrayOf(66f, 72f, 79f, 86f, 93f)) ligne(x, 32f, x - 1f, 64f, strate, 0.22f, 0.6f)
+            // Le versant boisé qui tombe du Rham vers le Grund.
+            val versant = nappe(P.milieu, 0.74f)
+            lisiere(-3f, 103f, { x -> 27f + 2.4f * sin(x * 0.17f + 1.4f) }, 2f, 3.2f, 128, versant)
+            lisiere(-3f, 103f, { x -> 33f + 2f * sin(x * 0.23f + 3f) }, 1.8f, 2.8f, 131, sombre(versant, 0.2f))
+            // Les houppiers du versant, un par un : un seul aplat vert lisait
+            // comme du feutre de table.
+            for (k in 0 until 26) {
+                val hx = -2f + r() * 104f
+                val hy = 29f + r() * 26f
+                val hr = 1.5f + r() * 2.2f
+                touffe(if (r() < 0.5f) sombre(versant, 0.3f) else mix(versant, 0xFFFFFFFF.toInt(), if (P.nuit) 0.03f else 0.1f),
+                    hx, hy, hr, hx + hr * 0.9f, hy + hr * 0.4f, hr * 0.75f, hx - hr * 0.8f, hy + hr * 0.5f, hr * 0.7f)
             }
-            // Le palais jaune sur la crête, en trois quarts lui aussi.
-            rue3q(RUE_PALAIS, PALAIS, intArrayOf(duJour(0xFFE9C05A.toInt())), r)
-            touffe(vert(0.35f), 64f, 31f, 2.4f, 68f, 30.5f, 2f, 98f, 28.5f, 2.6f)
+            // L'abbaye. Elle manquait tout simplement : la carte s'appelait
+            // Neimënster et ne montrait que la ville haute, un rocher et un
+            // palais jaune. C'est une longue aile sous un seul grand toit
+            // d'ardoise, qui fuit vers la gauche depuis son clocher carré.
+            val creme = duJour(0xFFEDE3CF.toInt())
+            rue3q(RUE_ABBAYE, ABBAYE, intArrayOf(creme), r)
+            // Le clocher et sa flèche, le seul repère qu'on reconnaisse de
+            // loin : il est dans la bande de droite, que la plaque ne prend pas.
+            val ard = neutre(ardoise())
+            boite3q(85f, 43f, 9.5f, 29f, 5f, creme, versDroite = true, pente = 0.1f, dessus = false) {
+                val encadre = neutre(sombre(duJour(0xFFB4AEA1.toInt()), 0.2f))
+                val cadran = neutre(duJour(0xFFE8E2D2.toInt()))
+                // L'horloge, et les baies du beffroi sous elle.
+                rond(4.5f, 6.4f, 2.5f, encadre)
+                rond(4.5f, 6.4f, 1.9f, cadran)
+                ligne(4.5f, 6.4f, 4.5f, 4.9f, encadre, 0.35f)
+                ligne(4.5f, 6.4f, 5.7f, 6.9f, encadre, 0.3f)
+                for (bx in floatArrayOf(1.9f, 5.6f)) {
+                    rect(bx, 11.5f, 1.6f, 4.6f, encadre)
+                    rect(bx + 0.3f, 12f, 1f, 4f, neutre(sombre(creme, 0.75f)))
+                    if (P.allume) rect(bx + 0.3f, 13.5f, 1f, 2.5f, P.fenetre, 0.85f)
+                }
+                rect(0f, 9.6f, 9f, 0.7f, encadre, 0.7f)
+                rect(0f, 19.5f, 9f, 0.7f, encadre, 0.7f)
+            }
+            mineral {
+                // La flèche d'ardoise, et sa croix.
+                // Le bulbe d'ardoise, et son lanternon : c'est lui, et non une
+                // flèche gothique, qui coiffe le clocher de Neimënster.
+                pieceD("M83.8 14C83.8 9.6 86.1 7.4 89.8 4.8C93.5 7.4 95.8 9.6 95.8 14Z", ard)
+                pieceD("M89.8 4.8C93.5 7.4 95.8 9.6 95.8 14L97.3 13.1C97.3 8.6 94.7 6.4 91.1 3.9Z", sombre(ard, 0.3f))
+                rect(88.3f, 2.6f, 3f, 2.4f, neutre(duJour(0xFFE8E2D2.toInt())))
+                pieceD("M87.5 2.8L89.8 0L92.1 2.8Z", ard)
+            }
+            // L'Alzette au pied de l'abbaye, bien plus bas que nous : d'ici
+            // on la voit par-dessus le parapet.
+            riviere(43.5f, 49f, 129, 30f, 62f)
+            // L'abbaye tremble dans l'Alzette : des traits couchés sous elle,
+            // dans ses couleurs, de plus en plus courts vers le bord proche.
+            for (k in 0 until 26) {
+                val rx = 30f + r() * 70f
+                val ry = 43.9f + r() * 4.6f
+                val col = if (r() < 0.45f) ard else creme
+                rect(rx, ry, 1.6f + r() * 5f, 0.3f + r() * 0.35f, mix(col, P.eau, 0.5f), 0.45f)
+            }
             plan(2)
-            solDePierre(SolDePierre.DALLES, DEVANT)  // la cour sous la voûte
             poser(DEVANT)
-            // La voûte de la casemate, en cadre de scène : sa face, et dedans
-            // le creux plus sombre de la galerie.
-            val pierre = duJour(0xFFC6B088.toInt())
+            // Le parapet du Bock, au premier plan : c'est lui qui dit d'où
+            // l'on regarde. Il remplace la voûte en plein cintre qu'on
+            // dessinait ici : elle faisait doublon avec la fenêtre de la carte
+            // (propriétaire, 2026-11-15), prenait les deux tiers de l'image et
+            // obligeait tout ce qui est haut à se mettre au centre, c'est-à-dire
+            // pile derrière la plaque du mot. Sa pierre sortait en plus d'un
+            // ocre de miel, faute de neutre() (règle 10).
+            val pierre = neutre(duJour(0xFFB9B2A4.toInt()))
             mineral {
-                piece(cadre("M19.5 60L19.5 33C19.5 19 33 10 54 9.6C72 9.2 87 13 94 24L96 35L96 60Z"), sombre(pierre, 0.5f))
-                piece(cadre("M16.5 60L16.5 32C16.5 16 32 6.8 54 6.4C74 6 90 10 97.5 22L99.5 34L99.5 60Z"), pierre)
-                // La roche taillée de la galerie : des bancs clairs et sombres.
-                val clair = mix(pierre, 0xFFFFFFFF.toInt(), 0.16f)
-                pieceD("M-3 14C3 12 9 13 14 16C11 17 5 17 -3 18Z", clair, 0.4f)
-                pieceD("M-3 27C3 25 10 26 15 29C11 30 4 30 -3 31Z", clair, 0.4f)
-                pieceD("M-3 40C3 38.4 10 39 15.5 42C11 43 4 43 -3 44Z", clair, 0.4f)
-                pieceD("M30 -3L36 3C42 1.6 50 1.4 58 2.4C66 1.4 76 2 84 4.6L92 -3Z", sombre(pierre, 0.18f), 0.4f)
-            }
-            touffe(vert(0.6f), 20f, 55f, 3f, 25f, 56f, 2.6f, 29f, 57.5f, 2f)
-            touffe(vert(0.55f), 88f, 53f, 3.4f, 94f, 50f, 3.2f, 98f, 55f, 3f)
-            // Le garde-corps de fer.
-            val fer = duJour(0xFF2E3238.toInt())
-            fun rampe(x: Float) = 45f - (x - 17f) * 0.018f
-            mineral {
-                ligne(16.5f, rampe(16.5f), 100f, rampe(100f), fer, 0.5f)
-                ligne(16.5f, 56f, 100f, 55.4f, fer, 0.3f)
-                var bx = 19f
-                while (bx < 99f) { ligne(bx, rampe(bx), bx, DEVANT, fer, 0.28f); bx += 4.4f }
+                piece(Path().apply {
+                    moveTo(-3f, DEVANT + 1f); lineTo(-3f, 49.8f)
+                    var px = -3f
+                    while (px <= 103f) { lineTo(px, 49.6f + 0.35f * sin(px * 0.3f)); px += 3f }
+                    lineTo(103f, DEVANT + 1f); close()
+                }, pierre)
+                // L'appareil du parapet : des assises et des joints verticaux.
+                val joint = sombre(pierre, 0.34f)
+                // La couronne du parapet, un peu saillante, et son chanfrein.
+                rect(-3f, 49.4f, 106f, 1.9f, mix(pierre, 0xFFFFFFFF.toInt(), 0.12f), 0.85f)
+                rect(-3f, 51.1f, 106f, 0.55f, sombre(pierre, 0.42f), 0.6f)
+                // L'appareil, deux assises sous la couronne : des blocs longs,
+                // que les joints décalent d'une assise à l'autre.
+                var ay = 51.8f
+                var dec = 0f
+                while (ay < DEVANT + 1f) {
+                    ligne(-3f, ay, 103f, ay - 0.2f, joint, 0.18f, 0.65f)
+                    var jx = -3f + dec
+                    while (jx < 103f) {
+                        ligne(jx, ay + 0.15f, jx, ay + 2.5f, joint, 0.15f, 0.55f)
+                        jx += 6.4f
+                    }
+                    ay += 2.7f
+                    dec = if (dec == 0f) 3.2f else 0f
+                }
             }
             c.restore()
         }
@@ -5578,7 +5635,7 @@ object Paysages {
                 feuille(-3f, -3f, 106f, 72f, creux, 0f)
                 pieceD("M-3 10L103 10L103 52L-3 52Z", rose, 0.4f)
                 for ((ax, w) in listOf(6f to 10f, 30f to 16f, 56f to 16f, 88f to 10f)) {
-                    pieceD("M$ax 52L$ax ${44f - w * 0.4f}C$ax ${30f - w * 0.3f} ${ax + w} ${30f - w * 0.3f} ${ax + w} ${44f - w * 0.4f}L${ax + w} 52Z", creux, 0.3f)
+                    pieceD("M$ax 52L$ax ${44f - w * 0.4f}C$ax ${30f - w * 0.3f} ${ax + w} ${30f - w * 0.3f} ${ax + w} ${44f - w * 0.4f}L${ax + w} 52Z", creux, 0.18f)
                 }
             }
             plan(1)
