@@ -267,9 +267,11 @@ gouache, et décidé pour LuxKeyb le 2026-11-13 (« fais tout ») :
 - **Chaque lieu est redessiné d'après une photo du propriétaire**, sa
   silhouette la plus reconnaissable sur un bord ou dans la bande du haut
   (le dessin du mot tient le centre). Demande les photos au propriétaire
-  plutôt que de dessiner de mémoire. Fait : Veianen (le château dans la
-  brume), Esch-Sauer (la tour et son drapeau), Neimënster (vu des casemates
-  du Bock), Mëllerdall (le Schiessentümpel), Stad (le Grund sur l'Alzette),
+  plutôt que de dessiner de mémoire. **Les photos reçues sont rangées dans
+  `photos-lieux/` à la racine, hors git** (`.git/info/exclude`) : onze au
+  2026-11-15, dont `11-neimenster-grund.jpg`. Fait : Veianen (le château dans la
+  brume), Esch-Sauer (la tour et son drapeau), Neimënster (l'abbaye du Grund,
+  d'après photo depuis le 2026-11-15), Mëllerdall (le Schiessentümpel), Stad (le Grund sur l'Alzette),
   Musel (le monument de Schengen), Schueberfouer (la roue et le carrousel),
   Rout Bréck (le pont rouge vu d'en bas), Breedewee (la porte de la rue
   Large), Gëlle Fra (la statue au couchant, grande, sur le bord droit).
@@ -581,6 +583,77 @@ les quatre heures côte à côte.
    gravier, herbe, terre, mousse ou berge, selon le lieu ; les rangs
    grossissent en approchant. Une eau se voit à travers (le lit, les galets)
    ou reflète ce qui la borde ; elle n'est jamais un aplat bleu.
+12. **Composer dans le П** (2026-11-15). Le dessin du mot occupe le milieu de
+   la fenêtre et n'en bouge pas. Les cotes exactes, à vérifier avant de placer
+   un sujet :
+
+   | Ce qui porte le mot | Boîte occupée (fenêtre 100 × 66) |
+   |---|---|
+   | un meuble (le bus, le chat) | x 17→83, y 12,5→58,5 (`Enluminure` : 66 × 46 centrée) |
+   | un tracé de sonorité, soit la grande majorité des 2 800 mots | x 16→84, y 18→52, plus la tige jusqu'au socle à 61 (`Trace.LARGEUR`, `MILIEU`, `AMPLITUDE`) |
+
+   Il reste donc au décor un **П** : la bande de ciel au-dessus de y = 18, et
+   les deux bandes x < 16 et x > 84. Ce qui doit se reconnaître (une tour, un
+   clocher, une roue, un monument) va là, et le reste fuit derrière la plaque.
+   Corollaire : **pas de second cadre dans la fenêtre**. Une voûte, une arche
+   ou une porte en plein cintre fait doublon avec la fenêtre de la carte
+   (propriétaire, 2026-11-15, sur Neimënster) et, pire, n'est haute qu'en son
+   milieu : elle oblige donc tout ce qui est haut à se mettre au centre,
+   c'est-à-dire pile derrière la plaque. Un parapet, une margelle ou un bord
+   de rocher au premier plan dit d'où l'on regarde sans rien coûter.
+   Le Breedewee garde sa porte : c'est une ruelle vue dans l'axe, son sujet
+   *est* le cadre.
+13. **La matière d'un mur vient de petits éléments d'architecture, pas d'une
+   texture** (leçon de la tour d'Esch-Sauer, étendue le 2026-11-15). Chaînes
+   d'angle, socle de pierre à joints, corniche et l'ombre qu'elle porte,
+   bandeaux d'étage, encadrements de baie avec appui saillant : c'est
+   `Peintre.matiere`, que `rue3q` applique à ses façades et que **tout volume
+   dessiné à la main doit appeler aussi**, avec `pierreDeTaille()` pour le
+   grès. Pour un mur appareillé (rempart, donjon, pile de pont), les blocs se
+   posent un par un, en assises décalées, chacun avec sa teinte, son arête
+   éclairée et son pied dans l'ombre — et **le fond doit être peint en joint
+   sombre avant les blocs** : avec un fond de leur couleur, l'écart entre deux
+   pierres montre exactement leur teinte et l'appareil reste invisible, quelle
+   que soit la force des joints. Un rocher suit la même règle : des lits, puis
+   des joints montants décalés d'un banc à l'autre, puis les diaclases.
+14. **Du fond vers l'avant, comme on colle des cartons.** Ce qui est derrière
+   se peint d'abord et se fait couper le pied par ce qui est devant. Une
+   rangée de maisons peinte *après* le mur qui la porte, et posée plus haut
+   que lui, se lit comme des maisons suspendues au-dessus du vide
+   (propriétaire, 2026-11-15, sur la ville haute de Neimënster).
+
+### La revue des 27 décors (en cours, depuis le 2026-11-14)
+
+Le propriétaire les reprend un par un, dans l'ordre de l'enum `Lieu`, sur la
+branche `fix/carte-cadence-et-lisibilite` (PR #19). La planche de relecture :
+
+```bash
+cd android_keyboard && JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
+  ./gradlew :app:testDebugUnitTest --tests "*PlancheCartesTest.lieux" \
+  -Pplanche=<dossier> -PplancheLieux=NEIMENSTER --rerun -q
+```
+
+Trois colonnes (regard −1 / 0 / +1), une ligne par lieu dans l'ordre des
+arguments ; `regard 0` porte la plaque du mot, `regard -1` montre le décor
+dégagé. Un film animé : `PlancheCartesTest.secousse` avec `-PplancheSecousse`,
+et **`-PplancheRarete=TRES_RARE` pour filmer de nuit** (ajouté le 2026-11-15 :
+sans lui le film sort toujours à l'heure de la commune, donc en plein jour, et
+tout ce qui ne vit qu'une fois les lumières allumées reste invisible).
+
+Vus et repris : 1 Rout Bréck, 2 Veianen, 3 Esch-Sauer, 4 Musel, 5 Neimënster,
+11 Pafendall, 12 Ansebuerg. Suivant : 6 Gëlle Fra.
+
+Les défauts qui reviennent, dans l'ordre de fréquence :
+
+1. **Du bâti dessiné à la main sans `neutre()`** : `raviver` le tire vers
+   l'ocre de miel (règle 10). Sept fois sur sept décors revus.
+2. **`mix(pierre, P.pres, t)` comme ombre** : ça passe tant que la pierre est
+   chaude, ça verdit dès qu'elle est neutre. `P.pres` est un vert. Il en reste
+   une cinquantaine dans le fichier, corrigées seulement là où j'ai travaillé.
+3. **Des verts d'aplat** : passer par `Peintre.nappe` (ajouté le 2026-11-15),
+   jamais un littéral brut, qui ne s'éteindrait pas la nuit.
+4. **Le sujet du lieu absent ou minuscule** (Neimënster n'avait pas son
+   abbaye) — vérifier d'abord que la carte montre ce qu'elle nomme.
 
 ## 5. Les points de vigilance
 
@@ -679,10 +752,13 @@ le milieu, `plan(2)` le proche, puis le sol.
 | Un ouvrage seul (tour, socle, bureau) | `boite3q(x, bas, l, h, profondeur, couleur, versDroite, pente) { détails }` | La face, son côté à l'ombre froide, son dessus ; les détails se peignent à plat sur la face. |
 | Poser un dessin de face en perspective | `surQuad(l, h, quadrilatère, x0, y0) { … }` | Vraie perspective (`Matrix.setPolyToPoly`). Sert aux ponts, passerelles, murs ; aussi dans la `Vie` pour ce qui roule ou coule dessus. |
 | Le bâti sans jaune | `neutre(c)`, `facades()`, `ombreFroide(c, t)`, `fenetreVerre` | `rue3q` et `boite3q` les appliquent déjà ; à appeler soi-même pour une pièce de bâti dessinée à la main. |
-| La matière d'une façade | `matiere` (dans `rue3q`) | Socle, chaînes d'angle, corniche, bandeaux, appuis et linteaux, enduit ; rangs d'ardoises sur le toit. Rien sur une maison trop petite pour le montrer. |
+| La matière d'une façade | `matiere(l, h, mur, pierreDeTaille(), alea, colombages)` | Socle, chaînes d'angle, corniche, bandeaux, appuis et linteaux, enduit ; rangs d'ardoises sur le toit. `rue3q` l'applique seul ; **l'appeler soi-même** (après un `c.translate`, ou dans le `dessin` de `boite3q`) pour tout mur dessiné à la main. Rien sur une maison trop petite pour le montrer. |
+| Un mur appareillé (rempart, donjon, pile) | les blocs un par un, en assises décalées, dans un `surQuad` | **Peindre le fond en joint sombre avant les blocs** : sinon l'écart entre deux pierres montre leur propre couleur et l'appareil reste invisible. Chaque bloc : sa teinte, son arête éclairée, son pied dans l'ombre. Les `rect` passent sous le seuil de `enCarton`, donc sans tranche ni ombre propre : c'est ce qui rend l'appareil pierre par pierre abordable. |
+| Un rocher | des lits parallèles à la crête (`trait` clippé), puis des joints montants décalés, puis les diaclases et les ressauts | Les lits seuls donnent une dune rayée. |
 | Un premier plan bâti | `solDePierre(PAVES / DALLES / GRAVIER, haut, pente, bordure)` | `bordure` : une rangée de pierres de taille contre l'eau. |
 | Un premier plan naturel | `solNaturel(HERBE / TERRE / MOUSSE / BERGE, haut, pente)` | L'herbe et la mousse restent de la végétation pour les saisons. |
 | Une eau | une teinte en voile (`forme`, 0,4) sur un lit de galets ; ou des reflets en traits couchés qui tremblent | Jamais un aplat bleu opaque. |
+| Un vert de végétation | `nappe(col, force, calme)` | Le vert pomme vient de la palette brute passée dans `raviver`. `nappe` ramène la couleur vers `VERDURE` puis à mi-chemin de son propre `neutre`. **Toujours lui passer une couleur déjà adaptée à l'heure** (`P.milieu`, `P.loin`, ou `duJour(…)`) : un littéral brut ne s'éteindrait pas la nuit. |
 | Une brume, une écume | `brume(x, y, rx, ry, opacité)` | Un ovale blanc qui s'efface ; animée dans la `Vie`. |
 | Ce qui vit (Vie) | `Paysages.Vie.dessiner` : une branche par lieu, et le calque où elle vit (`vitDans`) | Lent, en boucle longue ; une réponse propre à la secousse (`raf`, `vol`, `elan`). |
 | Le surcadrage | `Surcadre.de(lieu)` | Branches d'un coin du haut, pied de roseaux, de fougères, d'herbes. |
