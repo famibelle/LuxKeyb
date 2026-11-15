@@ -4811,7 +4811,12 @@ object Paysages {
                 // 2026-11-15). Le garde-corps est un bandeau clair sur sa
                 // lisse, le tablier une poutre sombre dessous, et le
                 // belvédère est posé sur la même poutre, dans la continuité.
-                val passerelle = floatArrayOf(-3f, 13.4f, 36f, 14.8f, 36f, 20.4f, -3f, 19.6f)
+                // Elle monte vers la droite : sur la photo, le tablier fait
+                // un angle positif avec l'horizon et s'en va vers le haut.
+                // Il descendait, et la perspective tirait l'œil vers le bas
+                // (demande du propriétaire, 2026-11-15). Sa bande s'amincit
+                // en s'éloignant, comme il se doit.
+                val passerelle = floatArrayOf(-3f, 15.4f, 36f, 12.4f, 36f, 18.2f, -3f, 21.6f)
                 piece(quad(passerelle), mix(betonN, gris, 0.16f), 0.6f)
                 // Tout se dessine dans la perspective de la passerelle, le
                 // belvédère compris : il a donc exactement la hauteur de son
@@ -4840,12 +4845,12 @@ object Paysages {
                     rect(0f, 4.2f, 39f, 2f, gris)
                 }
                 // Le mât d'acier sous la tour, et son pied sur la rue.
-                ligne(8.4f, 21f, 8.4f, DEVANT, gris, 0.5f)
-                ligne(20.3f, 22f, 20.3f, DEVANT, gris, 0.4f)
+                ligne(8.4f, 20.6f, 8.4f, DEVANT, gris, 0.5f)
+                ligne(20.3f, 19.6f, 20.3f, DEVANT, gris, 0.4f)
                 // Les obliques d'acier sous la passerelle : celle qui descend
                 // à gauche de la tour, et le mât qui tient le belvédère.
-                ligne(6.2f, 20.4f, -3f, 34f, gris, 0.3f)
-                ligne(31.4f, 21f, 26f, DEVANT, gris, 0.3f)
+                ligne(6.2f, 20.8f, -3f, 34f, gris, 0.3f)
+                ligne(31.4f, 18.6f, 26f, DEVANT, gris, 0.3f)
             }
             // Les arbres du pied : sur la photo ils mangent le bas de la
             // tour, et c'est leur vert sombre qui détache son béton blanc.
