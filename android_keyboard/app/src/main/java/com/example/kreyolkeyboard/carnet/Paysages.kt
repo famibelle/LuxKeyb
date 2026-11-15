@@ -4813,10 +4813,14 @@ object Paysages {
                 // belvédère est posé sur la même poutre, dans la continuité.
                 // Elle monte vers la droite : sur la photo, le tablier fait
                 // un angle positif avec l'horizon et s'en va vers le haut.
-                // Il descendait, et la perspective tirait l'œil vers le bas
-                // (demande du propriétaire, 2026-11-15). Sa bande s'amincit
-                // en s'éloignant, comme il se doit.
-                val passerelle = floatArrayOf(-3f, 15.4f, 36f, 12.4f, 36f, 18.2f, -3f, 21.6f)
+                // Sa bande s'amincit en s'éloignant, comme il se doit.
+                //
+                // Son épaisseur suit la photo du propriétaire, mesurée :
+                // la tour y fait 3,5 fois plus haut que large, et la
+                // passerelle 0,36 fois la largeur de la tour. À 6,2 unités
+                // pour une tour de 11, elle en valait 0,56 et écrasait son
+                // support (demande du propriétaire, 2026-11-15).
+                val passerelle = floatArrayOf(-3f, 16.4f, 36f, 13.4f, 36f, 17f, -3f, 20.4f)
                 piece(quad(passerelle), mix(betonN, gris, 0.16f), 0.6f)
                 // Tout se dessine dans la perspective de la passerelle, le
                 // belvédère compris : il a donc exactement la hauteur de son
@@ -4824,33 +4828,33 @@ object Paysages {
                 // par-dessus en rectangle droit, il dépassait d'une tête et
                 // ne suivait pas la fuite (jugement du propriétaire,
                 // 2026-11-15).
-                surQuad(39f, 6.2f, passerelle) {
+                surQuad(39f, 4f, passerelle) {
                     // Le garde-corps en résille, jusqu'au belvédère.
-                    rect(0f, 0.5f, 29f, 2.9f, mix(betonN, gris, 0.3f))
-                    ligne(0f, 0.5f, 29f, 0.5f, gris, 0.3f)
+                    rect(0f, 0.3f, 29f, 2f, mix(betonN, gris, 0.3f))
+                    ligne(0f, 0.3f, 29f, 0.3f, gris, 0.26f)
                     var mx = 1.5f
-                    while (mx < 29f) { ligne(mx, 0.9f, mx, 3.4f, gris, 0.12f); mx += 3.4f }
+                    while (mx < 29f) { ligne(mx, 0.6f, mx, 2.3f, gris, 0.1f); mx += 3.4f }
                     // Le belvédère : la même bande, mais tout en verre. En
                     // transparence, donc sous 0,95 : on voit le ciel et la
                     // vallée au travers, et ce sont ses montants qui le
                     // dessinent.
-                    rect(29f, 0.5f, 10f, 2.9f, verre, 0.3f)
-                    rect(29f, 0.5f, 10f, 0.8f, mix(verre, 0xFFFFFFFF.toInt(), 0.45f), 0.3f)
-                    ligne(29f, 0.5f, 39f, 0.5f, gris, 0.4f)
-                    ligne(29f, 3.4f, 39f, 3.4f, gris, 0.4f)
-                    ligne(29f, 0.5f, 29f, 3.4f, gris, 0.3f)
-                    ligne(39f, 0.5f, 39f, 3.4f, gris, 0.4f)
-                    ligne(34f, 0.5f, 34f, 3.4f, gris, 0.16f)
+                    rect(29f, 0.3f, 10f, 2f, verre, 0.3f)
+                    rect(29f, 0.3f, 10f, 0.6f, mix(verre, 0xFFFFFFFF.toInt(), 0.45f), 0.3f)
+                    ligne(29f, 0.3f, 39f, 0.3f, gris, 0.34f)
+                    ligne(29f, 2.3f, 39f, 2.3f, gris, 0.34f)
+                    ligne(29f, 0.3f, 29f, 2.3f, gris, 0.26f)
+                    ligne(39f, 0.3f, 39f, 2.3f, gris, 0.34f)
+                    ligne(34f, 0.3f, 34f, 2.3f, gris, 0.14f)
                     // Le tablier, sous les deux.
-                    rect(0f, 4.2f, 39f, 2f, gris)
+                    rect(0f, 2.8f, 39f, 1.2f, gris)
                 }
                 // Le mât d'acier sous la tour, et son pied sur la rue.
-                ligne(8.4f, 20.6f, 8.4f, DEVANT, gris, 0.5f)
-                ligne(20.3f, 19.6f, 20.3f, DEVANT, gris, 0.4f)
+                ligne(8.4f, 19.4f, 8.4f, DEVANT, gris, 0.5f)
+                ligne(20.3f, 18.4f, 20.3f, DEVANT, gris, 0.4f)
                 // Les obliques d'acier sous la passerelle : celle qui descend
                 // à gauche de la tour, et le mât qui tient le belvédère.
-                ligne(6.2f, 20.8f, -3f, 34f, gris, 0.3f)
-                ligne(31.4f, 18.6f, 26f, DEVANT, gris, 0.3f)
+                ligne(6.2f, 19.6f, -3f, 34f, gris, 0.3f)
+                ligne(31.4f, 17.4f, 26f, DEVANT, gris, 0.3f)
             }
             // Les arbres du pied : sur la photo ils mangent le bas de la
             // tour, et c'est leur vert sombre qui détache son béton blanc.
