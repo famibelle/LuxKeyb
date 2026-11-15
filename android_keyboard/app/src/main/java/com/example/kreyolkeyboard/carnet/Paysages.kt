@@ -1262,11 +1262,27 @@ object Paysages {
     internal val RUE_GELLE_FRA = Fuite(floatArrayOf(-4f, 58f), floatArrayOf(86f, 47f), floatArrayOf(-160f, 54f), 170f, taille = 0.62f)
     private val MAISONS_GELLE_FRA = maisonsAuHasard(60, 350, 15f, 22f)
 
-    /** Les deux rues du village d'Esch-sur-Sûre, qui fuient vers le fond de la boucle. */
-    internal val RUE_ESCH_HAUT = Fuite(floatArrayOf(36f, 43.5f), floatArrayOf(150f, 33f), floatArrayOf(-120f, 40f), taille = 0.3f)
-    internal val RUE_ESCH_BAS = Fuite(floatArrayOf(30f, 51.5f), floatArrayOf(150f, 33f), floatArrayOf(-120f, 47f), taille = 0.36f)
-    private val MAISONS_ESCH_HAUT = maisonsAuHasard(32, 117, 12f, 18f)
-    private val MAISONS_ESCH_BAS = maisonsAuHasard(36, 118, 12f, 18f)
+    /**
+     * Le village d'Esch-sur-Sûre, **en bas à droite** comme sur la photo du
+     * propriétaire (2026-11-15), en deux planches de maisons de trois quarts
+     * qui fuient vers le fond de la boucle. C'étaient deux rangées de trente
+     * maisons minuscules qui barraient le milieu de la fenêtre : peu de
+     * maisons et grandes se lisent, beaucoup et petites font une frise.
+     */
+    internal val RUE_ESCH_HAUT = Fuite(floatArrayOf(60f, 46f), floatArrayOf(210f, 38f), floatArrayOf(-60f, 43f), taille = 0.6f)
+    internal val RUE_ESCH_BAS = Fuite(floatArrayOf(56f, 56f), floatArrayOf(210f, 44f), floatArrayOf(-60f, 52f), taille = 0.78f)
+    // Des maisons de village et non d'avenue : un corps bas et un grand
+    // comble d'ardoise percé de lucarnes, comme sur la photo. Elles sont
+    // écrites à la main plutôt que tirées au hasard, pour que le rapport du
+    // toit au mur soit celui-là et pas celui d'un immeuble.
+    private val MAISONS_ESCH_HAUT = arrayOf(
+        floatArrayOf(13f, 10f, 0f, 0f, 7f, 1f), floatArrayOf(11f, 9f, 1f, 0f, 6.4f, 0f),
+        floatArrayOf(14f, 10.5f, 2f, 0f, 7.4f, 1f), floatArrayOf(12f, 9.5f, 3f, 0f, 6.6f, 0f)
+    )
+    private val MAISONS_ESCH_BAS = arrayOf(
+        floatArrayOf(15f, 11f, 0f, 0f, 7.6f, 1f), floatArrayOf(12f, 9.5f, 1f, 0f, 6.8f, 0f),
+        floatArrayOf(14f, 10.5f, 2f, 0f, 7.2f, 1f)
+    )
 
     /** Le village de l'autre rive de la Moselle. */
     internal val RUE_MUSEL = Fuite(floatArrayOf(63f, 32.5f), floatArrayOf(175f, 28.5f), floatArrayOf(-80f, 31f), taille = 0.2f)
@@ -3815,16 +3831,23 @@ object Paysages {
                 feuille(29.2f, 23.5f, 2.4f, 6f, blanc)
                 pieceD("M28.9 23.7L30.4 18.5L31.9 23.7Z", ardoise())
             }
-            // Le village en deux rues de trois quarts, qui fuient vers le
-            // fond de la boucle de la Sûre, l'église entre les deux.
+            // Un second versant boisé, plus sombre et plus près : sur la
+            // photo la forêt descend par ressauts jusqu'aux toits, elle ne
+            // s'arrête pas sur une seule crête.
+            lisiere(-2f, 102f, { x -> 38f + 1.8f * sin(x * 0.19f + 2f) }, 1.3f, 2.1f, 119, nappe(P.milieu, 0.78f))
+            // La Sûre : le village est sur la rive proche, devant elle, et
+            // non posé dessus.
+            riviere(45.5f, 50f, 118, 20f, 30f)
+            // Le village en deux planches de trois quarts, le clocher entre
+            // les deux. L'église du bas est au premier plan, donc dessinée
+            // après la planche du haut.
             val murs = intArrayOf(blanc, duJour(0xFFD8DAD8.toInt()), blanc, duJour(0xFFDDB2A4.toInt()), blanc, duJour(0xFFB9C6D6.toInt()))
-            rue3q(RUE_ESCH_HAUT, MAISONS_ESCH_HAUT, murs, r, ecart = 6f)
+            rue3q(RUE_ESCH_HAUT, MAISONS_ESCH_HAUT, murs, r, ecart = 5f)
             mineral {
-                feuille(56.5f, 33.5f, 3f, 9f, blanc)
-                pieceD("M56.1 33.7L58 25L59.9 33.7Z", ardoise())
+                feuille(76f, 34f, 3.4f, 11f, blanc)
+                pieceD("M75.5 34.2L77.7 24.5L79.9 34.2Z", ardoise())
             }
-            rue3q(RUE_ESCH_BAS, MAISONS_ESCH_BAS, murs, r, ecart = 6f)
-            riviere(51.5f, 56f, 118, 44f, 52f, 58f)
+            rue3q(RUE_ESCH_BAS, MAISONS_ESCH_BAS, murs, r, ecart = 5f)
             c.restore()
             plan(2)
             solDePierre(SolDePierre.PAVES, DEVANT, -0.02f)  // la place au bord de la Sûre
