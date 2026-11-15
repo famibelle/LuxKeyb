@@ -4053,6 +4053,16 @@ object Paysages {
                     trait("M54 ${50f + dy}C62 ${42f + dy} 70 ${33f + dy} 82 ${24f + dy}C90 ${18f + dy} 97 ${15f + dy} 106 ${13f + dy}",
                         if (k % 2 == 0) lit else haut, 1.7f, 0.85f)
                 }
+                // Les joints montants du rocher : chaque banc se débite en
+                // blocs, décalés d'un banc à l'autre. Sans eux les lits seuls
+                // donnaient des bandes lisses, pas du grès.
+                val jointR = sombre(roche, 0.34f)
+                for (k in 0 until 230) {
+                    val px = 56f + r() * 50f
+                    val py = 14f + r() * 44f
+                    ligne(px, py, px + 0.45f, py + 1.9f + r() * 1.2f, jointR, 0.3f, 0.7f)
+                    ligne(px + 0.55f, py, px + 1f, py + 1.5f, mix(roche, 0xFFFFFFFF.toInt(), 0.24f), 0.26f, 0.5f)
+                }
                 // Les diaclases : le grès du Bock se débite en gros blocs, et
                 // la falaise est coupée de fentes verticales d'où sort la
                 // verdure. Sans elles les lits seuls faisaient une dune rayée.
@@ -4072,6 +4082,8 @@ object Paysages {
                         "L${rx + 12f} ${ry - 4.2f}C${rx + 8f} ${ry - 3.2f} ${rx + 4f} ${ry - 1.4f} $rx ${ry + 1.2f}Z",
                         mix(roche, 0xFFFFFFFF.toInt(), 0.26f), 0f)
                 }
+                // Le pied de la falaise, dans l'ombre des arbres du Grund.
+                rect(56f, 38f, 50f, 24f, sombre(roche, 0.28f), 0.4f)
                 c.restore()
             }
             // La ville haute, debout sur la corniche, et dessinée AVANT le
@@ -4085,30 +4097,55 @@ object Paysages {
                 duJour(0xFFEDE8DC.toInt()), duJour(0xFFDAD6CC.toInt()), duJour(0xFFE7DBCB.toInt())
             ), r)
             mineral {
-                // Le rempart sur la corniche : du moellon assisé, pas un aplat.
+                // Le rempart, en vrai appareil : des blocs de grès taillés un
+                // par un, en assises parallèles à la crête, décalées d'une
+                // assise à l'autre. Des joints tracés sur un aplat donnaient
+                // un grillage, pas de la pierre (propriétaire, 2026-11-15).
                 val mur = neutre(duJour(0xFFC3BBA8.toInt()))
-                val remp = chemin("M79 27.5C86 21 94 16.5 103 14L103 8.4C93 10.9 85 15.4 77 23Z")
-                piece(remp, mur)
-                c.save()
-                c.clipPath(remp)
-                val jointM = sombre(mur, 0.42f)
-                for (dy in floatArrayOf(1.6f, 3.2f, 4.8f, 6.4f)) {
-                    trait("M77 ${23f + dy}C85 ${15.4f + dy} 93 ${10.9f + dy} 103 ${8.4f + dy}", jointM, 0.22f, 0.7f)
+                val rouille = neutre(duJour(0xFFAC9574.toInt()))
+                val quadMur = floatArrayOf(77f, 23f, 103f, 8.4f, 103f, 14f, 79f, 27.5f)
+                piece(quad(quadMur), sombre(mur, 0.5f))
+                surQuad(30f, 6f, quadMur) {
+                    c.save()
+                    c.clipRect(0f, 0f, 30f, 6f)
+                    var by = 0f
+                    var rang = 0
+                    while (by < 6f) {
+                        val bh = min(1.35f + r() * 0.5f, 6f - by)
+                        var bx = -1f - (rang % 2) * 1.8f
+                        while (bx < 30f) {
+                            val bw = 2.4f + r() * 2.6f
+                            val d = r()
+                            val face = when {
+                                d < 0.32f -> sombre(mur, 0.14f + r() * 0.26f)
+                                d < 0.64f -> mix(mur, 0xFFFFFFFF.toInt(), 0.08f + r() * 0.18f)
+                                else -> mix(mur, rouille, 0.35f + r() * 0.45f)
+                            }
+                            val w = bw - 0.34f
+                            val h = bh - 0.3f
+                            rect(bx, by, w, h, face)
+                            // L'arête du bloc prend le jour, son pied reste dans le joint.
+                            rect(bx, by, w, 0.13f, mix(face, 0xFFFFFFFF.toInt(), 0.32f), 0.75f)
+                            rect(bx, by + h - 0.13f, w, 0.13f, sombre(face, 0.45f), 0.6f)
+                            bx += bw
+                        }
+                        by += bh
+                        rang++
+                    }
+                    // Le ruissellement : le pied du mur est plus sombre, le
+                    // couronnement lavé par la pluie.
+                    rect(0f, 4.3f, 30f, 1.7f, sombre(mur, 0.24f), 0.32f)
+                    rect(0f, 0f, 30f, 0.7f, mix(mur, 0xFFFFFFFF.toInt(), 0.16f), 0.4f)
+                    c.restore()
                 }
-                var jk = 0
-                while (jk < 16) {
-                    val u = jk / 16f
-                    val jx = 77f + u * 26f
-                    val jy = 23f - u * 14.6f
-                    ligne(jx, jy, jx + 1.4f, jy + 4.6f, jointM, 0.2f, 0.6f)
-                    jk++
-                }
-                c.restore()
-                trait("M77 23C85 15.4 93 10.9 103 8.4", mix(mur, 0xFFFFFFFF.toInt(), 0.22f), 0.5f, 0.8f)
+                // Les créneaux, de la même pierre, avec leur ombre portée.
                 var k = 0
                 while (k < 9) {
                     val u = k / 9f
-                    rect(78f + u * 24f, 24.6f - u * 11.4f, 1.3f, 1.1f, mur)
+                    val cx = 78f + u * 24f
+                    val cy = 24.6f - u * 11.4f
+                    rect(cx, cy, 1.3f, 1.1f, mix(mur, 0xFFFFFFFF.toInt(), 0.08f))
+                    rect(cx, cy + 1.1f, 1.3f, 0.3f, sombre(mur, 0.35f), 0.45f)
                     k++
                 }
             }
