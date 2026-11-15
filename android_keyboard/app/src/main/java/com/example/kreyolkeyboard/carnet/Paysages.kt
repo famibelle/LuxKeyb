@@ -4763,7 +4763,12 @@ object Paysages {
             // était une dalle gris-beige collée au bord droit, à moitié hors
             // cadre, que l'on ne remarquait pas (jugé sur la photo, 2026-11-15).
             val beton = duJour(0xFFF7F7F5.toInt())
-            val gris = duJour(0xFF55595F.toInt())
+            // L'acier et le béton dessinés à la main passent par [neutre],
+            // comme tout le bâti (règle 10) : sans lui, `raviver` virait le
+            // gris au brun et cernait chaque pièce d'un liséré orange. Le
+            // [beton] brut reste pour [boite3q], qui neutralise lui-même.
+            val gris = neutre(duJour(0xFF55595F.toInt()))
+            val betonN = neutre(beton)
             val verre = duJour(0xFF9FD3EC.toInt())
             mineral {
                 // La tour d'abord : la passerelle passera devant elle.
@@ -4807,9 +4812,9 @@ object Paysages {
                 // lisse, le tablier une poutre sombre dessous, et le
                 // belvédère est posé sur la même poutre, dans la continuité.
                 val passerelle = floatArrayOf(-3f, 13.4f, 36f, 14.8f, 36f, 20.4f, -3f, 19.6f)
-                piece(quad(passerelle), mix(beton, gris, 0.16f), 0.6f)
+                piece(quad(passerelle), mix(betonN, gris, 0.16f), 0.6f)
                 surQuad(39f, 6.2f, passerelle) {
-                    rect(0f, 0.5f, 39f, 2.9f, mix(beton, gris, 0.3f))
+                    rect(0f, 0.5f, 39f, 2.9f, mix(betonN, gris, 0.3f))
                     ligne(0f, 0.5f, 39f, 0.5f, gris, 0.3f)
                     var mx = 1.5f
                     while (mx < 39f) { ligne(mx, 0.9f, mx, 3.4f, gris, 0.12f); mx += 3.4f }
@@ -4817,10 +4822,20 @@ object Paysages {
                 }
                 // Le belvédère vitré, au bout : il repose sur le tablier et
                 // dépasse d'une tête, comme sur la photo.
-                feuille(26f, 11.2f, 10f, 9.6f, verre, 0.5f)
-                ligne(26f, 11.2f, 36f, 11.2f, gris, 0.42f)
-                ligne(36f, 11.2f, 36f, 20.8f, gris, 0.42f)
-                ligne(31f, 11.6f, 31f, 20.4f, gris, 0.16f)
+                //
+                // En verre, donc posé à plat et transparent ([rect] sous 0,95,
+                // pas [feuille]) : en pièce de papier il prenait son bord de
+                // kraft et son ombre, et se lisait comme un carton collé sur
+                // le décor (jugement du propriétaire, 2026-11-15). On voit le
+                // ciel au travers, et ce sont ses montants d'acier qui le
+                // dessinent.
+                rect(26f, 11.2f, 10f, 9.6f, verre, 0.3f)
+                rect(26f, 11.2f, 10f, 2.2f, mix(verre, 0xFFFFFFFF.toInt(), 0.45f), 0.35f)
+                ligne(26f, 11.2f, 36f, 11.2f, gris, 0.4f)
+                ligne(26f, 20.8f, 36f, 20.8f, gris, 0.5f)
+                ligne(26f, 11.2f, 26f, 20.8f, gris, 0.3f)
+                ligne(36f, 11.2f, 36f, 20.8f, gris, 0.4f)
+                ligne(31f, 11.2f, 31f, 20.8f, gris, 0.16f)
                 // Le mât d'acier sous la tour, et son pied sur la rue.
                 ligne(8.4f, 21f, 8.4f, DEVANT, gris, 0.5f)
                 ligne(20.3f, 22f, 20.3f, DEVANT, gris, 0.4f)
@@ -4840,9 +4855,14 @@ object Paysages {
         /** La cabine vitrée de l'ascenseur, son haut en [y]. */
         fun cabine(y: Float) {
             val gris = duJour(0xFF55595F.toInt())
-            feuille(12.4f, y, 4.4f, 6f, duJour(0xFF9FD3EC.toInt()), 0.4f)
-            ligne(12.4f, y, 16.8f, y, gris, 0.35f)
-            ligne(12.4f, y + 6f, 16.8f, y + 6f, gris, 0.35f)
+            // Du verre dans la gaine, et non un carton bleu posé dessus :
+            // voir la note du belvédère, même remarque du propriétaire.
+            rect(12.4f, y, 4.4f, 6f, duJour(0xFF9FD3EC.toInt()), 0.42f)
+            rect(12.4f, y, 4.4f, 1.4f, duJour(0xFFD8EEF8.toInt()), 0.4f)
+            ligne(12.4f, y, 16.8f, y, gris, 0.3f)
+            ligne(12.4f, y + 6f, 16.8f, y + 6f, gris, 0.4f)
+            ligne(12.4f, y, 12.4f, y + 6f, gris, 0.16f)
+            ligne(16.8f, y, 16.8f, y + 6f, gris, 0.16f)
             if (P.allume) rect(74.8f, y + 0.6f, 3.8f, 4.8f, P.fenetre, 0.6f)
         }
 
