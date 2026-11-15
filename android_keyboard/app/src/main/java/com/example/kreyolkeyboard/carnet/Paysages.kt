@@ -2826,7 +2826,7 @@ object Paysages {
         private fun tonsDuPied(saison: Saison?, lointain: Boolean): IntArray {
             val t = when (saison) {
                 Saison.HIERSCHT -> intArrayOf(duJour(0xFF9A5A22.toInt()), duJour(0xFFD08A34.toInt()), duJour(0xFFC9A869.toInt()))
-                Saison.WANTER -> intArrayOf(duJour(0xFF7A6448.toInt()), duJour(0xFFB59A72.toInt()), duJour(0xFFCDB894.toInt()))
+                Saison.WANTER -> intArrayOf(neutre(duJour(0xFF6B625A.toInt())), neutre(duJour(0xFF9B9287.toInt())), neutre(duJour(0xFFBDB6A9.toInt())))
                 Saison.FREIJOER -> intArrayOf(vert(0.25f), mix(vert(0.7f), 0xFFB8DC6A.toInt(), 0.35f), duJour(0xFFC9B87A.toInt()))
                 else -> intArrayOf(vert(0.1f), vert(0.42f), duJour(0xFFC9B06A.toInt()))
             }
@@ -3017,7 +3017,7 @@ object Paysages {
             if (tons == null) {
                 // L'hiver, les brins nus du saule, couleur de paille.
                 piece(branche, bois(), 0.9f)
-                piece(brins, duJour(0xFFC9A23A.toInt()), 0.5f)
+                piece(brins, neutre(duJour(0xFFB3A692.toInt())), 0.5f)
                 return
             }
             piece(f1, tons[0], 0.7f)
@@ -5230,14 +5230,18 @@ object Paysages {
         fun peitrusdall() {
             lisiere(16f, 84f, { x -> 34f + 2f * sin(x * 0.2f) }, 2f, 3f, 296, mix(vert(0.4f), P.loin, 0.35f))
             plan(1)
-            val pierre = duJour(0xFFD3C29C.toInt())
+            // Le pont Adolphe est du bâti : sa pierre passe par [neutre],
+            // sinon `raviver` la tire vers l'ocre de la vallée derrière elle
+            // et l'arche disparaît (règles 1 et 10 de la skill
+            // `direction-artistique`, jugé en main sur un A21s le 2026-11-15).
+            val pierre = neutre(duJour(0xFFD3C29C.toInt()))
             // Le pont Adolphe dessiné de face, posé de trois quarts : son pied
             // gauche tout près, son tablier qui fuit vers la droite.
             surQuad(PONT_PEITRUSDALL_L, PONT_PEITRUSDALL_H, PONT_PEITRUSDALL, x0 = -3f, y0 = 0f) { mineral {
                 pieceD("M-3 6L86 5L86 10L-3 11Z", pierre)
                 feuille(-3f, 5f, 89f, 0.8f, sombre(pierre, 0.25f), 0f)
                 pieceD("M-3 10.6L50 10.2L46 13C30 14 14 26 8 46L-3 46Z", pierre)
-                pieceD("M8 46C14 26 30 13 46 12.6C62 12 76 18 86 28L82 30C74 21 62 16 46 16.4C32 17 18 28 12 46Z", sombre(pierre, 0.12f))
+                pieceD("M8 46C14 26 30 13 46 12.6C62 12 76 18 86 28L82 30C74 21 62 16 46 16.4C32 17 18 28 12 46Z", sombre(pierre, 0.24f))
                 for (ax in floatArrayOf(2f, 10f, 18f, 26f)) {
                     val h = 12f + (30f - ax) * 0.3f
                     pieceD("M$ax ${h + 6f}L$ax ${h + 2f}C$ax ${h - 0.6f} ${ax + 5f} ${h - 0.6f} ${ax + 5f} ${h + 2f}L${ax + 5f} ${h + 6f}Z", sombre(pierre, 0.45f), 0f)

@@ -230,6 +230,11 @@ internal object Habillage {
         }
         fun vegetal(i: Int): Boolean = if (releve != null) (releve[i] ushr 24) > 127 else vegetalPixel(px[i])
         val rouille = arrayOf(intArrayOf(214, 118, 38), intArrayOf(186, 64, 36), intArrayOf(230, 176, 58), intArrayOf(160, 92, 40))
+        // Le soir et la nuit, la palette est déjà orange : rouiller d'autant
+        // par-dessus donnait un incendie où plus rien ne se lisait (carte
+        // `Kuch`, Mëllerdall du soir, jugée en main sur un A21s le
+        // 2026-11-15). La rouille y va donc à force réduite.
+        val forceRouille = if (P.rang >= 2) 0.55f else 1f
         // Les taches de l'automne mesurent deux unités et demie de la boîte,
         // quelle que soit la taille du rendu : des blocs de quelques pixels se
         // lisaient en hachures sur la carte et en confettis sur la vignette.
@@ -325,7 +330,7 @@ internal object Habillage {
                         val a = rouille[n.toInt().coerceIn(0, 2)]
                         val b = rouille[(n.toInt() + 1).coerceIn(0, 3)]
                         val f = n - n.toInt()
-                        val t = 0.38f + 0.2f * bruitCase(bruit71, grilleX, o, fx, rangeeF)
+                        val t = (0.38f + 0.2f * bruitCase(bruit71, grilleX, o, fx, rangeeF)) * forceRouille
                         rr += (a[0] + (b[0] - a[0]) * f - rr) * t
                         gg += (a[1] + (b[1] - a[1]) * f - gg) * t
                         bb += (a[2] + (b[2] - a[2]) * f - bb) * t

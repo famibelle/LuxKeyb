@@ -139,7 +139,8 @@ class PlancheCartesTest {
         val decoupe = android.graphics.Path().apply { addRect(visible, android.graphics.Path.Direction.CW) }
         val pinceau = Paint(Paint.ANTI_ALIAS_FLAG)
         val cases = ArrayList<Pair<String, Bitmap>>()
-        val lieux = listOf(Lieu.NEI_BRECK, Lieu.HAFF_REIMECH, Lieu.CONZEFENN, Lieu.MUSEL, Lieu.MELLERDALL, Lieu.GELLE_FRA)
+        val lieux = System.getProperty("planche.lieux")?.takeIf { it.isNotBlank() }?.let { lieuxChoisis() }
+            ?: listOf(Lieu.NEI_BRECK, Lieu.HAFF_REIMECH, Lieu.CONZEFENN, Lieu.MUSEL, Lieu.MELLERDALL, Lieu.GELLE_FRA)
         for (lieu in lieux) for (mois in intArrayOf(4, 7, 10, 1)) {
             val souvenir = Souvenir.du(2026, mois, 15)
             val motif = Motif("Bréck", Rarete.COMMUN, zone, blason(lieu), souvenir).apply { profondeur = true }
