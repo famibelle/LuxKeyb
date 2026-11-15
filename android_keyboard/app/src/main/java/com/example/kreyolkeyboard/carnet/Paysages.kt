@@ -4754,30 +4754,45 @@ object Paysages {
             plan(2)
             solDePierre(SolDePierre.PAVES, DEVANT, -0.02f)  // la rue du Pfaffenthal
             poser(DEVANT)
-            val beton = duJour(0xFFEDEDEB.toInt())
+            // Le béton de la tour est blanc, et c'est lui le sujet du lieu :
+            // sur la photo du propriétaire, la tour crève le ciel au milieu
+            // et la passerelle la traverse, les deux formant une croix. Elle
+            // était une dalle gris-beige collée au bord droit, à moitié hors
+            // cadre, que l'on ne remarquait pas (jugé sur la photo, 2026-11-15).
+            val beton = duJour(0xFFF7F7F5.toInt())
             val gris = duJour(0xFF55595F.toInt())
             val verre = duJour(0xFF9FD3EC.toInt())
             mineral {
+                // La tour d'abord : la passerelle passera devant elle.
+                // Élancée et non massive : la tour est haute et étroite, et ce
+                // sont ses arêtes d'acier qui la détachent. Son béton blanc
+                // seul se perdait dans le ciel pâle du matin, là où la photo
+                // le détache sur un bleu franc.
+                boite3q(72f, DEVANT, 11f, 63f, 6f, beton, versDroite = false, pente = 0.05f, dessus = false) {
+                    // Le local de machinerie, en haut, plus sombre.
+                    rect(0f, 0f, 11f, 2.4f, mix(beton, gris, 0.42f))
+                    // La gaine vitrée où monte la cabine, et ses lames d'acier.
+                    rect(3.4f, 3.2f, 4.4f, 24f, mix(beton, gris, 0.62f))
+                    var ly = 4f
+                    while (ly < 27f) { ligne(3.4f, ly, 7.8f, ly, gris, 0.26f); ly += 1.1f }
+                    // Les deux arêtes, qui donnent sa silhouette à la tour.
+                    rect(0f, 0f, 0.75f, 63f, mix(beton, gris, 0.55f))
+                    rect(10.25f, 0f, 0.75f, 63f, mix(beton, gris, 0.3f))
+                }
                 // La passerelle vers la ville haute : elle arrive de la gauche,
-                // plus épaisse au premier plan, et fuit jusqu'à la tour.
-                val passerelle = floatArrayOf(-3f, 6.4f, 80f, 10.4f, 80f, 15.4f, -3f, 14f)
-                piece(quad(passerelle), mix(beton, P.pres, 0.1f), 0.6f)
-                surQuad(82f, 5.6f, passerelle) {
-                    rect(0f, 0f, 82f, 2.6f, verre, 0.9f)
-                    rect(0f, 4.4f, 82f, 1.2f, gris)
+                // plus épaisse au premier plan, et traverse la tour jusqu'au
+                // bord droit, où elle s'achève sur sa cabine vitrée.
+                val passerelle = floatArrayOf(-3f, 7.2f, 103f, 11.6f, 103f, 16.6f, -3f, 14.8f)
+                piece(quad(passerelle), mix(beton, P.pres, 0.12f), 0.6f)
+                surQuad(106f, 6f, passerelle) {
+                    rect(0f, 0f, 106f, 2.8f, verre, 0.9f)
+                    rect(0f, 4.7f, 106f, 1.3f, gris)
                     var mx = 0f
-                    while (mx < 82f) { ligne(mx, 0f, mx, 2.6f, gris, 0.18f); mx += 3f }
+                    while (mx < 106f) { ligne(mx, 0f, mx, 2.8f, gris, 0.18f); mx += 3f }
                 }
-                // La tour de l'ascenseur, de trois quarts : sa face, ses lames,
-                // et son flanc qui fuit vers la gauche, le long de la cabine.
-                boite3q(80f, DEVANT, 14f, 61.5f, 8f, beton, versDroite = false, pente = 0.06f, dessus = false) {
-                    rect(4.5f, 3f, 5f, 14f, mix(beton, gris, 0.35f))
-                    var ly = 3.8f
-                    while (ly < 17f) { ligne(4.5f, ly, 9.5f, ly, gris, 0.2f); ly += 1.1f }
-                }
-                feuille(94f, 17f, 9f, 7f, verre, 0.5f)
-                feuille(94f, 24f, 9f, 1.2f, gris, 0f)
-                ligne(79.3f, 14.8f, 79.3f, DEVANT, gris, 0.5f)
+                // Le mât d'acier sous la tour, et son pied sur la rue.
+                ligne(71.4f, 16f, 71.4f, DEVANT, gris, 0.5f)
+                ligne(83.3f, 17f, 83.3f, DEVANT, gris, 0.4f)
             }
             if (!vivant) cabine(30f)
             touffe(vert(0.55f), 1f, 52f, 7f, 10f, 55f, 5f, -2f, 42f, 6f, 6f, 46f, 4f)
@@ -4787,9 +4802,9 @@ object Paysages {
         /** La cabine vitrée de l'ascenseur, son haut en [y]. */
         fun cabine(y: Float) {
             val gris = duJour(0xFF55595F.toInt())
-            feuille(74.2f, y, 5f, 6f, duJour(0xFF9FD3EC.toInt()), 0.4f)
-            ligne(74.2f, y, 79.2f, y, gris, 0.35f)
-            ligne(74.2f, y + 6f, 79.2f, y + 6f, gris, 0.35f)
+            feuille(75.4f, y, 4.4f, 6f, duJour(0xFF9FD3EC.toInt()), 0.4f)
+            ligne(75.4f, y, 79.8f, y, gris, 0.35f)
+            ligne(75.4f, y + 6f, 79.8f, y + 6f, gris, 0.35f)
             if (P.allume) rect(74.8f, y + 0.6f, 3.8f, 4.8f, P.fenetre, 0.6f)
         }
 
