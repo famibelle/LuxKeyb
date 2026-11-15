@@ -4781,28 +4781,30 @@ object Paysages {
                 // [boite3q] projette, `p` × 0,62, soit 9 + 2 = 11) : la tour
                 // fait 3,5 fois plus haut que large, et la passerelle court
                 // sur 4,8 fois cette largeur. Elle n'en faisait que 3,5, et
-                // paraissait courte et basse (propriétaire, 2026-11-15).
-                val passerelle = floatArrayOf(-3f, 17f, 50f, 12.6f, 50f, 17.5f, -3f, 22.5f)
+                // paraissait courte et basse (propriétaire, 2026-11-15) ; son
+                // épaisseur a été relevée deux fois à son œil, 4,3 puis 5,5,
+                // et vaut maintenant 6,5 unités, soit 0,59 largeur de tour.
+                val passerelle = floatArrayOf(-3f, 16f, 50f, 11.9f, 50f, 17.7f, -3f, 22.5f)
                 piece(quad(passerelle), mix(betonN, gris, 0.16f), 0.6f)
-                surQuad(53f, 5.5f, passerelle) {
+                surQuad(53f, 6.5f, passerelle) {
                     // Le garde-corps en résille, et le tablier sombre dessous.
-                    rect(0f, 0.4f, 41f, 2.8f, mix(betonN, gris, 0.3f))
-                    ligne(0f, 0.4f, 41f, 0.4f, gris, 0.3f)
+                    rect(0f, 0.45f, 41f, 3.3f, mix(betonN, gris, 0.3f))
+                    ligne(0f, 0.45f, 41f, 0.45f, gris, 0.3f)
                     var mx = 1.8f
-                    while (mx < 41f) { ligne(mx, 0.8f, mx, 3.2f, gris, 0.12f); mx += 4f }
+                    while (mx < 41f) { ligne(mx, 0.9f, mx, 3.75f, gris, 0.12f); mx += 4f }
                     // Le bout vitré : la passerelle s'achève sur ses fenêtres,
                     // dans sa propre hauteur. Il n'y a pas de cube de verre
                     // sur la photo du propriétaire, c'était une invention
                     // (jugement du propriétaire, 2026-11-15).
-                    rect(41f, 0.4f, 12f, 2.8f, verre, 0.22f)
-                    rect(41f, 0.4f, 12f, 0.7f, mix(verre, 0xFFFFFFFF.toInt(), 0.5f), 0.3f)
-                    ligne(41f, 0.4f, 53f, 0.4f, gris, 0.42f)
-                    ligne(41f, 3.2f, 53f, 3.2f, gris, 0.42f)
-                    ligne(41f, 0.4f, 41f, 3.2f, gris, 0.3f)
-                    ligne(52.9f, 0.4f, 52.9f, 3.2f, gris, 0.42f)
-                    for (vx in floatArrayOf(45f, 49f)) ligne(vx, 0.4f, vx, 3.2f, gris, 0.16f)
+                    rect(41f, 0.45f, 12f, 3.3f, verre, 0.22f)
+                    rect(41f, 0.45f, 12f, 0.8f, mix(verre, 0xFFFFFFFF.toInt(), 0.5f), 0.3f)
+                    ligne(41f, 0.45f, 53f, 0.45f, gris, 0.42f)
+                    ligne(41f, 3.75f, 53f, 3.75f, gris, 0.42f)
+                    ligne(41f, 0.45f, 41f, 3.75f, gris, 0.3f)
+                    ligne(52.9f, 0.45f, 52.9f, 3.75f, gris, 0.42f)
+                    for (vx in floatArrayOf(45f, 49f)) ligne(vx, 0.45f, vx, 3.75f, gris, 0.16f)
                     // Le tablier, sous toute la longueur.
-                    rect(0f, 3.8f, 53f, 1.7f, gris)
+                    rect(0f, 4.5f, 53f, 2f, gris)
                 }
 
                 // La tour par-dessus : elle masque la passerelle derrière elle.
@@ -4822,11 +4824,11 @@ object Paysages {
                 }
 
                 // Le mât d'acier sous la tour, et son pied sur la rue.
-                ligne(8.4f, 21.4f, 8.4f, DEVANT, gris, 0.5f)
-                ligne(19.6f, 20.4f, 19.6f, DEVANT, gris, 0.4f)
+                ligne(8.4f, 21.5f, 8.4f, DEVANT, gris, 0.5f)
+                ligne(19.6f, 20.5f, 19.6f, DEVANT, gris, 0.4f)
                 // Les obliques sous la passerelle.
-                ligne(6.2f, 21.6f, -3f, 34f, gris, 0.3f)
-                ligne(44f, 18.1f, 38f, DEVANT, gris, 0.3f)
+                ligne(6.2f, 21.7f, -3f, 34f, gris, 0.3f)
+                ligne(44f, 18.2f, 38f, DEVANT, gris, 0.3f)
             }
             // Les arbres du pied : sur la photo ils mangent le bas de la
             // tour, et c'est leur vert sombre qui détache son béton blanc.
