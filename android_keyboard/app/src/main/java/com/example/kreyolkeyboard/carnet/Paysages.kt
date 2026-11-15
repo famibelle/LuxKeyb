@@ -3785,7 +3785,7 @@ object Paysages {
             val r = Alea(115)
             lisiere(-2f, 102f, { x -> 12f + 5f * cos(x * 0.028f) + sin(x * 0.2f) * 0.6f }, 1.5f, 2.4f, 116,
                 mix(P.loin, P.milieu, 0.45f))
-            pieceD("M80 22C84 18 90 17 95 20L99 36L78 38Z", duJour(0xFF9C7C56.toInt()), 0.5f)
+            pieceD("M80 22C84 18 90 17 95 20L99 36L78 38Z", neutre(duJour(0xFF9C7C56.toInt())), 0.5f)
             plan(1)
             plancher(56f, DEVANT)
             poser(56f)
@@ -3810,21 +3810,27 @@ object Paysages {
             plan(2)
             solDePierre(SolDePierre.PAVES, DEVANT, -0.02f)  // la place au bord de la Sûre
             poser(DEVANT)
-            val roc = duJour(0xFFB09670.toInt())
+            // Le schiste d'Esch-sur-Sûre, le rocher et le donjon sont
+            // neutralisés : sans cela le ravivage les tirait vers un ocre
+            // jaune, et la matière bâtie n'a pas de jaune (règle 10). Leurs
+            // faces à l'ombre passent par [sombre] et non plus par un mélange
+            // avec [P.pres], qui est un vert : sur une pierre ocre il donnait
+            // un olive plausible, sur une pierre grise un pan de mur vert.
+            val roc = neutre(duJour(0xFFB09670.toInt()))
             mineral {
                 pieceD("M-2 58.5L-2 41C4 39 12 38 20 40C26 42 31 50 35 58.5Z", roc)
-                pieceD("M8 58.5C10 52 16 48 22 47C26 50 28 54 29 58.5Z", mix(roc, P.pres, 0.25f), 0.6f)
+                pieceD("M8 58.5C10 52 16 48 22 47C26 50 28 54 29 58.5Z", sombre(roc, 0.25f), 0.6f)
             }
-            pieceD("M-2 43C4 40 12 39 20 41C24 42 27 45 29 48L26 48C22 44.5 14 42.5 -2 45.5Z", duJour(0xFF9A8C58.toInt()), 0.5f)
-            val pierre = duJour(0xFFA79A88.toInt())
+            pieceD("M-2 43C4 40 12 39 20 41C24 42 27 45 29 48L26 48C22 44.5 14 42.5 -2 45.5Z", neutre(duJour(0xFF9A8C58.toInt())), 0.5f)
+            val pierre = neutre(duJour(0xFFA79A88.toInt()))
             mineral {
                 pieceD("M3 42L3 9.2C3 7.6 23 7.6 23 9.2L23 42Z", pierre)
-                pieceD("M17 42L17 8.3C20 8.5 22.4 8.8 23 9.2L23 42Z", mix(pierre, P.pres, 0.32f), 0f)
+                pieceD("M17 42L17 8.3C20 8.5 22.4 8.8 23 9.2L23 42Z", sombre(pierre, 0.32f), 0f)
                 pieceD("M3 42L3 9.2C3.4 8.7 4.6 8.4 6 8.2L6 42Z", mix(pierre, 0xFFFFFFFF.toInt(), 0.16f), 0f)
-                feuille(2.6f, 7.8f, 20.8f, 1.6f, mix(pierre, P.pres, 0.18f), 0.5f)
-                val joint = mix(pierre, P.pres, 0.4f)
+                feuille(2.6f, 7.8f, 20.8f, 1.6f, sombre(pierre, 0.18f), 0.5f)
+                val joint = sombre(pierre, 0.45f)
                 for (y in floatArrayOf(14f, 20f, 26f, 32f, 38f)) ligne(3f, y, 23f, y, joint, 0.18f, 0.6f)
-                val trou = mix(P.pres, 0xFF000000.toInt(), 0.4f)
+                val trou = sombre(pierre, 0.8f)
                 rect(10.4f, 13f, 2f, 3.2f, trou); rond(11.4f, 13f, 1f, trou)
                 rect(15.2f, 25.5f, 1.5f, 3f, trou); rect(6.5f, 32f, 1.3f, 2.6f, trou)
                 if (P.allume) rect(10.7f, 13.6f, 1.4f, 2.2f, P.fenetre, 0.9f)
