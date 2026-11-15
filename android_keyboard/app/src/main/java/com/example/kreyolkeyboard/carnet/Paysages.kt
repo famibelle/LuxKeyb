@@ -4781,24 +4781,31 @@ object Paysages {
                 // de machinerie et de ses garde-corps, avec du ciel au-dessus.
                 // Montant jusqu'au bord, elle ne lisait plus comme une tour
                 // mais comme un pilier (jugement du propriétaire, 2026-11-15).
-                boite3q(9f, DEVANT, 11f, HAUT_PAFENDALL, 6f, beton,
+                // Largeur dessinée = la face **plus le flanc** que [boite3q]
+                // projette (`p` × 0,62) : la tour mesurait donc 14,7 unités
+                // et non 11, et tous les rapports en découlaient faux. Face
+                // de 9 et flanc de 2 font 11 unités au total, pour 38,5
+                // visibles au-dessus des arbres : 3,5 fois plus haut que
+                // large, exactement le rapport mesuré sur la photo du
+                // propriétaire (3,51).
+                boite3q(9f, DEVANT, 9f, HAUT_PAFENDALL, 3.2f, beton,
                         versDroite = true, pente = 0.05f, dessus = true) {
                     // Le local de machinerie, en haut, plus sombre.
-                    rect(0f, 0f, 11f, 2.6f, mix(beton, gris, 0.42f))
+                    rect(0f, 0f, 9f, 2.6f, mix(beton, gris, 0.42f))
                     // La gaine vitrée où monte la cabine, et ses lames d'acier.
-                    rect(3.4f, 3.4f, 4.4f, 24f, mix(beton, gris, 0.62f))
+                    rect(2.8f, 3.4f, 3.6f, 24f, mix(beton, gris, 0.62f))
                     var ly = 4.2f
-                    while (ly < 27f) { ligne(3.4f, ly, 7.8f, ly, gris, 0.26f); ly += 1.1f }
+                    while (ly < 27f) { ligne(2.8f, ly, 6.4f, ly, gris, 0.26f); ly += 1.1f }
                     // Les deux arêtes, qui donnent sa silhouette à la tour.
-                    rect(0f, 0f, 0.75f, HAUT_PAFENDALL, mix(beton, gris, 0.55f))
-                    rect(10.25f, 0f, 0.75f, HAUT_PAFENDALL, mix(beton, gris, 0.3f))
+                    rect(0f, 0f, 0.65f, HAUT_PAFENDALL, mix(beton, gris, 0.55f))
+                    rect(8.35f, 0f, 0.65f, HAUT_PAFENDALL, mix(beton, gris, 0.3f))
                 }
                 // Les garde-corps du belvédère, au sommet.
                 var gx = 9.6f
-                while (gx < 19.6f) { ligne(gx, DEVANT - HAUT_PAFENDALL - 2.2f, gx, DEVANT - HAUT_PAFENDALL, gris, 0.16f); gx += 1.3f }
-                ligne(9.4f, DEVANT - HAUT_PAFENDALL - 2.2f, 19.8f, DEVANT - HAUT_PAFENDALL - 2.2f, gris, 0.28f)
+                while (gx < 19.4f) { ligne(gx, DEVANT - HAUT_PAFENDALL - 2.2f, gx, DEVANT - HAUT_PAFENDALL, gris, 0.16f); gx += 1.3f }
+                ligne(9.3f, DEVANT - HAUT_PAFENDALL - 2.2f, 19.9f, DEVANT - HAUT_PAFENDALL - 2.2f, gris, 0.28f)
                 // Les quatre tiges d'antenne qui dépassent du belvédère.
-                for (ax in floatArrayOf(10.6f, 13.2f, 16.2f, 18.8f))
+                for (ax in floatArrayOf(10.4f, 13f, 15.8f, 18.4f))
                     ligne(ax, DEVANT - HAUT_PAFENDALL - 5.6f, ax, DEVANT - HAUT_PAFENDALL - 2.2f, gris, 0.12f)
                 // La passerelle vers la ville haute : elle arrive de la
                 // gauche, plus épaisse au premier plan, traverse la tour et
@@ -4850,7 +4857,7 @@ object Paysages {
                 }
                 // Le mât d'acier sous la tour, et son pied sur la rue.
                 ligne(8.4f, 19.4f, 8.4f, DEVANT, gris, 0.5f)
-                ligne(20.3f, 18.4f, 20.3f, DEVANT, gris, 0.4f)
+                ligne(19.6f, 18.4f, 19.6f, DEVANT, gris, 0.4f)
                 // Les obliques d'acier sous la passerelle : celle qui descend
                 // à gauche de la tour, et le mât qui tient le belvédère.
                 ligne(6.2f, 19.6f, -3f, 34f, gris, 0.3f)
@@ -4869,12 +4876,12 @@ object Paysages {
             val gris = duJour(0xFF55595F.toInt())
             // Du verre dans la gaine, et non un carton bleu posé dessus :
             // voir la note du belvédère, même remarque du propriétaire.
-            rect(12.4f, y, 4.4f, 6f, duJour(0xFF9FD3EC.toInt()), 0.42f)
-            rect(12.4f, y, 4.4f, 1.4f, duJour(0xFFD8EEF8.toInt()), 0.4f)
-            ligne(12.4f, y, 16.8f, y, gris, 0.3f)
-            ligne(12.4f, y + 6f, 16.8f, y + 6f, gris, 0.4f)
-            ligne(12.4f, y, 12.4f, y + 6f, gris, 0.16f)
-            ligne(16.8f, y, 16.8f, y + 6f, gris, 0.16f)
+            rect(11.8f, y, 3.6f, 6f, duJour(0xFF9FD3EC.toInt()), 0.42f)
+            rect(11.8f, y, 3.6f, 1.4f, duJour(0xFFD8EEF8.toInt()), 0.4f)
+            ligne(11.8f, y, 15.4f, y, gris, 0.3f)
+            ligne(11.8f, y + 6f, 15.4f, y + 6f, gris, 0.4f)
+            ligne(11.8f, y, 11.8f, y + 6f, gris, 0.16f)
+            ligne(15.4f, y, 15.4f, y + 6f, gris, 0.16f)
             if (P.allume) rect(74.8f, y + 0.6f, 3.8f, 4.8f, P.fenetre, 0.6f)
         }
 
