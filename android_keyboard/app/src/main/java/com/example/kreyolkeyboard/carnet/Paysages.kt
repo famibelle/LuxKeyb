@@ -4728,24 +4728,27 @@ object Paysages {
             plan(2)
             solDePierre(SolDePierre.GRAVIER, DEVANT)  // l'allée du jardin
             poser(DEVANT)
-            // La charmille taillée en arche, cadre de scène de feuillage.
+            // La charmille taillée, en deux massifs latéraux. Elle faisait
+            // avant une arche sur toute la fenêtre : un aplat vert qui
+            // occupait les deux tiers de l'image et ne laissait du château
+            // qu'une lucarne (propriétaire, 2026-11-15). Elle reste donc
+            // dans les bandes que le dessin du mot ne prend pas (x < 17 et
+            // x > 83) et sous la ligne du toit, en s'abaissant vers le
+            // centre comme une charmille taillée en berceau.
             val haie = vert(0.25f)
-            val charmille = cadre("M17 60L17 30C17 15 31 5.4 50 5.4C69 5.4 83 15 83 30L83 60Z")
-            val feuilles = Path()
-            for (k in 0..34) {
-                val u = k / 34f
-                val (px, py) = when {
-                    u < 0.25f -> 17f to 58f - u / 0.25f * 28f
-                    u > 0.75f -> 83f to 30f + (u - 0.75f) / 0.25f * 28f
-                    else -> {
-                        val a = PI.toFloat() * (1f + (u - 0.25f) / 0.5f)
-                        (50f + 33f * cos(a)) to (30f + 24.6f * sin(a))
-                    }
+            for ((bord, dedans) in listOf(-3f to 15f, 103f to 85f)) {
+                val massif = Path().apply {
+                    moveTo(bord, DEVANT + 0.2f); lineTo(bord, 31f); lineTo(dedans, 39f)
+                    lineTo(dedans, DEVANT + 0.2f); close()
                 }
-                feuilles.addCircle(px, py, 1.4f + r() * 1f, Path.Direction.CW)
+                val feuilles = Path()
+                for (k in 0..12) {
+                    val u = k / 12f
+                    feuilles.addCircle(bord + (dedans - bord) * u, 31f + 8f * u, 1.3f + r() * 1f, Path.Direction.CW)
+                }
+                massif.op(feuilles, Path.Op.UNION)
+                piece(massif, haie)
             }
-            charmille.op(feuilles, Path.Op.UNION)
-            piece(charmille, haie)
             val pierre = duJour(0xFFB3AD98.toInt())
             mineral {
                 for ((x, s) in listOf(24f to 1f, 76f to -1f)) lion(x, DEVANT, s, pierre)

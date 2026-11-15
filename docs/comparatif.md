@@ -135,7 +135,7 @@ n'est pas significatif ; celui avec Gboard l'est, et Samsung devance aussi Gboar
 une espace, réglages par défaut. Samsung a changé <span class="lux">regimm</span> en
 <span class="lux">Regime</span> et <span class="lux">hielenner</span> en
 <span class="lux">Hielenter</span>. Gboard, sur notre téléphone de test où il porte aussi
-le français et le créole guadeloupéen, a modifié 86 mots (<span class="lux">der</span>
+deux autres langues, a modifié 86 mots (<span class="lux">der</span>
 devenu <span class="lux">www</span>, par exemple) : nous ne retenons pas ce chiffre,
 qui tient probablement à cette configuration, mais nous le signalons. Sur un
 émulateur, avec le luxembourgeois seul, Gboard change 2 mots sur 177
@@ -421,8 +421,8 @@ réglages par défaut. On compare le texte final à ce qui a été tapé.
 - **Samsung** a changé <span class="lux">regimm</span> en <span class="lux">Regime</span>
   (le mot français) et <span class="lux">hielenner</span> en
   <span class="lux">Hielenter</span>.
-- **Gboard** doit se lire avec prudence. Sur notre téléphone de test, où il porte aussi le
-  français et le créole guadeloupéen, la même frappe a modifié 86 mots sur 186 (<span
+- **Gboard** doit se lire avec prudence. Sur notre téléphone de test, où il porte aussi deux
+  autres langues, la même frappe a modifié 86 mots sur 186 (<span
   class="lux">der</span> devenu <span class="lux">www</span>, par exemple). Nous ne
   retenons pas ce chiffre : il tient probablement à cette configuration et à des appuis
   synthétiques, pas au clavier en lui-même. Avec le luxembourgeois seul, sur émulateur, il

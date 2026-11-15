@@ -1,4 +1,4 @@
-/* Palette guadeloupéenne partagée : Klavyé Kréyòl Karukera
+/* Palette partagée par toutes les pages du site.
    Clair par défaut, sombre via prefers-color-scheme, forçable via
    data-theme="dark"/"light" sur <html> (posé par theme.js / le bouton). */
 

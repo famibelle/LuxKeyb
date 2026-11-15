@@ -96,8 +96,7 @@
 
   // AccentHandler.accentMap, reconstruite pour le luxembourgeois : chaque liste
   // est classée par fréquence décroissante des diacritiques dans les corpus
-  // LuxAlign + LETZ. Les digraphes créoles GEREC (ch, dj, ng…) n'y sont plus,
-  // et le trait d'union est en appui long sur « . ».
+  // LuxAlign + LETZ, et le trait d'union est en appui long sur « . ».
   const ACCENT_MAP = {
     a: ['ä', 'à', 'â'],
     e: ['é', 'ë', 'è', 'ê'],
