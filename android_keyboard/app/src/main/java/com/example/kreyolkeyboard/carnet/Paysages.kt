@@ -4771,23 +4771,29 @@ object Paysages {
             val betonN = neutre(beton)
             val verre = duJour(0xFF9FD3EC.toInt())
             mineral {
-                // La tour d'abord : la passerelle passera devant elle.
-                // Élancée et non massive : la tour est haute et étroite, et ce
-                // sont ses arêtes d'acier qui la détachent. Son béton blanc
-                // seul se perdait dans le ciel pâle du matin, là où la photo
-                // le détache sur un bleu franc.
-                // La tour s'arrête, elle ne sort pas du cadre : sur la photo
-                // du propriétaire, son sommet est net, surmonté de son local
-                // de machinerie et de ses garde-corps, avec du ciel au-dessus.
-                // Montant jusqu'au bord, elle ne lisait plus comme une tour
-                // mais comme un pilier (jugement du propriétaire, 2026-11-15).
-                // Largeur dessinée = la face **plus le flanc** que [boite3q]
-                // projette (`p` × 0,62) : la tour mesurait donc 14,7 unités
-                // et non 11, et tous les rapports en découlaient faux. Face
-                // de 9 et flanc de 2 font 11 unités au total, pour 38,5
-                // visibles au-dessus des arbres : 3,5 fois plus haut que
-                // large, exactement le rapport mesuré sur la photo du
-                // propriétaire (3,51).
+                // L'ordre compte : la passerelle **passe derrière la tour**,
+                // comme sur la photo du propriétaire, donc elle se peint
+                // avant elle. Peinte après, elle lui passait devant et
+                // coupait son béton en deux (2026-11-15).
+                //
+                // Proportions mesurées sur la photo, rapportées à la largeur
+                // dessinée de la tour (sa face **plus** le flanc que
+                // [boite3q] projette, `p` × 0,62, soit 9 + 2 = 11) : la tour
+                // fait 3,5 fois plus haut que large, la passerelle 0,39 de
+                // cette largeur, et le belvédère vitré 0,97 — presque un
+                // carré, bien plus haut que la passerelle qu'il termine.
+                val passerelle = floatArrayOf(-3f, 16.2f, 36f, 13.3f, 36f, 17.2f, -3f, 20.5f)
+                piece(quad(passerelle), mix(betonN, gris, 0.16f), 0.6f)
+                surQuad(39f, 4.3f, passerelle) {
+                    // Le garde-corps en résille, et le tablier sombre dessous.
+                    rect(0f, 0.3f, 39f, 2.2f, mix(betonN, gris, 0.3f))
+                    ligne(0f, 0.3f, 39f, 0.3f, gris, 0.26f)
+                    var mx = 1.5f
+                    while (mx < 39f) { ligne(mx, 0.6f, mx, 2.5f, gris, 0.1f); mx += 3.4f }
+                    rect(0f, 3f, 39f, 1.3f, gris)
+                }
+
+                // La tour par-dessus : elle masque la passerelle derrière elle.
                 boite3q(9f, DEVANT, 9f, HAUT_PAFENDALL, 3.2f, beton,
                         versDroite = true, pente = 0.05f, dessus = true) {
                     // Le local de machinerie, en haut, plus sombre.
@@ -4800,68 +4806,37 @@ object Paysages {
                     rect(0f, 0f, 0.65f, HAUT_PAFENDALL, mix(beton, gris, 0.55f))
                     rect(8.35f, 0f, 0.65f, HAUT_PAFENDALL, mix(beton, gris, 0.3f))
                 }
-                // Les garde-corps du belvédère, au sommet.
+                // Les garde-corps du sommet, et ses antennes.
                 var gx = 9.6f
                 while (gx < 19.4f) { ligne(gx, DEVANT - HAUT_PAFENDALL - 2.2f, gx, DEVANT - HAUT_PAFENDALL, gris, 0.16f); gx += 1.3f }
                 ligne(9.3f, DEVANT - HAUT_PAFENDALL - 2.2f, 19.9f, DEVANT - HAUT_PAFENDALL - 2.2f, gris, 0.28f)
-                // Les quatre tiges d'antenne qui dépassent du belvédère.
                 for (ax in floatArrayOf(10.4f, 13f, 15.8f, 18.4f))
                     ligne(ax, DEVANT - HAUT_PAFENDALL - 5.6f, ax, DEVANT - HAUT_PAFENDALL - 2.2f, gris, 0.12f)
-                // La passerelle vers la ville haute : elle arrive de la
-                // gauche, plus épaisse au premier plan, traverse la tour et
-                // **s'arrête** peu après, sur le belvédère vitré. Elle courait
-                // jusqu'au bord droit, alors que sur la photo du propriétaire
-                // elle finit là, et le ciel occupe tout le reste.
-                // Un seul objet, et peu de traits : à la taille d'une carte,
-                // une résille fine et une plateforme ajourée se brouillaient
-                // en rayures et en petite échelle (jugement du propriétaire,
-                // 2026-11-15). Le garde-corps est un bandeau clair sur sa
-                // lisse, le tablier une poutre sombre dessous, et le
-                // belvédère est posé sur la même poutre, dans la continuité.
-                // Elle monte vers la droite : sur la photo, le tablier fait
-                // un angle positif avec l'horizon et s'en va vers le haut.
-                // Sa bande s'amincit en s'éloignant, comme il se doit.
-                //
-                // Son épaisseur suit la photo du propriétaire, mesurée :
-                // la tour y fait 3,5 fois plus haut que large, et la
-                // passerelle 0,36 fois la largeur de la tour. À 6,2 unités
-                // pour une tour de 11, elle en valait 0,56 et écrasait son
-                // support (demande du propriétaire, 2026-11-15).
-                val passerelle = floatArrayOf(-3f, 16.4f, 36f, 13.4f, 36f, 17f, -3f, 20.4f)
-                piece(quad(passerelle), mix(betonN, gris, 0.16f), 0.6f)
-                // Tout se dessine dans la perspective de la passerelle, le
-                // belvédère compris : il a donc exactement la hauteur de son
-                // garde-corps, comme sur la photo, et il fuit avec elle. Posé
-                // par-dessus en rectangle droit, il dépassait d'une tête et
-                // ne suivait pas la fuite (jugement du propriétaire,
-                // 2026-11-15).
-                surQuad(39f, 4f, passerelle) {
-                    // Le garde-corps en résille, jusqu'au belvédère.
-                    rect(0f, 0.3f, 29f, 2f, mix(betonN, gris, 0.3f))
-                    ligne(0f, 0.3f, 29f, 0.3f, gris, 0.26f)
-                    var mx = 1.5f
-                    while (mx < 29f) { ligne(mx, 0.6f, mx, 2.3f, gris, 0.1f); mx += 3.4f }
-                    // Le belvédère : la même bande, mais tout en verre. En
-                    // transparence, donc sous 0,95 : on voit le ciel et la
-                    // vallée au travers, et ce sont ses montants qui le
-                    // dessinent.
-                    rect(29f, 0.3f, 10f, 2f, verre, 0.3f)
-                    rect(29f, 0.3f, 10f, 0.6f, mix(verre, 0xFFFFFFFF.toInt(), 0.45f), 0.3f)
-                    ligne(29f, 0.3f, 39f, 0.3f, gris, 0.34f)
-                    ligne(29f, 2.3f, 39f, 2.3f, gris, 0.34f)
-                    ligne(29f, 0.3f, 29f, 2.3f, gris, 0.26f)
-                    ligne(39f, 0.3f, 39f, 2.3f, gris, 0.34f)
-                    ligne(34f, 0.3f, 34f, 2.3f, gris, 0.14f)
-                    // Le tablier, sous les deux.
-                    rect(0f, 2.8f, 39f, 1.2f, gris)
+
+                // Le belvédère vitré, au bout de la passerelle et à droite de
+                // la tour : une boîte haute de 0,97 largeur de tour, centrée
+                // sur le tablier, donc bien au-dessus et au-dessous de lui.
+                val bh = 10.5f
+                val cg = 16f; val cd = 15.2f
+                val boite = floatArrayOf(26f, cg - bh / 2f, 36f, cd - bh / 2f, 36f, cd + bh / 2f, 26f, cg + bh / 2f)
+                forme(quad(boite), verre, 0.3f)
+                surQuad(10f, bh, boite) {
+                    rect(0f, 0f, 10f, 1.8f, mix(verre, 0xFFFFFFFF.toInt(), 0.5f), 0.35f)
+                    ligne(0f, 0.25f, 10f, 0.25f, gris, 0.42f)
+                    ligne(0f, bh - 0.25f, 10f, bh - 0.25f, gris, 0.5f)
+                    ligne(0.2f, 0f, 0.2f, bh, gris, 0.3f)
+                    ligne(9.8f, 0f, 9.8f, bh, gris, 0.42f)
+                    ligne(5f, 0.25f, 5f, bh - 0.25f, gris, 0.16f)
+                    // Le plancher du belvédère, dans l'épaisseur du tablier.
+                    rect(0f, bh * 0.62f, 10f, 0.8f, gris)
                 }
+
                 // Le mât d'acier sous la tour, et son pied sur la rue.
                 ligne(8.4f, 19.4f, 8.4f, DEVANT, gris, 0.5f)
                 ligne(19.6f, 18.4f, 19.6f, DEVANT, gris, 0.4f)
-                // Les obliques d'acier sous la passerelle : celle qui descend
-                // à gauche de la tour, et le mât qui tient le belvédère.
+                // Les obliques sous la passerelle.
                 ligne(6.2f, 19.6f, -3f, 34f, gris, 0.3f)
-                ligne(31.4f, 17.4f, 26f, DEVANT, gris, 0.3f)
+                ligne(31.4f, 20.4f, 26f, DEVANT, gris, 0.3f)
             }
             // Les arbres du pied : sur la photo ils mangent le bas de la
             // tour, et c'est leur vert sombre qui détache son béton blanc.
