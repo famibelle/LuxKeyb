@@ -32,6 +32,7 @@ décors sont repris un à un.
 | Ansebuerg (`ANSEBUERG`) | `ansebuerg-chateau-charmille.webp` | Le château d'Ansembourg vu depuis la charmille taillée, les deux lions de pierre, les jardins en terrasses | Le château et sa terrasse en fuite, les deux lions, la charmille |
 | Belval (`BELVAL`) | `belval-hauts-fourneaux.png` | Le haut fourneau A depuis la place des Hauts-Fourneaux : la cheminée de brique rouge, les cowpers clairs en grappe, la charpente d'acier à contre-jour, les mâts à bannières blanches | La cheminée de brique comme verticale du lieu, les cowpers, la charpente presque noire, le mur à refends, l'esplanade pavée |
 | Bäerdref (`BAERDREF`) | `baerdref-abri-sous-roche.png` | Un abri sous roche percé d'un trou large et bas : une hêtraie en plein soleil au travers, un pilier de grès débité en blocs anguleux à droite, du sable pâle au sol | Tout le lieu, redessiné le 2026-11-16 : le trou porté à gauche, la voûte qui avance, le pilier en blocs, le litage du grès. **Légende à confirmer** : la photo pourrait être la Hohllay ou le Priedegtstull |
+| Nei Bréck (`NEI_BRECK`) | `nei-breck-pont-adolphe.webp` | Le pont Adolphe depuis la vallée : grande arche surbaissée à double nervure, tympan percé d'arcades qui raccourcissent vers la clé, balustrade et réverbères, la Spuerkeess et sa flèche de cuivre au fond, la Pétrusse boisée en dessous (filigrane de banque d'images) | Tout le lieu, redessiné le 2026-11-16 : le pont en pierre gris-beige avec ses claveaux, ses arcades et sa seconde nervure, la Spuerkeess en silhouette dans la bande du haut, la vallée boisée sous l'arche |
 | Felsmillen (`FELSMILLEN`) | `felsmillen-gorges-passerelle.webp` | Les gorges de Felsmillen près d'Echternach : rochers de grès, caillebotis sinueux dans la fougère | Le rocher de gauche et ses strates, le caillebotis qui part dans la forêt |
 | Ourdall (`OURDALL`) | `ourdall-promenade-passerelle.webp` | La promenade de l'Ourdall au bord du lac de l'Our, à Vianden : le caillebotis, son grillage et sa main courante | Le caillebotis qui fuit au bord de l'eau, le garde-corps grillagé |
 | Ourdall (`OURDALL`) | `ourdall-passerelle-belvedere.webp` | Une passerelle-belvédère de la promenade, sous les arbres, le lac au fond | Une variante possible du point de vue |
@@ -53,8 +54,8 @@ décors sont repris un à un.
 
 ## Les autres lieux
 
-Sept lieux n'ont pas encore de photo ici : Veianen, Esch-Sauer, Stad,
-Nei Bréck, Haff Réimech, Péitrusdall, Priedegtstull. Ils ont été dessinés
+Six lieux n'ont pas encore de photo ici : Veianen, Esch-Sauer, Stad,
+Haff Réimech, Péitrusdall, Priedegtstull. Ils ont été dessinés
 d'après des photos ou des descriptions données dans d'autres sessions de
 travail, qui n'ont pas été conservées. Pour les compléter : ajouter la photo
 ici, sous le nom `<lieu>-<sujet>.<ext>`, et une ligne à l'index.
