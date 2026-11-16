@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "40.0.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_cartes_lieux_v40.png",
+        "alt": "Six fenêtres de cartes, l'une à côté de l'autre. 1. La ruelle du Breedewee : une porte en arc à gros claveaux de pierre, la ruelle pavée derrière. 2. Belval : la cheminée de brique rouge, la charpente noire du haut fourneau et les cylindres clairs des cowpers. 3. Le Mëllerdall : le pont de pierre du Schiessentümpel, ses trois chutes et le bassin où l'on voit les galets. 4. Berdorf : un abri sous roche de grès lité, large et bas, ouvert sur une hêtraie en plein soleil. 5. Le pont Adolphe : son tablier à balustrade en haut de la fenêtre, sa grande arche et son tympan percé d'arcades, la vallée boisée dessous. 6. Les gorges de Felsmillen : une paroi de grès en surplomb à gauche, un caillebotis de bois qui monte à droite dans la forêt.",
+        "legende": "Six des seize lieux redessinés d'après photos, chacun avec la matière dont il est fait."
+      }
+    ]
+  },
   "38.0.0": {
     "images": [
       {

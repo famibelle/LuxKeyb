@@ -1,9 +1,203 @@
 {
- "genere_le": "2026-11-07",
- "derniere_version": "38.1.0",
- "derniere_date": "2026-11-02",
+ "genere_le": "2026-11-16",
+ "derniere_version": "40.0.0",
+ "derniere_date": "2026-11-16",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "40.0.0",
+   "date": "2026-11-16",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Seize lieux redessinés d'après photos",
+       "texte": "Le pont Rouge, le château de Vianden, la tour d'Esch-sur-Sûre, les stèles de Schengen, l'abbaye de Neimënster, la Gëlle Fra, la Schueberfouer, le Schiessentümpel, le Grund, la ruelle du Breedewee, l'ascenseur du Pfaffenthal, le château d'Ansembourg, le haut fourneau de Belval, l'abri sous roche de Berdorf, le pont Adolphe et les gorges de Felsmillen ne sont plus dessinés de mémoire : chacun l'est d'après une photo, et montre ce qui le rend reconnaissable."
+      },
+      {
+       "titre": "Chaque chose est faite de sa matière",
+       "texte": "La pierre de taille et ses assises, le moellon de schiste, le grès et ses bancs creusés en surplomb, la brique, la tôle rivée, les charpentes ajourées, les claveaux d'une arche, la mousse sur les vires. Une tour, un mur ou un rocher ne sont plus un aplat de couleur cerné de trois traits."
+      },
+      {
+       "titre": "Le décor laisse voir son sujet",
+       "texte": "Le mot est au centre de la fenêtre, donc ce qui compte dans un lieu tient désormais la bande du haut et les deux bords. Un pont donne son tablier au haut de la carte, une paroi tient toute une colonne, et le feuillage ne passe plus devant ce qu'on venait regarder."
+      },
+      {
+       "titre": "Un vert vraiment luxembourgeois",
+       "texte": "Les grandes masses de végétation sont profondes et franches au lieu de tirer vers le vert pomme, et les quatre saisons se lisent sur tous les lieux."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "⚡",
+     "titre": "Rapidité",
+     "points": [
+      {
+       "titre": "La carte penche d'un seul mouvement",
+       "texte": "En inclinant le téléphone, l'image avançait à deux cadences mélangées, ce qui donnait un battement. Elle n'en a plus qu'une, et le geste est plus doux."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "La vallée de la Pétrusse se lit aux quatre saisons",
+       "texte": "La pierre du pont y prenait la couleur de la vallée derrière elle, et l'arche disparaissait."
+      },
+      {
+       "titre": "Les roseaux sous la neige",
+       "texte": "Le surcadrage d'hiver virait à l'orange vif au lieu de la paille."
+      },
+      {
+       "titre": "Les soirs d'automne",
+       "texte": "Le soir est déjà orange, et la rouille de l'automne par-dessus mettait le feu à la carte. Elle y va plus doucement."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_cartes_lieux_v40.png",
+     "alt": "Six fenêtres de cartes, l'une à côté de l'autre. 1. La ruelle du Breedewee : une porte en arc à gros claveaux de pierre, la ruelle pavée derrière. 2. Belval : la cheminée de brique rouge, la charpente noire du haut fourneau et les cylindres clairs des cowpers. 3. Le Mëllerdall : le pont de pierre du Schiessentümpel, ses trois chutes et le bassin où l'on voit les galets. 4. Berdorf : un abri sous roche de grès lité, large et bas, ouvert sur une hêtraie en plein soleil. 5. Le pont Adolphe : son tablier à balustrade en haut de la fenêtre, sa grande arche et son tympan percé d'arcades, la vallée boisée dessous. 6. Les gorges de Felsmillen : une paroi de grès en surplomb à gauche, un caillebotis de bois qui monte à droite dans la forêt.",
+     "legende": "Six des seize lieux redessinés d'après photos, chacun avec la matière dont il est fait."
+    }
+   ],
+   "image": "Screenshots/lux_cartes_lieux_v40.png",
+   "image_alt": "Six fenêtres de cartes, l'une à côté de l'autre. 1. La ruelle du Breedewee : une porte en arc à gros claveaux de pierre, la ruelle pavée derrière. 2. Belval : la cheminée de brique rouge, la charpente noire du haut fourneau et les cylindres clairs des cowpers. 3. Le Mëllerdall : le pont de pierre du Schiessentümpel, ses trois chutes et le bassin où l'on voit les galets. 4. Berdorf : un abri sous roche de grès lité, large et bas, ouvert sur une hêtraie en plein soleil. 5. Le pont Adolphe : son tablier à balustrade en haut de la fenêtre, sa grande arche et son tympan percé d'arcades, la vallée boisée dessous. 6. Les gorges de Felsmillen : une paroi de grès en surplomb à gauche, un caillebotis de bois qui monte à droite dans la forêt.",
+   "image_legende": "Six des seize lieux redessinés d'après photos, chacun avec la matière dont il est fait."
+  },
+  {
+   "version": "39.2.0",
+   "date": "2026-11-14",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Les bâtiments peints de trois quarts",
+       "texte": "Les maisons du Grund, la ville basse sous la Gëlle Fra, le village d'Esch-sur-Sûre, l'autre rive de la Moselle, la ville haute vue de Neimënster, la Spuerkeess, les châteaux de Vianden et d'Ansembourg, le pont couvert du Haff Réimech, l'ascenseur du Pfaffenthal et le haut fourneau de Belval fuient maintenant en perspective, avec leurs toits, leurs lucarnes et leurs pignons, au lieu de s'aligner de face en bandes."
+      },
+      {
+       "titre": "Les paysages naturels aussi",
+       "texte": "La lisière et la clôture de Conzefenn, le pont du Mëllerdall, la passerelle du Dumongshaff, le pont Adolphe vu de la Pétrusse, le mur de tuf du Kallektuffquell et le rocher de Felsmillen fuient en perspective."
+      },
+      {
+       "titre": "Le Mëllerdall d'après photo",
+       "texte": "Le Schiessentümpel dans sa forêt, son pont de pierre en arche, ses trois chutes animées entre les rochers moussus, une brume d'eau qui monte des points de chute, et un bassin transparent où l'on voit les galets."
+      },
+      {
+       "titre": "Des bâtiments sans dominante jaune",
+       "texte": "Des enduits variés comme au pays (gris perle, vieux rose, blanc cassé, bleu-gris, ocre rouge, vert sauge), des ombres froides, de vraies fenêtres en verre, et la matière des façades : socles et chaînes d'angle en pierre, corniches, appuis de fenêtres, toits d'ardoise."
+      },
+      {
+       "titre": "Un premier plan en vraie matière",
+       "texte": "Pavés, dalles ou gravier sur les cartes de ville et de château, herbe, terre de forêt, mousse ou berge de galets sur les paysages naturels, au lieu du plancher de la scène ; et une Alzette qui reflète les façades du Grund."
+      },
+      {
+       "titre": "Une rangée par lieu dans l'album",
+       "texte": "Chaque heure garde sa colonne, du matin à la nuit, et la place de la nuit reste vide pour les lieux qui n'en ont pas."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "39.1.0",
+   "date": "2026-11-14",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Un album des paysages en grille de 9 × 3",
+       "texte": "Chaque champ de sens a maintenant trois lieux, et les mots sans champ aussi. On voit d'un coup d'œil ce qui manque (« le troisième lieu du savoir »). La falaise du Priedegtstull rejoint le savoir et la parole, la vallée de la Pétrusse la chose publique, la passerelle du Dumongshaff la société, et la ruelle du Breedewee devient un lieu de la ville que l'on peut gagner en jouant. L'album compte 90 cases, et chacune reste atteignable dans les quatre langues."
+      },
+      {
+       "titre": null,
+       "texte": "Les cartes déjà gagnées gardent leur paysage."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "39.0.0",
+   "date": "2026-11-13",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Des paysages en papier découpé",
+       "texte": "Chaque carte montre son lieu en feuilles de papier de couleur posées en couches, avec leur grain, une fine tranche de papier kraft et une ombre douce de l'une à l'autre. Quand vous penchez le téléphone, l'ombre de chaque feuille glisse sur celle de derrière, comme dans un vrai théâtre de papier."
+      },
+      {
+       "titre": "Tous les lieux redessinés d'après des photos, vus de trois quarts",
+       "texte": "Le château de Vianden au-dessus de la brume, la tour d'Esch-sur-Sûre et son drapeau, la vue des casemates du Bock, la cascade du Schiessentümpel et son pont, le Grund au bord de l'Alzette, le monument de Schengen au bord de la Moselle, la grande roue et le carrousel de la Schueberfouer, le pont rouge vu d'en bas, la porte de la rue Large et la Gëlle Fra au couchant."
+      },
+      {
+       "titre": "Dix-sept nouveaux lieux",
+       "texte": "Le pont Adolphe et son tram, les hauts fourneaux de Belval, l'arche de grès de Berdorf, les jardins du château d'Ansembourg, l'ascenseur du Pfaffenthal, les rochers et le caillebotis de Felsmillen, la passerelle de l'Ourdall, le barrage de la Haute-Sûre, les moutons de Conzefenn, le pont couvert du Haff Réimech, la grotte Hohllay, la tour du Napoleonsgaart, la source de tuf du Kallektuffquell, la vallée de la Pétrusse, la Wollefsschlucht, la falaise du Priedegtstull et la passerelle du Dumongshaff. L'album des paysages compte maintenant 87 cases. Les cartes déjà gagnées gardent leur paysage."
+      },
+      {
+       "titre": "Des branches et des roseaux au premier plan",
+       "texte": "Sur la plupart des cartes, une branche entre par un coin du haut (un saule au-dessus de l'eau, un bouleau, un sarment de vigne à la Moselle) et des roseaux, des fougères ou de hautes herbes poussent au pied de la scène. Ils encadrent le pont, le château ou la rivière sans les cacher, et creusent la profondeur quand vous penchez le téléphone. Ils changent avec la saison où la carte a été gagnée : feuilles rousses en automne, branches nues sous la neige en hiver. Une brise les fait bouger doucement. Ils remplacent les arbres qui bordaient les cartes rares."
+      },
+      {
+       "titre": "Des paysages qui bougent",
+       "texte": "Sur la carte ouverte, la brume glisse sous le château de Vianden, le drapeau flotte, la grande roue tourne et les chevaux de bois montent et descendent, l'eau coule des chutes, la péniche descend la Moselle, le tram traverse le pont, la cabine de l'ascenseur monte et descend, les moutons broutent, les canards glissent sur l'étang, l'eau goutte de la source et de la grotte. Le soir et la nuit, leurs lumières s'allument."
+      },
+      {
+       "titre": "Secouez le téléphone",
+       "texte": "Chaque paysage répond à sa manière. La roue s'emballe, le drapeau claque, les chutes éclaboussent, le tram et le bus filent en sonnant, des ronds s'élargissent sur l'eau, la source de tuf déborde, des chauves-souris sortent de la grotte Hohllay, une pluie d'éclats d'or court sur la Gëlle Fra, les feuilles tombent sous l'arche de Berdorf, et les branches et les roseaux plient sous le coup de vent."
+      },
+      {
+       "titre": "La ruelle du Breedewee s'anime",
+       "texte": "La flamme de ses lanternes vacille, et un chat roux traverse la ruelle de temps en temps. Secouez : les lanternes tanguent et le chat détale."
+      },
+      {
+       "titre": "La neige s'accumule l'hiver",
+       "texte": "Sur les cartes gagnées en hiver, une couche de neige épaisse couvre les toits, les crêtes et les haies. Secouez le téléphone, elle tombe en paquets, puis se reforme doucement sous les flocons."
+      },
+      {
+       "titre": "Des couleurs plus vives et plus chaleureuses",
+       "texte": "Dans tous les paysages."
+      },
+      {
+       "titre": "Le tracé du mot est centré",
+       "texte": "Sur la carte : les mots courts ne penchent plus d'un côté."
+      },
+      {
+       "titre": "L'image partagée garde tout",
+       "texte": "La roue, le tram, le drapeau ou la péniche restent sur l'image d'une carte qu'on partage."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "38.1.0",
    "date": "2026-11-02",
@@ -103,136 +297,6 @@
    "image": "Screenshots/lux_cartes_sujet_agrandi.png",
    "image_alt": "Deux colonnes, « Avant » et « Après ». En haut, la grille de Mäi Carnet avec six cartes : Kaz, Bus, Haus, dräi, Fliger, Päerd. Avant, le chat, le bus, la maison, le 3, l'avion et le cheval sont petits au milieu de leur paysage ; après, chacun remplit sa fenêtre. En bas, la carte Bus ouverte : avant, un petit bus posé en bas de la fenêtre ; après, un grand bus qui en prend toute la largeur.",
    "image_legende": "Le dessin de chaque carte prend maintenant toute la fenêtre."
-  },
-  {
-   "version": "37.12.0",
-   "date": "2026-10-31",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Une nouvelle série dans le carnet : Niveau A1",
-       "texte": "Les quelque 800 mots du niveau A1 que recense le dictionnaire officiel du luxembourgeois, rangés par thème (la famille, les métiers, manger et boire, la santé, les mois et les fêtes…), puis les verbes, les adjectifs et les petits mots. Chaque case vide montre le sens du mot à trouver."
-      },
-      {
-       "titre": "Les jeux vous aident à la remplir",
-       "texte": "Après les essentiels, Wuertsich, Wuertmix et Wuertriet glissent dans leurs parties les mots du niveau A1 qui manquent encore à votre carnet."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_carnet_niveau_a1.png",
-     "alt": "Mäi Carnet, vue Séries. Sous le titre « Niveau A1 », la page « Famille », 1 sur 31 : la carte Famill est gagnée, les autres cases vides montrent le sens du mot à trouver : mamie, papi, garçon, frère, cousin, fille, parents, petit-fils, petite-fille, femme, grand-mère, grand-père, enfant, mère, maman, homme.",
-     "legende": "La série Niveau A1 dans le carnet : la page de la famille."
-    }
-   ],
-   "image": "Screenshots/lux_carnet_niveau_a1.png",
-   "image_alt": "Mäi Carnet, vue Séries. Sous le titre « Niveau A1 », la page « Famille », 1 sur 31 : la carte Famill est gagnée, les autres cases vides montrent le sens du mot à trouver : mamie, papi, garçon, frère, cousin, fille, parents, petit-fils, petite-fille, femme, grand-mère, grand-père, enfant, mère, maman, homme.",
-   "image_legende": "La série Niveau A1 dans le carnet : la page de la famille."
-  },
-  {
-   "version": "37.11.1",
-   "date": "2026-10-31",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "La languette des cartes imprimées pend à une chaîne",
-       "texte": "Le petit rappel du type et du coût, sous la Force, est accroché à la pastille par une chaîne qui suit la rareté. Un gros anneau de fer pour une commune, deux maillons de bronze, trois maillons d'argent, et une chaîne d'or avec une perle pour une très rare."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_papier_chaines.png",
-     "alt": "Le coin de quatre cartes imprimées, de la moins rare à la plus rare. Sous la pastille de Force pend une languette qui répète le type et le coût. 1. Commune, en fer : un seul gros anneau. 2. Peu commune, en bronze : deux maillons. 3. Rare, en argent : trois maillons fins. 4. Très rare, en or : deux maillons et une perle violette.",
-     "legende": "La chaîne de la languette suit la rareté de la carte imprimée."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_papier_chaines.png",
-   "image_alt": "Le coin de quatre cartes imprimées, de la moins rare à la plus rare. Sous la pastille de Force pend une languette qui répète le type et le coût. 1. Commune, en fer : un seul gros anneau. 2. Peu commune, en bronze : deux maillons. 3. Rare, en argent : trois maillons fins. 4. Très rare, en or : deux maillons et une perle violette.",
-   "image_legende": "La chaîne de la languette suit la rareté de la carte imprimée."
-  },
-  {
-   "version": "37.11.0",
-   "date": "2026-10-31",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Les cartes de nombre montrent leur nombre",
-       "texte": "La carte « zweeavéierzeg » affiche un grand 42 au milieu de son paysage, en nacre comme les autres dessins. On reconnaît chaque nombre d'un coup d'œil dans le carnet, et sur la carte imprimée aussi."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_nombres.png",
-     "alt": "Trois cartes de nombre ouvertes. 1. « siwen », en fer : un grand 7 nacré devant le château. 2. « zweeavéierzeg », en or : un grand 42 doré devant la ville de nuit. 3. « honnert », en fer : un grand 100 devant le château.",
-     "legende": "Chaque carte de nombre montre son nombre en grand."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_nombres.png",
-   "image_alt": "Trois cartes de nombre ouvertes. 1. « siwen », en fer : un grand 7 nacré devant le château. 2. « zweeavéierzeg », en or : un grand 42 doré devant la ville de nuit. 3. « honnert », en fer : un grand 100 devant le château.",
-   "image_legende": "Chaque carte de nombre montre son nombre en grand."
-  },
-  {
-   "version": "37.10.1",
-   "date": "2026-10-31",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Le guide montre les nouveaux dessins",
-       "texte": "Les images qui expliquent une carte, dans l'aide, ont été refaites avec les dessins de la 37.10.0."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
-     "alt": "Animation dans Mäi Carnet. 1. La grille du carnet : Kaz, un chat qui marche, Léiw, un lion, Moien, un soleil qui se lève, Famill, une famille, Kaddo, un cadeau, Apel, une pomme. 2. à 6. Les cartes s'ouvrent l'une après l'autre en grand : « Kaz » en or devant la ville de nuit, « Léiw » en argent, « Famill » devant la grande roue de la Schueberfouer, « Kaddo » et « Apel » en or. 7. Retour à la grille.",
-     "legende": "Les nouveaux dessins sur les cartes, des animaux aux mots de tous les jours."
-    },
-    {
-     "image": "Screenshots/lux_essentiels.gif",
-     "alt": "Animation. 1. Dans Mäi Carnet, vue Séries, la page « Nombres » des essentiels : six cartes gagnées, eent à sechs, et des cases vides qui montrent le sens à trouver (sept, neuf, dix, vingt, cent, mille). 2. Les pages « Temps » et « Jours », cases vides marquées semaine, demain, lundi, mardi… 3. Dans Wuertmix, l'indice « bonne nuit » : la réponse se pose sur deux lignes, G _ _ _ puis _ _ _ _ _ T. 4. Les lettres sont placées : GUTT NUECHT. 5. Validé, le score passe à 100.",
-     "legende": "La page des essentiels dans le carnet, et une expression à remettre dans l'ordre dans Wuertmix."
-    },
-    {
-     "image": "Screenshots/lux_guide_carte_haut.png",
-     "alt": "Planche du guide : le haut de la carte « Waasser », une goutte d'eau devant la vallée, avec quatre repères numérotés : 1 le mot, 2 la longueur, 3 le paysage, 4 le cadre.",
-     "legende": "Le guide de l'aide montre la carte avec son nouveau dessin."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_nouveaux_dessins.gif",
-   "image_alt": "Animation dans Mäi Carnet. 1. La grille du carnet : Kaz, un chat qui marche, Léiw, un lion, Moien, un soleil qui se lève, Famill, une famille, Kaddo, un cadeau, Apel, une pomme. 2. à 6. Les cartes s'ouvrent l'une après l'autre en grand : « Kaz » en or devant la ville de nuit, « Léiw » en argent, « Famill » devant la grande roue de la Schueberfouer, « Kaddo » et « Apel » en or. 7. Retour à la grille.",
-   "image_legende": "Les nouveaux dessins sur les cartes, des animaux aux mots de tous les jours."
   }
  ]
 }

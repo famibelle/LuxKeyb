@@ -1,5 +1,63 @@
 {
   "_comment": "Deutsche Übersetzung von nouveautes.html, nach Version. Von Hand gepflegt: generate_nouveautes.py führt sie in stats/nouveautes-de.json zusammen. Jede Version folgt der französischen aus dem CHANGELOG: dieselben Abschnitte, dieselbe Anzahl Punkte, in derselben Reihenfolge; der Titel eines Abschnitts darf fehlen, wenn _sections ihn übersetzt. Eine Version, die hier fehlt oder nicht mehr die französische Form hat, erscheint auf Französisch mit einem Hinweis. Der Text ist HTML: < und & maskieren.",
+  "40.0.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Neu",
+        "points": [
+          {
+            "titre": "Sechzehn Orte nach Fotos neu gezeichnet",
+            "texte": "Die Rote Brücke, die Burg Vianden, der Turm von Esch-Sauer, die Stelen von Schengen, die Abtei Neumünster, die Gëlle Fra, die Schueberfouer, der Schiessentümpel, das Grundviertel, die Breedewee-Gasse, der Aufzug von Pfaffenthal, Schloss Ansemburg, der Hochofen von Belval, der Felsüberhang von Berdorf, die Adolphe-Brücke und die Felsmillen-Schlucht werden nicht mehr aus dem Gedächtnis gezeichnet: jeder folgt einem Foto und zeigt, was ihn erkennbar macht."
+          },
+          {
+            "titre": "Jedes Ding besteht aus seinem Material",
+            "texte": "Quaderstein und seine Schichten, Schiefer-Bruchstein, Sandstein mit seinen ausgewaschenen Bänken, Ziegel, genietetes Blech, offene Stahlfachwerke, die Keilsteine eines Bogens, Moos auf den Simsen. Ein Turm, eine Mauer oder ein Fels ist keine Farbfläche mit drei Strichen mehr."
+          },
+          {
+            "titre": "Die Kulisse lässt ihr Motiv sehen",
+            "texte": "Das Wort steht in der Mitte des Fensters, also hält das Wichtigste eines Ortes nun das obere Band und die beiden Ränder. Eine Brücke gibt ihre Fahrbahn an den oberen Rand, eine Felswand hält eine ganze Spalte, und das Laub steht nicht mehr vor dem, was man ansehen wollte."
+          },
+          {
+            "titre": "Ein wirklich luxemburgisches Grün",
+            "texte": "Die großen Pflanzenflächen sind tief und klar, statt ins Apfelgrün zu kippen, und die vier Jahreszeiten sind an allen Orten zu erkennen."
+          }
+        ]
+      },
+      {
+        "titre": "Geschwindigkeit",
+        "points": [
+          {
+            "titre": "Die Karte neigt sich in einer einzigen Bewegung",
+            "texte": "Beim Neigen des Telefons lief das Bild in zwei gemischten Taktraten, was ein Flackern ergab. Jetzt ist es nur noch eine, und die Bewegung ist weicher."
+          }
+        ]
+      },
+      {
+        "titre": "Korrekturen",
+        "points": [
+          {
+            "titre": "Das Petrusstal ist zu allen vier Jahreszeiten lesbar",
+            "texte": "Der Stein der Brücke nahm die Farbe des Tals dahinter an, und der Bogen verschwand."
+          },
+          {
+            "titre": "Schilf unter dem Schnee",
+            "texte": "Die Winterumrahmung wurde leuchtend orange statt strohfarben."
+          },
+          {
+            "titre": "Herbstabende",
+            "texte": "Der Abend ist schon orange, und der Herbstrost darüber setzte die Karte in Brand. Er wird jetzt sanfter aufgetragen."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Sechs Kartenfenster nebeneinander. 1. Die Breedewee-Gasse: ein Bogentor aus großen Keilsteinen, dahinter die gepflasterte Gasse. 2. Belval: der rote Ziegelschornstein, das schwarze Stahlfachwerk des Hochofens und die hellen Zylinder der Winderhitzer. 3. Das Müllerthal: die Steinbrücke am Schiessentümpel, ihre drei Wasserfälle und das Becken, in dem die Kiesel durchscheinen. 4. Berdorf: ein breiter, niedriger Felsüberhang aus geschichtetem Sandstein, der sich zu einem sonnigen Buchenwald öffnet. 5. Die Adolphe-Brücke: ihre Fahrbahn mit Balustrade am oberen Fensterrand, ihr großer Bogen und das von Arkaden durchbrochene Bogenfeld, darunter das bewaldete Tal. 6. Die Felsmillen-Schlucht: links eine überhängende Sandsteinwand, rechts ein hölzerner Bohlenweg, der in den Wald steigt.",
+        "legende": "Sechs der sechzehn nach Fotos neu gezeichneten Orte, jeder mit dem Material, aus dem er besteht."
+      }
+    ]
+  },
   "38.1.0": {
     "intro": "",
     "sections": [

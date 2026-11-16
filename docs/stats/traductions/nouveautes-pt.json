@@ -1,5 +1,63 @@
 {
   "_comment": "Tradução portuguesa de nouveautes.html, por versão. Mantida à mão: generate_nouveautes.py junta-a em stats/nouveautes-pt.json. Cada versão segue a francesa do CHANGELOG: as mesmas secções, o mesmo número de pontos, pela mesma ordem; o título de uma secção pode faltar quando _sections o traduz. Uma versão que falte aqui, ou que já não tenha a forma da francesa, aparece em francês com um aviso. O texto é HTML: escapar < e &.",
+  "40.0.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Novidades",
+        "points": [
+          {
+            "titre": "Dezasseis lugares redesenhados a partir de fotografias",
+            "texte": "A Ponte Vermelha, o castelo de Vianden, a torre de Esch-sur-Sûre, as estelas de Schengen, a abadia de Neimënster, a Gëlle Fra, a Schueberfouer, o Schiessentümpel, o Grund, a viela do Breedewee, o elevador de Pfaffenthal, o castelo de Ansembourg, o alto-forno de Belval, o abrigo rochoso de Berdorf, a ponte Adolphe e as gargantas de Felsmillen já não são desenhados de memória: cada um segue uma fotografia e mostra o que o torna reconhecível."
+          },
+          {
+            "titre": "Cada coisa é feita da sua matéria",
+            "texte": "Cantaria e as suas fiadas, alvenaria de xisto, arenito e os seus bancos escavados, tijolo, chapa rebitada, estruturas de aço vazadas, as aduelas de um arco, musgo nas cornijas. Uma torre, um muro ou uma rocha deixou de ser uma mancha de cor contornada por três traços."
+          },
+          {
+            "titre": "O cenário deixa ver o seu tema",
+            "texte": "A palavra fica no centro da janela, por isso o que importa num lugar ocupa agora a faixa de cima e os dois lados. Uma ponte dá o seu tabuleiro ao topo do cartão, uma parede rochosa ocupa uma coluna inteira, e a folhagem já não se põe à frente daquilo que se vinha ver."
+          },
+          {
+            "titre": "Um verde verdadeiramente luxemburguês",
+            "texte": "As grandes massas de vegetação são profundas e francas em vez de puxarem para o verde-maçã, e as quatro estações leem-se em todos os lugares."
+          }
+        ]
+      },
+      {
+        "titre": "Rapidez",
+        "points": [
+          {
+            "titre": "O cartão inclina-se num só movimento",
+            "texte": "Ao inclinar o telemóvel, a imagem avançava a duas cadências misturadas, o que produzia um tremor. Agora só tem uma, e o gesto é mais suave."
+          }
+        ]
+      },
+      {
+        "titre": "Correções",
+        "points": [
+          {
+            "titre": "O vale do Pétrusse lê-se nas quatro estações",
+            "texte": "A pedra da ponte tomava a cor do vale por trás dela, e o arco desaparecia."
+          },
+          {
+            "titre": "Os juncos sob a neve",
+            "texte": "A moldura de inverno virava laranja vivo em vez de cor de palha."
+          },
+          {
+            "titre": "As tardes de outono",
+            "texte": "A tarde já é laranja, e a ferrugem do outono por cima punha o cartão a arder. Agora é aplicada com mais suavidade."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Seis janelas de cartões lado a lado. 1. A viela do Breedewee: um portão em arco de grandes aduelas de pedra, a rua calcetada por trás. 2. Belval: a chaminé de tijolo vermelho, a estrutura negra do alto-forno e os cilindros claros dos recuperadores. 3. O Mullerthal: a ponte de pedra do Schiessentümpel, as suas três quedas e o tanque onde se veem os seixos. 4. Berdorf: um abrigo rochoso largo e baixo, de arenito estratificado, aberto sobre um faial em pleno sol. 5. A ponte Adolphe: o tabuleiro com balaustrada no topo da janela, o grande arco e o tímpano rasgado por arcadas, o vale arborizado por baixo. 6. As gargantas de Felsmillen: à esquerda uma parede de arenito em consola, à direita um passadiço de madeira que sobe para a floresta.",
+        "legende": "Seis dos dezasseis lugares redesenhados a partir de fotografias, cada um com a matéria de que é feito."
+      }
+    ]
+  },
   "38.1.0": {
     "intro": "",
     "sections": [

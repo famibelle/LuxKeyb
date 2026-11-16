@@ -1,5 +1,63 @@
 {
   "_comment": "English translation of nouveautes.html, by version. Hand-maintained: generate_nouveautes.py merges it into stats/nouveautes-en.json. Each version mirrors the French one from the CHANGELOG: same sections, same number of points, in the same order; a section's title can be left out when _sections translates it. A version that is missing here, or no longer has the French shape, is shown in French with a notice. Text is HTML: escape < and &.",
+  "40.0.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "New",
+        "points": [
+          {
+            "titre": "Sixteen places redrawn from photographs",
+            "texte": "The Red Bridge, Vianden castle, the tower of Esch-sur-Sûre, the Schengen steles, Neimënster abbey, the Gëlle Fra, the Schueberfouer, the Schiessentümpel, the Grund, the Breedewee alley, the Pfaffenthal lift, Ansembourg castle, the Belval blast furnace, the Berdorf rock shelter, the Adolphe Bridge and the Felsmillen gorges are no longer drawn from memory: each follows a photograph, and shows what makes it recognisable."
+          },
+          {
+            "titre": "Everything is made of its own material",
+            "texte": "Dressed stone and its courses, slate rubble, sandstone with its undercut beds, brick, riveted sheet metal, open steelwork, the voussoirs of an arch, moss on the ledges. A tower, a wall or a rock is no longer a flat colour outlined with three strokes."
+          },
+          {
+            "titre": "The scenery lets its subject show",
+            "texte": "The word sits in the middle of the window, so what matters in a place now holds the top band and the two sides. A bridge gives its deck to the top of the card, a cliff holds a whole column, and foliage no longer stands in front of what you came to look at."
+          },
+          {
+            "titre": "A truly Luxembourgish green",
+            "texte": "The large masses of vegetation are deep and frank instead of turning apple green, and the four seasons read on every place."
+          }
+        ]
+      },
+      {
+        "titre": "Speed",
+        "points": [
+          {
+            "titre": "The card tilts in one single motion",
+            "texte": "When you tilted the phone, the image advanced at two mixed rates, which made it stutter. It now has only one, and the gesture is smoother."
+          }
+        ]
+      },
+      {
+        "titre": "Fixes",
+        "points": [
+          {
+            "titre": "The Pétrusse valley reads in all four seasons",
+            "texte": "The stone of the bridge took on the colour of the valley behind it, and the arch disappeared."
+          },
+          {
+            "titre": "Reeds under the snow",
+            "texte": "The winter border turned bright orange instead of straw."
+          },
+          {
+            "titre": "Autumn evenings",
+            "texte": "Evening is already orange, and autumn rust on top set the card on fire. It is applied more gently now."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Six card windows side by side. 1. The Breedewee alley: an arched gate of large stone voussoirs, the cobbled lane behind it. 2. Belval: the red brick chimney, the black steelwork of the blast furnace and the pale cylinders of the cowpers. 3. The Mullerthal: the stone bridge of the Schiessentümpel, its three falls and the pool where the pebbles show through. 4. Berdorf: a wide, low rock shelter of bedded sandstone, opening onto a sunlit beech wood. 5. The Adolphe Bridge: its balustraded deck across the top of the window, its great arch and spandrel pierced by arcades, the wooded valley below. 6. The Felsmillen gorges: an overhanging sandstone wall on the left, a wooden boardwalk climbing into the forest on the right.",
+        "legende": "Six of the sixteen places redrawn from photographs, each with the material it is made of."
+      }
+    ]
+  },
   "38.1.0": {
     "intro": "",
     "sections": [
