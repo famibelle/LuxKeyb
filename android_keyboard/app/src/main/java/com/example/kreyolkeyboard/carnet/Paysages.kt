@@ -4737,35 +4737,53 @@ object Paysages {
                 pieceD("M17 ${hautRempart(17f) + 1.4f}L103 ${hautRempart(103f) + 1.4f}L103 ${hautRempart(103f) + 2.6f}L17 ${hautRempart(17f) + 2.6f}Z",
                     sombre(rempart, 0.34f), 0.3f)
             }
-            // ---- La ville haute, posée sur le rempart : une ligne de
-            // pignons et de toits d'ardoise, petits, loin au-dessus.
+            // ---- La ville haute, posée sur le rempart : **une silhouette**,
+            // d'un seul tenant (propriétaire, 2026-11-16). Au dernier plan,
+            // des maisons modelées une à une — mur coloré, toit, fenêtres —
+            // se lisaient comme une rangée de cabines : autant de détail
+            // qu'au premier plan, à une échelle où l'œil ne demande qu'un
+            // profil. Une découpe unique rend la distance.
             run {
-                val murs = facades()
-                val toitHaut = loin(sombre(0xFF3A4254.toInt(), 0.1f), 0.2f)
+                val ville = Path()
                 var hx = 15f
-                var k = 0
                 while (hx < 103f) {
                     val w = 3.2f + r() * 3.8f
                     val h = 2.4f + r() * 5.2f
                     val th = h * (0.4f + r() * 0.35f)
-                    val bas = hautRempart(hx) + 0.5f
-                    val mur = loin(murs[k % murs.size], 0.2f)
-                    mineral {
-                        pieceD("M$hx ${bas}L$hx ${bas - h}L${hx + w} ${bas - h}L${hx + w} ${bas}Z", mur)
-                        if (r() < 0.45f) pieceD("M${hx - 0.5f} ${bas - h}L${hx + w / 2f} ${bas - h - th}L${hx + w + 0.5f} ${bas - h}Z", toitHaut)
-                        else pieceD("M${hx - 0.5f} ${bas - h}L${hx - 0.5f} ${bas - h - th * 0.5f}L${hx + w + 0.5f} ${bas - h - th * 0.5f}L${hx + w + 0.5f} ${bas - h}Z", toitHaut)
-                        if (P.allume) for (f in 0 until (w / 2.6f).toInt().coerceAtLeast(1))
-                            rect(hx + 0.7f + f * 2.4f, bas - h * 0.62f, 0.9f, 1.3f, P.fenetre, 0.8f)
+                    val bas = hautRempart(hx) + 0.8f
+                    ville.addRect(hx, bas - h, hx + w, bas, Path.Direction.CW)
+                    if (r() < 0.45f) {
+                        ville.moveTo(hx - 0.5f, bas - h)
+                        ville.lineTo(hx + w / 2f, bas - h - th)
+                        ville.lineTo(hx + w + 0.5f, bas - h)
+                        ville.close()
+                    } else {
+                        ville.addRect(hx - 0.5f, bas - h - th * 0.5f, hx + w + 0.5f, bas - h, Path.Direction.CW)
                     }
                     hx += w + 0.4f + r() * 1.5f
-                    k++
                 }
-                // Un beffroi, pour que la ville haute ait une silhouette.
-                mineral {
-                    val tour = loin(0xFFDCD2BA.toInt(), 0.42f)
-                    pieceD("M62 ${hautRempart(62f) + 0.6f}L62 ${hautRempart(62f) - 9f}L68 ${hautRempart(68f) - 9f}L68 ${hautRempart(68f) + 0.6f}Z", tour)
-                    pieceD("M61 ${hautRempart(61f) - 9f}L65 ${hautRempart(65f) - 15f}L69 ${hautRempart(69f) - 9f}Z", ardoise())
-                    if (P.allume) rect(63.8f, hautRempart(64f) - 6.6f, 1.4f, 2.2f, P.fenetre, 0.9f)
+                // Le beffroi fait partie de la même découpe : détaché, il
+                // redevenait un objet, et la silhouette un décor derrière lui.
+                val hb = hautRempart(65f)
+                ville.addRect(62f, hb - 9f, 68f, hb + 0.8f, Path.Direction.CW)
+                ville.moveTo(61f, hb - 9f); ville.lineTo(65f, hb - 15f); ville.lineTo(69f, hb - 9f); ville.close()
+                // Une silhouette doit être **plus sombre** que son fond, et
+                // il faut partir de bien plus sombre qu'on ne croit : le
+                // calque du fond s'estompe de 30 % vers le ciel, qui au
+                // matin est jaune. Un gris-bleu moyen en ressortait ocre,
+                // exactement de la valeur du rempart, et la ville haute
+                // disparaissait dans son mur.
+                mineral { piece(ville, mix(neutre(duJour(0xFF232A38.toInt())), distance, 0.1f)) }
+                // La nuit, les seules fenêtres allumées : une silhouette noire
+                // au-dessus d'un rempart éclairé serait une ville morte.
+                if (P.allume) mineral {
+                    val ra = Alea(152)
+                    for (k in 0 until 26) {
+                        val x = 16f + ra() * 85f
+                        val y = hautRempart(x) - 1f - ra() * 5f
+                        rect(x, y, 0.8f, 1.1f, P.fenetre, 0.75f)
+                    }
+                    rect(63.8f, hb - 6.6f, 1.4f, 2.2f, P.fenetre, 0.9f)
                 }
             }
             // La végétation qui s'accroche au pied du rocher et dans ses
