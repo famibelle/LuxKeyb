@@ -4401,41 +4401,146 @@ object Paysages {
                 t.close()
                 return t
             }
+            // ---- Le pont est en **vieilles pierres apparentes, recouvertes
+            // de mousse** (propriétaire, d'après la photo) : des blocs
+            // irréguliers, de tons tous différents, chacun posé sur un lit
+            // de mortier sombre qui reparaît en joint. Un aplat rayé de
+            // traits fins faisait de la pierre de taille neuve, pas un vieux
+            // pont de meunier du Mullerthal.
+            val pierres = Alea(145)
+            val mortier = sombre(gres, 0.52f)
+            fun ton(k: Float): Int = when {
+                k < 0.30f -> sombre(gres, 0.14f + k * 0.5f)
+                k < 0.58f -> mix(gres, 0xFFFFFFFF.toInt(), 0.1f + k * 0.2f)
+                k < 0.80f -> mix(gres, mousse, 0.18f + k * 0.26f)   // la pierre lichénée
+                else -> mix(gres, neutre(duJour(0xFF8C7A5E.toInt())), 0.3f + k * 0.4f)
+            }
+            /** Un bloc, rentré de son joint : le mortier du dessous fait le creux. */
+            fun bloc(pts: FloatArray, col: Int) {
+                var cx = 0f; var cy = 0f
+                for (i in pts.indices step 2) { cx += pts[i]; cy += pts[i + 1] }
+                cx /= pts.size / 2; cy /= pts.size / 2
+                val d = Path()
+                for (i in pts.indices step 2) {
+                    val x = cx + (pts[i] - cx) * 0.9f
+                    val y = cy + (pts[i + 1] - cy) * 0.84f
+                    if (i == 0) d.moveTo(x, y) else d.lineTo(x, y)
+                }
+                d.close()
+                piece(d, col)
+            }
+            fun dansArche(x: Float, y: Float, marge: Float): Boolean {
+                if (y > ARCHE[2]) return false
+                val u = (x - ARCHE[0]) / (ARCHE[1] + marge)
+                val v = (ARCHE[2] - y) / (ARCHE[3] + marge)
+                return u * u + v * v < 1f
+            }
+            val claveau = 3.4f
             mineral {
                 val corps = chemin("M-4 ${tablier(-4f)}L104 ${tablier(104f)}L104 32L-4 32Z")
                 corps.op(arche(ARCHE), Path.Op.DIFFERENCE)
-                piece(corps, gres)
-                // Le parapet prend le jour ; le tympan reste dans l'ombre du
-                // vallon, sinon le pont est une planche sans épaisseur.
-                pieceD("M-4 ${tablier(-4f)}L104 ${tablier(104f)}L104 ${tablier(104f) + 2.2f}L-4 ${tablier(-4f) + 2.2f}Z",
-                    mix(gres, 0xFFFFFFFF.toInt(), 0.18f))
-                val tympan = chemin("M-4 ${tablier(-4f) + 4.6f}L104 ${tablier(104f) + 4.6f}L104 32L-4 32Z")
-                tympan.op(arche(ARCHE), Path.Op.DIFFERENCE)
-                piece(tympan, sombre(gres, 0.2f), 0.3f)
-                for (d in floatArrayOf(2.2f, 4.6f)) ligne(-4f, tablier(-4f) + d, 104f, tablier(104f) + d, joint, 0.22f, 0.8f)
-                // Les assises du tympan, décalées d'un rang à l'autre.
-                var jx = -2f
-                while (jx < 104f) {
-                    ligne(jx, tablier(jx) + 4.6f, jx, tablier(jx) + 7.6f, joint, 0.18f, 0.55f)
-                    ligne(jx + 2.6f, tablier(jx + 2.6f) + 7.6f, jx + 2.6f, tablier(jx + 2.6f) + 10.6f, joint, 0.18f, 0.55f)
-                    jx += 5.2f
+                piece(corps, mortier)
+                // Les assises du tympan, décalées d'un rang à l'autre, et
+                // interrompues par la ceinture de claveaux.
+                var dy = 2.4f
+                while (dy < 27f) {
+                    val h = 2.3f + pierres() * 0.9f
+                    var x = -6f - pierres() * 4f
+                    while (x < 104f) {
+                        val w = 3.2f + pierres() * 3.4f
+                        val q = floatArrayOf(x, tablier(x) + dy, x + w, tablier(x + w) + dy,
+                            x + w, tablier(x + w) + dy + h, x, tablier(x) + dy + h)
+                        if (!dansArche(x + w / 2f, tablier(x + w / 2f) + dy + h / 2f, 0f)) bloc(q, ton(pierres()))
+                        x += w
+                    }
+                    dy += h
                 }
-                // Les claveaux, puis l'intrados : une arche a une épaisseur,
-                // sans quoi c'est un ovale peint sur un mur.
-                for (k in 0..18) {
-                    val u = PI.toFloat() * k / 18f
-                    ligne(ARCHE[0] - cos(u) * ARCHE[1], ARCHE[2] - sin(u) * ARCHE[3],
-                        ARCHE[0] - cos(u) * (ARCHE[1] + 2.2f), ARCHE[2] - sin(u) * (ARCHE[3] + 2.2f),
-                        if (k % 2 == 0) joint else sombre(gres, 0.25f), 0.9f, 0.8f)
+                // La ceinture de claveaux, qui donne son épaisseur à l'arche.
+                for (k in 0 until 17) {
+                    val u0 = PI.toFloat() * k / 17f
+                    val u1 = PI.toFloat() * (k + 1) / 17f
+                    bloc(floatArrayOf(
+                        ARCHE[0] - cos(u0) * ARCHE[1], ARCHE[2] - sin(u0) * ARCHE[3],
+                        ARCHE[0] - cos(u1) * ARCHE[1], ARCHE[2] - sin(u1) * ARCHE[3],
+                        ARCHE[0] - cos(u1) * (ARCHE[1] + claveau), ARCHE[2] - sin(u1) * (ARCHE[3] + claveau),
+                        ARCHE[0] - cos(u0) * (ARCHE[1] + claveau), ARCHE[2] - sin(u0) * (ARCHE[3] + claveau)),
+                        ton(pierres()))
                 }
+                // Le couronnement : une assise de dalles plus longues et
+                // plus claires, qui coiffe le parapet.
+                var cx2 = -6f
+                while (cx2 < 104f) {
+                    val w = 5.4f + pierres() * 3.6f
+                    bloc(floatArrayOf(cx2, tablier(cx2), cx2 + w, tablier(cx2 + w),
+                        cx2 + w, tablier(cx2 + w) + 2.2f, cx2, tablier(cx2) + 2.2f),
+                        mix(ton(pierres()), 0xFFFFFFFF.toInt(), 0.16f))
+                    cx2 += w
+                }
+                // L'intrados : le dessous de l'arche est dans l'ombre.
                 for (k in 0 until 28) {
                     val u0 = PI.toFloat() * k / 28f
                     val u1 = PI.toFloat() * (k + 1) / 28f
                     ligne(ARCHE[0] - cos(u0) * ARCHE[1], ARCHE[2] - sin(u0) * ARCHE[3],
-                        ARCHE[0] - cos(u1) * ARCHE[1], ARCHE[2] - sin(u1) * ARCHE[3], sombre(gres, 0.55f), 0.9f, 0.85f)
+                        ARCHE[0] - cos(u1) * ARCHE[1], ARCHE[2] - sin(u1) * ARCHE[3], sombre(gres, 0.6f), 0.9f, 0.85f)
                 }
             }
-            pieceD("M-4 ${tablier(-4f)}L104 ${tablier(104f)}L104 ${tablier(104f) + 0.8f}L-4 ${tablier(-4f) + 0.8f}Z", mousseClaire, 0.3f)
+            // ---- La mousse qui recouvre le pont. Peinte hors de [mineral],
+            // pour que les saisons la trouvent : c'est de la végétation.
+            run {
+                // La coiffe du couronnement, épaisse et festonnée, qui
+                // déborde du parapet.
+                // Elle court par plaques, interrompue : une bande verte
+                // continue se lit comme une haie posée sur le parapet.
+                val r2 = Alea(148)
+                var x = -5f
+                while (x < 104f) {
+                    val l = 6f + r2() * 16f
+                    val e = 1.3f + r2() * 1.6f
+                    val plaque = Path()
+                    plaque.moveTo(x, tablier(x) - 0.7f)
+                    plaque.lineTo(x + l, tablier(x + l) - 0.7f)
+                    var u = x + l
+                    while (u >= x) { plaque.lineTo(u, tablier(u) + e + 0.6f * sin(u * 0.9f)); u -= 1.2f }
+                    plaque.close()
+                    plaque.op(bosses(x, x + l, { v -> tablier(v) + e * 0.6f }, 0.7f, 1.4f, Alea(147 + x.toInt())), Path.Op.UNION)
+                    piece(plaque, if (r2() < 0.5f) mousse else mousseClaire)
+                    x += l + 1.5f + r2() * 7f
+                }
+                // Les plaques accrochées au tympan, dans les joints, et les
+                // coulées qui en descendent.
+                for (k in 0 until 22) {
+                    val mx = -4f + r2() * 108f
+                    val my = tablier(mx) + 2.6f + r2() * 14f
+                    if (dansArche(mx, my, claveau + 1f)) continue
+                    // Une plaque étalée, pas une boule : la mousse suit la
+                    // pierre, elle ne s'y colle pas en pompon.
+                    val rr = 0.7f + r2() * 1.5f
+                    touffe(if (k % 3 == 0) mousseClaire else mousse,
+                        mx, my, rr, mx + rr * 1.3f, my + rr * 0.3f, rr * 0.8f,
+                        mx - rr * 1.3f, my + rr * 0.35f, rr * 0.75f,
+                        mx + rr * 0.5f, my + rr * 0.6f, rr * 0.6f, mx - rr * 0.5f, my + rr * 0.55f, rr * 0.55f)
+                    if (r2() < 0.45f) {
+                        val mh = 2.4f + r2() * 5f
+                        pieceD("M${mx - 1f} ${my}C${mx - 1.3f} ${my + mh * 0.5f} ${mx - 0.5f} ${my + mh * 0.8f} ${mx} ${my + mh}" +
+                            "C${mx + 0.6f} ${my + mh * 0.8f} ${mx + 1.3f} ${my + mh * 0.5f} ${mx + 1f} ${my}Z", mousse, 0.3f)
+                    }
+                }
+                // La mousse de l'extrados, qui souligne l'arche, et les
+                // touffes qui pendent de son dessous.
+                for (k in 0 until 17) {
+                    val u = PI.toFloat() * (k + 0.5f) / 17f
+                    val rr = claveau + 0.2f + r2() * 1.3f
+                    rond(ARCHE[0] - cos(u) * (ARCHE[1] + rr), ARCHE[2] - sin(u) * (ARCHE[3] + rr),
+                        0.9f + r2() * 0.9f, if (k % 3 == 0) mousseClaire else mousse, 0.85f)
+                }
+                for (k in 0 until 7) {
+                    val u = PI.toFloat() * (0.12f + 0.76f * k / 6f)
+                    val bx = ARCHE[0] - cos(u) * (ARCHE[1] - 0.4f)
+                    val by = ARCHE[2] - sin(u) * (ARCHE[3] - 0.4f)
+                    pieceD("M${bx - 1.2f} ${by}C${bx - 1.4f} ${by + 1.6f} ${bx - 0.3f} ${by + 2.4f} ${bx} ${by + 3.2f}" +
+                        "C${bx + 0.4f} ${by + 2.2f} ${bx + 1.4f} ${by + 1.4f} ${bx + 1f} ${by}Z", mousse, 0.3f)
+                }
+            }
             // Le garde-corps de branches : des perches brutes, pas une grille.
             val bois = neutre(duJour(0xFF7A6246.toInt()))
             mineral {
