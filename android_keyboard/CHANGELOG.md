@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [40.1.0] - 2026-11-16
+
+### ✨ Nouveautés
+
+- **La promenade de l'Ourdall d'après photos** : le lac de l'Our et la longue colline boisée qui le ferme, les pylônes de la retenue sur sa crête, et le caillebotis de bois gris qui longe la rive avec son garde-corps grillagé, à travers lequel on voit l'eau.
+
 ## [40.0.0] - 2026-11-16
 
 ### ✨ Nouveautés
