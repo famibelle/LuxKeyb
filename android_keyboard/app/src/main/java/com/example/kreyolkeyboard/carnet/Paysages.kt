@@ -1225,16 +1225,20 @@ object Paysages {
      * Les maisons du Grund vues de trois quarts ([Peintre.rue3q]), de la plus
      * proche à la plus lointaine : largeur le long de la rue et hauteur (au
      * premier plan), mur, colombages (1), hauteur du toit, lucarnes (1).
-     * Étroites et hautes, comme les maisons du quai.
+     * Étroites et hautes, comme les maisons du quai, mais pas au point de
+     * passer devant le rocher : à 27 unités, leur faîtage montait plus haut
+     * que la crête, et la falaise, le rempart et la ville haute
+     * disparaissaient derrière elles. Le Grund, ce sont des maisons au pied
+     * d'une falaise, pas devant un mur.
      */
     private val MAISONS_GRUND_3Q = arrayOf(
-        floatArrayOf(14f, 27f, 2f, 0f, 6f, 1f), floatArrayOf(10f, 22f, 1f, 1f, 5f, 0f),
-        floatArrayOf(13f, 28f, 0f, 0f, 6.5f, 1f), floatArrayOf(10f, 21f, 3f, 0f, 5f, 0f),
-        floatArrayOf(14f, 25f, 2f, 1f, 6f, 1f), floatArrayOf(11f, 23f, 1f, 0f, 5.5f, 0f),
-        floatArrayOf(13f, 27f, 3f, 0f, 6f, 1f), floatArrayOf(11f, 22f, 0f, 1f, 5.5f, 0f),
-        floatArrayOf(13f, 25f, 2f, 0f, 6f, 1f), floatArrayOf(11f, 23f, 1f, 0f, 5.5f, 0f),
-        floatArrayOf(14f, 26f, 3f, 1f, 6f, 1f), floatArrayOf(12f, 24f, 0f, 0f, 5.5f, 0f),
-        floatArrayOf(13f, 25f, 2f, 0f, 6f, 1f), floatArrayOf(12f, 23f, 1f, 0f, 5.5f, 0f)
+        floatArrayOf(14f, 19.5f, 2f, 0f, 4.4f, 1f), floatArrayOf(10f, 16f, 1f, 1f, 3.7f, 0f),
+        floatArrayOf(13f, 20f, 0f, 0f, 4.8f, 1f), floatArrayOf(10f, 15.4f, 3f, 0f, 3.7f, 0f),
+        floatArrayOf(14f, 18f, 2f, 1f, 4.4f, 1f), floatArrayOf(11f, 16.6f, 1f, 0f, 4f, 0f),
+        floatArrayOf(13f, 19.5f, 3f, 0f, 4.4f, 1f), floatArrayOf(11f, 16f, 0f, 1f, 4f, 0f),
+        floatArrayOf(13f, 18f, 2f, 0f, 4.4f, 1f), floatArrayOf(11f, 16.6f, 1f, 0f, 4f, 0f),
+        floatArrayOf(14f, 18.8f, 3f, 1f, 4.4f, 1f), floatArrayOf(12f, 17.4f, 0f, 0f, 4f, 0f),
+        floatArrayOf(13f, 18f, 2f, 0f, 4.4f, 1f), floatArrayOf(12f, 16.6f, 1f, 0f, 4f, 0f)
     )
 
     /**
@@ -4688,21 +4692,123 @@ object Paysages {
 
         fun stadPapier() {
             val r = Alea(145)
-            lisiere(-2f, 34f, { x -> 22f + 3f * sin(x * 0.2f) }, 1.8f, 2.6f, 146, nappe(mix(P.loin, P.milieu, 0.4f), 0.3f, VERT_CALME))
-            val rocher = duJour(0xFFB7AA8C.toInt())
-            val rempart = duJour(0xFFCFC3A5.toInt())
+            // ---- Le rocher, le rempart et la ville haute.
+            //
+            // Au Grund, **la ville est au-dessus** : c'est tout le lieu. Le
+            // rocher et le rempart étaient bien dessinés, mais sous la ligne
+            // des toits : la rangée de maisons les cachait entièrement, et la
+            // carte montrait une bourgade au bord d'une rivière, n'importe où
+            // en Europe. Ils montent maintenant dans la bande du haut, celle
+            // que la plaque du mot laisse libre.
+            val distance = mix(P.cielBas, neutre(P.cielBas), 0.6f)
+            fun loin(col: Int, t: Float) = mix(neutre(duJour(col)), distance, if (P.nuit) t * 0.5f else t)
+            val rocher = loin(0xFF8E8775.toInt(), 0.24f)
+            val rempart = loin(0xFFC2BBA8.toInt(), 0.28f)
+            fun crete(x: Float) = 25.8f - (x - 18f) * 0.036f
+            fun hautRempart(x: Float) = crete(x) - 9.6f
             mineral {
-                pieceD("M24 66L26 36L102 33L102 66Z", rocher)
-                pieceD("M30 36.5L30 24L102 22L102 34Z", rempart)
-                for ((bx, w) in listOf(38f to 8f, 50f to 9f, 62f to 8f)) {
-                    pieceD("M$bx 37L$bx 22C$bx 19.4 ${bx + w} 19.4 ${bx + w} 22L${bx + w} 37Z", rempart)
-                    feuille(bx + w * 0.62f, 21f, w * 0.38f, 16f, mix(rempart, P.pres, 0.22f), 0f)
+                pieceD("M14 52L17 ${crete(17f)}C40 ${crete(40f) - 1.4f} 70 ${crete(70f) - 1.6f} 103 ${crete(103f)}L103 52Z", rocher)
+                // Les strates du grès, et les grandes diaclases verticales
+                // qui font la falaise du Bock plutôt qu'un talus.
+                for (y in floatArrayOf(27f, 32f, 37f, 42f))
+                    trait("M15 ${y}C40 ${y - 2.6f} 70 ${y - 3.2f} 103 ${y - 2.4f}", sombre(rocher, 0.3f), 0.4f, 0.55f)
+                for (x in floatArrayOf(24f, 39f, 52f, 68f, 83f, 96f))
+                    ligne(x, crete(x) + 1.2f, x - 1.4f, 46f, sombre(rocher, 0.34f), 0.35f, 0.5f)
+                // Le rempart qui le couronne, et ses arcades aveugles.
+                pieceD("M17 ${crete(17f)}C40 ${crete(40f) - 1.4f} 70 ${crete(70f) - 1.6f} 103 ${crete(103f)}" +
+                    "L103 ${hautRempart(103f)}L17 ${hautRempart(17f)}Z", rempart)
+                val creux = sombre(rempart, 0.44f)
+                // Le socle, plus sombre : un rempart porte, et cela se voit
+                // au pied. Sans lui c'est une bande d'ocre d'un bord à l'autre.
+                pieceD("M17 ${crete(17f)}C40 ${crete(40f) - 1.4f} 70 ${crete(70f) - 1.6f} 103 ${crete(103f)}" +
+                    "L103 ${crete(103f) - 2.6f}C70 ${crete(70f) - 4f} 40 ${crete(40f) - 3.8f} 17 ${crete(17f) - 2.6f}Z",
+                    sombre(rempart, 0.26f))
+                for (bx in floatArrayOf(22f, 37f, 52f, 67f, 82f, 94f)) {
+                    val w = 10.5f
+                    val bas = crete(bx) - 3f
+                    val naissance = hautRempart(bx) + 6.4f
+                    pieceD("M$bx ${bas}L$bx ${naissance}C$bx ${naissance - 5.6f} ${bx + w} ${naissance - 5.6f} ${bx + w} ${naissance}L${bx + w} ${bas}Z", creux)
+                    pieceD("M${bx + 0.9f} ${bas}L${bx + 0.9f} ${naissance}C${bx + 0.9f} ${naissance - 4.7f} ${bx + w - 0.9f} ${naissance - 4.7f} ${bx + w - 0.9f} ${naissance}L${bx + w - 0.9f} ${bas}Z",
+                        sombre(rempart, 0.6f), 0.3f)
+                }
+                // L'arête du chemin de ronde.
+                pieceD("M17 ${hautRempart(17f)}L103 ${hautRempart(103f)}L103 ${hautRempart(103f) + 1.4f}L17 ${hautRempart(17f) + 1.4f}Z",
+                    mix(rempart, 0xFFFFFFFF.toInt(), 0.22f))
+                pieceD("M17 ${hautRempart(17f) + 1.4f}L103 ${hautRempart(103f) + 1.4f}L103 ${hautRempart(103f) + 2.6f}L17 ${hautRempart(17f) + 2.6f}Z",
+                    sombre(rempart, 0.34f), 0.3f)
+            }
+            // ---- La ville haute, posée sur le rempart : une ligne de
+            // pignons et de toits d'ardoise, petits, loin au-dessus.
+            run {
+                val murs = facades()
+                val toitHaut = loin(sombre(0xFF3A4254.toInt(), 0.1f), 0.2f)
+                var hx = 15f
+                var k = 0
+                while (hx < 103f) {
+                    val w = 3.2f + r() * 3.8f
+                    val h = 2.4f + r() * 5.2f
+                    val th = h * (0.4f + r() * 0.35f)
+                    val bas = hautRempart(hx) + 0.5f
+                    val mur = loin(murs[k % murs.size], 0.2f)
+                    mineral {
+                        pieceD("M$hx ${bas}L$hx ${bas - h}L${hx + w} ${bas - h}L${hx + w} ${bas}Z", mur)
+                        if (r() < 0.45f) pieceD("M${hx - 0.5f} ${bas - h}L${hx + w / 2f} ${bas - h - th}L${hx + w + 0.5f} ${bas - h}Z", toitHaut)
+                        else pieceD("M${hx - 0.5f} ${bas - h}L${hx - 0.5f} ${bas - h - th * 0.5f}L${hx + w + 0.5f} ${bas - h - th * 0.5f}L${hx + w + 0.5f} ${bas - h}Z", toitHaut)
+                        if (P.allume) for (f in 0 until (w / 2.6f).toInt().coerceAtLeast(1))
+                            rect(hx + 0.7f + f * 2.4f, bas - h * 0.62f, 0.9f, 1.3f, P.fenetre, 0.8f)
+                    }
+                    hx += w + 0.4f + r() * 1.5f
+                    k++
+                }
+                // Un beffroi, pour que la ville haute ait une silhouette.
+                mineral {
+                    val tour = loin(0xFFDCD2BA.toInt(), 0.42f)
+                    pieceD("M62 ${hautRempart(62f) + 0.6f}L62 ${hautRempart(62f) - 9f}L68 ${hautRempart(68f) - 9f}L68 ${hautRempart(68f) + 0.6f}Z", tour)
+                    pieceD("M61 ${hautRempart(61f) - 9f}L65 ${hautRempart(65f) - 15f}L69 ${hautRempart(69f) - 9f}Z", ardoise())
+                    if (P.allume) rect(63.8f, hautRempart(64f) - 6.6f, 1.4f, 2.2f, P.fenetre, 0.9f)
                 }
             }
-            lisiere(28f, 102f, { x -> 21.5f + 0.8f * sin(x * 0.5f) }, 1.1f, 1.7f, 147, vert(0.4f))
-            feuille(71.4f, 10f, 1.2f, 12f, duJour(0xFF5A4030.toInt()), 0.5f)
-            touffe(vert(0.5f), 72f, 11f, 4.6f, 68f, 14f, 3.8f, 76f, 14.5f, 3.8f, 72f, 6.5f, 3.6f)
+            // La végétation qui s'accroche au pied du rocher et dans ses
+            // fissures : au Grund, le rocher n'est jamais nu.
+            run {
+                var vx = 12f
+                while (vx < 103f) {
+                    val l = 5f + r() * 11f
+                    lisiere(vx, vx + l, { x -> crete(x) + 1.2f + 1.4f * sin(x * 0.33f) }, 1.1f, 2f, 147 + vx.toInt(), vert(0.42f))
+                    vx += l + 3f + r() * 9f
+                }
+            }
+            for (k in 0 until 9) {
+                val tx = 16f + k * 10f + r() * 5f
+                touffe(vert(0.5f + (k % 3) * 0.08f), tx, crete(tx) + 4f + r() * 9f, 1.5f + r() * 1.3f,
+                    tx + 2f, crete(tx) + 6f + r() * 8f, 1.2f + r() * 1f)
+            }
+            lisiere(-2f, 20f, { x -> 24f + 3f * sin(x * 0.2f) }, 1.8f, 2.6f, 146, nappe(mix(P.loin, P.milieu, 0.4f), 0.3f, VERT_CALME))
             plan(1)
+            // ---- Le clocher de Saint-Jean-du-Grund : la flèche d'ardoise
+            // qui monte au-dessus des toits est le seul trait qui dise
+            // « Grund » du premier coup d'œil.
+            mineral {
+                val tour = neutre(duJour(0xFFE6DCC4.toInt()))
+                pieceD("M30.8 46L30.8 16.6L37.2 16.6L37.2 46Z", tour)
+                pieceD("M29.9 16.6L38.1 16.6L38.1 14.4L29.9 14.4Z", mix(tour, 0xFFFFFFFF.toInt(), 0.22f))
+                for (fx in floatArrayOf(31.6f, 34.6f)) {
+                    pieceD("M$fx 24.6L$fx 21.8C$fx 20.3 ${fx + 1.8f} 20.3 ${fx + 1.8f} 21.8L${fx + 1.8f} 24.6Z",
+                        if (P.allume) P.fenetre else sombre(tour, 0.45f))
+                }
+                rond(34f, 29.4f, 1.9f, mix(tour, 0xFFFFFFFF.toInt(), 0.5f))
+                rond(34f, 29.4f, 1.9f, sombre(tour, 0.4f), 0.25f)
+                ligne(34f, 29.4f, 34f, 28.1f, sombre(tour, 0.6f), 0.28f)
+                ligne(34f, 29.4f, 35.1f, 29.9f, sombre(tour, 0.6f), 0.24f)
+                // La flèche : une aiguille, pas un chapeau. Celle de
+                // Saint-Jean est très effilée, avec un petit lanternon.
+                val tuile = sombre(neutre(ardoise()), 0.15f)
+                pieceD("M30.4 14.4L34 11.4L37.6 14.4Z", tuile)
+                pieceD("M31.4 11.4L36.6 11.4L36.6 8.6L31.4 8.6Z", mix(tuile, 0xFFFFFFFF.toInt(), 0.18f))
+                pieceD("M30.6 8.6L34 -1.6L37.4 8.6Z", tuile)
+                ligne(34f, -1.6f, 34f, -4.4f, sombre(tuile, 0.3f), 0.3f)
+                ligne(32.9f, -3.2f, 35.1f, -3.2f, sombre(tuile, 0.3f), 0.26f)
+            }
             rue3q(RUE_GRUND, MAISONS_GRUND_3Q, facades(), r)
             touffe(vert(0.6f), 58f, 43.5f, 2.6f, 62f, 42.5f, 3f, 66f, 43.4f, 2.2f)
             plan(2)
