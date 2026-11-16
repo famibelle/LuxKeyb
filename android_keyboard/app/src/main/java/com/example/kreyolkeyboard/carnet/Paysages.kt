@@ -1689,10 +1689,13 @@ object Paysages {
                 Lieu.BREEDEWEE -> if (calque == 3) lanterneVivante(p, temps, 44f, 16f, true, 0)
                     else { lanterneVivante(p, temps, 92f, 24f, false, 1); chat(p, temps, vol) }
                 Lieu.FELSMILLEN -> { feuillesQuiTombent(p, temps, raf); envol(p, vol, 12f, 30f, 1f) }
+                // Le lac est à gauche depuis que le lieu suit la photo, et le
+                // coin haut droit est pris par l'arbre : les reflets, les
+                // ronds et les oiseaux ont suivi.
                 Lieu.OURDALL -> if (calque == 3) {
-                    reflets(p, temps, 0f, 62f, 37f, 50f, raf)
-                    ronds(p, vol, 43f, 12f, 34f, 52f)
-                } else envol(p, vol, 90f, 10f, -1f)
+                    reflets(p, temps, 0f, 60f, 36f, 52f, raf)
+                    ronds(p, vol, 44f, 10f, 28f, 46f)
+                } else envol(p, vol, 22f, 9f, 1f)
                 Lieu.STAUSEI -> {
                     reflets(p, temps, 0f, 72f, 48f, 57f, raf)
                     ronds(p, vol, 52f, 20f, 44f, 62f)
@@ -7243,38 +7246,196 @@ object Paysages {
             c.restore()
         }
 
-        // ---- Ourdall, la passerelle le long du lac de l'Our (photos du propriétaire)
+        // ---- Ourdall, la promenade du lac de l'Our (photos du propriétaire)
 
+        /**
+         * Ce que disent les photos, et qu'aucune maquette n'avait :
+         *
+         * 1. **Le lac est le sujet autant que le caillebotis.** Une grande
+         *    eau calme et pâle, ouverte, et une longue colline boisée qui la
+         *    ferme au fond : c'est cela, la promenade de l'Ourdall.
+         * 2. **Le garde-corps est un grillage**, tendu entre des poteaux sous
+         *    une main courante épaisse. On voit le lac au travers : il se
+         *    dessine fil par fil, jamais en panneau plein.
+         * 3. **Le bois est gris**, délavé par la pluie, et non brun verni.
+         * 4. **Les pylônes de la ligne passent sur la crête**, à gauche : le
+         *    lac de l'Our est la retenue de pompage de Vianden, et ce sont eux
+         *    qui le disent.
+         * 5. **Un arbre surplombe la promenade** et occupe tout le coin haut
+         *    droit, au-dessus du caillebotis.
+         *
+         * Sur la carte ouverte, le caillebotis et ses deux garde-corps
+         * tiennent la colonne de droite, l'arbre les coiffe dans la bande du
+         * haut, et tout le reste est le lac, sa crête et ses pylônes.
+         */
         fun ourdall() {
             val r = Alea(235)
-            lisiere(-2f, 102f, { x -> 22f + 4f * sin(x * 0.05f + 0.5f) }, 2f, 3f, 236, mix(vert(0.4f), P.loin, 0.3f))
-            pylone(8f, 26f, 15f, 3f, duJour(0xFF6A6E74.toInt()))
-            plan(1)
-            pieceD("M-2 66L-2 34C30 33 70 33 102 35L102 66Z", mix(P.eau, 0xFF6F8A60.toInt(), 0.35f), 0.4f)
-            val clair = mix(P.eau, 0xFFFFFFFF.toInt(), if (P.nuit) 0.18f else 0.4f)
-            for (k in 0 until 8) rect(r() * 60f, 36f + r() * 14f, 3f + r() * 6f, 0.3f, clair, 0.7f)
-            lisiere(62f, 102f, { x -> 32f - (x - 62f) * 0.05f }, 1.6f, 2.4f, 237, vert(0.35f))
-            plan(2)
-            solNaturel(SolNaturel.BERGE)  // la rive du lac
-            poser(DEVANT)
-            val bois = duJour(0xFFB9A07A.toInt())
-            val gris = duJour(0xFF8A8E92.toInt())
-            pieceD("M30 58.5L64 36L69 36L84 58.5Z", bois)
-            lames({ y -> 30f + (58.5f - y) / 22.5f * 34f }, { y -> 84f - (58.5f - y) / 22.5f * 15f }, 58.5f, 36f, sombre(bois, 0.3f))
-            // Le garde-corps de gauche : le grillage, puis la main courante.
-            var x = 16f
-            while (x < 64f) {
-                val t = (x - 16f) / 48f
-                ligne(x, 45f - t * 11.6f, x + 2.4f, 58.5f - t * 22f, gris, 0.12f)
-                ligne(x + 2.4f, 45f - (t + 0.05f) * 11.6f, x, 58.5f - t * 22f, gris, 0.12f)
-                x += 2.4f
+            // ---- La crête boisée du fond, et le éperon qui la double plus près.
+            val colline = nappe(duJour(0xFF3E5C2A.toInt()), 0.5f, VERT_CALME)
+            lisiere(-2f, 102f, { x -> 23f + 2.4f * sin(x * 0.055f) - x * 0.025f }, 2.2f, 3.4f, 236,
+                mix(colline, P.loin, 0.2f))
+            // Les pylônes et leur ligne : petits, sur la crête, dans la
+            // colonne de gauche, là où la carte ouverte les montre.
+            val acier = neutre(duJour(0xFF8A9099.toInt()))
+            mineral {
+                for (px in floatArrayOf(9f, 23f)) pylone(px, 23.6f - px * 0.025f, 14.4f - px * 0.025f, 2.6f, sombre(acier, 0.35f))
+                ligne(9f, 16.6f, 23f, 16.2f, acier, 0.12f, 0.5f)
+                ligne(23f, 16.2f, 42f, 18.4f, acier, 0.12f, 0.4f)
             }
-            pieceD("M14 42.6L64 32.4L64 33.6L16 45.2Z", bois)
-            for (px in floatArrayOf(16f, 32f, 46f, 57f)) ligne(px, 45f - (px - 16f) / 48f * 11.6f, px, 58.5f - (px - 16f) / 48f * 22f, sombre(bois, 0.3f), 0.5f)
-            // Celui de droite, et les arbres qui surplombent.
-            pieceD("M98 41L70 32.6L70 33.8L98 43.4Z", bois)
-            for (px in floatArrayOf(96f, 86f, 77f)) ligne(px, 42f - (98f - px) * 0.3f, px, 58.5f - (98f - px) * 0.85f, sombre(bois, 0.3f), 0.5f)
-            touffe(vert(0.5f), 84f, 4f, 8f, 94f, 10f, 7f, 100f, 2f, 8f, 76f, -2f, 6f)
+            lisiere(-2f, 102f, { x -> 28f + 2f * sin(x * 0.09f + 1.2f) - x * 0.02f }, 2f, 3f, 237, colline)
+            plan(1)
+            // ---- Le lac, la pièce la plus large de la carte.
+            val lac = mix(P.eau, neutre(duJour(0xFF4E7A74.toInt())), 0.55f)
+            pieceD("M-3 67L-3 33.4C20 32.2 50 32 78 32.8C90 33.2 98 33.6 103 33.2L103 67Z", lac, 0.4f)
+            // Le reflet de la colline sous sa rive : sans lui l'eau est un
+            // aplat, et la rive ne tient à rien.
+            forme("M-3 39.4L-3 34C20 32.8 50 32.6 78 33.4C90 33.8 98 34.2 103 33.8L103 38.6C70 39.8 30 40 -3 39.4Z",
+                sombre(lac, 0.3f), 0.3f)
+            // Les traînées de lumière : horizontales, et plus longues en
+            // approchant. C'est ce qui couche l'eau à plat.
+            val brillance = mix(lac, 0xFFFFFFFF.toInt(), if (P.nuit) 0.14f else 0.42f)
+            for (k in 0 until 16) {
+                val yy = 35f + r() * 22f
+                val t = (yy - 35f) / 22f
+                rect(-2f + r() * 78f, yy, 4f + r() * (6f + t * 14f), 0.3f + t * 0.3f, brillance, 0.7f)
+            }
+            plan(2)
+            poser(DEVANT)
+            // ---- Le caillebotis. Il entre par le coin bas droit et
+            // traverse **en biais** vers le fond.
+            //
+            // Deux géométries ont été essayées avant celle-ci, et toutes
+            // deux perdaient le garde-corps, qui est le sujet :
+            //
+            // - fuyant vers le milieu, ses deux garde-corps convergent
+            //   derrière la plaque et il ne reste qu'un ponton ;
+            // - dressé le long du bord droit, « monter » et « s'éloigner »
+            //   deviennent la même direction : un poteau vertical se couche
+            //   sur l'arête du tablier, la main courante retombe dessus, et
+            //   le garde-corps se réduit à un trait.
+            //
+            // En biais, l'arête est oblique et la hauteur du garde-corps s'en
+            // détache : dans la colonne libre on voit une bande de grillage
+            // haute de dix unités, ses poteaux et sa main courante.
+            val bois = neutre(duJour(0xFFA69C8C.toInt()))
+            // Le bord intérieur est remonté : le garde-corps extérieur, qui
+            // se lève par-dessus les lames, en couvrait presque toutes.
+            fun bordInterne(u: Float) = floatArrayOf(104f - 46f * u, 40.6f - 11.2f * u)
+            fun bordExterne(u: Float) = floatArrayOf(104f - 44f * u, 62f - 25.5f * u)
+            // La rive sous la promenade : sans elle le caillebotis a de l'eau
+            // des deux côtés et se lit comme un pont jeté sur le lac.
+            val talus = sombre(vert(0.58f), 0.12f)
+            val rive = chemin("M104 68L104 61.4C92 59.6 80 54 70 45C65 40.4 61 36.4 57.6 33.6" +
+                "C54.6 38.6 52.4 44.6 50.4 50.6C48.8 55.6 47 61.4 46 68Z")
+            piece(rive, sombre(talus, 0.14f))
+            // Le bord de l'eau, mouillé : il casse la diagonale, qui sans lui
+            // se lit comme un mur jeté en travers du lac.
+            forme("M57.6 33.6C61 36.4 65 40.4 70 45C80 54 92 59.6 104 61.4L104 63.6C90 62 78 56.4 68 47.4C63 43 59 39 56.6 36.4Z",
+                sombre(talus, 0.42f), 0.55f)
+            c.save(); c.clipPath(rive)
+            releve?.save(); releve?.clipPath(rive)
+            for (k in 0 until 12) {
+                val bx = 54f + r() * 52f
+                val by = 38f + r() * 28f
+                val t = r()
+                touffe(if (t < 0.34f) mix(talus, duJour(0xFFDCEE8E.toInt()), 0.3f)
+                       else if (t < 0.72f) vert(0.66f) else sombre(talus, 0.3f),
+                    bx, by, 1.2f + r() * 1.8f, bx + 2.2f, by + 1f, 1f + r() * 1.5f)
+            }
+            releve?.restore(); c.restore()
+            fun hautGarde(u: Float) = 10f - 7f * u
+            val tablier = Path()
+            var a = bordInterne(0f)
+            tablier.moveTo(a[0], a[1])
+            var u = 0f
+            while (u < 1f) { u = min(1f, u + 0.05f); a = bordInterne(u); tablier.lineTo(a[0], a[1]) }
+            while (u > 0f) { a = bordExterne(u); tablier.lineTo(a[0], a[1]); u -= 0.05f }
+            a = bordExterne(0f)
+            tablier.lineTo(a[0], a[1])
+            tablier.close()
+            piece(tablier, bois)
+            // Les lames, transversales et plus serrées au loin.
+            for (k in 1..18) {
+                val uu = (k / 18f).pow(1.5f)
+                val g = bordInterne(uu); val d = bordExterne(uu)
+                ligne(g[0], g[1], d[0], d[1], sombre(bois, 0.5f), 0.62f - 0.46f * uu, 0.9f)
+            }
+            /**
+             * Un garde-corps de la promenade, le long du [bord] du tablier :
+             * l'ombre qu'il porte sur les lames, le grillage fil par fil, les
+             * poteaux, puis la main courante et son arête au jour.
+             *
+             * Le grillage ne se peint pas en panneau : c'est à travers lui
+             * qu'on voit le lac, et une pièce de papier le boucherait.
+             */
+            fun gardeCorps(bord: (Float) -> FloatArray, surLeTablier: Boolean) {
+                // Celui du bord intérieur se lève au-dessus du lac, celui du
+                // bord extérieur par-dessus les lames : l'ombre portée est ce
+                // qui pose le second, qui sans elle flotte sur le tablier.
+                if (surLeTablier) {
+                    var v = 0f
+                    while (v < 1f) {
+                        val b = bord(v); val c2 = bord(min(1f, v + 0.04f))
+                        ligne(b[0], b[1], c2[0] + hautGarde(v) * 0.7f, c2[1],
+                            sombre(bois, 0.26f), 0.6f, 0.22f)
+                        v += 0.04f
+                    }
+                }
+                val fil = sombre(bois, 0.58f)
+                var v = 0f
+                while (v < 1f) {
+                    val b = bord(v); val c2 = bord(min(1f, v + 0.035f))
+                    ligne(b[0], b[1] - hautGarde(v), c2[0], c2[1], fil, 0.12f, 0.45f)
+                    ligne(b[0], b[1], c2[0], c2[1] - hautGarde(v), fil, 0.12f, 0.45f)
+                    v += 0.035f
+                }
+                v = 0f
+                while (v < 1f) {
+                    val b = bord(v)
+                    ligne(b[0], b[1], b[0], b[1] - hautGarde(v), sombre(bois, 0.52f), 0.36f - 0.2f * v)
+                    v += 0.1f + 0.05f * v
+                }
+                val main = Path()
+                var b = bord(0f)
+                main.moveTo(b[0], b[1] - hautGarde(0f))
+                v = 0f
+                while (v < 1f) { v = min(1f, v + 0.05f); b = bord(v); main.lineTo(b[0], b[1] - hautGarde(v)) }
+                while (v > 0f) {
+                    b = bord(v); main.lineTo(b[0], b[1] - hautGarde(v) + 0.5f + (1f - v) * 0.9f)
+                    v -= 0.05f
+                }
+                b = bord(0f)
+                main.lineTo(b[0], b[1] - hautGarde(0f) + 1.4f)
+                main.close()
+                piece(main, sombre(bois, 0.3f), 0.9f)
+                v = 0f
+                while (v < 1f) {
+                    b = bord(v); val c2 = bord(min(1f, v + 0.05f))
+                    ligne(b[0], b[1] - hautGarde(v), c2[0], c2[1] - hautGarde(min(1f, v + 0.05f)),
+                        mix(bois, 0xFFFFFFFF.toInt(), 0.22f), 0.22f, 0.8f)
+                    v += 0.05f
+                }
+            }
+            gardeCorps({ v -> bordInterne(v) }, false)
+            gardeCorps({ v -> bordExterne(v) }, true)
+            // Le bosquet où la promenade s'enfonce, au bout du caillebotis.
+            touffe(talus, 54f, 32f, 4.4f, 60f, 34f, 3.6f, 49f, 34.6f, 3.4f, 64f, 36.6f, 2.8f)
+            touffe(vert(0.66f), 57f, 30.4f, 2.6f, 51.6f, 31.6f, 2.2f)
+            // ---- L'arbre qui surplombe la promenade, dans le coin haut droit.
+            val feuillage = vert(0.72f)
+            trait("M104 1.6C97 5 92.6 11 90.6 19", sombre(bois, 0.5f), 0.7f)
+            for (k in 0 until 16) {
+                val fx = 74f + r() * 32f
+                val fy = -3f + r() * 17f
+                val t = r()
+                touffe(if (t < 0.32f) mix(feuillage, duJour(0xFFE6F2A0.toInt()), 0.3f)
+                       else if (t < 0.76f) feuillage else sombre(feuillage, 0.34f),
+                    fx, fy, 2f + r() * 2.6f,
+                    fx + 2.8f, fy + 1.6f, 1.8f + r() * 2f,
+                    fx - 2.6f, fy + 1.4f, 1.6f + r() * 2f)
+            }
+            // Les roseaux de la rive, en bas à gauche.
+            touffe(sombre(vert(0.5f), 0.2f), -3f, 56f, 3.6f, 3f, 57.6f, 3f)
             c.restore()
         }
 
