@@ -46,8 +46,10 @@ Tout vit dans `carnet/Paysages.kt`, classe `Peintre`, en unités de fenêtre
 
 | Matière | Recette | Où elle est écrite |
 |---|---|---|
-| **Pierre de taille en bossage** | le joint en creux peint **d'abord**, la ciselure plate autour du bloc, puis le champ rugueux : piqûres de pointerolle en lignes obliques, deux arêtes de lumière, un éclat de temps en temps | `bossage`, `champBosse`, `tonPierre`, **locales au Breedewee** : à remonter dans le `Peintre` dès qu'un deuxième lieu en a besoin |
-| **Mur appareillé** (rempart, donjon, pile) | fond en joint sombre, puis les blocs un par un en assises décalées, chacun sa teinte, son arête éclairée, son pied dans l'ombre | `direction-artistique` § 8 |
+| **Pierre de taille en bossage** | le joint en creux peint **d'abord**, la ciselure plate autour du bloc, puis le champ rugueux : piqûres de pointerolle en lignes obliques, deux arêtes de lumière, un éclat de temps en temps | `bossage`, `champBosse`, `tonPierre`, dans le `Peintre` depuis le 2026-11-16 (le pont Adolphe a été le deuxième lieu à en avoir besoin) |
+| **Claveaux d'un arc** | l'anneau entre deux ellipses, débité par des joints **radiaux** et non en assises : les pierres d'un arc rayonnent depuis le centre | `voussoirs(cx, cy, rx, ry, ep, a0, a1, col, graine, pas)` |
+| **Ce qui est ajouré** (balustrade, arcades, charpente, galerie) | une seule pièce **percée** par `Path.op(…, DIFFERENCE)`, jamais un aplat sur lequel on peint les barreaux | `charpente`, et à la main pour le reste |
+| **Mur appareillé** (rempart, donjon, pile, tympan) | fond en joint sombre, puis les blocs un par un en assises décalées, chacun sa teinte, son arête éclairée, son pied dans l'ombre | `appareil(contour, col, rang, longueur, graine, pente, lichen, ombre)` ; le contour peut être percé, et `ombre` sous 0,95 lui retire sa tranche de kraft |
 | **Brique** | rangs décalés d'une demi-brique, chaque brique d'un ton tiré au sort, joint en creux, les bords suivant le fruit du fût | `appareilBrique` |
 | **Tôle d'acier rivée** | joints horizontaux des plaques, un rang de rivets sous chaque joint, deux coutures verticales, l'arête du soleil | `tole` ; `cowper` pour une virole cylindrique |
 | **Charpente d'acier** | la découpe **percée** d'un seul tenant (montants, entretoises, le ciel entre les deux), peinte deux fois, la seconde décalée, pour laisser un filet de lumière sur chaque membrure | `charpente` |
@@ -114,6 +116,26 @@ Tout vit dans `carnet/Paysages.kt`, classe `Peintre`, en unités de fenêtre
 - **La lune n'est pas le soir.** `P.allume` est vrai le soir **et** la nuit :
   une flaque de lune posée dessus fait une fumée orange au couchant. Pour ce
   qui n'appartient qu'à la nuit, `P.nuit`.
+- **Une ouverture rognée n'est plus une ouverture.** Les arcades du pont
+  Adolphe montaient de deux dixièmes dans la bande de la corniche, posée
+  après elles : leur plein cintre disparaissait et il ne restait que dix
+  rectangles clairs, qu'on lisait comme des fenêtres éclairées. Vérifier
+  qu'aucune pièce postérieure ne mange la tête d'un percement.
+- **Le tableau d'un percement ne se peint que sur son bord.** L'épaisseur de
+  l'ouvrage, à l'ombre, est ce qui dit qu'on voit au travers ; peinte sur
+  tout le trou, elle le bouche et l'ouverture devient un panneau sombre. La
+  pièce à poser est la **différence** entre l'ouverture et elle-même
+  rentrée d'un demi, décalée du côté opposé au jour.
+- **Un clocher trop large fait un toit.** Une flèche veut être à peu près
+  aussi haute que deux fois sa base. Large de dix unités pour cinq de haut,
+  celle de la Spuerkeess passait pour une toiture de plus.
+- **Sans sol, le plancher de la scène reparaît.** Sous `DEVANT` il reste
+  cinq unités que `poser(DEVANT)` ne couvre pas : il faut un
+  `solNaturel` ou un `solDePierre`, sinon les lames de bois du théâtre
+  s'étalent au bas de la carte.
+- **Deux rideaux de la même nuance n'en font qu'un.** Un feuillage étagé ne
+  se lit que par l'écart de **valeur** d'un rideau à l'autre, du clair au
+  fond au sombre devant. Mêmes verts, et la vallée redevient un aplat.
 - **La vignette n'a pas la gouache.** `Facture.VIGNETTE` est un aplat avec sa
   seule tranche de kraft : une matière qui ne tient que par ses coups de
   pinceau disparaît dans la grille.
