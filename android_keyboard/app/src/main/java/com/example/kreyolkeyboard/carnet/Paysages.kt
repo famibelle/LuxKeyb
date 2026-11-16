@@ -1192,6 +1192,41 @@ object Paysages {
         "M-3 44.4L3 42.6L8.6 43L11.4 45.6L11.2 47.4L8.4 45.2L3.2 45.4L-3 47Z",
         "M91 45.4L95 43.6L100.6 44L103 46.4L103 48.2L100.4 46L95.2 46L91.2 47.4Z")
 
+    /**
+     * Le trou de l'abri sous roche de Berdorf : large et bas comme sur la
+     * photo du propriétaire, et porté vers la gauche. Au milieu, la plaque
+     * du mot l'aurait masqué tout entier et la carte ouverte n'aurait
+     * montré qu'une masse sombre ; décalé, il donne sa clarté verte à la
+     * colonne de gauche, et la colonne de droite garde le gros pilier.
+     */
+    private const val TROU_BAERDREF =
+        "M-2 40C-2 29.6 4 22.6 14 18.6C26 13.8 38 12.4 48 13.8C58 15.2 64.4 19 67.6 24.4" +
+        "C69.8 28.2 70.4 32.6 69.6 37.4C58 42.6 24 43.8 -2 40Z"
+
+    /**
+     * Les blocs du pilier de Berdorf, du haut vers le bas. Anguleux et
+     * jamais d'équerre : taillés au rectangle, ils faisaient des panneaux
+     * de béton au lieu d'un rocher débité.
+     */
+    private val BLOCS_BAERDREF = arrayOf(
+        "M67.6 43.4L68.8 26.2L74 27.4L77.6 30.2L76.2 44.6Z",
+        "M76.2 44.6L77.6 30.2L82 28.8L87.4 31.6L86.6 46.2Z",
+        "M86.6 46.2L87.4 31.6L92 30L97 31.4L96.8 47.4Z",
+        "M96.8 47.4L97 31.4L101 29.8L104 30.6L104 48.4Z",
+        "M66.6 58.7L67.6 43.4L72 44.6L79 45.2L78.8 58.7Z",
+        "M78.8 58.7L79 45.2L84 47L90.8 46.4L90.6 58.7Z",
+        "M90.6 58.7L90.8 46.4L96 48.2L104 47.6L104 58.7Z")
+
+    /** Les diaclases qui séparent ces blocs : des cassures, pas des joints de mur. */
+    private val JOINTS_BAERDREF = arrayOf(
+        "M68.8 26.2L74 27.4L77.6 30.2L82 28.8L87.4 31.6L92 30L97 31.4L101 29.8L104 30.6",
+        "M67.6 43.4L72 44.6L79 45.2L84 47L90.8 46.4L96 48.2L104 47.6",
+        "M77.6 30.2L76.2 44.6", "M87.4 31.6L86.6 46.2", "M97 31.4L96.8 47.4",
+        "M79 45.2L78.8 58.7", "M90.8 46.4L90.6 58.7")
+
+    /** Les valeurs de ces blocs, du plus clair au plus sombre : −1 assombrit, +1 éclaircit. */
+    private val VALEURS_BAERDREF = floatArrayOf(-0.9f, 0.5f, -0.3f, 0.9f, 0.2f, -0.7f, 0.6f)
+
     /** La grande roue de la Schueberfouer : centre x, y, rayon. */
     private val ROUE = floatArrayOf(10f, 26f, 23f)
 
@@ -1952,7 +1987,9 @@ object Paysages {
             val n = 3 + (raf * 10f).toInt()
             for (k in 0 until n) {
                 val u = ((temps * (0.05f + 0.01f * (k % 3)) + k * 0.137f) % 1f)
-                val x = 20f + (k * 37 % 64) + sin(temps * 1.5f + k) * 2f
+                // D'un bord à l'autre : groupées au milieu, elles ne
+                // tombaient que derrière la plaque du mot.
+                val x = 2f + (k * 37 % 94) + sin(temps * 1.5f + k) * 2f
                 val y = -2f + u * 60f
                 p.rond(x, y, 0.55f, p.vert(0.3f + 0.1f * (k % 4)))
             }
@@ -6074,6 +6111,69 @@ object Paysages {
             }
         }
 
+        /**
+         * Le litage du grès sur une masse déjà peinte : des bancs
+         * horizontaux de tons voisins de [haut] à [bas], un surplomb tous
+         * les trois bancs (son ombre dessous, son arête au soleil), et
+         * quelques diaclases verticales. [pente] incline les lits, qui ne
+         * sont jamais tout à fait horizontaux.
+         *
+         * Le dessin est enfermé dans [masse], la pièce qu'on vient de poser
+         * : sans ce découpage les lits traverseraient la fenêtre. Le relevé
+         * des saisons est découpé avec lui, sinon la roche effacerait de la
+         * végétation en dehors d'elle-même.
+         *
+         * C'est le litage qui fait le grès. Cerclée de trois traits, une
+         * masse de roche se lit comme un tas de sable.
+         */
+        fun strates(masse: Path, haut: Float, bas: Float, col: Int, graine: Int,
+                    pas: Float = 3.4f, pente: Float = 0f) {
+            if (!actif) return
+            val rr = Alea(graine)
+            c.save(); c.clipPath(masse)
+            releve?.save(); releve?.clipPath(masse)
+            /** Tout ce qui est sous une crête ondulée posée en [y] : un banc. */
+            fun banc(y: Float, amp: Float, phase: Float, cl: Int, o: Float) {
+                val t = Path()
+                t.moveTo(-5f, bas + 8f); t.lineTo(-5f, y)
+                var x = -5f
+                while (x <= LARGEUR + 5f) {
+                    t.lineTo(x, y + sin(x * 0.09f + phase) * amp + sin(x * 0.31f + phase) * amp * 0.3f + x * pente)
+                    x += 2.5f
+                }
+                t.lineTo(LARGEUR + 5f, bas + 8f); t.close()
+                forme(t, cl, o)
+            }
+            var y = haut
+            var k = 0
+            while (y < bas) {
+                val amp = 0.3f + rr() * 0.6f
+                val phase = rr() * 6.2f
+                val u = rr()
+                val ton = if (u < 0.5f) sombre(col, 0.08f + u * 0.7f)
+                          else mix(col, 0xFFFFFFFF.toInt(), (u - 0.5f) * 0.6f)
+                // Un banc sur trois fait saillie : l'arête prend le jour, et
+                // l'ombre qu'elle porte dessous est ce qui creuse la roche.
+                if (k % 3 == 1) banc(y - 0.4f, amp, phase, mix(col, 0xFFFFFFFF.toInt(), 0.3f), 0.9f)
+                banc(y, amp, phase, ton, 1f)
+                if (k % 3 == 1) {
+                    banc(y + 0.2f, amp, phase, sombre(col, 0.55f), 0.5f)
+                    banc(y + 1.3f, amp, phase, ton, 1f)
+                }
+                y += pas * (0.55f + rr() * 0.9f)
+                k++
+            }
+            // Les diaclases : le grès se débite en blocs, et ces cassures
+            // verticales empêchent le litage de se lire comme un store.
+            for (i in 0 until 9) {
+                val fx = -2f + rr() * 104f
+                val y0 = haut + rr() * (bas - haut) * 0.7f
+                val l = (bas - haut) * (0.12f + rr() * 0.26f)
+                ligne(fx, y0, fx + (rr() - 0.5f) * 2.4f, y0 + l, sombre(col, 0.42f), 0.2f + rr() * 0.24f, 0.6f)
+            }
+            releve?.restore(); c.restore()
+        }
+
         fun belval() {
             val r = Alea(185)
             // Le fond : la ligne basse des halles et des bâtiments de la
@@ -6182,33 +6282,125 @@ object Paysages {
 
         fun baerdref() {
             val r = Alea(195)
-            val feuillage = mix(vert(0.8f), 0xFF8FD05A.toInt(), if (P.nuit) 0.05f else 0.3f)
-            lisiere(-2f, 102f, { x -> 6f + 3f * sin(x * 0.13f) }, 2.4f, 3.6f, 196, feuillage)
-            for (k in 0 until 9) feuille(r() * 100f, 10f + r() * 10f, 0.6f + r() * 0.5f, 34f, mix(feuillage, P.pres, 0.45f), 0.3f)
-            lisiere(-2f, 102f, { x -> 26f + 3f * sin(x * 0.11f) }, 2f, 3f, 197, mix(feuillage, P.milieu, 0.3f))
+            // ---- Ce qu'on voit par le trou : la hêtraie en plein soleil.
+            // Sur la photo c'est la seule clarté de l'image, et tout le
+            // reste est une roche à contre-jour. Le second rideau d'abord,
+            // que la distance pâlit (l'estompe du premier calque).
+            lisiere(-2f, 102f, { x -> 9f + 3f * sin(x * 0.08f) }, 2.4f, 3.8f, 196,
+                nappe(mix(P.loin, P.milieu, 0.45f), 0.4f, VERT_CALME))
             plan(1)
-            pieceD("M-2 66L-2 47C30 43 70 43 102 46L102 66Z", duJour(0xFFF0E2C2.toInt()), 0.5f)
-            mineral { pieceD("M54 50C54 45 58 42.5 64 42.5C70 42.5 73 45.5 74 50Z", duJour(0xFF9A9684.toInt())) }
-            pieceD("M55 46C57 43.5 60 42.6 64 42.6C68 42.6 71 43.6 72.6 46C68 44.6 60 44.6 55 46Z", duJour(0xFF6E8A44.toInt()), 0.3f)
-            plan(2)
-            solNaturel(SolNaturel.TERRE)  // le chemin sous l'arche
-            poser(DEVANT)
-            val roche = duJour(0xFFC99A62.toInt())
-            mineral {
-                piece(cadre("M16 60L16 42C16 30 26 22 45 21C64 20.4 81 24 86 33L88 42L88 60Z"), sombre(roche, 0.5f))
-                piece(cadre("M12.5 60L12.5 40C12.5 26 22.6 16.4 45 15.4C67 14.6 84.4 18.6 90.4 30L92.4 40L92.4 60Z"), roche)
-                val strate = mix(roche, P.pres, 0.22f)
-                for (y in floatArrayOf(6f, 11f)) ligne(-2f, y, 102f, y + 0.8f, strate, 0.3f, 0.7f)
-                for (y in floatArrayOf(28f, 38f, 48f)) {
-                    ligne(-2f, y, 12f, y + 0.5f, strate, 0.3f, 0.7f)
-                    ligne(93f, y, 102f, y + 0.4f, strate, 0.3f, 0.7f)
-                }
-                pieceD("M84 60C84 51 88 45.6 95 45.6C101 45.6 104 51 104 60Z", duJour(0xFFA9A28C.toInt()))
+            val feuillu = vert(0.78f)
+            val clair = mix(feuillu, duJour(0xFFEDF4A8.toInt()), if (P.nuit) 0.06f else 0.42f)
+            val feuilleSombre = sombre(feuillu, 0.3f)
+            // L'ombre du sous-bois, sur laquelle les touffes éclairées se
+            // détachent : sans elle, ce qui reste entre deux touffes est le
+            // fond nu, et le trou devient un champ uni, orange le soir.
+            lisiere(-2f, 102f, { x -> 12f + 3f * sin(x * 0.14f + 2f) }, 2f, 3.2f, 201, feuilleSombre)
+            // Les fûts clairs des hêtres, que le soleil prend de côté. Fins
+            // et peu nombreux : larges et réguliers, ils faisaient les
+            // meneaux d'une fenêtre au lieu d'une futaie.
+            val tronc = neutre(duJour(0xFFCFC6B2.toInt()))
+            for (k in 0 until 5) {
+                val tx = 2f + k * 21f + r() * 8f
+                ligne(tx, 8f, tx + (r() - 0.5f) * 3f, 44f, tronc, 0.3f + r() * 0.35f, 0.8f)
             }
-            val mousse = duJour(0xFF7C9A48.toInt())
-            pieceD("M-2 2C20 0 60 -1 102 1L102 4C70 3 30 3.6 -2 5Z", mousse, 0.3f)
-            touffe(mousse, 2f, 30f, 2.6f, 4f, 44f, 3f, 1f, 54f, 2.6f)
-            pieceD("M85 49C88 46 92 45.6 96 45.6C100 45.6 102.6 47.6 103.4 50C98 48.6 90 48.6 85 49Z", mousse, 0.3f)
+            // Le feuillage en touffes découpées et non en nappe unie :
+            // autrement le trou se lit comme un aplat vert, et les fûts
+            // comme des barreaux. Elles doivent les recouper.
+            for (k in 0 until 30) {
+                val fx = -3f + r() * 106f
+                val fy = 8f + r() * 28f
+                val t = r()
+                touffe(if (t < 0.3f) clair else if (t < 0.75f) feuillu else feuilleSombre,
+                    fx, fy, 1.8f + r() * 2.2f,
+                    fx + 2.4f, fy + 1.4f, 1.6f + r() * 1.8f,
+                    fx - 2.2f, fy + 1.2f, 1.4f + r() * 1.8f)
+            }
+            // Le talus éclairé au fond du trou, puis la dalle sur laquelle
+            // l'arche repose : c'est cette bande claire qui fait de
+            // l'ouverture un œil, et non une tache.
+            pieceD("M-3 48L-3 38.6C14 37 34 36.4 52 37.6C64 38.4 80 39.6 103 38.6L103 48Z",
+                mix(clair, duJour(0xFFF4EFC6.toInt()), 0.4f), 0.3f)
+            mineral {
+                pieceD("M-3 48L-3 41.6C16 40.4 40 40.2 60 41.2C76 42 90 42.8 103 42.4L103 48Z",
+                    neutre(duJour(0xFFCFC6B0.toInt())), 0.35f)
+            }
+            plan(2)
+            solNaturel(SolNaturel.BERGE)  // le sable de l'abri, semé de cailloux
+            poser(DEVANT)
+            // ---- La roche. Non pas une masse unique percée d'un trou,
+            // qu'un litage seul ne sauvait pas du contreplaqué, mais trois
+            // découpes étagées comme au théâtre : la paroi du fond, la
+            // voûte qui avance par-dessus nos têtes, le pilier qui ferme à
+            // droite. Chacune a sa valeur, sa tranche de kraft et son
+            // litage, et ce sont ces ruptures qui creusent l'abri.
+            val gres = neutre(duJour(0xFFB5A98F.toInt()))
+            val fond = sombre(gres, 0.32f)
+            val voute = sombre(gres, 0.62f)
+            val jour = mix(gres, 0xFFFFFFFF.toInt(), 0.16f)
+            val mousse = nappe(duJour(0xFF7C9A48.toInt()), 0.5f, VERT_CALME)
+            mineral {
+                val paroi = cadre(TROU_BAERDREF)
+                piece(paroi, fond)
+                strates(paroi, 10f, 59f, fond, 198, 4.6f, 0.03f)
+                // La lèvre de la voûte est cassée, pas arrondie : un arc
+                // lisse parallèle au trou faisait un arc-en-ciel de deux
+                // bandes, et le tableau sombre que j'avais ajouté dessous
+                // n'y ajoutait qu'un troisième cerne.
+                val plafond = chemin("M-3 -3L103 -3L103 20L94 24.6L86 23.4L78 25.6L70 20.6L62 13.6" +
+                    "L52 10.4L40 9.6L30 12.4L20 12L12 16.2L4 18.6L-3 26Z")
+                piece(plafond, voute)
+                strates(plafond, -4f, 25f, voute, 199, 6.4f, 0.045f)
+                // Les traînées humides sous la voûte : le grès suinte, et
+                // sans elles le plafond est une bande unie.
+                for (k in 0 until 11) {
+                    val tx = 2f + k * 9f + r() * 4f
+                    ligne(tx, r() * 4f, tx + 0.8f, 8f + r() * 9f, sombre(voute, 0.4f), 0.5f, 0.5f)
+                }
+                // Le pilier de droite, le seul morceau que le soleil prend
+                // de côté : c'est lui que la colonne libre de la carte
+                // ouverte montre en entier, et il ferme le trou à droite.
+                val pilier = chemin("M66 58.7L68 21C72 24.4 78 27 86 28C94 29 99 28.4 104 26.6L104 58.7Z")
+                piece(pilier, jour)
+                // Le grès du Mullerthal se débite en gros blocs, et le
+                // pilier en est un empilement : un litage de plus y aurait
+                // refait le même store que sur la paroi du fond.
+                for ((i, d) in BLOCS_BAERDREF.withIndex()) {
+                    val v = VALEURS_BAERDREF[i]
+                    forme(d, if (v < 0f) sombre(jour, -v * 0.45f)
+                             else mix(jour, 0xFFFFFFFF.toInt(), v * 0.34f), 1f)
+                }
+                for (d in JOINTS_BAERDREF) trait(d, sombre(gres, 0.65f), 0.5f, 0.7f)
+                // Le creux entre le pilier et la paroi, à contre-jour.
+                forme("M66 58.7L68 21C70 23.4 72 25 74.6 26.4L73 58.7Z", sombre(gres, 0.55f), 0.45f)
+                // Les blocs tombés : sur la photo ils ferment le bas de
+                // l'abri, clairs sur le sable, et leur face à l'ombre dit
+                // qu'ils sont devant la paroi.
+                pieceD("M82 58.7C81 49.2 87 44.6 94 44.6C100.6 44.6 104 49.2 104 58.7Z", mix(gres, 0xFFFFFFFF.toInt(), 0.26f))
+                forme("M96 45.2C101 46.6 104 51.2 104 58.7L97 58.7Z", sombre(gres, 0.32f), 0.5f)
+                pieceD("M-3 58.7C-3 51.6 2 48.6 7 49.6C11 50.6 12.4 54.6 12 58.7Z", sombre(gres, 0.16f))
+            }
+            // ---- La mousse tient les lèvres du grès, et au bord haut de la
+            // photo une retombée de verdure passe par-dessus l'abri.
+            pieceD("M-3 -3L40 -3C38.6 3 30 7 19 7.4C10 7.8 2 6.4 -3 4.4Z", mousse, 0.3f)
+            for (k in 0 until 9) {
+                val mx = -2f + k * 5f + r() * 3f
+                touffe(if (k % 3 == 0) mix(mousse, clair, 0.35f) else mousse,
+                    mx, 3f + r() * 4f, 1.2f + r() * 1.4f, mx + 1.8f, 2f + r() * 4f, 1f + r() * 1.2f)
+            }
+            touffe(mousse, 85f, 43.8f, 2.2f, 91f, 42.8f, 2.6f, 97f, 44f, 2.2f)
+            touffe(mousse, 0f, 49f, 1.8f, 5f, 48.4f, 1.6f)
+            if (P.nuit) {
+                // La nuit, le dehors est la seule lumière : la lune pose une
+                // flaque claire sur le sable au droit de l'ouverture. Sans
+                // elle l'abri n'est qu'une masse bleue de plus. Au soir, qui
+                // est [allume] lui aussi, cette flaque montait dans le trou
+                // et y faisait une fumée orange : elle est réservée à la nuit
+                // et reste basse, sur le sable.
+                halo(26f, 56f, 22f, 0xFFBFD4F0.toInt(), 0.4f)
+                halo(22f, 58f, 13f, 0xFFD8E4F6.toInt(), 0.4f)
+                halo(58f, 57f, 12f, 0xFFBFD4F0.toInt(), 0.2f)
+            }
             c.restore()
         }
 
