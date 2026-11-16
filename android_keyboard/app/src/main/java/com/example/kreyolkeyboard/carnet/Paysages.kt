@@ -3412,35 +3412,70 @@ object Paysages {
         }
 
         /**
-         * Un chat roux qui court sur le plancher, les pattes en ([x], [y]),
-         * vers la droite ou vers la gauche ; [foulee] fait tourner ses pattes,
-         * [galop] l'allonge et le fait bondir.
+         * Un chat qui court sur le pavé, les pattes en ([x], [y]), vers la
+         * droite ou vers la gauche ; [foulee] fait tourner ses pattes, [galop]
+         * l'allonge et le fait bondir.
+         *
+         * Il est **d'une seule découpe** : pattes, tronc, croupe, poitrail,
+         * tête, oreilles et queue réunis en une silhouette, et non une pile
+         * d'ovales et de traits. C'est elle qui fait le chat de nuit, où il
+         * ne reste plus que le noir du papier et l'œil allumé ; de jour, la
+         * même découpe est rousse et porte ses rayures.
          */
         fun chat(x: Float, y: Float, versDroite: Boolean, foulee: Float, galop: Float) {
             val roux = duJour(0xFFD9822B.toInt())
-            val fonce = sombre(roux, 0.35f)
+            val robe = if (P.nuit) mix(0xFF0A0912.toInt(), P.pres, 0.14f) else roux
+            val fonce = sombre(robe, 0.35f)
             val clair = duJour(0xFFF3D9B0.toInt())
             c.save()
             if (!versDroite) c.scale(-1f, 1f, x, y)
             val bond = abs(sin(foulee)) * (0.2f + 0.6f * galop)
             val yy = y - bond
-            // Les pattes : deux paires qui se croisent, plus écartées au galop.
-            val ecart = 0.5f + 0.5f * galop
-            for ((dx, ph) in listOf(-1.7f to 0f, -1.3f to PI.toFloat(), 1.5f to PI.toFloat() * 0.5f, 1.9f to PI.toFloat() * 1.5f)) {
-                val a = sin(foulee + ph) * ecart
-                ligne(x + dx, yy - 1.4f, x + dx + a * 1.3f, y - 0.1f, fonce, 0.55f)
+            val etire = 1f + 0.14f * galop
+            val hx = x + 3.3f * etire
+            val hy = yy - 4.9f
+            val sil = Path()
+            fun masse(cx: Float, cy: Float, rx: Float, ry: Float) {
+                sil.op(Path().apply { addOval(RectF(cx - rx, cy - ry, cx + rx, cy + ry), Path.Direction.CW) },
+                    Path.Op.UNION)
             }
-            // La queue, dressée, qui ondule.
-            trait("M${x - 2.4f} ${yy - 2.2f}Q${x - 4.4f} ${yy - 2.6f + sin(foulee * 0.5f)} ${x - 4.2f} ${yy - 4.8f}", roux, 0.55f)
-            ovalePapier(x, yy - 2.3f, 2.8f + 0.4f * galop, 1.15f, roux, 0f)
-            // Deux rayures, la tête, les oreilles, le museau clair.
-            ligne(x - 0.6f, yy - 3.3f, x - 0.3f, yy - 2.2f, fonce, 0.35f)
-            ligne(x + 0.6f, yy - 3.4f, x + 0.9f, yy - 2.3f, fonce, 0.35f)
-            rond(x + 2.9f, yy - 3.1f, 1.05f, roux)
-            triangle(x + 2.1f, yy - 3.7f, x + 2.5f, yy - 5f, x + 3f, yy - 3.9f, roux)
-            triangle(x + 3f, yy - 3.9f, x + 3.6f, yy - 5f, x + 3.8f, yy - 3.6f, roux)
-            rond(x + 3.6f, yy - 2.8f, 0.45f, clair)
-            rond(x + 3.2f, yy - 3.3f, 0.16f, if (P.nuit) 0xFFE8F070.toInt() else 0xFF1E2A10.toInt())
+            // Les pattes : deux paires qui se croisent, plus écartées au galop,
+            // fuselées de l'épaule au coussinet.
+            val ecart = 0.5f + 0.6f * galop
+            for ((dx, ph) in listOf(-2.1f to 0f, -1f to PI.toFloat(), 1.3f to PI.toFloat() * 0.5f, 2.1f to PI.toFloat() * 1.5f)) {
+                val px = x + dx * etire
+                val fx = px + sin(foulee + ph) * ecart * 1.4f
+                sil.op(Path().apply {
+                    moveTo(px - 0.4f, yy - 3.6f)
+                    lineTo(px + 0.4f, yy - 3.6f)
+                    lineTo(fx + 0.28f, y)
+                    lineTo(fx - 0.28f, y)
+                    close()
+                }, Path.Op.UNION)
+            }
+            // Le tronc, la croupe ronde, le poitrail, la tête.
+            masse(x, yy - 3.6f, 2.9f * etire, 1f)
+            masse(x - 1.9f * etire, yy - 3.7f, 1.35f, 1.35f)
+            masse(x + 1.9f * etire, yy - 3.8f, 1.2f, 1.2f)
+            masse(hx, hy, 1.1f, 0.95f)
+            // Les deux oreilles pointues.
+            sil.op(chemin("M${hx - 1f} ${hy - 0.4f}L${hx - 0.5f} ${hy - 2.1f}L${hx + 0.15f} ${hy - 0.8f}Z"), Path.Op.UNION)
+            sil.op(chemin("M${hx + 0.15f} ${hy - 0.9f}L${hx + 0.9f} ${hy - 2f}L${hx + 1.05f} ${hy - 0.3f}Z"), Path.Op.UNION)
+            // La queue dressée, qui ondule et s'affine jusqu'au bout.
+            val ond = sin(foulee * 0.5f) * 0.6f
+            sil.op(ruban(x - 2.4f * etire, yy - 4f, x - 5.4f * etire, yy - 5.2f + ond,
+                x - 3.8f * etire, yy - 8f + ond * 0.4f, 1.15f, 0.4f), Path.Op.UNION)
+            piece(sil, robe)
+            if (P.nuit) {
+                // La nuit, rien que la découpe noire et l'œil qui luit.
+                rond(hx + 0.2f, hy - 0.2f, 0.44f, 0xFFE8F070.toInt(), 0.26f)
+                rond(hx + 0.2f, hy - 0.2f, 0.17f, 0xFFE8F070.toInt())
+            } else {
+                ligne(x - 0.6f, yy - 4.4f, x - 0.3f, yy - 3.3f, fonce, 0.35f)
+                ligne(x + 0.6f, yy - 4.5f, x + 0.9f, yy - 3.4f, fonce, 0.35f)
+                rond(hx + 0.7f, hy + 0.3f, 0.45f, clair)
+                rond(hx + 0.2f, hy - 0.2f, 0.16f, 0xFF1E2A10.toInt())
+            }
             c.restore()
         }
 
