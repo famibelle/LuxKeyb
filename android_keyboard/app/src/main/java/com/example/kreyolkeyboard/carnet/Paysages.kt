@@ -1645,8 +1645,10 @@ object Paysages {
                     pluieDOr(p, temps, raf)
                     envol(p, vol, 10f, 52f, 1f)
                 }
-                Lieu.BREEDEWEE -> if (calque == 3) lanterneVivante(p, temps, 81f, 36f, false, 1)
-                    else { lanterneVivante(p, temps, 30f, 31f, true, 0); chat(p, temps, vol) }
+                // Les deux lanternes sont celles du décor (plan 1 sous l'arc, plan 2 sur
+                // le mur de droite) : leurs places doivent suivre quand il est redessiné.
+                Lieu.BREEDEWEE -> if (calque == 3) lanterneVivante(p, temps, 44f, 16f, true, 0)
+                    else { lanterneVivante(p, temps, 92f, 24f, false, 1); chat(p, temps, vol) }
                 Lieu.FELSMILLEN -> { feuillesQuiTombent(p, temps, raf); envol(p, vol, 12f, 30f, 1f) }
                 Lieu.OURDALL -> if (calque == 3) {
                     reflets(p, temps, 0f, 62f, 37f, 50f, raf)
