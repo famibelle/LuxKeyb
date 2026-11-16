@@ -9,6 +9,25 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [40.0.0] - 2026-11-16
+
+### ✨ Nouveautés
+
+- **Seize lieux redessinés d'après photos** : le pont Rouge, le château de Vianden, la tour d'Esch-sur-Sûre, les stèles de Schengen, l'abbaye de Neimënster, la Gëlle Fra, la Schueberfouer, le Schiessentümpel, le Grund, la ruelle du Breedewee, l'ascenseur du Pfaffenthal, le château d'Ansembourg, le haut fourneau de Belval, l'abri sous roche de Berdorf, le pont Adolphe et les gorges de Felsmillen ne sont plus dessinés de mémoire : chacun l'est d'après une photo, et montre ce qui le rend reconnaissable.
+- **Chaque chose est faite de sa matière** : la pierre de taille et ses assises, le moellon de schiste, le grès et ses bancs creusés en surplomb, la brique, la tôle rivée, les charpentes ajourées, les claveaux d'une arche, la mousse sur les vires. Une tour, un mur ou un rocher ne sont plus un aplat de couleur cerné de trois traits.
+- **Le décor laisse voir son sujet** : le mot est au centre de la fenêtre, donc ce qui compte dans un lieu tient désormais la bande du haut et les deux bords. Un pont donne son tablier au haut de la carte, une paroi tient toute une colonne, et le feuillage ne passe plus devant ce qu'on venait regarder.
+- **Un vert vraiment luxembourgeois** : les grandes masses de végétation sont profondes et franches au lieu de tirer vers le vert pomme, et les quatre saisons se lisent sur tous les lieux.
+
+### ⚡ Rapidité
+
+- **La carte penche d'un seul mouvement** : en inclinant le téléphone, l'image avançait à deux cadences mélangées, ce qui donnait un battement. Elle n'en a plus qu'une, et le geste est plus doux.
+
+### 🐛 Corrections
+
+- **La vallée de la Pétrusse se lit aux quatre saisons** : la pierre du pont y prenait la couleur de la vallée derrière elle, et l'arche disparaissait.
+- **Les roseaux sous la neige** : le surcadrage d'hiver virait à l'orange vif au lieu de la paille.
+- **Les soirs d'automne** : le soir est déjà orange, et la rouille de l'automne par-dessus mettait le feu à la carte. Elle y va plus doucement.
+
 ## [39.2.0] - 2026-11-14
 
 ### ✨ Nouveautés
