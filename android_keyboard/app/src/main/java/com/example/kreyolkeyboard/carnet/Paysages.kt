@@ -6921,14 +6921,56 @@ object Paysages {
             val lueur = if (P.allume) P.fenetre else mix(taille, 0xFFFFFFFF.toInt(), 0.45f)
             mineraux++
 
-            /** Un bloc en bossage : saillant, chanfreiné, son joint en creux. */
+            /** La couleur d'un bloc, tirée au sort : pierre nue, humide ou verdie. */
+            fun tonPierre(col: Int, k: Float): Int = when {
+                k < 0.3f -> sombre(col, 0.1f + k * 0.35f)
+                k < 0.56f -> mix(col, 0xFFFFFFFF.toInt(), 0.06f + k * 0.16f)
+                k < 0.78f -> col
+                else -> sombre(mix(col, neutre(duJour(0xFF7E8A62.toInt())), 0.28f + k * 0.2f), 0.12f)
+            }
+
+            /**
+             * Le champ rugueux d'un bossage, dans le rectangle donné : les
+             * piqûres de la pointerolle, quelques éclats, et les deux arêtes
+             * que la lumière prend. C'est cette rugosité qui fait la pierre ;
+             * un aplat bordé de deux traits fait du carton peint.
+             */
+            fun champBosse(x: Float, y: Float, w: Float, h: Float, col: Int, graine: Int) {
+                val rr = Alea(graine)
+                // Les deux faces du relief : haut et gauche au jour, bas et
+                // droite dans l'ombre du chanfrein.
+                rect(x, y, w, h * 0.2f, mix(col, 0xFFFFFFFF.toInt(), 0.26f))
+                rect(x, y, w * 0.06f, h, mix(col, 0xFFFFFFFF.toInt(), 0.18f))
+                rect(x, y + h * 0.8f, w, h * 0.2f, sombre(col, 0.3f))
+                rect(x + w * 0.94f, y, w * 0.06f, h, sombre(col, 0.22f))
+                // Les piqûres : des creux et des reliefs, en lignes obliques
+                // comme les laisse l'outil.
+                val n = (w * h * 0.6f).toInt().coerceIn(6, 34)
+                for (i in 0 until n) {
+                    val px = x + 0.1f + rr() * (w - 0.2f)
+                    val py = y + 0.1f + rr() * (h - 0.2f)
+                    val t = rr()
+                    rect(px, py, 0.16f + rr() * 0.3f, 0.12f + rr() * 0.2f,
+                        if (t < 0.5f) sombre(col, 0.18f + t * 0.3f) else mix(col, 0xFFFFFFFF.toInt(), 0.1f + t * 0.2f),
+                        0.75f)
+                }
+                // Un éclat, de temps en temps : un coin mangé par le temps.
+                if (rr() < 0.3f) {
+                    val ex = if (rr() < 0.5f) x else x + w - 1.2f
+                    forme("M$ex ${y + h}L${ex + 1.2f} ${y + h}L$ex ${y + h - 1f}Z", sombre(col, 0.38f), 0.8f)
+                }
+            }
+
+            /** Un bloc en bossage : son joint en creux, sa ciselure lisse, son champ rugueux. */
             fun bossage(x: Float, y: Float, w: Float, h: Float, col: Int, k: Float) {
-                rect(x, y, w, h, sombre(col, 0.42f))
-                val c0 = if (k < 0.3f) sombre(col, 0.12f) else if (k < 0.78f) col
-                    else sombre(mix(col, neutre(duJour(0xFF7E8A62.toInt())), 0.3f + k * 0.2f), 0.12f)
-                rect(x + 0.35f, y + 0.3f, w - 0.7f, h - 0.6f, c0)
-                rect(x + 0.35f, y + 0.3f, w - 0.7f, h * 0.22f, mix(c0, 0xFFFFFFFF.toInt(), 0.28f))
-                rect(x + 0.35f, y + h - 0.3f - h * 0.2f, w - 0.7f, h * 0.2f, sombre(c0, 0.22f))
+                rect(x, y, w, h, sombre(col, 0.5f))
+                val c0 = tonPierre(col, k)
+                // La ciselure : la bordure plate que le tailleur laisse
+                // autour du bossage, et qui dessine chaque pierre.
+                rect(x + 0.22f, y + 0.2f, w - 0.44f, h - 0.4f, mix(c0, 0xFFFFFFFF.toInt(), 0.14f))
+                val m = 0.42f
+                champBosse(x + 0.22f + m, y + 0.2f + m, w - 0.44f - 2f * m, h - 0.4f - 2f * m,
+                    c0, (x * 7f + y * 13f).toInt() + 500)
             }
 
             // ---- Le fond : la ruelle qui tourne et s'enfonce dans l'ombre.
@@ -7090,10 +7132,18 @@ object Paysages {
                 piece(Path().apply {
                     moveTo(c0[0], c0[1]); lineTo(c1[0], c1[1]); lineTo(d1[0], d1[1]); lineTo(d0[0], d0[1]); close()
                 }, sombre(taille, 0.42f))
-                piece(Path().apply {
+                val col = tonPierre(taille, t)
+                val claveau = Path().apply {
                     moveTo(a0[0], a0[1]); lineTo(a1[0], a1[1]); lineTo(b1[0], b1[1]); lineTo(b0[0], b0[1]); close()
-                }, if (t < 0.3f) sombre(taille, 0.14f) else if (t < 0.78f) taille
-                    else sombre(mix(taille, neutre(duJour(0xFF7E8A62.toInt())), 0.28f + t * 0.18f), 0.12f))
+                }
+                piece(claveau, mix(col, 0xFFFFFFFF.toInt(), 0.14f))   // la ciselure
+                // Le champ rugueux du claveau, découpé dans sa ciselure.
+                val bb = RectF()
+                claveau.computeBounds(bb, true)
+                c.save()
+                c.clipPath(claveau)
+                champBosse(bb.left + 0.55f, bb.top + 0.55f, bb.width() - 1.1f, bb.height() - 1.1f, col, 600 + k * 17)
+                c.restore()
             }
             // La descente de gouttière, sur le massif de droite.
             rect(84f, -3f, 1.6f, 48f, zinc)
@@ -7103,11 +7153,27 @@ object Paysages {
             for (cy in floatArrayOf(8f, 26f, 42f)) rect(83.4f, cy, 2.8f, 0.9f, sombre(zinc, 0.3f))
             mineraux--
             // La mousse qui verdit le pied des piédroits et le bas de l'arc.
+            // La mousse et l'humidité se logent **dans les joints** et au
+            // pied des piédroits : en boules posées sur la pierre, elles se
+            // lisaient comme des buissons collés.
             for (k in 0 until 9) {
-                val mx = if (k % 2 == 0) -2f + r() * 10f else 64f + r() * 24f
-                val my = 30f + r() * 28f
-                touffe(if (k % 3 == 0) vert(0.6f) else vert(0.42f),
-                    mx, my, 0.9f + r() * 1.1f, mx + 1.2f, my + 1f, 0.7f + r() * 0.9f)
+                val mx = if (k % 2 == 0) -4f + r() * 14f else 62f + r() * 26f
+                val my = 16f + r() * 42f
+                // Une plaque de mousse s'étale dans un joint : plusieurs
+                // taches basses qui se touchent, jamais un trait vert.
+                for (i in 0 until 4) {
+                    val dx = mx + i * (0.8f + r() * 0.7f)
+                    forme(Path().apply {
+                        addOval(dx, my + r() * 0.5f - 0.25f, dx + 1f + r() * 1.2f, my + 0.5f + r() * 0.5f, Path.Direction.CW)
+                    }, if (i % 3 == 0) sombre(vert(0.5f), 0.1f) else sombre(vert(0.34f), 0.2f), 0.85f)
+                }
+            }
+            for (k in 0 until 5) {
+                val mx = if (k % 2 == 0) -3f + r() * 10f else 64f + r() * 22f
+                val my = 55f + r() * 4f
+                for (i in 0 until 5) ovalePapier(mx + i * (1f + r() * 0.8f), my + r() * 1.2f,
+                    0.7f + r() * 0.8f, 0.4f + r() * 0.4f,
+                    if (i % 3 == 0) vert(0.56f) else sombre(vert(0.38f), 0.12f), 0.2f)
             }
             if (!vivant) lanterne(92f, 24f, false)
             c.restore()
