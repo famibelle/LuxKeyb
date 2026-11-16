@@ -3,14 +3,11 @@
 Les photos d'après lesquelles les lieux des cartes sont peints
 (`android_keyboard/app/src/main/java/com/example/kreyolkeyboard/carnet/Paysages.kt`).
 
-**Les photos ne sont pas dans le dépôt.** Le dépôt est public, et ce sont pour
-la plupart des photos de tiers, trouvées sur des sites touristiques, dont la
-licence n'est pas connue. Les publier ici les redistribuerait, et elles
-resteraient dans l'historique git. Elles sont rangées dans ce répertoire sur la
-machine de travail mais ignorées par git (`.gitignore`), comme `impression/`.
-Seul cet index est suivi. Une photo dont on détient les droits, ou sous licence
-libre (CC0, domaine public), peut y être ajoutée de force
-(`git add -f`), en notant sa licence ci-dessous.
+Les photos sont rangées ici, à côté de cet index (décision du propriétaire,
+2026-11-16). Plusieurs viennent de sites touristiques et leur licence n'est pas
+connue : elles servent de référence de travail et ne doivent être ni
+réutilisées ni redistribuées avec les visuels du jeu (`LICENSE-VISUELS.md`).
+Noter la source et la licence d'une photo dès qu'on la connaît.
 
 Les cartes ne reproduisent aucune de ces photos. Elles en reprennent la
 composition, les matières et les couleurs, redessinées en papier découpé.
