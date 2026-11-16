@@ -641,7 +641,8 @@ sans lui le film sort toujours à l'heure de la commune, donc en plein jour, et
 tout ce qui ne vit qu'une fois les lumières allumées reste invisible).
 
 Vus et repris : 1 Rout Bréck, 2 Veianen, 3 Esch-Sauer, 4 Musel, 5 Neimënster,
-11 Pafendall, 12 Ansebuerg. Suivant : 6 Gëlle Fra.
+6 Gëlle Fra, 7 Schueberfouer, 8 Mëllerdall, 9 Stad, 10 Breedewee,
+11 Pafendall, 12 Ansebuerg. Suivant : 13 Belval.
 
 Les défauts qui reviennent, dans l'ordre de fréquence :
 
@@ -653,7 +654,67 @@ Les défauts qui reviennent, dans l'ordre de fréquence :
 3. **Des verts d'aplat** : passer par `Peintre.nappe` (ajouté le 2026-11-15),
    jamais un littéral brut, qui ne s'éteindrait pas la nuit.
 4. **Le sujet du lieu absent ou minuscule** (Neimënster n'avait pas son
-   abbaye) — vérifier d'abord que la carte montre ce qu'elle nomme.
+   abbaye) — vérifier d'abord que la carte montre ce qu'elle nomme. Pire :
+   **le sujet dessiné mais caché**. Au Grund, le rocher, le rempart et la
+   ville haute étaient là, sous la ligne des toits : les maisons du quai, à
+   27 unités, montaient plus haut que la crête et cachaient tout. Rendre la
+   planche et regarder, toujours, avant de croire le code.
+5. **Pas assez d'écart de valeurs entre les masses.** Quand une fenêtre se
+   lit comme une suite de bandes horizontales, ce n'est jamais le détail
+   qu'on retouche qui est en cause. Au Schéissendëmpel, la pierre du pont et
+   la roche des rives avaient la même valeur : tout le vallon faisait un mur
+   de soutènement à lunettes peintes.
+
+### La pierre et la matière du bâti (propriétaire, 2026-11-16)
+
+« Comme pour les dessins précédents, pour les immeubles et constructions,
+respecte la pierre et la matière. » Un mur peint d'un aplat et rayé de
+quelques traits fins donne de la pierre de taille neuve, jamais un mur du
+pays. **`Peintre.appareil(contour, col, rang, longueur, graine, pente)`** est
+l'outil : il remplit le contour d'un mortier sombre, puis pose des blocs
+irréguliers rentrés de leur joint — c'est le mortier qui reparaît en creux
+autour de chacun et qui fait voir la pierre. Les tons sont tirés au hasard
+dans quatre familles, dont une **pierre lichénée**, qui donne l'âge.
+
+Trois points qui ne vont pas de soi :
+
+- **Une arche se fait en claveaux, pas en traits radiaux.** Des traits tirés
+  sur un aplat font un éventail dessiné dessus ; une ceinture de coins posés
+  un à un donne son épaisseur à l'arche. Et elle se pose **après** les
+  assises : posées après elle, celles-ci s'en écartaient et laissaient une
+  bande de mortier nue tout autour.
+- **Un intrados sombre** le long du bord intérieur : sans lui, l'ouverture
+  reste un ovale peint sur un mur.
+- **Ce qu'on voit par l'arche doit être plus sombre que la pierre.** Une
+  ouverture claire de la même valeur que le tympan n'est pas une ouverture.
+
+Fait : le pont du Schéissendëmpel (avec sa mousse par plaques, demandée le
+même jour), la porte et le mur du Breedewee, le rempart du Grund. Le rempart
+du Bock l'avait déjà (`6ee59d66`). Restent à reprendre quand on y passera :
+les châteaux de Veianen et d'Ansebuerg, les tours d'Esch-Sauer et du
+Napoleonsgaart.
+
+### Les pièges de couleur du calque du fond
+
+Deux fois de suite sur le Grund, et c'est la même cause : **le calque du
+fond s'estompe de 30 % vers `cielBas`**, et au matin ce ciel est jaune.
+
+- Une flèche d'ardoise peinte au fond en ressortait **ocre**. Elle est
+  passée au plan des maisons.
+- Une silhouette de ville en gris-bleu moyen prenait **exactement la valeur
+  du rempart** qu'elle devait surmonter. Il faut partir d'un noir bleuté.
+- Et pour la même raison, le lointain s'estompe maintenant vers un **gris de
+  distance** (`mix(cielBas, neutre(cielBas), 0.6f)`) et non vers le seul ciel.
+
+### La silhouette au dernier plan (propriétaire, 2026-11-16)
+
+Au dernier plan, une rangée de maisons devient **une découpe unique**, tours
+comprises. Modelées une à une — mur coloré, toit, fenêtres — elles portent
+autant de détail qu'au premier plan, à une échelle où l'œil ne demande qu'un
+profil, et se lisent comme une rangée de cabines. Un clocher détaché de la
+découpe redevient un objet posé devant un décor. La nuit, la silhouette
+garde quelques fenêtres allumées : une découpe noire au-dessus d'un rempart
+éclairé serait une ville morte.
 
 ## 5. Les points de vigilance
 

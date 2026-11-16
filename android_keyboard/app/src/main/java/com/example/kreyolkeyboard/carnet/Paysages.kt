@@ -3452,6 +3452,76 @@ object Paysages {
         fun pierreDeTaille(): Int = neutre(duJour(0xFFB9B3A6.toInt()))
 
         /**
+         * Un bloc de pierre posé sur son lit de mortier, rentré de son joint :
+         * c'est le mortier du dessous qui reparaît en creux tout autour, et
+         * c'est ce creux qui fait voir la pierre. Suit la [pente] du rang.
+         */
+        private fun blocDePierre(x: Float, y: Float, w: Float, h: Float, pente: Float, col: Int) {
+            val ix = w * 0.055f
+            val iy = h * 0.09f
+            val d = Path()
+            d.moveTo(x + ix, y + iy)
+            d.lineTo(x + w - ix, y + w * pente + iy)
+            d.lineTo(x + w - ix, y + w * pente + h - iy)
+            d.lineTo(x + ix, y + h - iy)
+            d.close()
+            piece(d, col)
+        }
+
+        /**
+         * **Un appareil de pierre**, pour tout ce qui est bâti : [contour]
+         * rempli d'un mortier sombre, puis des blocs irréguliers posés dessus,
+         * chacun rentré de son joint. Rangs de [rang] de haut, blocs de
+         * [longueur] en moyenne, le tout suivant la [pente] du bâtiment.
+         *
+         * Demande du propriétaire (2026-11-16) : « respecte la pierre et la
+         * matière ». Un mur peint d'un aplat et rayé de quelques traits fins
+         * donne de la pierre de taille neuve, jamais un mur du pays ; et à
+         * valeur égale deux murs voisins se fondent l'un dans l'autre. Ce
+         * sont les joints creux et les tons tirés au hasard — dont une part
+         * de pierre lichénée — qui font la matière.
+         *
+         * Le contour est découpé d'avance (une arche creusée y reste creuse),
+         * et tout est peint sous le clip : rien ne déborde.
+         */
+        fun appareil(contour: Path, col: Int, rang: Float = 2.6f, longueur: Float = 4.6f,
+                     graine: Int = 0, pente: Float = 0f, lichen: Float = 0.2f) {
+            if (!actif) return
+            piece(contour, sombre(col, 0.5f))
+            val b = RectF()
+            contour.computeBounds(b, true)
+            if (b.width() <= 0f || b.height() <= 0f) return
+            val r = Alea(graine + 400)
+            c.save()
+            c.clipPath(contour)
+            val largeur = b.width() + longueur * 2f
+            var y = b.top - rang - abs(pente) * largeur
+            val fin = b.bottom + rang + abs(pente) * largeur
+            while (y < fin) {
+                val h = rang * (0.82f + r() * 0.36f)
+                var x = b.left - longueur * (0.3f + r())
+                while (x < b.right + longueur) {
+                    val w = longueur * (0.68f + r() * 0.72f)
+                    val t = r()
+                    blocDePierre(x, y + (x - b.left) * pente, w, h, pente, when {
+                        t < 0.32f -> sombre(col, 0.12f + t * 0.55f)
+                        t < 0.62f -> mix(col, 0xFFFFFFFF.toInt(), 0.08f + t * 0.2f)
+                        t < 0.62f + lichen -> mix(col, vert(0.42f), 0.16f + t * 0.22f)
+                        else -> mix(col, neutre(duJour(0xFF8E7C60.toInt())), 0.22f + t * 0.3f)
+                    })
+                    x += w
+                }
+                y += h
+            }
+            c.restore()
+        }
+
+        /** [appareil] sur un rectangle, le cas courant d'un mur. */
+        fun appareil(x: Float, y: Float, w: Float, h: Float, col: Int, rang: Float = 2.6f,
+                     longueur: Float = 4.6f, graine: Int = 0, pente: Float = 0f) =
+            appareil(Path().apply { addRect(x, y, x + w, y + h, Path.Direction.CW) }, col, rang, longueur, graine, pente)
+
+        /**
          * [col] à l'ombre, mais une ombre froide : vers un bleu-gris qui suit
          * l'heure, au lieu du brun de [sombre]. Lumière chaude, ombre froide.
          */
@@ -4443,22 +4513,7 @@ object Paysages {
             mineral {
                 val corps = chemin("M-4 ${tablier(-4f)}L104 ${tablier(104f)}L104 32L-4 32Z")
                 corps.op(arche(ARCHE), Path.Op.DIFFERENCE)
-                piece(corps, mortier)
-                // Les assises du tympan, décalées d'un rang à l'autre, et
-                // interrompues par la ceinture de claveaux.
-                var dy = 2.4f
-                while (dy < 27f) {
-                    val h = 2.3f + pierres() * 0.9f
-                    var x = -6f - pierres() * 4f
-                    while (x < 104f) {
-                        val w = 3.2f + pierres() * 3.4f
-                        val q = floatArrayOf(x, tablier(x) + dy, x + w, tablier(x + w) + dy,
-                            x + w, tablier(x + w) + dy + h, x, tablier(x) + dy + h)
-                        if (!dansArche(x + w / 2f, tablier(x + w / 2f) + dy + h / 2f, 0f)) bloc(q, ton(pierres()))
-                        x += w
-                    }
-                    dy += h
-                }
+                appareil(corps, gres, 2.6f, 4.6f, 145, -0.09f)
                 // La ceinture de claveaux, qui donne son épaisseur à l'arche.
                 for (k in 0 until 17) {
                     val u0 = PI.toFloat() * k / 17f
@@ -4715,14 +4770,14 @@ object Paysages {
                 for (x in floatArrayOf(24f, 39f, 52f, 68f, 83f, 96f))
                     ligne(x, crete(x) + 1.2f, x - 1.4f, 46f, sombre(rocher, 0.34f), 0.35f, 0.5f)
                 // Le rempart qui le couronne, et ses arcades aveugles.
-                pieceD("M17 ${crete(17f)}C40 ${crete(40f) - 1.4f} 70 ${crete(70f) - 1.6f} 103 ${crete(103f)}" +
-                    "L103 ${hautRempart(103f)}L17 ${hautRempart(17f)}Z", rempart)
+                appareil(chemin("M17 ${crete(17f)}C40 ${crete(40f) - 1.4f} 70 ${crete(70f) - 1.6f} 103 ${crete(103f)}" +
+                    "L103 ${hautRempart(103f)}L17 ${hautRempart(17f)}Z"), rempart, 2.3f, 4.4f, 360, -0.036f)
                 val creux = sombre(rempart, 0.44f)
                 // Le socle, plus sombre : un rempart porte, et cela se voit
                 // au pied. Sans lui c'est une bande d'ocre d'un bord à l'autre.
                 pieceD("M17 ${crete(17f)}C40 ${crete(40f) - 1.4f} 70 ${crete(70f) - 1.6f} 103 ${crete(103f)}" +
                     "L103 ${crete(103f) - 2.6f}C70 ${crete(70f) - 4f} 40 ${crete(40f) - 3.8f} 17 ${crete(17f) - 2.6f}Z",
-                    sombre(rempart, 0.26f))
+                    sombre(rempart, 0.3f))
                 for (bx in floatArrayOf(22f, 37f, 52f, 67f, 82f, 94f)) {
                     val w = 10.5f
                     val bas = crete(bx) - 3f
@@ -6894,22 +6949,29 @@ object Paysages {
             plancher(DEVANT, BAS)
             poser(DEVANT)
             // ---- Le mur de gauche et la porte de pierre.
-            pieceD("M-3 -3L8 -3L12 58.5L-3 58.5Z", mur)
-            for (y in floatArrayOf(6f, 14f, 22f, 30f, 38f, 46f, 54f))
-                ligne(-3f, y, 8f + y * 0.065f, y + 0.4f, sombre(mur, 0.3f), 0.25f)
+            appareil(chemin("M-3 -3L8 -3L12 58.5L-3 58.5Z"), mur, 3f, 5.2f, 356, 0.04f)
             // Le passage, franchement sombre : c'est le seul trou noir de la
             // fenêtre, et c'est lui qui fait lire la porte.
             pieceD("M14 58.5L14 25C14 18 26 18 26 25L26 58.5Z", sombre(neutre(duJour(0xFF30291F.toInt())), 0.3f), 0f)
-            feuille(10f, 24f, 4f, 34.5f, pierre)
-            feuille(26f, 24f, 4f, 34.5f, pierre)
-            for (y in floatArrayOf(28f, 33f, 38f, 43f, 48f, 53f)) {
-                ligne(10f, y, 14f, y, sombre(pierre, 0.32f), 0.25f); ligne(26f, y, 30f, y, sombre(pierre, 0.32f), 0.25f)
-            }
-            pieceD("M10 25C10 13 30 13 30 25L26 25C26 18 14 18 14 25Z", pierre)
-            for (k in 0..7) {
-                val a = PI.toFloat() * (1f + k / 7f)
-                ligne(20f + cos(a) * 6f, 25f + sin(a) * 6f, 20f + cos(a) * 10f, 25f + sin(a) * 10f,
-                    if (k % 2 == 0) sombre(pierre, 0.36f) else sombre(pierre, 0.2f), 0.3f)
+            // Les piédroits en pierre appareillée, et l'arc en vrais
+            // claveaux : des traits radiaux sur un aplat ne font pas une
+            // arche, ils font un éventail dessiné dessus.
+            appareil(10f, 24f, 4f, 34.5f, pierre, 3.2f, 4f, 357)
+            appareil(26f, 24f, 4f, 34.5f, pierre, 3.2f, 4f, 358)
+            val rp = Alea(359)
+            for (k in 0 until 11) {
+                val a0 = PI.toFloat() * (1f + k / 11f)
+                val a1 = PI.toFloat() * (1f + (k + 1) / 11f)
+                val t = rp()
+                val q = Path()
+                q.moveTo(20f + cos(a0) * 6f, 25f + sin(a0) * 6f)
+                q.lineTo(20f + cos(a1) * 6f, 25f + sin(a1) * 6f)
+                q.lineTo(20f + cos(a1) * 10f, 25f + sin(a1) * 10f)
+                q.lineTo(20f + cos(a0) * 10f, 25f + sin(a0) * 10f)
+                q.close()
+                piece(q, if (t < 0.34f) sombre(pierre, 0.1f + t * 0.5f)
+                    else if (t < 0.68f) mix(pierre, 0xFFFFFFFF.toInt(), 0.08f + t * 0.16f)
+                    else mix(pierre, vert(0.42f), 0.12f + t * 0.2f))
             }
             mineraux--
             // ---- Le lierre fleuri qui retombe de l'arche (direction validée
