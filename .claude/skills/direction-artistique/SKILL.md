@@ -832,7 +832,10 @@ le milieu, `plan(2)` le proche, puis le sol.
 **Pour un nouveau lieu, dans cet ordre** :
 1. Partir d'une photo du propriétaire ; en relever le sujet, la direction
    dans laquelle les choses fuient, les matières (pierre, enduit, eau, sol)
-   et les couleurs réelles.
+   et les couleurs réelles. Ranger la photo dans `references/paysages/`
+   sous le nom `<lieu>-<sujet>.<ext>` et l'inscrire dans l'index
+   `references/paysages/README.md` (avec sa source et sa licence si on les
+   connaît).
 2. Poser les plans (`plan(0..2)`), le sujet sur le milieu, en silhouettes
    lisibles (règle 1).
 3. Donner sa fuite à tout ce qui a une ligne (`Fuite`, `rue3q`, `boite3q`,
