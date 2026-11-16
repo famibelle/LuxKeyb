@@ -53,7 +53,8 @@ Tout vit dans `carnet/Paysages.kt`, classe `Peintre`, en unités de fenêtre
 | **Charpente d'acier** | la découpe **percée** d'un seul tenant (montants, entretoises, le ciel entre les deux), peinte deux fois, la seconde décalée, pour laisser un filet de lumière sur chaque membrure | `charpente` |
 | **Enduit, façade** | socle, chaînes d'angle, corniche, bandeaux, appuis et linteaux | `matiere`, appliquée seule par `rue3q` ; à appeler soi-même pour un mur dessiné à la main |
 | **Ardoise, tuile** | rangs à recouvrement, décalés, teintes voisines | dans `matiere` |
-| **Rocher** | des lits parallèles à la crête, puis des joints montants décalés, puis diaclases et ressauts | `direction-artistique` § 8 |
+| **Grès du Mullerthal** | le **litage** : des bancs d'épaisseurs inégales, de tons voisins mais franchement écartés, un banc sur trois en surplomb (arête au soleil, ombre portée dessous), et des diaclases verticales par-dessus | `strates(masse, haut, bas, col, graine, pas, pente)`, découpé dans la pièce déjà peinte |
+| **Rocher débité en blocs** | des polygones **anguleux et jamais d'équerre**, valeurs écartées d'un bloc à l'autre, les cassures tracées en polylignes brisées qui suivent les blocs | `BLOCS_BAERDREF`, `JOINTS_BAERDREF`, `VALEURS_BAERDREF` |
 | **Verre** | un bleu froid un peu translucide, jamais un blanc | `fenetreVerre` |
 | **Eau** | une teinte **en voile** (`forme`, 0,4) sur un lit de galets qu'on voit au travers, ou des reflets en traits couchés | Mëllerdall, Ourdall |
 | **Sol bâti** | `solDePierre(PAVES / DALLES / GRAVIER, haut, pente, bordure)` | — |
@@ -95,6 +96,24 @@ Tout vit dans `carnet/Paysages.kt`, classe `Peintre`, en unités de fenêtre
   un fût de brique font un poteau de bois peint.
 - **Le grain est chaud.** Un blanc pur posé dessus jaunit ; pour un blanc
   franc (une chute d'eau, une écume), tirer vers le bleu.
+- **Le litage seul ne sauve pas une masse unique.** Une paroi d'un bord à
+  l'autre, même bien litée, se lit comme un contreplaqué : les lits courent
+  sans jamais rencontrer d'arête. Il faut **étager des découpes** (la paroi
+  du fond, la voûte, le pilier), chacune sa valeur, sa tranche de kraft et
+  son litage à elle. Ce sont les ruptures qui creusent, pas les lignes.
+- **L'arc-en-ciel.** Une grande pièce dont le bord suit à distance constante
+  celui d'une ouverture fait deux bandes concentriques : sa tranche de kraft
+  d'un côté, le tableau d'ombre de l'autre. Cassez la lèvre en polyligne
+  anguleuse, et n'ajoutez pas de troisième cerne.
+- **La tranche de kraft d'une grande pièce lisse devient une moulure.** Elle
+  est juste sur une découpe de la taille d'une main ; sur un arc de soixante
+  unités, c'est un jonc de caoutchouc. Découper plus petit, ou casser le bord.
+- **Des blocs rectangulaires font du béton.** Un rocher se débite en
+  polygones de travers, aux valeurs écartées ; d'équerre et de ton voisin,
+  ils donnent des panneaux préfabriqués.
+- **La lune n'est pas le soir.** `P.allume` est vrai le soir **et** la nuit :
+  une flaque de lune posée dessus fait une fumée orange au couchant. Pour ce
+  qui n'appartient qu'à la nuit, `P.nuit`.
 - **La vignette n'a pas la gouache.** `Facture.VIGNETTE` est un aplat avec sa
   seule tranche de kraft : une matière qui ne tient que par ses coups de
   pinceau disparaît dans la grille.
