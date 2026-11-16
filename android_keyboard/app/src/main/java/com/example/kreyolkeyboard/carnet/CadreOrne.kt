@@ -3423,6 +3423,7 @@ object Ornement {
  */
 abstract class Carton(context: Context) : ViewGroup(context), SensorEventListener {
 
+
     private val emplacements = ArrayList<RectF>()
 
     /** La hauteur de ce carton-là, en unités de carte. */
@@ -3734,12 +3735,41 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
      * l'effet voulu : une carte, ça a du poids. Le seuil évite de rejouer
      * trois cents ordres de tracé pour un dixième de degré.
      */
+    /**
+     * Redemande une image, au plus [IMAGES_PAR_SECONDE] par
+     * seconde. Une sur deux : trente par seconde suffisent à des flocons
+     * lents et à des nuages qui passent, et la batterie tient deux fois mieux
+     * qu'à soixante.
+     *
+     * Le limiteur vit ici, dans [Carton], et non dans [CarteOrnee] : le
+     * capteur et l'ambiance doivent partager **une seule** cadence. Tant que
+     * le capteur appelait `invalidate()` de son côté, il arrivait à la cadence
+     * de l'interface pendant que l'ambiance peignait à trente, et les deux
+     * mêlés donnaient un battement — l'histogramme de `gfxinfo` montrait deux
+     * bosses, à 19 et à 32 ms (Galaxy A21s, release, 2026-11-15). Ce qui se
+     * voyait en penchant la carte n'était pas une cadence basse, c'était une
+     * cadence irrégulière.
+     */
+    protected fun relancer() {
+        if (!relancePrevue) {
+            relancePrevue = true
+            postOnAnimationDelayed(relance, 1000L / IMAGES_PAR_SECONDE - 8)
+        }
+    }
+
+    protected var relancePrevue = false
+    protected val relance = Runnable {
+        relancePrevue = false
+        invalidate()
+    }
+
     override fun onSensorChanged(evenement: SensorEvent) {
         posture.echantillon(evenement.values)
         if (abs(posture.roulis - pesanteur) < SEUIL && abs(posture.tangage - tangage) < SEUIL) return
         pesanteur = posture.roulis
         tangage = posture.tangage
-        invalidate()
+        // Par le limiteur, comme l'ambiance : voir [relancer].
+        relancer()
     }
 
     /**
@@ -3965,6 +3995,9 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
     }
 
     private companion object {
+        /** La cadence de toute la carte : voir [relancer]. */
+        const val IMAGES_PAR_SECONDE = 30
+
         /** Le lissage du roulis du capteur, et le seuil sous lequel on l'ignore. */
         const val LISSAGE = 0.20f
         // Sur le roulis déjà lissé, qui avance d'un cinquième de l'écart par
@@ -4483,24 +4516,6 @@ class CarteOrnee(
         relancer()
     }
 
-    /**
-     * Redemande une image. Une sur deux : trente par seconde suffisent à des
-     * flocons lents et à des nuages qui passent, et la batterie tient deux
-     * fois mieux qu'à soixante.
-     */
-    private fun relancer() {
-        if (!relancePrevue) {
-            relancePrevue = true
-            postOnAnimationDelayed(relance, 1000L / IMAGES_PAR_SECONDE - 8)
-        }
-    }
-
-    private var relancePrevue = false
-    private val relance = Runnable {
-        relancePrevue = false
-        invalidate()
-    }
-
     /** La face, les rayons et le motif : tout ce que le métal recouvre. */
     private fun dessous(
         canvas: Canvas, u: Float, avecIris: Boolean, avecSujet: Boolean = true,
@@ -4714,7 +4729,6 @@ class CarteOrnee(
      */
     private companion object {
         /** La cadence de l'ambiance : voir [animer]. */
-        const val IMAGES_PAR_SECONDE = 30
 
         /**
          * L'accélération, sans la pesanteur, au-delà de laquelle on secoue,
