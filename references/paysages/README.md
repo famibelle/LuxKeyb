@@ -21,15 +21,20 @@ composition, les matières et les couleurs, redessinées en papier découpé.
 | Ourdall (`OURDALL`) | `ourdall-promenade-passerelle.webp` | La promenade de l'Ourdall au bord du lac de l'Our, à Vianden : le caillebotis, son grillage et sa main courante | Le caillebotis qui fuit au bord de l'eau, le garde-corps grillagé |
 | Ourdall (`OURDALL`) | `ourdall-passerelle-belvedere.webp` | Une passerelle-belvédère de la promenade, sous les arbres, le lac au fond | Une variante possible du point de vue |
 | Felsmillen (`FELSMILLEN`) | `felsmillen-gorges-passerelle.webp` | Les gorges de Felsmillen près d'Echternach : rochers de grès, caillebotis sinueux dans la fougère | Le rocher de gauche et ses strates, le caillebotis qui part dans la forêt |
+| Napoleonsgaart (`NAPOLEONSGAART`) | `napoleonsgaart-tour-chemin.webp` | La tour de pierre au sommet de la colline, le chemin goudronné qui y monte entre deux pelouses, un pylône à droite | La tour vue de trois quarts, le chemin qui monte, le pylône, le grand ciel de nuages |
+| Conzefenn (`CONZEFENN`) | `conzefenn-moutons-cloture.png` | Un troupeau de moutons dans la prairie, une clôture de piquets au premier plan, la forêt d'épicéas au fond | La lisière d'épicéas, les moutons sur la prairie, la clôture de bois qui fuit |
+| Dumongshaff (`DUMONGSHAFF`) | `dumongshaff-passerelle-etang.png` | Une passerelle de bois en arc au-dessus de l'eau, les herbes des rives (photo signée A. Gontier) | La passerelle de bois et sa rambarde à barreaux, l'étang, les roseaux |
+| Rout Bréck (`ROUT_BRECK`) | `rout-breck-pont-rouge.png` | Le pont Grande-Duchesse Charlotte vu d'en dessous, ses béquilles rouges, ses lampadaires, la vallée boisée | Le tablier rouge qui monte, vu d'en bas, la béquille, la verdure de la vallée |
+| Breedewee (`BREEDEWEE`) | `breedewee-ruelle-porte.png` | Une ruelle pavée du Grund sous une porte de pierre en arc, entre de hautes façades | La porte de pierre en cadre de scène, la ruelle et ses façades |
+| Gëlle Fra (`GELLE_FRA`) | `gelle-fra-statue-couchant.png` | La statue dorée, bras levés avec sa couronne, sur son obélisque, dans un ciel de couchant | La statue dorée sur son socle sombre, à droite, le ciel du soir |
 | Mëllerdall (`MELLERDALL`) | `mellerdall-schiessentumpel.jpg` | Le Schiessentümpel : pont de pierre en arche avec sa rambarde de branches, trois chutes entre des rochers moussus, l'eau soyeuse | Tout le lieu, redessiné le 2026-11-14 : forêt, pont de trois quarts, trois chutes, bassin transparent sur ses galets, brume aux points de chute |
 
 ## Les autres lieux
 
-Les vingt-trois autres lieux (Rout Bréck, Veianen, Esch-Sauer, Musel, Neimënster,
-Gëlle Fra, Schueberfouer, Stad, Breedewee, Pafendall, Ansebuerg, Belval,
-Bäerdref, Nei Bréck, Conzefenn, Haff Réimech, Hohllay, Napoleonsgaart,
-Kallektuffquell, Péitrusdall, Wollefsschlucht, Priedegtstull, Dumongshaff)
-ont été dessinés d'après des photos ou des descriptions données dans
-d'autres sessions de travail, qui n'ont pas été conservées. Pour les
-compléter : ajouter la photo ici, sous le nom `<lieu>-<sujet>.<ext>`, et une
-ligne à l'index.
+Les dix-sept autres lieux (Veianen, Esch-Sauer, Musel, Neimënster,
+Schueberfouer, Stad, Pafendall, Ansebuerg, Belval, Bäerdref, Nei Bréck,
+Haff Réimech, Hohllay, Kallektuffquell, Péitrusdall, Wollefsschlucht,
+Priedegtstull) ont été dessinés d'après des photos ou des descriptions
+données dans d'autres sessions de travail, qui n'ont pas été conservées.
+Pour les compléter : ajouter la photo ici, sous le nom
+`<lieu>-<sujet>.<ext>`, et une ligne à l'index.
