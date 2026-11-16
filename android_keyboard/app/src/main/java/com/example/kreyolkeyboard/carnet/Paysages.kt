@@ -1466,8 +1466,13 @@ object Paysages {
     /** Les moutons du premier plan de Conzefenn, en x. */
     private val MOUTONS = floatArrayOf(6f, 13f, 88f, 95f)
 
-    /** Le plan incliné du monte-charge de Belval : son pied, puis son sommet au gueulard. */
-    private val RAMPE = floatArrayOf(72f, 60f, 97f, 14f)
+    /**
+     * Les mâts des bannières plantés sur la place des Hauts-Fourneaux, en x
+     * (photo du propriétaire). Deux à chaque bord : la plaque du mot couvre
+     * la boîte centrale, et une rangée régulière n'aurait battu au vent que
+     * derrière elle.
+     */
+    private val BANNIERES = floatArrayOf(2f, 22f, 36f, 52f, 88f, 96f)
 
     /**
      * Ce qui vit dans un lieu, sur la carte ouverte (repris de KreyolKeyb,
@@ -1516,8 +1521,6 @@ object Paysages {
             Lieu.FOUER -> calque == 3 || calque == 4
             Lieu.BREEDEWEE -> calque == 3 || calque == 4
             Lieu.GELLE_FRA -> calque == 4 || (calque == 3 && !PAPIER)
-            // La benne roule sur la rampe du fourneau, donc sur son carton.
-            Lieu.BELVAL -> calque == 3
             else -> calque == 4
         }
 
@@ -1622,9 +1625,9 @@ object Paysages {
                     p.tram(x)
                     sonnerie(p, x + 15f, 25.4f, raf)
                 } else envol(p, vol, 8f, 30f, 1f)
-                // La benne du monte-charge monte charger le gueulard puis
-                // redescend ; une secousse la relance vers le haut.
-                Lieu.BELVAL -> p.benne(((1f - cos(temps * 0.45f + elan(temps) * 2.4f)) * 0.5f).coerceIn(0f, 1f))
+                Lieu.BELVAL -> for ((k, x) in BANNIERES.withIndex()) {
+                    p.banniere(x, sin(temps * 1.4f + k) * 0.4f + raf * 1.6f * sin(temps * 9f + k), k)
+                }
                 Lieu.BAERDREF -> feuillesQuiTombent(p, temps, raf)
                 Lieu.ANSEBUERG -> if (calque == 3) {
                     for (k in 0..1) {
@@ -5935,187 +5938,155 @@ object Paysages {
             if (P.allume) rond(x + 15f, y + 2f, 0.5f, 0xFFFFF4C8.toInt())
         }
 
-        // ---- Belval, les deux hauts fourneaux de la friche d'Esch
+        // ---- Belval, les hauts fourneaux d'Esch (photo du propriétaire)
 
         /**
-         * Un haut fourneau de Belval, posé sur [bas] : la cage d'acier large
-         * de [w] et haute de [h] depuis [x], la cuve qu'elle enserre, la
-         * ceinture des tuyères autour du ventre et la plateforme du gueulard
-         * par-dessus.
+         * Une charpente d'acier **percée** : le trapèze de [w] sur [h] posé
+         * en ([x], [bas]), découpé d'un seul tenant en [nc] travées et [nr]
+         * étages, montants et entretoises, le ciel entre les deux.
          *
-         * La cuve se colle d'abord, la **cage percée** par-dessus : elle est
-         * découpée d'un seul tenant, montants et entretoises, et le ciel se
-         * voit par ses vides. Peinte pleine, avec ses barres dessinées
-         * dessus, elle ne faisait qu'une façade à meneaux, et le fourneau
-         * une maison : c'est ce qu'était le Belval d'avant.
+         * C'est le découpage qui fait lire une charpente. Peinte pleine, avec
+         * ses barres dessinées dessus, elle ne fait qu'une façade à meneaux,
+         * et le fourneau une maison.
          */
-        fun hautFourneau(x: Float, bas: Float, w: Float, h: Float, acier: Int, rouille: Int) = mineral {
+        fun charpente(x: Float, bas: Float, w: Float, h: Float, col: Int, nc: Int, nr: Int, rentre: Float = 0.07f) = mineral {
             val haut = bas - h
-            val g = x + w * 0.07f
-            val d = x + w * 0.93f
-            // Le trapèze de la cage : droit en bas, un peu rentré et penché
-            // en haut, pour qu'elle se présente de trois quarts.
-            fun cx2(u: Float, v: Float): Float {
-                val l = x + (g - x) * v
-                val r = (x + w) + (d - (x + w)) * v
-                return l + (r - l) * u
+            val g = x + w * rentre
+            val d = x + w * (1f - rentre)
+            fun px(u: Float, v: Float): Float {
+                val a = x + (g - x) * v
+                val b = (x + w) + (d - (x + w)) * v
+                return a + (b - a) * u
             }
-            fun cy2(u: Float, v: Float): Float = bas + (haut + 0.8f * u - bas) * v
-            // La cage, **percée** d'un seul tenant : quatre montants, six
-            // entretoises, et le ciel entre les deux.
+            fun py(u: Float, v: Float): Float = bas + (haut + 0.8f * u - bas) * v
             val cage = Path()
-            cage.moveTo(cx2(0f, 0f), cy2(0f, 0f))
-            cage.lineTo(cx2(0f, 1f), cy2(0f, 1f))
-            cage.lineTo(cx2(1f, 1f), cy2(1f, 1f))
-            cage.lineTo(cx2(1f, 0f), cy2(1f, 0f))
+            cage.moveTo(px(0f, 0f), py(0f, 0f)); cage.lineTo(px(0f, 1f), py(0f, 1f))
+            cage.lineTo(px(1f, 1f), py(1f, 1f)); cage.lineTo(px(1f, 0f), py(1f, 0f))
             cage.close()
             val trous = Path()
-            for (ic in 0 until 3) for (ir in 0 until 5) {
-                val ua = 0.09f + 0.82f * (ic + 0.1f) / 3f
-                val ub = 0.09f + 0.82f * (ic + 0.9f) / 3f
-                val va = 0.04f + 0.91f * (ir + 0.07f) / 5f
-                val vb = 0.04f + 0.91f * (ir + 0.93f) / 5f
-                trous.moveTo(cx2(ua, va), cy2(ua, va))
-                trous.lineTo(cx2(ub, va), cy2(ub, va))
-                trous.lineTo(cx2(ub, vb), cy2(ub, vb))
-                trous.lineTo(cx2(ua, vb), cy2(ua, vb))
+            for (ic in 0 until nc) for (ir in 0 until nr) {
+                val ua = 0.1f + 0.8f * (ic + 0.12f) / nc
+                val ub = 0.1f + 0.8f * (ic + 0.88f) / nc
+                val va = 0.04f + 0.9f * (ir + 0.09f) / nr
+                val vb = 0.04f + 0.9f * (ir + 0.91f) / nr
+                trous.moveTo(px(ua, va), py(ua, va)); trous.lineTo(px(ub, va), py(ub, va))
+                trous.lineTo(px(ub, vb), py(ub, vb)); trous.lineTo(px(ua, vb), py(ua, vb))
                 trous.close()
             }
             cage.op(trous, Path.Op.DIFFERENCE)
-            piece(cage, acier)
-            // La cuve, devant la cage : col étroit au gueulard, ventre
-            // renflé, étalages qui se resserrent sur le creuset. C'est elle
-            // le fourneau ; sans elle on ne lit qu'un échafaudage.
-            val mx = x + w * 0.5f
-            val rc = w * 0.29f
-            val ventre = haut + h * 0.44f
-            pieceD("M${mx - rc * 0.44f} ${haut + 1.2f}L${mx - rc * 0.5f} ${ventre - h * 0.22f}" +
-                "L${mx - rc} ${ventre - h * 0.06f}L${mx - rc} ${ventre + h * 0.06f}" +
-                "L${mx - rc * 0.5f} ${bas - 4.5f}L${mx - rc * 0.5f} ${bas - 2f}L${mx + rc * 0.5f} ${bas - 2f}" +
-                "L${mx + rc * 0.5f} ${bas - 4.5f}L${mx + rc} ${ventre + h * 0.06f}L${mx + rc} ${ventre - h * 0.06f}" +
-                "L${mx + rc * 0.5f} ${ventre - h * 0.22f}L${mx + rc * 0.44f} ${haut + 1.2f}Z", rouille)
-            // La ceinture des tuyères, qui fait le tour du ventre.
-            ovalePapier(mx, ventre + h * 0.06f, rc * 1.22f, h * 0.038f, mix(rouille, 0xFFFFFFFF.toInt(), 0.22f))
-            // La plateforme du gueulard et sa cheminée.
-            feuille(x - w * 0.07f, haut - h * 0.05f, w * 1.14f, h * 0.05f, acier, 0.5f)
-            pieceD("M${mx - w * 0.15f} ${haut - h * 0.05f}L${mx - w * 0.11f} ${haut - h * 0.12f}" +
-                "L${mx + w * 0.11f} ${haut - h * 0.12f}L${mx + w * 0.15f} ${haut - h * 0.05f}Z", rouille)
+            piece(cage, col)
         }
 
         /**
-         * La benne du monte-charge, à [u] de sa course (0 au pied du plan
-         * incliné, 1 au gueulard) : un caisson posé en travers de la rampe,
-         * qu'il suit comme un wagonnet suit son rail.
+         * Un cowper : le cylindre clair de [w] posé en [x], sa calotte
+         * conique en [haut] et sa cheminée. Ils vont par trois ou quatre,
+         * serrés contre le fourneau, et ce sont **les seules pièces claires**
+         * de la friche : l'acier y est presque noir à contre-jour.
          */
-        fun benne(u: Float) = mineral {
-            val l = sqrt((RAMPE[2] - RAMPE[0]) * (RAMPE[2] - RAMPE[0]) + (RAMPE[3] - RAMPE[1]) * (RAMPE[3] - RAMPE[1]))
-            val dx = (RAMPE[2] - RAMPE[0]) / l
-            val dy = (RAMPE[3] - RAMPE[1]) / l
-            val x = RAMPE[0] + (RAMPE[2] - RAMPE[0]) * u
-            val y = RAMPE[1] + (RAMPE[3] - RAMPE[1]) * u
-            fun pt(a: Float, b: Float) = "${x + dx * a - dy * b} ${y + dy * a + dx * b}"
-            val col = neutre(duJour(0xFF4B3A31.toInt()))
-            pieceD("M${pt(-2.4f, -2f)}L${pt(2.4f, -1.6f)}L${pt(2f, 1.6f)}L${pt(-2f, 2f)}Z", col)
-            ligne(x + dx * 2.4f - dy * 1.6f, y + dy * 2.4f + dx * 1.6f, x + dx * 2.4f + dy * 1.6f, y + dy * 2.4f - dx * 1.6f,
-                mix(col, 0xFFFFFFFF.toInt(), 0.3f), 0.4f)
+        fun cowper(x: Float, haut: Float, w: Float, col: Int, acier: Int, cone: Boolean = true) = mineral {
+            feuille(x, haut, w, 60f - haut, col, 0.6f)
+            if (cone) {
+                // Une calotte bombée, pas un cône : pointue, elle faisait
+                // des tourelles de château au lieu de récipients sous pression.
+                pieceD("M${x - 0.5f} ${haut + 0.3f}Q${x + w * 0.5f} ${haut - w * 0.72f} ${x + w + 0.5f} ${haut + 0.3f}Z", col)
+                feuille(x + w * 0.46f - 0.5f, haut - w * 1f, 1f, w * 0.5f, acier, 0.3f)
+            } else feuille(x - 0.5f, haut - 1.1f, w + 1f, 1.4f, sombre(col, 0.22f), 0.4f)
+            // Le flanc à l'ombre : le soleil vient de la gauche sur la photo.
+            feuille(x + w * 0.68f, haut + 0.6f, w * 0.32f, 59.4f - haut, sombre(col, 0.22f), 0f)
+            for (y in floatArrayOf(0.26f, 0.52f, 0.78f)) {
+                val yy = haut + (60f - haut) * y
+                ligne(x, yy, x + w, yy, sombre(col, 0.16f), 0.3f)
+            }
         }
 
         fun belval() {
             val r = Alea(185)
-            // Le fond : les immeubles de la Cité des Sciences, qui a poussé
-            // sur la friche. Belval n'est pas qu'une ruine d'acier, mais ce
-            // sont les fourneaux qui le font reconnaître : le verre reste au
-            // lointain, pâle, et l'acier prend les bords et la bande du haut.
-            val vitre = duJour(0xFF93AFC4.toInt())
-            for ((dim, col) in listOf(floatArrayOf(20f, 9f, 24f) to duJour(0xFFB9C4CF.toInt()),
-                    floatArrayOf(60f, 11f, 29f) to duJour(0xFFC9B9A9.toInt()))) {
-                val (x, w, h) = Triple(dim[0], dim[1], dim[2])
-                boite3q(x, 54f, w, h, 5f, col) {
-                    var y = 2f
-                    while (y < h - 1f) { rect(0.8f, y, w - 1.6f, 0.9f, vitre, 0.7f); y += 2.6f }
-                }
-            }
+            // Le fond : la ligne basse des halles et des bâtiments de la
+            // Cité des Sciences, loin derrière. Sur la photo le ciel est net
+            // et c'est l'acier qui fait tout : le lointain reste une bande.
+            lisiere(-2f, 102f, { x -> 46f + 1.6f * sin(x * 0.08f) }, 1.4f, 2.2f, 186,
+                neutre(mix(P.loin, P.cielBas, 0.34f)))
             plan(1)
-            val acier = neutre(duJour(0xFF5E4639.toInt()))
-            val rouille = neutre(duJour(0xFFB4502A.toInt()))
-            val cowper = neutre(duJour(0xFF9A6240.toInt()))
+            // Les matières de la photo : l'acier des charpentes presque noir
+            // à contre-jour, la brique chaude de la cheminée, le béton clair
+            // des cowpers et du long mur de droite. Tout passe par [neutre],
+            // comme le bâti (règle 10) : sans lui le gris vire au brun.
+            val acier = neutre(duJour(0xFF3B4654.toInt()))
+            val brique = neutre(duJour(0xFF9A5A44.toInt()))
+            val beton = neutre(duJour(0xFFC9C3B6.toInt()))
+            val mur = neutre(duJour(0xFFBDB49F.toInt()))
             mineral {
-                // Les deux fourneaux tiennent les deux bords, et la batterie
-                // de cowpers le milieu : la plaque du mot couvre la boîte
-                // centrale (17 à 83, 12,5 à 58,5), si bien qu'un fourneau
-                // planté au milieu, comme avant, disparaissait tout entier
-                // derrière elle et ne laissait voir que des cylindres beiges.
-                // Le fourneau B à gauche, entamé par le bord ; le fourneau A
-                // à droite, plus haut, avec son monte-charge.
-                hautFourneau(-4f, 60f, 23f, 47.5f, acier, rouille)
-                hautFourneau(70f, 60f, 28f, 51.5f, acier, rouille)
-                // Les cowpers : quatre cylindres à calotte, dont seuls les
-                // dômes dépassent de la plaque. C'est la rangée de dômes qui
-                // dit « usine à fer » dans la bande du haut.
-                for ((cx, cw) in listOf(26f to 7f, 36f to 6.6f, 45.6f to 7f)) {
-                    val y0 = 14f + (cx - 26f) * 0.05f
-                    pieceD("M$cx 60L$cx ${y0}C$cx ${y0 - cw * 0.76f} ${cx + cw} ${y0 - cw * 0.76f} ${cx + cw} ${y0}L${cx + cw} 60Z", cowper)
-                    // Le flanc à l'ombre, et non un mélange au vert du jour :
-                    // il verdissait le cylindre (règle 10).
-                    feuille(cx + cw * 0.66f, y0 + 0.6f, cw * 0.34f, 59.4f - y0, sombre(cowper, 0.26f), 0f)
-                    // La cheminée du cowper : trois verticales de plus dans
-                    // la bande du haut, la seule que la plaque laisse voir.
-                    feuille(cx + cw * 0.42f - 0.55f, 4.4f, 1.1f, y0 - cw * 0.5f - 4.4f, acier, 0.4f)
-                }
-                // La conduite de vent chaud, des cowpers au ventre du
-                // fourneau, et la grande descente qui part du gueulard.
-                trait("M26 17C38 13.6 58 15 70 19.5", rouille, 1.8f)
-                trait("M80 5.5C72 4 66 6.6 64 14", mix(acier, 0xFFFFFFFF.toInt(), 0.14f), 2.2f)
-                // Le plan incliné du monte-charge, devant le fourneau A : il
-                // monte de la fosse à minerai au gueulard, et il porte la
-                // seule chose qui bouge ici (voir [Vie]).
-                val l = sqrt((RAMPE[2] - RAMPE[0]) * (RAMPE[2] - RAMPE[0]) + (RAMPE[3] - RAMPE[1]) * (RAMPE[3] - RAMPE[1]))
-                val dx = (RAMPE[2] - RAMPE[0]) / l
-                val dy = (RAMPE[3] - RAMPE[1]) / l
-                fun pt(a: Float, b: Float) = "${RAMPE[0] + dx * a - dy * b} ${RAMPE[1] + dy * a + dx * b}"
-                pieceD("M${pt(-2f, -1.9f)}L${pt(l + 1f, -1.9f)}L${pt(l + 1f, 1.9f)}L${pt(-2f, 1.9f)}Z", acier, 0.6f)
-                var a = 2f
-                while (a < l) {
-                    ligne(RAMPE[0] + dx * a - dy * 1.6f, RAMPE[1] + dy * a + dx * 1.6f,
-                        RAMPE[0] + dx * (a + 3.4f) + dy * 1.6f, RAMPE[1] + dy * (a + 3.4f) - dx * 1.6f, rouille, 0.3f)
-                    a += 3.4f
-                }
-                if (!vivant) benne(0.18f)
+                // Le long mur à refends qui ferme la place à droite.
+                feuille(78f, 30f, 26f, 30f, mur, 0.5f)
+                feuille(78f, 28.8f, 26f, 1.4f, sombre(mur, 0.28f), 0.3f)
+                var mx = 80f
+                while (mx < 104f) { ligne(mx, 30.6f, mx, 60f, sombre(mur, 0.18f), 0.35f); mx += 3.6f }
+                // La cheminée de brique : la verticale qui tient toute la
+                // photo, et la seule pièce chaude du lieu. Elle sort par le
+                // haut de la fenêtre, comme elle sort du cadre de la photo.
+                pieceD("M5.6 60L7.4 3.4L13.4 3.4L15.2 60Z", brique)
+                feuille(6.8f, 1.8f, 7.2f, 1.8f, sombre(brique, 0.35f), 0.4f)
+                feuille(12.1f, 3.8f, 2.4f, 56f, sombre(brique, 0.2f), 0f)
+                for (y in floatArrayOf(14f, 26f, 38f, 50f)) ligne(7.6f + (y - 14f) * 0.03f, y, 14.4f - (y - 14f) * 0.03f, y, sombre(brique, 0.3f), 0.3f)
+                // Le grand cylindre clair contre la cheminée.
+                cowper(17f, 9.5f, 9f, beton, acier, cone = false)
+                // La tour du gueulard : la charpente la plus haute, avec son
+                // chevalement. C'est elle qui dépasse de tout sur la photo.
+                charpente(28f, 60f, 14f, 57f, acier, 2, 7)
+                feuille(26.4f, 1.4f, 17.2f, 2.2f, acier, 0.5f)
+                trait("M28 3.6L35 8.4L42 3.6", acier, 0.9f)
+                // Le massif du fourneau, et la grosse conduite qui en descend.
+                // Le massif du fourneau : la halle de coulée en bas, une
+                // charpente ajourée au-dessus, le pot à poussière contre
+                // elle. D'un seul tenant, il ne faisait qu'une colline noire.
+                pieceD("M36 60L36 34L58 32L58 60Z", acier)
+                charpente(37f, 34f, 18f, 15f, acier, 3, 2)
+                pieceD("M48 60L48 30C48 24.6 56 24.6 56 30L56 60Z", sombre(acier, 0.18f))
+                // Les conduites qui descendent du gueulard sur le massif :
+                // elles le longent au lieu de l'enjamber en arc-en-ciel.
+                trait("M38 9C40 15 44 19 50 23", acier, 2.2f)
+                trait("M44 24C50 27 54 32 55 40", sombre(acier, 0.25f), 1.5f)
+                trait("M58 27C64 24 70 26 76 30", acier, 1.6f)
+                // Les cowpers : trois cylindres clairs à calotte conique,
+                // serrés contre le fourneau. Leurs cônes sont ce que la bande
+                // du haut laisse voir d'eux sur la carte ouverte.
+                cowper(58f, 13f, 7.4f, beton, acier)
+                cowper(66.4f, 10f, 8f, beton, acier)
+                cowper(75.4f, 15f, 7f, beton, acier)
+                // Le faisceau de conduites noires entre les cowpers.
+                for (x in floatArrayOf(65.2f, 74.4f)) feuille(x, 22f, 1.3f, 38f, sombre(acier, 0.3f), 0.3f)
+                // La charpente de droite, devant le mur.
+                charpente(84f, 60f, 13f, 42f, acier, 2, 5)
                 if (P.allume) {
                     // La nuit, les fourneaux sont éclairés d'en bas d'une
                     // lumière chaude : c'est l'image que Belval donne de
-                    // lui-même. Sans elle, la friche n'est qu'une masse
-                    // bleue de plus, et le lieu perd ce qui le distingue.
-                    for (mx in floatArrayOf(5f, 84f)) {
-                        halo(mx, 44f, 24f, 0xFFFF9A3C.toInt(), 0.42f)
-                        halo(mx, 52f, 13f, 0xFFFFC46A.toInt(), 0.4f)
+                    // lui-même, et sans elle la friche n'est qu'une masse
+                    // bleue de plus.
+                    for (x in floatArrayOf(10f, 46f, 90f)) {
+                        halo(x, 44f, 24f, 0xFFFF9A3C.toInt(), 0.4f)
+                        halo(x, 52f, 13f, 0xFFFFC46A.toInt(), 0.38f)
                     }
-                    for (cx in floatArrayOf(29.4f, 39.2f, 49.1f)) halo(cx, 26f, 11f, 0xFFFFB45A.toInt(), 0.26f)
-                    // Les fenêtres allumées sont celles des immeubles du
-                    // fond, pas des lucioles semées dans le ciel.
-                    for (k in 0 until 8) rond(if (k < 4) 21f + r() * 7f else 61f + r() * 9f, 30f + r() * 20f, 0.4f, P.fenetre)
+                    for (x in floatArrayOf(61.7f, 70.4f, 78.9f)) halo(x, 18f, 9f, 0xFFFFB45A.toInt(), 0.26f)
+                    for (k in 0 until 7) rond(80f + r() * 22f, 33f + r() * 22f, 0.4f, P.fenetre)
                 }
             }
             plan(2)
             solDePierre(SolDePierre.DALLES, DEVANT, -0.02f)  // la place des Hauts-Fourneaux
             poser(DEVANT)
-            // Le ballast et les rails de la voie de desserte, au pied des
-            // fourneaux : une aciérie est d'abord une gare de minerai. La
-            // bande de gazon vert qui tenait cette place faisait une pelouse
-            // sous un haut fourneau.
-            mineral {
-                val ballast = neutre(duJour(0xFF8D7161.toInt()))
-                val traverse = neutre(duJour(0xFF5E4639.toInt()))
-                val rail = neutre(duJour(0xFF9B9086.toInt()))
-                pieceD("M-2 60L-2 54.4L102 53.6L102 60Z", ballast, 0.4f)
-                var tx = -2f
-                while (tx < 102f) { feuille(tx, 55.6f - (tx + 2f) * 0.008f, 3.2f, 1f, traverse, 0.3f); tx += 5.4f }
-                for (dy in floatArrayOf(0f, 2f)) ligne(-2f, 55.4f + dy, 102f, 54.6f + dy, rail, 0.4f)
-            }
-            // Les bouquets qui repoussent sur le ballast, assez petits pour
-            // ne pas faire des boules de buis sur la place.
-            touffe(vert(0.34f), 20f, 53.4f, 1.8f, 22.6f, 54f, 1.4f, 66f, 53.8f, 1.7f, 68.4f, 54.4f, 1.3f)
+            // La haie basse au pied des charpentes, et les mâts des
+            // bannières plantés sur la place : c'est tout ce que la photo
+            // montre devant l'acier.
+            lisiere(-2f, 102f, { x -> 56.8f + 0.8f * sin(x * 0.24f) }, 0.8f, 1.3f, 187,
+                nappe(mix(vert(0.1f), 0xFF20371F.toInt(), 0.5f), 0.3f, VERT_CALME))
+            if (!vivant) for ((k, x) in BANNIERES.withIndex()) banniere(x, 0f, k)
             c.restore()
+        }
+
+        /** Une bannière blanche sur son mât en [x], gonflée de [vent]. */
+        fun banniere(x: Float, vent: Float, k: Int) {
+            ligne(x, 25f, x, DEVANT, neutre(duJour(0xFF8C9096.toInt())), 0.35f)
+            val toile = duJour(if (k % 2 == 0) 0xFFF4F4F2.toInt() else 0xFFDCE6EE.toInt())
+            pieceD("M${x + 0.3f} 26L${x + 2.7f + vent} 26.4L${x + 2.5f + vent * 1.4f} 39L${x + 0.3f} 39Z", toile, 0.4f)
         }
 
         // ---- Bäerdref, l'arche de grès dans la forêt (photo du propriétaire)
