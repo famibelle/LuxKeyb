@@ -6927,33 +6927,36 @@ object Paysages {
             // mur qui ferme la ruelle, percé du passage voûté où l'escalier
             // va se rendre.
             val distance = mix(P.cielBas, neutre(P.cielBas), 0.6f)
-            pieceD("M20 34L22.6 14C32 11 56 10.6 70 12L70 34Z", mix(neutre(duJour(0xFF8E8775.toInt())), distance, 0.3f))
+            pieceD("M31 34L32 20.6C37 19.2 53 18.8 59 20.2L59 34Z",
+                mix(sombre(neutre(duJour(0xFF8E8775.toInt())), 0.38f), distance, 0.24f))
             // La verdure du talus, bornée au mur du fond : débordant à
             // droite, elle faisait une haie verticale entre le mur et la
             // rangée.
-            lisiere(22f, 67f, { x -> 15f + 1.2f * sin(x * 0.4f) }, 0.9f, 1.6f, 368, vert(0.4f))
+            lisiere(33f, 57f, { x -> 21.6f + 0.8f * sin(x * 0.5f) }, 0.55f, 1f, 368, vert(0.4f))
+            // Le mur qui ferme la ruelle. Il est **loin** : son appareil est
+            // menu, sa porte étroite, son toit bas. À l'échelle du premier
+            // plan, un moellon y valait trois fenêtres de maison.
             val fond = murs[0]
-            appareil(24f, 17f, 44f, 17f, fond, 2.2f, 3.8f, 369)
-            pieceD("M22 17.4L46 11.6L70 17.4Z", toit)
-            ligne(22f, 17.4f, 70f, 17.4f, neutre(mix(ardoise(), 0xFFFFFFFF.toInt(), 0.18f)), 0.4f)
+            appareil(33f, 23.4f, 24f, 10.6f, fond, 1.15f, 2f, 369)
+            pieceD("M31.6 23.7L45 20.2L58.4 23.7Z", toit)
+            ligne(31.6f, 23.7f, 58.4f, 23.7f, neutre(mix(ardoise(), 0xFFFFFFFF.toInt(), 0.18f)), 0.25f)
             // Le passage voûté : le but de l'escalier. Sombre, mais pas noir :
             // on devine la ruelle qui continue derrière.
-            val voute = chemin("M38 34L38 27.5C38 23.8 50 23.8 50 27.5L50 34Z")
+            val voute = chemin("M41 34L41 30.4C41 28.4 49 28.4 49 30.4L49 34Z")
             piece(voute, sombre(neutre(duJour(0xFF2E2820.toInt())), 0.25f), 0f)
-            forme(chemin("M38 34L38 29.6C41 28.2 47 28.2 50 29.6L50 34Z"),
+            forme(chemin("M41 34L41 31.6C43 30.9 47 30.9 49 31.6L49 34Z"),
                 if (P.allume) P.fenetre else mix(pierre, 0xFFFFFFFF.toInt(), 0.3f), if (P.nuit) 0.5f else 0.3f)
             for (k in 0 until 7) {
                 val a0 = PI.toFloat() * (1f + k / 7f)
                 val a1 = PI.toFloat() * (1f + (k + 1) / 7f)
                 val q = Path()
-                q.moveTo(44f + cos(a0) * 6f, 27.5f + sin(a0) * 3.7f)
-                q.lineTo(44f + cos(a1) * 6f, 27.5f + sin(a1) * 3.7f)
-                q.lineTo(44f + cos(a1) * 8f, 27.5f + sin(a1) * 5.2f)
-                q.lineTo(44f + cos(a0) * 8f, 27.5f + sin(a0) * 5.2f)
+                q.moveTo(45f + cos(a0) * 4f, 30.4f + sin(a0) * 2f)
+                q.lineTo(45f + cos(a1) * 4f, 30.4f + sin(a1) * 2f)
+                q.lineTo(45f + cos(a1) * 5.1f, 30.4f + sin(a1) * 2.8f)
+                q.lineTo(45f + cos(a0) * 5.1f, 30.4f + sin(a0) * 2.8f)
                 q.close()
                 piece(q, if (k % 2 == 0) mix(pierre, 0xFFFFFFFF.toInt(), 0.16f) else sombre(pierre, 0.2f))
             }
-            if (!vivant) lanterne(53f, 26f, true)
             plan(1)
             // ---- Les deux rangées, de trois quarts, qui montent vers le fond.
             rue3q(RUE_BREEDEWEE, MAISONS_BREEDEWEE, murs, r)
@@ -6988,57 +6991,102 @@ object Paysages {
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
-            // ---- Le mur de gauche et la porte de pierre, au premier plan.
-            appareil(chemin("M-3 -3L8 -3L12 58.5L-3 58.5Z"), mur, 3f, 5.2f, 356, 0.04f)
-            // Le passage de la porte : d'autres marches, qui montent dans
-            // l'ombre vers la lumière de l'autre bout. Un trou noir plein ne
-            // donnait sur rien.
-            val passage = chemin("M14 58.5L14 25C14 18 26 18 26 25L26 58.5Z")
-            piece(passage, sombre(neutre(duJour(0xFF2E2820.toInt())), 0.2f), 0f)
+            // ---- La porte de pierre, **de trois quarts et plus grande**
+            // (propriétaire, 2026-11-16). On ne voit plus seulement sa face :
+            // on voit l'épaisseur du passage, par anneaux de voûte emboîtés
+            // qui fuient vers le fond de la ruelle, et un escalier qui s'y
+            // enfonce en rapetissant. De face, avec un trou noir plat, elle
+            // n'avait ni épaisseur ni profondeur.
+            appareil(chemin("M-3 -3L10 -3L14 58.5L-3 58.5Z"), mur, 3f, 5.2f, 356, 0.04f)
+            val arcX = 21f; val arcA = 13f; val arcY = 38f; val arcH = 17f
+            fun ouverture(k: Float): Path {
+                // L'anneau [k] du passage, de 0 (le nez de la porte) à 1 (le
+                // débouché), qui fuit vers le point de fuite de la ruelle.
+                val cx = arcX + k * 13f
+                val a = arcA * (1f - k * 0.5f)
+                val ys = arcY - k * 7f
+                val h = arcH * (1f - k * 0.46f)
+                val t = Path()
+                t.moveTo(cx - a, 60f)
+                t.lineTo(cx - a, ys)
+                for (i in 0..20) {
+                    val u = PI.toFloat() * i / 20f
+                    t.lineTo(cx - cos(u) * a, ys - sin(u) * h)
+                }
+                t.lineTo(cx + a, 60f)
+                t.close()
+                return t
+            }
+            val dehors = ouverture(0f)
+            // Le fond du passage, puis les anneaux de voûte, de plus en plus
+            // sombres : c'est l'emboîtement qui fait la profondeur.
+            piece(dehors, sombre(neutre(duJour(0xFF2E2820.toInt())), 0.15f), 0f)
             c.save()
-            c.clipPath(passage)
-            val lueur = if (P.allume) P.fenetre else mix(pierre, 0xFFFFFFFF.toInt(), 0.42f)
-            forme(chemin("M15 58.5L15 34C18 31.6 23 31.6 25.4 34L25.4 58.5Z"), lueur, if (P.nuit) 0.4f else 0.26f)
-            var py = 36f
-            var ppas = 1.5f
-            while (py < 58.5f) {
-                ligne(14f, py, 26f, py, mix(lueur, pierre, 0.35f), ppas * 0.24f, 0.75f)
-                ligne(14f, py + ppas * 0.55f, 26f, py + ppas * 0.55f, sombre(neutre(duJour(0xFF2E2820.toInt())), 0.4f), ppas * 0.4f, 0.8f)
-                py += ppas
-                ppas *= 1.16f
+            c.clipPath(dehors)
+            for (k in 1..6) {
+                val t = k / 6f
+                val anneau = ouverture(t)
+                piece(anneau, mix(sombre(pierre, if (k % 2 == 0) 0.34f else 0.52f),
+                    neutre(duJour(0xFF241F18.toInt())), t * 0.72f), 0f)
+                // L'arête de l'anneau prend la lumière : c'est elle qui fait
+                // compter les assises de la voûte en s'enfonçant.
+                val b = RectF()
+                anneau.computeBounds(b, true)
+                val cx = (b.left + b.right) / 2f
+                val a = (b.right - b.left) / 2f
+                val ys = arcY - t * 7f
+                val h = arcH * (1f - t * 0.46f)
+                for (i in 0 until 20) {
+                    val u0 = PI.toFloat() * i / 20f
+                    val u1 = PI.toFloat() * (i + 1) / 20f
+                    ligne(cx - cos(u0) * a, ys - sin(u0) * h, cx - cos(u1) * a, ys - sin(u1) * h,
+                        mix(pierre, 0xFFFFFFFF.toInt(), 0.2f - t * 0.16f), 0.5f, 0.6f - t * 0.4f)
+                }
+            }
+            // L'escalier du passage, qui monte et rapetisse vers le débouché.
+            val lueur = if (P.allume) P.fenetre else mix(pierre, 0xFFFFFFFF.toInt(), 0.5f)
+            forme(ouverture(1f), lueur, if (P.nuit) 0.45f else 0.3f)
+            for (k in 0 until 11) {
+                val t = k / 11f
+                val y = 58.5f - t * 15f
+                val g = arcX - arcA + t * 10.4f
+                val d = arcX + arcA + t * 3.6f
+                val h = 1.75f * (1f - t * 0.62f)
+                rect(g, y - h, d - g, h * 0.52f, mix(mix(pierre, lueur, 0.25f + t * 0.4f), 0xFF000000.toInt(), 0.1f))
+                rect(g, y - h * 0.48f, d - g, h * 0.48f, sombre(neutre(duJour(0xFF2E2820.toInt())), 0.3f + t * 0.2f))
             }
             c.restore()
-            // Le seuil usé.
-            rect(13.6f, 56.4f, 12.8f, 2.1f, sombre(pierre, 0.25f))
-            rect(13.6f, 56.4f, 12.8f, 0.5f, mix(pierre, 0xFFFFFFFF.toInt(), 0.25f))
-            // Les piédroits en pierre appareillée, leur imposte, et l'arc en
-            // vrais claveaux : des traits radiaux sur un aplat ne font pas une
-            // arche, ils font un éventail dessiné dessus.
-            appareil(10f, 24f, 4f, 34.5f, pierre, 3.2f, 4f, 357)
-            appareil(26f, 24f, 4f, 34.5f, pierre, 3.2f, 4f, 358)
-            rect(9.4f, 23.4f, 5.2f, 1.1f, mix(pierre, 0xFFFFFFFF.toInt(), 0.22f))
-            rect(25.4f, 23.4f, 5.2f, 1.1f, mix(pierre, 0xFFFFFFFF.toInt(), 0.22f))
+            // Le seuil usé, au nez de la porte.
+            rect(7.4f, 56.2f, 27.2f, 2.3f, sombre(pierre, 0.25f))
+            rect(7.4f, 56.2f, 27.2f, 0.55f, mix(pierre, 0xFFFFFFFF.toInt(), 0.25f))
+            // Les piédroits en pierre appareillée : celui de droite est vu de
+            // biais, donc plus étroit, et il porte l'ombre de l'arc.
+            appareil(3f, 36f, 5f, 22.5f, pierre, 3.4f, 4.2f, 357)
+            appareil(34f, 36f, 3.6f, 22.5f, sombre(pierre, 0.18f), 3.4f, 4.2f, 358)
+            rect(2.4f, 35.2f, 6.2f, 1.2f, mix(pierre, 0xFFFFFFFF.toInt(), 0.22f))
+            rect(33.4f, 35.2f, 4.8f, 1.2f, mix(pierre, 0xFFFFFFFF.toInt(), 0.1f))
+            // L'arc en vrais claveaux, et sa clé saillante.
             val rp = Alea(359)
-            for (k in 0 until 11) {
-                val a0 = PI.toFloat() * (1f + k / 11f)
-                val a1 = PI.toFloat() * (1f + (k + 1) / 11f)
+            for (k in 0 until 13) {
+                val a0 = PI.toFloat() * (1f + k / 13f)
+                val a1 = PI.toFloat() * (1f + (k + 1) / 13f)
                 val t = rp()
                 val q = Path()
-                q.moveTo(20f + cos(a0) * 6f, 25f + sin(a0) * 6f)
-                q.lineTo(20f + cos(a1) * 6f, 25f + sin(a1) * 6f)
-                q.lineTo(20f + cos(a1) * 10f, 25f + sin(a1) * 10f)
-                q.lineTo(20f + cos(a0) * 10f, 25f + sin(a0) * 10f)
+                q.moveTo(arcX + cos(a0) * arcA, arcY + sin(a0) * arcH)
+                q.lineTo(arcX + cos(a1) * arcA, arcY + sin(a1) * arcH)
+                q.lineTo(arcX + cos(a1) * (arcA + 4.2f), arcY + sin(a1) * (arcH + 4.2f))
+                q.lineTo(arcX + cos(a0) * (arcA + 4.2f), arcY + sin(a0) * (arcH + 4.2f))
                 q.close()
-                piece(q, if (k == 5) mix(pierre, 0xFFFFFFFF.toInt(), 0.3f)
+                piece(q, if (k == 6) mix(pierre, 0xFFFFFFFF.toInt(), 0.3f)
                     else if (t < 0.34f) sombre(pierre, 0.1f + t * 0.5f)
                     else if (t < 0.68f) mix(pierre, 0xFFFFFFFF.toInt(), 0.08f + t * 0.16f)
                     else mix(pierre, vert(0.42f), 0.12f + t * 0.2f))
             }
-            // La clé de l'arc, saillante, et les gonds scellés dans le piédroit.
-            pieceD("M18.4 15.2L21.6 15.2L21.2 11.4L18.8 11.4Z", mix(pierre, 0xFFFFFFFF.toInt(), 0.34f))
-            for (gy in floatArrayOf(29f, 42f, 54f)) {
-                rect(26f, gy, 1.6f, 0.7f, sombre(neutre(duJour(0xFF4A4038.toInt())), 0.1f))
-                rond(27.4f, gy + 0.35f, 0.5f, sombre(neutre(duJour(0xFF4A4038.toInt())), 0.1f))
+            pieceD("M18.6 17.2L23.4 17.2L22.8 12.2L19.2 12.2Z", mix(pierre, 0xFFFFFFFF.toInt(), 0.34f))
+            // Les gonds scellés dans le piédroit.
+            for (gy in floatArrayOf(40f, 48f, 55f)) {
+                rect(6.6f, gy, 2f, 0.8f, sombre(neutre(duJour(0xFF4A4038.toInt())), 0.1f))
+                rond(8.4f, gy + 0.4f, 0.6f, sombre(neutre(duJour(0xFF4A4038.toInt())), 0.1f))
             }
             mineraux--
             // ---- Le lierre fleuri qui retombe de l'arche (direction validée
@@ -7046,19 +7094,19 @@ object Paysages {
             // adoucit la porte.
             val lierre = vert(0.4f)
             val lierreClair = vert(0.62f)
-            for (k in 0 until 16) {
-                val a = PI.toFloat() * (1.02f + 0.96f * k / 15f)
-                val lx = 20f + cos(a) * (10.4f + r() * 1.6f)
-                val ly = 25f + sin(a) * (11f + r() * 1.6f)
-                val chute = 2f + r() * 7f
+            for (k in 0 until 11) {
+                val a = PI.toFloat() * (1.04f + 0.52f * k / 10f)
+                val lx = arcX + cos(a) * (arcA + 5.2f + r() * 1.6f)
+                val ly = arcY + sin(a) * (arcH + 5.2f + r() * 1.6f)
+                val chute = 2f + r() * 6f
                 touffe(if (k % 3 == 0) lierreClair else lierre,
-                    lx, ly, 1.3f + r() * 1.1f, lx + 1f, ly + chute * 0.5f, 1f + r() * 0.9f,
-                    lx - 0.8f, ly + chute, 0.9f + r() * 0.8f)
+                    lx, ly, 1.2f + r() * 1f, lx + 1f, ly + chute * 0.5f, 0.9f + r() * 0.8f,
+                    lx - 0.8f, ly + chute, 0.8f + r() * 0.7f)
                 if (k % 4 == 1) rond(lx + 0.6f, ly + chute * 0.6f, 0.45f,
                     if (P.nuit) mix(P.fenetre, 0xFFFFFFFF.toInt(), 0.4f) else 0xFFF3E0F0.toInt(), 0.9f)
             }
-            if (!vivant) lanterne(30f, 31f, true)
-            touffe(vert(0.5f), 4f, 57f, 2.4f, 9f, 57.5f, 2f)
+            if (!vivant) lanterne(38f, 42f, true)
+            touffe(vert(0.5f), 1.5f, 57f, 2.4f, 6f, 57.5f, 2f)
             c.restore()
         }
 
