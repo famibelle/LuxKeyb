@@ -6880,6 +6880,14 @@ object Paysages {
             // crème, pierre et mur en sortaient d'un seul et même jaune, et la
             // fenêtre entière se lisait comme un aplat. Règle 10 : la matière
             // bâtie se peint dans [neutre].
+            //
+            // Et chaque construction porte sa matière (propriétaire,
+            // 2026-11-16) : appareil de pierre pour le mur, la porte et les
+            // soubassements ([appareil]), enduit taché, corniche, bandeaux et
+            // chaînes d'angle pour les façades ([matiere], le même outil que
+            // les rues de trois quarts), ardoises posées rang par rang pour
+            // les toits. Un aplat rayé de quelques traits fins ne fait pas un
+            // bâtiment : il fait une maquette de carton.
             val r = Alea(355)
             val enduit = neutre(duJour(0xFFD6CEBD.toInt()))
             val pierre = neutre(duJour(0xFFB4AB98.toInt()))
@@ -6888,59 +6896,121 @@ object Paysages {
             val faitage = neutre(mix(ardoise(), 0xFFFFFFFF.toInt(), 0.18f))
             val murs = IntArray(6) { neutre(facades()[it]) }
             val vitre = if (P.allume) P.fenetre else neutre(duJour(0xFF3E4654.toInt()))
+            val volet = neutre(duJour(0xFF6E7A5E.toInt()))
             mineraux++
+
+            /** Un toit couvert d'ardoises, rang par rang, décalées d'un rang à l'autre. */
+            fun couvrir(forme: Path, graine: Int) {
+                val b = RectF()
+                forme.computeBounds(b, true)
+                val rr = Alea(graine)
+                c.save()
+                c.clipPath(forme)
+                var y = b.top + 0.6f
+                var k = 0
+                while (y < b.bottom + 1f) {
+                    ligne(b.left - 1f, y, b.right + 1f, y, sombre(toit, 0.4f), 0.18f, 0.75f)
+                    var x = b.left - 1f + (k % 2) * 1f
+                    while (x < b.right + 1f) {
+                        ligne(x, y, x, y + 1.2f, sombre(toit, 0.3f), 0.13f, 0.55f)
+                        if (rr() < 0.12f) rect(x + 0.1f, y + 0.1f, 1.7f, 1f, mix(toit, 0xFFFFFFFF.toInt(), 0.2f), 0.4f)
+                        x += 1.9f
+                    }
+                    y += 1.2f; k++
+                }
+                c.restore()
+            }
+            /** Une fenêtre : son encadrement de pierre, son appui, sa vitre, ses volets. */
+            fun croisee(x: Float, y: Float, w: Float, h: Float, volets: Boolean) {
+                if (volets) {
+                    rect(x - w * 0.62f, y, w * 0.58f, h, volet)
+                    rect(x + w + w * 0.04f, y, w * 0.58f, h, volet)
+                    var vy = y + 0.5f
+                    while (vy < y + h - 0.3f) {
+                        ligne(x - w * 0.6f, vy, x - w * 0.06f, vy, sombre(volet, 0.35f), 0.14f, 0.7f)
+                        ligne(x + w + w * 0.06f, vy, x + w + w * 0.6f, vy, sombre(volet, 0.35f), 0.14f, 0.7f)
+                        vy += 0.8f
+                    }
+                }
+                feuille(x - 0.6f, y - 0.6f, w + 1.2f, h + 1f, pierre, 0.3f)
+                rect(x - 1f, y + h, w + 2f, 0.7f, mix(pierre, 0xFFFFFFFF.toInt(), 0.2f))   // l'appui
+                rect(x, y, w, h, if (P.allume && r() < 0.5f) P.fenetre else vitre)
+                ligne(x + w / 2f, y, x + w / 2f, y + h, sombre(pierre, 0.3f), 0.18f)
+                ligne(x, y + h * 0.45f, x + w, y + h * 0.45f, sombre(pierre, 0.3f), 0.16f, 0.8f)
+            }
+
             // ---- La façade du fond, qui ferme la ruelle, avec son toit
             // d'ardoise : sans toit elle montait jusqu'au bord haut et ne
             // laissait pas un pouce de ciel.
             feuille(22f, 9f, 42f, 40f, murs[2])
-            // Un toit à deux pentes, pas un fronton : la pointe trop haute
-            // et sans débord se lisait comme un pignon de temple.
-            pieceD("M18.6 9.6L43 3.6L67.4 9.6Z", toit)
-            pieceD("M18.6 9.6L67.4 9.6L67.4 11f.2L18.6 11.2Z".replace("11f.2", "11.2"), sombre(toit, 0.3f))
+            c.save(); c.translate(22f, 9f)
+            matiere(42f, 40f, murs[2], pierre, r, false)
+            c.restore()
+            val combles = chemin("M18.6 9.6L43 3.6L67.4 9.6Z")
+            piece(combles, toit)
+            couvrir(combles, 361)
+            pieceD("M18.6 9.6L67.4 9.6L67.4 11.2L18.6 11.2Z", sombre(toit, 0.3f))
             ligne(18.6f, 9.6f, 67.4f, 9.6f, faitage, 0.45f)
-            ligne(43f, 3.6f, 43f, 9.6f, sombre(toit, 0.25f), 0.3f)
             for (fx in floatArrayOf(28f, 38f, 52f)) for (fy in floatArrayOf(14f, 25f)) {
+                pieceD("M${fx - 0.6f} ${fy + 6.4f}L${fx - 0.6f} ${fy + 1.4f}C${fx - 0.6f} ${fy - 1.2f} ${fx + 4f} ${fy - 1.2f} ${fx + 4f} ${fy + 1.4f}" +
+                    "L${fx + 4f} ${fy + 6.4f}Z", pierre, 0.3f)
                 pieceD("M$fx ${fy + 6f}L$fx ${fy + 1.6f}C$fx ${fy - 0.4f} ${fx + 3.4f} ${fy - 0.4f} ${fx + 3.4f} ${fy + 1.6f}L${fx + 3.4f} ${fy + 6f}Z",
                     if (P.allume && r() < 0.6f) P.fenetre else vitre, 0.3f)
-                pieceD("M${fx - 0.5f} ${fy + 6.4f}L${fx - 0.5f} ${fy + 1.4f}C${fx - 0.5f} ${fy - 1f} ${fx + 3.9f} ${fy - 1f} ${fx + 3.9f} ${fy + 1.4f}" +
-                    "L${fx + 3.9f} ${fy + 6.4f}L${fx + 3.4f} ${fy + 6.4f}L${fx + 3.4f} ${fy + 1.6f}C${fx + 3.4f} ${fy - 0.4f} $fx ${fy - 0.4f} $fx ${fy + 1.6f}L$fx ${fy + 6.4f}Z",
-                    pierre, 0.3f)
+                rect(fx - 1f, fy + 6.4f, 5.4f, 0.7f, mix(pierre, 0xFFFFFFFF.toInt(), 0.2f))
                 ligne(fx + 1.7f, fy + 0.4f, fx + 1.7f, fy + 6f, sombre(pierre, 0.3f), 0.2f)
             }
             anneau(43f, 36.5f, 1.8f, pierre, 0.7f)
             plan(1)
             // ---- Les façades de droite, qui montent avec la rue : chacune
-            // sa couleur du Grund, chacune son toit.
+            // sa couleur du Grund, chacune sa matière, chacune son toit.
             for ((i, f) in arrayOf(floatArrayOf(58f, 23f, 3f), floatArrayOf(79f, 26f, 1f), floatArrayOf(97f, 14f, 4f)).withIndex()) {
-                val x0 = f[0]; val w = f[1]
-                feuille(x0, 2f + i * -1.4f, w, 59.5f, murs[f[2].toInt()])
-                pieceD("M${x0 - 1.4f} ${2.4f + i * -1.4f}L${x0 + w * 0.5f} ${-4f + i * -1.4f}L${x0 + w + 1.4f} ${2.4f + i * -1.4f}Z", toit)
-                ligne(x0, 2.4f + i * -1.4f, x0 + w, 2.4f + i * -1.4f, faitage, 0.45f)
+                val x0 = f[0]; val w = f[1]; val haut = 2f - i * 1.4f
+                feuille(x0, haut, w, 60f - haut, murs[f[2].toInt()])
+                c.save(); c.translate(x0, haut)
+                matiere(w, 58.5f - haut, murs[f[2].toInt()], pierre, r, false)
+                c.restore()
+                // Le soubassement, en vraie pierre : c'est lui que la rue
+                // frotte, et c'est par lui qu'une maison tient au sol.
+                appareil(x0, 47.5f, w, 11f, sombre(pierre, 0.16f), 2.4f, 3.8f, 370 + i)
+                val rampant = chemin("M${x0 - 1.4f} ${haut + 0.4f}L${x0 + w * 0.5f} ${haut - 6f}L${x0 + w + 1.4f} ${haut + 0.4f}Z")
+                piece(rampant, toit)
+                couvrir(rampant, 365 + i)
+                ligne(x0, haut + 0.4f, x0 + w, haut + 0.4f, faitage, 0.45f)
                 ligne(x0, -4f, x0, 58.5f, sombre(enduit, 0.4f), 0.35f)
             }
             for (fy in floatArrayOf(9f, 21f, 33f)) {
-                for (fx in floatArrayOf(61f, 69f, 82f, 91f, 98f)) {
-                    feuille(fx - 0.6f, fy - 0.6f, 4.4f, 7f, pierre, 0.3f)
-                    rect(fx, fy, 3.2f, 5.8f, if (P.allume && r() < 0.5f) P.fenetre else vitre)
-                    ligne(fx + 1.6f, fy, fx + 1.6f, fy + 5.8f, sombre(pierre, 0.25f), 0.18f)
-                }
+                for ((j, fx) in floatArrayOf(61f, 69f, 82f, 91f, 98f).withIndex())
+                    croisee(fx, fy, 3.2f, 5.8f, (j + fy.toInt()) % 3 == 0)
             }
             pieceD("M63 52L63 43C63 39.6 68.4 39.6 68.4 43L68.4 52Z", sombre(murs[3], 0.5f), 0.3f)
+            for (k in 0..5) ligne(63.4f, 44f + k * 1.5f, 68f, 44f + k * 1.5f, sombre(murs[3], 0.68f), 0.2f, 0.8f)
             if (!vivant) lanterne(79f, 36f, false)
             // ---- La ruelle en escalier, qui monte vers le fond. C'est
             // l'escalier qui en fait le Breedewee : en pente lisse, elle se
             // lisait comme une dune de sable.
             val pave = neutre(duJour(0xFF8E8678.toInt()))
             val ruelle = chemin("M12 66C28 53 42 46 52 42L60 42C60 48 62 56 64 66Z")
-            piece(ruelle, pave, 0.3f)
+            piece(ruelle, sombre(pave, 0.45f), 0.3f)
             c.save()
             c.clipPath(ruelle)
             var sy = 42.5f
             var pas = 1.1f
+            val rs = Alea(366)
             while (sy < 66f) {
                 val demi = 4f + (sy - 42f) * 1.5f
-                ligne(50f - demi, sy, 58f + demi * 0.5f, sy + 0.5f, mix(pave, 0xFFFFFFFF.toInt(), 0.3f), pas * 0.42f, 0.8f)
-                ligne(50f - demi, sy + pas * 0.5f, 58f + demi * 0.5f, sy + pas * 0.5f + 0.5f, sombre(pave, 0.4f), pas * 0.3f, 0.7f)
+                val g = 50f - demi
+                val d = 58f + demi * 0.5f
+                // Chaque marche est une dalle, avec son nez clair et son
+                // contremarche à l'ombre.
+                var mx = g
+                while (mx < d) {
+                    val mw = 3f + rs() * 4f
+                    rect(mx + 0.12f, sy, mw - 0.24f, pas * 0.5f,
+                        mix(pave, 0xFFFFFFFF.toInt(), 0.16f + rs() * 0.22f))
+                    mx += mw
+                }
+                ligne(g, sy, d, sy + 0.5f, mix(pave, 0xFFFFFFFF.toInt(), 0.42f), pas * 0.2f, 0.9f)
+                ligne(g, sy + pas * 0.56f, d, sy + pas * 0.56f + 0.5f, sombre(pave, 0.5f), pas * 0.42f, 0.8f)
                 sy += pas
                 pas *= 1.14f
             }
@@ -6953,11 +7023,17 @@ object Paysages {
             // Le passage, franchement sombre : c'est le seul trou noir de la
             // fenêtre, et c'est lui qui fait lire la porte.
             pieceD("M14 58.5L14 25C14 18 26 18 26 25L26 58.5Z", sombre(neutre(duJour(0xFF30291F.toInt())), 0.3f), 0f)
-            // Les piédroits en pierre appareillée, et l'arc en vrais
-            // claveaux : des traits radiaux sur un aplat ne font pas une
-            // arche, ils font un éventail dessiné dessus.
+            // Le seuil usé, et la lumière qui entre par l'arche.
+            rect(13.6f, 56.4f, 12.8f, 2.1f, sombre(pierre, 0.25f))
+            rect(13.6f, 56.4f, 12.8f, 0.5f, mix(pierre, 0xFFFFFFFF.toInt(), 0.25f))
+            forme(chemin("M14 58.5L14 44C20 42 26 44 26 46L26 58.5Z"), mix(pierre, 0xFF000000.toInt(), 0.2f), 0.18f)
+            // Les piédroits en pierre appareillée, leur imposte, et l'arc en
+            // vrais claveaux : des traits radiaux sur un aplat ne font pas
+            // une arche, ils font un éventail dessiné dessus.
             appareil(10f, 24f, 4f, 34.5f, pierre, 3.2f, 4f, 357)
             appareil(26f, 24f, 4f, 34.5f, pierre, 3.2f, 4f, 358)
+            rect(9.4f, 23.4f, 5.2f, 1.1f, mix(pierre, 0xFFFFFFFF.toInt(), 0.22f))
+            rect(25.4f, 23.4f, 5.2f, 1.1f, mix(pierre, 0xFFFFFFFF.toInt(), 0.22f))
             val rp = Alea(359)
             for (k in 0 until 11) {
                 val a0 = PI.toFloat() * (1f + k / 11f)
@@ -6969,9 +7045,16 @@ object Paysages {
                 q.lineTo(20f + cos(a1) * 10f, 25f + sin(a1) * 10f)
                 q.lineTo(20f + cos(a0) * 10f, 25f + sin(a0) * 10f)
                 q.close()
-                piece(q, if (t < 0.34f) sombre(pierre, 0.1f + t * 0.5f)
+                piece(q, if (k == 5) mix(pierre, 0xFFFFFFFF.toInt(), 0.3f)
+                    else if (t < 0.34f) sombre(pierre, 0.1f + t * 0.5f)
                     else if (t < 0.68f) mix(pierre, 0xFFFFFFFF.toInt(), 0.08f + t * 0.16f)
                     else mix(pierre, vert(0.42f), 0.12f + t * 0.2f))
+            }
+            // La clé de l'arc, saillante, et les gonds scellés dans le piédroit.
+            pieceD("M18.4 15.2L21.6 15.2L21.2 11.4L18.8 11.4Z", mix(pierre, 0xFFFFFFFF.toInt(), 0.34f))
+            for (gy in floatArrayOf(29f, 42f, 54f)) {
+                rect(26f, gy, 1.6f, 0.7f, sombre(neutre(duJour(0xFF4A4038.toInt())), 0.1f))
+                rond(27.4f, gy + 0.35f, 0.5f, sombre(neutre(duJour(0xFF4A4038.toInt())), 0.1f))
             }
             mineraux--
             // ---- Le lierre fleuri qui retombe de l'arche (direction validée
