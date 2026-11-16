@@ -1443,7 +1443,7 @@ object Paysages {
      * étaient de face, à plat : une maison ne se présente pas de face
      * (propriétaire, 2026-11-16).
      */
-    internal val RUE_BREEDEWEE = Fuite(floatArrayOf(84f, 56f), floatArrayOf(54f, 32f), floatArrayOf(400f, 34f), 24f)
+    internal val RUE_BREEDEWEE = Fuite(floatArrayOf(80f, 57f), floatArrayOf(52f, 33.6f), floatArrayOf(400f, 36f), 24f)
 
     /**
      * Les maisons du Breedewee : largeur, hauteur, mur, colombages, toit,
@@ -1456,11 +1456,9 @@ object Paysages {
      * plongeait dans une ruelle du Grund.
      */
     private val MAISONS_BREEDEWEE = arrayOf(
-        floatArrayOf(13f, 25f, 2f, 0f, 6f, 1f), floatArrayOf(11f, 22f, 1f, 0f, 5.2f, 0f),
-        floatArrayOf(12f, 24f, 0f, 0f, 5.6f, 1f), floatArrayOf(10f, 21f, 3f, 0f, 5f, 0f),
-        floatArrayOf(12f, 23f, 4f, 0f, 5.6f, 1f), floatArrayOf(10f, 22f, 5f, 0f, 5f, 0f),
-        floatArrayOf(11f, 24f, 2f, 0f, 5.4f, 0f), floatArrayOf(10f, 21f, 1f, 0f, 5f, 0f),
-        floatArrayOf(11f, 23f, 3f, 0f, 5.2f, 1f), floatArrayOf(10f, 21f, 0f, 0f, 5f, 0f))
+        floatArrayOf(15f, 50f, 2f, 0f, 11f, 1f), floatArrayOf(13f, 44f, 1f, 0f, 9.5f, 0f),
+        floatArrayOf(14f, 48f, 0f, 0f, 10.5f, 1f), floatArrayOf(13f, 43f, 3f, 0f, 9.5f, 0f),
+        floatArrayOf(13f, 46f, 4f, 0f, 10f, 1f))
 
     /** La pente du tablier de la Rout Bréck, vu d'en bas. */
     private const val TABLIER_PENTE = 0.17f
@@ -6926,46 +6924,67 @@ object Paysages {
             val distance = mix(P.cielBas, neutre(P.cielBas), 0.6f)
             mineraux++
 
-            // ---- Le fond de la ruelle : le talus, le mur qui la ferme et
-            // son passage voûté, où l'escalier va se rendre.
-            pieceD("M33 32L34 20.6C39 19.2 53 18.8 58 20.2L58 32Z",
-                mix(sombre(neutre(duJour(0xFF8E8775.toInt())), 0.38f), distance, 0.24f))
-            lisiere(35f, 56f, { x -> 21.6f + 0.8f * sin(x * 0.5f) }, 0.55f, 1f, 368, vert(0.4f))
-            appareil(35f, 23.4f, 21f, 8.6f, murs[0], 1.1f, 1.9f, 369)
-            pieceD("M33.6 23.7L45.5 20.4L57.4 23.7Z", toit)
-            ligne(33.6f, 23.7f, 57.4f, 23.7f, neutre(mix(ardoise(), 0xFFFFFFFF.toInt(), 0.18f)), 0.25f)
-            val voute = chemin("M42 32L42 29C42 27.2 49 27.2 49 29L49 32Z")
-            piece(voute, sombre(neutre(duJour(0xFF2E2820.toInt())), 0.25f), 0f)
-            forme(chemin("M42 32L42 30.2C44 29.6 47 29.6 49 30.2L49 32Z"),
-                if (P.allume) P.fenetre else mix(pierre, 0xFFFFFFFF.toInt(), 0.3f), if (P.nuit) 0.5f else 0.3f)
-            for (k in 0 until 7) {
-                val a0 = PI.toFloat() * (1f + k / 7f)
-                val a1 = PI.toFloat() * (1f + (k + 1) / 7f)
-                val q = Path()
-                q.moveTo(45.5f + cos(a0) * 3.5f, 29f + sin(a0) * 1.8f)
-                q.lineTo(45.5f + cos(a1) * 3.5f, 29f + sin(a1) * 1.8f)
-                q.lineTo(45.5f + cos(a1) * 4.5f, 29f + sin(a1) * 2.5f)
-                q.lineTo(45.5f + cos(a0) * 4.5f, 29f + sin(a0) * 2.5f)
-                q.close()
-                piece(q, if (k % 2 == 0) mix(pierre, 0xFFFFFFFF.toInt(), 0.16f) else sombre(pierre, 0.2f))
+            // ---- Ce qui ferme la ruelle, c'est **une maison**, avec sa
+            // façade, ses fenêtres, sa porte et son toit (propriétaire,
+            // 2026-11-16 : la construction du fond « ne ressemble à rien de
+            // ce que l'on voit en ville »). Un mur isolé percé d'une voûte,
+            // posé au milieu de nulle part, n'existe nulle part : au bout
+            // d'une ruelle du Grund il y a une maison, et l'escalier mène à
+            // sa porte.
+            // Le talus et sa verdure, derrière : peints d'abord, la maison
+            // se pose dessus.
+            lisiere(19f, 53f, { x -> 18.6f + 0.9f * sin(x * 0.45f) }, 0.6f, 1.1f, 368, vert(0.4f))
+            val finRue = murs[2]
+            feuille(24f, 22.2f, 31f, 11.8f, finRue)
+            c.save(); c.translate(24f, 22.2f)
+            matiere(31f, 11.8f, finRue, pierre, r, false)
+            c.restore()
+            val combles = chemin("M22.4 22.5L39.5 17.6L56.6 22.5Z")
+            piece(combles, toit)
+            run {
+                val b = RectF(); combles.computeBounds(b, true)
+                c.save(); c.clipPath(combles)
+                var y = b.top + 0.5f
+                var k = 0
+                while (y < b.bottom + 1f) {
+                    ligne(b.left - 1f, y, b.right + 1f, y, sombre(toit, 0.4f), 0.14f, 0.7f)
+                    var x = b.left - 1f + (k % 2) * 0.7f
+                    while (x < b.right + 1f) { ligne(x, y, x, y + 0.9f, sombre(toit, 0.3f), 0.1f, 0.5f); x += 1.4f }
+                    y += 0.9f; k++
+                }
+                c.restore()
             }
+            ligne(22.4f, 22.5f, 56.6f, 22.5f, neutre(mix(ardoise(), 0xFFFFFFFF.toInt(), 0.18f)), 0.25f)
+            // Les fenêtres, puis la porte : c'est là que l'escalier se rend.
+            for (fy in floatArrayOf(24f, 27.8f)) for (fx in floatArrayOf(26.4f, 30.2f, 47.4f, 51.2f)) {
+                feuille(fx - 0.3f, fy - 0.3f, 2.4f, 2.8f, pierre, 0.3f)
+                rect(fx, fy, 1.8f, 2.2f, if (P.allume && r() < 0.5f) P.fenetre else neutre(duJour(0xFF3E4654.toInt())))
+                ligne(fx + 0.9f, fy, fx + 0.9f, fy + 2.2f, sombre(pierre, 0.3f), 0.11f)
+            }
+            feuille(35.7f, 26.2f, 7.6f, 7.8f, pierre, 0.3f)
+            pieceD("M36.5 34L36.5 29.6C36.5 27.8 42.5 27.8 42.5 29.6L42.5 34Z",
+                sombre(neutre(duJour(0xFF4A3A2C.toInt())), 0.2f))
+            forme(chemin("M37.2 30.5C38.3 29.6 40.7 29.6 41.8 30.5L41.8 31.5L37.2 31.5Z"),
+                if (P.allume) P.fenetre else mix(pierre, 0xFFFFFFFF.toInt(), 0.45f), if (P.nuit) 0.75f else 0.5f)
+            for (dx in floatArrayOf(38.5f, 40.5f)) ligne(dx, 31.1f, dx, 34f, sombre(neutre(duJour(0xFF4A3A2C.toInt())), 0.45f), 0.14f)
+            rond(41.1f, 32.2f, 0.3f, mix(pierre, 0xFFFFFFFF.toInt(), 0.3f))
             plan(1)
             // ---- La rangée de maisons, de trois quarts, et l'escalier.
             rue3q(RUE_BREEDEWEE, MAISONS_BREEDEWEE, murs, r)
-            fun bordG(y: Float) = 36f - (y - 32f) * 1.25f
-            fun bordD(y: Float) = 54f + (y - 32f) * 1.25f
+            fun bordG(y: Float) = 30f - (y - 33.6f) * 0.9f
+            fun bordD(y: Float) = 52f + (y - 33.6f) * 1.197f
             // Le mur de soutènement de gauche : du côté de la montagne, une
             // ruelle du Grund n'a pas de maisons, elle a un mur. Sans lui,
             // l'escalier monte le long d'un vide.
-            val soutenement = chemin("M${bordG(70f)} 70L${bordG(32.6f)} 32.6L35.6 25.6L${bordG(70f) - 16f} 60Z")
-            appareil(soutenement, mur, 2.8f, 4.6f, 362, -0.55f)
-            pieceD("M${bordG(32.6f)} 32.6L35.6 25.6L33.4 24.6L${bordG(32.6f) - 2.6f} 31.4Z", mix(pierre, 0xFFFFFFFF.toInt(), 0.2f))
-            val cage = chemin("M${bordG(32.6f)} 32.6L${bordD(32.6f)} 32.6L${bordD(70f)} 70L${bordG(70f)} 70Z")
+            val soutenement = chemin("M${bordG(70f)} 70L${bordG(34f)} 34L30.6 27L${bordG(70f) - 14f} 58Z")
+            appareil(soutenement, mur, 2.8f, 4.6f, 362, -0.6f)
+            pieceD("M${bordG(34f)} 34L30.6 27L28.4 26L${bordG(34f) - 2.6f} 32.8Z", mix(pierre, 0xFFFFFFFF.toInt(), 0.2f))
+            val cage = chemin("M${bordG(34f)} 34L${bordD(34f)} 34L${bordD(70f)} 70L${bordG(70f)} 70Z")
             piece(cage, sombre(pave, 0.45f), 0.3f)
             c.save()
             c.clipPath(cage)
             val rs = Alea(366)
-            var sy = 32.6f
+            var sy = 34f
             var pas = 0.85f
             while (sy < 70f) {
                 val g = bordG(sy); val d = bordD(sy)
