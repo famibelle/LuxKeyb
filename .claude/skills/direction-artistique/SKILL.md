@@ -799,6 +799,11 @@ théâtre de papier**, **À corriger** (concret, avec la règle du § 4 concern�
 
 ## 8. Peindre un lieu : la boîte à outils
 
+**Pour la matière des surfaces** (pierre, brique, tôle, charpente, enduit,
+eau, verre), voir la skill `matieres-du-decor` : elle dit de quoi une pièce
+est faite, ses recettes, ses pièges et ce qu'elle a le droit de coûter. Ici,
+ce qu'on peint et où.
+
 Tout est dans `carnet/Paysages.kt` (le `Peintre`), en unités de fenêtre :
 100 de large, 66 de haut, `DEVANT` (58,5) pour la rainure du premier plan.
 Un lieu se peint de son fond vers l'avant : `plan(0)` le lointain, `plan(1)`
