@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "40.1.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_carte_ourdall.png",
+        "alt": "Deux fois la même fenêtre de carte, à l'Ourdall. 1. Le matin : le lac de l'Our, pâle et calme, une longue colline boisée qui le ferme au fond, un pylône de la retenue sur sa crête, des roseaux et un saule à gauche, et à droite le caillebotis de bois gris qui longe la rive, son garde-corps grillagé à travers lequel on voit l'eau. 2. La nuit : la même vue sous un ciel étoilé et un croissant de lune, le lac bleu profond et le garde-corps en silhouette.",
+        "legende": "La promenade de l'Ourdall, le matin et la nuit : le lac, sa colline et le garde-corps grillagé."
+      }
+    ]
+  },
   "40.0.0": {
     "images": [
       {

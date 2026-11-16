@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-11-16",
- "derniere_version": "40.0.0",
+ "derniere_version": "40.1.0",
  "derniere_date": "2026-11-16",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "40.1.0",
+   "date": "2026-11-16",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "La promenade de l'Ourdall d'après photos",
+       "texte": "Le lac de l'Our et la longue colline boisée qui le ferme, les pylônes de la retenue sur sa crête, et le caillebotis de bois gris qui longe la rive avec son garde-corps grillagé, à travers lequel on voit l'eau."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_carte_ourdall.png",
+     "alt": "Deux fois la même fenêtre de carte, à l'Ourdall. 1. Le matin : le lac de l'Our, pâle et calme, une longue colline boisée qui le ferme au fond, un pylône de la retenue sur sa crête, des roseaux et un saule à gauche, et à droite le caillebotis de bois gris qui longe la rive, son garde-corps grillagé à travers lequel on voit l'eau. 2. La nuit : la même vue sous un ciel étoilé et un croissant de lune, le lac bleu profond et le garde-corps en silhouette.",
+     "legende": "La promenade de l'Ourdall, le matin et la nuit : le lac, sa colline et le garde-corps grillagé."
+    }
+   ],
+   "image": "Screenshots/lux_carte_ourdall.png",
+   "image_alt": "Deux fois la même fenêtre de carte, à l'Ourdall. 1. Le matin : le lac de l'Our, pâle et calme, une longue colline boisée qui le ferme au fond, un pylône de la retenue sur sa crête, des roseaux et un saule à gauche, et à droite le caillebotis de bois gris qui longe la rive, son garde-corps grillagé à travers lequel on voit l'eau. 2. La nuit : la même vue sous un ciel étoilé et un croissant de lune, le lac bleu profond et le garde-corps en silhouette.",
+   "image_legende": "La promenade de l'Ourdall, le matin et la nuit : le lac, sa colline et le garde-corps grillagé."
+  },
   {
    "version": "40.0.0",
    "date": "2026-11-16",
@@ -264,39 +293,6 @@
    "image": "Screenshots/lux_gouache_penchee.gif",
    "image_alt": "La carte « Bus », commune, le matin à la Rout Bréck, gagnée en automne, ouverte et penchée lentement de gauche à droite. Le ciel, les nuages, la ville au loin, les collines et le pont rouge sont des cartons peints à la gouache qui glissent chacun à sa vitesse ; des nuages de carton traversent le ciel et des feuilles de papier tombent. Le bus est une plaque de nacre posée sur une tige et un socle de métal : la plaque ne bouge pas, seul un reflet glisse sur elle.",
    "image_legende": "Une commune qu'on penche : cinq cartons peints, des nuages qui passent, et la plaque du bus où glisse un reflet."
-  },
-  {
-   "version": "38.0.0",
-   "date": "2026-11-01",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Le dessin de chaque carte prend toute la place",
-       "texte": "Le chat, la maison, le bus ou le chiffre d'une carte de nombre sont bien plus grands et centrés dans la fenêtre, et le paysage les met en valeur tout autour. Toutes les cartes du carnet en profitent, ouvertes comme dans la grille."
-      },
-      {
-       "titre": "Les mots sans dessin aussi",
-       "texte": "Le ruban qui suit la sonorité du mot est plus haut et plus épais."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_sujet_agrandi.png",
-     "alt": "Deux colonnes, « Avant » et « Après ». En haut, la grille de Mäi Carnet avec six cartes : Kaz, Bus, Haus, dräi, Fliger, Päerd. Avant, le chat, le bus, la maison, le 3, l'avion et le cheval sont petits au milieu de leur paysage ; après, chacun remplit sa fenêtre. En bas, la carte Bus ouverte : avant, un petit bus posé en bas de la fenêtre ; après, un grand bus qui en prend toute la largeur.",
-     "legende": "Le dessin de chaque carte prend maintenant toute la fenêtre."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_sujet_agrandi.png",
-   "image_alt": "Deux colonnes, « Avant » et « Après ». En haut, la grille de Mäi Carnet avec six cartes : Kaz, Bus, Haus, dräi, Fliger, Päerd. Avant, le chat, le bus, la maison, le 3, l'avion et le cheval sont petits au milieu de leur paysage ; après, chacun remplit sa fenêtre. En bas, la carte Bus ouverte : avant, un petit bus posé en bas de la fenêtre ; après, un grand bus qui en prend toute la largeur.",
-   "image_legende": "Le dessin de chaque carte prend maintenant toute la fenêtre."
   }
  ]
 }

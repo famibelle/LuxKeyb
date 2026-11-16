@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-11-16",
- "derniere_version": "40.0.0",
+ "derniere_version": "40.1.0",
  "derniere_date": "2026-11-16",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "40.1.0",
+   "date": "2026-11-16",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Novidades",
+     "points": [
+      {
+       "titre": "O passeio do Ourdall a partir de fotografias",
+       "texte": "O lago do Our e a longa colina arborizada que o fecha, os postes da albufeira na sua crista, e o passadiço de madeira cinzenta que acompanha a margem com o seu guarda-corpos de rede, através do qual se vê a água."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_carte_ourdall.png",
+     "alt": "Duas vezes a mesma janela de cartão, no Ourdall. 1. De manhã: o lago do Our, pálido e calmo, uma longa colina arborizada a fechá-lo ao fundo, um poste da albufeira na crista, juncos e um salgueiro à esquerda, e à direita o passadiço de madeira cinzenta ao longo da margem, com o guarda-corpos de rede através do qual se vê a água. 2. De noite: a mesma vista sob um céu estrelado e um quarto de lua, o lago azul profundo e o guarda-corpos em silhueta.",
+     "legende": "O passeio do Ourdall, de manhã e de noite: o lago, a sua colina e o guarda-corpos de rede."
+    }
+   ],
+   "image": "Screenshots/lux_carte_ourdall.png",
+   "image_alt": "Duas vezes a mesma janela de cartão, no Ourdall. 1. De manhã: o lago do Our, pálido e calmo, uma longa colina arborizada a fechá-lo ao fundo, um poste da albufeira na crista, juncos e um salgueiro à esquerda, e à direita o passadiço de madeira cinzenta ao longo da margem, com o guarda-corpos de rede através do qual se vê a água. 2. De noite: a mesma vista sob um céu estrelado e um quarto de lua, o lago azul profundo e o guarda-corpos em silhueta.",
+   "image_legende": "O passeio do Ourdall, de manhã e de noite: o lago, a sua colina e o guarda-corpos de rede."
+  },
   {
    "version": "40.0.0",
    "date": "2026-11-16",
@@ -267,39 +296,6 @@
    "image": "Screenshots/lux_gouache_penchee.gif",
    "image_alt": "A carta «Bus», comum, de manhã na Rout Bréck, ganha no outono, aberta e inclinada lentamente da esquerda para a direita. O céu, as nuvens, a cidade ao longe, as colinas e a ponte vermelha são peças de cartão pintadas a guache que deslizam cada uma à sua velocidade; nuvens de cartão atravessam o céu e caem folhas de papel. O autocarro é uma placa de madrepérola assente numa haste e numa base de metal: a placa não se mexe, só um reflexo desliza sobre ela.",
    "image_legende": "Uma carta comum inclinada: cinco planos pintados, nuvens que passam e a placa do autocarro onde desliza um reflexo."
-  },
-  {
-   "version": "38.0.0",
-   "date": "2026-11-01",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Novidades",
-     "points": [
-      {
-       "titre": "O desenho de cada carta ocupa toda a janela",
-       "texte": "O gato, a casa, o autocarro ou o algarismo de uma carta de número estão agora muito maiores e centrados na janela, e a paisagem à volta põe-nos em destaque. Todas as cartas da coleção beneficiam, abertas ou na grelha."
-      },
-      {
-       "titre": "As palavras sem desenho também",
-       "texte": "A fita que segue o som da palavra é mais alta e mais grossa."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_sujet_agrandi.png",
-     "alt": "Duas colunas, «Antes» e «Depois». Em cima, a grelha de Mäi Carnet com seis cartas: Kaz, Bus, Haus, dräi, Fliger, Päerd. Antes, o gato, o autocarro, a casa, o 3, o avião e o cavalo são pequenos no meio da paisagem; depois, cada um enche a sua janela. Em baixo, a carta Bus aberta: antes, um pequeno autocarro no fundo da janela; depois, um grande autocarro em toda a largura. O ecrã está em francês.",
-     "legende": "O desenho de cada carta ocupa agora toda a janela."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_sujet_agrandi.png",
-   "image_alt": "Duas colunas, «Antes» e «Depois». Em cima, a grelha de Mäi Carnet com seis cartas: Kaz, Bus, Haus, dräi, Fliger, Päerd. Antes, o gato, o autocarro, a casa, o 3, o avião e o cavalo são pequenos no meio da paisagem; depois, cada um enche a sua janela. Em baixo, a carta Bus aberta: antes, um pequeno autocarro no fundo da janela; depois, um grande autocarro em toda a largura. O ecrã está em francês.",
-   "image_legende": "O desenho de cada carta ocupa agora toda a janela."
   }
  ]
 }

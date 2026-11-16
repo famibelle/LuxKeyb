@@ -1,9 +1,38 @@
 {
  "genere_le": "2026-11-16",
- "derniere_version": "40.0.0",
+ "derniere_version": "40.1.0",
  "derniere_date": "2026-11-16",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "40.1.0",
+   "date": "2026-11-16",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "New",
+     "points": [
+      {
+       "titre": "The Ourdall promenade, from photographs",
+       "texte": "Lake Our and the long wooded hill that closes it, the pylons of the pumped-storage reservoir on its crest, and the grey wooden boardwalk running along the shore with its wire-mesh railing, through which the water shows."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_carte_ourdall.png",
+     "alt": "The same card window twice, at the Ourdall. 1. Morning: Lake Our, pale and calm, a long wooded hill closing it at the back, a pylon of the reservoir on its crest, reeds and a willow on the left, and on the right the grey wooden boardwalk along the shore, its wire-mesh railing with the water showing through. 2. Night: the same view under a starry sky and a crescent moon, the lake deep blue and the railing in silhouette.",
+     "legende": "The Ourdall promenade, morning and night: the lake, its hill and the wire-mesh railing."
+    }
+   ],
+   "image": "Screenshots/lux_carte_ourdall.png",
+   "image_alt": "The same card window twice, at the Ourdall. 1. Morning: Lake Our, pale and calm, a long wooded hill closing it at the back, a pylon of the reservoir on its crest, reeds and a willow on the left, and on the right the grey wooden boardwalk along the shore, its wire-mesh railing with the water showing through. 2. Night: the same view under a starry sky and a crescent moon, the lake deep blue and the railing in silhouette.",
+   "image_legende": "The Ourdall promenade, morning and night: the lake, its hill and the wire-mesh railing."
+  },
   {
    "version": "40.0.0",
    "date": "2026-11-16",
@@ -267,39 +296,6 @@
    "image": "Screenshots/lux_gouache_penchee.gif",
    "image_alt": "The “Bus” card, common, in the morning at the Rout Bréck, won in autumn, open and slowly tilted from left to right. The sky, the clouds, the distant city, the hills and the red bridge are pieces of cardboard painted in gouache, each sliding at its own speed; cardboard clouds cross the sky and paper leaves fall. The bus is a mother-of-pearl plaque on a metal rod and base: the plaque does not move, only a gleam slides across it.",
    "image_legende": "A common card being tilted: five painted layers, passing clouds, and the bus plaque with a sliding gleam."
-  },
-  {
-   "version": "38.0.0",
-   "date": "2026-11-01",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "New",
-     "points": [
-      {
-       "titre": "Each card's drawing fills the whole window",
-       "texte": "The cat, the house, the bus or the digit of a number card are now much bigger and centred in the window, with the landscape setting them off all around. Every card in the collection benefits, open or in the grid."
-      },
-      {
-       "titre": "Words without a drawing too",
-       "texte": "The ribbon that follows the sound of the word is taller and thicker."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_sujet_agrandi.png",
-     "alt": "Two columns, “Before” and “After”. At the top, the Mäi Carnet grid with six cards: Kaz, Bus, Haus, dräi, Fliger, Päerd. Before, the cat, the bus, the house, the 3, the plane and the horse are small in the middle of their landscape; after, each one fills its window. At the bottom, the open Bus card: before, a small bus at the bottom of the window; after, a large bus spanning its whole width. The screen is in French.",
-     "legende": "Each card's drawing now fills the whole window."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_sujet_agrandi.png",
-   "image_alt": "Two columns, “Before” and “After”. At the top, the Mäi Carnet grid with six cards: Kaz, Bus, Haus, dräi, Fliger, Päerd. Before, the cat, the bus, the house, the 3, the plane and the horse are small in the middle of their landscape; after, each one fills its window. At the bottom, the open Bus card: before, a small bus at the bottom of the window; after, a large bus spanning its whole width. The screen is in French.",
-   "image_legende": "Each card's drawing now fills the whole window."
   }
  ]
 }

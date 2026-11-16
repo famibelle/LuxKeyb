@@ -1,5 +1,25 @@
 {
   "_comment": "English translation of nouveautes.html, by version. Hand-maintained: generate_nouveautes.py merges it into stats/nouveautes-en.json. Each version mirrors the French one from the CHANGELOG: same sections, same number of points, in the same order; a section's title can be left out when _sections translates it. A version that is missing here, or no longer has the French shape, is shown in French with a notice. Text is HTML: escape < and &.",
+  "40.1.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "New",
+        "points": [
+          {
+            "titre": "The Ourdall promenade, from photographs",
+            "texte": "Lake Our and the long wooded hill that closes it, the pylons of the pumped-storage reservoir on its crest, and the grey wooden boardwalk running along the shore with its wire-mesh railing, through which the water shows."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "The same card window twice, at the Ourdall. 1. Morning: Lake Our, pale and calm, a long wooded hill closing it at the back, a pylon of the reservoir on its crest, reeds and a willow on the left, and on the right the grey wooden boardwalk along the shore, its wire-mesh railing with the water showing through. 2. Night: the same view under a starry sky and a crescent moon, the lake deep blue and the railing in silhouette.",
+        "legende": "The Ourdall promenade, morning and night: the lake, its hill and the wire-mesh railing."
+      }
+    ]
+  },
   "40.0.0": {
     "intro": "",
     "sections": [

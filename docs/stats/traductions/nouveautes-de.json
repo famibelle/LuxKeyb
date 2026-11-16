@@ -1,5 +1,25 @@
 {
   "_comment": "Deutsche Übersetzung von nouveautes.html, nach Version. Von Hand gepflegt: generate_nouveautes.py führt sie in stats/nouveautes-de.json zusammen. Jede Version folgt der französischen aus dem CHANGELOG: dieselben Abschnitte, dieselbe Anzahl Punkte, in derselben Reihenfolge; der Titel eines Abschnitts darf fehlen, wenn _sections ihn übersetzt. Eine Version, die hier fehlt oder nicht mehr die französische Form hat, erscheint auf Französisch mit einem Hinweis. Der Text ist HTML: < und & maskieren.",
+  "40.1.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Neu",
+        "points": [
+          {
+            "titre": "Die Ourdall-Promenade nach Fotos",
+            "texte": "Der Our-Stausee und der lange bewaldete Hügel, der ihn abschließt, die Masten des Pumpspeichers auf seinem Kamm, und der graue Holzsteg am Ufer mit seinem Drahtgitter-Geländer, durch das man das Wasser sieht."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Zweimal dasselbe Kartenfenster, an der Ourdall. 1. Morgens: der Our-Stausee, blass und ruhig, ein langer bewaldeter Hügel, der ihn hinten abschließt, ein Mast des Speichers auf seinem Kamm, Schilf und eine Weide links, und rechts der graue Holzsteg am Ufer mit seinem Drahtgitter-Geländer, durch das das Wasser scheint. 2. Nachts: dieselbe Sicht unter Sternenhimmel und Mondsichel, der See tiefblau, das Geländer als Silhouette.",
+        "legende": "Die Ourdall-Promenade, morgens und nachts: der See, sein Hügel und das Drahtgitter-Geländer."
+      }
+    ]
+  },
   "40.0.0": {
     "intro": "",
     "sections": [
