@@ -6816,57 +6816,118 @@ object Paysages {
         // ---- Breedewee, la rue Large et sa porte (photo du propriétaire)
 
         fun breedeweePapier() {
+            // Le Breedewee, la ruelle en escalier du Grund : la porte de
+            // pierre au premier plan, les façades colorées qui montent de part
+            // et d'autre, et un bout de ciel au-dessus des toits.
+            //
+            // Tout y était peint avec `duJour` seul, qui tire vers le vert du
+            // feuillage, puis réchauffé par le ravivage : enduit gris, ocre,
+            // crème, pierre et mur en sortaient d'un seul et même jaune, et la
+            // fenêtre entière se lisait comme un aplat. Règle 10 : la matière
+            // bâtie se peint dans [neutre].
             val r = Alea(355)
-            val enduit = duJour(0xFFB9B2A6.toInt())
-            val ocre = duJour(0xFFD3C29A.toInt())
-            val creme = duJour(0xFFEDE4D0.toInt())
+            val enduit = neutre(duJour(0xFFD6CEBD.toInt()))
+            val pierre = neutre(duJour(0xFFB4AB98.toInt()))
+            val mur = neutre(duJour(0xFF9A9080.toInt()))
+            val toit = neutre(ardoise())
+            val faitage = neutre(mix(ardoise(), 0xFFFFFFFF.toInt(), 0.18f))
+            val murs = IntArray(6) { neutre(facades()[it]) }
+            val vitre = if (P.allume) P.fenetre else neutre(duJour(0xFF3E4654.toInt()))
             mineraux++
-            // La grande façade du fond, ses fenêtres cintrées et son oculus.
-            feuille(22f, -3f, 42f, 46f, enduit)
-            for (fx in floatArrayOf(28f, 38f, 52f)) for (fy in floatArrayOf(3f, 14f)) {
-                pieceD("M$fx ${fy + 6f}L$fx ${fy + 1.6f}C$fx ${fy - 0.4f} ${fx + 3.2f} ${fy - 0.4f} ${fx + 3.2f} ${fy + 1.6f}L${fx + 3.2f} ${fy + 6f}Z",
-                    if (P.allume && r() < 0.6f) P.fenetre else creme, 0.3f)
-                ligne(fx + 1.6f, fy + 0.2f, fx + 1.6f, fy + 6f, sombre(enduit, 0.4f), 0.15f)
+            // ---- La façade du fond, qui ferme la ruelle, avec son toit
+            // d'ardoise : sans toit elle montait jusqu'au bord haut et ne
+            // laissait pas un pouce de ciel.
+            feuille(22f, 9f, 42f, 40f, murs[2])
+            // Un toit à deux pentes, pas un fronton : la pointe trop haute
+            // et sans débord se lisait comme un pignon de temple.
+            pieceD("M18.6 9.6L43 3.6L67.4 9.6Z", toit)
+            pieceD("M18.6 9.6L67.4 9.6L67.4 11f.2L18.6 11.2Z".replace("11f.2", "11.2"), sombre(toit, 0.3f))
+            ligne(18.6f, 9.6f, 67.4f, 9.6f, faitage, 0.45f)
+            ligne(43f, 3.6f, 43f, 9.6f, sombre(toit, 0.25f), 0.3f)
+            for (fx in floatArrayOf(28f, 38f, 52f)) for (fy in floatArrayOf(14f, 25f)) {
+                pieceD("M$fx ${fy + 6f}L$fx ${fy + 1.6f}C$fx ${fy - 0.4f} ${fx + 3.4f} ${fy - 0.4f} ${fx + 3.4f} ${fy + 1.6f}L${fx + 3.4f} ${fy + 6f}Z",
+                    if (P.allume && r() < 0.6f) P.fenetre else vitre, 0.3f)
+                pieceD("M${fx - 0.5f} ${fy + 6.4f}L${fx - 0.5f} ${fy + 1.4f}C${fx - 0.5f} ${fy - 1f} ${fx + 3.9f} ${fy - 1f} ${fx + 3.9f} ${fy + 1.4f}" +
+                    "L${fx + 3.9f} ${fy + 6.4f}L${fx + 3.4f} ${fy + 6.4f}L${fx + 3.4f} ${fy + 1.6f}C${fx + 3.4f} ${fy - 0.4f} $fx ${fy - 0.4f} $fx ${fy + 1.6f}L$fx ${fy + 6.4f}Z",
+                    pierre, 0.3f)
+                ligne(fx + 1.7f, fy + 0.4f, fx + 1.7f, fy + 6f, sombre(pierre, 0.3f), 0.2f)
             }
-            anneau(46f, 27f, 1.6f, creme, 0.5f)
+            anneau(43f, 36.5f, 1.8f, pierre, 0.7f)
             plan(1)
-            // Les façades de droite, qui montent avec la rue.
-            feuille(60f, -3f, 21f, 61.5f, ocre)
-            feuille(81f, -3f, 22f, 61.5f, enduit)
-            for (fy in floatArrayOf(4f, 16f, 28f)) {
-                for (fx in floatArrayOf(64f, 72f, 85f, 94f)) {
-                    feuille(fx, fy, 3.6f, 6f, creme, 0.3f)
-                    rect(fx + 0.5f, fy + 0.5f, 2.6f, 5f, if (P.allume && r() < 0.5f) P.fenetre else sombre(enduit, 0.45f))
+            // ---- Les façades de droite, qui montent avec la rue : chacune
+            // sa couleur du Grund, chacune son toit.
+            for ((i, f) in arrayOf(floatArrayOf(58f, 23f, 3f), floatArrayOf(79f, 26f, 1f), floatArrayOf(97f, 14f, 4f)).withIndex()) {
+                val x0 = f[0]; val w = f[1]
+                feuille(x0, 2f + i * -1.4f, w, 59.5f, murs[f[2].toInt()])
+                pieceD("M${x0 - 1.4f} ${2.4f + i * -1.4f}L${x0 + w * 0.5f} ${-4f + i * -1.4f}L${x0 + w + 1.4f} ${2.4f + i * -1.4f}Z", toit)
+                ligne(x0, 2.4f + i * -1.4f, x0 + w, 2.4f + i * -1.4f, faitage, 0.45f)
+                ligne(x0, -4f, x0, 58.5f, sombre(enduit, 0.4f), 0.35f)
+            }
+            for (fy in floatArrayOf(9f, 21f, 33f)) {
+                for (fx in floatArrayOf(61f, 69f, 82f, 91f, 98f)) {
+                    feuille(fx - 0.6f, fy - 0.6f, 4.4f, 7f, pierre, 0.3f)
+                    rect(fx, fy, 3.2f, 5.8f, if (P.allume && r() < 0.5f) P.fenetre else vitre)
+                    ligne(fx + 1.6f, fy, fx + 1.6f, fy + 5.8f, sombre(pierre, 0.25f), 0.18f)
                 }
             }
-            pieceD("M64 52L64 43C64 40 69 40 69 43L69 52Z", sombre(ocre, 0.5f), 0.3f)
-            if (!vivant) lanterne(81f, 36f, false)
-            for (y in floatArrayOf(46f, 49f, 52f, 55f)) ligne(81f, y, 103f, y, sombre(enduit, 0.35f), 0.3f)
-            ligne(81f, -3f, 81f, 58.5f, sombre(enduit, 0.5f), 0.4f)
-            // La rue pavée qui monte vers le fond.
-            pieceD("M14 66C30 52 44 45 54 41L60 41C60 47 62 55 64 66Z", duJour(0xFF8C8478.toInt()), 0.3f)
-            for (k in 0 until 30) rond(20f + r() * 40f, 44f + r() * 14f, 0.35f, sombre(duJour(0xFF8C8478.toInt()), 0.3f), 0.7f)
+            pieceD("M63 52L63 43C63 39.6 68.4 39.6 68.4 43L68.4 52Z", sombre(murs[3], 0.5f), 0.3f)
+            if (!vivant) lanterne(79f, 36f, false)
+            // ---- La ruelle en escalier, qui monte vers le fond. C'est
+            // l'escalier qui en fait le Breedewee : en pente lisse, elle se
+            // lisait comme une dune de sable.
+            val pave = neutre(duJour(0xFF8E8678.toInt()))
+            val ruelle = chemin("M12 66C28 53 42 46 52 42L60 42C60 48 62 56 64 66Z")
+            piece(ruelle, pave, 0.3f)
+            c.save()
+            c.clipPath(ruelle)
+            var sy = 42.5f
+            var pas = 1.1f
+            while (sy < 66f) {
+                val demi = 4f + (sy - 42f) * 1.5f
+                ligne(50f - demi, sy, 58f + demi * 0.5f, sy + 0.5f, mix(pave, 0xFFFFFFFF.toInt(), 0.3f), pas * 0.42f, 0.8f)
+                ligne(50f - demi, sy + pas * 0.5f, 58f + demi * 0.5f, sy + pas * 0.5f + 0.5f, sombre(pave, 0.4f), pas * 0.3f, 0.7f)
+                sy += pas
+                pas *= 1.14f
+            }
+            c.restore()
             plan(2)
             plancher(DEVANT, BAS)
             poser(DEVANT)
-            val pierre = duJour(0xFFB7AA90.toInt())
-            val mur = duJour(0xFFA89A80.toInt())
+            // ---- Le mur de gauche et la porte de pierre.
             pieceD("M-3 -3L8 -3L12 58.5L-3 58.5Z", mur)
-            for (y in floatArrayOf(6f, 14f, 22f, 30f, 38f, 46f, 54f)) ligne(-3f, y, 8f + y * 0.065f, y + 0.4f, sombre(mur, 0.3f), 0.2f)
-            // La porte : son passage sombre, ses piédroits, son arc à bossages.
-            pieceD("M14 58.5L14 25C14 18 26 18 26 25L26 58.5Z", sombre(enduit, 0.65f), 0f)
+            for (y in floatArrayOf(6f, 14f, 22f, 30f, 38f, 46f, 54f))
+                ligne(-3f, y, 8f + y * 0.065f, y + 0.4f, sombre(mur, 0.3f), 0.25f)
+            // Le passage, franchement sombre : c'est le seul trou noir de la
+            // fenêtre, et c'est lui qui fait lire la porte.
+            pieceD("M14 58.5L14 25C14 18 26 18 26 25L26 58.5Z", sombre(neutre(duJour(0xFF30291F.toInt())), 0.3f), 0f)
             feuille(10f, 24f, 4f, 34.5f, pierre)
             feuille(26f, 24f, 4f, 34.5f, pierre)
             for (y in floatArrayOf(28f, 33f, 38f, 43f, 48f, 53f)) {
-                ligne(10f, y, 14f, y, sombre(pierre, 0.3f), 0.2f); ligne(26f, y, 30f, y, sombre(pierre, 0.3f), 0.2f)
+                ligne(10f, y, 14f, y, sombre(pierre, 0.32f), 0.25f); ligne(26f, y, 30f, y, sombre(pierre, 0.32f), 0.25f)
             }
             pieceD("M10 25C10 13 30 13 30 25L26 25C26 18 14 18 14 25Z", pierre)
-            for (k in 0..6) {
-                val a = PI.toFloat() * (1f + k / 6f)
-                ligne(20f + cos(a) * 6f, 25f + sin(a) * 6f, 20f + cos(a) * 10f, 25f + sin(a) * 10f, sombre(pierre, 0.35f), 0.2f)
+            for (k in 0..7) {
+                val a = PI.toFloat() * (1f + k / 7f)
+                ligne(20f + cos(a) * 6f, 25f + sin(a) * 6f, 20f + cos(a) * 10f, 25f + sin(a) * 10f,
+                    if (k % 2 == 0) sombre(pierre, 0.36f) else sombre(pierre, 0.2f), 0.3f)
             }
             mineraux--
-            // Les lanternes vacillent sur la carte ouverte : [Vie] les y pose.
+            // ---- Le lierre fleuri qui retombe de l'arche (direction validée
+            // le 2026-11-01) : c'est la seule verdure de la ruelle, et elle
+            // adoucit la porte.
+            val lierre = vert(0.4f)
+            val lierreClair = vert(0.62f)
+            for (k in 0 until 16) {
+                val a = PI.toFloat() * (1.02f + 0.96f * k / 15f)
+                val lx = 20f + cos(a) * (10.4f + r() * 1.6f)
+                val ly = 25f + sin(a) * (11f + r() * 1.6f)
+                val chute = 2f + r() * 7f
+                touffe(if (k % 3 == 0) lierreClair else lierre,
+                    lx, ly, 1.3f + r() * 1.1f, lx + 1f, ly + chute * 0.5f, 1f + r() * 0.9f,
+                    lx - 0.8f, ly + chute, 0.9f + r() * 0.8f)
+                if (k % 4 == 1) rond(lx + 0.6f, ly + chute * 0.6f, 0.45f,
+                    if (P.nuit) mix(P.fenetre, 0xFFFFFFFF.toInt(), 0.4f) else 0xFFF3E0F0.toInt(), 0.9f)
+            }
             if (!vivant) lanterne(30f, 31f, true)
             touffe(vert(0.5f), 4f, 57f, 2.4f, 9f, 57.5f, 2f)
             c.restore()
