@@ -5974,7 +5974,14 @@ object Paysages {
                 trous.close()
             }
             cage.op(trous, Path.Op.DIFFERENCE)
-            piece(cage, col)
+            // Du métal, pas du carton : chaque membrure prend l'arête du
+            // soleil. La découpe est peinte une première fois en acier
+            // clair, puis une seconde, décalée, en acier sombre : il reste
+            // un filet de lumière en haut et à gauche de chaque barre, là
+            // où le soleil de la photo accroche les profilés.
+            piece(cage, mix(col, 0xFFFFFFFF.toInt(), 0.34f))
+            cage.offset(0.34f, 0.3f)
+            forme(cage, col)
         }
 
         /**
@@ -5985,6 +5992,24 @@ object Paysages {
          */
         fun cowper(x: Float, haut: Float, w: Float, col: Int, acier: Int, cone: Boolean = true) = mineral {
             feuille(x, haut, w, 60f - haut, col, 0.6f)
+            // La tôle rivée : le cylindre est fait de viroles boulonnées
+            // bout à bout, et c'est ce rang de rivets à chaque joint qui le
+            // distingue d'un silo de béton.
+            val rr = Alea((x * 17f).toInt() + 400)
+            var jy = haut + 3.4f
+            while (jy < 59f) {
+                ligne(x, jy, x + w, jy, sombre(col, 0.3f), 0.3f)
+                var rx = x + 0.7f
+                while (rx < x + w - 0.4f) {
+                    rond(rx, jy - 0.7f, 0.18f, mix(col, 0xFFFFFFFF.toInt(), 0.22f), 0.75f)
+                    rx += 1.4f
+                }
+                jy += 4.6f + rr() * 0.6f
+            }
+            // Le filet de lumière sur la panse, à un quart du bord : un
+            // large bandeau clair collé au bord gauche faisait trois
+            // planches côte à côte au lieu d'un cylindre.
+            feuille(x + w * 0.16f, haut + 0.4f, w * 0.12f, 59.6f - haut, mix(col, 0xFFFFFFFF.toInt(), 0.26f), 0f)
             if (cone) {
                 // Une calotte bombée, pas un cône : pointue, elle faisait
                 // des tourelles de château au lieu de récipients sous pression.
@@ -5992,10 +6017,60 @@ object Paysages {
                 feuille(x + w * 0.46f - 0.5f, haut - w * 1f, 1f, w * 0.5f, acier, 0.3f)
             } else feuille(x - 0.5f, haut - 1.1f, w + 1f, 1.4f, sombre(col, 0.22f), 0.4f)
             // Le flanc à l'ombre : le soleil vient de la gauche sur la photo.
-            feuille(x + w * 0.68f, haut + 0.6f, w * 0.32f, 59.4f - haut, sombre(col, 0.22f), 0f)
-            for (y in floatArrayOf(0.26f, 0.52f, 0.78f)) {
-                val yy = haut + (60f - haut) * y
-                ligne(x, yy, x + w, yy, sombre(col, 0.16f), 0.3f)
+            feuille(x + w * 0.74f, haut + 0.6f, w * 0.26f, 59.4f - haut, sombre(col, 0.17f), 0f)
+        }
+
+        /**
+         * Un pan de tôle : les joints horizontaux des plaques, leurs rivets,
+         * et l'arête que le soleil prend à gauche. C'est ce qui distingue
+         * une masse d'acier d'un aplat de papier gris.
+         */
+        fun tole(x: Float, y: Float, w: Float, h: Float, col: Int, graine: Int) {
+            val rr = Alea(graine)
+            var jy = y + 3f
+            while (jy < y + h - 0.6f) {
+                ligne(x, jy, x + w, jy, sombre(col, 0.3f), 0.3f)
+                var rx = x + 0.8f
+                while (rx < x + w - 0.5f) {
+                    rond(rx, jy - 0.7f, 0.2f, mix(col, 0xFFFFFFFF.toInt(), 0.26f), 0.8f)
+                    rx += 1.6f
+                }
+                jy += 4.2f + rr() * 1.2f
+            }
+            var jx = x + w * 0.42f
+            while (jx < x + w - 0.5f) { ligne(jx, y, jx, y + h, sombre(col, 0.24f), 0.28f); jx += w * 0.46f }
+            feuille(x, y, w * 0.08f, h, mix(col, 0xFFFFFFFF.toInt(), 0.26f), 0f)
+        }
+
+        /**
+         * L'appareil de brique d'une cheminée, du rang du bas [bas] au rang
+         * du haut [haut], entre les bords que donne [bord] (gauche et droite
+         * à une hauteur) : des rangs décalés d'une demi-brique, chaque brique
+         * d'un ton un peu différent, le joint en creux entre elles.
+         *
+         * C'est l'appareil qui fait la brique. Cerclé de quatre traits
+         * seulement, le fût se lisait comme un poteau de bois peint.
+         */
+        fun appareilBrique(bas: Float, haut: Float, col: Int, graine: Int, bord: (Float) -> FloatArray) {
+            val rr = Alea(graine)
+            val rang = 1.3f
+            var y = haut
+            var k = 0
+            while (y < bas) {
+                val b = bord(y)
+                val lb = (b[1] - b[0]) / 4f
+                val hh = min(rang - 0.26f, bas - y)
+                var bx = b[0] - if (k % 2 == 0) 0f else lb * 0.5f
+                while (bx < b[1]) {
+                    val x0 = max(b[0], bx)
+                    val x1 = min(b[1], bx + lb - 0.22f)
+                    val u = rr()
+                    if (x1 - x0 > 0.2f) rect(x0, y, x1 - x0, hh,
+                        if (u < 0.5f) sombre(col, 0.05f + u * 0.3f) else mix(col, 0xFFFFFFFF.toInt(), (u - 0.5f) * 0.28f))
+                    bx += lb
+                }
+                y += rang
+                k++
             }
         }
 
@@ -6024,10 +6099,20 @@ object Paysages {
                 // La cheminée de brique : la verticale qui tient toute la
                 // photo, et la seule pièce chaude du lieu. Elle sort par le
                 // haut de la fenêtre, comme elle sort du cadre de la photo.
-                pieceD("M5.6 60L7.4 3.4L13.4 3.4L15.2 60Z", brique)
-                feuille(6.8f, 1.8f, 7.2f, 1.8f, sombre(brique, 0.35f), 0.4f)
-                feuille(12.1f, 3.8f, 2.4f, 56f, sombre(brique, 0.2f), 0f)
-                for (y in floatArrayOf(14f, 26f, 38f, 50f)) ligne(7.6f + (y - 14f) * 0.03f, y, 14.4f - (y - 14f) * 0.03f, y, sombre(brique, 0.3f), 0.3f)
+                pieceD("M5.6 60L7.4 3.4L13.4 3.4L15.2 60Z", sombre(brique, 0.45f))
+                appareilBrique(60f, 3.6f, brique, 188) { y ->
+                    val t = (y - 3.4f) / 56.6f
+                    floatArrayOf(7.4f - 1.8f * t, 13.4f + 1.8f * t)
+                }
+                // Le flanc à l'ombre, en voile : le soleil vient de la
+                // gauche, et l'appareil doit rester lisible dessous.
+                forme(chemin("M12.4 60L11.5 3.6L13.4 3.6L15.2 60Z"), sombre(brique, 0.55f), 0.34f)
+                // La couronne de fonte en haut du fût, et les cerclages.
+                feuille(6.6f, 1.6f, 7.6f, 2f, sombre(brique, 0.4f), 0.4f)
+                for (y in floatArrayOf(16f, 32f, 48f)) {
+                    val t = (y - 3.4f) / 56.6f
+                    ligne(7.4f - 1.8f * t, y, 13.4f + 1.8f * t, y, sombre(brique, 0.42f), 0.5f)
+                }
                 // Le grand cylindre clair contre la cheminée.
                 cowper(17f, 9.5f, 9f, beton, acier, cone = false)
                 // La tour du gueulard : la charpente la plus haute, avec son
@@ -6040,8 +6125,10 @@ object Paysages {
                 // charpente ajourée au-dessus, le pot à poussière contre
                 // elle. D'un seul tenant, il ne faisait qu'une colline noire.
                 pieceD("M36 60L36 34L58 32L58 60Z", acier)
+                tole(36f, 32f, 22f, 28f, acier, 410)
                 charpente(37f, 34f, 18f, 15f, acier, 3, 2)
                 pieceD("M48 60L48 30C48 24.6 56 24.6 56 30L56 60Z", sombre(acier, 0.18f))
+                tole(48f, 29f, 8f, 31f, sombre(acier, 0.18f), 420)
                 // Les conduites qui descendent du gueulard sur le massif :
                 // elles le longent au lieu de l'enjamber en arc-en-ciel.
                 trait("M38 9C40 15 44 19 50 23", acier, 2.2f)
@@ -6053,8 +6140,10 @@ object Paysages {
                 cowper(58f, 13f, 7.4f, beton, acier)
                 cowper(66.4f, 10f, 8f, beton, acier)
                 cowper(75.4f, 15f, 7f, beton, acier)
-                // Le faisceau de conduites noires entre les cowpers.
-                for (x in floatArrayOf(65.2f, 74.4f)) feuille(x, 22f, 1.3f, 38f, sombre(acier, 0.3f), 0.3f)
+                // La conduite qui passe devant la grappe de cowpers. Deux
+                // tuyaux verticaux collés contre leur flanc à l'ombre n'y
+                // faisaient qu'une bande noire de trois unités de large.
+                trait("M56.5 30.4C66 29.2 74 29.6 83 31.2", sombre(acier, 0.16f), 1.7f)
                 // La charpente de droite, devant le mur.
                 charpente(84f, 60f, 13f, 42f, acier, 2, 5)
                 if (P.allume) {
