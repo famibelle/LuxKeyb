@@ -1466,9 +1466,6 @@ object Paysages {
         return floatArrayOf(x, y).also { m.mapPoints(it) }
     }
 
-    /** Le rocher de Felsmillen, de trois quarts : où son dessin de face (-3, -3, 41 × 69) est posé. */
-    private val ROCHER_FELSMILLEN = floatArrayOf(-3f, -5f, 38f, 2.4f, 38f, 61.6f, -3f, 68f)
-
     /** La rue du Grund, au bord de l'Alzette : elle fuit vers la droite. */
     internal val RUE_GRUND = Fuite(floatArrayOf(13f, 50.5f), floatArrayOf(178f, 34f), floatArrayOf(-140f, 40f), 150f, quai = 3f)
 
@@ -7074,36 +7071,175 @@ object Paysages {
             }
         }
 
-        // ---- Felsmillen, les rochers de grès et le caillebotis (photo du propriétaire)
+        // ---- Felsmillen, la paroi de grès et le caillebotis (photo du propriétaire)
 
+        /**
+         * Ce que dit la photo, et qu'aucune maquette n'avait :
+         *
+         * 1. **La gorge n'a pas de ciel.** La futaie se referme au-dessus ;
+         *    la seule clarté est le fond du vallon, loin, au bout du chemin.
+         * 2. **La paroi est litée, et en surplomb.** Des bancs horizontaux
+         *    que l'eau a creusés par en dessous : le haut avance au-dessus du
+         *    pied, et c'est l'ombre portée sous chaque corniche qui creuse la
+         *    roche. Sans elle, ce n'est qu'un mur.
+         * 3. **Elle fuit vers la droite** : son arête descend du coin haut
+         *    gauche vers le milieu de la fenêtre, et ses lits penchent avec.
+         * 4. **La mousse est la pièce la plus claire du lieu**, un vert franc
+         *    qui tient tout le pied de la paroi et monte sur ses vires.
+         * 5. **Le caillebotis se tord** : large au premier plan, il bombe vers
+         *    la droite avant de repartir dans la forêt en se rétrécissant. Ses
+         *    lames sont transversales, et sa tranche se voit du côté du jour.
+         *
+         * La carte ouverte ne laisse que les deux colonnes et la bande du
+         * haut : la paroi tient celle de gauche sur toute sa hauteur, le
+         * caillebotis monte dans celle de droite, la futaie ferme le haut, et
+         * le fond de la gorge passe derrière la plaque comme il disparaît
+         * dans la forêt sur la photo.
+         */
         fun felsmillen() {
             val r = Alea(225)
-            val fond = mix(vert(0.8f), P.cielBas, 0.25f)
-            lisiere(-2f, 102f, { x -> 8f + 3f * sin(x * 0.17f) }, 2.2f, 3.4f, 226, fond)
-            for (k in 0 until 10) feuille(30f + r() * 72f, 4f + r() * 8f, 0.6f + r() * 0.5f, 40f, sombre(fond, 0.4f), 0.3f)
-            plan(1)
-            pieceD("M-2 66L-2 40C30 36 70 34 102 36L102 66Z", vert(0.75f), 0.5f)
-            val gres = duJour(0xFFB7A889.toInt())
-            val clair = mix(gres, 0xFFFFFFFF.toInt(), 0.18f)
-            // Le rocher de gauche dessiné de face, posé de trois quarts : ses
-            // strates fuient vers la droite, comme le caillebotis.
-            surQuad(41f, 69f, ROCHER_FELSMILLEN, x0 = -3f, y0 = -3f) {
-                mineral {
-                    pieceD("M-3 66L-3 -3L34 -3C38 4 36 10 31 13C35 17 34 24 28 27C31 31 30 38 25 42L24 66Z", gres)
-                    pieceD("M8 6C16 3 26 4 31 10C25 11 16 11 8 9Z", clair, 0.4f)
-                    pieceD("M6 20C14 17 24 18 29 24C22 25 14 25 6 23Z", clair, 0.4f)
-                    pieceD("M4 34C12 31 20 32 25 38C19 39 11 39 4 37Z", clair, 0.4f)
-                }
-                touffe(duJour(0xFF6E8A44.toInt()), 30f, 13f, 1.6f, 27f, 27f, 1.6f, 22f, 42f, 2f)
+            // ---- Le fond du vallon, la seule clarté de la photo.
+            // Le fond est boisé d'abord, la clarté ensuite : mélangé au bas du
+            // ciel, le vert du lointain sortait jaune et faisait un rideau.
+            val lointain = nappe(duJour(0xFF4F6B2E.toInt()), 0.45f, VERT_CALME)
+            lisiere(-2f, 102f, { x -> 10f + 3.4f * sin(x * 0.09f) }, 2.4f, 3.8f, 226, lointain)
+            // La trouée du fond du vallon : une bande, pas un pan. En grand,
+            // elle se lisait comme un mur de lumière derrière les arbres.
+            val jour = mix(lointain, duJour(0xFFEFF2C4.toInt()), if (P.nuit) 0.08f else 0.3f)
+            pieceD("M-3 40L-3 27C16 24.6 38 24 60 25.6C78 27 92 28 103 27L103 40Z", jour, 0.3f)
+            // Les fûts du fond : fins et nombreux, à peine détachés. Plus
+            // larges, ils feraient une palissade au lieu d'une futaie.
+            val futLoin = mix(neutre(duJour(0xFFCCC2AC.toInt())), lointain, 0.4f)
+            for (k in 0 until 15) {
+                val tx = -3f + k * 7.2f + r() * 3.6f
+                ligne(tx, 6f, tx + (r() - 0.5f) * 2f, 42f, futLoin, 0.22f + r() * 0.28f, 0.7f)
             }
-            mineral { pieceD("M40 30C42 26 50 25 56 27C58 30 56 34 50 35C44 35 40 34 40 30Z", gres) }
+            plan(1)
+            val feuillu = vert(0.7f)
+            // Le sous-bois : sans lui, ce qui reste entre deux fûts est le
+            // fond clair, et la gorge se lit comme un pré.
+            lisiere(-2f, 102f, { x -> 34f + 3f * sin(x * 0.13f + 1.4f) }, 2f, 3.2f, 227, sombre(vert(0.5f), 0.3f))
+            // Les fûts proches, en vraies découpes : le tronc, sa joue à
+            // l'ombre, et le pied qui s'enfonce dans la mousse du plan devant.
+            val fut = neutre(duJour(0xFFC9BFA8.toInt()))
+            for (tx in floatArrayOf(36f, 53f, 69f, 81f, 93f, 99.5f)) {
+                val w = 1.3f + r() * 1.1f
+                val pente = (r() - 0.5f) * 3f
+                pieceD("M$tx -3L${tx + w} -3L${tx + w + pente} 47L${tx + pente} 47Z", fut)
+                forme("M${tx + w * 0.55f} -3L${tx + w} -3L${tx + w + pente} 47L${tx + w * 0.55f + pente} 47Z",
+                    sombre(fut, 0.32f), 0.5f)
+            }
+            // La voûte de feuillage : c'est elle qui fait la gorge. Le ciel
+            // ouvert en haut de la fenêtre nous mettait dans une clairière.
+            pieceD("M-3 -3L103 -3L103 7C94 12 86 8 77 11C68 14 59 9 50 12C41 15 32 9 23 12C15 14.6 6 12 -3 8Z",
+                sombre(feuillu, 0.42f))
+            for (k in 0 until 12) {
+                val fx = -3f + r() * 106f
+                val fy = 1f + r() * 9f
+                touffe(if (r() < 0.45f) feuillu else sombre(feuillu, 0.42f),
+                    fx, fy, 2f + r() * 2.4f,
+                    fx + 2.6f, fy + 1.6f, 1.8f + r() * 1.8f,
+                    fx - 2.4f, fy + 1.2f, 1.6f + r() * 1.8f)
+            }
             plan(2)
-            solNaturel(SolNaturel.TERRE)  // le sentier au pied des rochers
+            solNaturel(SolNaturel.MOUSSE)  // le tapis du fond de gorge
             poser(DEVANT)
-            val bois = duJour(0xFFB08A60.toInt())
-            pieceD("M58 58.5C66 48 78 40 84 34L90 34C88 40 96 50 102 54L102 58.5Z", bois)
-            lames({ y -> 58f + (58.5f - y) / 24.5f * 26f }, { y -> min(102f, 102f - (58.5f - y) / 24.5f * 12f) }, 58.5f, 34f, sombre(bois, 0.35f))
-            touffe(vert(0.65f), -2f, 56f, 4f, 6f, 57f, 3.4f, 14f, 57.5f, 3f, 24f, 58f, 2.6f)
+            // ---- La mousse, la pièce la plus claire du lieu : elle monte au
+            // pied de la paroi et passe sous le caillebotis.
+            val mousse = nappe(duJour(0xFF7FA83C.toInt()), 0.5f, VERT_CALME)
+            val mousseClaire = mix(mousse, duJour(0xFFD6EE78.toInt()), if (P.nuit) 0.08f else 0.3f)
+            lisiere(-2f, 102f, { x -> 46f - x * 0.07f }, 2.2f, 3.6f, 228, mousse)
+            for (k in 0 until 9) {
+                val mx = -2f + r() * 104f
+                val my = 44f + r() * 13f
+                touffe(mousseClaire, mx, my, 1.3f + r() * 1.2f,
+                    mx + 2.2f, my + 0.5f, 1f + r() * 1f, mx + 4.2f, my - 0.2f, 0.8f + r() * 0.9f)
+            }
+            // Un bloc tombé au bord du chemin, dans la colonne de droite.
+            val gres = neutre(duJour(0xFFB3A78C.toInt()))
+            val creux = sombre(gres, 0.42f)
+            mineral { pieceD("M90 46C91.4 41.6 96 39.6 100 40.4C103 41 104.6 43 105 46Z", mix(gres, 0xFFFFFFFF.toInt(), 0.1f)) }
+            touffe(mousseClaire, 92f, 40.6f, 1.4f, 97f, 39.6f, 1.6f, 102f, 41f, 1.2f)
+            // ---- La paroi de grès, en trois découpes étagées : la paroi du
+            // fond, la corniche qui avance par-dessus, le gros banc qui bombe
+            // au pied. D'un seul tenant, litée ou non, elle se lirait comme
+            // un panneau de contreplaqué.
+            val vire = mix(gres, 0xFFFFFFFF.toInt(), 0.14f)
+            val banc = mix(gres, 0xFFFFFFFF.toInt(), 0.08f)
+            mineral {
+                val paroi = chemin("M-4 -3L20 -3C24 2 27 6 29 10C33 13 35 17 34 21C38 24 42 28 42 33C42.6 38 40 43 37 46C28 48 16 50 4 52L-4 53Z")
+                val fond = sombre(gres, 0.18f)
+                piece(paroi, fond)
+                strates(paroi, -2f, 52f, fond, 229, 3.8f, 0.1f)
+                val corniche = chemin("M-4 -3L14 -3C19 2 24 7 28 12C22 15 13 16 5 15C0 14.4 -2 13.6 -4 12.6Z")
+                piece(corniche, vire)
+                strates(corniche, -3f, 15f, vire, 230, 3f, 0.12f)
+                // L'ombre que la corniche porte sous elle : c'est elle qui
+                // creuse la roche, et non un trait de plus sur la paroi.
+                forme("M-4 12.6C-2 13.6 0 14.4 5 15C13 16 22 15 28 12C26.6 14.4 24 16.2 20.4 17.6C12.6 20 3 19.6 -4 17Z",
+                    creux, 0.72f)
+                // Un second surplomb à mi-hauteur : la paroi s'étage, elle ne
+                // descend pas d'un trait depuis la corniche jusqu'au pied.
+                forme("M-4 25.4C4 26.4 14 27 22 26C28 25.2 32 24 35 22.6C34 25.2 31 27.4 26.6 28.8C18 31.4 4 31.4 -4 29.6Z",
+                    creux, 0.5f)
+                val pied = chemin("M-4 33C5 32.4 13 35 18 40C21.4 43.4 22 48 20 52L-4 54Z")
+                piece(pied, banc)
+                strates(pied, 32f, 54f, banc, 231, 3.2f, 0.14f)
+                forme("M13.6 36C18 39.6 21.6 44 22 50C21 51.6 19 52.6 16 53L18.6 44Z", creux, 0.4f)
+            }
+            // La mousse tient les vires : des traînées posées sur l'arête des
+            // bancs. Semée au hasard, elle mettrait des confettis verts sur
+            // une roche qui n'en a pas.
+            // Une traînée suit l'arête d'un banc : des ovales aplatis qui se
+            // recouvrent. En ronds, même serrés, la mousse faisait un collier
+            // de perles vertes sur une roche qui n'en porte pas.
+            for (vy in floatArrayOf(14f, 30f)) {
+                val x0 = -4f + r() * 4f
+                val l = 16f + r() * 12f
+                val y0 = vy + r() * 2f
+                val t = Path()
+                for (i in 0 until 10) {
+                    val u = i / 9f
+                    val cx = x0 + l * u
+                    val cy = y0 + u * 3.4f
+                    t.addOval(cx - 2.6f, cy - 0.6f - r() * 0.5f, cx + 2.6f, cy + 0.7f + r() * 0.6f, Path.Direction.CW)
+                }
+                piece(t, mousse)
+            }
+            pieceD("M-4 -3L24 -3C22.6 3.6 15 7.6 6 8C0 8.2 -2 7 -4 6Z", mousse, 0.3f)
+            // ---- Le caillebotis. Il entre par le bas de la colonne de
+            // droite, bombe vers le bord, puis repart dans la forêt : c'est
+            // ce coup de reins qui le fait vivre, un ruban droit ne dirait
+            // rien. Les lames sont transversales et se serrent au loin.
+            // Le bois passe par [neutre] comme toute matière bâtie : sans lui,
+            // le brun vire à l'orange et le tablier devient un tapis.
+            val bois = neutre(duJour(0xFF9C6A46.toInt()))
+            fun recul(y: Float) = ((DEVANT - y) / 26.5f).coerceIn(0f, 1f)
+            fun axe(y: Float): Float { val t = recul(y); return 86f + 12f * t - 20f * t * t }
+            fun demi(y: Float): Float = 14f - 10.5f * recul(y)
+            val tablier = Path()
+            var y = DEVANT
+            tablier.moveTo(axe(y) - demi(y), y)
+            while (y > 32f) { y -= 1.3f; tablier.lineTo(axe(y) - demi(y), y) }
+            while (y < DEVANT) { tablier.lineTo(axe(y) + demi(y), y); y += 1.3f }
+            tablier.lineTo(axe(DEVANT) + demi(DEVANT), DEVANT)
+            tablier.close()
+            piece(tablier, bois)
+            lames({ yy -> axe(yy) - demi(yy) }, { yy -> axe(yy) + demi(yy) }, DEVANT, 33f, sombre(bois, 0.5f))
+            // La tranche du tablier, du côté du jour : elle épaissit en
+            // venant vers nous, et c'est ce qui le pose sur la mousse.
+            var yb = 33f
+            while (yb < DEVANT) {
+                val y2 = min(DEVANT, yb + 1.6f)
+                ligne(axe(yb) + demi(yb), yb, axe(y2) + demi(y2), y2,
+                    sombre(bois, 0.45f), 0.25f + (yb - 33f) / 25.5f * 0.9f)
+                yb = y2
+            }
+            // Le caillebotis ne s'arrête pas en l'air : il passe derrière un
+            // buisson, comme il disparaît dans la forêt sur la photo.
+            touffe(sombre(vert(0.5f), 0.26f), 77f, 33.6f, 3.2f, 83f, 32.4f, 2.8f, 88.4f, 33.6f, 2.2f)
+            touffe(sombre(vert(0.58f), 0.12f), -3f, 54f, 4f, 4f, 56f, 3.4f, 12f, 57.4f, 3f)
+            touffe(vert(0.66f), 99f, 56f, 4f, 104f, 54f, 3.4f)
             c.restore()
         }
 
