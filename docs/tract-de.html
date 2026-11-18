@@ -515,6 +515,18 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   font-family:"Fredoka",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.15;}
 .a-valider b{display:block;font-size:30px;letter-spacing:.06em;text-transform:uppercase;}
 .a-valider span{display:block;font-size:15px;font-weight:600;}
+/* 2026-11-18 : comme sur l'affiche, trois cartes du Wuertduell sans
+   filigrane (bronze, argent, or ; cartes-imprimables/boite/rectos_52.pdf)
+   s'ouvrent en éventail à gauche du QR code, à la place du tampon ; le
+   tampon prend la place de l'ancienne carte Kran, à droite du badge. */
+.eventail{position:relative;width:44mm;height:36mm;flex:none;align-self:flex-end;margin-bottom:8.5mm;}
+.eventail img{position:absolute;bottom:0;width:21mm;height:auto;transform-origin:50% 100%;
+  filter:drop-shadow(0 1.5mm 2.5mm rgba(0,0,0,.35));}
+.eventail .c1{left:0;transform:rotate(-10deg);z-index:1;}
+.eventail .c2{left:11mm;transform:translateY(-1.5mm);z-index:2;}
+.eventail .c3{left:22mm;transform:rotate(10deg);z-index:3;}
+.shots .s-stamp{position:absolute;right:-1mm;top:80mm;z-index:4;}
+.shots .s-stamp .tampon[class]{font-size:2.6mm;}
 </style>
 </head>
 <body>
@@ -584,7 +596,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
         </div>
         <div class="col-right">
           <div class="shots">
-            <img class="s4" src="assets/cartes/carte_kran.webp" alt="Sehr seltene Karte „Kran“, Goldrahmen, sternklare Winternacht">
+            <div class="stamp s-stamp"><span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratis</span></span></div>
             <img class="s1" src="Screenshots/lux_wuertsich_trouves_de.png" alt="Das Spiel Wuertsich: drei gefundene Wörter im Gitter, jedes mit seiner Übersetzung">
             <img class="s3" src="Screenshots/lux_wierderbuch_gromperekichelchen_de.png" alt="Der Wörterbucheintrag Gromperekichelchen: Kartoffelpuffer, ein Beispielsatz und die anderen Formen">
             <img class="s2" src="Screenshots/lux_supports_clavier.png" alt="Die Tastatur beim Tippen: nach „Ech hunn op der Schueb“ schlägt die Leiste „Schueberfouer“ vor">
@@ -599,8 +611,10 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
           <p class="signature">Däi Lëtzebuergesch, op dengem Telefon.</p>
           <p class="promises">Was Sie tippen, bleibt auf Ihrem Telefon</p>
         </div>
-        <div class="stamp">
-          <span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratis</span></span>
+        <div class="eventail">
+          <img class="c1" src="assets/cartes/carte_hond_wuertduell.webp" alt="Ungewöhnliche Karte „Hond“ (Hund), Bronzerahmen">
+          <img class="c2" src="assets/cartes/carte_kuch_wuertduell.webp" alt="Seltene Karte „Kuch“ (Kuchen), Silberrahmen">
+          <img class="c3" src="assets/cartes/carte_kaz_wuertduell.webp" alt="Sehr seltene Karte „Kaz“ (Katze), Goldrahmen">
         </div>
         <div class="qr-wrap">
           <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR-Code zur Google-Play-Seite von Lëtzebuergesch Clavier">
@@ -634,7 +648,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
         </div>
         <div class="col-right">
           <div class="shots">
-            <img class="s4" src="assets/cartes/carte_kran.webp" alt="Sehr seltene Karte „Kran“, Goldrahmen, sternklare Winternacht">
+            <div class="stamp s-stamp"><span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratis</span></span></div>
             <img class="s1" src="Screenshots/lux_wuertsich_trouves_de.png" alt="Das Spiel Wuertsich: drei gefundene Wörter im Gitter, jedes mit seiner Übersetzung">
             <img class="s3" src="Screenshots/lux_wierderbuch_gromperekichelchen_de.png" alt="Der Wörterbucheintrag Gromperekichelchen: Kartoffelpuffer, ein Beispielsatz und die anderen Formen">
             <img class="s2" src="Screenshots/lux_supports_clavier.png" alt="Die Tastatur beim Tippen: nach „Ech hunn op der Schueb“ schlägt die Leiste „Schueberfouer“ vor">
@@ -649,8 +663,10 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
           <p class="signature">Däi Lëtzebuergesch, op dengem Telefon.</p>
           <p class="promises">Was Sie tippen, bleibt auf Ihrem Telefon</p>
         </div>
-        <div class="stamp">
-          <span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratis</span></span>
+        <div class="eventail">
+          <img class="c1" src="assets/cartes/carte_hond_wuertduell.webp" alt="Ungewöhnliche Karte „Hond“ (Hund), Bronzerahmen">
+          <img class="c2" src="assets/cartes/carte_kuch_wuertduell.webp" alt="Seltene Karte „Kuch“ (Kuchen), Silberrahmen">
+          <img class="c3" src="assets/cartes/carte_kaz_wuertduell.webp" alt="Sehr seltene Karte „Kaz“ (Katze), Goldrahmen">
         </div>
         <div class="qr-wrap">
           <img src="assets/qr-luxkeyb-store-bleu.png" alt="QR-Code zur Google-Play-Seite von Lëtzebuergesch Clavier">

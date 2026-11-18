@@ -352,6 +352,18 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
   font-family:"Fredoka",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.15;}
 .a-valider b{display:block;font-size:30px;letter-spacing:.06em;text-transform:uppercase;}
 .a-valider span{display:block;font-size:15px;font-weight:600;}
+/* 2026-11-18 : la carte Kran (ancien dessin) quitte la capture du
+   dictionnaire. Trois cartes du Wuertduell, une par cadre (bronze, argent,
+   or), dessinées par l'application et sans filigrane
+   (cartes-imprimables/boite/rectos_52.pdf), s'ouvrent en éventail à gauche
+   du QR code ; le tampon « 100 % gratuit » monte au-dessus du badge. */
+.eventail{position:relative;width:60mm;height:52mm;flex:none;margin-right:-4mm;}
+.eventail img{position:absolute;bottom:0;width:31mm;height:auto;transform-origin:50% 100%;
+  filter:drop-shadow(0 2mm 3mm rgba(0,0,0,.35));}
+.eventail .c1{left:0;transform:rotate(-10deg);z-index:1;}
+.eventail .c2{left:14.5mm;transform:rotate(0deg) translateY(-2mm);z-index:2;}
+.eventail .c3{left:29mm;transform:rotate(10deg);z-index:3;}
+.store .stamp{margin-bottom:1mm;}
 </style>
 </head>
 <body>
@@ -411,7 +423,6 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
     <div class="panel">
       <p class="subtitle">Já o fala.<br>Agora também o escreve.</p>
       <div class="shots">
-        <img class="s4" src="assets/cartes/carte_kran.webp" alt="Cartão muito raro «Kran» (grua), moldura de ouro, noite de inverno estrelada">
         <img class="s1" src="Screenshots/lux_wuertsich_trouves_pt.png" alt="O jogo Wuertsich: três palavras encontradas na grelha, cada uma com a sua tradução">
         <img class="s3" src="Screenshots/lux_wierderbuch_gromperekichelchen_pt.png" alt="A entrada Gromperekichelchen do dicionário: panqueca de batata ralada, uma frase de exemplo e as outras formas">
         <img class="s2" src="Screenshots/lux_supports_clavier.png" alt="O teclado durante a escrita: depois de «Ech hunn op der Schueb», a barra sugere «Schueberfouer»">
@@ -431,13 +442,18 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
     </div>
 
     <div class="qr-center">
-      <div class="stamp">
-        <span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">grátis</span></span>
+      <div class="eventail">
+        <img class="c1" src="assets/cartes/carte_hond_wuertduell.webp" alt="Cartão pouco comum «Hond» (cão), moldura de bronze">
+        <img class="c2" src="assets/cartes/carte_kuch_wuertduell.webp" alt="Cartão raro «Kuch» (bolo), moldura de prata">
+        <img class="c3" src="assets/cartes/carte_kaz_wuertduell.webp" alt="Cartão muito raro «Kaz» (gato), moldura de ouro">
       </div>
       <div class="qr-wrap">
         <img src="assets/qr-luxkeyb-store-bleu.png" alt="Código QR para a página do Lëtzebuergesch Clavier no Google Play" width="980" height="980">
       </div>
       <div class="store">
+        <div class="stamp">
+          <span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">grátis</span></span>
+        </div>
         <img class="gp-badge" src="assets/google-play-badge-pt.svg" alt="Disponível no Google Play">
         <span>ou procure<br><b>Lëtzebuergesch Clavier</b></span>
       </div>

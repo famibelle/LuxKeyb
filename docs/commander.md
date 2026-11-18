@@ -66,7 +66,7 @@ boîte</strong>. On joue tout de suite, à deux, dès 6 ans.
 </div>
 
 <figure style="margin:20px auto;max-width:620px;text-align:center;">
-  <img src="assets/cartes-eventail.png" style="width:100%;" alt="Quatre cartes en éventail : Bam (arbre) en étain, Sonn (soleil) en bronze, Brëll (lunettes) en argent, Kran (grue) en or">
+  <img src="assets/cartes-eventail.png" style="width:100%;" alt="Trois cartes en éventail : Hond (chien) en bronze, Kuch (gâteau) en argent, Kaz (chat) en or">
   <figcaption>Les cartes du carnet de l'application, sur du vrai carton</figcaption>
 </figure>
 
