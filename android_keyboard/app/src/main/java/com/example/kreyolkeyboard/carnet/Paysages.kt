@@ -1696,10 +1696,13 @@ object Paysages {
                     reflets(p, temps, 0f, 60f, 36f, 52f, raf)
                     ronds(p, vol, 44f, 10f, 28f, 46f)
                 } else envol(p, vol, 22f, 9f, 1f)
+                // Depuis que le lieu suit les photos, l'eau d'aval est une
+                // bande au pied du barrage et le ciel une échancrure : les
+                // reflets s'y couchent, et les oiseaux montent par la trouée.
                 Lieu.STAUSEI -> {
-                    reflets(p, temps, 0f, 72f, 48f, 57f, raf)
-                    ronds(p, vol, 52f, 20f, 44f, 62f)
-                    envol(p, vol, 96f, 36f, -1f)
+                    reflets(p, temps, 0f, 100f, 50f, 57f, raf)
+                    ronds(p, vol, 54f, 20f, 46f, 70f)
+                    envol(p, vol, 44f, 10f, 1f)
                 }
                 Lieu.CONZEFENN -> for ((k, mx) in MOUTONS.withIndex()) {
                     val leve = raf > 0.1f
@@ -7439,32 +7442,246 @@ object Paysages {
             c.restore()
         }
 
-        // ---- Stauséi, le barrage de la Haute-Sûre et ses anses boisées (photos du propriétaire)
+        // ---- Stauséi, le barrage de la Haute-Sûre (photos du propriétaire)
 
+        /**
+         * Ce que disent les photos, et qu'aucune maquette n'avait :
+         *
+         * 1. **Le barrage est une voûte**, un voile de béton tendu entre deux
+         *    versants, et sa convexité regarde le lac. Vu d'aval, le milieu
+         *    de la crête s'éloigne et remonte dans la fenêtre, les deux
+         *    culées descendent vers nous : c'est cet arc qui le distingue
+         *    d'un mur jeté en travers de la vallée.
+         * 2. **Le béton est coulé par plots verticaux.** Ce sont ces joints
+         *    de reprise, de la crête au pied, qui font la matière, avec les
+         *    longues traînées sombres que l'eau laisse sous la crête.
+         * 3. **La crête est une route** bordée d'un garde-corps ajouré : on
+         *    voit le lac au travers, entre les poteaux.
+         * 4. **Le lac est vert jade**, encaissé entre deux versants boisés
+         *    très raides qui plongent jusqu'à l'eau, et il remonte la vallée
+         *    en V jusqu'au fond de la fenêtre.
+         * 5. **Une bande pâle de marnage** cerne le lac à la ligne d'eau :
+         *    la terre caillouteuse que la baisse du plan d'eau découvre.
+         *    C'est elle qui dit qu'on est devant une retenue et non devant un
+         *    étang, et elle vaut pour tout le pourtour.
+         * 6. **Le ciel n'est qu'une échancrure** entre les deux crêtes.
+         *
+         * Sur la carte ouverte, les deux bouts de la crête et les deux
+         * culées tiennent les colonnes, le lac et ses versants la bande du
+         * haut, et l'eau d'aval le bas.
+         */
         fun stausei() {
-            lisiere(-2f, 102f, { x -> 14f + 5f * cos((x - 55f) * 0.05f) }, 2f, 3f, 246, mix(P.loin, vert(0.3f), 0.4f))
-            pieceD("M18 40L18 29C34 27.4 64 27.4 82 29L82 40Z", mix(P.eau, 0xFF4F9A80.toInt(), 0.35f), 0.3f)
-            lisiere(-2f, 46f, { x -> 20f + x * 0.1f }, 1.8f, 2.6f, 247, vert(0.25f))
-            lisiere(56f, 102f, { x -> 24f - (x - 56f) * 0.12f }, 1.8f, 2.6f, 248, vert(0.35f))
+            val r = Alea(245)
+            // L'arc de la crête : le milieu s'éloigne, les deux culées
+            // viennent vers nous, et la culée de droite est la plus proche —
+            // c'est le point de vue de la photo, pris du versant de gauche.
+            // Tout le reste en découle : plus on va à droite, plus le
+            // tablier est large, plus le voile est haut et plus le lac
+            // s'ouvre derrière lui.
+            fun crete(x: Float) = 33f + 0.06f * (x - 50f) + 0.0030f * (x - 50f) * (x - 50f)
+            fun tablier(x: Float) = 2.2f + (crete(x) - 33f) * 0.22f
+            fun piedVoile(x: Float) = crete(x) + 6.5f + (crete(x) - 33f) * 0.42f
+            // La ligne d'eau du lac, qui remonte la vallée : elle sort de
+            // derrière le barrage vers x = 28, atteint le fond vers x = 58 et
+            // redescend vers la rive droite. À gauche elle passe sous la
+            // crête, où le barrage la cache : c'est ce qui donne au lieu son
+            // asymétrie, celle de la photo.
+            val bornes = floatArrayOf(-4f, 44f, 12f, 39f, 24f, 33f, 34f, 27.5f, 46f, 23.5f,
+                60f, 21.5f, 74f, 22.5f, 88f, 25f, 104f, 27.5f)
+            fun rive(x: Float): Float {
+                var i = 0
+                while (i < bornes.size - 4 && x > bornes[i + 2]) i += 2
+                val t = ((x - bornes[i]) / (bornes[i + 2] - bornes[i])).coerceIn(0f, 1f)
+                return bornes[i + 1] + (bornes[i + 3] - bornes[i + 1]) * t
+            }
+            // Le haut de la grève découverte : un liseré partout, et à
+            // gauche un grand pan de terre nue, qui est ce que la photo
+            // montre le plus franchement de la retenue.
+            fun greveHaut(x: Float) = rive(x) - 0.9f - max(0f, 26f - x) * 0.55f
+            /** Le ruban compris entre les courbes [haut] et [bas], de [x0] à [x1]. */
+            fun ruban(x0: Float, x1: Float, haut: (Float) -> Float, bas: (Float) -> Float): Path {
+                val t = Path()
+                t.moveTo(x0, haut(x0))
+                var x = x0
+                while (x < x1) { x = min(x1, x + 2.5f); t.lineTo(x, haut(x)) }
+                while (x > x0) { t.lineTo(x, bas(x)); x = max(x0, x - 2.5f) }
+                t.lineTo(x0, bas(x0))
+                t.close()
+                return t
+            }
+            // ---- Le fond de la vallée : deux crêtes lointaines qui ferment
+            // le V, la seconde plus franche que la première.
+            lisiere(-3f, 103f, { x -> 15.6f + 2.2f * sin(x * 0.07f) }, 1.8f, 2.8f, 246,
+                mix(nappe(duJour(0xFF40622C.toInt()), 0.38f, VERT_CALME), P.loin, 0.38f))
+            lisiere(-3f, 103f, { x -> 19f + 1.6f * sin(x * 0.11f + 2f) }, 2f, 3f, 247,
+                mix(nappe(duJour(0xFF3A5E26.toInt()), 0.44f, VERT_CALME), P.loin, 0.16f))
             plan(1)
-            val beton = duJour(0xFFD8CDB4.toInt())
+            // ---- Les deux versants, qui plongent jusqu'à l'eau. Trois
+            // rideaux par rive, du clair au fond au sombre devant : à nuance
+            // égale deux rideaux n'en font qu'un et la vallée redevient un
+            // aplat. Chacun s'arrête là où sa cime rencontre la ligne d'eau,
+            // sans quoi il se peindrait sous le lac pour rien.
+            val versant = nappe(duJour(0xFF36602A.toInt()), 0.5f, VERT_CALME)
+            lisiere(-4f, 44f, { x -> 0.5f + (x + 4f) * 0.406f }, 2.2f, 3.6f, 248, mix(versant, P.loin, 0.2f))
+            lisiere(54f, 104f, { x -> 20f - (x - 54f) * 0.36f }, 2.2f, 3.6f, 249, mix(versant, P.loin, 0.2f))
+            lisiere(-4f, 38f, { x -> 6f + (x + 4f) * 0.381f }, 2.6f, 4.2f, 250, versant)
+            lisiere(68f, 104f, { x -> 21f - (x - 68f) * 0.361f }, 2.6f, 4.2f, 251, versant)
+            lisiere(-4f, 30f, { x -> 12f + (x + 4f) * 0.412f }, 3f, 5f, 252, sombre(versant, 0.24f))
+            lisiere(84f, 104f, { x -> 23f - (x - 84f) * 0.45f }, 3f, 5f, 253, sombre(versant, 0.24f))
+            // Des touffes claires dans les pentes : sans elles, un versant
+            // entier n'est qu'une masse verte.
+            for (k in 0 until 16) {
+                val gauche = k % 2 == 0
+                val fx = if (gauche) -4f + r() * 34f else 70f + r() * 36f
+                val fy = (if (gauche) 2f + fx * 0.4f else 21f - (fx - 70f) * 0.36f) + r() * 7f
+                val t = r()
+                touffe(if (t < 0.34f) mix(versant, duJour(0xFFDCEE8E.toInt()), 0.26f)
+                       else if (t < 0.7f) versant else sombre(versant, 0.34f),
+                    fx, fy, 1.8f + r() * 2.2f,
+                    fx + 2.6f, fy + 1.4f, 1.4f + r() * 1.8f,
+                    fx - 2.4f, fy + 1.2f, 1.3f + r() * 1.6f)
+            }
+            // ---- Le marnage : la grève pâle que la retenue découvre, tout
+            // le long de la ligne d'eau. Elle est minérale, donc l'hiver ne
+            // la blanchit pas et le printemps n'y sème rien.
+            val greve = neutre(duJour(0xFFC3B49A.toInt()))
             mineral {
-                pieceD("M14 36C30 33 60 33 92 36L92 44C60 40 30 40 14 44Z", beton)
-                pieceD("M14 35C30 32 60 32 92 35L92 36.4C60 33.4 30 33.4 14 36.4Z", sombre(beton, 0.18f))
-                for (x in floatArrayOf(28f, 42f, 56f, 70f, 84f)) ligne(x, 34.6f, x, 41.4f, sombre(beton, 0.25f), 0.25f)
-                pieceD("M-2 50C6 46 14 44 20 46C24 47 26 50 24 52L-2 52Z", duJour(0xFFB9B0A0.toInt()))
+                piece(ruban(-4f, 104f, { x -> greveHaut(x) }, { x -> rive(x) + 0.3f }), greve, 0.5f)
+                // Le pan de gauche est une pente, pas un aplat : son ombre le
+                // long de l'eau, et son arête au jour en haut.
+                forme(ruban(-4f, 26f, { x -> rive(x) - 2f }, { x -> rive(x) + 0.3f }), sombre(greve, 0.26f), 0.5f)
+                forme(ruban(-4f, 24f, { x -> greveHaut(x) }, { x -> greveHaut(x) + 1.2f }),
+                    mix(greve, 0xFFFFFFFF.toInt(), 0.22f), 0.6f)
+                for (k in 0 until 28) {
+                    val gx = -4f + r() * 108f
+                    val gy = greveHaut(gx) + 0.6f + r() * (rive(gx) - greveHaut(gx) - 0.6f)
+                    rond(gx, gy, 0.2f + r() * 0.34f,
+                        if (r() < 0.5f) sombre(greve, 0.3f) else mix(greve, 0xFFFFFFFF.toInt(), 0.2f), 0.8f)
+                }
+            }
+            // ---- Le lac, vert jade. Il descend bien au-dessous du barrage :
+            // les plans glissent l'un sur l'autre, et un lac arrêté sur la
+            // crête découvrirait le ciel sous elle.
+            // Le jade de la retenue. Il passe par [duJour] mais **pas** par
+            // [neutre] : le vert de l'eau est une teinte, pas une matière
+            // bâtie, et neutralisé il tournait au mauve.
+            //
+            // Et il **cède le pas au ciel le soir et la nuit** ([P.allume]).
+            // Une eau se lit à ce qu'elle reflète : de jour c'est le vert du
+            // fond, au couchant c'est le ciel. Forcé au jade aux quatre
+            // heures, le lac du soir devenait une prairie de plus entre deux
+            // versants verts, et c'est exactement ce que la palette de
+            // l'heure disait déjà avec son eau rose.
+            //
+            // La saturation est tenue comme celle de la végétation ([nappe]) :
+            // le ravivage des palettes vives sort un vert d'eau franc en vert
+            // pomme, et le lac devenait la chose la plus criarde de la carte,
+            // devant le mot qui est posé dessus.
+            fun calmer(col: Int) = mix(col, neutre(col), 0.45f)
+            val lac = calmer(mix(P.eau, duJour(0xFF2E8269.toInt()), if (P.allume) 0.44f else 0.72f))
+            piece(ruban(-4f, 104f, { x -> rive(x) + 0.2f }, { 60f }), lac, 0.4f)
+            // Le reflet des versants sous leur rive : sans lui l'eau est un
+            // aplat et la grève ne tient à rien.
+            forme(ruban(-4f, 104f, { x -> rive(x) + 0.2f }, { x -> rive(x) + 2.8f }), sombre(lac, 0.32f), 0.32f)
+            // Les traînées de lumière, couchées et plus longues en approchant.
+            val brillance = mix(lac, 0xFFFFFFFF.toInt(), if (P.nuit) 0.16f else 0.48f)
+            for (k in 0 until 18) {
+                val lx = 30f + r() * 74f
+                val ly = rive(lx) + 3.4f + r() * (crete(lx) - rive(lx) - 7f).coerceAtLeast(1f)
+                val t = (ly - rive(lx)) / 14f
+                rect(lx, ly, 3f + r() * (4f + t * 10f), 0.3f, brillance, 0.7f)
             }
             plan(2)
-            solNaturel(SolNaturel.BERGE)  // la rive du lac
+            solNaturel(SolNaturel.BERGE)  // la grève d'aval, sous la fenêtre
             poser(DEVANT)
-            pieceD("M-2 66L-2 46C30 44 70 44 102 46L102 66Z", mix(P.eau, 0xFF3F8A6A.toInt(), 0.45f), 0.4f)
-            // La passerelle d'Insenborn, en bas à droite.
-            val bois = duJour(0xFFC9B79A.toInt())
-            pieceD("M74 58.5L84 47L90 47L92 58.5Z", bois)
-            pieceD("M72 55L83 44.4L83 46.4L74 57Z", sombre(bois, 0.15f))
-            pieceD("M94 55L91 44.4L91 46.4L93 57Z", sombre(bois, 0.15f))
-            touffe(vert(0.55f), 96f, 40f, 7f, 100f, 50f, 7f, 90f, 34f, 5f)
-            touffe(vert(0.4f), -2f, 56f, 6f, 6f, 58f, 5f)
+            // ---- Le voile de béton, de la crête à son pied.
+            val beton = neutre(duJour(0xFFB7AF9C.toInt()))
+            val voile = ruban(-4f, 104f, { x -> crete(x) }, { x -> piedVoile(x) })
+            mineral {
+                piece(voile, sombre(beton, 0.14f))
+                c.save(); c.clipPath(voile)
+                releve?.save(); releve?.clipPath(voile)
+                // Les plots de bétonnage : chaque levée a son ton et son
+                // joint de reprise, de la crête au pied. C'est cet appareil
+                // vertical qui fait le barrage ; un aplat beige bordé de deux
+                // traits ne ferait que du carton peint.
+                var px = -5f
+                while (px < 105f) {
+                    // Les levées sont plus larges en venant vers nous.
+                    val l = (3.4f + r() * 1.8f) * (1f + (crete(px) - 33f) * 0.06f)
+                    val t = r()
+                    forme(ruban(px, px + l, { x -> crete(x) - 1f }, { x -> piedVoile(x) + 1f }),
+                        if (t < 0.45f) mix(beton, 0xFFFFFFFF.toInt(), 0.06f + t * 0.34f)
+                        else sombre(beton, 0.05f + (t - 0.45f) * 0.48f), 0.92f)
+                    ligne(px, crete(px) - 1.5f, px, piedVoile(px) + 1.5f, sombre(beton, 0.5f), 0.22f, 0.85f)
+                    px += l
+                }
+                // Les traînées que l'eau laisse sous la crête, et l'ombre du
+                // pied que l'eau d'aval mouille.
+                for (k in 0 until 11) {
+                    val tx = -3f + r() * 106f
+                    val h = (piedVoile(tx) - crete(tx)) * (0.4f + r() * 0.58f)
+                    ligne(tx, crete(tx) + 0.6f, tx + (r() - 0.5f) * 1.4f, crete(tx) + 0.6f + h,
+                        sombre(beton, 0.5f), 0.4f + r() * 0.9f, 0.34f)
+                }
+                // Le voile s'assombrit en descendant, et son pied est mouillé.
+                forme(ruban(-4f, 104f, { x -> crete(x) + (piedVoile(x) - crete(x)) * 0.45f }, { x -> piedVoile(x) }),
+                    sombre(beton, 0.3f), 0.22f)
+                forme(ruban(-4f, 104f, { x -> piedVoile(x) - 1.5f }, { x -> piedVoile(x) }), sombre(beton, 0.46f), 0.4f)
+                releve?.restore(); c.restore()
+                // ---- La crête : la route, son parapet amont, et le
+                // garde-corps aval, ajouré — c'est entre ses poteaux qu'on
+                // voit le lac, et une pièce pleine le boucherait.
+                // Le tablier est posé **à plat** sur le voile : sa tranche de
+                // kraft, sur cent unités de long, se lisait comme un jonc de
+                // caoutchouc tendu d'une rive à l'autre. C'est l'ombre du
+                // parapet sur le parement qui dit maintenant l'arête.
+                forme(ruban(-4f, 104f, { x -> crete(x) - tablier(x) }, { x -> crete(x) + 0.1f }),
+                    mix(beton, 0xFFFFFFFF.toInt(), 0.2f), 0.94f)
+                forme(ruban(-4f, 104f, { x -> crete(x) - tablier(x) }, { x -> crete(x) - tablier(x) + 0.7f }),
+                    mix(beton, 0xFFFFFFFF.toInt(), 0.36f), 0.8f)
+                forme(ruban(-4f, 104f, { x -> crete(x) }, { x -> crete(x) + 0.5f }), sombre(beton, 0.42f), 0.6f)
+                var jx = -4f
+                while (jx < 104f) {
+                    ligne(jx, crete(jx) - tablier(jx) + 0.4f, jx, crete(jx), sombre(beton, 0.2f), 0.18f, 0.4f)
+                    jx += 5f + (crete(jx) - 33f) * 0.5f
+                }
+                // Le garde-corps, aval : ses poteaux grandissent eux aussi en
+                // venant vers nous, et c'est entre eux qu'on voit le lac.
+                val metal = mix(beton, 0xFFFFFFFF.toInt(), if (P.nuit) 0.3f else 0.52f)
+                var gx = -4f
+                while (gx < 104f) {
+                    val h = tablier(gx) * 0.72f
+                    rect(gx, crete(gx) - h, 0.1f + h * 0.14f, h + 0.2f, metal, 0.95f)
+                    gx += 2.8f + (crete(gx) - 33f) * 0.22f
+                }
+                var ux = -4f
+                while (ux < 103f) {
+                    val h = tablier(ux) * 0.72f
+                    ligne(ux, crete(ux) - h, ux + 3f, crete(ux + 3f) - tablier(ux + 3f) * 0.72f, metal, 0.26f)
+                    ligne(ux, crete(ux) - h * 0.5f, ux + 3f, crete(ux + 3f) - tablier(ux + 3f) * 0.36f, metal, 0.2f, 0.8f)
+                    ux += 3f
+                }
+            }
+            // ---- L'eau d'aval, plus sombre et plus verte que le lac.
+            val aval = calmer(mix(P.eau, duJour(0xFF236B57.toInt()), if (P.allume) 0.56f else 0.82f))
+            piece(ruban(-4f, 104f, { x -> piedVoile(x) }, { 62f }), aval, 0.4f)
+            // L'écume au pied du voile, et les rides du courant.
+            forme(ruban(-4f, 104f, { x -> piedVoile(x) }, { x -> piedVoile(x) + 1.1f }),
+                mix(aval, 0xFFFFFFFF.toInt(), if (P.nuit) 0.2f else 0.5f), 0.45f)
+            // L'ombre que le voile porte sur l'eau d'aval : elle est ce qui
+            // dit la hauteur du barrage, et sans elle la retenue flotte.
+            // Puis le reflet du parement, couché dessous : une eau sans
+            // reflet n'est qu'une aire verte au bas de la fenêtre.
+            forme(ruban(-4f, 104f, { x -> piedVoile(x) + 1.1f }, { x -> piedVoile(x) + 2.6f }), sombre(aval, 0.4f), 0.38f)
+            forme(ruban(-4f, 104f, { x -> piedVoile(x) + 2.6f }, { x -> piedVoile(x) + 8.5f }),
+                mix(aval, beton, 0.55f), 0.22f)
+            val ride = mix(aval, 0xFFFFFFFF.toInt(), if (P.nuit) 0.16f else 0.42f)
+            for (k in 0 until 14) {
+                val ax = -4f + r() * 86f
+                val ay = piedVoile(ax) + 2f + r() * (56f - piedVoile(ax)).coerceAtLeast(2f)
+                rect(ax, ay, 4f + r() * 9f, 0.32f, ride, 0.7f)
+            }
             c.restore()
         }
 
