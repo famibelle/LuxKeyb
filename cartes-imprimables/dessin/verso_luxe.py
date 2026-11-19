@@ -24,11 +24,21 @@ L, H = CA.L, CA.H
 NUIT_CENTRE, NUIT_BORD = '#22356f', '#0b1333'
 GRAVURE = '#8c7a4c'          # l'or de la rosace, éteint sur la nuit
 GRAVURE_FINE = '#5d5640'
+# Le cœur du médaillon, depuis que le lion y est dans ses couleurs d'origine
+# (propriétaire, 2026-11-19) : son tracé est vert très sombre et disparaissait
+# sur la nuit, où seuls flottaient les deux angles rouge et bleu du drapeau.
+# Un ivoire plutôt qu'un blanc pur, qui ferait une tache sur l'or.
+CREME, CREME_OMBRE = '#f6efdd', '#e3d6b2'
+GUILLOCHE_CREME = '#c9a84c'
 
 
-def logo_or(chemin, cote=900):
-    """Le lion du logo, recoloré pour la nuit : traits en or, angles rouge et
-    bleu gardés, fond rendu transparent."""
+def _lion(chemin, cote, en_or):
+    """Le lion du logo, fond rendu transparent.
+
+    [en_or] recolore son tracé en or clair et ne garde que les deux angles du
+    drapeau : c'est ce qu'il fallait tant que le médaillon était bleu nuit.
+    Sinon il garde ses couleurs d'origine, et son cœur doit être clair.
+    """
     im = Image.open(chemin).convert('RGB').resize((cote, cote), Image.LANCZOS)
     a = np.asarray(im).astype(np.float32)
     fond = np.array([245, 246, 249], np.float32)
@@ -38,13 +48,23 @@ def logo_or(chemin, cote=900):
     couleur = sat > 60                                   # les deux angles du drapeau
     alpha = np.clip(ecart / 60, 0, 1)
     trait = np.array([243, 214, 140], np.float32)        # or clair
-    rgb = np.where(couleur[..., None], a, trait)
-    # Un trait sombre est pleinement or ; son bord antialiasé s'efface.
+    rgb = np.where(couleur[..., None], a, trait) if en_or else a
+    # Un trait plein est pleinement opaque ; son bord antialiasé s'efface.
     alpha = np.where(couleur, alpha, np.clip((245 - lum) / 120, 0, 1))
     rgba = np.dstack([rgb, alpha * 255]).astype(np.uint8)
     tampon = io.BytesIO()
     Image.fromarray(rgba, 'RGBA').save(tampon, 'PNG', optimize=True)
     return base64.b64encode(tampon.getvalue()).decode()
+
+
+def logo_or(chemin, cote=900):
+    """Le lion recoloré en or, pour un médaillon de nuit : voir [_lion]."""
+    return _lion(chemin, cote, True)
+
+
+def logo_couleurs(chemin, cote=900):
+    """Le lion dans ses couleurs d'origine, pour un médaillon clair."""
+    return _lion(chemin, cote, False)
 
 
 def rosace(cx, cy, r, amplitude, lobes, brins, couleur, epaisseur):
@@ -87,7 +107,7 @@ def verso(largeur_px, logo_png):
          CA.grad_lineaire('v_anneau', 0, cy - 66, 0, cy + 66, [CA.HI, CA.MID, CA.LO], [0, .5, 1]),
          CA.grad_lineaire('v_anneau2', 0, cy + 60, 0, cy - 60, [CA.HI, CA.MID, CA.LO], [0, .5, 1]),
          f'<radialGradient id="v_coeur" gradientUnits="userSpaceOnUse" cx="{cx}" cy="{cy - 15}" r="70">'
-         f'<stop offset="0" stop-color="#2c4486"/><stop offset="1" stop-color="#101a44"/></radialGradient>',
+         f'<stop offset="0" stop-color="{CREME}"/><stop offset="1" stop-color="{CREME_OMBRE}"/></radialGradient>',
          f'<clipPath id="v_clipFace"><path d="{CA.roundrect(b, b, L - b, H - b, 11)}"/></clipPath>',
          '</defs>']
 
@@ -147,7 +167,7 @@ def verso(largeur_px, logo_png):
     for y in (H * .30, H * .70):
         s.append(CA.joyau(b + 6, y, 3.2, CA.HI) + CA.joyau(L - b - 6, y, 3.2, CA.HI))
 
-    # Le médaillon : anneau d'or à grènetis, cœur de nuit, lion d'or.
+    # Le médaillon : anneau d'or à grènetis, cœur ivoire, lion en couleurs.
     s.append(f'<circle cx="{cx}" cy="{cy}" r="68" fill="{CA.melange(NUIT_BORD, "#000000", .3)}"/>')
     s.append(f'<circle cx="{cx}" cy="{cy}" r="66" fill="url(#v_anneau)" stroke="{CA.TRAIT}" stroke-width="1.4"/>')
     s.append(f'<circle cx="{cx}" cy="{cy}" r="56" fill="url(#v_anneau2)" stroke="{CA.TRAIT}" stroke-width="1.2"/>')
@@ -155,7 +175,7 @@ def verso(largeur_px, logo_png):
         a = i / 40 * 2 * math.pi
         s.append(CA.joyau(cx + math.cos(a) * 61, cy + math.sin(a) * 61, 1.25, CA.HI))
     s.append(f'<circle cx="{cx}" cy="{cy}" r="52" fill="url(#v_coeur)" stroke="{CA.TRAIT}" stroke-width="1.6"/>')
-    s.append(rosace(cx, cy, 44, 3.5, 16, 6, '#3d5296', .35))
+    s.append(rosace(cx, cy, 44, 3.5, 16, 6, GUILLOCHE_CREME, .35))
     s.append(f'<image href="data:image/png;base64,{logo_png}" x="{cx - 40}" y="{cy - 41}" width="80" height="80"/>')
 
     # Le nom du jeu, en haut et en bas du médaillon : lisible dans les deux sens.

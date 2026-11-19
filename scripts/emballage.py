@@ -145,10 +145,11 @@ def png64(im, fmt='PNG', **k):
 _logo = None
 
 
-def logo_or():
+def logo_lion():
+    """Le lion du logo dans ses couleurs d'origine (propriétaire, 2026-11-19)."""
     global _logo
     if _logo is None:
-        _logo = VL.logo_or(LOGO, 600)
+        _logo = VL.logo_couleurs(LOGO, 600)
     return _logo
 
 
@@ -223,11 +224,16 @@ def medaillon(cx, cy, r, forme, couleur, ident):
 
 
 def lion(cx, cy, r):
-    """Le médaillon du dos : anneau d'or, cœur de nuit, lion d'or."""
+    """Le médaillon du dos : anneau d'or, cœur ivoire, lion en couleurs.
+
+    Le cœur était bleu nuit et le lion recoloré en or. Dans ses couleurs
+    d'origine (propriétaire, 2026-11-19), son tracé vert très sombre s'y
+    perdait : il lui faut un fond clair, le même que sur le dos des cartes.
+    """
     return (f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="url(#or_anneau)" stroke="{OR_TRAIT}" stroke-width="{r * .04}"/>'
-            f'<circle cx="{cx}" cy="{cy}" r="{r * .8}" fill="url(#coeur)" stroke="{OR_TRAIT}" stroke-width="{r * .03}"/>'
-            + VL.rosace(cx, cy, r * .66, r * .05, 16, 6, '#3d5296', r * .008)
-            + f'<image href="data:image/png;base64,{logo_or()}" x="{cx - r * .62}" y="{cy - r * .63}" '
+            f'<circle cx="{cx}" cy="{cy}" r="{r * .8}" fill="url(#coeur_lion)" stroke="{OR_TRAIT}" stroke-width="{r * .03}"/>'
+            + VL.rosace(cx, cy, r * .66, r * .05, 16, 6, VL.GUILLOCHE_CREME, r * .008)
+            + f'<image href="data:image/png;base64,{logo_lion()}" x="{cx - r * .62}" y="{cy - r * .63}" '
               f'width="{r * 1.24}" height="{r * 1.24}"/>')
 
 
@@ -580,8 +586,8 @@ def defs(p):
             .replace('gradientUnits="userSpaceOnUse"', 'gradientUnits="objectBoundingBox"')
             + f'<radialGradient id="email" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="{m(c, "#ffffff", .35)}"/>'
               f'<stop offset=".55" stop-color="{c}"/><stop offset="1" stop-color="{m(c, "#000000", .45)}"/></radialGradient>'
-            + '<radialGradient id="coeur" cx=".5" cy=".42" r=".6"><stop offset="0" stop-color="#2c4486"/>'
-              '<stop offset="1" stop-color="#101a44"/></radialGradient>'
+            + f'<radialGradient id="coeur_lion" cx=".5" cy=".42" r=".6"><stop offset="0" stop-color="{VL.CREME}"/>'
+              f'<stop offset="1" stop-color="{VL.CREME_OMBRE}"/></radialGradient>'
             + f'<radialGradient id="nuit_face" gradientUnits="userSpaceOnUse" cx="{W / 2}" cy="44" r="62">'
               f'<stop offset="0" stop-color="{NUIT_CENTRE}"/><stop offset="1" stop-color="{NUIT_BORD}"/></radialGradient>'
             + f'<radialGradient id="nuit_dos" gradientUnits="userSpaceOnUse" cx="{W / 2}" cy="44" r="62">'
@@ -843,8 +849,12 @@ def produire(code):
     cartouche = (texte(-FP, -FP - marge - entete + 9, f'Wuertduell · étui « {p["nom"]} » · BAT à plat', 5, '#222', 700, ancre='start')
                  + texte(-FP, -FP - marge - entete + 15.5,
                          f'Intérieur {W:g} × {H:g} × {D:g} mm (54 cartes poker sous film) · fond perdu {FP:g} mm · '
-                         f'rouge : coupe · bleu pointillé : rainage · vert : sécurité du texte ({SECU:g} mm) · '
-                         'cotes à caler sur le gabarit de l’imprimeur', 2.6, '#444', ancre='start'))
+                         'cotes à caler sur le gabarit de l’imprimeur', 2.6, '#444', ancre='start')
+                 # Une seule ligne débordait de la page : le BAT partant chez
+                 # l'imprimeur, rien n'y doit être coupé par le bord.
+                 + texte(-FP, -FP - marge - entete + 20,
+                         f'Rouge : coupe · bleu pointillé : rainage · vert : sécurité du texte ({SECU:g} mm) · '
+                         'magenta : à compléter avant impression', 2.6, '#444', ancre='start'))
     pages = svg(defs_, corps + trace(True) + notes_bat(p) + cartouche, lb, hb + 14, -FP - marge, -FP - marge - entete)
     f = os.path.join(dossier, '_bat.html')
     with open(f, 'w', encoding='utf-8') as fh:
