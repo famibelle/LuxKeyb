@@ -151,3 +151,59 @@ Restent 44 676 phrases. Sur les fichiers livrés, mesuré par
 87,8 → 89,0 %, couverture 93,6 → 94,4 %, ParaLux 20,8 → 20,8 %. Banc de frappes
 ParaLux (`bench_frappes.js`) : 22,5 / 37,1 / 59,6 % → 22,7 / 37,2 / 59,3 %,
 dans le bruit.
+
+## Conséquence sur les cartes : la rareté bouge (décision du 2026-11-20)
+
+Dans le carnet, la rareté d'une carte est le rang de sa forme dans
+`luxemburgish_dict.json` (`Rarete.pourRang`, seuils 3 000 / 6 500 / 9 000).
+Les phrases d'exemple du LOD font monter les mots du quotidien : 1 378 des
+12 000 premiers mots changent de palier. Le propriétaire a choisi d'**accepter
+les nouvelles raretés** plutôt que de les figer : elles disent mieux la langue
+courante (« Kaz » n'est pas un mot rare).
+
+### Cartes imprimées (`cartes_imprimees.json`) : 39 sur 209 changent de palier
+
+Les nombres ne bougent pas : leur rareté se lit sur leur orthographe.
+
+- **B1** (12) : Kaz (très rare → commune), Hond (peu commune → commune), Päerd (rare → commune), iessen (peu commune → commune), sprangen (très rare → rare), léif (très rare → rare), Kuch (rare → peu commune), Kéis (très rare → peu commune), Brout (rare → peu commune), drénken (peu commune → commune), schwammen (rare → peu commune), schéin (peu commune → commune)
+- **E1** (7) : Reen (peu commune → commune), Sonn (peu commune → commune), Insel (peu commune → commune), Mound (très rare → rare), kachen (très rare → peu commune), kal (peu commune → commune), waarm (peu commune → commune)
+- **NA1** (9) : Kaddo (très rare → rare), Kaffi (peu commune → commune), Fleesch (peu commune → commune), gesond (peu commune → commune), Noper (peu commune → commune), Apdikt (très rare → rare), Architekt (rare → peu commune), Supermarché (peu commune → commune), brong (très rare → rare)
+- **NA2** (11) : Box (peu commune → commune), Mond (peu commune → commune), Gaart (peu commune → commune), Schaf (très rare → peu commune), Schong (peu commune → commune), Toilette (rare → peu commune), modern (peu commune → commune), Duerf (peu commune → commune), Kolleeg (rare → peu commune), Marathon (rare → peu commune), Bibliothéik (rare → peu commune)
+
+Composition des boîtes (communes / peu communes / rares / très rares) :
+
+| Boîte | avant | après |
+|---|---|---|
+| B1, départ | 14 / 7 / 5 / 26 | 20 / 7 / 3 / 22 |
+| E1, extension | 27 / 7 / 0 / 18 | 32 / 3 / 1 / 16 |
+| NA1, niveau A1 | 26 / 9 / 4 / 13 | 31 / 5 / 6 / 10 |
+| NA2, niveau A2 | 22 / 18 / 5 / 7 | 28 / 17 / 1 / 6 |
+
+### Fait dans cette branche
+
+- `luxemburgish_blasons.json` régénéré (`generate_blasons.py`) : les grilles
+  tirent un autre vocabulaire, et seuls 47 % des lemmes jouables avaient
+  encore un champ. Après : 64 % du carnet.
+- `generate_chassecroise.py` garantit désormais chaque case de l'album des
+  paysages (au moins 3 mots par case et par langue) : la case du soir du Haff
+  Réimech était tombée à 2 mots dans les grilles portugaises. Une grille
+  portugaise remplacée.
+- « Smartphone » perd son dessin : plus aucun jeu ne le donne.
+- Les 628 tests unitaires passent.
+
+### Reste à faire, sur une machine qui fait tourner l'émulateur
+
+Les rendus de cartes sont dessinés par l'application elle-même
+(`scripts/exporter_rectos.sh`) ; ce conteneur n'a pas de KVM pour l'émulateur.
+
+1. Réexporter les rectos des quatre boîtes et relancer
+   `scripts/rectos_boite.py assembler` (PDF d'impression, `liste.csv`), puis
+   `scripts/bat_cartes.py` pour chaque BAT. Une carte qui change de palier
+   change d'heure (matin, après-midi, soir, nuit) et de cadre.
+2. Revoir l'équilibre des boîtes avec ces nouveaux comptes : B1 perd quatre
+   très rares, et « Kaz », sa carte n° 001, devient commune.
+3. L'affiche, le tract et le triptyque montrent « Kaz » très rare au cadre
+   d'or (`docs/assets/cartes/carte_kaz_wuertduell.webp`) : choisir une autre
+   carte vedette, ou réexporter celle-ci.
+4. Dans l'application, les cartes déjà gagnées changent de palier à la mise à
+   jour : à annoncer dans les notes de version.
