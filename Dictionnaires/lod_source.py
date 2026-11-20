@@ -310,7 +310,10 @@ def _quasi_doublons(exemples, segments):
             for i in index.get(tri, ()):
                 votes[i] = votes.get(i, 0) + 1
         texte = " ".join(m)
-        for i, n in sorted(votes.items(), key=lambda kv: -kv[1])[:3]:
+        # Départage par indice : sans lui, l'ordre des ex æquo suit celui d'un
+        # set de chaînes, qui change à chaque lancement (PYTHONHASHSEED), et
+        # le pipeline et la page corpus n'écartaient pas les mêmes phrases.
+        for i, n in sorted(votes.items(), key=lambda kv: (-kv[1], kv[0]))[:5]:
             if n < max(1, len(tris) // 2):
                 break
             if difflib.SequenceMatcher(None, texte, textes[i]).ratio() >= SEUIL_QUASI_DOUBLON:
