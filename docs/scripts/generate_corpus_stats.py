@@ -9,7 +9,9 @@ clavier embarque réellement. Écrit docs/assets/corpus_stats.json.
     pip install datasets
     python docs/scripts/generate_corpus_stats.py
 
-Les deux corpus sont publics : aucun HF_TOKEN n'est nécessaire.
+Les deux corpus sont publics : aucun HF_TOKEN n'est nécessaire. Les phrases
+d'exemple du LOD et le corpus du ZLS viennent de data.public.lu, mis en cache
+par `Dictionnaires/lod_source.py` et `Dictionnaires/zls_source.py`.
 """
 
 import json
@@ -143,13 +145,30 @@ def main():
         print(f"  {source['dataset']}", file=sys.stderr)
         phrases_par_corpus[source["cle"]] = charger(source)
 
+    # Les phrases d'exemple du LOD, versées par le pipeline avec les mêmes
+    # règles d'exclusion (`lod_source.exemples_pour_entrainement`) : sans les
+    # segments du jeu d'évaluation du ZLS, ni les phrases que LETZ reprend
+    # déjà. Le corpus du ZLS est donc chargé ici, et pas seulement pour
+    # l'évaluation plus bas.
+    print("  LOD (phrases d'exemple)", file=sys.stderr)
+    sys.path.insert(0, str(RACINE / "Dictionnaires"))
+    import lod_source
+    import zls_source
+    segments_zls = [s["lb"] for s in zls_source.segments()]
+    phrases_par_corpus["lod"] = {
+        phrase for phrase, _ in lod_source.exemples_pour_entrainement(
+            set().union(*phrases_par_corpus.values()), segments_zls,
+            verbeux=False)}
+
     par_corpus = {cle: stats_corpus(p) for cle, p in phrases_par_corpus.items()}
     union = set().union(*phrases_par_corpus.values())
     global_ = stats_corpus(union)
 
-    # Recouvrement lexical : montre que les deux corpus ne se remplacent pas.
+    # Recouvrement lexical : montre que la presse et le dictionnaire ne se
+    # remplacent pas. LETZ et le LOD sont regroupés : ce sont les mêmes
+    # phrases d'exemple, LETZ n'en étant qu'une sélection.
     formes = {cle: set(s["_compteur"]) for cle, s in par_corpus.items()}
-    a, b = formes["luxalign"], formes["letz"]
+    a, b = formes["luxalign"], formes["letz"] | formes["lod"]
 
     # N-grammes, mêmes seuils que le pipeline.
     bigrammes, trigrammes = Counter(), Counter()
@@ -275,11 +294,10 @@ def main():
     # `Dictionnaires/LuxembourgishComplet.py`.
     zls_mesure = None
     try:
-        sys.path.insert(0, str(RACINE / "Dictionnaires"))
-        import zls_source
-        # `union` réunit déjà les phrases des deux corpus d'entraînement,
+        # `union` réunit déjà les phrases des trois sources d'entraînement,
         # dédupliquées : c'est exactement ce dont le filtre de recouvrement a
-        # besoin.
+        # besoin. Les exemples du LOD qui figurent dans ce corpus en ont été
+        # retirés à la source : le jeu inédit reste donc entier.
         phrases_entrainement = union
         inedits = zls_source.segments_inedits(phrases_entrainement)
         zls_mesure = evaluer({s["lb"] for s in inedits})
@@ -303,7 +321,7 @@ def main():
         "recouvrement": {
             "communes": len(a & b),
             "luxalign_seul": len(a - b),
-            "letz_seul": len(b - a),
+            "exemples_seul": len(b - a),
         },
         "diacritiques": diacritiques,
         "ponctuation": ponctuation,

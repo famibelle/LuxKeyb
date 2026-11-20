@@ -120,18 +120,19 @@ Il les met dans la poche de ceux qui écrivent :
 
 | Ressource | Publiée par | Ce que le clavier en fait |
 |---|---|---|
-| **LOD, Linguistesch Daten** (CC0, data.public.lu) | ZLS | Les traductions, les phrases d'exemple, les familles de formes, et 84 855 formes ajoutées aux suggestions |
+| **LOD, Linguistesch Daten** (CC0, data.public.lu) | ZLS | Les traductions, les phrases d'exemple (affichées, et versées au corpus des suggestions), les familles de formes, et 82 898 formes ajoutées aux suggestions |
 | **LOD, Index vun der Sich-Funktioun** (CC0) | ZLS | Le pont entre les formes conjuguées ou déclinées et leur article : `Haiser` mène à `Haus` |
 | **Méisproochegen Iwwersetzungskorpus** (CC0) | ZLS | Les traductions officielles sous les phrases d'exemple, et le banc d'essai de la prédiction |
 | **LuxASR** | Université du Luxembourg | La dictée vocale |
 | **LuxAlign** et **LETZ** | Université du Luxembourg | Les fréquences et les contextes qui prédisent le mot suivant |
 
 ### 📚 **Corpus des suggestions**
-Le dictionnaire et les n-grammes sont produits à partir de deux corpus publics
+Le dictionnaire et les n-grammes sont produits à partir de trois sources publiques
 de luxembourgeois contemporain :
 
 - **[LuxAlign](https://huggingface.co/datasets/fredxlpy/LuxAlign)** (CC BY-NC 4.0), 180 342 phrases de RTL.lu, qui apporte le vocabulaire et presque tous les n-grammes ;
-- **[LETZ](https://huggingface.co/datasets/fredxlpy/LETZ)** (CC BY 4.0), 5 862 phrases d'exemple du LOD, soixante fois plus petit, mais le seul endroit où `dech`, `däin`, `hues`, `mamm` apparaissent en nombre, c'est-à-dire exactement ce qu'on tape sur un téléphone.
+- **[LETZ](https://huggingface.co/datasets/fredxlpy/LETZ)** (CC BY 4.0), 5 862 phrases d'exemple du LOD, soixante fois plus petit, mais le seul endroit où `dech`, `däin`, `hues`, `mamm` apparaissent en nombre, c'est-à-dire exactement ce qu'on tape sur un téléphone ;
+- les **phrases d'exemple du [LOD](https://lod.lu)** (CC0), dont LETZ n'était qu'une sélection : 44 678 phrases de plus, une fois retirées celles qui servent à mesurer le clavier. Après `du`, le clavier proposait `jour` ; il propose maintenant `hues`.
 
 Le pipeline est relancé à chaque build, ce qui fait évoluer les suggestions avec
 l'usage réel de la langue. La qualité est mesurée sur des textes **jamais vus à
@@ -324,7 +325,7 @@ python generate_lod_forms.py --strict       # couverture LOD
 python generate_translations.py --strict    # gloses, familles, exemples
 ```
 
-Les deux corpus sont publics : aucun jeton Hugging Face n'est nécessaire.
+Les sources sont publiques : aucun jeton Hugging Face n'est nécessaire.
 L'ordre compte, les scripts suivants lisent les fichiers produits par les
 précédents. Le détail du pipeline est dans
 [`Dictionnaires/README.md`](Dictionnaires/README.md), les corpus et leurs

@@ -83,9 +83,12 @@ Les fichiers générés sont **directement prêts** pour l'app Android :
 
 ### Pipeline Luxembourgeois
 - Datasets `fredxlpy/LuxAlign` (champ `lb`) et `fredxlpy/LETZ` (champ `text`)
+- Phrases d'exemple du LOD (`lod_source.exemples_pour_entrainement`), moins
+  celles du corpus de traduction du ZLS, qui sert à l'évaluation — voir
+  [CORPUS.md](CORPUS.md)
 - **Publics : aucun `HF_TOKEN` n'est nécessaire**
 - Phrases dédoublonnées toutes sources confondues avant comptage
-- `--strict` refuse le repli local et l'absence d'un des deux corpus
+- `--strict` refuse le repli local et l'absence d'une des trois sources
 - Licences et citations : [CORPUS.md](CORPUS.md)
 
 ## 📁 Structure

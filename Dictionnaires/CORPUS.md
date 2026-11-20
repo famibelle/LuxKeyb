@@ -44,9 +44,14 @@ Platform.
 - Auteurs : Fred Philippy, Shohreh Haddadan, Siwen Guo
 - Licence : **CC BY 4.0** — attribution obligatoire, usage commercial autorisé
 - Apport : 5 862 phrases, ~53 k mots. Cent fois plus petit que LuxAlign, mais
-  seul porteur du registre quotidien — deuxième personne, famille, objets
+  premier porteur du registre quotidien — deuxième personne, famille, objets
   courants. Ce sont les mots qu'on tape sur un téléphone et que la presse
   écrite n'emploie jamais.
+- Depuis le 2026-11-20, les phrases d'exemple du LOD sont versées au corpus
+  directement (voir plus bas). LETZ n'en était qu'une sélection : 94,8 % de ses
+  phrases s'y retrouvent. Il reste chargé tel quel, parce qu'il alimente aussi
+  le jeu « Wuertlück », qui cite LETZ sous chacune de ses phrases ; le LOD
+  n'y ajoute que les phrases que LETZ n'a pas.
 
 ```bibtex
 @inproceedings{philippy-etal-2024-forget,
@@ -119,10 +124,11 @@ contact indiqué par les auteurs pour les données RTL est <ai@rtl.lu>.
 ## LOD — Lëtzebuerger Online Dictionnaire
 
 Dictionnaire officiel de la langue luxembourgeoise, publié par le **Zenter fir
-d'Lëtzebuerger Sprooch** (ZLS). Il sert deux fois : les **traductions
-françaises** affichées dans les jeux et l'onglet Wierderbuch, et depuis le
-2026-09-02 les **formes que le corpus ne connaît pas**. Il n'entre toujours pas
-dans le modèle n-grammes, qui reste entièrement corpus.
+d'Lëtzebuerger Sprooch** (ZLS). Il sert trois fois : les **traductions
+françaises** affichées dans les jeux et l'onglet Wierderbuch, depuis le
+2026-09-02 les **formes que le corpus ne connaît pas**, et depuis le
+2026-11-20 ses **phrases d'exemple**, versées au corpus du dictionnaire et des
+n-grammes (voir « Les phrases d'exemple » ci-dessous).
 
 - Portail : <https://data.public.lu/fr/organizations/zenter-fir-dletzebuerger-sprooch/>
 - Site : <https://lod.lu>
@@ -184,6 +190,51 @@ python Dictionnaires/generate_translations.py --strict  # les gloses, qui lisent
 dernière édition via l'API de data.public.lu — le ZLS republie chaque trimestre
 sous un chemin horodaté — et met les deux XML en cache sous
 `Dictionnaires/luxemburgish_data/lod/` (180 Mo, hors dépôt).
+
+### Les phrases d'exemple, au corpus depuis le 2026-11-20
+
+Le LOD porte 58 962 phrases d'exemple, écrites par le ZLS pour montrer comment
+s'emploie chaque mot : 55 555 phrases distinctes, ~0,5 M de mots. C'est la
+langue de tous les jours, en quantité : dix fois ce qu'apportait LETZ.
+`lod_source.exemples_pour_entrainement` les lit, et `LuxembourgishComplet.py`
+les verse au corpus après LuxAlign et LETZ. Elles comptent pour le dictionnaire
+comme pour les n-grammes, avec trois règles :
+
+1. **Le jeu d'évaluation est retiré.** Le corpus de traduction du ZLS reprend
+   5 713 exemples du LOD : ils sont écartés, ainsi que 442 exemples presque
+   identiques à l'un de ses segments (le ZLS a retouché certaines phrases :
+   « Kannapee » y est devenu « Canapé »). Sans cela, le modèle apprendrait les
+   réponses avant d'être interrogé, et le filtre de `generate_corpus_stats.py`
+   amputerait le jeu publié de la moitié de ses segments. C'est pourquoi le
+   pipeline refuse de verser les exemples quand le corpus du ZLS est
+   indisponible, et pourquoi `--strict` s'arrête alors.
+2. **Le mot illustré n'est pas compté dans la fréquence du dictionnaire.** Il
+   est dans la phrase par construction : chaque article reçoit ses exemples,
+   que le mot soit courant ou rare. Le compter doublerait la fréquence de mots
+   comme `millen` (16 → 65) ou `schappeg` (0 → 10). Il reste dans les n-grammes,
+   où ses voisins disent comment il s'emploie, et dans le vote de casse.
+3. **Les registres écartés :** vulgaire (VULG), péjoratif (PEJ) et vieilli
+   (VEREELZT). Les emplois figurés (EGS) restent : c'est de la langue réelle.
+
+Les phrases que LETZ apporte déjà sont reconnues par leur clé de comparaison
+(casse et ponctuation ignorées) et ne comptent qu'une fois. Restent **44 678
+phrases** ajoutées au corpus.
+
+Pourquoi un poids de 1 et pas davantage : mesuré le 2026-11-20
+(`Dictionnaires/mesure_exemples_lod.py`, rapport
+`reports/exemples_lod_ngrammes_2026-11-20.md`), tripler le poids du LOD faisait
+monter les phrases de style dictionnaire mais effaçait le gain sur la presse et
+la Chambre, et faisait baisser ParaLux. Le modèle se mettait à écrire comme un
+dictionnaire.
+
+Ce que ça change, sur les fichiers livrés et le jeu publié du ZLS (10 068
+segments, inchangé) : voir le tableau en fin de section « Iwwersetzungskorpus ».
+Après `du`, le clavier proposait `jour, logement, travail` (du français, venu de
+LuxAlign) ; il propose désormais `hues, muss`. Après `wëlls de`, `kanns du`,
+`weess du` ou `looss dech`, il n'avait rien à proposer.
+
+La licence CC0 n'ajoute aucune obligation. Les fichiers de dictionnaire
+restent soumis à la clause NonCommercial de LuxAlign.
 
 ## Lexique 3.83 — le français de la seconde rangée
 
