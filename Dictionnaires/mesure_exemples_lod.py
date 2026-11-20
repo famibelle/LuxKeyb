@@ -185,8 +185,13 @@ class Comptes:
 class Modele:
     """Le modèle n-grammes livré, reconstruit à l'identique (casse repliée)."""
 
-    def __init__(self, comptes):
+    def __init__(self, comptes, min_suite=1):
+        # `min_suite` : occurrences minimales d'une suite pour être proposée.
+        # Le pipeline vaut 1. À 1, dans un contexte vu 25 fois, une suite vue
+        # une seule fois pèse 4 % et passe le seuil de pertinence de 1 % :
+        # « an dengem » proposait ainsi « gulasch, fierkelsjelli ».
         self.comptes = comptes
+        self.min_suite = min_suite
         suivants_mot = defaultdict(Counter)
         for (a, b), n in comptes.bi.items():
             suivants_mot[a][b] += n
@@ -209,7 +214,7 @@ class Modele:
             if total < SEUIL_OCCURRENCES_CONTEXTE:
                 continue
             candidats = [(m, n) for m, n in compteur.most_common(5)
-                         if n / total > SEUIL_PERTINENCE]
+                         if n / total > SEUIL_PERTINENCE and n >= self.min_suite]
             if candidats:
                 self.predictions[contexte] = [m for m, _ in candidats]
 
@@ -339,7 +344,10 @@ def main():
 
     print("📖 corpus Hugging Face…", file=sys.stderr)
     phrases = {s["cle"]: charger(s) for s in CORPUS}
-    tok = lambda ps: [[(t, False) for t in decouper(p)] for p in ps]  # noqa: E731
+    # `sorted` : Counter.most_common départage les ex æquo par ordre
+    # d'insertion, et l'ordre d'un set de chaînes change d'un lancement à
+    # l'autre (PYTHONHASHSEED). Sans tri, le top-3 varie de ±0,1 point.
+    tok = lambda ps: [[(t, False) for t in decouper(p)] for p in sorted(ps)]  # noqa: E731
 
     print("📖 exemples du LOD…", file=sys.stderr)
     lod, lod_brutes, lod_ecartees = lire_exemples_lod()
@@ -429,11 +437,17 @@ def main():
         "N · naïf : + LOD complet (fuite)": c_luxalign + c_letz + c_lod_naif,
     }
 
+    # Les deux mêmes corpus, avec une suite vue au moins deux fois : sur A
+    # pour mesurer le seuil seul, sur B pour mesurer seuil + LOD.
+    variantes["A2 · A, suite vue ≥ 2 fois"] = (variantes["A · actuel (LuxAlign + LETZ)"], 2)
+    variantes["B3 · B, suite vue ≥ 2 fois"] = (variantes["B · + LOD hors ZLS, vedette ôtée"], 2)
+
     modeles, lignes = {}, {}
     rapport["variantes"] = {}
     for nom, comptes in variantes.items():
         print(f"🧠 {nom}", file=sys.stderr)
-        mod = Modele(comptes)
+        comptes, min_suite = comptes if isinstance(comptes, tuple) else (comptes, 1)
+        mod = Modele(comptes, min_suite)
         modeles[nom] = mod
         rapport["variantes"][nom] = {
             "contextes": len(mod.predictions),
@@ -469,6 +483,12 @@ def main():
             for jeu_nom in jeux
         }
 
+    # L'apport du LOD seul, une fois le seuil de suite appliqué aux deux.
+    rapport["ecart_B3_vs_A2"] = {
+        jeu_nom: ecart_bootstrap(lignes[("A2 · A, suite vue ≥ 2 fois", jeu_nom)],
+                                 lignes[("B3 · B, suite vue ≥ 2 fois", jeu_nom)])
+        for jeu_nom in jeux}
+
     # --- Ce que le LOD change dans le modèle ----------------------------------
     a, b = modeles[base], modeles["B · + LOD hors ZLS, vedette ôtée"]
     nouveaux = sorted((k for k in b.predictions if k not in a.predictions),
@@ -491,6 +511,10 @@ def main():
         k: {"B": b.predictions.get(k, [])[:3], "B2": b2.predictions.get(k, [])[:3]}
         for k in rapport["contextes_nouveaux_2e_personne"]}
     rapport["B2_contextes"] = len(b2.predictions)
+    b3 = modeles["B3 · B, suite vue ≥ 2 fois"]
+    rapport["B3_contextes_2e_personne"] = {
+        k: {"B": b.predictions.get(k, [])[:3], "B3": b3.predictions.get(k, [])[:3]}
+        for k in rapport["contextes_nouveaux_2e_personne"]}
 
     # Piège 2 : les mots que la vedette ferait monter dans le dictionnaire.
     bb = modeles["B' · + LOD hors ZLS, vedette comptée"]
