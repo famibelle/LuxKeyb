@@ -132,3 +132,22 @@ HF_HUB_DISABLE_XET=1 python Dictionnaires/mesure_exemples_lod.py --sortie rappor
 Environ 15 minutes. Réseau nécessaire : `data.public.lu`,
 `download.data.public.lu`, `huggingface.co` et le CDN de Hugging Face
 (`us.aws.cdn.hf.co`).
+
+## Suite : branché dans le pipeline (même jour)
+
+`LuxembourgishComplet.py` verse désormais les exemples, avec les règles
+ci-dessus (code partagé : `lod_source.exemples_pour_entrainement`). Deux
+différences avec la variante B mesurée plus haut :
+
+- les phrases que LETZ apporte déjà ne comptent qu'une fois (la variante B les
+  comptait deux fois) : 4 723 phrases ;
+- les quasi-doublons sont cherchés contre **tout** le corpus du ZLS, et pas
+  seulement contre ses segments inédits : 443 exemples écartés au lieu de 8.
+  Plusieurs exemples du LOD sont des variantes d'une même phrase (« fir eng
+  Bluttanalys » / « fir dës Bluttanalys »).
+
+Restent 44 676 phrases. Sur les fichiers livrés, mesuré par
+`generate_corpus_stats.py` : top-3 ZLS 18,1 → **19,5 %**, contexte reconnu
+87,8 → 89,0 %, couverture 93,6 → 94,4 %, ParaLux 20,8 → 20,8 %. Banc de frappes
+ParaLux (`bench_frappes.js`) : 22,5 / 37,1 / 59,6 % → 22,7 / 37,2 / 59,3 %,
+dans le bruit.

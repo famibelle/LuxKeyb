@@ -201,7 +201,7 @@ les verse au corpus après LuxAlign et LETZ. Elles comptent pour le dictionnaire
 comme pour les n-grammes, avec trois règles :
 
 1. **Le jeu d'évaluation est retiré.** Le corpus de traduction du ZLS reprend
-   5 713 exemples du LOD : ils sont écartés, ainsi que 442 exemples presque
+   5 713 exemples du LOD : ils sont écartés, ainsi que 443 exemples presque
    identiques à l'un de ses segments (le ZLS a retouché certaines phrases :
    « Kannapee » y est devenu « Canapé »). Sans cela, le modèle apprendrait les
    réponses avant d'être interrogé, et le filtre de `generate_corpus_stats.py`
@@ -217,8 +217,9 @@ comme pour les n-grammes, avec trois règles :
    (VEREELZT). Les emplois figurés (EGS) restent : c'est de la langue réelle.
 
 Les phrases que LETZ apporte déjà sont reconnues par leur clé de comparaison
-(casse et ponctuation ignorées) et ne comptent qu'une fois. Restent **44 678
-phrases** ajoutées au corpus.
+(casse et ponctuation ignorées) et ne comptent qu'une fois. Restent **44 676
+phrases** ajoutées au corpus, soit ~0,4 M de mots ; 52 240 mots vedettes n'y
+sont pas comptés dans la fréquence du dictionnaire.
 
 Pourquoi un poids de 1 et pas davantage : mesuré le 2026-11-20
 (`Dictionnaires/mesure_exemples_lod.py`, rapport
@@ -227,8 +228,22 @@ monter les phrases de style dictionnaire mais effaçait le gain sur la presse et
 la Chambre, et faisait baisser ParaLux. Le modèle se mettait à écrire comme un
 dictionnaire.
 
-Ce que ça change, sur les fichiers livrés et le jeu publié du ZLS (10 068
-segments, inchangé) : voir le tableau en fin de section « Iwwersetzungskorpus ».
+Ce que ça change, sur les fichiers livrés, mesuré par
+`docs/scripts/generate_corpus_stats.py` sur le même jeu publié du ZLS (10 038
+segments, 135 343 événements, inchangé) :
+
+| | avant | après |
+|---|---|---|
+| top-3 du mot suivant | 18,1 % | **19,5 %** |
+| contexte reconnu | 87,8 % | 89,0 % |
+| couverture lexicale | 93,6 % | 94,4 % |
+| ParaLux, top-3 | 20,8 % | 20,8 % |
+| banc de frappes ParaLux (top-3 après 1 / 2 / 3 lettres) | 22,5 / 37,1 / 59,6 % | 22,7 / 37,2 / 59,3 % |
+| mots du dictionnaire | 38 442 | 40 788 |
+| contextes n-grammes | 27 746 | 30 531 |
+
+ParaLux ne bouge pas, et c'est attendu : c'est du RTL, le registre de
+LuxAlign. Le gain est sur la langue de tous les jours.
 Après `du`, le clavier proposait `jour, logement, travail` (du français, venu de
 LuxAlign) ; il propose désormais `hues, muss`. Après `wëlls de`, `kanns du`,
 `weess du` ou `looss dech`, il n'avait rien à proposer.
@@ -359,6 +374,13 @@ Ils s'accordent à moins d'un point sur la couverture et le contexte, ce qui les
 valide mutuellement. L'écart de 2,7 points sur le top-3 va dans le sens
 attendu : ParaLux partage la source RTL.lu et le registre de LuxAlign, il
 flatte légèrement. **Publier le chiffre ZLS**, garder ParaLux comme témoin.
+
+Depuis que les phrases d'exemple du LOD sont au corpus (2026-11-20), le ZLS
+est à 19,5 % de top-3, ParaLux toujours à 20,8 % : voir « Les phrases
+d'exemple » plus haut. L'écart s'est réduit parce que le ZLS reprend beaucoup
+d'exemples du LOD — dont aucun n'a été appris, ils sont retirés de
+l'entraînement — et que ces phrases ont le même registre que celles qui ont
+été apprises.
 
 ## Corpus retiré
 

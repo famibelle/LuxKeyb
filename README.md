@@ -132,7 +132,7 @@ de luxembourgeois contemporain :
 
 - **[LuxAlign](https://huggingface.co/datasets/fredxlpy/LuxAlign)** (CC BY-NC 4.0), 180 342 phrases de RTL.lu, qui apporte le vocabulaire et presque tous les n-grammes ;
 - **[LETZ](https://huggingface.co/datasets/fredxlpy/LETZ)** (CC BY 4.0), 5 862 phrases d'exemple du LOD, soixante fois plus petit, mais le seul endroit où `dech`, `däin`, `hues`, `mamm` apparaissent en nombre, c'est-à-dire exactement ce qu'on tape sur un téléphone ;
-- les **phrases d'exemple du [LOD](https://lod.lu)** (CC0), dont LETZ n'était qu'une sélection : 44 678 phrases de plus, une fois retirées celles qui servent à mesurer le clavier. Après `du`, le clavier proposait `jour` ; il propose maintenant `hues`.
+- les **phrases d'exemple du [LOD](https://lod.lu)** (CC0), dont LETZ n'était qu'une sélection : 44 676 phrases de plus, une fois retirées celles qui servent à mesurer le clavier. Après `du`, le clavier proposait `jour` ; il propose maintenant `hues`.
 
 Le pipeline est relancé à chaque build, ce qui fait évoluer les suggestions avec
 l'usage réel de la langue. La qualité est mesurée sur des textes **jamais vus à
