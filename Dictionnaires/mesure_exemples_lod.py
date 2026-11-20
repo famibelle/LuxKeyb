@@ -148,7 +148,14 @@ class Comptes:
         self.tri = Counter()
 
     @classmethod
-    def de_phrases(cls, listes_de_tokens, ignorer_vedette=False, poids=1):
+    def de_phrases(cls, listes_de_tokens, ignorer_vedette=False, poids=1,
+                   vedette_jamais_predite=False):
+        """`vedette_jamais_predite` : le mot illustré sert de contexte mais
+        n'est jamais compté comme suite. Sans cela, « an dengem » propose
+        « fierkelsjelli, gulasch, kaartespill » : le LOD illustre des dizaines
+        de mots rares par la même amorce, et chacun y passe le seuil de 1 %.
+        Le dénominateur (les unigrammes) est inchangé, donc la probabilité
+        des autres suites aussi."""
         c = cls()
         for tokens in listes_de_tokens:
             mots = [t for t, _ in tokens]
@@ -157,10 +164,13 @@ class Comptes:
             for t, vedette in tokens:
                 if not (ignorer_vedette and vedette):
                     c.uni_dico[t] += poids
-            for a, b in zip(mots, mots[1:]):
-                c.bi[(a, b)] += poids
-            for a, b, d in zip(mots, mots[1:], mots[2:]):
-                c.tri[(a, b, d)] += poids
+            vedettes = [v and vedette_jamais_predite for _, v in tokens]
+            for i, (a, b) in enumerate(zip(mots, mots[1:])):
+                if not vedettes[i + 1]:
+                    c.bi[(a, b)] += poids
+            for i, (a, b, d) in enumerate(zip(mots, mots[1:], mots[2:])):
+                if not vedettes[i + 2]:
+                    c.tri[(a, b, d)] += poids
         return c
 
     def __add__(self, autre):
@@ -404,12 +414,15 @@ def main():
     t_lod = [t for _, t in lod_entrainement]
     c_lod_brut = Comptes.de_phrases(t_lod)
     c_lod = Comptes.de_phrases(t_lod, ignorer_vedette=True)
+    c_lod_cible = Comptes.de_phrases(t_lod, ignorer_vedette=True,
+                                     vedette_jamais_predite=True)
     c_lod_x3 = Comptes.de_phrases(t_lod, ignorer_vedette=True, poids=3)
     c_lod_naif = Comptes.de_phrases([t for _, t in lod.values()])
 
     variantes = {
         "A · actuel (LuxAlign + LETZ)": c_luxalign + c_letz,
         "B · + LOD hors ZLS, vedette ôtée": c_luxalign + c_letz + c_lod,
+        "B2 · B, vedette jamais prédite": c_luxalign + c_letz + c_lod_cible,
         "B' · + LOD hors ZLS, vedette comptée": c_luxalign + c_letz + c_lod_brut,
         "C · LuxAlign + LOD (LETZ retiré)": c_luxalign + c_lod,
         "D · + LOD pondéré ×3": c_luxalign + c_letz + c_lod_x3,
@@ -472,6 +485,12 @@ def main():
     rapport["premier_choix_change_2e_personne"] = {
         k: {"avant": a.predictions[k][:3], "apres": b.predictions[k][:3]}
         for k in changes if set(k.split()) & DEUXIEME_PERSONNE}
+
+    b2 = modeles["B2 · B, vedette jamais prédite"]
+    rapport["B2_contextes_2e_personne"] = {
+        k: {"B": b.predictions.get(k, [])[:3], "B2": b2.predictions.get(k, [])[:3]}
+        for k in rapport["contextes_nouveaux_2e_personne"]}
+    rapport["B2_contextes"] = len(b2.predictions)
 
     # Piège 2 : les mots que la vedette ferait monter dans le dictionnaire.
     bb = modeles["B' · + LOD hors ZLS, vedette comptée"]
