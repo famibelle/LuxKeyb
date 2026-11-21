@@ -629,7 +629,11 @@ MEUBLES = {
     'Mikro': 'micro',           # micro
     'Kamera': 'camera',         # caméra
     'Handy': 'telephone',       # portable
-    'Smartphone': 'telephone',  # smartphone — le seul dessin partagé
+    # « Smartphone » partageait le dessin de « Handy ». Retiré le 2026-11-20 :
+    # aucune grille ne le tire depuis l'ajout des exemples du LOD au corpus,
+    # et sa glose (« smartphone ») répète le mot, ce qui l'écarte de
+    # Wuertsich, Wuertmix et Wuertriet. Il n'était dans le carnet que par le
+    # hasard d'un tirage (BlasonsAssetTest).
     'Antenn': 'antenne',        # antenne
     'Fändel': 'drapeau',        # drapeau
     'Auer': 'horloge',          # heure, montre, compteur — un cadran les tient

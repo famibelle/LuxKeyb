@@ -12,7 +12,10 @@ attribution. On crédite quand même le ZLS — c'est leur travail.
 Ce module ne produit aucun actif. Il porte ce que `generate_translations.py`
 (les gloses) et `generate_lod_forms.py` (les formes) avaient tous les deux
 besoin de savoir, pour qu'une seule copie décide de l'URL, du cache et de la
-lecture de l'index.
+lecture de l'index. Il lit aussi les phrases d'exemple que
+`LuxembourgishComplet.py` verse au corpus et que
+`docs/scripts/generate_corpus_stats.py` mesure : une seule copie des règles
+d'exclusion, pour que les deux ne divergent pas.
 
 Deux choses à ne pas refaire autrement :
 
@@ -27,6 +30,7 @@ Deux choses à ne pas refaire autrement :
 
 import io
 import json
+import re
 import urllib.request
 import xml.etree.ElementTree as ET
 import zipfile
@@ -185,3 +189,168 @@ def graphies_par_categorie(xml_index, verbeux=True):
                                         key=lambda kv: -len(kv[1])):
             print(f"   🔤 {categorie:<22} {len(formes):>7}")
     return par_categorie
+
+
+# ---------------------------------------------------------------------------
+# Les phrases d'exemple, comme corpus du dictionnaire et des n-grammes
+# ---------------------------------------------------------------------------
+#
+# Le LOD porte 58 962 phrases d'exemple, écrites par le ZLS pour montrer
+# comment un mot s'emploie. C'est la langue de tous les jours que la presse
+# n'écrit pas : « wëlls de », « kanns du », « looss dech ». LETZ, au corpus
+# depuis le début, n'en était qu'une sélection de 5 862.
+#
+# Mesuré le 2026-11-20 (`mesure_exemples_lod.py`,
+# `reports/exemples_lod_ngrammes_2026-11-20.md`) : top-3 du corpus du ZLS de
+# 18,1 à 19,6 %, +0,3 point sur sa partie Chambre et presse, deuxième personne
+# de 14 à 25 %, ParaLux inchangé. Trois règles en sortent, appliquées ici pour
+# que le pipeline et la page corpus ne puissent pas diverger.
+
+# VULG et PEJ : l'application ne montre jamais ces registres. VEREELZT
+# (vieilli) : un clavier ne doit pas proposer un usage sorti de la langue.
+# EGS (emploi figuré) reste : c'est de la langue réelle, seulement imagée.
+MARQUES_EXEMPLE_ECARTEES = {"VULG", "PEJ", "VEREELZT"}
+
+# Ressemblance au-delà de laquelle un exemple est tenu pour un segment du jeu
+# d'évaluation retouché. Le ZLS a standardisé son corpus : « Kannapee » y est
+# devenu « Canapé », « Gezei » a disparu. Une clé exacte laisserait fuir ces
+# phrases, que le modèle aurait apprises avant d'être interrogé dessus.
+SEUIL_QUASI_DOUBLON = 0.9
+
+_MOT_SIMPLE = re.compile(r"[^\W\d_]+")
+
+
+def _recoller(texte):
+    """Phrase d'un `<text>` d'exemple, et positions de ses mots vedettes.
+
+    Le LOD ne stocke pas de phrase mais la suite de ses mots, le mot illustré
+    balisé à part (`<inflectedHeadword>`). Pas d'espace après une élision
+    (« d' »), ni avant une ponctuation isolée — même règle que
+    `generate_translations._phrase`.
+    """
+    morceaux, vedettes, longueur = [], [], 0
+    for enfant in texte:
+        if enfant.tag not in ("word", "inflectedHeadword"):
+            continue
+        mot = (enfant.text or "").strip()
+        if not mot:
+            continue
+        if morceaux and not morceaux[-1].endswith(("'", "’")) \
+                and mot[0] not in ",.!?;:)»…":
+            morceaux.append(" ")
+            longueur += 1
+        if enfant.tag == "inflectedHeadword":
+            vedettes.append((longueur, longueur + len(mot)))
+        morceaux.append(mot)
+        longueur += len(mot)
+    return "".join(morceaux), vedettes
+
+
+def phrases_exemple(xml_articles=None, verbeux=True):
+    """Les phrases d'exemple distinctes : [(phrase, [(début, fin) des vedettes])].
+
+    Une phrase par clé de comparaison : un même exemple sert parfois à
+    plusieurs articles (le même `id` revient jusqu'à sept fois), et le compter
+    sept fois le pondérerait arbitrairement. L'ordre est celui du fichier.
+    """
+    from zls_source import cle_de_comparaison
+
+    if xml_articles is None:
+        xml_articles = telecharger_source("art", verbeux=verbeux)
+    vues, phrases, ecartees = set(), [], 0
+    for _, entree in ET.iterparse(io.BytesIO(xml_articles), events=("end",)):
+        if entree.tag != "entry":
+            continue
+        for exemple in entree.iter("example"):
+            texte = exemple.find("text")
+            if texte is None:
+                continue
+            marques = {(e.text or "").strip() for e in texte if e.tag == "attribute"}
+            if marques & MARQUES_EXEMPLE_ECARTEES:
+                ecartees += 1
+                continue
+            phrase, vedettes = _recoller(texte)
+            cle = cle_de_comparaison(phrase)
+            if len(_MOT_SIMPLE.findall(phrase)) < 2 or cle in vues:
+                continue
+            vues.add(cle)
+            phrases.append((phrase, vedettes))
+        entree.clear()
+    if verbeux:
+        print(f"   💬 {len(phrases)} phrases d'exemple distinctes "
+              f"({ecartees} écartées : {', '.join(sorted(MARQUES_EXEMPLE_ECARTEES))})")
+    return phrases
+
+
+def _quasi_doublons(exemples, segments):
+    """Indices des exemples presque identiques à un segment d'évaluation.
+
+    Index sur les trigrammes de mots, puis difflib sur les rares candidats :
+    comparer 50 000 phrases à 10 000 deux à deux prendrait une heure.
+    """
+    import difflib
+
+    def mots(p):
+        return [m.lower() for m in _MOT_SIMPLE.findall(p)]
+
+    index, textes = {}, []
+    for i, (phrase, _) in enumerate(exemples):
+        m = mots(phrase)
+        textes.append(" ".join(m))
+        for tri in set(zip(m, m[1:], m[2:])):
+            index.setdefault(tri, set()).add(i)
+    trouves = set()
+    for segment in segments:
+        m = mots(segment)
+        tris = set(zip(m, m[1:], m[2:]))
+        if not tris:
+            continue
+        votes = {}
+        for tri in tris:
+            for i in index.get(tri, ()):
+                votes[i] = votes.get(i, 0) + 1
+        texte = " ".join(m)
+        # Départage par indice : sans lui, l'ordre des ex æquo suit celui d'un
+        # set de chaînes, qui change à chaque lancement (PYTHONHASHSEED), et
+        # le pipeline et la page corpus n'écartaient pas les mêmes phrases.
+        for i, n in sorted(votes.items(), key=lambda kv: (-kv[1], kv[0]))[:5]:
+            if n < max(1, len(tris) // 2):
+                break
+            if difflib.SequenceMatcher(None, texte, textes[i]).ratio() >= SEUIL_QUASI_DOUBLON:
+                trouves.add(i)
+                break
+    return trouves
+
+
+def exemples_pour_entrainement(phrases_deja_vues, segments_evaluation, verbeux=True):
+    """Les exemples du LOD à verser au corpus, une fois le jeu d'évaluation ôté.
+
+    `segments_evaluation` : les segments luxembourgeois du corpus de traduction
+    du ZLS (`zls_source.segments()`). **Obligatoire** : 5 715 de ses 10 807
+    segments sont des exemples du LOD. Les apprendre ferait gagner 0,8 point de
+    top-3 qui n'existe pas, et le filtre de `generate_corpus_stats.py`
+    amputerait en silence la moitié du jeu publié.
+
+    `phrases_deja_vues` : le reste du corpus. LETZ reprend 94,8 % de ses
+    phrases au LOD, souvent avec une autre ponctuation : la comparaison se fait
+    par clé, sinon ces phrases compteraient deux fois.
+
+    Renvoie [(phrase, [(début, fin) des mots vedettes])].
+    """
+    from zls_source import cle_de_comparaison
+
+    exemples = phrases_exemple(verbeux=verbeux)
+    cles_evaluation = {cle_de_comparaison(s) for s in segments_evaluation}
+    hors_evaluation = [e for e in exemples
+                       if cle_de_comparaison(e[0]) not in cles_evaluation]
+    exacts = len(exemples) - len(hors_evaluation)
+    proches = _quasi_doublons(hors_evaluation, segments_evaluation)
+    hors_evaluation = [e for i, e in enumerate(hors_evaluation) if i not in proches]
+    cles_vues = {cle_de_comparaison(p) for p in phrases_deja_vues}
+    retenus = [e for e in hors_evaluation if cle_de_comparaison(e[0]) not in cles_vues]
+    if verbeux:
+        print(f"   🚫 {exacts} exemples du jeu d'évaluation du ZLS écartés, "
+              f"et {len(proches)} quasi-doublons")
+        print(f"   ♻️ {len(hors_evaluation) - len(retenus)} déjà au corpus (LETZ)")
+        print(f"   ✅ {len(retenus)} phrases d'exemple retenues")
+    return retenus

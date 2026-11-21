@@ -95,6 +95,12 @@ class LodFormsAssetTest {
     @Test
     fun `les manques signales par les locuteurs sont couverts`() {
         val toutes = (liste("suggest") + liste("spellcheck")).mapTo(HashSet()) { it.lowercase() }
+        // Depuis que les phrases d'exemple du LOD sont au corpus (2026-11-20),
+        // certaines de ces formes sont passées au dictionnaire de fréquences :
+        // `telleren` et `denks` y sont, et l'actif du LOD ne porte que ce que
+        // le dictionnaire n'a pas. Le clavier les connaît dans les deux cas.
+        val dico = dictionnaire()
+        for (i in 0 until dico.length()) toutes.add(dico.getJSONArray(i).getString(0).lowercase())
         // Le motif exact du chantier : des formes ordinaires que le corpus de
         // dépêches n'écrit jamais. Si l'appariement se casse, ce test le dit
         // avec des mots plutôt qu'avec un volume.

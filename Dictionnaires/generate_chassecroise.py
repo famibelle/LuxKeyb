@@ -139,6 +139,22 @@ GRILLES_PAR_NIVEAU = 100
 # comme garde-fou contre les mots aux lettres commodes.
 MAX_GRILLES_PAR_MOT = 3
 
+# Chaque case de l'album des paysages (un lieu à une heure) doit être atteinte
+# par au moins ce nombre de mots des grilles, dans chaque langue : c'est le
+# plancher de `SeriesPaysagesAssetTest`. Le tirage des grilles ne le garantit
+# pas de lui-même. Depuis que les phrases d'exemple du LOD sont au corpus
+# (2026-11-20), les mots du quotidien sont moins rares, et la case du soir du
+# Haff Réimech n'avait plus que deux mots dans les grilles portugaises ; une
+# autre graine ne faisait que déplacer le manque vers d'autres langues.
+# `garantir_cases` répare donc après coup, grille par grille.
+PLANCHER_CASES = 3
+REPARATIONS_MAX = 40
+ESSAIS_PAR_REPARATION = 600
+# Combien de fois les mots de la case en manque sont recopiés dans le vivier
+# d'une grille de remplacement : sans ce poids, une grille de dix mots n'en
+# tire un qu'une fois sur trente.
+POIDS_CASE_EN_MANQUE = 25
+
 # Nombre de solutions au-delà duquel on cesse de chercher : deux suffisent à
 # rejeter la grille, et énumérer les suivantes ne dirait rien de plus.
 SOLUTIONS_MAX = 2
@@ -394,6 +410,91 @@ def construire_grilles(vivier, rng):
     return grilles
 
 
+def garantir_cases(grilles, vivier, rng):
+    """Remplace des grilles jusqu'à ce que chaque case de l'album tienne son plancher.
+
+    Rend (grilles, vrai si toutes les cases le tiennent). Une case se calcule
+    comme dans l'application : `scripts/sel_des_lieux.tirage_des_cases`.
+
+    Pour une case en manque, on reconstruit une grille tirée au sort, au même
+    niveau, en pesant sur les mots de cette case. Le remplacement n'est gardé
+    que si : sa solution est unique ; il apporte à la case un mot qu'aucune
+    grille ne donnait ; aucune case ne repasse sous le plancher ; et son taux de
+    collision n'est pas plus loin de la cible que la pire grille de son niveau,
+    pour que la réparation ne dégrade pas la difficulté.
+    """
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+    import sel_des_lieux
+    cases, case_de = sel_des_lieux.tirage_des_cases()
+
+    def compter(liste):
+        vus, n = set(), Counter()
+        for g in liste:
+            for m in g["mots"]:
+                if m["f"] not in vus:
+                    vus.add(m["f"])
+                    n[case_de(m["f"])] += 1
+        return n
+
+    def ecart(g):
+        return abs(taux_de_collision(g) - NIVEAUX[g["l"]]["collisions"])
+
+    print("\n🗺️  CASES DE L'ALBUM DES PAYSAGES")
+    print("-" * 45)
+    pire_ecart = {}
+    for g in grilles:
+        pire_ecart[g["l"]] = max(pire_ecart.get(g["l"], 0), ecart(g))
+
+    for _ in range(REPARATIONS_MAX):
+        n = compter(grilles)
+        manques = sorted((n[c], c) for c in cases if n[c] < PLANCHER_CASES)
+        if not manques:
+            print(f"   ✅ {len(cases)} cases, la plus mince à "
+                  f"{min(n[c] for c in cases)} mots")
+            return grilles, True
+        compte, case = manques[0]
+        formes = {m["f"] for g in grilles for m in g["mots"]}
+        cibles = [e for e in vivier
+                  if case_de(e["f"]) == case and e["f"] not in formes]
+        if not cibles:
+            print(f"   ❌ case {case[0]}:{case[1]} : {compte} mots, "
+                  "et aucun autre mot du vivier n'y mène")
+            return grilles, False
+        biaise = vivier + cibles * POIDS_CASE_EN_MANQUE
+        remplacee = None
+        for _ in range(ESSAIS_PAR_REPARATION):
+            i = rng.randrange(len(grilles))
+            niveau = grilles[i]["l"]
+            usages = Counter(m["m"] for j, g in enumerate(grilles)
+                             if j != i and g["l"] == niveau for m in g["mots"])
+            candidate = _construire_une_grille(
+                _disponibles(biaise, usages), usages, rng,
+                dict(NIVEAUX[niveau], niveau=niveau))
+            if candidate is None or not any(
+                    case_de(m["f"]) == case and m["f"] not in formes
+                    for m in candidate["mots"]):
+                continue
+            if ecart(candidate) > pire_ecart[niveau]:
+                continue
+            if not solution_unique(candidate):
+                continue
+            essai = grilles[:i] + [candidate] + grilles[i + 1:]
+            n2 = compter(essai)
+            if any(n2[c] < PLANCHER_CASES and n2[c] < n[c] for c in cases):
+                continue
+            grilles, remplacee = essai, i
+            break
+        if remplacee is None:
+            print(f"   ❌ case {case[0]}:{case[1]} : {compte} mots, "
+                  f"aucune grille de remplacement en {ESSAIS_PAR_REPARATION} essais")
+            return grilles, False
+        print(f"   🔧 case {case[0]}:{case[1]} : {compte} → "
+              f"{compter(grilles)[case]} mots (grille {remplacee} remplacée)")
+
+    print(f"   ❌ plancher non atteint après {REPARATIONS_MAX} remplacements")
+    return grilles, False
+
+
 def _disponibles(vivier, usages):
     """Le vivier amputé des mots déjà trop vus.
 
@@ -545,6 +646,12 @@ def main():
     grilles = construire_grilles(vivier, rng)
     if not grilles:
         print("\n❌ Aucune grille produite, rien n'est écrit.")
+        return 1
+
+    grilles, cases_tenues = garantir_cases(grilles, vivier, rng)
+    if strict and not cases_tenues:
+        print("\n❌ Mode strict : une case de l'album des paysages reste "
+              "sous son plancher, rien n'est écrit.")
         return 1
 
     if not valider(grilles):
