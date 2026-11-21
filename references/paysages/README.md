@@ -47,18 +47,29 @@ décors sont repris un à un.
 | Péitrusdall (`PEITRUSDALL`) | `peitrusdall-passerelle-viaduc.webp` | La Passerelle (le vieux viaduc) vue du fond de la vallée de la Pétrusse, en contre-plongée : ses arches en plein cintre, ses hautes piles, la dalle moderne et ses béquilles d'acier en Y, l'éperon de rocher à gauche | Tout le lieu, redessiné le 2026-11-20 : le viaduc vu d'en bas, ses quatre arches à claveaux percées dans un appareil de pierre claire, les piles qui descendent hors du cadre, le tablier et ses béquilles, le ciel au travers, l'éperon et son lierre |
 | Wollefsschlucht (`WOLLEFSSCHLUCHT`) | `wollefsschlucht-gorge-escalier.png` | La gorge du Loup : deux parois de grès lité très rapprochées, un escalier de pierre qui s'enfonce dans les feuilles mortes, deux marcheurs pour l'échelle | Tout le lieu, redessiné le 2026-11-20 : la grande paroi froide et litée à droite en trois découpes étagées, la fente noire au milieu, la paroi de gauche en retrait, l'escalier de pierre moussu qui descend, les coulées d'algue, le tapis de feuilles |
 | Wollefsschlucht (`WOLLEFSSCHLUCHT`) | `wollefsschlucht-passerelle-bois.webp` | Une passerelle de bois qui entre dans une faille moussue, fougères et feuilles d'automne (filigrane de banque d'images). À confirmer : ce peut être une autre passerelle du Mullerthal | **Rien** : la carte du 2026-11-20 suit la seule photo de l'escalier, dont le lieu est sûr. À reprendre si le propriétaire confirme celle-ci |
+| Priedegtstull (`PRIEDEGTSTULL`) | `priedegtstull-aiguille-passerelle.jpg` | L'aiguille de grès détachée de la falaise, coiffée de sa plateforme à garde-corps et de son fanion ; la passerelle d'acier qui la relie à la paroi ; la grande falaise litée à droite et son escalier à main courante ; un bouleau clair entre les deux, le ciel plein de cumulus, vu en contre-plongée | Tout le lieu, redessiné le 2026-11-21 : l'aiguille dans la colonne de gauche, étagée en trois découpes de grès ; la passerelle et la plateforme dans la bande du haut, au-dessus du dessin du mot ; la falaise en quatre bancs étagés et son escalier dans la colonne de droite ; le bouleau et le ciel dans la trouée |
 | Dumongshaff (`DUMONGSHAFF`) | `dumongshaff-passerelle-etang.png` | Une passerelle de bois en arc au-dessus de l'eau, les herbes des rives (photo signée A. Gontier) | Tout le lieu, redessiné le 2026-11-20 : la passerelle vue de la rive droite, son bout proche grand et l'autre qui fuit vers la berge d'en face, le peigne de ses barreaux serrés, le bois gris, l'eau sombre et son reflet, les roseaux |
 
 ## Une photo dont le lieu reste à identifier
 
 | Fichier | Ce qu'on y voit | Lieu possible |
 |---|---|---|
-| `chemin-creux-mousse.webp` | Un chemin creux entre deux parois de rocher couvertes de mousse et de fougères, la forêt par-dessus, la lumière au bout | Kallektuffquell, ou un chemin creux du Mullerthal. À trancher avant de peindre la Kallektuffquell |
+| `chemin-creux-mousse.webp` | Un chemin creux entre deux parois de rocher couvertes de mousse et de fougères, la forêt par-dessus, la lumière au bout | **Pas la Kallektuffquell** : celle-ci est une source qui dépose son tuf en surplomb, pas un chemin entre deux murs. Reste un chemin creux du Mullerthal à identifier |
+
+## Un lieu repeint sans photo
+
+La **Kallektuffquell** a été repeinte le 2026-11-21 sans photo de référence,
+d'après ce qu'est le lieu : une source qui dépose son calcaire en un grand
+surplomb de tuf, couvert de mousse, d'où l'eau goutte dans un bassin peu
+profond, au fond d'un sous-bois. C'était la carte la plus en retard de
+l'album, une palissade ocre rayée sous un aplat vert pomme devant une nappe
+turquoise. **À reprendre si le propriétaire a une photo du lieu**, notamment
+pour la forme exacte du surplomb et la place du bassin.
 
 ## Les autres lieux
 
-Trois lieux n'ont pas encore de photo ici : Stad, Haff Réimech,
-Priedegtstull. Ils ont été dessinés
+Deux lieux n'ont pas encore de photo ici : Stad et Haff Réimech.
+Ils ont été dessinés
 d'après des photos ou des descriptions données dans d'autres sessions de
 travail, qui n'ont pas été conservées. Pour les compléter : ajouter la photo
 ici, sous le nom `<lieu>-<sujet>.<ext>`, et une ligne à l'index.
