@@ -9007,6 +9007,7 @@ object Paysages {
             val c2 = CLOTURE_CONZEFENN
             val bois = neutre(duJour(0xFF8A7458.toInt()))
             val bout = 182f
+            val grain = Alea(4321)   // le bois a son propre tirage : `r` garde celui des fleurs
             /** Une perche ronde posée à [h0] au-dessus du pied, épaisse de [ep], qui fléchit de [fleche]. */
             fun perche(h0: Float, ep: Float, fleche: Float, col: Int) {
                 fun y(v: Float) = c2.y(v) - h0 * c2.echelle(v) +
@@ -9027,6 +9028,22 @@ object Paysages {
                 while (v > -6f) { j.lineTo(c2.x(v), y(v) + ep * c2.echelle(v)); v = max(-6f, v - 8f) }
                 j.close()
                 forme(j, sombre(col, 0.4f), 0.55f)
+                // Le bois : un filet de jour sur le dos de la perche, et les
+                // nœuds des branches coupées. Sans eux la perche était un
+                // tube de carton brun (relevé du 2026-11-21).
+                v = -6f
+                while (v < bout) {
+                    val w = min(bout, v + 8f)
+                    ligne(c2.x(v), y(v) + ep * 0.2f * c2.echelle(v), c2.x(w), y(w) + ep * 0.2f * c2.echelle(w),
+                        mix(col, 0xFFFFFFFF.toInt(), 0.22f), 0.22f * c2.echelle(v), 0.8f)
+                    v = w
+                }
+                v = 4f + grain() * 10f
+                while (v < bout - 4f) {
+                    val e = c2.echelle(v)
+                    rond(c2.x(v), y(v) + ep * 0.5f * e, ep * 0.24f * e, sombre(col, 0.45f), 0.8f)
+                    v += 18f + grain() * 22f
+                }
             }
             perche(10.4f, 1.5f, 0.9f, mix(bois, 0xFFFFFFFF.toInt(), 0.1f))
             perche(5.6f, 1.2f, 1.3f, bois)
@@ -9049,6 +9066,18 @@ object Paysages {
                     "L${px + w * 0.38f + pen} ${py - h}L${px - w * 0.38f + pen} ${py - h}Z", ton, 0.6f)
                 forme("M${px + w * 0.1f} $py L${px + w * 0.5f} $py" +
                     "L${px + w * 0.38f + pen} ${py - h}L${px + w * 0.1f + pen} ${py - h}Z", sombre(ton, 0.38f), 0.5f)
+                // Le fil du bois, qui suit le piquet jusqu'en haut, un nœud,
+                // et la coupe de la tête, plus claire, où l'on voit le bois
+                // de bout.
+                for (fk in 0 until 2) {
+                    val u = -0.25f + fk * 0.28f
+                    ligne(px + w * u, py - h * 0.08f, px + w * u * 0.8f + pen, py - h * 0.92f, sombre(ton, 0.42f), 0.16f * e, 0.9f)
+                }
+                val nh = 0.3f + grain() * 0.45f
+                rond(px - w * 0.12f + pen * nh, py - h * nh, 0.28f * e, sombre(ton, 0.5f), 0.85f)
+                p.style = Paint.Style.FILL
+                teinte(mix(ton, 0xFFFFFFFF.toInt(), 0.28f), 0.9f)
+                if (actif) c.drawOval(px - w * 0.38f + pen, py - h - 0.3f * e, px + w * 0.38f + pen, py - h + 0.3f * e, p)
             }
             for (k in 0 until 16) {
                 val e = 0.8f + r() * 0.2f
