@@ -71,6 +71,15 @@ except ImportError:
 #    « hues » ou « mamm » apparaissent en quantité — soit exactement ce qu'on
 #    tape sur un téléphone et que la presse écrite n'emploie jamais.
 #
+# Une troisième source s'y ajoute, hors de cette liste parce qu'elle ne vient
+# pas de Hugging Face : les phrases d'exemple du LOD lui-même (58 962, CC0),
+# dont LETZ n'était qu'une sélection. Voir `_charger_exemples_lod` et
+# `lod_source.exemples_pour_entrainement`. Mesuré le 2026-11-20 : top-3 du
+# corpus du ZLS de 18,1 à 19,6 %, deuxième personne de 14 à 25 % — voir
+# `reports/exemples_lod_ngrammes_2026-11-20.md`. Elle n'entre pas dans le jeu
+# « Wuertlück » (`generate_cloze.py`), qui lit cette liste et cite la source
+# de chaque phrase.
+#
 # Le corpus POTOMITAN/luxembourgish-corpus utilisé jusqu'ici (157 tours de
 # parole de conférences de presse gouvernementales) a été retiré : les
 # ministres passent régulièrement au Hochdeutsch en pleine réponse, ce qui
@@ -225,8 +234,8 @@ _CARACTERES_TRANSPARENTS = ' \t\r\n"\'«»“”„‘’()[]-–—'
 _FINS_DE_PHRASE = '.!?…'
 
 
-def tokeniser(texte):
-    """Découpe un texte en (mot, en_tete_de_phrase), casse d'origine gardée."""
+def tokeniser_avec_positions(texte):
+    """Découpe un texte en (mot, en_tete_de_phrase, position du début)."""
     tokens = []
     for correspondance in PATTERN_MOT.finditer(texte):
         mot = correspondance.group(0).strip('-')
@@ -235,8 +244,14 @@ def tokeniser(texte):
         i = correspondance.start() - 1
         while i >= 0 and texte[i] in _CARACTERES_TRANSPARENTS:
             i -= 1
-        tokens.append((mot, i < 0 or texte[i] in _FINS_DE_PHRASE))
+        tokens.append((mot, i < 0 or texte[i] in _FINS_DE_PHRASE,
+                       correspondance.start()))
     return tokens
+
+
+def tokeniser(texte):
+    """Découpe un texte en (mot, en_tete_de_phrase), casse d'origine gardée."""
+    return [(mot, en_tete) for mot, en_tete, _ in tokeniser_avec_positions(texte)]
 
 
 def _classe_de_casse(forme):
@@ -467,10 +482,13 @@ class LuxembourgishPipelineUnique:
                 return False
             return self._charger_fallback_local()
 
-        # Une seule source sur deux, c'est un dictionnaire amputé de la moitié
+        if self._charger_exemples_lod():
+            sources_ok += 1
+
+        # Une seule source sur trois, c'est un dictionnaire amputé de la moitié
         # de son vocabulaire ou de tout son registre familier selon celle qui
         # manque — et rien dans les contrôles de format de la CI ne le verrait.
-        obligatoires = sum(1 for s in CORPUS_SOURCES if not s.get("optionnelle"))
+        obligatoires = sum(1 for s in CORPUS_SOURCES if not s.get("optionnelle")) + 1
         if sources_ok < obligatoires:
             print(f"\n⚠️ Seulement {sources_ok} corpus chargés sur {obligatoires} obligatoires.")
             if self.strict:
@@ -479,9 +497,39 @@ class LuxembourgishPipelineUnique:
 
         print(f"\n📋 RÉSUMÉ CHARGEMENT:")
         print(f"   📊 {len(self.textes_luxembourgeois)} phrases uniques")
-        print(f"   🌐 Sources: {sources_ok}/{len(CORPUS_SOURCES)}")
+        print(f"   🌐 Sources: {sources_ok}/{len(CORPUS_SOURCES) + 1}")
         print(f"   ✅ Prêt pour traitement")
         return True
+
+    def _charger_exemples_lod(self):
+        """Verse au corpus les phrases d'exemple du LOD. Vrai si c'est fait.
+
+        LETZ n'en apportait que 5 862 ; le LOD en porte 58 962, en CC0. Voir la
+        note en tête de `CORPUS_SOURCES` et `lod_source.exemples_pour_entrainement`,
+        qui applique les règles d'exclusion.
+
+        Le corpus de traduction du ZLS est indispensable ici, et pas comme
+        source : la moitié de ses segments sont des exemples du LOD, et c'est
+        le jeu sur lequel le clavier est évalué. Sans lui, impossible de les
+        écarter. On renonce alors aux exemples plutôt que de fausser la mesure.
+        """
+        print("\n🔄 LOD — phrases d'exemple (Zenter fir d'Lëtzebuerger Sprooch)")
+        try:
+            import lod_source
+            import zls_source
+            segments = [s["lb"] for s in zls_source.segments()]
+            exemples = lod_source.exemples_pour_entrainement(
+                (t["Texte"] for t in self.textes_luxembourgeois), segments)
+        except Exception as e:
+            print(f"   ❌ exemples du LOD indisponibles: {e}")
+            return False
+        for phrase, vedettes in exemples:
+            self.textes_luxembourgeois.append({
+                "Texte": phrase,
+                "Source": "LOD (phrases d'exemple)",
+                "Vedettes": vedettes,
+            })
+        return bool(exemples)
 
     def _charger_fallback_local(self):
         """Repli sur un corpus local. Hors mode strict uniquement.
@@ -541,18 +589,31 @@ class LuxembourgishPipelineUnique:
         compteur_mots = Counter()
         formes_hors_tete = defaultdict(Counter)
         
+        vedettes_ignorees = 0
         for transcription in self.textes_luxembourgeois:
             if isinstance(transcription, dict):
                 contenu_texte = transcription.get("Texte", "")
+                vedettes = transcription.get("Vedettes") or ()
             else:
                 contenu_texte = str(transcription) if transcription is not None else ""
+                vedettes = ()
             
             if not contenu_texte:
                 continue
                 
-            for mot, en_tete in tokeniser(contenu_texte):
+            for mot, en_tete, debut in tokeniser_avec_positions(contenu_texte):
                 lemme = mot.lower()
-                compteur_mots[lemme] += 1
+                # Le mot qu'un exemple du LOD illustre y est par construction :
+                # chaque article reçoit ses exemples, que le mot soit courant ou
+                # rare. Le compter doublerait la fréquence de mots comme
+                # « millen » (16 → 65) ou « schappeg » (0 → 10) sans aucune
+                # raison linguistique. Il reste dans les n-grammes, où ses
+                # voisins disent comment il s'emploie, et dans le vote de casse,
+                # où le ZLS l'écrit correctement.
+                if any(a <= debut < b for a, b in vedettes):
+                    vedettes_ignorees += 1
+                else:
+                    compteur_mots[lemme] += 1
                 if not en_tete:
                     formes_hors_tete[lemme][mot] += 1
         
@@ -644,6 +705,8 @@ class LuxembourgishPipelineUnique:
                       if total_occurrences else 0)
         print(f"✅ Dictionnaire luxembourgeois créé:")
         print(f"   - Occurrences analysées: {total_occurrences}")
+        if vedettes_ignorees:
+            print(f"   - Mots vedettes du LOD non comptés: {vedettes_ignorees}")
         print(f"   - Formes distinctes: {total_formes}")
         print(f"   - Retenues (freq >= {SEUIL_FREQUENCE_DICO}): {len(retenus)}")
         print(f"   - Entrées livrées: {len(self.nouveau_dictionnaire)}")

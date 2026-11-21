@@ -7,7 +7,7 @@ l'application, c'est distribuer les deux.
 
 | Fichier livré | Source | Licence | Ce qu'elle impose |
 |---|---|---|---|
-| `luxemburgish_dict.json`, `luxemburgish_ngrams.json` | LuxAlign (Philippy et coll., phrases de RTL.lu) et LETZ | **CC BY-NC 4.0** et CC BY 4.0 | Attribution, et **pas d'usage commercial** |
+| `luxemburgish_dict.json`, `luxemburgish_ngrams.json` | LuxAlign (Philippy et coll., phrases de RTL.lu), LETZ, et les phrases d'exemple du LOD (ZLS) | **CC BY-NC 4.0**, CC BY 4.0 et CC0 1.0 | Attribution, et **pas d'usage commercial** |
 | `luxemburgish_cloze.json` | idem | **CC BY-NC 4.0** et CC BY 4.0 | Idem, et l'attribution doit rester **visible à l'écran** : ce fichier reprend 1 600 phrases entières |
 | `luxemburgish_translations.json`, `luxemburgish_familles.json`, `luxemburgish_exemples.json`, `luxemburgish_lod_ids.json`, `luxemburgish_lod_forms.json` | Lëtzebuerger Online Dictionnaire, Zenter fir d'Lëtzebuerger Sprooch | **CC0 1.0** | Rien. Le ZLS est crédité quand même |
 | `french_simple_dict.json` | Lexique 3.83, New & Pallier | **CC BY-SA 4.0** | Attribution, et **partage à l'identique** de cet actif dérivé |
