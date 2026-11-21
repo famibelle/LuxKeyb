@@ -7794,7 +7794,8 @@ object Paysages {
             val ocre = duJour(0xFFDDB05A.toInt())
             val aile = duJour(0xFFEDE9E0.toInt())
             val toit = ardoise()
-            val terrasse = duJour(0xFFD8CCAE.toInt())
+            // La terrasse et ses lions sont de la pierre : [neutre] (règle 10).
+            val terrasse = neutre(duJour(0xFFD8CCAE.toInt()))
             // Le château de trois quarts : l'aile ocre, le corps central et
             // ses deux tours carrées, l'aile blanche, sur la terrasse à
             // arcades qui fuit avec eux.
@@ -7813,27 +7814,42 @@ object Paysages {
             rue3q(f, arrayOf(CHATEAU_ANSEBUERG[2]), intArrayOf(ocre, aile), r, debut = CHATEAU_ANSEBUERG[0][0] + CHATEAU_ANSEBUERG[1][0], froid = false)
             for (d in floatArrayOf(3f, 24f)) rue3q(f, arrayOf(TOUR_ANSEBUERG), intArrayOf(ocre), r, debut = CHATEAU_ANSEBUERG[0][0] + d, froid = false)
             mineral {
-                piece(Path().apply {
+                val face = Path().apply {
                     moveTo(bord[0], bord[1]); lineTo(bord[2], bord[3]); lineTo(bord[4], bord[5]); lineTo(bord[6], bord[7]); close()
-                }, terrasse)
+                }
+                piece(face, terrasse)
+                // Le mur de la terrasse est appareillé, en assises qui fuient
+                // avec lui : un aplat jaune n'était qu'un ruban.
+                appareil(face, terrasse, 1.2f, 3.2f, 207, (bord[3] - bord[1]) / (bord[2] - bord[0]), lichen = 0.04f)
                 val largeur = fin + 22f
                 surQuad(largeur, terrasseH, bord) {
-                    val creux = mix(terrasse, P.pres, 0.45f)
+                    // Les arcades sont des ouvertures dans la pierre, donc
+                    // sombres. Elles étaient teintées au vert du proche
+                    // (`mix(…, P.pres)`, le piège de la skill des matières),
+                    // et sortaient en sept pastilles vertes.
+                    val creux = sombre(terrasse, 0.62f)
                     var ax = 14f + CHATEAU_ANSEBUERG[0][0] + 2f
                     while (ax < 14f + CHATEAU_ANSEBUERG[0][0] + CHATEAU_ANSEBUERG[1][0] - 3f) {
                         pieceD("M$ax 8L$ax 4C$ax 2.2 ${ax + 3.2f} 2.2 ${ax + 3.2f} 4L${ax + 3.2f} 8Z", creux, 0f)
+                        // Le tableau, au jour à gauche : l'épaisseur du mur.
+                        forme("M$ax 8L$ax 4C$ax 2.2 ${ax + 3.2f} 2.2 ${ax + 3.2f} 4L${ax + 2.6f} 4C${ax + 2.6f} 2.9 ${ax + 0.6f} 2.9 ${ax + 0.6f} 4L${ax + 0.6f} 8Z",
+                            mix(terrasse, 0xFFFFFFFF.toInt(), 0.1f), 0.8f)
                         ax += 5f
                     }
-                    ligne(0f, 0.4f, largeur, 0.4f, mix(terrasse, P.pres, 0.3f), 0.4f)
+                    ligne(0f, 0.4f, largeur, 0.4f, sombre(terrasse, 0.3f), 0.4f)
                 }
-                // La balustrade, qui se serre en fuyant.
-                var u = -14f
-                while (u < fin + 8f) {
-                    val e = f.echelle(u)
-                    ligne(f.x(u), f.y(u), f.x(u), f.y(u) - 1.4f * e, terrasse, 0.3f * e)
-                    u += 1.8f
+                // La balustrade, qui se serre en fuyant. Ses balustres sont
+                // plus fins que la tranche d'un carton : sans [filDeFer]
+                // ils sortaient dorés.
+                filDeFer {
+                    var u = -14f
+                    while (u < fin + 8f) {
+                        val e = f.echelle(u)
+                        ligne(f.x(u), f.y(u), f.x(u), f.y(u) - 1.4f * e, terrasse, 0.3f * e)
+                        u += 1.8f
+                    }
+                    ligne(f.x(-14f), f.y(-14f) - 1.4f, f.x(fin + 8f), f.y(fin + 8f) - 1.4f * f.echelle(fin + 8f), terrasse, 0.4f)
                 }
-                ligne(f.x(-14f), f.y(-14f) - 1.4f, f.x(fin + 8f), f.y(fin + 8f) - 1.4f * f.echelle(fin + 8f), terrasse, 0.4f)
             }
             for (x in floatArrayOf(12f, 88f)) {
                 pieceD("M$x 40L${x - 1.6f} 34C${x - 1.4f} 30 ${x - 0.4f} 27 $x 26C${x + 0.4f} 27 ${x + 1.4f} 30 ${x + 1.6f} 34Z", vert(0.15f))
@@ -7867,20 +7883,68 @@ object Paysages {
                 massif.op(feuilles, Path.Op.UNION)
                 piece(massif, haie)
             }
-            val pierre = duJour(0xFFB3AD98.toInt())
+            val pierre = neutre(duJour(0xFFB3AD98.toInt()))
             mineral {
-                for ((x, s) in listOf(24f to 1f, 76f to -1f)) lion(x, DEVANT, s, pierre)
-                feuille(36f, 56.4f, 28f, 2.4f, duJour(0xFF9C988C.toInt()), 0.4f)
+                for ((x, s) in listOf(24f to 1f, 76f to -1f)) lion(x, DEVANT, s, pierre, 209 + s.toInt())
+                // L'escalier qui descend au jardin entre les deux lions :
+                // trois marches, chacune son nez au jour et sa contremarche
+                // à l'ombre. C'était une bande grise.
+                val marche = neutre(duJour(0xFF9C988C.toInt()))
+                for (k in 0 until 3) {
+                    val y = 54.2f + k * 1.5f
+                    val dx = k * 1.2f
+                    feuille(36f - dx, y, 28f + 2f * dx, 1.5f, sombre(marche, 0.28f), 0.4f)
+                    rect(36f - dx, y, 28f + 2f * dx, 0.45f, mix(marche, 0xFFFFFFFF.toInt(), 0.2f), 0.9f)
+                }
             }
             c.restore()
         }
 
-        /** Un lion de pierre couché sur son socle, tourné vers le centre de la scène ([s] : 1 ou -1). */
-        fun lion(x: Float, bas: Float, s: Float, col: Int) {
-            feuille(x - 4f, bas - 3f, 8f, 3f, mix(col, P.pres, 0.2f))
-            pieceD("M${x - 3.6f * s} ${bas - 3f}C${x - 3.6f * s} ${bas - 6f} ${x + 0.4f * s} ${bas - 7f} ${x + 2.2f * s} ${bas - 6.2f}L${x + 3.6f * s} ${bas - 3f}Z", col)
-            touffe(mix(col, P.pres, 0.12f), x + 2.4f * s, bas - 7.6f, 2.3f)
-            touffe(col, x + 3.2f * s, bas - 7.2f, 1.4f)
+        /**
+         * Un lion de pierre couché sur son socle, tourné vers le centre de la
+         * scène ([s] : 1 ou -1).
+         *
+         * Sur la photo, c'est une pierre grise usée, tachée de lichen, sur un
+         * socle mouluré. C'étaient trois ronds beiges sur un pavé verdi au
+         * `P.pres` (relevé du 2026-11-21) : on y lisait des champignons. Il
+         * a maintenant un socle à corniche, un corps qui prend le jour à
+         * gauche et garde l'ombre à droite, une crinière plus sombre que la
+         * face, et ses taches de lichen.
+         */
+        fun lion(x: Float, bas: Float, s: Float, col: Int, graine: Int) {
+            val rr = Alea(graine)
+            val ombre = sombre(col, 0.34f)
+            val jour = mix(col, 0xFFFFFFFF.toInt(), 0.18f)
+            // Le socle, sa corniche et son ombre.
+            feuille(x - 4f, bas - 3f, 8f, 3f, sombre(col, 0.16f))
+            rect(x + 1.6f, bas - 3f, 2.4f, 3f, ombre, 0.45f)
+            feuille(x - 4.5f, bas - 3.7f, 9f, 0.8f, jour, 0.4f)
+            // Le corps couché, l'arrière-train vers l'extérieur.
+            val corps = "M${x - 3.8f * s} ${bas - 3.7f}C${x - 3.9f * s} ${bas - 6.4f} ${x - 1f * s} ${bas - 7.2f} ${x + 1.4f * s} ${bas - 6.6f}" +
+                "L${x + 3.9f * s} ${bas - 4.6f}L${x + 3.9f * s} ${bas - 3.7f}Z"
+            pieceD(corps, col)
+            forme("M${x - 3.8f * s} ${bas - 3.7f}C${x - 3.9f * s} ${bas - 6.4f} ${x - 1f * s} ${bas - 7.2f} ${x + 1.4f * s} ${bas - 6.6f}" +
+                "L${x + 1f * s} ${bas - 5.8f}C${x - 1f * s} ${bas - 6.2f} ${x - 3f * s} ${bas - 5.6f} ${x - 3f * s} ${bas - 3.7f}Z",
+                if (s > 0) jour else ombre, 0.6f)
+            // Les pattes avant, allongées vers le centre.
+            rect(if (s > 0) x + 1.4f else x - 4.6f, bas - 4.6f, 3.2f, 0.9f, sombre(col, 0.08f))
+            // La crinière, puis la tête, plus claire, qui dépasse devant.
+            touffe(sombre(col, 0.22f), x + 1.6f * s, bas - 7.4f, 2f, x + 0.6f * s, bas - 6.4f, 1.6f, x + 2.4f * s, bas - 6f, 1.5f)
+            rond(x + 2.6f * s, bas - 7f, 1.25f, col)
+            rond(x + 3.3f * s, bas - 6.6f, 0.6f, mix(col, 0xFFFFFFFF.toInt(), 0.1f))
+            rond(x + 2.9f * s, bas - 7.3f, 0.22f, sombre(col, 0.6f))
+            // Le lichen, en taches pâles et sombres, sur la pierre et nulle
+            // part ailleurs : hors d'elle, une tache flotterait avec sa
+            // tranche de kraft.
+            val pierre = chemin(corps).apply { addRect(x - 4f, bas - 3f, x + 4f, bas, Path.Direction.CW) }
+            c.save(); c.clipPath(pierre)
+            releve?.let { it.save(); it.clipPath(pierre) }
+            for (k in 0 until 6) {
+                val lx = x + (rr() - 0.5f) * 7f
+                val ly = bas - 0.6f - rr() * 6f
+                rond(lx, ly, 0.3f + rr() * 0.45f, if (k % 2 == 0) neutre(duJour(0xFF9DA07A.toInt())) else mix(col, 0xFFFFFFFF.toInt(), 0.3f), 0.5f)
+            }
+            releve?.restore(); c.restore()
         }
 
         // ---- Pafendall, l'ascenseur panoramique (photo du propriétaire)
