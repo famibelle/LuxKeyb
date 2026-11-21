@@ -9,6 +9,18 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [41.1.0] - 2026-11-21
+
+### ✨ Nouveautés
+
+- **Le Wierderbuch dit la nature de chaque mot** : dans la liste des résultats, chaque mot porte sa nature à côté de lui (« Nom féminin », « Verbe », « Adjectif »…), et sa fiche l'affiche sous le mot. Tapez « Haus » : vous voyez tout de suite que c'est un nom neutre, et que « hausen » est un verbe.
+- **Des eaux claires** : les lacs, les rivières et les bassins des cartes sont d'un bleu limpide. Là où l'eau est basse, on voit le fond et ses galets, et des truites nagent dans les bassins du Mëllerdall et de la Kallektuffquell.
+- **Six lieux repeints** : le lac de la Haute-Sûre entre ses versants boisés, avec son ponton et sa barque ; le château de Vianden au-dessus de la brume de l'Our, ses toits d'ardoise et le clocher de la ville ; l'aiguille de grès du Priedegtstull et sa passerelle ; le grand surplomb de tuf de la Kallektuffquell ; le Biodiversum au bord de l'étang du Haff Réimech ; et la ville haute de Luxembourg, avec Saint-Michel, le parc des casemates, les tours du Kirchberg et, en contrebas, le clocher de Saint-Jean du Grund.
+
+### 🐛 Corrections
+
+- **« Activer » plutôt qu'« interrupteur »** : les consignes de mise en route parlaient d'un interrupteur, un mot que certains ne comprenaient pas. Elles disent maintenant activer, désactiver et réactiver.
+
 ## [41.0.0] - 2026-11-21
 
 ### ✨ Nouveautés
