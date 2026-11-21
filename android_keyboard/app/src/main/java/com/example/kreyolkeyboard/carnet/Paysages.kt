@@ -5333,7 +5333,9 @@ object Paysages {
                 // Les maisons du Grund à l'extrême gauche, sous leurs mansardes.
                 feuille(-4f, 33f, 11f, 15f, rose)
                 c.save(); c.translate(-4f, 33f); matiere(11f, 15f, rose, taille, r, false); c.restore()
-                pieceD("M-5 33.4L-3 25.6L8 25.6L10 33.4Z", ard)
+                // Les toitures en ardoise, comme à Veianen et au Stad : un
+                // aplat gris n'en disait pas la matière (relevé du 2026-11-21).
+                ardoises(floatArrayOf(-3f, 25.6f, 8f, 25.6f, 10f, 33.4f, -5f, 33.4f), ard, 5336, 6, 8)
                 for (fx in floatArrayOf(-2.4f, 1.4f, 5.2f)) {
                     rect(fx - 0.35f, 35.65f, 2.5f, 3.5f, taille)
                     fenetreVerre(fx, 36f, 1.8f, 2.8f, r)
@@ -5341,10 +5343,13 @@ object Paysages {
                 // La nef et son toit en pavillon, le plus gros volume de la scène.
                 feuille(16f, 34f, 20f, 13f, neutre(creme))
                 c.save(); c.translate(16f, 34f); matiere(20f, 13f, neutre(creme), taille, r, false); c.restore()
-                pieceD("M14.6 34.4L20.5 21.2L32 21.2L37.4 34.4Z", ard)
+                ardoises(floatArrayOf(20.5f, 21.2f, 32f, 21.2f, 37.4f, 34.4f, 14.6f, 34.4f), ard, 5344, 9, 12)
                 pieceD("M20.5 21.2L32 21.2L32 22.2L20.5 22.2Z", mix(ard, 0xFFFFFFFF.toInt(), 0.2f), 0f)
                 for (lx in floatArrayOf(18.6f, 24.4f, 30.2f)) {
-                    pieceD("M$lx 31.4L${lx + 1.3f} 28.6L${lx + 2.6f} 31.4Z", sombre(ard, 0.25f), 0.3f)
+                    // La lucarne, plus claire que l'ardoise : sombre sur un
+                    // toit d'ardoise, elle s'y perdait.
+                    pieceD("M$lx 31.4L${lx + 1.3f} 28.6L${lx + 2.6f} 31.4Z", mix(ard, 0xFFFFFFFF.toInt(), 0.24f), 0.3f)
+                    ligne(lx - 0.1f, 31.5f, lx + 1.3f, 28.5f, sombre(ard, 0.4f), 0.3f)
                     rect(lx + 0.8f, 30.4f, 1f, 1.4f, neutre(sombre(creme, 0.7f)))
                     if (P.allume) rect(lx + 0.8f, 30.4f, 1f, 1.4f, P.fenetre, 0.85f)
                 }
