@@ -11095,7 +11095,9 @@ object Paysages {
          */
         fun obelisque(x0: Float, x1: Float, haut: Float) = mineral {
             val r = Alea(352)
-            val granit = neutre(duJour(0xFFB8A79C.toInt()))
+            // Relevé sur la photo : le granit au couchant fait #A7826F, un
+            // brun rosé. Le beige d'avant (#B8A79C) sortait gris.
+            val granit = neutre(duJour(0xFFB4876E.toInt()))
             val bas = DEVANT + 1f
             val rentrant = (x1 - x0) * 0.14f
             val fut = chemin("M$x0 ${bas}L${x0 + rentrant} ${haut}L${x1 - rentrant} ${haut}L$x1 ${bas}Z")
@@ -11156,9 +11158,14 @@ object Paysages {
          */
         private fun statueEntiere(x: Float, pied: Float) {
             val or = if (P.nuit) 0xFFFFD36A.toInt() else 0xFFE2AC36.toInt()
-            val clair = mix(or, 0xFFFFF4C8.toInt(), 0.5f)
-            val ombre = mix(or, 0xFF5A3A08.toInt(), 0.42f)
-            val pli = mix(or, 0xFF6A4A10.toInt(), 0.3f)
+            // Un métal poli tient par l'écart de ses valeurs : sur la photo
+            // les plis tombent au brun (#4E2709) et le reflet monte presque
+            // au blanc (#EDD581). Entre les deux tons voisins d'avant, la
+            // statue se lisait en plâtre peint en jaune.
+            val clair = mix(or, 0xFFFFF4C8.toInt(), 0.55f)
+            val ombre = mix(or, 0xFF3A2004.toInt(), 0.62f)
+            val pli = mix(or, 0xFF4A2E08.toInt(), 0.5f)
+            val reflet = if (P.nuit) mix(or, 0xFFFFFFFF.toInt(), 0.4f) else 0xFFFFF6D8.toInt()
             // Le halo du soir, en vrai dégradé : un rond plat posait derrière
             // elle un disque à bord net.
             if (P.allume) {
@@ -11180,8 +11187,11 @@ object Paysages {
             c.clipPath(robe)
             forme(chemin("M${x - 3.2f} ${pied}C${x - 2.7f} ${pied - 9f} ${x - 2.6f} ${pied - 15f} ${x - 2.2f} ${pied - 19.5f}" +
                 "L${x - 0.7f} ${pied - 19.8f}L${x - 1.4f} ${pied}Z"), clair, 0.55f)
+            // Le filet du reflet, étroit, au quart du bord éclairé.
+            forme(chemin("M${x - 2.1f} ${pied - 1f}C${x - 1.9f} ${pied - 8f} ${x - 1.9f} ${pied - 14f} ${x - 1.7f} ${pied - 19.2f}" +
+                "L${x - 1.35f} ${pied - 19.2f}C${x - 1.5f} ${pied - 14f} ${x - 1.5f} ${pied - 8f} ${x - 1.6f} ${pied - 1f}Z"), reflet, 0.85f)
             forme(chemin("M${x + 0.5f} ${pied - 19.7f}C${x + 1.2f} ${pied - 14f} ${x + 1.8f} ${pied - 8f} ${x + 4.6f} ${pied}" +
-                "L${x + 2f} ${pied}Z"), ombre, 0.5f)
+                "L${x + 2f} ${pied}Z"), ombre, 0.7f)
             for (k in 0 until 7) {
                 val fx = x - 2.6f + k * 1.05f
                 trait("M$fx ${pied - 18.5f}C${fx - 0.3f} ${pied - 12f} ${fx + 0.7f} ${pied - 5f} ${fx + 1f} ${pied}", pli, 0.2f, 0.7f)
