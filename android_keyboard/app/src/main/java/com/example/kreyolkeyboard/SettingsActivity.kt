@@ -10598,6 +10598,9 @@ class SettingsActivity : AppCompatActivity() {
                 TranslationDictionary.charger(applicatif)
                 TranslationDictionary.chargerExemples(applicatif)
                 TranslationDictionary.chargerArticles(applicatif)
+                // La nature de chaque résultat (« Nom féminin ») : 542 Ko lus
+                // au premier résultat affiché seraient un arrêt visible.
+                TranslationDictionary.chargerCategories(applicatif)
             }.start()
 
             colonne.addView(TextView(activity).apply {
@@ -10817,11 +10820,44 @@ class SettingsActivity : AppCompatActivity() {
                 layoutParams = LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
                 )
-                addView(TextView(activity).apply {
-                    text = resultat.mot
-                    textSize = 19f
-                    setTypeface(null, Typeface.BOLD)
-                    setTextColor(Color.parseColor("#1C1C1C"))
+                // La nature à droite du mot, sur sa ligne : sous la glose, elle
+                // aurait ajouté une troisième ligne à chacun des quarante
+                // résultats. Le libellé entier plutôt qu'une abréviation
+                // (« n. » se lit nom ou neutre), sauf pour les trois genres
+                // composés, qui ne tiendraient pas. Quand même ainsi il ne
+                // tient pas (« Fussballseuropameeschterschaft » ne lui laissait
+                // que « N… » sur le A21s), il s'efface tout entier : un libellé
+                // coupé n'apprend rien, et la fiche le donne.
+                addView(LinearLayout(activity).apply {
+                    orientation = LinearLayout.HORIZONTAL
+                    isBaselineAligned = true
+                    addView(TextView(activity).apply {
+                        text = resultat.mot
+                        textSize = 19f
+                        setTypeface(null, Typeface.BOLD)
+                        setTextColor(Color.parseColor("#1C1C1C"))
+                    })
+                    TranslationDictionary.categorie(activity, resultat.mot)?.let { nature ->
+                        addView(TextView(activity).apply {
+                            text = getString(TranslationDictionary.categorieCourte(nature))
+                            textSize = 14f
+                            // 5,33:1 sur le blanc, 5,19:1 sur la ligne teintée.
+                            setTextColor(Color.parseColor("#6B6B6B"))
+                            maxLines = 1
+                            ellipsize = android.text.TextUtils.TruncateAt.END
+                            setPadding(enDp(10), 0, 0, 0)
+                            layoutParams = LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
+                            )
+                            // INVISIBLE et non GONE : la ligne garde sa mise
+                            // en page, rien ne se recalcule en boucle.
+                            addOnLayoutChangeListener { vue, _, _, _, _, _, _, _, _ ->
+                                val coupe = (vue as TextView).layout
+                                    ?.let { it.lineCount > 0 && it.getEllipsisCount(0) > 0 } == true
+                                vue.visibility = if (coupe) View.INVISIBLE else View.VISIBLE
+                            }
+                        })
+                    }
                 })
                 addView(TextView(activity).apply {
                     text = resultat.glose
@@ -10906,6 +10942,31 @@ class SettingsActivity : AppCompatActivity() {
                 setTypeface(null, Typeface.BOLD)
                 setTextColor(Color.parseColor("#1C1C1C"))
             })
+
+            // La nature du mot, sous lui et avant son sens : le genre d'un nom
+            // ne se devine pas, et c'est lui qui donne l'article (dat Haus).
+            // Une seule pastille neutre pour toutes les natures, sans couleur
+            // par genre : toutes les teintes libres de l'appli portent déjà un
+            // sens (langue, carnet, jeux, rareté), et c'est le texte qui
+            // informe. Le libellé entier ici, la fiche a la place.
+            TranslationDictionary.categorie(activity, resultat.mot)?.let { nature ->
+                colonne.addView(TextView(activity).apply {
+                    text = getString(nature)
+                    textSize = 14f
+                    setTypeface(null, Typeface.BOLD)
+                    // 8,35:1.
+                    setTextColor(Color.parseColor("#37474F"))
+                    setPadding(enDp(12), enDp(4), enDp(12), enDp(4))
+                    background = GradientDrawable().apply {
+                        cornerRadius = enDp(12).toFloat()
+                        setColor(Color.parseColor("#ECEFF1"))
+                    }
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { topMargin = enDp(6) }
+                })
+            }
 
             colonne.addView(titreSection(activity, getString(R.string.sa_en_francais), 30))
 
@@ -11170,6 +11231,9 @@ class SettingsActivity : AppCompatActivity() {
                 Toast.makeText(activity, getString(R.string.sa_impossible_ouvrir_lod_lu), Toast.LENGTH_SHORT).show()
             }
         }
+
+        private fun enDp(valeur: Int): Int =
+            (valeur * resources.displayMetrics.density).toInt()
 
         companion object {
             private const val LOD_ARTICLE = "https://lod.lu/artikel/"
