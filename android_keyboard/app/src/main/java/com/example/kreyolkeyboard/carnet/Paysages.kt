@@ -1394,11 +1394,15 @@ object Paysages {
         floatArrayOf(14f, 11f, 0f, 0f, 7.2f, 1f), floatArrayOf(11f, 10f, 0f, 0f, 6.4f, 1f)
     )
 
-    /** Le château de Vianden sur son éperon : le palais, la tour carrée, l'aile basse. */
-    internal val FUITE_VEIANEN = Fuite(floatArrayOf(41f, 31f), floatArrayOf(175f, 22f), floatArrayOf(-90f, 27f), taille = 1f)
-    private val CHATEAU_VEIANEN = arrayOf(
-        floatArrayOf(40f, 17f, 0f, 0f, 6.5f, 1f), floatArrayOf(8f, 20f, 0f, 0f, 7f, 0f), floatArrayOf(18f, 9.5f, 0f, 0f, 4f, 0f)
-    )
+    /**
+     * La ville de Vianden, au pied du château : des toits serrés en bas à
+     * gauche, pris de haut comme sur la photo, qui fuient vers la droite.
+     * Le château, lui, n'est plus une rangée de maisons de [rue3q] : il est
+     * dessiné à la main sur ses trois lignes de fuite, parce que c'est le
+     * sujet du lieu et qu'il lui faut ses tours rondes et sa flèche.
+     */
+    internal val RUE_VEIANEN = Fuite(floatArrayOf(-6f, 62f), floatArrayOf(74f, 48f), floatArrayOf(-150f, 58f), 150f, taille = 0.5f)
+    private val MAISONS_VEIANEN = maisonsAuHasard(34, 171, 14f, 20f)
 
     /** Le château d'Ansembourg : l'aile ocre, le corps central, l'aile blanche, et ses deux tours. */
     internal val FUITE_ANSEBUERG = Fuite(floatArrayOf(22f, 32f), floatArrayOf(190f, 23f), floatArrayOf(-100f, 28f), 165f)
@@ -2063,7 +2067,10 @@ object Paysages {
                 Lieu.NEI_BRECK -> Surcadre(Essence.FEUILLU, DROITE, Pied.FOUGERES, DEUX)
                 Lieu.PEITRUSDALL -> Surcadre(Essence.FEUILLU, DEUX, Pied.HERBES, GAUCHE, portee = 24f)
                 Lieu.PAFENDALL -> Surcadre(Essence.FEUILLU, DROITE, Pied.FOUGERES, DROITE, portee = 26f)
-                Lieu.VEIANEN -> Surcadre(Essence.FEUILLU, DEUX, Pied.HERBES, DEUX, portee = 25f)
+                // La branche passe à gauche et les fougères à droite : au
+                // milieu et à droite, le feuillage mangeait le château, qui
+                // est tout le lieu.
+                Lieu.VEIANEN -> Surcadre(Essence.FEUILLU, GAUCHE, Pied.FOUGERES, DROITE, portee = 20f)
                 Lieu.OURDALL -> Surcadre(Essence.SAULE, GAUCHE, Pied.ROSEAUX, GAUCHE)
                 // Les coulisses restent à droite, où il n'y a que de l'eau et
                 // de la forêt : à gauche elles couvraient la grève, qui est
@@ -3630,6 +3637,86 @@ object Paysages {
             appareil(Path().apply { addRect(x, y, x + w, y + h, Path.Direction.CW) }, col, rang, longueur, graine, pente)
 
         /**
+         * Un pan de trois quarts qu'on peint à plat dans une boîte de
+         * 100 × 100, comme [surQuad], mais **découpé** à son quadrilatère
+         * [q] (haut gauche, haut droit, bas droit, bas gauche).
+         *
+         * Une matière déborde toujours un peu sa boîte — un rang d'ardoises
+         * commence avant le bord, une lame dépasse — et [surQuad] ne borne
+         * rien. Sur un trapèze effilé, une flèche de clocher par exemple, ce
+         * débord part à l'infini de la projection et noie tout le bord de la
+         * carte : c'est arrivé au clocher de Vianden le 2026-11-21.
+         */
+        fun surPan(q: FloatArray, bloc: () -> Unit) {
+            if (!actif) return
+            val pan = quad(q)
+            c.save(); c.clipPath(pan)
+            releve?.let { it.save(); it.clipPath(pan) }
+            surQuad(100f, 100f, q) { bloc() }
+            releve?.restore(); c.restore()
+        }
+
+        /**
+         * L'ardoise d'une couverture, dans le quadrilatère [q] du pan (faîte
+         * à gauche, faîte à droite, égout à droite, égout à gauche) :
+         * [rangs] rangs à recouvrement de [par] ardoises, décalés d'un demi.
+         *
+         * Le ton change surtout d'un **rang** à l'autre et à peine d'une
+         * ardoise à sa voisine : tiré par ardoise, l'écart donne un mur de
+         * moellons posé sur le toit. Et chaque rang porte dessous l'ombre de
+         * son recouvrement, qui est ce qui fait l'ardoise bien plus que la
+         * découpe. Peints à plat puis mis en perspective, si bien que les
+         * rangs se serrent d'eux-mêmes vers le faîte.
+         */
+        fun ardoises(q: FloatArray, col: Int, graine: Int, rangs: Int, par: Int) {
+            val rr = Alea(graine)
+            piece(quad(q), col, 0.5f)
+            surPan(q) {
+                val hr = 100f / rangs
+                var y = 0f
+                var k = 0
+                while (y < 100f) {
+                    val tr = rr()
+                    val rang = if (tr < 0.5f) sombre(col, 0.03f + tr * 0.14f)
+                        else mix(col, 0xFFFFFFFF.toInt(), 0.02f + (tr - 0.5f) * 0.12f)
+                    val l = 100f / par
+                    var x = if (k % 2 == 0) -l * 0.5f else 0f
+                    while (x < 100f) {
+                        val t = rr()
+                        rect(x, y, l * 0.92f, hr * 1.4f,
+                            if (t < 0.34f) sombre(rang, 0.05f) else if (t < 0.68f) mix(rang, 0xFFFFFFFF.toInt(), 0.035f) else rang)
+                        x += l
+                    }
+                    rect(0f, y + hr * 0.82f, 100f, hr * 0.22f, sombre(col, 0.3f), 0.5f)
+                    y += hr
+                    k++
+                }
+            }
+        }
+
+        /**
+         * Le platelage d'un pont ou d'un ponton, dans le quadrilatère [q] :
+         * des lames de bois dans le sens de la longueur, chacune de son ton,
+         * sur un fond de joint sombre peint d'abord. (Le [lames] du plancher
+         * de théâtre, plus bas, est une autre chose : celui-là est une
+         * matière de trois quarts.)
+         */
+        fun platelage(q: FloatArray, col: Int, graine: Int, n: Int) {
+            val rr = Alea(graine)
+            piece(quad(q), sombre(col, 0.5f), 0.5f)
+            surPan(q) {
+                var y = 0f
+                while (y < 100f) {
+                    val h = (100f / n) * (0.75f + rr() * 0.5f)
+                    val t = rr()
+                    rect(-2f, y, 104f, h - 100f / n * 0.16f,
+                        if (t < 0.42f) sombre(col, 0.06f + t * 0.3f) else mix(col, 0xFFFFFFFF.toInt(), 0.03f + t * 0.16f))
+                    y += h
+                }
+            }
+        }
+
+        /**
          * La couleur d'un bloc, tirée au sort : pierre nue, humide ou
          * verdie. Deux pierres voisines du même ton se fondent l'une dans
          * l'autre et l'appareil disparaît.
@@ -4130,77 +4217,301 @@ object Paysages {
 
         // ---- Veianen, d'après la photo du château au-dessus de la brume
 
-        fun veianenPapier() {
+        /**
+         * Ce que dit la photo du propriétaire (2026-11-21) :
+         *
+         * 1. **Le château tient le haut du bord droit**, et rien d'autre ne
+         *    lui dispute la bande du ciel : sa longue toiture d'ardoise, ses
+         *    tours rondes à coiffe conique du côté proche, la flèche de la
+         *    chapelle à l'autre bout, ses murs pâles percés de petites
+         *    fenêtres. Il était au milieu de la fenêtre, c'est-à-dire sous le
+         *    dessin du mot, et on n'en voyait rien sur la carte ouverte.
+         * 2. **La brume traverse la vallée à mi-hauteur**, en bancs : c'est
+         *    elle qui détache l'éperon de la forêt et qui donne sa profondeur
+         *    au lieu. Sans elle, trois versants verts l'un derrière l'autre.
+         * 3. **La ville est en bas à gauche**, petits toits serrés, et le
+         *    clocher des Trinitaires se dresse au-dessus d'elle sur son
+         *    rocher : une aiguille grise, bien plus fine que le château, qui
+         *    tient la colonne de gauche comme le château tient celle de
+         *    droite.
+         * 4. **La forêt est d'automne**, avec des sapins sombres plantés
+         *    dedans. Le vert de base reste vert : c'est la saison qui le
+         *    rouille, et un roux peint d'avance serait roux en avril.
+         */
+        fun veianen() {
             val r = Alea(103)
-            lisiere(-2f, 102f, { x -> 27f - 3f * sin(x * 0.06f + 1f) - max(0f, x - 55f) * 0.1f }, 1.2f, 1.9f, 104,
-                mix(P.loin, P.cielBas, 0.12f))
-            lisiere(-2f, 102f, { x -> 33f + 2f * sin(x * 0.09f) }, 1.4f, 2.2f, 105, nappe(mix(P.loin, P.milieu, 0.35f), 0.3f, VERT_CALME))
+            // ---- Le fond : deux crêtes pâles, et le banc de nuages bas qui
+            // traîne sur l'horizon à gauche, d'où vient le soleil.
+            lisiere(-3f, 103f, { x -> 22.4f - 2.4f * sin(x * 0.05f + 1.2f) }, 1.2f, 1.9f, 104,
+                mix(P.loin, P.cielBas, 0.32f))
+            pieceD("M-3 25C8 23.4 20 22.8 32 23.6C40 24.2 46 25.2 52 26.2L52 29L-3 29Z",
+                mix(0xFFFFFFFF.toInt(), P.cielBas, if (P.nuit) 0.55f else 0.34f), 0.3f)
+            lisiere(-3f, 103f, { x -> 26.6f + 2f * sin(x * 0.085f) }, 1.4f, 2.2f, 105,
+                nappe(mix(P.loin, P.milieu, 0.55f), 0.34f, VERT_CALME))
             plan(1)
-            pieceD("M-2 66L-2 43C12 40 26 36 36 33C50 30 70 30 84 33C92 35 98 37 102 38L102 66Z", nappe(P.milieu))
-            touffe(vert(0.3f), 24f, 34f, 3f, 28f, 32.5f, 3.2f, 32f, 33.5f, 2.6f)
-            touffe(vert(0.3f), 90f, 34.5f, 3f, 95f, 33f, 3.2f, 99f, 35f, 2.8f)
-            val mur = duJour(0xFFEADDBE.toInt())
-            val ombre = mix(mur, P.pres, 0.28f)
-            val toit = ardoise()
-            // Le château en volumes de trois quarts : le palais, la tour
-            // carrée et l'aile basse fuient vers la droite, chacun avec sa
-            // façade, son toit et le pignon qui dépasse de sa voisine.
-            val f = FUITE_VEIANEN
-            val fin = CHATEAU_VEIANEN.sumOf { it[0].toDouble() }.toFloat()
-            mineral {
-                piece(Path().apply {
-                    moveTo(f.x(0f) - 8f, f.y(0f) + 6f)
-                    lineTo(f.x(0f) - 5f, f.y(0f))
-                    var u = 0f
-                    while (u <= fin) { lineTo(f.x(u), f.y(u)); u += 4f }
-                    lineTo(f.x(fin) + 3f, f.y(fin) + 6f * f.echelle(fin))
-                    close()
-                }, duJour(0xFFA39377.toInt()))
+            // ---- Les versants. Le grand bois du milieu ferme la vallée,
+            // l'éperon du château monte à droite, et un troisième rideau,
+            // plus sombre, descend vers la ville.
+            val bois = nappe(duJour(0xFF3F6A2E.toInt()), 0.48f, VERT_CALME)
+            lisiere(-3f, 86f, { x -> 29.6f + 0.0016f * (x - 38f) * (x - 38f) }, 2.2f, 3.4f, 106,
+                mix(bois, P.loin, 0.3f))
+            fun eperon(x: Float) = 21.6f + 0.0048f * (x - 92f) * (x - 92f)
+            lisiere(30f, 104f, { x -> eperon(x) }, 2.4f, 3.8f, 107, bois)
+            lisiere(-3f, 104f, { x -> 40f + 0.0018f * (104f - x) * (104f - x) }, 2.6f, 4.2f, 108,
+                sombre(bois, 0.24f))
+            // Quelques sapins plantés dans la pente, qui disent l'échelle du
+            // château mieux que la forêt elle-même.
+            for (k in 0 until 14) {
+                val sx = 24f + r() * 78f
+                val sy = eperon(sx).coerceAtMost(44f) + 2.4f + r() * 7f
+                val sh = 3f + r() * 3.4f
+                pieceD("M${sx - sh * 0.36f} ${sy}L$sx ${sy - sh}L${sx + sh * 0.36f} ${sy}Z",
+                    sombre(bois, 0.3f + r() * 0.18f), 0.4f)
             }
-            rue3q(f, CHATEAU_VEIANEN, intArrayOf(duJour(0xFFD6CFC2.toInt())), r)
+            // ---- Le château. Tout est accroché à trois lignes qui fuient
+            // vers la gauche : le faîte, la ligne d'égout et la terrasse. Le
+            // bout proche, à droite, est le plus grand : c'est celui qu'on
+            // voit en entier à côté du dessin du mot, et la toiture court sur
+            // la bande du haut, au-dessus de lui.
+            fun cx(u: Float) = 72f + u * 27f
+            fun faite(u: Float) = 7.6f - u * 2f
+            fun egout(u: Float) = 12.2f - u * 0.8f
+            fun terrasse(u: Float) = 19.4f + u * 2.2f
+            // Le château est du bâti : il passe par [neutre] (règle 10).
+            // Sans cela le ravivage des palettes vives le sortait en or,
+            // alors que c'est une bâtisse de schiste crépie de gris clair.
+            //
+            // Et il a sa matière, comme tout immeuble du carnet (skill
+            // `matieres-du-decor`, règle 1 : une matière est une
+            // organisation, pas une couleur). Ici trois appareils, tous
+            // relevés sur la photo :
+            //
+            // - **l'ardoise** des toitures, en rangs à recouvrement décalés
+            //   d'un demi, de tons voisins. C'est la plus grande surface du
+            //   château et c'était un aplat gris ;
+            // - **l'enduit** des murs, avec son socle, ses chaînes d'angle,
+            //   son bandeau sous la corniche et l'encadrement de pierre de
+            //   chaque fenêtre, peints à plat puis posés dans le
+            //   quadrilatère de la façade ([surQuad]) ;
+            // - **le moellon de schiste** du soubassement, en assises
+            //   minces et inégales ([appareil]).
+            //
+            // Le soleil vient de la gauche, comme sur la photo : toute arête
+            // gauche est au jour, tout flanc droit à l'ombre.
+            val creme = duJour(0xFFE4DED2.toInt())
+            val mur = eclaire(neutre(creme), 0.16f)
+            val toit = neutre(ardoise())
+            val creux = neutre(ombreFroide(creme, 0.42f))
+            val taille = pierreDeTaille()
+            val vitre = if (P.allume) P.fenetre else neutre(duJour(0xFF2B3038.toInt()))
             mineral {
-                // Le clocher de la chapelle, sur le faîte du palais.
-                val u = 22f
-                val e = f.echelle(u)
-                val cx = f.x(u) - 2.6f * e
-                val cy = f.y(u) - (CHATEAU_VEIANEN[0][1] + CHATEAU_VEIANEN[0][4]) * e - 0.6f * e
-                feuille(cx - 1.4f * e, cy - 4f * e, 2.8f * e, 4.6f * e, mur)
-                pieceD("M${cx - 1.9f * e} ${cy - 3.7f * e}L$cx ${cy - 8.4f * e}L${cx + 1.9f * e} ${cy - 3.7f * e}Z", toit)
-                // La tour ronde de gauche, devant le pignon du palais : ronde,
-                // elle se voit de même sous tous les angles.
-                val tx = f.x(0f) - 6f
-                val ty = f.y(0f)
-                feuille(tx, ty - 15f, 4.4f, 15f, mur)
-                feuille(tx + 2.7f, ty - 15f, 1.7f, 15f, ombre, 0f)
-                pieceD("M${tx - 0.7f} ${ty - 14.8f}L${tx + 2.2f} ${ty - 23.8f}L${tx + 5.1f} ${ty - 14.8f}Z", toit)
-                fenetre(tx + 1.4f, ty - 10f, 1f, 1.8f, r)
+                // L'aile basse et blanche en contrebas, à gauche : sur la
+                // photo elle fait socle au château et le détache du bois.
+                piece(quad(floatArrayOf(61f, 25.4f, 74f, 24.2f, 74f, 29f, 61f, 29.6f)),
+                    neutre(duJour(0xFFF2EFE6.toInt())), 0.5f)
+                surQuad(100f, 40f, floatArrayOf(61f, 25.4f, 74f, 24.2f, 74f, 29f, 61f, 29.6f)) {
+                    rect(0f, 30f, 100f, 10f, taille, 0.55f)
+                    for (k in 0 until 5) rect(4f + k * 22f, 8f, 9f, 16f, vitre, 0.7f)
+                }
+                ardoises(floatArrayOf(61.6f, 23.4f, 73.4f, 22.2f, 74.6f, 24f, 60.4f, 25.4f), toit, 309, 5, 16)
+                // Le pignon du bout proche, qui fuit derrière : c'est lui qui
+                // donne au corps son épaisseur.
+                piece(quad(floatArrayOf(cx(1f), egout(1f), 104f, egout(1f) - 1.4f,
+                    104f, terrasse(1f) - 2.4f, cx(1f), terrasse(1f))), creux, 0.5f)
+                ardoises(floatArrayOf(cx(1f) + 1.6f, faite(1f), 102.6f, faite(1f) - 1f,
+                    104f, egout(1f) - 1.4f, cx(1f), egout(1f)), sombre(toit, 0.16f), 310, 7, 10)
+                // Le soubassement : du moellon de schiste, en assises minces
+                // et inégales. Sans lui le château est planté dans une
+                // pelouse, alors que la photo le montre debout sur un éperon.
+                appareil(quad(floatArrayOf(cx(-0.04f), terrasse(-0.04f) - 0.4f, 104f, terrasse(1.2f) - 0.4f,
+                    104f, terrasse(1.2f) + 4.6f, cx(-0.04f), terrasse(-0.04f) + 3f)),
+                    neutre(duJour(0xFF8C8275.toInt())), rang = 1.15f, longueur = 2.5f, graine = 311,
+                    pente = 0.055f, lichen = 0.14f, ombre = 0.5f)
+                // La longue façade, puis sa matière peinte à plat dedans :
+                // socle, chaînes d'angle, bandeau de corniche, et les deux
+                // rangs de fenêtres dans leur encadrement de pierre. C'est à
+                // eux qu'on lit la longueur du bâtiment, et sans eux la
+                // façade n'est qu'une planche.
+                val facade = floatArrayOf(cx(0f), egout(0f), cx(1f), egout(1f), cx(1f), terrasse(1f), cx(0f), terrasse(0f))
+                piece(quad(facade), mur, 0.6f)
+                surQuad(100f, 40f, facade) {
+                    // Le badigeon : l'enduit n'est pas uniforme, il est lavé.
+                    for (k in 0 until 9) {
+                        val bx = r() * 100f
+                        val by = 4f + r() * 32f
+                        ovalePapier(bx, by, 4f + r() * 9f, 2.5f + r() * 5f,
+                            if (r() < 0.5f) mix(mur, 0xFFFFFFFF.toInt(), 0.09f) else sombre(mur, 0.07f), 0f)
+                    }
+                    rect(0f, 0f, 100f, 3.4f, taille, 0.9f)           // le bandeau de corniche
+                    rect(0f, 3.4f, 100f, 0.9f, sombre(taille, 0.3f), 0.7f)
+                    rect(0f, 33f, 100f, 7f, taille, 0.85f)           // le socle
+                    rect(0f, 33f, 100f, 0.7f, mix(taille, 0xFFFFFFFF.toInt(), 0.2f), 0.7f)
+                    for (k in 0 until 9) ligne(3f + k * 11.5f, 33.6f, 3f + k * 11.5f, 40f, sombre(taille, 0.32f), 0.4f, 0.6f)
+                    // Les chaînes d'angle, en pierre de taille : c'est ce qui
+                    // dit qu'un mur est un ouvrage et non un panneau.
+                    for ((i, bx) in floatArrayOf(0f, 95f).withIndex()) {
+                        var qy = 3.4f
+                        var longue = true
+                        while (qy < 33f) {
+                            val qh = if (longue) 5.2f else 3.4f
+                            rect(bx, qy, if (longue) 5f else 3.4f, qh - 0.5f,
+                                if (i == 0) mix(taille, 0xFFFFFFFF.toInt(), 0.1f) else sombre(taille, 0.2f), 0.9f)
+                            qy += qh
+                            longue = !longue
+                        }
+                    }
+                    for (k in 0 until 11) {
+                        val fx = 7.5f + k * 8.1f
+                        for (fy in floatArrayOf(10f, 22f)) {
+                            rect(fx - 0.8f, fy - 0.9f, 5.2f, 9.4f, taille, 0.85f)        // l'encadrement
+                            rect(fx, fy, 3.6f, 7.4f, vitre, if (P.allume) 0.95f else 0.85f)
+                            rect(fx - 1.2f, fy + 7.8f, 6f, 1.1f, sombre(taille, 0.12f), 0.9f)  // l'appui
+                        }
+                    }
+                }
+                ardoises(floatArrayOf(cx(0f) + 1.4f, faite(0f), cx(1f) - 1.6f, faite(1f),
+                    cx(1f), egout(1f), cx(0f), egout(0f)), toit, 312, 9, 20)
+                // Les deux tours rondes du bout proche, coiffées en poivrière.
+                // Elles débordent le faîte : c'est ce qui les fait lire comme
+                // des tours et non comme deux pans de mur de plus. Un cylindre
+                // n'a que deux valeurs tranchées de droit, la panse et son
+                // flanc à l'ombre, plus un filet de lumière étroit à un quart
+                // du bord : un large bandeau clair en ferait une planche.
+                for ((k, tx) in floatArrayOf(91.8f, 97.8f).withIndex()) {
+                    val haut = 12f - k * 1.2f
+                    val bas = 25f + k * 1.6f
+                    val l = 5.2f + k * 0.8f
+                    val g = tx - l * 0.5f
+                    feuille(g, haut, l, bas - haut, mur, 0.6f)
+                    rect(g + l * 0.13f, haut, l * 0.11f, bas - haut, mix(mur, 0xFFFFFFFF.toInt(), 0.2f), 0.8f)
+                    rect(g + l * 0.74f, haut, l * 0.26f, bas - haut, creux, 0.9f)
+                    // Le cordon de pierre, et deux baies dans leur encadrement.
+                    rect(g, haut + 1.2f, l, 0.9f, taille, 0.85f)
+                    for (fy in floatArrayOf(4.2f, 8.2f)) {
+                        rect(g + l * 0.26f, haut + fy - 0.4f, l * 0.42f, 2.6f, taille, 0.85f)
+                        rect(g + l * 0.34f, haut + fy, l * 0.26f, 1.7f, vitre, 0.9f)
+                    }
+                    // La poivrière, en écailles d'ardoise.
+                    val pointe = haut - 7.6f - k * 1.4f
+                    val cone = chemin("M${g - l * 0.16f} ${haut + 0.4f}L$tx ${pointe}L${g + l * 1.16f} ${haut + 0.4f}Z")
+                    piece(cone, toit, 0.4f)
+                    c.save(); c.clipPath(cone)
+                    releve?.let { it.save(); it.clipPath(cone) }
+                    val rr = Alea(313 + k)
+                    var ey = pointe + 0.6f
+                    var i = 0
+                    while (ey < haut + 0.6f) {
+                        val large = (ey - pointe) / (haut + 0.4f - pointe) * l * 1.3f
+                        val pas = 0.62f + (ey - pointe) * 0.035f
+                        var ex = tx - large * 0.5f + (if (i % 2 == 0) 0f else pas * 0.5f)
+                        while (ex < tx + large * 0.5f) {
+                            rect(ex, ey, pas * 0.88f, 0.92f,
+                                if (rr() < 0.4f) sombre(toit, 0.12f) else mix(toit, 0xFFFFFFFF.toInt(), 0.07f))
+                            ex += pas
+                        }
+                        ey += 0.62f
+                        i++
+                    }
+                    releve?.restore(); c.restore()
+                }
+                // La flèche de la chapelle, à l'autre bout : une aiguille, et
+                // c'est elle qui dit que le château n'est pas une caserne.
+                feuille(73.4f, 6.4f, 2.6f, 6.6f, mur, 0.5f)
+                rect(73.4f, 6.4f, 0.5f, 6.6f, mix(mur, 0xFFFFFFFF.toInt(), 0.2f), 0.8f)
+                rect(75.3f, 6.4f, 0.7f, 6.6f, creux, 0.9f)
+                ardoises(floatArrayOf(74.4f, 1.4f, 75f, 1.4f, 76.8f, 6.8f, 72.6f, 6.8f), toit, 314, 7, 4)
+                pieceD("M74.2 1.6L74.7 -1.2L75.2 1.6Z", sombre(toit, 0.2f), 0f)
             }
+            // ---- La brume de la vallée, posée après le château : elle
+            // mange son pied et c'est ce qui le met sur son éperon.
             if (!vivant) brumeDeVeianen(0f)
             plan(2)
-            solDePierre(SolDePierre.GRAVIER, DEVANT)  // le chemin au bord de l'Our
+            solNaturel(SolNaturel.TERRE, DEVANT, 0.03f)  // le sentier du belvédère d'en face
             poser(DEVANT)
-            val tronc = duJour(0xFF5A4030.toInt())
-            feuille(5f, 30f, 1.6f, 30f, tronc, 0.6f)
-            feuille(93f, 32f, 1.6f, 28f, tronc, 0.6f)
-            touffe(vert(0.55f), -2f, 36f, 9f, 6f, 28f, 8f, 3f, 19f, 6.5f, 13f, 38f, 6.5f, -1f, 48f, 7f, 11f, 49f, 6f)
-            touffe(vert(0.75f), 4f, 24f, 4.5f, 10f, 33f, 4f, 2f, 42f, 4f)
-            touffe(vert(0.5f), 101f, 34f, 9f, 92f, 28f, 7f, 97f, 45f, 8f, 88f, 47f, 6f)
-            touffe(vert(0.72f), 94f, 31f, 4f, 98f, 39f, 3.6f)
-            lisiere(-2f, 102f, { x -> 53f + 1.6f * sin(x * 0.35f) }, 1.6f, 2.6f, 106, vert(0.35f))
+            // ---- Le rocher et le clocher des Trinitaires, qui tiennent la
+            // colonne de gauche. L'aiguille est grise et fine : c'est son
+            // élancement qui la distingue du château, pas sa taille.
+            val roche = neutre(duJour(0xFF8E8880.toInt()))
+            val pierre = neutre(duJour(0xFFCFC8B8.toInt()))
+            mineral {
+                pieceD("M-3 60L-3 47C4 45.4 11 44.6 17 45.4C21 46 24 48 26 51L28 60Z", roche)
+                for (dy in floatArrayOf(2.6f, 6f, 9.8f)) {
+                    pieceD("M-3 ${47f + dy}C4 ${45.6f + dy} 11 ${44.8f + dy} 16 ${45.6f + dy}" +
+                        "L16 ${46.6f + dy}C11 ${45.8f + dy} 4 ${46.6f + dy} -3 ${48f + dy}Z", sombre(roche, 0.26f), 0f)
+                }
+                // La tour est du moellon de schiste, comme le soubassement
+                // du château : des assises minces et inégales, des chaînes
+                // d'angle de pierre de taille, et l'abat-son dans son
+                // encadrement. Un aplat rayé d'un trait d'ombre en faisait
+                // une borne.
+                appareil(8.2f, 36f, 3.6f, 10f, pierre, rang = 0.85f, longueur = 1.7f, graine = 315)
+                for ((i, qx) in floatArrayOf(8.2f, 10.9f).withIndex()) {
+                    var qy = 36f
+                    var longue = true
+                    while (qy < 45.8f) {
+                        val qh = if (longue) 1.7f else 1.1f
+                        rect(qx, qy, if (longue) 0.9f else 0.65f, qh - 0.2f,
+                            if (i == 0) mix(taille, 0xFFFFFFFF.toInt(), 0.12f) else sombre(taille, 0.22f), 0.9f)
+                        qy += qh
+                        longue = !longue
+                    }
+                }
+                rect(7.9f, 35.8f, 4.2f, 0.8f, taille, 0.9f)
+                rect(9.1f, 38.4f, 1.8f, 2.6f, taille, 0.9f)
+                rect(9.45f, 38.8f, 1.1f, 1.9f, if (P.allume) P.fenetre else neutre(duJour(0xFF2B3038.toInt())), 0.9f)
+                // La flèche, en écailles d'ardoise comme les poivrières du
+                // château : c'est la même couverture, à l'autre bout du lieu.
+                ardoises(floatArrayOf(9.85f, 24.6f, 10.15f, 24.6f, 12.4f, 36f, 7.6f, 36f), toit, 316, 9, 4)
+                pieceD("M9.75 24.8L10 22.2L10.25 24.8Z", sombre(toit, 0.2f), 0f)
+            }
+            // ---- La ville, en contrebas : des toits serrés qui fuient vers
+            // la droite, pris de haut comme sur la photo.
+            rue3q(RUE_VEIANEN, MAISONS_VEIANEN, facades(), r, ecart = 1.2f)
+            // ---- Les sapins du bord droit, ceux au travers desquels on
+            // regarde : ils ferment la vue de ce côté et donnent sa mesure
+            // au château, qui est loin derrière eux.
+            val proche = sombre(nappe(duJour(0xFF2A5026.toInt()), 0.5f, VERT_CALME), 0.3f)
+            /** Un sapin de papier : cinq étages, du plus étroit en haut au plus large au pied. */
+            fun sapin(x: Float, bas: Float, h: Float, col: Int) {
+                val t = Path()
+                val n = 5
+                for (k in 0 until n) {
+                    val u = k / (n - 1f)
+                    val y = bas - h + h * u * 0.78f
+                    val l = h * (0.1f + u * 0.26f)
+                    t.moveTo(x - l, y + h * 0.3f)
+                    t.lineTo(x, y - h * 0.06f)
+                    t.lineTo(x + l, y + h * 0.3f)
+                    t.close()
+                }
+                t.addRect(x - h * 0.03f, bas - h * 0.3f, x + h * 0.03f, bas, Path.Direction.CW)
+                piece(t, col, 0.5f)
+            }
+            for (k in 0 until 4) {
+                val sx = floatArrayOf(86f, 92.5f, 99f, 104.5f)[k]
+                val sy = floatArrayOf(60f, 64f, 58f, 63f)[k]
+                val sh = floatArrayOf(26f, 32f, 23f, 30f)[k]
+                sapin(sx, sy, sh, if (k % 2 == 0) proche else sombre(proche, 0.12f))
+            }
+            lisiere(-3f, 103f, { x -> 55f + 1.8f * sin(x * 0.31f) }, 1.8f, 2.8f, 109, sombre(proche, 0.06f))
             c.restore()
         }
 
         /** La brume de la vallée de l'Our : deux bandes de papier pâle, glissées de [d] unités. */
         fun brumeDeVeianen(d: Float) {
-            val col = if (P.nuit) mix(P.cielBas, 0xFFFFFFFF.toInt(), 0.25f) else mix(0xFFFFFFFF.toInt(), P.cielBas, 0.3f)
-            for ((k, y) in floatArrayOf(31f, 34.6f).withIndex()) {
+            val col = if (P.nuit) mix(P.cielBas, 0xFFFFFFFF.toInt(), 0.25f) else mix(0xFFFFFFFF.toInt(), P.cielBas, 0.42f)
+            for ((k, y) in floatArrayOf(30f, 34.4f).withIndex()) {
                 val dec = ((d * (1f + 0.5f * k)) % 30f + 30f) % 30f - 30f
+                // L'épaisseur se pince : d'épaisseur constante, les deux
+                // bandes faisaient deux rubans tendus en travers de la
+                // vallée, et non des bancs qui traînent sur les pentes.
+                fun ep(x: Float) = 0.25f + 2.6f * (0.5f + 0.5f * sin(x * 0.082f + k * 2.3f)).pow(1.6f)
                 val t = Path()
                 var x = -32f
-                t.moveTo(x + dec, y + 3f)
-                while (x <= 132f) { t.lineTo(x + dec, y + sin(x * 0.2094f + k) * 0.9f); x += 2f }
+                t.moveTo(x + dec, y + sin(x * 0.2094f + k) * 0.7f)
+                while (x <= 132f) { t.lineTo(x + dec, y + sin(x * 0.2094f + k) * 0.7f); x += 2f }
                 x = 132f
-                while (x >= -32f) { t.lineTo(x + dec, y + 3.2f + sin(x * 0.2094f + 2f + k) * 0.7f); x -= 2f }
+                while (x >= -32f) { t.lineTo(x + dec, y + ep(x) + sin(x * 0.2094f + 2f + k) * 0.5f); x -= 2f }
                 t.close()
                 piece(t, col, 0.4f)
             }
@@ -4343,22 +4654,44 @@ object Paysages {
                 forme("M83 37.6L104 40.2L104 45L83 41.6Z", sombre(lac, 0.42f), 0.3f)
                 forme("M86 37.8L100 39.6L99.4 42.6L86.4 40.6Z", mix(lac, toile, 0.4f), 0.35f)
                 // Le radeau, vu de trois quarts : son bout proche à droite.
-                pieceD("M83 31.8L104 34.4L104 38.2L83 34.8Z", bois, 0.5f)
+                // Son platelage est fait de lames, pas d'un aplat gris : le
+                // bois est une matière comme une autre, et deux traits
+                // dessus n'en faisaient que du carton peint.
+                platelage(floatArrayOf(83f, 31.8f, 104f, 34.4f, 104f, 38.2f, 83f, 34.8f), bois, 304, 7)
+                // Le chant du platelage, où l'on voit le bout des lames.
                 forme("M83 34.8L104 38.2L104 39.4L83 35.8Z", sombre(bois, 0.42f), 0.9f)
-                for (k in 0 until 7) ligne(84f + k * 3f, 32.1f + k * 0.36f, 84f + k * 3f, 35.1f + k * 0.42f,
-                    sombre(bois, 0.25f), 0.2f, 0.6f)
-                // Les quatre montants et le toit de toile tendu.
+                for (k in 0 until 9) ligne(83.5f + k * 2.4f, 34.9f + k * 0.39f, 83.5f + k * 2.4f, 35.9f + k * 0.4f,
+                    sombre(bois, 0.6f), 0.18f, 0.7f)
+                // Les trois montants, ronds : un filet de lumière à gauche,
+                // le flanc droit à l'ombre.
                 for (px in floatArrayOf(85.6f, 92.6f, 99.6f)) {
                     val base = 32.1f + (px - 83f) * 0.145f
-                    ligne(px, base, px, base - 6.6f, bois, 0.4f)
+                    rect(px - 0.3f, base - 6.6f, 0.6f, 6.6f, bois, 0.95f)
+                    rect(px - 0.3f, base - 6.6f, 0.16f, 6.6f, mix(bois, 0xFFFFFFFF.toInt(), 0.3f), 0.9f)
+                    rect(px + 0.14f, base - 6.6f, 0.16f, 6.6f, sombre(bois, 0.4f), 0.9f)
                 }
-                pieceD("M84.2 27.4L92.6 23.6L101.6 28L101.6 29.2L84.2 28.6Z", toile, 0.5f)
-                forme("M84.2 28.6L101.6 29.2L101.6 30.2L84.2 29.6Z", sombre(toile, 0.22f), 0.8f)
-                // La barque amarrée le long du bord proche, sa cabine claire.
+                // La tonnelle : de la toile tendue sur ses lés, qui pend en
+                // festons au bord. Un triangle blanc faisait une bâche de
+                // carton.
+                val dais = floatArrayOf(84.2f, 27.4f, 92.6f, 23.6f, 101.6f, 28f, 92.8f, 29.6f)
+                piece(quad(dais), toile, 0.5f)
+                surPan(dais) {
+                    for (k in 1 until 6) ligne(k * 16.7f, 0f, k * 16.7f, 100f, sombre(toile, 0.14f), 0.9f, 0.8f)
+                    rect(0f, 56f, 100f, 46f, sombre(toile, 0.1f), 0.5f)
+                }
+                forme("M84.2 28.6L101.6 29.2L101.6 30.2L84.2 29.6Z", sombre(toile, 0.26f), 0.9f)
+                for (k in 0 until 16) rond(84.4f + k * 1.1f, 30.15f + k * 0.04f, 0.3f, sombre(toile, 0.26f), 0.9f)
+                // La barque amarrée le long du bord proche : son bordé en
+                // virures, sa préceinte, sa ligne de flottaison, sa cabine.
                 feuille(89.4f, 32.4f, 7.2f, 2.8f, mix(toile, bois, 0.35f), 0.4f)
+                for (k in 0 until 4) rect(90.2f + k * 1.7f, 33.2f, 1.1f, 1.4f, neutre(duJour(0xFF2B3038.toInt())), 0.9f)
                 pieceD("M85.4 35.2C90 34.5 97 35.3 102.6 36.6L101.8 38.6C96.4 37.4 90 36.6 85.6 36.8Z", coque, 0.5f)
-                for (k in 0 until 4) ligne(87f + k * 4f, 36.1f + k * 0.25f, 87f + k * 4f, 37.3f + k * 0.3f,
-                    sombre(coque, 0.3f), 0.22f, 0.7f)
+                forme("M85.4 35.9C90 35.2 97 36 102.6 37.3L102.4 37.9C96.8 36.6 90 35.8 85.5 36.5Z",
+                    mix(coque, 0xFFFFFFFF.toInt(), 0.26f), 0.9f)
+                forme("M85.6 36.8C90 36.5 96.4 37.3 101.8 38.5L101.7 39.1C96.3 37.9 90 37.1 85.6 37.4Z",
+                    sombre(coque, 0.45f), 0.9f)
+                for (k in 0 until 5) ligne(87f + k * 3.4f, 35.6f + k * 0.21f, 87f + k * 3.4f, 37.2f + k * 0.26f,
+                    sombre(coque, 0.3f), 0.2f, 0.7f)
             }
             // La lampe du ponton, le soir et la nuit.
             if (P.allume) {
@@ -9414,45 +9747,6 @@ object Paysages {
         }
 
         // ------------------------------------------------------ les lieux
-
-        /** Veianen : le château sur son éperon, la ville basse et l'Our. */
-        fun veianen() {
-            if (PAPIER) { veianenPapier(); return }
-            val r = Alea(3)
-            crete(33f, 2.4f, 5, P.loin)
-            plan(1)
-            forme("M0 66L0 45C14 41 30 36 42 32C52 29 66 29 76 32C86 35 94 40 100 42L100 66Z", P.milieu)
-            val pi = P.pierre
-            val om = mix(P.pierre, P.pres, 0.3f)
-            mineral {
-                rect(43f, 27f, 36f, 6f, om)
-                var x = 43f
-                while (x < 79f) { rect(x, 25.8f, 1.3f, 1.4f, om); x += 2.4f }
-                rect(52f, 18f, 18f, 10f, pi); triangle(51.4f, 18f, 61f, 10.5f, 70.6f, 18f, P.toit)
-                rect(45.5f, 15f, 5.5f, 13f, pi); triangle(45f, 15f, 48.25f, 7.5f, 51.5f, 15f, P.toit)
-                rect(48.6f, 15f, 2.4f, 13f, om, 0.6f)
-                rect(70f, 13f, 6.5f, 15f, pi); triangle(69.4f, 13f, 73.25f, 5.8f, 77.1f, 13f, P.toit)
-                rect(73.8f, 13f, 2.7f, 15f, om, 0.6f)
-                rect(61.8f, 13.5f, 2.2f, 5f, pi); triangle(61.5f, 13.5f, 62.9f, 9f, 64.3f, 13.5f, P.toit)
-                for (fx in floatArrayOf(54f, 57.5f, 61f, 64.5f, 67f)) fenetre(fx, 21f, 1.3f, 2.2f, r)
-                fenetre(47.4f, 19f, 1.1f, 1.8f, r); fenetre(72.4f, 17f, 1.2f, 2f, r); fenetre(72.4f, 22f, 1.2f, 2f, r)
-            }
-            bosquet(30f, 44f, 34.5f, 2.4f, 8, mix(P.milieu, P.pres, 0.4f))
-            bosquet(80f, 100f, 37f, 2.6f, 9, mix(P.milieu, P.pres, 0.4f))
-            plan(2)
-            plancher(DEVANT, BAS)
-            poser(DEVANT)
-            forme("M0 66L0 52C20 48 40 50 60 49C80 48 92 50 100 52L100 66Z", P.pres)
-            var x = 14f
-            while (x < 90f) {
-                val h = 3f + r() * 2f
-                maison(x, 50.5f - sin(x * 0.05f) * 0.6f, 3.8f, h, r)
-                x += 5.4f
-            }
-            riviere(55.5f, DEVANT, 12, 17f, 39f, 61f, 82f)
-            rond(2f, 50f, 7f, P.sol); rond(98f, 51f, 6f, P.sol)
-            c.restore()
-        }
 
         /** La Rout Bréck : le pont rouge au-dessus de la Pétrusse, le Kirchberg derrière. */
         fun routBreck() {

@@ -20,6 +20,7 @@ décors sont repris un à un.
 | Lieu (`Lieu`) | Fichier | Ce qu'on y voit | Ce que la carte en reprend |
 |---|---|---|---|
 | Rout Bréck (`ROUT_BRECK`) | `rout-breck-pont-rouge.png` | Le pont Grande-Duchesse Charlotte vu d'en dessous, ses béquilles rouges, ses lampadaires, la vallée boisée | Le tablier rouge qui monte, vu d'en bas, la béquille, la verdure de la vallée |
+| Veianen (`VEIANEN`) | `veianen-chateau-brume.webp` | Le château de Vianden sur son éperon, au-dessus de la brume qui traverse la vallée de l'Our : longue toiture d'ardoise, tours rondes à coiffe conique, flèche de la chapelle ; la ville en contrebas à gauche avec le clocher des Trinitaires sur son rocher ; forêt d'automne, soleil bas derrière les nuages | Tout le lieu, redessiné le 2026-11-21 : le château porté en haut à droite, hors du dessin du mot, avec son soubassement de rocher, ses deux rangs de fenêtres et son aile blanche ; les bancs de brume en travers de la vallée ; le clocher sur son rocher et la ville qui fuit, à gauche ; les sapins et le sentier du belvédère d'en face |
 | Esch-Sauer (`ESCH_SAUER`) | `esch-sauer-lac-plage.jpg` | Le lac de la Haute-Sûre entre deux versants boisés, vu de la grève de galets : l'eau turquoise, un ponton de bois à tonnelle blanche avec sa barque, des pédalos au large (filigrane de banque d'images) | Tout le lieu, redessiné le 2026-11-21 : les deux versants qui plongent dans l'eau, le lac turquoise au large et sombre en approchant, la grève de galets au coin bas gauche, le ponton et sa tonnelle sur la rive droite, les trois pédalos. **Remplace** la tour ronde et le bourg, dessinés d'après une photo perdue |
 | Musel (`MUSEL`) | `musel-steles-schengen.png` | Les trois stèles de l'accord de Schengen au bord de la Moselle, le fleuve et l'autre rive plantée de vignes | Les trois stèles, le fleuve, l'autre rive qui fuit vers l'amont |
 | Neimënster (`NEIMENSTER`) | `neimenster-grund-rempart.jpg` | Saint-Jean du Grund et son clocher vus des casemates du Bock, le rempart, la ville haute au-dessus | Le clocher, le rempart qui fuit, la ville haute en arrière-plan |
@@ -56,7 +57,7 @@ décors sont repris un à un.
 
 ## Les autres lieux
 
-Quatre lieux n'ont pas encore de photo ici : Veianen, Stad, Haff Réimech,
+Trois lieux n'ont pas encore de photo ici : Stad, Haff Réimech,
 Priedegtstull. Ils ont été dessinés
 d'après des photos ou des descriptions données dans d'autres sessions de
 travail, qui n'ont pas été conservées. Pour les compléter : ajouter la photo
