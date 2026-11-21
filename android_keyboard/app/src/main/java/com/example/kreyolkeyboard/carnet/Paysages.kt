@@ -1449,12 +1449,15 @@ object Paysages {
     internal val CLOTURE_CONZEFENN = Fuite(floatArrayOf(-2f, 62f), floatArrayOf(200f, 36f), floatArrayOf(-150f, 50f), taille = 1f)
 
     /** La passerelle de l'étang du Dumongshaff, de trois quarts : le quadrilatère où son dessin de face est posé. */
-    private val PASSERELLE_DUMONGSHAFF = floatArrayOf(4f, 22f, 98f, 32.5f, 98f, 47f, 4f, 55f)
-
-    /** Le pont Adolphe vu de la Pétrusse, de trois quarts : où son dessin de face (-3, 0, 89 × 46) est posé. */
-    private val PONT_PEITRUSDALL = floatArrayOf(-5f, -2f, 89f, 5f, 89f, 35f, -5f, 51f)
-    private const val PONT_PEITRUSDALL_L = 89f
-    private const val PONT_PEITRUSDALL_H = 46f
+    /**
+     * Où le dessin de face de la passerelle du Dumongshaff (100 × 30) est
+     * posé : haut gauche, haut droit, bas droit, bas gauche.
+     *
+     * Le bout **proche est à droite**, comme sur la photo, prise de la rive
+     * droite : ce côté-là est donc le plus haut du quadrilatère, et l'autre
+     * s'écrase en touchant la berge d'en face.
+     */
+    private val PASSERELLE_DUMONGSHAFF = floatArrayOf(2f, 30f, 100f, 15f, 100f, 51f, 2f, 45f)
 
     /** Le mur de tuf du Kallektuffquell, de trois quarts : où son dessin de face (-3, -3, 106 × 41) est posé. */
     private val MUR_TUF = floatArrayOf(-3f, -3f, 103f, -3f, 103f, 31f, -3f, 42f)
@@ -1497,6 +1500,14 @@ object Paysages {
 
     /** Les moutons du premier plan de Conzefenn, en x. */
     private val MOUTONS = floatArrayOf(6f, 13f, 88f, 95f)
+
+    /**
+     * La taille de ces quatre-là. Elle est écrite ici parce que la [Vie] les
+     * redessine à chaque trame quand la carte est ouverte : les deux tracés
+     * doivent donner la même bête, sinon le troupeau change de taille dès
+     * qu'on prend la carte en main.
+     */
+    internal const val MOUTON_PROCHE = 1.45f
 
     /**
      * Les mâts des bannières plantés sur la place des Hauts-Fourneaux, en x
@@ -1707,7 +1718,7 @@ object Paysages {
                 Lieu.CONZEFENN -> for ((k, mx) in MOUTONS.withIndex()) {
                     val leve = raf > 0.1f
                     val saut = raf * 1.2f * abs(sin(temps * 12f + k))
-                    p.mouton(mx, 47f + (k % 2) * 3f - saut, 1f,
+                    p.mouton(mx, 47f + (k % 2) * 3f - saut, MOUTON_PROCHE,
                         if (leve) 0f else 0.5f + 0.5f * sin(temps * 0.8f + k * 1.7f), k % 3 != 0)
                 }
                 Lieu.HAFF_REIMECH -> if (calque == 3) {
@@ -1717,9 +1728,12 @@ object Paysages {
                 Lieu.HOHLLAY -> {
                     // Une secousse fait tomber une pluie de gouttes de la voûte, et
                     // sortir les chauves-souris de la grotte.
-                    goutte(p, temps, 50f, 12f, 54f); goutte(p, temps + 1.3f, 70f, 13f, 55f)
-                    for (k in 0 until (raf * 8f).toInt()) goutte(p, temps * 1.7f + k * 0.37f, 30f + (k * 23 % 46), 12f, 55f)
-                    chauvesSouris(p, vol, 50f, 26f)
+                    // Les gouttes partent de la lèvre de la voûte, qui est
+                    // descendue avec elle : plus haut, elles tombaient du
+                    // vide au-dessus de la grotte.
+                    goutte(p, temps, 50f, 23f, 52f); goutte(p, temps + 1.3f, 70f, 26f, 53f)
+                    for (k in 0 until (raf * 8f).toInt()) goutte(p, temps * 1.7f + k * 0.37f, 30f + (k * 23 % 46), 24f, 53f)
+                    chauvesSouris(p, vol, 50f, 34f)
                 }
                 Lieu.NAPOLEONSGAART -> { balise(p, temps, raf); envol(p, vol, 100f, 44f, -1f) }
                 Lieu.KALLEKTUFFQUELL -> p.surQuad(106f, 41f, MUR_TUF, x0 = -3f, y0 = -3f) {
@@ -1731,14 +1745,12 @@ object Paysages {
                     }
                     ronds(p, vol, 41f, 22f, 48f, 70f)
                 }
-                Lieu.PEITRUSDALL -> if (calque == 3) {
-                    // Sur le tablier qui fuit : le tram suit la perspective du pont.
-                    val x = ((54f + temps * 5f + elan(temps) * 30f + 20f) % 140f) - 20f
-                    p.surQuad(PONT_PEITRUSDALL_L, PONT_PEITRUSDALL_H, PONT_PEITRUSDALL, x0 = -3f, y0 = 0f) {
-                        p.tram(x, 2.2f)
-                        sonnerie(p, x + 15f, 2.2f, raf)
-                    }
-                } else envol(p, vol, 6f, 30f, 1f)
+                // Plus de tram depuis que le lieu suit la photo : le tram
+                // passe sur le pont Adolphe et sur la Rout Bréck, jamais sur
+                // la Passerelle. Ce sont les choucas de la vallée qui
+                // traversent les arches.
+                Lieu.PEITRUSDALL -> if (calque == 3) envol(p, vol, 20f, 22f, 1f)
+                    else envol(p, vol, 70f, 20f, -1f)
                 Lieu.WOLLEFSSCHLUCHT -> { feuillesQuiTombent(p, temps, raf); envol(p, vol, 50f, 10f, 1f) }
                 Lieu.PRIEDEGTSTULL -> { feuillesQuiTombent(p, temps, raf); envol(p, vol, 20f, 20f, 1f) }
                 Lieu.DUMONGSHAFF -> if (calque == 3) canards(p, temps, raf) else envol(p, vol, 94f, 20f, -1f)
@@ -7056,14 +7068,33 @@ object Paysages {
         }
 
         /** Un mouton à tête noire en ([x], [y]), de taille [s] ; [broute] de 0 (tête levée) à 1 (tête dans l'herbe). */
+        /**
+         * Un mouton des Ardennes, de taille [s], tourné à droite ou non, la
+         * tête d'autant plus basse que [broute] approche de 1.
+         *
+         * Blanc à tête noire et à quatre pattes noires, et la laine lui fait
+         * un dos bosselé : c'est ce qui le distingue d'un galet pâle posé sur
+         * l'herbe, qui est ce qu'il était. Quatre pattes et non deux, parce
+         * qu'une bête de profil en montre toujours au moins trois.
+         */
         fun mouton(x: Float, y: Float, s: Float, broute: Float, versDroite: Boolean = true) {
             val laine = duJour(0xFFF1ECE0.toInt())
             val tete = duJour(0xFF2E2A28.toInt())
             val k = if (versDroite) 1f else -1f
-            ligne(x - 1.2f * s, y + 0.8f * s, x - 1.2f * s, y + 2f * s, tete, 0.3f * s)
-            ligne(x + 1.2f * s, y + 0.8f * s, x + 1.2f * s, y + 2f * s, tete, 0.3f * s)
-            ovalePapier(x, y, 2.2f * s, 1.4f * s, laine, 0.3f)
-            ovalePapier(x + k * 2.4f * s, y - 0.6f * s + broute * 1.4f * s, 0.8f * s, 0.6f * s, tete, 0f)
+            for (px in floatArrayOf(-1.5f, -0.9f, 1f, 1.6f))
+                ligne(x + px * s, y + 0.6f * s, x + px * s * 1.06f, y + 2.1f * s, tete, 0.26f * s)
+            // Le dos bosselé : trois flocons de laine découpés d'une pièce.
+            touffe(laine, x - 1.1f * s, y - 0.2f * s, 1.25f * s,
+                x + 0.1f * s, y - 0.55f * s, 1.35f * s,
+                x + 1.3f * s, y - 0.1f * s, 1.2f * s,
+                x, y + 0.4f * s, 1.3f * s)
+            // La queue, du côté opposé à la tête.
+            ovalePapier(x - k * 2.1f * s, y - 0.2f * s, 0.45f * s, 0.6f * s, laine, 0f)
+            // La tête, et l'oreille qui pend.
+            val hx = x + k * 2.2f * s
+            val hy = y - 0.7f * s + broute * 1.9f * s
+            ovalePapier(hx, hy, 0.85f * s, 0.62f * s, tete, 0f)
+            ovalePapier(hx - k * 0.7f * s, hy - 0.35f * s, 0.4f * s, 0.26f * s, tete, 0f)
         }
 
         /**
@@ -7687,79 +7718,203 @@ object Paysages {
 
         // ---- Conzefenn, les tourbières de Troisvierges et leurs moutons (photo du propriétaire)
 
+        /**
+         * Ce que dit la photo, et que la première version n'avait pas :
+         *
+         * 1. **La lisière est un mur**, pas un peigne. Les épicéas de
+         *    Troisvierges font une masse presque noire qui barre toute la
+         *    largeur, et seules leurs cimes se découpent sur le ciel. Dessinés
+         *    un à un et espacés, ils donnaient une fermeture éclair posée sur
+         *    le pré. C'est la pièce la plus sombre de la carte, et c'est elle
+         *    qui tient le fond.
+         * 2. **Le troupeau est nombreux et serré.** Des dizaines de bêtes
+         *    éparpillées sur tout le pré, de plus en plus petites et de plus
+         *    en plus tassées contre la lisière. Quatre moutons sur une prairie
+         *    vide, c'est une illustration de livre d'enfant ; ce pré-là est
+         *    couvert.
+         * 3. **Le mouton des Ardennes est blanc à tête noire**, sur quatre
+         *    pattes noires, et sa laine fait un dos bosselé. La tête baissée
+         *    de celui qui broute est ce qui se lit le mieux de loin.
+         * 4. **La clôture est en perches rondes** de bois brut : des piquets
+         *    qui penchent chacun à sa façon, des lisses d'épaisseurs inégales
+         *    qui fléchissent entre eux et les dépassent, une écharpe en
+         *    diagonale. Équarrie et d'aplomb, elle faisait une barrière de
+         *    jardin devant une tourbière.
+         * 5. **L'herbe est haute et drue**, semée de boutons d'or, et un
+         *    genêt en fleur marque le bord du pré.
+         * 6. **Une trouée à droite** laisse voir, par-dessus la lisière, un
+         *    versant plus lointain : c'est ce qui donne au plateau sa
+         *    profondeur.
+         *
+         * Tout fuit vers la droite ([LISIERE_CONZEFENN], [CLOTURE_CONZEFENN]) :
+         * sur la carte ouverte, la lisière tient la bande du haut et la
+         * clôture les deux colonnes.
+         */
         fun conzefenn() {
             val r = Alea(255)
-            // De trois quarts : la lisière de la forêt fuit vers la droite,
-            // ses épicéas rapetissent au loin, et la prairie la suit.
             val f = LISIERE_CONZEFENN
             val fin = 300f
-            val epiceas = sombre(vert(0.15f), 0.25f)
+            // ---- Le versant lointain, qu'on voit par la trouée de droite.
+            lisiere(-3f, 103f, { x -> 17f + 2.4f * sin(x * 0.06f + 1.2f) }, 2f, 3.2f, 256,
+                mix(nappe(duJour(0xFF4A6B38.toInt()), 0.34f, VERT_CALME), P.loin, 0.52f))
+            // ---- Le mur d'épicéas : une seule découpe, dont les cimes se
+            // recouvrent. Le pré s'arrête quatre unités sous leurs pieds, si
+            // bien qu'il reste sous les cimes une bande pleine : c'est elle
+            // qui fait le mur, et c'est elle qui manquait.
+            // Un vert d'épicéa : froid et profond. Passé par [nappe] seule,
+            // il sortait olive, et le mur se confondait avec le versant
+            // lointain posé derrière lui.
+            //
+            // Il tombe **hors** de la famille que [Habillage] reconnaît comme
+            // végétale, et c'est voulu : un épicéa ne rouille pas l'automne
+            // et ne blanchit pas sous la neige, il la porte. L'automne laisse
+            // donc le mur vert au-dessus d'un pré roux, et l'hiver lui pose
+            // une ligne de neige sur les cimes. Ne pas « corriger » cette
+            // couleur pour la faire rentrer dans la famille.
+            val epiceas = sombre(mix(nappe(duJour(0xFF27492C.toInt()), 0.42f, VERT_CALME),
+                duJour(0xFF14332C.toInt()), 0.42f), 0.14f)
             val foret = Path()
             foret.moveTo(-3f, BAS + 2f)
             foret.lineTo(-3f, f.y(0f) - 4f)
-            var u = -4f
+            var u = -5f
             while (u <= fin) {
                 val e = f.echelle(u)
                 val x = f.x(u); val base = f.y(u)
-                val h = (7f + r() * 5f) * e
-                val l = (1.6f + r() * 0.8f) * e
-                foret.lineTo(x - l, base - h * 0.25f)
+                val h = (8f + r() * 6.5f) * e
+                val l = (2.4f + r() * 1.4f) * e
+                foret.lineTo(x - l, base - h * 0.34f)
                 foret.lineTo(x, base - h)
-                foret.lineTo(x + l, base - h * 0.25f)
-                u += 2.4f + r() * 1.6f
+                foret.lineTo(x + l, base - h * 0.34f)
+                u += 1.5f + r() * 1.3f
             }
             foret.lineTo(103f, f.y(fin) - 2f)
             foret.lineTo(103f, BAS + 2f); foret.close()
             piece(foret, epiceas)
+            // Deux ou trois arbres de devant, un peu plus clairs : sans écart
+            // de valeur, la masse reste un aplat découpé en dents de scie.
+            for (k in 0 until 9) {
+                val uu = -4f + r() * 150f
+                val e = f.echelle(uu)
+                val h = (7f + r() * 5f) * e
+                val l = (2f + r() * 1.2f) * e
+                val tx = f.x(uu); val ty = f.y(uu) + 1.6f * e
+                pieceD("M${tx - l} $ty L${tx - l * 0.45f} ${ty - h * 0.42f}L${tx - l * 0.72f} ${ty - h * 0.4f}" +
+                    "L${tx - l * 0.3f} ${ty - h * 0.74f}L${tx - l * 0.5f} ${ty - h * 0.72f}L$tx ${ty - h}" +
+                    "L${tx + l * 0.5f} ${ty - h * 0.72f}L${tx + l * 0.3f} ${ty - h * 0.74f}" +
+                    "L${tx + l * 0.72f} ${ty - h * 0.4f}L${tx + l * 0.45f} ${ty - h * 0.42f}L${tx + l} ${ty}Z",
+                    if (k % 3 == 0) mix(epiceas, duJour(0xFF5E8A46.toInt()), 0.26f) else sombre(epiceas, 0.2f), 0.5f)
+            }
             plan(1)
-            // La prairie, son bord le long de la lisière.
+            // ---- La prairie, son bord le long de la lisière.
             piece(Path().apply {
-                moveTo(-2f, 66f); lineTo(-2f, f.y(-4f) + 0.6f)
+                moveTo(-2f, 66f); lineTo(-2f, f.y(-4f) + 6.5f)
                 var v = 0f
-                while (v <= fin) { lineTo(f.x(v), f.y(v) + 0.6f * f.echelle(v)); v += 8f }
-                lineTo(102f, f.y(fin)); lineTo(102f, 66f); close()
-            }, vert(0.85f), 0.4f)
+                while (v <= fin) { lineTo(f.x(v), f.y(v) + 6.5f * f.echelle(v)); v += 8f }
+                lineTo(102f, f.y(fin) + 1f); lineTo(102f, 66f); close()
+            }, mix(mix(vert(0.78f), duJour(0xFF57A33E.toInt()), 0.3f), P.loin, 0.1f), 0.4f)
+            // L'ombre que la lisière porte sur le pré : un pré qui vient
+            // buter contre un mur noir sans transition se lit comme un
+            // découpage collé.
+            forme(Path().apply {
+                moveTo(-2f, f.y(-4f) + 6.5f)
+                var v = 0f
+                while (v <= fin) { lineTo(f.x(v), f.y(v) + 6.5f * f.echelle(v)); v += 8f }
+                lineTo(102f, f.y(fin) + 1f)
+                v = fin
+                while (v >= 0f) { lineTo(f.x(v), f.y(v) + (6.5f + 3.4f) * f.echelle(v)); v -= 8f }
+                lineTo(-2f, f.y(-4f) + 9.9f); close()
+            }, sombre(vert(0.6f), 0.3f), 0.3f)
             // Les moutons et les fleurs posés sur la prairie qui fuit : plus
             // petits et plus serrés au loin, contre la lisière.
             fun auSol(uu: Float, recul: Float): FloatArray {
                 val e = f.echelle(uu)
                 return floatArrayOf(f.x(uu) - recul * 0.9f * e, f.y(uu) + recul * e, e)
             }
-            for (k in 0 until 18) {
-                val p = auSol(10f + r() * 220f, 3f + r() * 9f)
-                mouton(p[0], p[1], (0.75f + r() * 0.2f) * p[2], r(), r() < 0.5f)
+            for (k in 0 until 34) {
+                val p = auSol(6f + r() * 240f, 4.6f + r() * 9f)
+                mouton(p[0], p[1], (0.9f + r() * 0.35f) * p[2], r(), r() < 0.5f)
             }
-            for (k in 0 until 14) {
-                val p = auSol(r() * 240f, 2f + r() * 12f)
+            for (k in 0 until 18) {
+                val p = auSol(r() * 240f, 4f + r() * 12f)
                 rond(p[0], p[1], 0.55f * p[2], duJour(0xFFF2C230.toInt()))
             }
+            // Le genêt en fleur, au bord du pré, dans la colonne de droite.
+            val genet = sombre(vert(0.55f), 0.1f)
+            touffe(genet, 92f, 36.5f, 3.2f, 97f, 37.5f, 2.6f, 88f, 37.6f, 2f)
+            for (k in 0 until 14) rond(86f + r() * 14f, 34.4f + r() * 4.4f, 0.4f + r() * 0.3f, duJour(0xFFF5D43A.toInt()))
             plan(2)
             solNaturel(SolNaturel.HERBE)  // la prairie
             poser(DEVANT)
-            pieceD("M-2 66L-2 47C30 44.5 70 41.5 102 40L102 66Z", vert(0.7f), 0.4f)
-            if (!vivant) for ((k, mx) in MOUTONS.withIndex()) mouton(mx, 47f + (k % 2) * 3f, 1f, if (k % 2 == 0) 1f else 0f, k % 3 != 0)
-            // La clôture, qui fuit avec la lisière : ses piquets rapetissent
-            // et ses lisses se rejoignent vers le fond.
+            // Le pré du devant. Sa lèvre est douce (0,2) et l'herbe haute
+            // l'enjambe : à pleine ombre, sa tranche de kraft faisait une
+            // marche en travers du pré.
+            pieceD("M-2 66L-2 47C30 44.5 70 41.5 102 40L102 66Z", vert(0.7f), 0.2f)
+            // L'herbe du devant est haute : des touffes dressées, de deux
+            // valeurs, de plus en plus drues en approchant. Sans elles, le
+            // pré est une moquette et la clôture est plantée dans du feutre.
+            val herbe = vert(0.62f)
+            for (k in 0 until 110) {
+                val hx = -2f + r() * 106f
+                val hy = 41f + r() * 18f
+                val hh = 1.4f + max(0f, hy - 44f) * 0.16f + r() * 1.6f
+                ligne(hx, hy, hx + (r() - 0.5f) * 1.4f, hy - hh,
+                    if (r() < 0.45f) mix(herbe, duJour(0xFFDCEE8E.toInt()), 0.3f) else sombre(herbe, 0.26f),
+                    0.2f + r() * 0.16f, 0.8f)
+            }
+            if (!vivant) for ((k, mx) in MOUTONS.withIndex())
+                mouton(mx, 47f + (k % 2) * 3f, MOUTON_PROCHE, if (k % 2 == 0) 1f else 0f, k % 3 != 0)
+            // ---- La clôture de perches. Rien n'y est d'équerre : les
+            // piquets penchent chacun à sa façon, les lisses fléchissent
+            // entre eux et les dépassent, et une écharpe tient le tout.
             val c2 = CLOTURE_CONZEFENN
-            val bois = duJour(0xFF7A6248.toInt())
-            val piquets = floatArrayOf(0f, 18f, 40f, 66f, 96f, 132f, 176f)
-            val bout = piquets.last()
-            for (hl in floatArrayOf(9f, 5f)) {
-                piece(Path().apply {
-                    moveTo(c2.x(0f), c2.y(0f) - hl)
-                    lineTo(c2.x(bout), c2.y(bout) - hl * c2.echelle(bout))
-                    lineTo(c2.x(bout), c2.y(bout) - (hl - 1.2f) * c2.echelle(bout))
-                    lineTo(c2.x(0f), c2.y(0f) - (hl - 1.2f))
-                    close()
-                }, bois, 0.6f)
+            val bois = neutre(duJour(0xFF8A7458.toInt()))
+            val bout = 182f
+            /** Une perche ronde posée à [h0] au-dessus du pied, épaisse de [ep], qui fléchit de [fleche]. */
+            fun perche(h0: Float, ep: Float, fleche: Float, col: Int) {
+                fun y(v: Float) = c2.y(v) - h0 * c2.echelle(v) +
+                    sin((v + 6f) / (bout + 6f) * PI.toFloat()) * fleche * c2.echelle(v)
+                val t = Path()
+                var v = -6f
+                t.moveTo(c2.x(v), y(v))
+                while (v < bout) { v = min(bout, v + 8f); t.lineTo(c2.x(v), y(v)) }
+                while (v > -6f) { t.lineTo(c2.x(v), y(v) + ep * c2.echelle(v)); v = max(-6f, v - 8f) }
+                t.lineTo(c2.x(-6f), y(-6f) + ep)
+                t.close()
+                piece(t, col, 0.6f)
+                // La joue à l'ombre, sous la perche : c'est elle qui l'arrondit.
+                val j = Path()
+                v = -6f
+                j.moveTo(c2.x(v), y(v) + ep * 0.55f)
+                while (v < bout) { v = min(bout, v + 8f); j.lineTo(c2.x(v), y(v) + ep * 0.55f * c2.echelle(v)) }
+                while (v > -6f) { j.lineTo(c2.x(v), y(v) + ep * c2.echelle(v)); v = max(-6f, v - 8f) }
+                j.close()
+                forme(j, sombre(col, 0.4f), 0.55f)
             }
-            for (pu in piquets) {
+            perche(10.4f, 1.5f, 0.9f, mix(bois, 0xFFFFFFFF.toInt(), 0.1f))
+            perche(5.6f, 1.2f, 1.3f, bois)
+            // L'écharpe : la perche de travers qui empêche la clôture de
+            // coucher. C'est elle qu'on remarque sur la photo.
+            val e0 = c2.echelle(10f); val e1 = c2.echelle(74f)
+            pieceD("M${c2.x(10f)} ${c2.y(10f) + 0.6f}L${c2.x(10f) + 1.3f * e0} ${c2.y(10f) + 0.6f}" +
+                "L${c2.x(74f) + 1.1f * e1} ${c2.y(74f) - 11.4f * e1}L${c2.x(74f)} ${c2.y(74f) - 11.4f * e1}Z",
+                sombre(bois, 0.12f), 0.5f)
+            for (pu in floatArrayOf(0f, 18f, 40f, 66f, 96f, 132f, 176f)) {
                 val e = c2.echelle(pu)
-                feuille(c2.x(pu) - 0.7f * e, c2.y(pu) - 12.5f * e, 1.4f * e, 12.5f * e, bois, 0.6f)
+                val px = c2.x(pu); val py = c2.y(pu) + 0.8f * e
+                // Le piquet penche, et il n'est pas de la même épaisseur en
+                // haut qu'en bas : c'est une perche, pas un tasseau.
+                val pen = (r() - 0.5f) * 2.6f * e
+                val w = (1.7f + r() * 0.6f) * e
+                val h = (13.5f + r() * 2.4f) * e
+                val ton = if (r() < 0.4f) mix(bois, 0xFFFFFFFF.toInt(), 0.12f) else sombre(bois, 0.1f + r() * 0.2f)
+                pieceD("M${px - w * 0.5f} $py L${px + w * 0.5f} $py" +
+                    "L${px + w * 0.38f + pen} ${py - h}L${px - w * 0.38f + pen} ${py - h}Z", ton, 0.6f)
+                forme("M${px + w * 0.1f} $py L${px + w * 0.5f} $py" +
+                    "L${px + w * 0.38f + pen} ${py - h}L${px + w * 0.1f + pen} ${py - h}Z", sombre(ton, 0.38f), 0.5f)
             }
-            for (k in 0 until 14) {
+            for (k in 0 until 16) {
                 val e = 0.8f + r() * 0.2f
-                rond(r() * 100f, 53f + r() * 5f, 0.5f * e, duJour(0xFFF2C230.toInt()))
+                rond(r() * 100f, 52f + r() * 6f, 0.5f * e, duJour(0xFFF2C230.toInt()))
             }
             c.restore()
         }
@@ -7836,91 +7991,389 @@ object Paysages {
             c.restore()
         }
 
-        // ---- Hohllay, la grotte de Berdorf (photo du propriétaire)
+        // ---- Hohllay, la grotte des meules de Berdorf (photo du propriétaire)
 
+        /**
+         * Une **empreinte de meule** dans le grès : la cuvette ronde que le
+         * carrier laissait en détachant sa pierre, et les gradins
+         * concentriques de l'outil autour d'elle.
+         *
+         * C'est tout le lieu. Posées à plat, les empreintes feraient des
+         * cibles peintes sur un mur : elles sont vues de biais sur une voûte,
+         * donc **aplaties** de [aplat], et la lumière vient d'en bas à gauche
+         * (elle entre par la bouche de la grotte et rebondit sur le sol), si
+         * bien que chaque cuvette porte son croissant clair en bas à gauche et
+         * son ombre en haut à droite. Sans ces deux croissants, les anneaux
+         * restent un dessin, et la roche ne se creuse pas.
+         */
+        fun meule(cx: Float, cy: Float, rx: Float, aplat: Float, col: Int, graine: Int) {
+            if (!actif) return
+            val rr = Alea(graine)
+            c.save(); c.scale(1f, aplat, cx, cy)
+            releve?.let { it.save(); it.scale(1f, aplat, cx, cy) }
+            rond(cx, cy, rx, sombre(col, 0.1f + rr() * 0.1f))
+            // Trois ou quatre gradins, pas davantage, et d'un ton à l'autre
+            // l'écart reste faible : plus nombreux et plus contrastés, les
+            // anneaux font une cible peinte et non un creux.
+            var k = rx
+            var i = 0
+            while (k > rx * 0.26f) {
+                val t = rr()
+                anneau(cx, cy, k, if (i % 2 == 0) mix(col, 0xFFFFFFFF.toInt(), 0.06f + t * 0.1f)
+                                  else sombre(col, 0.1f + t * 0.12f), rx * 0.1f)
+                k -= rx * (0.2f + rr() * 0.1f)
+                i++
+            }
+            // Les deux croissants : le jour en bas à gauche, l'ombre en haut
+            // à droite. Ils sont tracés par-dessus les gradins, en voile.
+            p.style = Paint.Style.STROKE; p.strokeWidth = rx * 0.3f
+            teinte(mix(col, 0xFFFFFFFF.toInt(), 0.3f), 0.26f)
+            c.drawArc(cx - rx * 0.86f, cy - rx * 0.86f, cx + rx * 0.86f, cy + rx * 0.86f, 100f, 110f, false, p)
+            teinte(sombre(col, 0.5f), 0.3f)
+            c.drawArc(cx - rx * 0.86f, cy - rx * 0.86f, cx + rx * 0.86f, cy + rx * 0.86f, 285f, 105f, false, p)
+            p.style = Paint.Style.FILL
+            releve?.restore(); c.restore()
+        }
+
+        /**
+         * Ce que dit la photo, et que l'ancienne version n'avait pas :
+         *
+         * 1. **C'est une grotte, pas une crypte.** L'ancienne avait deux
+         *    piliers d'aplomb, trois arcades en plein cintre et des murs
+         *    crème : on y lisait une église basse. Ici rien n'est régulier,
+         *    rien n'est d'aplomb, et la voûte pèse.
+         * 2. **Le plafond est le sujet.** Il est couvert de grandes empreintes
+         *    de meules, rondes, concentriques, qui se recouvrent les unes les
+         *    autres. C'est le seul endroit du Luxembourg qui ressemble à ça,
+         *    et c'était réduit à quelques petits arcs gris en haut de la
+         *    fenêtre.
+         * 3. **Le grès est chaud et il est sale** : ocre et rose là où le jour
+         *    le prend, vert-noir d'algue et de mousse partout où l'eau
+         *    suinte, c'est-à-dire en bas et au fond.
+         * 4. **Le jour entre par un côté** et ne va pas loin : le fond de la
+         *    grotte est presque noir, et c'est ce noir qui donne l'échelle.
+         * 5. **Un gros pilier de roche** sépare deux travées, et la voûte s'en
+         *    va de part et d'autre.
+         * 6. **Le sol est un chaos de blocs tombés**, mouillés, mangés de
+         *    mousse.
+         *
+         * Sur la carte ouverte, la voûte et ses meules tiennent la bande du
+         * haut, la bouche du jour la colonne de gauche et le pilier celle de
+         * droite.
+         */
         fun hohllay() {
-            // Le grès de la Hohllay est gris-beige, et la grotte est éclairée
-            // du dehors : sa pierre passe par [neutre], comme tout le bâti
-            // dessiné à la main (règle 10). Sans cela `raviver` la poussait à
-            // l'orange vif sur les quatre heures, ce que la skill signalait
-            // déjà « à surveiller » et que la photo du propriétaire confirme.
-            val gres = neutre(duJour(0xFFBFAE97.toInt()))
-            val rose = neutre(duJour(0xFFCFC2AE.toInt()))
-            val creux = sombre(gres, 0.8f)
+            val r = Alea(295)
+            // Le grès passe par [neutre], comme tout le bâti et toute la
+            // roche dessinés à la main (règle 10) : sans cela `raviver` le
+            // pousse à l'orange vif sur les quatre heures.
+            val gres = neutre(duJour(0xFFB29070.toInt()))
+            val mouille = neutre(duJour(0xFF4A4A38.toInt()))
+            // Un noir **neutre**, écrit comme tel : obtenu en assombrissant
+            // le grès, il passait par le brun de [sombre], que `raviver`
+            // ressortait en or sale. Le fond d'une grotte n'a pas de couleur.
+            val noir = neutre(duJour(0xFF201C17.toInt()))
+            /** Le bord bas de la voûte : une arche qui culmine au milieu. */
+            // Elle descend bas : la voûte de la Hohllay pèse sur la tête, et
+            // c'est elle le sujet. Posée haut, il ne restait que onze unités
+            // de plafond au milieu de la fenêtre, c'est-à-dire exactement là
+            // où la carte ouverte le montre.
+            fun arc(x: Float) = 22f + 0.0050f * (x - 50f) * (x - 50f)
+            // ---- La bouche, à gauche : le jour n'entre que par là, et il
+            // ne va pas loin. Elle est au lointain ; tout le reste est devant.
             mineral {
-                feuille(-3f, -3f, 106f, 72f, creux, 0f)
-                pieceD("M-3 10L103 10L103 52L-3 52Z", rose, 0.4f)
-                for ((ax, w) in listOf(6f to 10f, 30f to 16f, 56f to 16f, 88f to 10f)) {
-                    pieceD("M$ax 52L$ax ${44f - w * 0.4f}C$ax ${30f - w * 0.3f} ${ax + w} ${30f - w * 0.3f} ${ax + w} ${44f - w * 0.4f}L${ax + w} 52Z", creux, 0.18f)
-                }
+                feuille(-3f, -3f, 106f, 72f, sombre(mouille, 0.3f), 0f)
+                pieceD("M-4 50C-2 44 1 39 4 35C7 32 11 30.6 13 32.4C14.4 34 13 38.6 12 42C11 46 10.6 48 11 51Z",
+                    mix(P.cielBas, 0xFFFFFFFF.toInt(), if (P.nuit) 0.1f else 0.45f), 0f)
+                forme("M-4 50C-2 45 0 41 2.6 38C5 35 8 33.6 9.6 35C10.6 36.6 9.6 39.6 9 43C8.4 46.4 8.2 48 8.4 51Z",
+                    mix(vert(0.6f), P.cielBas, 0.3f), 0.8f)
             }
             plan(1)
             mineral {
-                for (px in floatArrayOf(18f, 76f)) {
-                    pieceD("M$px 58L${px + 1f} 20C${px - 2f} 16 ${px + 10f} 16 ${px + 7f} 20L${px + 8f} 58Z", rose)
-                    pieceD("M$px 58L${px + 0.6f} 46C${px + 3f} 44 ${px + 6f} 44 ${px + 8f} 46L${px + 8f} 58Z", duJour(0xFF8AA04A.toInt()), 0.3f)
+                // Le fond de la grotte, posé au plan du milieu et non au
+                // lointain : au lointain, l'estompe des plans le ramenait
+                // vers la couleur du ciel et le noir tournait à l'ocre. Or
+                // c'est ce noir qui donne l'échelle du lieu.
+                pieceD("M13 -4L104 -4L104 68L13 68Z", noir, 0f)
+                // La paroi du fond, à peine tirée du noir, avec ses propres
+                // empreintes : sans elle le milieu est un trou découpé, et
+                // la grotte n'a pas de fond, elle a une ouverture.
+                val fond = mix(noir, gres, 0.14f)
+                pieceD("M18 38C30 32 48 30 64 32C74 33 82 36 88 40L88 60L18 60Z", fond, 0f)
+                for (k in 0 until 5) meule(24f + k * 16f + r() * 6f, 37f + r() * 8f,
+                    3.4f + r() * 3.4f, 0.6f + r() * 0.24f, fond, 360 + k)
+                forme("M18 38C30 32 48 30 64 32C74 33 82 36 88 40L88 44C80 40 70 37.6 60 37C44 35.6 30 37 18 42Z",
+                    sombre(noir, 0.2f), 0.5f)
+                // ---- La voûte. Elle n'est pas un bandeau sur lequel on
+                // peint des ronds : c'est une suite de **bombements qui se
+                // recouvrent**, chacun sa découpe, sa valeur et son ombre
+                // portée sur le suivant. C'est la règle du grès de la skill
+                // des matières : ce sont les ruptures qui creusent, pas les
+                // lignes. D'un seul tenant, la voûte restait un mur beige
+                // orné de cibles.
+                //
+                // Les bombements vont du clair au sombre en s'enfonçant vers
+                // la droite : le jour entre par la bouche, à gauche.
+                val voute = Path()
+                voute.moveTo(-4f, -4f); voute.lineTo(104f, -4f)
+                var x = 104f
+                while (x > -4f) { voute.lineTo(x, arc(x)); x -= 3f }
+                voute.lineTo(-4f, arc(-4f)); voute.close()
+                piece(voute, mix(gres, noir, 0.4f))
+                c.save(); c.clipPath(voute)
+                releve?.let { it.save(); it.clipPath(voute) }
+                for (k in 0 until 6) {
+                    val cx = -6f + k * 22f + r() * 6f
+                    val w = 13f + r() * 6f
+                    val bas = arc(cx) + 1.5f - r() * 3f
+                    val haut = bas - 9f - r() * 6f
+                    val jour = ((cx + 10f) / 110f).coerceIn(0f, 1f)
+                    val col = mix(mix(gres, neutre(duJour(0xFFC08A62.toInt())), 0.3f * r()), noir, 0.1f + jour * 0.42f)
+                    val bombe = chemin("M${cx - w} -6L${cx - w} ${haut}Q${cx - w * 0.5f} ${bas + 1f} $cx ${bas}" +
+                        "Q${cx + w * 0.55f} ${bas + 1f} ${cx + w} ${haut - 2f}L${cx + w} -6Z")
+                    piece(bombe, col, 0.5f)
+                    c.save(); c.clipPath(bombe)
+                    releve?.let { it.save(); it.clipPath(bombe) }
+                    // Deux ou trois empreintes par bombement, débordantes :
+                    // c'est en débordant qu'elles se recouvrent, comme sur la
+                    // photo, au lieu de s'aligner en pois.
+                    for (i in 0 until 3) {
+                        val mx = cx - w + r() * w * 2f
+                        val my = haut - 2f + r() * (bas - haut + 4f)
+                        meule(mx, my, 4.5f + r() * 5.5f, 0.5f + r() * 0.3f,
+                            if (r() < 0.3f) mix(col, mouille, 0.35f) else col, 296 + k * 4 + i)
+                    }
+                    // Le suintement, au creux du bombement.
+                    if (r() < 0.7f) {
+                        val sx = cx - w * 0.5f + r() * w
+                        forme("M$sx ${haut - 2f}C${sx + 2f} ${bas - 5f} ${sx - 2f} ${bas - 2f} ${sx + 1f} ${bas + 2f}" +
+                            "L${sx + 3.5f + r() * 2f} ${bas + 2f}C${sx + 2f} ${bas - 3f} ${sx + 5f} ${bas - 6f} ${sx + 3f} ${haut - 2f}Z",
+                            mouille, 0.3f + r() * 0.25f)
+                    }
+                    releve?.restore(); c.restore()
                 }
-                pieceD("M-3 -3L103 -3L103 12C80 16 60 10 50 12C40 14 20 10 -3 14Z", gres)
+                releve?.restore(); c.restore()
+                // La lèvre de la voûte, dans l'ombre : c'est elle qui fait
+                // avancer le plafond au-dessus du vide.
+                val levre = Path()
+                levre.moveTo(-4f, arc(-4f) - 1.4f)
+                var lx = -4f
+                while (lx < 104f) { lx = min(104f, lx + 3f); levre.lineTo(lx, arc(lx) - 1.4f) }
+                while (lx > -4f) { levre.lineTo(lx, arc(lx)); lx = max(-4f, lx - 3f) }
+                levre.lineTo(-4f, arc(-4f)); levre.close()
+                forme(levre, sombre(gres, 0.55f), 0.5f)
             }
             plan(2)
-            solNaturel(SolNaturel.TERRE)  // le sol sableux de la grotte
+            solNaturel(SolNaturel.TERRE)  // le sol de sable et de blocs
             poser(DEVANT)
             mineral {
-                piece(cadre("M8 60L8 30C8 16 26 8 50 8C74 8 92 16 92 30L92 60Z"), gres)
-                val trace = sombre(gres, 0.25f)
-                for (k in 0 until 6) {
-                    val x0 = -2f + k * 18f
-                    trait("M$x0 6Q${x0 + 8f} -1 ${x0 + 16f} 6", trace, 0.35f, 0.8f)
-                    trait("M${x0 + 2f} 4Q${x0 + 8f} -1.6 ${x0 + 14f} 4", trace, 0.25f, 0.7f)
+                /** Un montant de roche, de [x0] à [x1], qui descend de la voûte au sol. */
+                fun pilier(x0: Float, x1: Float, taille: Float, graine: Int, col: Int) {
+                    val g = Alea(graine)
+                    val w = x1 - x0
+                    // Il est galbé, et jamais d'aplomb : un montant droit fait
+                    // une colonne, et la grotte redevient une crypte.
+                    pieceD("M${x0 + w * 0.06f} 60L${x0 - w * 0.08f} 46C${x0 + w * 0.16f} 38 ${x0 - w * 0.04f} 28 ${x0 + w * 0.1f} ${arc(x0) + 1f}" +
+                        "C${x0 + w * 0.3f} ${arc(x0) - 3f} ${x1 - w * 0.25f} ${arc(x1) - 3f} ${x1 - w * 0.06f} ${arc(x1) + 1f}" +
+                        "L${x1 - w * 0.16f} 32C${x1 + w * 0.1f} 42 ${x1 - w * 0.12f} 52 $x1 60Z", col)
+                    for (k in 0 until 4) {
+                        val my = 16f + k * 10f + g() * 5f
+                        meule(x0 + w * (0.25f + g() * 0.5f), my, w * (0.3f + g() * 0.22f), 0.78f + g() * 0.2f,
+                            if (my > 34f) mix(col, mouille, 0.45f) else col, graine + 40 + k)
+                    }
+                    // Le flanc à l'ombre, du côté opposé au jour.
+                    forme("M${x1 - w * 0.34f} ${arc(x1) + 1f}L${x1 - w * 0.06f} ${arc(x1) + 1f}" +
+                        "L${x1 - w * 0.16f} 32C${x1 + w * 0.1f} 42 ${x1 - w * 0.12f} 52 $x1 60L${x1 - w * 0.3f} 60Z",
+                        sombre(col, 0.45f), 0.5f)
+                    // Le pied vert : tout ce qui est bas est mouillé.
+                    forme("M${x0 + w * 0.05f} 60C${x0 + w * 0.1f} 50 ${x1 - w * 0.2f} 48 ${x1 - w * 0.05f} 60Z",
+                        mix(col, duJour(0xFF5E7A3A.toInt()), 0.5f), 0.55f)
                 }
-                for (y in floatArrayOf(20f, 30f, 40f)) { trait("M0 ${y}Q4 ${y - 4f} 8 $y", trace, 0.3f); trait("M92 ${y}Q96 ${y - 4f} 100 $y", trace, 0.3f) }
-                pieceD("M-2 58.5C10 52 30 52 40 56L40 58.5Z", duJour(0xFF8E9A6A.toInt()))
-                pieceD("M60 58.5C70 53 90 52 102 55L102 58.5Z", duJour(0xFF8E9A6A.toInt()))
+                // Celui de gauche est au jour, celui de droite à
+                // contre-jour : ils n'ont pas la même valeur, et c'est ce qui
+                // creuse la grotte entre les deux.
+                pilier(10f, 24f, 1f, 310, gres)
+                pilier(74f, 92f, 1f, 330, mix(gres, noir, 0.42f))
+                // La paroi du fond, derrière le pilier de droite : une
+                // seconde travée, plus sombre, qui ouvre la grotte.
+                pieceD("M92 60L93 26C96 22 100 22 104 25L104 60Z", mix(noir, gres, 0.18f), 0.4f)
+            }
+            // ---- Le sol : des blocs tombés, mouillés, mangés de mousse.
+            val bloc = mix(neutre(duJour(0xFF8A7C66.toInt())), noir, 0.3f)
+            mineral {
+                pieceD("M-4 60L-4 48C14 45 34 46 52 48C70 50 88 49 104 46L104 60Z", sombre(bloc, 0.55f), 0.35f)
+                for (k in 0 until 7) {
+                    val bx = -5f + r() * 112f
+                    val by = 48f + r() * 9f
+                    val bw = 5f + r() * 11f
+                    val bh = 2.4f + r() * 3.4f
+                    pieceD("M$bx ${by + bh}L${bx + bw * 0.12f} ${by + bh * 0.2f}L${bx + bw * 0.5f} $by" +
+                        "L${bx + bw * 0.92f} ${by + bh * 0.3f}L${bx + bw} ${by + bh}Z",
+                        if (r() < 0.5f) sombre(bloc, 0.14f) else sombre(bloc, 0.34f), 0.5f)
+                }
+            }
+            val mousse = mix(duJour(0xFF5E7A2E.toInt()), mouille, 0.52f)
+            // La mousse s'étale en plaques rasantes, elle ne pousse pas en
+            // boules : des ovales très aplatis, posés sur les blocs.
+            for (k in 0 until 16) {
+                val gx = -4f + r() * 112f
+                val gy = 48f + r() * 10f
+                ovalePapier(gx, gy, 2.2f + r() * 3.4f, 0.5f + r() * 0.7f,
+                    if (r() < 0.4f) mix(mousse, duJour(0xFF9CBE52.toInt()), 0.28f) else mousse, 0f)
             }
             c.restore()
         }
 
         // ---- Napoleonsgaart, la tour sur la butte (photo du propriétaire)
 
+        /**
+         * Ce que dit la photo, et que l'ancienne version n'avait pas :
+         *
+         * 1. **La tour est un ouvrage de pierre, massif et élancé** : trois
+         *    fois et demie plus haute que large, en moellons assisés, avec
+         *    des chaînes d'angle, trois bandes de petites baies en creux, une
+         *    corniche et un parapet. C'était un poteau brun à quatre points.
+         * 2. **Elle est posée sur une butte d'herbe**, pas sur un pré plat.
+         *    La butte a son mur de soutènement au pied et une clôture de
+         *    grillage sur sa crête, et c'est elle qui donne la hauteur.
+         * 3. **Le chemin monte droit vers elle.** Il part du bas de la
+         *    fenêtre, large, et se referme en arrivant au pied : c'est la
+         *    seule fuite du lieu, et elle vaut tout le reste.
+         * 4. **Deux mâts d'acier l'accompagnent** : un pylône treillis au
+         *    bord du champ, et un mât d'antenne plus mince à côté de la tour.
+         *    Ils sont du lieu, pas une gêne.
+         * 5. **Le ciel est grand et nuageux**, mais il ne doit pas manger la
+         *    tour : trois cumulus posés bas, pas une couverture.
+         *
+         * Sur la carte ouverte, la tour tient la colonne de droite sur toute
+         * sa hauteur, le pylône celle de gauche, et le chemin arrive entre
+         * les deux.
+         */
         fun napoleonsgaart() {
-            cumulus(2f, 24f, 28f, 276)
-            cumulus(38f, 16f, 32f, 277)
-            cumulus(68f, 28f, 30f, 278)
+            val r = Alea(275)
+            // Trois cumulus posés haut et courts : larges, ils se
+            // rejoignaient en une couverture crème et la tour s'y noyait.
+            cumulus(2f, 14f, 20f, 276)
+            cumulus(30f, 9f, 22f, 277)
+            cumulus(56f, 16f, 17f, 278)
+            // L'horizon est bas et lointain : on est sur le haut d'une butte,
+            // et le pays s'en va de tous les côtés.
+            lisiere(-3f, 103f, { x -> 33f + 1.8f * sin(x * 0.08f) }, 1.6f, 2.6f, 279,
+                mix(nappe(duJour(0xFF4E6B38.toInt()), 0.34f, VERT_CALME), P.loin, 0.46f))
             plan(1)
-            pieceD("M-2 66L-2 44C20 42 40 40 54 38C64 36 76 36 86 38C94 40 98 42 102 43L102 66Z", vert(0.85f), 0.4f)
-            pieceD("M56 44C66 35 80 33 92 35C96 37 100 41 102 44Z", vert(0.65f), 0.4f)
-            val grille = duJour(0xFF9AA0A6.toInt())
-            var gx = 40f
-            while (gx < 102f) { ligne(gx, 37.6f, gx, 42f, grille, 0.15f); gx += 3f }
-            ligne(40f, 38f, 102f, 37.4f, grille, 0.15f)
-            plan(2)
-            solDePierre(SolDePierre.GRAVIER, DEVANT)  // le chemin du parc
-            poser(DEVANT)
-            pieceD("M30 58.5C44 52 64 48 80 46L86 46C78 50 66 54 58 58.5Z", duJour(0xFF4A4C50.toInt()), 0.4f)
-            val pierre = duJour(0xFF6E6862.toInt())
+            // ---- La butte, et son mur de soutènement.
+            val pre = vert(0.7f)
+            pieceD("M-3 66L-3 48C14 46 30 45 44 43C56 41 64 36 74 32C82 29 92 29 103 33L103 66Z", pre, 0.4f)
+            // Le flanc de la butte est dans l'ombre sous la tour : sans cela
+            // elle est un décor posé à plat et non un monticule.
+            // L'ombre du flanc passe par le lointain et non par [sombre] :
+            // le brun de [sombre] sur un vert d'herbe donne un kaki de toile
+            // de tente, et toute la butte s'éteignait.
+            forme("M44 43C56 41 64 36 74 32C82 29 92 29 103 33L103 38C92 34.6 82 34.6 74 37C64 40 56 44 46 45.6Z",
+                mix(pre, P.loin, 0.26f), 0.94f)
+            val pierre = duJour(0xFF8E887E.toInt())
             mineral {
-                // Le socle, de trois quarts comme la tour : sa face, et le côté qui fuit.
-                boite3q(72f, 58.5f, 18f, 10.5f, 10f, sombre(pierre, 0.1f), pente = 0.06f)
-                boite3q(76f, 49f, 12f, 9f, 8f, pierre, pente = 0.06f)
-                // Vue de trois quarts : la face éclairée, puis celle de côté qui fuit.
-                pieceD("M78.6 58.5L79.6 6L86 5L86.4 58.5Z", mix(pierre, 0xFFFFFFFF.toInt(), 0.08f))
-                pieceD("M86.4 58.5L86 5L92 6.6L93 58.5Z", sombre(pierre, 0.3f))
-                pieceD("M79 4.4L86 3.2L92.6 5L86 6.4Z", sombre(pierre, 0.15f), 0.4f)
-                val joint = sombre(pierre, 0.3f)
-                var y = 8f
-                while (y < 40f) { ligne(79.8f, y, 86f, y - 0.9f, joint, 0.12f, 0.7f); ligne(86f, y - 0.9f, 92.4f, y + 0.7f, joint, 0.12f, 0.5f); y += 1.8f }
-                for (fy in floatArrayOf(15f, 27f)) {
-                    for (fx in floatArrayOf(81f, 83.4f)) rect(fx, fy - (fx - 79f) * 0.15f, 1.3f, 1.6f, if (P.allume) P.fenetre else sombre(pierre, 0.6f))
-                    for (fx in floatArrayOf(87.6f, 90f)) rect(fx, fy - 0.9f + (fx - 86f) * 0.27f, 1.1f, 1.6f, if (P.allume) P.fenetre else sombre(pierre, 0.7f))
-                }
-                feuille(84.4f, 50f, 3.2f, 8.5f, duJour(0xFF2F5FB0.toInt()), 0.3f)
-                val fer = duJour(0xFF55595F.toInt())
-                ligne(80f, 2.4f, 92f, 2.4f, fer, 0.2f)
-                for (fx in floatArrayOf(80f, 83f, 86f, 89f, 92f)) ligne(fx, 2.4f, fx, 4.6f, fer, 0.15f)
-                ligne(86f, 4.6f, 86f, -1f, fer, 0.25f)
+                // Le mur de soutènement, au pied de la tour, en moellons.
+                appareil(chemin("M58 43.6C66 39.8 74 35.8 82 34.2C88 33.4 94 33.6 99 34.8L99 38.6C94 37.6 88 37.4 82 38.2C74 39.6 66 43.4 59 47Z"),
+                    sombre(pierre, 0.12f), 1.1f, 2.2f, 280, pente = -0.05f, lichen = 0.3f, ombre = 0.5f)
             }
-            pylone(5f, DEVANT, -2f, 4f, duJour(0xFF55595F.toInt()))
-            touffe(vert(0.4f), 100f, 44f, 5f, 96f, 50f, 4f)
+            // La clôture de grillage sur la crête : des poteaux fins et une
+            // maille qu'on voit au travers. Pleine, elle ferait un muret.
+            val acier = neutre(duJour(0xFF9DA3A8.toInt()))
+            fun crete(x: Float) = if (x < 74f) 43f - (x - 44f) * 0.37f else 32f + (x - 74f) * 0.14f
+            var gx = 44f
+            while (gx < 103f) {
+                val y = crete(gx)
+                ligne(gx, y, gx, y - 5.4f, acier, 0.22f, 0.85f)
+                ligne(gx, y - 5.4f, min(103f, gx + 5f), crete(min(103f, gx + 5f)) - 5.4f, acier, 0.18f, 0.8f)
+                ligne(gx, y - 2.6f, min(103f, gx + 5f), crete(min(103f, gx + 5f)) - 2.6f, acier, 0.12f, 0.5f)
+                // La maille : deux obliques par travée suffisent à la dire.
+                for (u in floatArrayOf(0f, 2.5f)) {
+                    ligne(gx + u, y, gx + u + 2.5f, y - 5.4f, acier, 0.1f, 0.3f)
+                    ligne(gx + u, y - 5.4f, gx + u + 2.5f, y, acier, 0.1f, 0.3f)
+                }
+                gx += 5f
+            }
+            // ---- La tour. Un socle évasé, le fût, la corniche, le parapet.
+            val taille = neutre(duJour(0xFF8A8278.toInt()))
+            val joint = sombre(taille, 0.42f)
+            mineral {
+                // Le socle, plus large, et son appareil de gros moellons.
+                boite3q(71f, 33f, 13f, 6f, 5f, sombre(taille, 0.14f), pente = 0.05f)
+                // La porte, dans le socle : la seule couleur franche du lieu.
+                feuille(76.4f, 29.4f, 2.4f, 3.6f, duJour(0xFF2F5FB0.toInt()), 0.3f)
+                // Le fût, de trois quarts, avec ses baies peintes à plat.
+                boite3q(74f, 28f, 9f, 24f, 4.2f, taille, pente = 0.06f) {
+                    // Les chaînes d'angle : deux bandes claires qui tiennent
+                    // la tour debout. Sans elles, le fût est une planche.
+                    // Les moellons sont petits et nombreux : à deux unités
+                    // de long sur neuf de large, ils faisaient six briques
+                    // par assise et la tour passait pour un mur de jardin.
+                    // Peu de lichen : la valeur par défaut verdit une pierre
+                    // sur cinq, et la tour prenait une mousse de sous-bois
+                    // qu'elle n'a pas, posée en plein vent sur une butte.
+                    appareil(Path().apply { addRect(0f, 0f, 9f, 24f, Path.Direction.CW) },
+                        sombre(taille, 0.1f), 0.78f, 1.4f, 281, lichen = 0.06f)
+                    rect(0f, 0f, 1.1f, 24f, mix(taille, 0xFFFFFFFF.toInt(), 0.18f), 0.6f)
+                    rect(7.9f, 0f, 1.1f, 24f, sombre(taille, 0.2f), 0.6f)
+                    // Les trois bandes de baies, en creux : le tableau à
+                    // l'ombre d'abord, le jour de la baie ensuite.
+                    for (by in floatArrayOf(5.2f, 11.4f, 17.6f)) {
+                        rect(1.6f, by - 0.5f, 5.8f, 2.6f, joint, 0.45f)
+                        for (k in 0 until 3) rect(1.9f + k * 1.9f, by, 1.2f, 1.6f,
+                            if (P.allume) P.fenetre else sombre(taille, 0.72f))
+                    }
+                }
+                // La corniche et le parapet, un peu plus larges que le fût.
+                boite3q(73.4f, 4.4f, 10.2f, 1.6f, 4.6f, mix(taille, 0xFFFFFFFF.toInt(), 0.1f), pente = 0.06f)
+                boite3q(74.4f, 2.8f, 8.2f, 2.2f, 4f, sombre(taille, 0.08f), pente = 0.06f)
+            }
+            // Le garde-corps du belvédère et le petit mât, sur la plate-forme.
+            for (px in floatArrayOf(74.6f, 77.4f, 80.2f, 82.6f)) ligne(px, 2.8f, px, 0.6f, acier, 0.2f)
+            ligne(74.4f, 0.8f, 82.8f, 0.4f, acier, 0.22f)
+            ligne(81f, 0.6f, 81.4f, -3f, acier, 0.25f)
+            plan(2)
+            solNaturel(SolNaturel.HERBE)  // le pré du haut de la butte
+            poser(DEVANT)
+            // ---- Les deux talus, puis le chemin entre eux.
+            //
+            // Les talus sont des pièces **opaques**, et non des voiles posés
+            // sur le pré. Un voile peint dans le plan du proche se compose
+            // avec le plan du milieu qui est derrière lui, et non avec le
+            // vert qu'on voit dessous : le talus de droite, voilé à trois
+            // dixièmes, sortait kaki sur toute la moitié basse de la carte.
+            // Dans un théâtre de papier, une pente est une découpe de plus.
+            forme("M-3 60L-3 54C10 52 24 50 36 47.6L56 42L66.6 40.6L4 60Z", mix(pre, P.loin, 0.16f), 0.94f)
+            forme("M30 60L72 41.4L80 40C88 41 96 43 103 46L103 60Z",
+                mix(pre, duJour(0xFF63A33C.toInt()), 0.3f), 0.94f)
+            // Le chemin. Large en bas, il se referme au pied de la tour :
+            // c'est la seule fuite du lieu, et c'est elle qui fait monter.
+            val bitume = neutre(duJour(0xFF5A5A5C.toInt()))
+            pieceD("M4 60L30 60L72 41.4L66.6 40.6Z", bitume, 0.45f)
+            // L'usure du milieu, plus claire, et les deux bords mangés
+            // d'herbe : un ruban gris uni se lit comme une planche posée.
+            forme("M14 60L24 60L70 41.2L67.6 40.8Z", mix(bitume, 0xFFFFFFFF.toInt(), 0.16f), 0.4f)
+            forme("M4 60L7 60L67.4 40.6L66.6 40.6Z", sombre(bitume, 0.3f), 0.5f)
+            forme("M28 60L30 60L72 41.4L71 41.2Z", sombre(bitume, 0.3f), 0.5f)
+            // L'herbe des talus, brin par brin. C'est elle qui fait le vert
+            // du lieu : la bande sous la fenêtre, peinte par [solNaturel],
+            // est drue et vive, et au-dessus l'aplat seul sortait kaki à
+            // côté d'elle. Les brins s'arrêtent au bord du chemin.
+            for (k in 0 until 170) {
+                val hx = -3f + r() * 108f
+                val hy = 41f + r() * 18f
+                val tl = ((60f - hy) / 19.4f).coerceIn(0f, 1f)
+                val tr = ((60f - hy) / 18.6f).coerceIn(0f, 1f)
+                if (hx > 4f + 62.6f * tl && hx < 30f + 42f * tr) continue
+                ligne(hx, hy, hx + (r() - 0.5f) * 1.2f, hy - 1.1f - r() * 1.8f,
+                    if (r() < 0.5f) mix(pre, duJour(0xFFDCEE8E.toInt()), 0.34f) else sombre(pre, 0.22f),
+                    0.2f + r() * 0.14f, 0.8f)
+            }
+            // ---- Les deux aciers du lieu : le grand pylône treillis au bord
+            // du champ, et le mât d'antenne qui double la tour.
+            pylone(6f, 52f, -4f, 7f, sombre(acier, 0.3f))
+            pylone(64f, 36f, 9f, 2.4f, sombre(acier, 0.22f))
+            ligne(64f, 12f, 76f, 16f, sombre(acier, 0.22f), 0.14f, 0.7f)
+            touffe(vert(0.4f), 100f, 46f, 5f, 96f, 52f, 4f)
             c.restore()
         }
 
@@ -7961,83 +8414,350 @@ object Paysages {
             c.restore()
         }
 
-        // ---- Péitrusdall, la vallée de la Pétrusse sous le pont Adolphe (photo du propriétaire)
+        // ---- Péitrusdall, la Passerelle vue du fond de la vallée (photo du propriétaire)
 
+        /**
+         * Ce que dit la photo, et que l'ancienne version n'avait pas :
+         *
+         * 1. **Ce n'est pas le pont Adolphe.** La carte montrait une copie de
+         *    la grande arche surbaissée de la [neiBreck], à deux cases de là
+         *    dans l'album. Le pont de la Pétrusse, c'est **la Passerelle**,
+         *    le vieux viaduc : une file d'arches en plein cintre portées par
+         *    des piles très hautes et très minces.
+         * 2. **On la regarde d'en bas**, du fond de la vallée, en forte
+         *    contre-plongée : le tablier barre le haut de la fenêtre et les
+         *    piles descendent hors du cadre.
+         * 3. **Le tablier est moderne et il déborde.** Une dalle claire,
+         *    posée sur le vieil ouvrage, portée de part et d'autre par des
+         *    **béquilles d'acier en Y** au droit de chaque pile. C'est ce
+         *    détail-là qui fait reconnaître la Passerelle d'aujourd'hui.
+         * 4. **Les arches montrent leurs claveaux** rayonnants, et les
+         *    tympans sont en appareil régulier de pierre claire.
+         * 5. **On voit le ciel au travers**, et la cime des arbres de la
+         *    vallée au bas des ouvertures.
+         * 6. **Un éperon de rocher tient le pied de gauche**, avec son mur
+         *    de soutènement et son lierre.
+         *
+         * Sur la carte ouverte, le tablier, les béquilles et le haut des
+         * arches tiennent la bande du haut, et une pile chaque colonne.
+         */
         fun peitrusdall() {
-            lisiere(16f, 84f, { x -> 34f + 2f * sin(x * 0.2f) }, 2f, 3f, 296, mix(vert(0.4f), P.loin, 0.35f))
+            val r = Alea(295)
+            /** Le dessus du tablier en [x] : il descend vers la gauche et s'incurve. */
+            fun tabl(x: Float) = 7.2f - x * 0.036f + 0.00012f * (x - 50f) * (x - 50f)
+            val naissance = 26.5f    // la ligne de naissance des arches
+            val rayon = 9.5f
+            val axes = floatArrayOf(-2f, 24f, 50f, 76f, 102f)   // les piles
+            val arches = floatArrayOf(11f, 37f, 63f, 89f)
+            // ---- Ce qu'on voit au travers : le ciel, et la cime des arbres
+            // de la vallée au bas des ouvertures.
+            // Un carré de ciel haut posé dans chaque ouverture a été
+            // essayé, pour dire la contre-plongée : il écrase le dégradé du
+            // ciel en un aplat et les quatre arches deviennent quatre
+            // vitres dépolies. Le ciel de la fenêtre passe au travers tel
+            // quel, c'est mieux.
+            //
+            // La cime des arbres de la vallée, basse : posée haut, la futaie
+            // bouchait les quatre ouvertures et le viaduc devenait un mur.
+            lisiere(-4f, 104f, { x -> 44f + 1.6f * sin(x * 0.13f) }, 1.6f, 2.6f, 296,
+                mix(nappe(duJour(0xFF4A6B30.toInt()), 0.36f, VERT_CALME), P.loin, 0.44f))
             plan(1)
-            // Le pont Adolphe est du bâti : sa pierre passe par [neutre],
-            // sinon `raviver` la tire vers l'ocre de la vallée derrière elle
-            // et l'arche disparaît (règles 1 et 10 de la skill
-            // `direction-artistique`, jugé en main sur un A21s le 2026-11-15).
-            val pierre = neutre(duJour(0xFFD3C29C.toInt()))
-            // Le pont Adolphe dessiné de face, posé de trois quarts : son pied
-            // gauche tout près, son tablier qui fuit vers la droite.
-            surQuad(PONT_PEITRUSDALL_L, PONT_PEITRUSDALL_H, PONT_PEITRUSDALL, x0 = -3f, y0 = 0f) { mineral {
-                pieceD("M-3 6L86 5L86 10L-3 11Z", pierre)
-                feuille(-3f, 5f, 89f, 0.8f, sombre(pierre, 0.25f), 0f)
-                pieceD("M-3 10.6L50 10.2L46 13C30 14 14 26 8 46L-3 46Z", pierre)
-                pieceD("M8 46C14 26 30 13 46 12.6C62 12 76 18 86 28L82 30C74 21 62 16 46 16.4C32 17 18 28 12 46Z", sombre(pierre, 0.24f))
-                for (ax in floatArrayOf(2f, 10f, 18f, 26f)) {
-                    val h = 12f + (30f - ax) * 0.3f
-                    pieceD("M$ax ${h + 6f}L$ax ${h + 2f}C$ax ${h - 0.6f} ${ax + 5f} ${h - 0.6f} ${ax + 5f} ${h + 2f}L${ax + 5f} ${h + 6f}Z", sombre(pierre, 0.45f), 0f)
+            // ---- Le viaduc. La pierre passe par [neutre], comme tout le
+            // bâti : sans cela `raviver` la tire vers l'ocre de la vallée
+            // derrière elle et l'ouvrage s'y fond (règle 10).
+            val pierre = neutre(duJour(0xFFCFC6B2.toInt()))
+            val acier = neutre(duJour(0xFF55585E.toInt()))
+            mineral {
+                // La masse : tympans et piles d'un seul tenant, **percée**
+                // de ses arches. Peintes par-dessus un mur plein, les arches
+                // ne seraient que des trous noirs dessinés.
+                val masse = Path()
+                masse.moveTo(-6f, 64f)
+                masse.lineTo(-6f, tabl(-6f) + 3.2f)
+                var x = -6f
+                while (x < 106f) { x = min(106f, x + 4f); masse.lineTo(x, tabl(x) + 3.2f) }
+                masse.lineTo(106f, 64f); masse.close()
+                for (cx in arches) {
+                    val trou = Path()
+                    trou.moveTo(cx - rayon, 64f)
+                    trou.lineTo(cx - rayon, naissance)
+                    trou.arcTo(RectF(cx - rayon, naissance - rayon, cx + rayon, naissance + rayon), 180f, 180f)
+                    trou.lineTo(cx + rayon, 64f)
+                    trou.close()
+                    masse.op(trou, Path.Op.DIFFERENCE)
                 }
-                for (lx in floatArrayOf(14f, 40f, 66f)) { ligne(lx, 1f, lx, 5f, duJour(0xFF55585E.toInt()), 0.25f); if (P.allume) rond(lx, 0.8f, 0.6f, P.fenetre) }
+                appareil(masse, pierre, 1.15f, 2.3f, 297, lichen = 0.1f, ombre = 0.5f)
+                // Les claveaux de chaque arche : ils rayonnent depuis le
+                // centre, ils ne suivent pas les assises du tympan.
+                for ((k, cx) in arches.withIndex())
+                    voussoirs(cx, naissance, rayon, rayon, 1.8f, 0f, PI.toFloat(), pierre, 298 + k)
+                // Le tableau de l'arche, à l'ombre : l'épaisseur de l'ouvrage,
+                // et c'est elle qui dit qu'on voit au travers.
+                for (cx in arches) {
+                    val creux = Path()
+                    creux.moveTo(cx - rayon, 64f)
+                    creux.lineTo(cx - rayon, naissance)
+                    creux.arcTo(RectF(cx - rayon, naissance - rayon, cx + rayon, naissance + rayon), 180f, 180f)
+                    creux.lineTo(cx + rayon, 64f)
+                    creux.close()
+                    val dedans = Path()
+                    dedans.moveTo(cx - rayon + 1.2f, 64f)
+                    dedans.lineTo(cx - rayon + 1.2f, naissance)
+                    dedans.arcTo(RectF(cx - rayon + 1.2f, naissance - rayon + 1.2f, cx + rayon - 1.2f, naissance + rayon - 1.2f), 180f, 180f)
+                    dedans.lineTo(cx + rayon - 1.2f, 64f)
+                    dedans.close()
+                    dedans.offset(0.9f, 0.9f)
+                    creux.op(dedans, Path.Op.DIFFERENCE)
+                    forme(creux, sombre(pierre, 0.55f), 0.7f)
+                }
+                // Les piles : leur arête au jour, leur flanc à l'ombre. Sans
+                // ces deux-là, une pile de trente unités de haut est une
+                // bande de papier posée debout.
+                for (px in axes) {
+                    forme("M${px - 3.6f} $naissance L${px - 2.2f} $naissance L${px - 2.8f} 64L${px - 4.6f} 64Z",
+                        mix(pierre, 0xFFFFFFFF.toInt(), 0.16f), 0.6f)
+                    forme("M${px + 2f} $naissance L${px + 3.6f} $naissance L${px + 4.6f} 64L${px + 2.6f} 64Z",
+                        sombre(pierre, 0.34f), 0.55f)
+                }
             }
-                if (!vivant) tram(54f, 2.2f)
+            // ---- Les béquilles d'acier en Y, sous la dalle, au droit de
+            // chaque pile : c'est par elles que le tablier d'aujourd'hui
+            // déborde du vieil ouvrage.
+            for (px in axes) {
+                val sous = tabl(px) + 3.2f
+                ligne(px, 17.5f, px - 5.4f, sous, acier, 0.5f)
+                ligne(px, 17.5f, px + 5.4f, sous, acier, 0.5f)
+                ligne(px, 17.5f, px, 21.5f, acier, 0.55f)
+                feuille(px - 1.1f, 16.9f, 2.2f, 1.4f, acier, 0.3f)
+            }
+            // ---- La dalle du tablier, par-dessus tout : sa tranche claire,
+            // son dessous à l'ombre, son garde-corps à claire-voie.
+            mineral {
+                val beton = neutre(duJour(0xFFC3BDB1.toInt()))
+                val dalle = Path()
+                dalle.moveTo(-6f, tabl(-6f))
+                var x = -6f
+                while (x < 106f) { x = min(106f, x + 4f); dalle.lineTo(x, tabl(x)) }
+                while (x > -6f) { dalle.lineTo(x, tabl(x) + 3.2f); x = max(-6f, x - 4f) }
+                dalle.lineTo(-6f, tabl(-6f) + 3.2f); dalle.close()
+                piece(dalle, beton, 0.5f)
+                val dessous = Path()
+                dessous.moveTo(-6f, tabl(-6f) + 1.9f)
+                x = -6f
+                while (x < 106f) { x = min(106f, x + 4f); dessous.lineTo(x, tabl(x) + 1.9f) }
+                while (x > -6f) { dessous.lineTo(x, tabl(x) + 3.2f); x = max(-6f, x - 4f) }
+                dessous.lineTo(-6f, tabl(-6f) + 3.2f); dessous.close()
+                forme(dessous, sombre(beton, 0.42f), 0.55f)
+            }
+            // Le garde-corps : des montants fins et deux filets. Plein, il
+            // ferait un bandeau de plus au-dessus de la dalle.
+            var gx = -5f
+            while (gx < 105f) { ligne(gx, tabl(gx), gx, tabl(gx) - 2.2f, acier, 0.18f, 0.8f); gx += 3.4f }
+            ligne(-5f, tabl(-5f) - 2.2f, 105f, tabl(105f) - 2.2f, acier, 0.22f)
+            ligne(-5f, tabl(-5f) - 1.1f, 105f, tabl(105f) - 1.1f, acier, 0.14f, 0.6f)
+            // Les candélabres du tablier.
+            for (lx in floatArrayOf(14f, 50f, 86f)) {
+                ligne(lx, tabl(lx) - 2f, lx, tabl(lx) - 6.4f, acier, 0.22f)
+                feuille(lx - 0.9f, tabl(lx) - 7f, 1.8f, 0.7f, acier, 0.3f)
+                if (P.allume) halo(lx, tabl(lx) - 6.6f, 3.4f, P.fenetre, 0.5f)
             }
             plan(2)
-            solNaturel(SolNaturel.HERBE)  // le parc de la vallée
+            solNaturel(SolNaturel.HERBE)  // le parc du fond de la vallée
             poser(DEVANT)
-            pieceD("M-3 58.5L-3 44C30 40 70 40 103 42L103 58.5Z", vert(0.8f), 0.4f)
-            pieceD("M60 58.5C66 50 70 44 72 38L75 38C76 44 84 52 96 58.5Z", duJour(0xFF6A6C70.toInt()), 0.4f)
-            mineral { pieceD("M90 58.5L92 40C96 38 100 38 103 39L103 58.5Z", duJour(0xFFA59A86.toInt())) }
-            touffe(vert(0.3f), -2f, 20f, 8f, 6f, 30f, 9f, 2f, 44f, 8f, 14f, 40f, 6f)
-            touffe(vert(0.45f), 98f, 10f, 8f, 90f, 20f, 9f, 100f, 32f, 8f, 84f, 30f, 6f)
+            // ---- L'éperon de rocher qui tient le pied de gauche, son mur
+            // de soutènement et son lierre.
+            val roche = neutre(duJour(0xFFB7A684.toInt()))
+            mineral {
+                val eperon = chemin("M-4 62L-4 40C4 38 12 39 18 42C24 45 27 50 28 56L30 62Z")
+                piece(eperon, roche)
+                strates(eperon, 38f, 62f, roche, 299, 3f, 0.08f)
+                appareil(chemin("M-4 42L-4 36C4 34 12 35 18 38L17 43C11 40 4 39 -4 42Z"),
+                    sombre(roche, 0.16f), 1.2f, 2.4f, 300, pente = 0.06f, lichen = 0.3f, ombre = 0.5f)
+            }
+            // Le lierre qui retombe du haut de l'éperon.
+            val lierre = sombre(vert(0.5f), 0.14f)
+            for (k in 0 until 7) {
+                val lx = -4f + r() * 22f
+                ligne(lx, 35f, lx + (r() - 0.5f) * 3f, 35f + 4f + r() * 7f, lierre, 0.3f, 0.8f)
+                touffe(if (r() < 0.4f) vert(0.62f) else lierre, lx, 35f + r() * 6f, 1.2f + r() * 1.4f,
+                    lx + 1.6f, 37f + r() * 6f, 1f + r() * 1.2f)
+            }
+            // Le fond de la vallée, et un lampadaire du parc.
+            // Le fond de la vallée tient **tout en bas** : remonté, il
+            // coupait les piles à mi-hauteur et le viaduc redevenait un
+            // aqueduc vu de plain-pied, alors qu'on le regarde d'en bas.
+            pieceD("M-3 60L-3 57C20 55.6 50 55.6 70 56.6C84 57.4 94 57.8 103 57.4L103 60Z", vert(0.72f), 0.4f)
+            ligne(36f, 58f, 36f, 48f, acier, 0.3f)
+            feuille(34.8f, 47f, 2.4f, 0.9f, acier, 0.3f)
+            if (P.allume) halo(36f, 47.6f, 4f, P.fenetre, 0.5f)
+            touffe(vert(0.42f), 96f, 50f, 6f, 103f, 54f, 7f, 90f, 56f, 5f)
             c.restore()
         }
 
         // ---- Wollefsschlucht, la gorge du Loup (photo du propriétaire)
 
+        /**
+         * Ce que disent les photos, et que l'ancienne version n'avait pas :
+         *
+         * 1. **C'est une faille, et son sujet est l'étroitesse.** Deux parois
+         *    de grès montent droit, presque à se toucher, et entre elles il
+         *    ne reste qu'une fente noire. L'ancienne version était un
+         *    caillebotis orange en pyramide entre deux murs ocre : symétrique,
+         *    large, et ouverte.
+         * 2. **Le grès est pâle et lité.** Gris-crème, des bancs horizontaux
+         *    d'épaisseurs inégales, des diaclases verticales par-dessus, et de
+         *    longues coulées vertes d'algue là où l'eau descend.
+         * 3. **Un escalier de pierre descend sur la gauche**, taillé dans la
+         *    pente, ses marches moussues et inégales. Ce sont les deux
+         *    marcheurs de la photo qui donnent l'échelle ; ici c'est
+         *    l'escalier qui s'en charge.
+         * 4. **Il n'y a pas de ciel**, seulement un peu de jour tout en haut
+         *    de la fente. C'est ce qui fait qu'on est dedans et non devant.
+         * 5. **Le sol est un tapis de feuilles mortes** et de mousse, entre
+         *    des blocs tombés.
+         *
+         * Sur la carte ouverte, la grande paroi tient la colonne de droite
+         * sur toute sa hauteur, l'escalier celle de gauche, et la fente noire
+         * passe entre les deux dans la bande du haut.
+         */
         fun wollefsschlucht() {
             val r = Alea(305)
-            feuille(-3f, -3f, 106f, 72f, mix(P.cielBas, 0xFFFFF8D8.toInt(), if (P.nuit) 0.05f else 0.4f), 0f)
-            val houppier = mix(vert(0.8f), 0xFFE8E070.toInt(), if (P.nuit) 0.05f else 0.3f)
-            for (k in 0 until 7) feuille(30f + r() * 40f, 4f, 0.6f + r() * 0.5f, 36f, mix(houppier, P.pres, 0.4f), 0.3f)
-            lisiere(-2f, 102f, { x -> 6f + 3f * sin(x * 0.2f) }, 2f, 3f, 306, houppier)
-            plan(1)
-            val gres = duJour(0xFF9C8460.toInt())
-            val mousse = duJour(0xFF5F8A3C.toInt())
-            val rouille = duJour(0xFFC9784A.toInt())
+            // Un grès **froid**. Celui du Mullerthal est ocre au soleil,
+            // mais au fond de la faille il ne reçoit que le jour du haut :
+            // tiré au chaud, il donnait une gorge en pain d'épice.
+            val gres = neutre(duJour(0xFFB4B4B0.toInt()))
+            // L'algue tire la pierre vers le vert sans la remplacer : à
+            // demi-teinte et posée à trois dixièmes, elle faisait des vitres
+            // vertes plaquées sur la paroi.
+            val algue = mix(gres, duJour(0xFF40561F.toInt()), 0.6f)
+            val noir = neutre(duJour(0xFF221E19.toInt()))
+            // ---- La fente, et le peu de jour qui y tombe.
             mineral {
-                pieceD("M-3 -3L30 -3C28 10 34 20 30 30C27 40 32 50 34 66L-3 66Z", gres)
-                pieceD("M103 -3L70 -3C72 10 66 22 70 32C73 42 68 52 66 66L103 66Z", gres)
-                pieceD("M6 44C12 40 20 42 26 48C20 50 12 50 6 48Z", rouille, 0.3f)
-                pieceD("M80 34C86 30 94 32 100 38C94 40 86 40 80 38Z", rouille, 0.3f)
+                feuille(-3f, -3f, 106f, 72f, noir, 0f)
+                pieceD("M40 -4L58 -4L55 11C51 8 46 7 42 8Z",
+                    mix(P.cielBas, 0xFFFFFFFF.toInt(), if (P.nuit) 0.12f else 0.5f), 0f)
             }
-            pieceD("M-3 20C8 16 20 18 28 26C20 28 8 30 -3 32Z", mousse, 0.4f)
-            pieceD("M103 12C92 8 80 12 72 20C80 22 92 24 103 26Z", mousse, 0.4f)
-            touffe(mousse, 4f, 56f, 4f, 12f, 60f, 4f, 96f, 52f, 4f, 88f, 58f, 4f)
-            plan(2)
-            solNaturel(SolNaturel.TERRE)  // le sentier de la gorge
-            poser(DEVANT)
-            val bois = duJour(0xFFB0805A.toInt())
-            pieceD("M30 58.5L47 30L53 30L70 58.5Z", bois)
-            lames({ y -> 30f + (58.5f - y) / 28.5f * 17f }, { y -> 70f - (58.5f - y) / 28.5f * 17f }, 58.5f, 30f, sombre(bois, 0.3f))
-            for (s in floatArrayOf(1f, -1f)) {
-                fun x(v: Float) = if (s > 0f) v else 100f - v
-                pieceD("M${x(16f)} 44L${x(46f)} 25L${x(46f)} 26.4L${x(18f)} 46.6Z", sombre(bois, 0.1f))
-                for (k in 0..4) {
-                    val t = k / 4f
-                    val px = 17f + t * 29f
-                    val haut = 45f - t * 19f
-                    val bas = 58.5f - t * 28.5f
-                    ligne(x(px), haut, x(px), bas, sombre(bois, 0.25f), 0.5f - t * 0.25f)
-                    if (k < 4) {
-                        val nx = 17f + (t + 0.25f) * 29f
-                        ligne(x(px), haut, x(nx), 58.5f - (t + 0.25f) * 28.5f, sombre(bois, 0.2f), 0.25f)
-                    }
+            plan(1)
+            mineral {
+                // La paroi du fond, dans la fente : à peine tirée du noir, et
+                // litée elle aussi. Sans elle, la fente est un trou découpé.
+                val fond = chemin("M36 -4L62 -4L60 60L34 60Z")
+                // La paroi du fond doit être **noire**, pas grise : c'est
+                // l'écart entre elle et la paroi du jour qui fait l'étroitesse.
+                // À deux tiers de noir elle sortait du même gris que le
+                // reste, et la faille se refermait en un mur continu.
+                val tonFond = mix(noir, gres, 0.16f)
+                piece(fond, tonFond)
+                strates(fond, -3f, 60f, tonFond, 306, 2.6f, 0.04f)
+                // Puis on la rend à la nuit. [strates] éclaircit un banc sur
+                // deux en le mélangeant au blanc, ce qui ramène une paroi
+                // noire au gris moyen : le voile par-dessus lui laisse son
+                // litage et lui reprend sa lumière.
+                forme(fond, noir, 0.62f)
+                // La paroi de gauche, en retrait : elle ferme la fente de
+                // l'autre côté et porte la pente où l'escalier est taillé.
+                val gauche = chemin("M-4 -4L34 -4L40 26C34 32 24 38 12 42L-4 46Z")
+                val tonGauche = mix(gres, noir, 0.56f)
+                piece(gauche, tonGauche)
+                strates(gauche, -3f, 46f, tonGauche, 307, 3f, 0.08f)
+                forme(gauche, noir, 0.3f)
+                // Les coulées vertes : elles descendent, elles ne tachent pas
+                // au hasard. C'est l'eau qui les pose.
+                for (k in 0 until 5) {
+                    val cx = -2f + r() * 36f
+                    forme("M$cx -4C${cx + 1.5f} 8 ${cx - 1.5f} 16 ${cx + 1f} 26L${cx + 3.4f} 26C${cx + 1f} 16 ${cx + 4f} 8 ${cx + 2.5f} -4Z",
+                        algue, 0.16f + r() * 0.14f)
                 }
+            }
+            plan(2)
+            solNaturel(SolNaturel.TERRE)  // le tapis de feuilles du fond de gorge
+            poser(DEVANT)
+            mineral {
+                // ---- La grande paroi de droite, la plus proche. Elle est
+                // faite de trois découpes étagées, et non d'un seul pan : un
+                // tenant unique, même bien lité, se lit comme du contreplaqué,
+                // parce que les lits y courent sans jamais rencontrer d'arête.
+                val face = chemin("M60 -4L106 -4L106 60L58 60C56 50 59 40 57 30C55.6 22 58 10 60 -4Z")
+                piece(face, mix(gres, 0xFFFFFFFF.toInt(), 0.1f))
+                strates(face, -3f, 60f, mix(gres, 0xFFFFFFFF.toInt(), 0.1f), 308, 3.2f, 0.05f)
+                // Le tableau du bord gauche, à l'ombre : c'est l'épaisseur de
+                // la paroi, et c'est elle qui dit qu'on voit dans la fente.
+                forme("M60 -4L63 -4C61 10 58.6 22 60 30C62 40 59 50 61 60L58 60C56 50 59 40 57 30C55.6 22 58 10 60 -4Z",
+                    sombre(gres, 0.72f), 0.75f)
+                // Les diaclases : des cassures verticales par-dessus le
+                // litage, légèrement de travers, qui débitent la paroi.
+                for (fx in floatArrayOf(68f, 79f, 88f, 97f)) {
+                    val pen = (r() - 0.5f) * 5f
+                    ligne(fx, -4f, fx + pen, 60f, sombre(gres, 0.5f), 0.3f + r() * 0.3f, 0.55f)
+                    ligne(fx + 0.5f, -4f, fx + pen + 0.5f, 60f, mix(gres, 0xFFFFFFFF.toInt(), 0.2f), 0.2f, 0.4f)
+                }
+                // L'éperon qui avance au pied, à droite : c'est la rupture de
+                // découpe qui creuse, pas une ligne de plus.
+                val eperon = chemin("M78 60L80 34C84 30 92 29 99 32L106 36L106 60Z")
+                val ton = mix(gres, 0xFFFFFFFF.toInt(), 0.1f)
+                piece(eperon, ton)
+                strates(eperon, 29f, 60f, ton, 309, 3.6f, 0.07f)
+                // L'ombre que l'éperon porte sur la paroi derrière lui.
+                forme("M78 60L80 34C83.4 30.6 88 29.4 93 29.6C88 31 83.6 33.4 81.6 36.6C79 41 78.6 51 79.6 60Z",
+                    sombre(gres, 0.5f), 0.4f)
+                // La vire du haut, qui avance au-dessus de la fente.
+                val vire = chemin("M58 -4L106 -4L106 9L74 11C66 11 60 8 57.6 4Z")
+                val tonVire = mix(gres, 0xFFFFFFFF.toInt(), 0.16f)
+                piece(vire, tonVire)
+                strates(vire, -4f, 11f, tonVire, 310, 2.8f, 0.04f)
+                forme("M57.6 4C60 8 66 11 74 11L106 9L106 12.6L74 14.6C65 14.6 59.4 11 57 6.6Z",
+                    sombre(gres, 0.55f), 0.6f)
+            }
+            // Les coulées vertes de la grande paroi, et la mousse de son pied.
+            for (k in 0 until 6) {
+                val cx = 60f + r() * 44f
+                forme("M$cx -4C${cx + 2f} 12 ${cx - 2f} 26 ${cx + 1f} 40L${cx + 4f} 40C${cx + 1f} 26 ${cx + 5f} 12 ${cx + 3f} -4Z",
+                    algue, 0.14f + r() * 0.14f)
+            }
+            // ---- L'escalier de pierre, taillé dans la pente de gauche. Ses
+            // marches sont inégales et moussues, et il tourne en descendant.
+            val marche = neutre(duJour(0xFF97968E.toInt()))
+            val mousse = mix(duJour(0xFF5E7A2E.toInt()), gres, 0.3f)
+            mineral {
+                // La pente de terre où il est creusé, d'abord.
+                pieceD("M-4 60L-4 44C8 41 20 36 30 29C34 26 38 24 41 25L44 60Z", sombre(marche, 0.42f), 0.5f)
+                for (k in 0 until 13) {
+                    val t = k / 12f
+                    val mx = 36f - t * 36f
+                    val my = 27f + t * 29f + t * t * 3f
+                    val l = 9f + t * 7f
+                    val h = 1.5f + t * 1.1f
+                    pieceD("M$mx ${my} L${mx - l} ${my + h * 0.5f}L${mx - l} ${my + h * 1.6f}L$mx ${my + h}Z",
+                        if (r() < 0.4f) mix(marche, 0xFFFFFFFF.toInt(), 0.1f) else sombre(marche, 0.1f + r() * 0.2f), 0.4f)
+                    // Le nez de la marche, à l'ombre, et sa mousse.
+                    forme("M$mx ${my + h}L${mx - l} ${my + h * 1.6f}L${mx - l} ${my + h * 2.2f}L$mx ${my + h * 1.7f}Z",
+                        sombre(marche, 0.52f), 0.6f)
+                    if (r() < 0.6f) ovalePapier(mx - l * (0.2f + r() * 0.6f), my + h * 0.7f,
+                        1f + r() * 1.6f, 0.3f + r() * 0.3f, mousse, 0f)
+                }
+                // La main courante, un simple fer planté dans la roche.
+                val fer = neutre(duJour(0xFF6E6A62.toInt()))
+                ligne(37f, 24f, 2f, 52f, fer, 0.3f, 0.9f)
+                for (px in floatArrayOf(33f, 24f, 15f, 6f)) ligne(px, 26.4f + (37f - px) * 0.8f, px, 30f + (37f - px) * 0.8f, fer, 0.26f, 0.9f)
+            }
+            // ---- Le tapis de feuilles, et les blocs tombés.
+            val feuilles = mix(neutre(duJour(0xFF8A6A44.toInt())), gres, 0.2f)
+            pieceD("M-4 60L-4 50C10 48 24 50 36 53C46 55.4 54 56 60 55.6L60 60Z", feuilles, 0.35f)
+            for (k in 0 until 16) {
+                val fx = -4f + r() * 66f
+                val fy = 50f + r() * 9f
+                ovalePapier(fx, fy, 0.8f + r() * 0.9f, 0.3f + r() * 0.3f,
+                    if (r() < 0.5f) mix(feuilles, duJour(0xFFC08A4A.toInt()), 0.4f) else sombre(feuilles, 0.3f), 0f)
+            }
+            for (k in 0 until 4) {
+                val bx = -2f + r() * 56f
+                val by = 52f + r() * 6f
+                val bw = 4f + r() * 7f
+                mineral {
+                    pieceD("M$bx ${by + 3f}L${bx + bw * 0.14f} ${by + 0.6f}L${bx + bw * 0.56f} $by" +
+                        "L${bx + bw * 0.9f} ${by + 0.8f}L${bx + bw} ${by + 3f}Z", sombre(gres, 0.3f), 0.5f)
+                }
+                ovalePapier(bx + bw * 0.5f, by + 0.6f, bw * 0.3f, 0.4f, mousse, 0f)
             }
             c.restore()
         }
@@ -8072,37 +8792,138 @@ object Paysages {
 
         // ---- Dumongshaff, la passerelle sur l'étang (photo du propriétaire)
 
+        /**
+         * Ce que dit la photo, et que l'ancienne version n'avait pas :
+         *
+         * 1. **Le bois est gris**, lavé par la pluie, et non d'un ocre de
+         *    bois verni. C'est le premier défaut qu'on voyait.
+         * 2. **On la regarde depuis la rive droite** : son extrémité proche
+         *    est grande, avec ses deux gros poteaux et son tablier de
+         *    planches posé au sol, et elle fuit vers la gauche où elle touche
+         *    l'autre berge, beaucoup plus petite. De face, elle n'était qu'un
+         *    bandeau en travers de la fenêtre.
+         * 3. **Le garde-corps est un peigne de barreaux serrés** entre une
+         *    lisse haute courbe et une lisse basse. Ce sont eux qui font
+         *    reconnaître cette passerelle-là.
+         * 4. **Le tablier est une arche très surbaissée**, à peine bombée.
+         * 5. **L'eau est sombre et verte**, et la passerelle s'y reflète.
+         * 6. **Les roseaux montent haut devant**, et mangent le pied de
+         *    l'ouvrage.
+         *
+         * Sur la carte ouverte, le bout proche et ses poteaux tiennent la
+         * colonne de droite, l'autre bout et la berge celle de gauche.
+         */
         fun dumongshaff() {
-            lisiere(-2f, 102f, { x -> 30f + 2f * sin(x * 0.1f) }, 1.6f, 2.4f, 326, mix(vert(0.5f), P.loin, 0.4f))
-            val ecorce = duJour(0xFF6A5A4A.toInt())
+            val r = Alea(327)
+            // Le pré d'en face et sa digue, sous un ciel bas.
+            lisiere(-2f, 102f, { x -> 29f + 1.6f * sin(x * 0.1f) }, 1.4f, 2.2f, 326,
+                mix(nappe(duJour(0xFF4E7034.toInt()), 0.36f, VERT_CALME), P.loin, 0.42f))
+            // Le jeune arbre nu, au bord gauche.
+            val ecorce = neutre(duJour(0xFF6A6358.toInt()))
             trait("M6 40L7 12M7 22L2 14M7 18L12 8M7 28L13 22", ecorce, 0.6f)
             plan(1)
-            pieceD("M-3 66L-3 40C30 38 70 38 103 40L103 66Z", vert(0.85f), 0.4f)
-            pieceD("M-3 58.5L-3 44C10 42 30 44 50 47C70 50 80 54 90 58.5Z", mix(P.eau, 0xFF6A7A50.toInt(), 0.45f), 0.4f)
-            feuille(95f, 18f, 1.4f, 24f, ecorce, 0.5f)
-            touffe(vert(0.55f), 92f, 14f, 7f, 100f, 22f, 8f, 86f, 24f, 6f)
+            val pre = vert(0.78f)
+            pieceD("M-3 66L-3 38C30 36 70 36 103 38L103 66Z", pre, 0.4f)
+            // La digue : une arête d'herbe plus sombre, qui dit que le pré
+            // est plus haut que l'eau.
+            forme("M-3 42C30 39.6 70 39.6 103 41.6L103 44C70 42 30 42 -3 44.4Z", sombre(pre, 0.2f), 0.4f)
             plan(2)
             solNaturel(SolNaturel.BERGE)  // la rive de l'étang
             poser(DEVANT)
-            val bois = duJour(0xFF9C8A70.toInt())
-            fun pont(x: Float) = 46f - 18f * (1f - ((x - 53f) / 43f).pow(2))
-            // La passerelle dessinée de face, posée de trois quarts : plus haute
-            // à gauche, ses barreaux qui se serrent vers la rive d'en face.
-            surQuad(90f, 25f, PASSERELLE_DUMONGSHAFF, x0 = 7.5f, y0 = 25.5f) {
-                pieceD("M10 46C30 36 70 34 96 40L96 42.4C70 37 30 39 10 48.4Z", sombre(bois, 0.2f))
-                pieceD("M10 38C30 28 70 26 96 32L96 33.6C70 27.8 30 29.8 10 39.6Z", bois)
-                var x = 12f
-                while (x < 96f) { ligne(x, pont(x) - 8f + 0.6f, x, pont(x), bois, 0.45f); x += 2.4f }
-                feuille(8f, 36f, 2f, 14f, sombre(bois, 0.1f))
-                feuille(95f, 30f, 2f, 14f, sombre(bois, 0.1f))
+            // ---- L'eau. Sombre, verte, et c'est elle qui porte le reflet.
+            // Une eau d'étang : verte, **sombre** et calme. Laissée à sa
+            // saturation, le ravivage la sortait en émeraude, et la nappe
+            // sous la passerelle se lisait comme une pelouse.
+            fun calmer(col: Int) = mix(col, neutre(col), 0.5f)
+            val eau = calmer(mix(P.eau, duJour(0xFF27452F.toInt()), if (P.allume) 0.55f else 0.84f))
+            pieceD("M-3 60L-3 41.4C14 40.4 34 42 52 44.6C68 47 84 49.6 103 50L103 60Z", eau, 0.4f)
+            // ---- La passerelle, dessinée de face puis posée de trois quarts :
+            // son bout proche à droite est grand, l'autre fuit vers la berge
+            // de gauche, et ses barreaux se serrent en s'éloignant.
+            // Un bois **gris**, lavé par la pluie. Tiré au chaud, la
+            // passerelle sortait en pin verni au bord d'un étang.
+            val bois = neutre(duJour(0xFF9C9B96.toInt()))
+            val ombreBois = sombre(bois, 0.4f)
+            /** Le dessus du tablier en [x], dans le dessin à plat : une arche très surbaissée. */
+            fun tablierPlat(x: Float) = 17f + 3.4f * ((x - 50f) / 50f).pow(2)
+            fun passerelle(reflet: Boolean) {
+                val ton = if (reflet) mix(eau, bois, 0.4f) else bois
+                val creux = if (reflet) mix(eau, ombreBois, 0.45f) else ombreBois
+                // Le tablier : sa face de chant, puis la poutre de rive
+                // dessous, plus sombre.
+                val dessus = Path()
+                dessus.moveTo(2f, tablierPlat(2f))
+                var x = 2f
+                while (x < 98f) { x = min(98f, x + 4f); dessus.lineTo(x, tablierPlat(x)) }
+                while (x > 2f) { dessus.lineTo(x, tablierPlat(x) + 1.6f); x = max(2f, x - 4f) }
+                dessus.lineTo(2f, tablierPlat(2f) + 1.6f); dessus.close()
+                piece(dessus, ton, 0.5f)
+                val poutre = Path()
+                poutre.moveTo(2f, tablierPlat(2f) + 1.6f)
+                x = 2f
+                while (x < 98f) { x = min(98f, x + 4f); poutre.lineTo(x, tablierPlat(x) + 1.6f) }
+                while (x > 2f) { poutre.lineTo(x, tablierPlat(x) + 4f); x = max(2f, x - 4f) }
+                poutre.lineTo(2f, tablierPlat(2f) + 4f); poutre.close()
+                piece(poutre, creux, 0.4f)
+                // Le peigne des barreaux, entre la lisse basse et la lisse
+                // haute. Ils sont serrés : c'est ce qui fait la passerelle.
+                x = 4f
+                while (x < 97f) {
+                    ligne(x, tablierPlat(x) - 8.6f, x, tablierPlat(x) - 0.2f, ton, 0.62f, 0.95f)
+                    ligne(x + 0.34f, tablierPlat(x) - 8.4f, x + 0.34f, tablierPlat(x) - 0.4f, creux, 0.2f, 0.6f)
+                    x += 1.7f
+                }
+                // Les deux lisses, par-dessus les barreaux.
+                for (h in floatArrayOf(9.4f, 3.2f)) {
+                    val lisse = Path()
+                    lisse.moveTo(2f, tablierPlat(2f) - h)
+                    x = 2f
+                    while (x < 98f) { x = min(98f, x + 4f); lisse.lineTo(x, tablierPlat(x) - h) }
+                    while (x > 2f) { lisse.lineTo(x, tablierPlat(x) - h + 1.3f); x = max(2f, x - 4f) }
+                    lisse.lineTo(2f, tablierPlat(2f) - h + 1.3f); lisse.close()
+                    piece(lisse, if (h > 5f) mix(ton, 0xFFFFFFFF.toInt(), 0.1f) else ton, 0.4f)
+                }
+                // Les quatre montants : deux à chaque bout, plus gros que les
+                // barreaux, et qui descendent sous le tablier.
+                for (px in floatArrayOf(2.4f, 8f, 90f, 96f)) {
+                    feuille(px, tablierPlat(px) - 11f, 2.2f, 19f, ton, 0.5f)
+                    feuille(px + 1.5f, tablierPlat(px) - 11f, 0.7f, 19f, creux, 0.4f)
+                }
             }
+            surQuad(100f, 30f, PASSERELLE_DUMONGSHAFF) { passerelle(false) }
+            // Le reflet, retourné et noyé dans l'eau : une passerelle posée
+            // sur une eau qui ne la rend pas flotte au-dessus d'un carton vert.
+            c.save()
+            // Le miroir est à la ligne d'eau, sous le tablier, et non au
+            // bas de la fenêtre : plus bas, le reflet tombait tout entier
+            // sous le bandeau du nom et ne se voyait jamais.
+            c.scale(1f, -0.5f, 0f, 47f)
+            surQuad(100f, 30f, PASSERELLE_DUMONGSHAFF) { passerelle(true) }
+            c.restore()
+            forme("M-3 60L-3 41.4C14 40.4 34 42 52 44.6C68 47 84 49.6 103 50L103 60Z", eau, 0.5f)
+            // Les traînées de l'eau, couchées, par-dessus tout.
+            val brillance = mix(eau, 0xFFFFFFFF.toInt(), if (P.nuit) 0.14f else 0.34f)
+            for (k in 0 until 9) {
+                val wx = -2f + r() * 74f
+                rect(wx, 44f + r() * 13f, 3f + r() * 8f, 0.3f, brillance, 0.65f)
+            }
+            // ---- Le tablier de planches posé au sol, au bout proche.
+            mineral {
+                pieceD("M84 58.5L88 50.6C92 49.6 97 49.4 103 50.2L103 58.5Z", neutre(duJour(0xFF8E8A80.toInt())), 0.4f)
+                for (k in 0 until 5) ligne(88f + k * 3.4f, 50.4f + k * 0.2f, 86.6f + k * 3.6f, 58.5f,
+                    sombre(neutre(duJour(0xFF8E8A80.toInt())), 0.35f), 0.22f, 0.7f)
+            }
+            // ---- Les roseaux, qui montent haut devant et mangent le pied de
+            // l'ouvrage. Ils sont plus hauts et plus drus à droite, où l'on
+            // se tient.
             val roseau = vert(0.6f)
-            val rr = Alea(327)
-            for (k in 0 until 40) {
-                val rx = rr() * 100f
-                if (rx in 30f..70f && rr() < 0.6f) continue
-                val h = 4f + rr() * 6f
-                ligne(rx, DEVANT, rx + (rr() - 0.5f) * 2f, DEVANT - h, roseau, 0.3f)
+            for (k in 0 until 70) {
+                val rx = -3f + r() * 106f
+                if (rx in 24f..62f && r() < 0.68f) continue
+                val h = 4f + r() * 8f + (if (rx > 70f) 4f else 0f)
+                ligne(rx, DEVANT, rx + (r() - 0.5f) * 3f, DEVANT - h,
+                    if (r() < 0.4f) mix(roseau, duJour(0xFFD8E884.toInt()), 0.3f) else sombre(roseau, 0.2f),
+                    0.26f + r() * 0.16f, 0.9f)
             }
             c.restore()
         }
