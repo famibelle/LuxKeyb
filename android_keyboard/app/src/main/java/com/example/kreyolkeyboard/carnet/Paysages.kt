@@ -9208,10 +9208,15 @@ object Paysages {
          * C'est tout le lieu. Posées à plat, les empreintes feraient des
          * cibles peintes sur un mur : elles sont vues de biais sur une voûte,
          * donc **aplaties** de [aplat], et la lumière vient d'en bas à gauche
-         * (elle entre par la bouche de la grotte et rebondit sur le sol), si
-         * bien que chaque cuvette porte son croissant clair en bas à gauche et
-         * son ombre en haut à droite. Sans ces deux croissants, les anneaux
-         * restent un dessin, et la roche ne se creuse pas.
+         * (elle entre par la bouche de la grotte et rebondit sur le sol).
+         * Une cuvette prend donc le jour sur sa paroi d'en face, **en haut à
+         * droite**, et garde l'ombre de sa lèvre en bas à gauche. Sans ces
+         * deux croissants, les anneaux restent un dessin, et la roche ne se
+         * creuse pas.
+         *
+         * Jusqu'au 2026-11-21 ils étaient inversés, clair en bas à gauche :
+         * c'est l'éclairage d'une **bosse**, et les empreintes sortaient en
+         * galettes posées sur la roche, empilées en bûches sur les piliers.
          */
         fun meule(cx: Float, cy: Float, rx: Float, aplat: Float, col: Int, graine: Int) {
             if (!actif) return
@@ -9231,12 +9236,13 @@ object Paysages {
                 k -= rx * (0.2f + rr() * 0.1f)
                 i++
             }
-            // Les deux croissants : le jour en bas à gauche, l'ombre en haut
-            // à droite. Ils sont tracés par-dessus les gradins, en voile.
+            // Les deux croissants : l'ombre de la lèvre en bas à gauche, du
+            // côté d'où vient le jour, et le jour sur la paroi d'en face, en
+            // haut à droite. Ils sont tracés par-dessus les gradins, en voile.
             p.style = Paint.Style.STROKE; p.strokeWidth = rx * 0.3f
-            teinte(mix(col, 0xFFFFFFFF.toInt(), 0.3f), 0.26f)
+            teinte(sombre(col, 0.5f), 0.34f)
             c.drawArc(cx - rx * 0.86f, cy - rx * 0.86f, cx + rx * 0.86f, cy + rx * 0.86f, 100f, 110f, false, p)
-            teinte(sombre(col, 0.5f), 0.3f)
+            teinte(mix(col, 0xFFFFFFFF.toInt(), 0.3f), 0.28f)
             c.drawArc(cx - rx * 0.86f, cy - rx * 0.86f, cx + rx * 0.86f, cy + rx * 0.86f, 285f, 105f, false, p)
             p.style = Paint.Style.FILL
             releve?.restore(); c.restore()
@@ -9379,9 +9385,17 @@ object Paysages {
                     val w = x1 - x0
                     // Il est galbé, et jamais d'aplomb : un montant droit fait
                     // une colonne, et la grotte redevient une crypte.
-                    pieceD("M${x0 + w * 0.06f} 60L${x0 - w * 0.08f} 46C${x0 + w * 0.16f} 38 ${x0 - w * 0.04f} 28 ${x0 + w * 0.1f} ${arc(x0) + 1f}" +
+                    val d = "M${x0 + w * 0.06f} 60L${x0 - w * 0.08f} 46C${x0 + w * 0.16f} 38 ${x0 - w * 0.04f} 28 ${x0 + w * 0.1f} ${arc(x0) + 1f}" +
                         "C${x0 + w * 0.3f} ${arc(x0) - 3f} ${x1 - w * 0.25f} ${arc(x1) - 3f} ${x1 - w * 0.06f} ${arc(x1) + 1f}" +
-                        "L${x1 - w * 0.16f} 32C${x1 + w * 0.1f} 42 ${x1 - w * 0.12f} 52 $x1 60Z", col)
+                        "L${x1 - w * 0.16f} 32C${x1 + w * 0.1f} 42 ${x1 - w * 0.12f} 52 $x1 60Z"
+                    pieceD(d, col)
+                    // Les empreintes sont taillées **dans** le pilier : sans
+                    // découpe, elles débordaient de sa silhouette, chacune
+                    // prenait sa tranche de kraft, et le pilier devenait une
+                    // pile de galettes.
+                    val pan = chemin(d)
+                    c.save(); c.clipPath(pan)
+                    releve?.let { it.save(); it.clipPath(pan) }
                     for (k in 0 until 4) {
                         val my = 16f + k * 10f + g() * 5f
                         meule(x0 + w * (0.25f + g() * 0.5f), my, w * (0.3f + g() * 0.22f), 0.78f + g() * 0.2f,
@@ -9394,6 +9408,7 @@ object Paysages {
                     // Le pied vert : tout ce qui est bas est mouillé.
                     forme("M${x0 + w * 0.05f} 60C${x0 + w * 0.1f} 50 ${x1 - w * 0.2f} 48 ${x1 - w * 0.05f} 60Z",
                         mix(col, duJour(0xFF5E7A3A.toInt()), 0.5f), 0.55f)
+                    releve?.restore(); c.restore()
                 }
                 // Celui de gauche est au jour, celui de droite à
                 // contre-jour : ils n'ont pas la même valeur, et c'est ce qui
