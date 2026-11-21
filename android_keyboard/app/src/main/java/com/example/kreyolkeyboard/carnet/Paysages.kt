@@ -1493,8 +1493,8 @@ object Paysages {
         floatArrayOf(14f, 48f, 0f, 0f, 10.5f, 1f), floatArrayOf(13f, 43f, 3f, 0f, 9.5f, 0f),
         floatArrayOf(13f, 46f, 4f, 0f, 10f, 1f))
 
-    /** La pente du tablier de la Rout Bréck, vu d'en bas. */
-    private const val TABLIER_PENTE = 0.17f
+    /** La pente du tablier de la Rout Bréck, vu d'en bas, relevée sur la photo (0,17 jusqu'au 2026-11-21). */
+    private const val TABLIER_PENTE = 0.493f
 
     /** Les moutons du premier plan de Conzefenn, en x. */
     private val MOUTONS = floatArrayOf(6f, 13f, 88f, 95f)
@@ -1688,7 +1688,7 @@ object Paysages {
                 Lieu.ROUT_BRECK -> {
                     val x = ((6f + temps * 6f + elan(temps) * 30f + 14f) % 128f) - 14f
                     p.bus(x)
-                    sonnerie(p, x + 9f, p.tablier(x + 9f) - 4.6f, raf)
+                    sonnerie(p, x + 9f * p.fuite(x), p.tablier(x + 9f * p.fuite(x)) - 4.6f * p.fuite(x), raf)
                     envol(p, vol, 90f, 44f, -1f)
                 }
                 Lieu.GELLE_FRA -> if (calque == 3) lampes(p, temps) else {
@@ -3908,9 +3908,9 @@ object Paysages {
          * débord part à l'infini de la projection et noie tout le bord de la
          * carte : c'est arrivé au clocher de Vianden le 2026-11-21.
          */
-        fun surPan(q: FloatArray, bloc: () -> Unit) {
+        fun surPan(q: FloatArray, contour: Path? = null, bloc: () -> Unit) {
             if (!actif) return
-            val pan = quad(q)
+            val pan = contour ?: quad(q)
             c.save(); c.clipPath(pan)
             releve?.let { it.save(); it.clipPath(pan) }
             surQuad(100f, 100f, q) { bloc() }
@@ -3973,6 +3973,70 @@ object Paysages {
                     rect(-2f, y, 104f, h - 100f / n * 0.16f,
                         if (t < 0.42f) sombre(col, 0.06f + t * 0.3f) else mix(col, 0xFFFFFFFF.toInt(), 0.03f + t * 0.16f))
                     y += h
+                }
+            }
+        }
+
+        /**
+         * Une face de caisson d'acier peint, dans le quadrilatère [q] (haut
+         * gauche, haut droit, bas droit, bas gauche) : des plaques soudées
+         * bout à bout, [plaques] dans le sens de la longueur, le long de x
+         * du pan si [enLongueur], de y sinon. Écrite pour la Rout Bréck
+         * (2026-11-21), dont les jambes et le tablier n'étaient que trois
+         * aplats rouges : sans appareil, l'acier se lisait comme du carton
+         * peint (règle 1 de la skill `matieres-du-decor`).
+         *
+         * Pas de rivets : le pont est soudé. Ce qui dit l'acier, c'est le
+         * joint de soudure entre deux plaques, sombre, avec son cordon qui
+         * prend la lumière du côté du jour ; le ton qui change à peine d'une
+         * plaque à l'autre (une peinture reprise par endroits) ; l'arête au
+         * jour le long d'un bord et le pied du caisson à l'ombre ; et, de
+         * loin en loin, une coulure sous un joint. Les plaques sont posées
+         * sous le seuil de [enCarton] : une tranche de kraft à chaque plaque
+         * ferait des tuiles, alors qu'un caisson soudé est lisse.
+         *
+         * Un caisson qui n'est pas un quadrilatère (le tablier de la Rout
+         * Bréck, dont le dessous fait des arcs) passe son [contour] : la
+         * pièce et ses plaques s'y découpent, et [q] ne sert plus qu'à
+         * orienter les plaques et la lumière ; il doit alors le couvrir.
+         */
+        fun acierPeint(q: FloatArray, col: Int, graine: Int, plaques: Int, enLongueur: Boolean, ombre: Float = 1f,
+                       contour: Path? = null) {
+            val rr = Alea(graine)
+            piece(contour ?: quad(q), col, ombre)
+            val joint = sombre(col, 0.38f)
+            val cordon = mix(col, 0xFFFFFFFF.toInt(), 0.2f)
+            surPan(q, contour) {
+                val l = 100f / plaques
+                for (k in 0 until plaques) {
+                    val t = rr()
+                    val ton = if (t < 0.5f) sombre(col, 0.02f + t * 0.1f) else mix(col, 0xFFFFFFFF.toInt(), 0.01f + (t - 0.5f) * 0.1f)
+                    val a = k * l
+                    if (enLongueur) rect(a, -2f, l, 104f, ton, 0.9f) else rect(-2f, a, 104f, l, ton, 0.9f)
+                    if (k > 0) {
+                        // Le joint, puis son cordon du côté du jour.
+                        if (enLongueur) {
+                            rect(a - 0.45f, -2f, 0.9f, 104f, joint, 0.5f)
+                            rect(a + 0.45f, -2f, 0.6f, 104f, cordon, 0.35f)
+                        } else {
+                            rect(-2f, a - 0.45f, 104f, 0.9f, joint, 0.5f)
+                            rect(-2f, a - 1.05f, 104f, 0.6f, cordon, 0.35f)
+                        }
+                    }
+                    // La coulure, sous un joint sur trois environ.
+                    if (k > 0 && rr() < 0.35f) {
+                        val pos = 15f + rr() * 70f
+                        if (enLongueur) rect(a + l * 0.1f, pos, l * 0.5f, 1.6f, sombre(col, 0.16f), 0.35f)
+                        else rect(pos, a, 1.6f, l * 0.55f, sombre(col, 0.16f), 0.35f)
+                    }
+                }
+                // L'arête au jour et le pied à l'ombre, le long du caisson.
+                if (enLongueur) {
+                    rect(-2f, 0f, 104f, 7f, mix(col, 0xFFFFFFFF.toInt(), 0.18f), 0.8f)
+                    rect(-2f, 84f, 104f, 16f, sombre(col, 0.18f), 0.6f)
+                } else {
+                    rect(0f, -2f, 9f, 104f, mix(col, 0xFFFFFFFF.toInt(), 0.18f), 0.8f)
+                    rect(82f, -2f, 18f, 104f, sombre(col, 0.16f), 0.6f)
                 }
             }
         }
@@ -7899,6 +7963,8 @@ object Paysages {
                 // Sur le tablier qui monte : le bus suit la pente.
                 c.save()
                 c.rotate(Math.toDegrees(kotlin.math.atan(TABLIER_PENTE.toDouble())).toFloat(), x, tablier(x))
+                // Et il rapetisse en s'éloignant, comme le tablier.
+                c.scale(fuite(x), fuite(x), x, tablier(x))
                 busDroit(x, tablier(x) - 1.4f - 3.2f)
                 c.restore()
                 return
@@ -10390,8 +10456,96 @@ object Paysages {
         }
         // ---- Rout Bréck, le pont Grande-Duchesse Charlotte vu d'en bas (photo du propriétaire)
 
-        /** Le haut du garde-corps de la Rout Bréck en [x] : le tablier monte vers la droite. */
-        fun tablier(x: Float) = (x + 3f) * TABLIER_PENTE
+        // Toute la géométrie du pont est relevée sur la photo du propriétaire
+        // (reçue le 2026-11-21), quadrillée au dixième : x = 100 · x photo,
+        // y = 72 · y photo − 2. Le pont est vu d'en dessous, de près, et fuit
+        // vers un point à droite de la fenêtre (x = 100) où il rentre dans
+        // la forêt.
+
+        /** Le haut du garde-corps de la Rout Bréck en [x] : le tablier descend en fuyant vers la droite. */
+        fun tablier(x: Float) = (x - 21f) * TABLIER_PENTE
+
+        /**
+         * L'échelle de la perspective sur la Rout Bréck en [x] : tout se
+         * rapproche du point de fuite, à droite. Le caisson, le garde-corps,
+         * les lampadaires et le bus s'y amincissent ensemble.
+         */
+        fun fuite(x: Float) = ((100f - x) / 100f).coerceIn(0.03f, 1.05f)
+
+        /**
+         * Le bas de la face du caisson, côté de nous. Il est droit : la face
+         * garde partout la même hauteur, c'est la fuite qui l'amincit (23 au
+         * bord gauche, où elle passe au-dessus de nous).
+         */
+        private fun sousFace(x: Float) = tablier(x) + 23f * fuite(x)
+
+        /**
+         * Le haut de la face du caisson : au-dessus, jusqu'au garde-corps, on
+         * voit d'en bas le dessous du trottoir en porte-à-faux, à l'ombre.
+         */
+        private fun dalle(x: Float) = tablier(x) + 8.5f * fuite(x)
+
+        /** L'abscisse du noeud, où les deux béquilles entrent dans le caisson. */
+        private val NOEUD_BRECK = 53f
+
+        /**
+         * Le bord du dessous du caisson, la ligne qui fait l'**arche**. Le
+         * dessous se voit en bande sombre sous la face. Côté gauche, vers la
+         * culée, il est d'épaisseur constante. À droite du noeud, la travée
+         * centrale : le caisson est le plus profond sur les béquilles, et son
+         * dessous remonte en courbe jusqu'à rejoindre la face, loin à droite.
+         * C'est ce jarret en arc qui reporte le poids du tablier dans les
+         * béquilles (le propriétaire, 2026-11-21 : « des espèces d'arche pour
+         * soutenir le poids »). La puissance 1,6 fait partir l'arc vite du
+         * noeud et le couche ensuite le long de la face.
+         */
+        private fun sousFond(x: Float): Float {
+            if (x <= NOEUD_BRECK) return sousFace(x) + max(9.5f * fuite(x), 6.5f)
+            val u = min(1f, (x - NOEUD_BRECK) / 36f)
+            return sousFace(x) + 6.5f * (1f - u).pow(1.6f)
+        }
+
+        /** La bande entre deux lignes du tablier, de bord à bord de la fenêtre. */
+        private fun bandeTablier(haut: (Float) -> Float, bas: (Float) -> Float) = Path().apply {
+            moveTo(-3f, haut(-3f))
+            var x = -3f
+            while (x < 103f) { x = min(103f, x + 1f); lineTo(x, haut(x)) }
+            while (x > -3f) { lineTo(x, bas(x)); x -= 1f }
+            lineTo(-3f, bas(-3f))
+            close()
+        }
+
+        /**
+         * Une bande d'une béquille de la Rout Bréck, de son pied ([px], [py])
+         * par sa tête ([tx], [ty]), prolongée jusqu'à la ligne droite [bord]. La bande va de [o1] à [o2] en
+         * fractions de la demi-largeur (−1 à gauche, 1 à droite), [bas] au
+         * pied et [haut] en tête : la béquille s'amincit en montant, parce
+         * que sa tête est plus loin de nous que son pied. On la prolonge
+         * jusqu'au haut du tablier, qui la recouvre : elle entre dans le
+         * caisson au lieu de buter sur un trait.
+         * Rend le quadrilatère (tête gauche, tête droite, pied droit, pied
+         * gauche) qu'attend [acierPeint].
+         */
+        private fun jambe(px: Float, py: Float, tx: Float, ty: Float, bas: Float, haut: Float,
+                          o1: Float, o2: Float, bord: (Float) -> Float): FloatArray {
+            val l = sqrt((tx - px) * (tx - px) + (ty - py) * (ty - py))
+            val nx = -(ty - py) / l; val ny = (tx - px) / l
+            // La ligne du bord : y = a·x + b.
+            val a = bord(1f) - bord(0f); val b = bord(0f)
+            fun cote(o: Float): FloatArray {
+                // Le côté de la jambe à la fraction o de la demi-largeur, prolongé
+                // jusqu'au bord du caisson. La normale pointe vers la droite de
+                // l'image quand la jambe monte vers la droite : on la retourne
+                // pour que o < 0 soit toujours le côté gauche.
+                val s = if (nx < 0f) -1f else 1f
+                val ax = px + s * nx * o * bas; val ay = py + s * ny * o * bas
+                val bx = tx + s * nx * o * haut; val by = ty + s * ny * o * haut
+                val t = (a * ax + b - ay) / ((by - ay) - a * (bx - ax))
+                return floatArrayOf(ax + t * (bx - ax), ay + t * (by - ay), ax, ay)
+            }
+            val g = cote(o1); val d = cote(o2)
+            return floatArrayOf(g[0], g[1], d[0], d[1], d[2], d[3], g[2], g[3])
+        }
 
         fun routBreckPapier() {
             val r = Alea(335)
@@ -10409,20 +10563,73 @@ object Paysages {
             val rouge = duJour(0xFFC94459.toInt())
             val fer = duJour(0xFF55595F.toInt())
             mineral {
-                // Les jambes en V, à gauche, sous le tablier.
-                pieceD("M14 58.5L22 58.5L6 8L-1 9Z", sombre(rouge, 0.22f))
-                pieceD("M-3 51L4 58.5L40 14L33 9.5Z", rouge)
-                // Le tablier, sa face et son dessous.
-                pieceD("M-3 0L103 ${tablier(103f)}L103 ${tablier(103f) + 6f}L-3 6.5Z", rouge)
-                pieceD("M-3 6.5L103 ${tablier(103f) + 6f}L103 ${tablier(103f) + 8.6f}L-3 9.4Z", sombre(rouge, 0.4f))
-                ligne(-3f, tablier(-3f) - 1.4f, 103f, tablier(103f) - 1.4f, fer, 0.3f)
+                // D'après la photo (2026-11-21). Le tablier repose sur des
+                // **béquilles** : deux caissons inclinés et parallèles, un
+                // sous chaque rive, accolés, qui entrent ensemble dans le
+                // caisson du tablier au même noeud. Une première version les
+                // dessinait en V, dont une jambe n'existe pas, sous une
+                // poutre droite (le propriétaire, même jour).
+                //
+                // Chaque béquille est un caisson soudé en deux faces, la
+                // gauche au jour et la droite à l'ombre.
+                val clair = mix(rouge, 0xFFFFFFFF.toInt(), 0.08f)
+                val ombre = sombre(rouge, 0.34f)
+                // La béquille de derrière, à gauche de l'autre : plus loin,
+                // donc plus sombre. Sa tête entre dans le dessous du caisson,
+                // son pied sort de la fenêtre sous les fougères.
+                acierPeint(jambe(-6f, 62f, 32f, 23.4f, 5.2f, 3.9f, -1f, 0.2f, ::tablier),
+                    sombre(rouge, 0.16f), 3351, 6, false)
+                acierPeint(jambe(-6f, 62f, 32f, 23.4f, 5.2f, 3.9f, 0.2f, 1f, ::tablier),
+                    sombre(rouge, 0.42f), 3352, 6, false, 0.5f)
+                // Le dessous du caisson, à l'ombre, et son arche.
+                val t3 = tablier(-3f); val t103 = tablier(103f)
+                acierPeint(floatArrayOf(-3f, t3, 103f, t103, 103f, t103 + 4f, -3f, t3 + 34f),
+                    sombre(rouge, 0.58f), 3356, 6, true, 0.5f, bandeTablier(::sousFace, ::sousFond))
+                // La béquille de devant, sur son socle au bas de la fenêtre.
+                acierPeint(jambe(12f, 64f, 49.5f, 25.7f, 6.4f, 4.6f, -1f, 0.1f, ::tablier), clair, 3353, 7, false)
+                acierPeint(jambe(12f, 64f, 49.5f, 25.7f, 6.4f, 4.6f, 0.1f, 1f, ::tablier), ombre, 3354, 7, false, 0.5f)
+                val beton = neutre(duJour(0xFFB9B5AA.toInt()))
+                pieceD("M0 68L2 62.6L22 62.6L24 68Z", beton, 0.6f)
+                rect(2f, 62.6f, 20f, 0.7f, mix(beton, 0xFFFFFFFF.toInt(), 0.35f), 0.8f)
+                // Sous le dessous du caisson, côté culée, le bas de l'âme
+                // lointaine prend un peu de jour : un liseré plus clair.
+                forme(bandeTablier(::sousFond) { x -> sousFond(x) + (if (x < NOEUD_BRECK - 12f) 1.6f else 0f) * fuite(x) },
+                    sombre(rouge, 0.18f), 0.9f)
+                // Du haut vers le bas, comme sur la photo : le dessous du
+                // trottoir en porte-à-faux, à l'ombre, coupé de ses consoles ;
+                // puis la face du caisson, au jour, avec ses raidisseurs.
+                // Une seule face rouge du garde-corps au bas du caisson se
+                // lisait comme une planche (le propriétaire, 2026-11-21).
+                acierPeint(floatArrayOf(-3f, t3, 103f, t103, 103f, t103 + 0.5f, -3f, dalle(-3f)),
+                    sombre(rouge, 0.5f), 3358, 16, true, 1f, bandeTablier(::tablier, ::dalle))
+                acierPeint(floatArrayOf(-3f, dalle(-3f), 103f, dalle(103f), 103f, sousFace(103f) + 0.5f, -3f, sousFace(-3f)),
+                    rouge, 3355, 11, true, 0.6f, bandeTablier(::dalle, ::sousFace))
+                // Le bord de la dalle, sous le garde-corps, accroche la lumière.
+                forme(bandeTablier(::tablier) { x -> tablier(x) + 0.9f * fuite(x) }, mix(rouge, 0xFFFFFFFF.toInt(), 0.3f), 0.8f)
+                // Le soir, les lampadaires éclairent le dessous du trottoir.
+                if (P.allume) {
+                    var gx = 22f
+                    while (gx < 94f) {
+                        val e = fuite(gx)
+                        halo(gx, tablier(gx) + 3f * e, 7f * e, P.fenetre, 0.35f)
+                        gx += 15f * e
+                    }
+                }
+                // L'arête du bas de la face prend un filet de jour.
+                forme(bandeTablier(::sousFace) { x -> sousFace(x) + 0.5f * fuite(x) }, mix(rouge, 0xFFFFFFFF.toInt(), 0.25f), 0.5f)
+                // Le garde-corps et les lampadaires, qui rapetissent et se
+                // rapprochent vers la droite.
+                fun garde(x: Float) = tablier(x) - 1.4f * fuite(x)
+                ligne(-3f, garde(-3f), 103f, garde(103f), fer, 0.3f)
                 var x = 0f
-                while (x <= 100f) { ligne(x, tablier(x) - 1.4f, x, tablier(x), fer, 0.12f); x += 1.6f }
-                for (k in 0..7) {
-                    val lx = 6f + k * 13f
-                    ligne(lx, tablier(lx) - 1.4f, lx, tablier(lx) - 3.6f, fer, 0.2f)
-                    if (P.allume) rond(lx, tablier(lx) - 3.8f, 1.6f, P.fenetre, 0.3f)
-                    rond(lx, tablier(lx) - 3.8f, 0.45f, if (P.allume) 0xFFFFF4C8.toInt() else duJour(0xFFE8E2D0.toInt()))
+                while (x <= 96f) { ligne(x, garde(x), x, tablier(x), fer, 0.12f * fuite(x)); x += 1.6f * fuite(x) }
+                var lx = 22f
+                while (lx < 94f) {
+                    val e = fuite(lx)
+                    ligne(lx, garde(lx), lx, tablier(lx) - 3.6f * e, fer, 0.2f * e)
+                    if (P.allume) halo(lx, tablier(lx) - 3.8f * e, 2.2f * e, P.fenetre, 0.55f)
+                    rond(lx, tablier(lx) - 3.8f * e, 0.5f * e, if (P.allume) 0xFFFFF4C8.toInt() else duJour(0xFFE8E2D0.toInt()))
+                    lx += 15f * e
                 }
             }
             touffe(vert(0.55f), 86f, 46f, 8f, 96f, 40f, 8f, 100f, 52f, 6f, 78f, 54f, 6f)
