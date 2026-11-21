@@ -1171,6 +1171,24 @@ object Paysages {
         floatArrayOf(80f, 4.8f, 36.4f, 48.2f))
 
     /**
+     * Les truites des deux bassins du Mullerthal : abscisse de repos,
+     * ordonnée, longueur, phase.
+     *
+     * Elles se tiennent **hors de l'axe du milieu**, où le dessin du mot et
+     * sa tige passent devant, et hors des rochers du lit. Une truite posée
+     * au centre de la fenêtre ne se voit sur aucune carte.
+     */
+    private val POISSONS_MELLERDALL = arrayOf(
+        floatArrayOf(31f, 54.2f, 4.1f, 0f), floatArrayOf(38f, 56.8f, 3.2f, 2.1f),
+        floatArrayOf(63f, 53.6f, 3.7f, 4.3f), floatArrayOf(71f, 57f, 4.4f, 1.2f),
+        floatArrayOf(88f, 54.6f, 3.4f, 3.4f), floatArrayOf(95f, 57.4f, 3.8f, 5.5f))
+
+    private val POISSONS_KALLEK = arrayOf(
+        floatArrayOf(10f, 52.6f, 3.8f, 0.8f), floatArrayOf(21f, 55.8f, 4.3f, 2.7f),
+        floatArrayOf(34f, 51.8f, 3.3f, 4.9f), floatArrayOf(64f, 53.8f, 4.1f, 1.6f),
+        floatArrayOf(78f, 56.6f, 3.5f, 3.8f), floatArrayOf(92f, 52.8f, 4f, 5.9f))
+
+    /**
      * Les blocs de grès du lit, entre les chutes et sur les deux rives :
      * des masses anguleuses, pas des dômes. Arrondies, elles se lisaient
      * comme des buissons taillés.
@@ -1635,7 +1653,7 @@ object Paysages {
                     ronds(p, vol, 40f, 20f, 52f, 86f)
                 } else envol(p, vol, 6f, 34f, 1f)
                 Lieu.NEIMENSTER -> if (calque == 3) choucas(p, temps, raf) else envol(p, vol, 90f, 50f, -1f)
-                Lieu.MELLERDALL -> chutes(p, temps, raf)
+                Lieu.MELLERDALL -> { chutes(p, temps, raf); p.poissons(POISSONS_MELLERDALL, temps, raf) }
                 Lieu.STAD -> alzette(p, temps, vol)
                 Lieu.MUSEL -> if (calque == 3) {
                     val x = ((20f + temps * 1.6f + 24f) % 150f) - 24f
@@ -1734,6 +1752,7 @@ object Paysages {
                             gx, souslevreTuf(gx), 47f, rond = true)
                     }
                     ronds(p, vol, 50f, 30f, 60f, 88f)
+                    p.poissons(POISSONS_KALLEK, temps, raf)
                 }
                 // Plus de tram depuis que le lieu suit la photo : le tram
                 // passe sur le pont Adolphe et sur la Rout Bréck, jamais sur
@@ -3084,6 +3103,97 @@ object Paysages {
                 c.restore()
             }
             return eau
+        }
+
+        /**
+         * Un banc de poissons vu de dessus, **sous** l'eau.
+         *
+         * Demande du propriétaire (2026-11-21) : « l'eau des bassins doit
+         * être cristalline, quasi transparente, au point de voir des
+         * poissons en transparence à travers l'eau ». Le poisson est donc
+         * autant la preuve de la transparence qu'un habitant du lieu : s'il
+         * ne se voit pas, le bassin n'est pas assez clair.
+         *
+         * Peints **à plat** ([forme] sous 0,95, donc sans tranche de kraft
+         * ni ombre portée) et déjà mêlés à la couleur de l'eau : c'est ce
+         * mélange qui les met dessous. Bordés de carton, ils se liraient
+         * posés sur la surface, comme des feuilles mortes. Même règle que le
+         * reflet de la coque du [haffReimech].
+         *
+         * [bancs] donne, par poisson : son abscisse de repos, son ordonnée,
+         * sa longueur et sa phase. Ils tiennent station et ne font
+         * qu'osciller : une truite de bassin ne traverse pas, elle se
+         * maintient face au courant. À la secousse elles filent, et se
+         * retournent quand elles repartent dans l'autre sens.
+         *
+         * [mineral] : un poisson n'est pas de la végétation, sans quoi
+         * l'automne le rouille et l'hiver le blanchit comme une feuille.
+         */
+        fun poissons(bancs: Array<FloatArray>, temps: Float, raf: Float) {
+            if (!actif) return
+            val corps = mix(neutre(duJour(0xFF4A4232.toInt())), P.eau, if (P.nuit) 0.7f else 0.38f)
+            val dos = mix(corps, 0xFF101418.toInt(), 0.3f)
+            val eclat = mix(corps, 0xFFFFFFFF.toInt(), 0.3f)
+            // La nuit on ne voit pas les poissons d'un bassin : ils y sont,
+            // mais à peine, et une truite franche sous une eau noire serait
+            // le seul détail que la nuit n'ait pas éteint.
+            val o = if (P.nuit) 0.34f else 0.88f
+            mineral {
+                for (b in bancs) {
+                    // Au repos elles bougent, **lentement** : une allée et
+                    // venue complète en une quinzaine de secondes, sur une
+                    // dizaine d'unités. Plus lent encore (le premier réglage
+                    // tournait en vingt-six secondes sur sept unités), elles
+                    // se lisaient à l'arrêt : on ne voyait pas qu'elles
+                    // nageaient, seulement qu'elles n'étaient plus au même
+                    // endroit en revenant sur la carte.
+                    val v = 0.4f + (b[3] % 1f) * 0.1f
+                    val a = temps * v * (1f + raf * 2.4f) + b[3]
+                    val cx = b[0] + sin(a) * (4.6f + raf * 5f)
+                    val cy = b[1] + sin(temps * 0.5f + b[3] * 2f) * 0.5f
+                    // Vue de dessus, une truite qui vire se raccourcit. C'est
+                    // ce raccourci qui fait le demi-tour : sans lui, elle se
+                    // retournait net d'une trame à l'autre.
+                    val pivot = 0.38f + 0.62f * abs(cos(a))
+                    // Et la queue bat, bien plus vite que le corps n'avance :
+                    // c'est elle, et non la dérive, qui dit que le poisson
+                    // nage au lieu de flotter.
+                    val queue = sin(temps * (2.1f + (b[3] % 1f) * 0.7f) * (1f + raf * 1.8f) + b[3] * 3f)
+                    poisson(cx, cy, b[2] * pivot, b[2] * 0.3f, if (cos(a) >= 0f) 1f else -1f,
+                        queue, corps, dos, eclat, o)
+                }
+            }
+        }
+
+        /**
+         * Un poisson vu de dessus, long de [l] et large de [w], le nez du
+         * côté de [sens], la queue battue de [queue] (-1 à 1).
+         *
+         * [l] et [w] sont donnés à part : quand la truite vire, c'est sa
+         * longueur apparente qui diminue, jamais sa largeur.
+         */
+        private fun poisson(cx: Float, cy: Float, l: Float, w: Float, sens: Float, queue: Float,
+                            corps: Int, dos: Int, eclat: Int, o: Float) {
+            val t = Path()
+            val nez = cx + sens * l * 0.5f
+            val arr = cx - sens * l * 0.32f
+            // La queue se décale en bloc : le pédoncule un peu, la nageoire
+            // tout entière. Seule la nageoire remuée, elle se tordait.
+            val d = queue * w * 0.5f
+            t.moveTo(nez, cy)
+            t.quadTo(cx + sens * l * 0.06f, cy - w, arr, cy - w * 0.3f + d * 0.45f)
+            t.lineTo(cx - sens * l * 0.5f, cy - w * 0.84f + d)
+            t.lineTo(cx - sens * l * 0.38f, cy + d * 0.8f)
+            t.lineTo(cx - sens * l * 0.5f, cy + w * 0.84f + d)
+            t.lineTo(arr, cy + w * 0.3f + d * 0.45f)
+            t.quadTo(cx + sens * l * 0.06f, cy + w, nez, cy)
+            t.close()
+            forme(t, corps, o)
+            // Le dos, qui est ce qu'on voit d'en haut, et l'éclat du flanc.
+            // Le dos est étroit : large, le poisson se lisait en losange noir.
+            ligne(cx - sens * l * 0.26f, cy, cx + sens * l * 0.38f, cy, dos, w * 0.38f, o * 0.72f)
+            ligne(cx - sens * l * 0.08f, cy - w * 0.44f, cx + sens * l * 0.28f, cy - w * 0.3f,
+                eclat, w * 0.22f, o * 0.58f)
         }
 
         // ------------------------------------------------- le surcadrage naturel
@@ -5431,11 +5541,17 @@ object Paysages {
             solNaturel(SolNaturel.BERGE)  // les galets du bord, au premier plan
             poser(DEVANT)
             // ---- Le lit du bassin, que l'eau transparente laisse voir.
-            val lit = neutre(duJour(0xFF9C8E74.toInt()))
+            //
+            // Il a foncé le 2026-11-21, et ses galets se sont écartés les uns
+            // des autres : sous une eau limpide, ce sont **les galets** qui
+            // portent la lecture, pas le sable. Un lit pâle et des galets
+            // voisins du lit sortaient le bassin en lait vert, où l'on ne
+            // voyait justement plus rien. Même correction qu'à l'Alzette.
+            val lit = neutre(duJour(0xFFA9A590.toInt()))
             val bassin = "M-3 62L-3 49.4C14 47.4 34 47.2 50 47.6C68 48 86 47 103 48.2L103 62Z"
             mineral { pieceD(bassin, lit, 0.3f) }
-            val galets = intArrayOf(neutre(duJour(0xFFBCB19B.toInt())), neutre(duJour(0xFF9A907C.toInt())),
-                neutre(duJour(0xFFCBC1A8.toInt())), neutre(duJour(0xFF847B6A.toInt())))
+            val galets = intArrayOf(neutre(duJour(0xFFC9BEA4.toInt())), neutre(duJour(0xFF6F6655.toInt())),
+                neutre(duJour(0xFFDDD3B7.toInt())), neutre(duJour(0xFF575044.toInt())))
             for (k in 0 until 44) {
                 val gx = r() * 104f - 2f
                 val gy = 49.4f + r() * 9f
@@ -5496,14 +5612,47 @@ object Paysages {
             // la plus petite eau de l'album, celle d'où la recette des
             // autres est partie, et elle restait pourtant la seule qu'on ne
             // voyait pas franchement au travers.
-            val eau = mix(P.eau, 0xFF86C4C0.toInt(), if (P.nuit) 0.18f else 0.38f)
-            forme(bassin, eau, if (P.nuit) 0.42f else 0.32f)
+            // Un **bleu de ciel clair**, et non le vert d'eau d'avant
+            // (question du propriétaire, 2026-11-21 : « pour illustrer la
+            // transparence de l'eau des bassins dans les forêts, est-ce
+            // qu'il ne faudrait pas opter pour un bleu », puis choix de la
+            // plus claire des trois teintes essayées). C'est une règle : un
+            // vert dit l'algue et la profondeur, un bleu dit qu'on voit au
+            // travers, et dans une forêt verte un bassin vert n'a de surcroît
+            // aucun contraste avec ce qui l'entoure.
+            // Et le voile est **mince** : 0,26 de jour, contre 0,40 au
+            // départ. Le propriétaire le veut « entre le bleu extrêmement
+            // pâle et le complètement transparent » (2026-11-21).
+            //
+            // Ce n'est **pas le voile seul** qui donne la transparence. Mince
+            // sur le lit brun foncé d'avant, il sortait l'eau en gris-beige,
+            // la couleur quittait le bassin sans que rien s'éclaircisse. Il a
+            // fallu éclaircir et refroidir le lit en même temps : une eau
+            // très transparente, ce sont des pierres pâles vues au travers
+            // d'un peu de bleu, pas un peu de bleu sur des pierres sombres.
+            //
+            // Et sous 0,30, ce ne sont plus ni la teinte ni le voile qui
+            // disent qu'il y a de l'eau, ce sont ses éclats.
+            val eau = mix(P.eau, 0xFFB8E6FA.toInt(), if (P.nuit) 0.12f else 0.3f)
+            forme(bassin, eau, if (P.nuit) 0.4f else 0.26f)
+            // Les truites du bassin : à l'arrêt sur la carte figée, elles
+            // dérivent dès que la carte est vivante ([Vie]).
+            if (!vivant) poissons(POISSONS_MELLERDALL, 0f, 0f)
             val ride = mix(eau, 0xFFFFFFFF.toInt(), 0.62f)
             for (ch in CHUTES_MELLERDALL) for (k in 1..3) {
                 val rr = ch[1] * (1.8f + k * 1.1f)
                 trait("M${ch[0] - rr} ${ch[3] + k * 1.8f}C${ch[0] - rr * 0.4f} ${ch[3] + k * 1.8f + 1.4f} " +
                     "${ch[0] + rr * 0.4f} ${ch[3] + k * 1.8f + 1.4f} ${ch[0] + rr} ${ch[3] + k * 1.8f}",
                     ride, 0.3f, 0.4f - k * 0.07f)
+            }
+            // Les éclats de la surface. Quand l'eau n'est presque plus qu'un
+            // voile, ce sont eux qui la font exister : sans eux, le bassin se
+            // lit en lit de galets à sec, et les truites en fossiles.
+            val eclat = mix(eau, 0xFFFFFFFF.toInt(), 0.78f)
+            for (k in 0 until 18) {
+                val ex = -3f + r() * 106f
+                val ey = 50f + r() * 8.4f
+                rect(ex, ey, 2.4f + r() * 7f, 0.24f + r() * 0.2f, eclat, 0.26f + r() * 0.34f)
             }
             // ---- La paroi de gauche, au premier plan : une masse sombre
             // et proche, qui donne sa profondeur au vallon et occupe la
@@ -9450,26 +9599,44 @@ object Paysages {
             fun bordBassin(x: Float) = 47.5f - (x - 20f) * 0.02f + 0.7f * sin(x * 0.16f)
             val galet = neutre(duJour(0xFFB4ACA0.toInt()))
             mineral {
-                piece(ruban(-4f, 104f, { x -> bordBassin(x) }, { 62f }, 2f), sombre(galet, 0.34f), 0.4f)
-                for (i in 0 until 30) {
+                // Le lit a foncé et ses galets se sont écartés les uns des
+                // autres le 2026-11-21, pour la raison écrite au bassin du
+                // [mellerdallPapier] : sous une eau limpide, ce sont les
+                // galets qui se lisent, et des galets voisins du lit
+                // faisaient un fond de porridge au lieu d'un fond de pierres.
+                piece(ruban(-4f, 104f, { x -> bordBassin(x) }, { 62f }, 2f), sombre(galet, 0.24f), 0.4f)
+                // Les deux tons restent **au-dessus** du lit : un galet plus
+                // sombre que son fond se perd, et des galets tous pâles et
+                // larges se lisaient en nénuphars posés dessus plutôt qu'en
+                // pierres vues au travers.
+                for (i in 0 until 40) {
                     val gx = -4f + r() * 108f
                     val gy = bordBassin(gx) + 0.8f + r() * 9f
                     val t = (gy - bordBassin(gx)) / 10f
-                    ovalePapier(gx, gy, 0.7f + t * 1.6f + r() * 0.5f, 0.4f + t * 0.9f + r() * 0.3f,
-                        if (r() < 0.5f) sombre(galet, 0.2f) else mix(galet, 0xFFFFFFFF.toInt(), 0.18f), 0f)
+                    ovalePapier(gx, gy, 0.55f + t * 1.2f + r() * 0.45f, 0.32f + t * 0.7f + r() * 0.26f,
+                        if (r() < 0.5f) sombre(galet, 0.2f) else mix(galet, 0xFFFFFFFF.toInt(), 0.2f), 0f)
                 }
             }
-            // Le bleu de l'heure d'abord, la teinte du tuf ensuite : l'eau
-            // d'une source est la plus claire de toutes, et elle était ici
-            // mêlée à 70 % d'un vert-de-gris qui la rendait trouble.
-            val eau = mix(P.eau, duJour(0xFF5E9E92.toInt()), 0.3f)
-            forme(ruban(-4f, 104f, { x -> bordBassin(x) }, { 62f }, 2f), eau, 0.32f)
+            // L'eau d'une source est la plus claire de toutes, et elle était
+            // ici mêlée à 70 % d'un vert-de-gris qui la rendait trouble. Le
+            // vert a cédé la place au bleu de ciel clair du bassin du
+            // [mellerdallPapier], pour la règle qui y est écrite : un vert
+            // dit l'algue, un bleu dit qu'on voit au travers.
+            val eau = mix(P.eau, duJour(0xFFB8E6FA.toInt()), 0.28f)
+            forme(ruban(-4f, 104f, { x -> bordBassin(x) }, { 62f }, 2f), eau,
+                if (P.nuit) 0.4f else 0.26f)
             forme(ruban(-4f, 104f, { x -> bordBassin(x) }, { x -> bordBassin(x) + 0.8f }, 2f),
                 mix(eau, filetDeau, 0.6f), 0.55f)
-            for (i in 0 until 9) {
+            // Les éclats de la surface, pour la raison écrite au bassin du
+            // [mellerdallPapier] : sous un voile de 0,20, c'est tout ce qui
+            // reste pour dire qu'il y a de l'eau.
+            for (i in 0 until 20) {
                 val wx = -4f + r() * 104f
-                rect(wx, bordBassin(wx) + 2f + r() * 7f, 3f + r() * 7f, 0.3f, filetDeau, 0.4f)
+                rect(wx, bordBassin(wx) + 1.4f + r() * 7.4f, 2.6f + r() * 7f, 0.26f + r() * 0.2f,
+                    filetDeau, 0.3f + r() * 0.3f)
             }
+            // Les truites du bassin de la source, sous le voile.
+            if (!vivant) poissons(POISSONS_KALLEK, 0f, 0f)
             // ---- Les hêtres du bord gauche, ceux au travers desquels on
             // regarde : des fûts clairs et lisses qui sortent de la fenêtre.
             val ecorce = neutre(duJour(0xFF9A9287.toInt()))
