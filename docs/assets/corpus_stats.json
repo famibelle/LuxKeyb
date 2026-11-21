@@ -1,5 +1,5 @@
 {
- "genere_le": "2026-09-23",
+ "genere_le": "2026-11-20",
  "corpus": {
   "luxalign": {
    "phrases": 180342,
@@ -224,191 +224,303 @@
      291
     ]
    ]
+  },
+  "lod": {
+   "phrases": 44676,
+   "caracteres": 2410056,
+   "mots": 402465,
+   "formes": 35313,
+   "longueur_moyenne": 9.0,
+   "hapax": 17066,
+   "germanismes_pour_10000": 0.0,
+   "quotidien_pour_10000": 116.5,
+   "top_mots": [
+    [
+     "d",
+     15454
+    ],
+    [
+     "de",
+     10512
+    ],
+    [
+     "ech",
+     8278
+    ],
+    [
+     "an",
+     7177
+    ],
+    [
+     "ass",
+     6945
+    ],
+    [
+     "huet",
+     6726
+    ],
+    [
+     "der",
+     6108
+    ],
+    [
+     "op",
+     5355
+    ],
+    [
+     "eng",
+     4421
+    ],
+    [
+     "net",
+     4421
+    ],
+    [
+     "e",
+     4248
+    ],
+    [
+     "fir",
+     4183
+    ],
+    [
+     "déi",
+     3968
+    ],
+    [
+     "den",
+     3684
+    ],
+    [
+     "vun",
+     3638
+    ],
+    [
+     "hunn",
+     3414
+    ],
+    [
+     "mat",
+     3331
+    ],
+    [
+     "ze",
+     3227
+    ],
+    [
+     "am",
+     3218
+    ],
+    [
+     "et",
+     3108
+    ],
+    [
+     "mir",
+     2504
+    ],
+    [
+     "sech",
+     2401
+    ],
+    [
+     "en",
+     2270
+    ],
+    [
+     "mer",
+     2203
+    ],
+    [
+     "ginn",
+     2128
+    ]
+   ]
   }
  },
  "global": {
-  "phrases": 186204,
-  "caracteres": 21538877,
-  "mots": 3350718,
-  "formes": 107572,
-  "longueur_moyenne": 18.0,
-  "hapax": 55388,
-  "germanismes_pour_10000": 2.3,
-  "quotidien_pour_10000": 10.7,
+  "phrases": 230880,
+  "caracteres": 23948934,
+  "mots": 3753183,
+  "formes": 121381,
+  "longueur_moyenne": 16.3,
+  "hapax": 61224,
+  "germanismes_pour_10000": 2.1,
+  "quotidien_pour_10000": 22.1,
   "top_mots": [
    [
     "d",
-    111367
+    126821
    ],
    [
     "an",
-    100105
+    107282
    ],
    [
     "de",
-    93557
+    104069
    ],
    [
     "der",
-    69128
+    75236
    ],
    [
     "vun",
-    58207
+    61845
    ],
    [
     "den",
-    47288
+    50972
    ],
    [
     "déi",
-    45863
-   ],
-   [
-    "fir",
-    38398
+    49831
    ],
    [
     "op",
-    37928
+    43283
    ],
    [
-    "a",
-    35745
+    "fir",
+    42581
    ],
    [
     "ass",
-    33457
+    40402
    ],
    [
-    "et",
-    32979
+    "a",
+    37694
    ],
    [
     "am",
-    32973
+    36191
+   ],
+   [
+    "et",
+    36087
    ],
    [
     "eng",
-    30978
-   ],
-   [
-    "ginn",
-    27888
-   ],
-   [
-    "och",
-    27470
-   ],
-   [
-    "vum",
-    27152
-   ],
-   [
-    "e",
-    26629
+    35399
    ],
    [
     "huet",
-    26618
+    33344
+   ],
+   [
+    "e",
+    30877
+   ],
+   [
+    "ginn",
+    30016
    ],
    [
     "net",
-    24799
+    29220
+   ],
+   [
+    "vum",
+    28919
+   ],
+   [
+    "och",
+    27940
    ],
    [
     "ze",
-    24575
+    27802
    ],
    [
     "mat",
-    23616
+    26947
    ],
    [
     "zu",
-    20750
+    21873
    ],
    [
     "sech",
-    19122
+    21523
    ],
    [
     "dat",
-    18374
+    20042
    ]
   ]
  },
  "recouvrement": {
-  "communes": 7111,
-  "luxalign_seul": 97848,
-  "letz_seul": 2613
+  "communes": 21355,
+  "luxalign_seul": 83604,
+  "exemples_seul": 16422
  },
  "diacritiques": [
   [
    "é",
-   269749
+   297700
   ],
   [
    "ë",
-   142374
+   161225
   ],
   [
    "ä",
-   111780
+   128848
   ],
   [
    "ü",
-   7184
+   8404
   ],
   [
    "è",
-   6514
+   6860
   ],
   [
    "ê",
-   2335
+   2399
   ],
   [
    "ç",
-   1346
+   1384
   ],
   [
    "ô",
-   1050
+   1086
   ],
   [
    "à",
-   866
+   907
   ],
   [
    "ö",
-   852
+   992
   ],
   [
    "î",
-   337
+   353
   ],
   [
    "â",
-   257
+   288
   ]
  ],
  "ponctuation": [
   [
-   ".",
-   203745
+   ",",
+   216127
   ],
   [
-   ",",
-   202739
+   ".",
+   203902
   ],
   [
    "'",
-   99349
+   114834
   ],
   [
    "-",
-   44193
+   44640
   ],
   [
    "\"",
@@ -416,314 +528,314 @@
   ],
   [
    "’",
-   15024
+   15027
   ],
   [
    ":",
-   13728
-  ],
-  [
-   "%",
-   4495
-  ],
-  [
-   "?",
-   2727
-  ],
-  [
-   "“",
-   2593
-  ],
-  [
-   "„",
-   2280
+   13742
   ],
   [
    "!",
-   2069
+   7273
+  ],
+  [
+   "?",
+   5881
+  ],
+  [
+   "%",
+   4504
+  ],
+  [
+   "“",
+   2686
+  ],
+  [
+   "„",
+   2373
   ],
   [
    ";",
-   1564
+   1565
   ]
  ],
  "couverture": [
   [
    100,
-   48.6
+   48.2
   ],
   [
    500,
-   65.5
+   65.0
   ],
   [
    1000,
-   72.6
+   72.0
   ],
   [
    5000,
-   87.2
+   86.5
   ],
   [
    10000,
-   91.9
+   91.2
   ],
   [
    20000,
-   95.3
+   94.7
   ],
   [
-   107572,
+   121381,
    100.0
   ]
  ],
  "ngrams": {
-  "bigrammes_distincts": 939088,
-  "trigrammes_distincts": 2016812,
+  "bigrammes_distincts": 1044229,
+  "trigrammes_distincts": 2223544,
   "top_bigrammes": [
    [
     "vun der",
-    21581
+    22665
    ],
    [
     "an der",
-    19817
+    21630
    ],
    [
     "an d",
-    10605
-   ],
-   [
-    "vun de",
-    8351
+    11751
    ],
    [
     "fir d",
-    8323
+    9074
+   ],
+   [
+    "vun de",
+    8868
    ],
    [
     "op der",
-    7994
+    8846
    ],
    [
     "an de",
-    7606
-   ],
-   [
-    "vun den",
-    4523
+    8396
    ],
    [
     "op d",
-    4278
+    5048
+   ],
+   [
+    "vun den",
+    4809
    ],
    [
     "an den",
-    4011
-   ],
-   [
-    "zu lëtzebuerg",
-    3773
+    4251
    ],
    [
     "fir de",
-    3717
+    4011
    ],
    [
     "bei der",
-    3701
+    3997
+   ],
+   [
+    "zu lëtzebuerg",
+    3837
    ],
    [
     "d police",
-    3472
-   ],
-   [
-    "an engem",
-    3213
-   ],
-   [
-    "mat der",
-    3101
-   ],
-   [
-    "vun engem",
-    2933
-   ],
-   [
-    "datt d",
-    2793
+    3654
    ],
    [
     "huet d",
-    2748
+    3488
    ],
    [
-    "géint auer",
-    2582
+    "an engem",
+    3426
+   ],
+   [
+    "mat der",
+    3410
+   ],
+   [
+    "vun engem",
+    3118
+   ],
+   [
+    "datt d",
+    2984
+   ],
+   [
+    "op de",
+    2974
    ]
   ],
   "top_trigrammes": [
+   [
+    "an der stad",
+    1627
+   ],
    [
     "an der rue",
     1594
    ],
    [
-    "an der stad",
-    1570
-   ],
-   [
     "op der plaz",
-    1387
+    1407
    ],
    [
     "hei am land",
-    1273
+    1295
    ],
    [
     "an der nuecht",
-    1098
+    1130
    ],
    [
     "vun der police",
-    1031
+    1065
    ],
    [
     "an der chamber",
-    1017
+    1041
+   ],
+   [
+    "fiert dëse bus",
+    1019
+   ],
+   [
+    "dëse bus op",
+    937
    ],
    [
     "der nuecht op",
-    804
+    805
    ],
    [
     "am kader vun",
-    711
+    721
    ],
    [
     "president vun der",
-    678
+    680
+   ],
+   [
+    "op d mannst",
+    638
    ],
    [
     "nuecht op e",
     628
    ],
    [
-    "op d mannst",
-    617
-   ],
-   [
     "vun de leit",
-    585
-   ],
-   [
-    "hei zu lëtzebuerg",
-    562
-   ],
-   [
-    "an d luucht",
-    532
+    606
    ]
   ],
   "exemples_contextes": [
    [
     "vun der",
     "police",
-    0.048,
-    21581
+    0.047,
+    22665
    ],
    [
     "an der",
-    "rue",
-    0.08,
-    19817
+    "stad",
+    0.075,
+    21630
    ],
    [
     "an d",
     "luucht",
-    0.05,
-    10605
-   ],
-   [
-    "vun de",
-    "leit",
-    0.07,
-    8351
+    0.048,
+    11751
    ],
    [
     "fir d",
     "éischt",
-    0.051,
-    8323
+    0.055,
+    9074
+   ],
+   [
+    "vun de",
+    "leit",
+    0.068,
+    8868
    ],
    [
     "op der",
     "plaz",
-    0.174,
-    7994
+    0.159,
+    8846
    ],
    [
     "an de",
     "leschte",
-    0.069,
-    7606
-   ],
-   [
-    "vun den",
-    "attentater",
-    0.015,
-    4523
+    0.067,
+    8396
    ],
    [
     "op d",
     "mannst",
-    0.144,
-    4278
+    0.126,
+    5048
+   ],
+   [
+    "vun den",
+    "zwee",
+    0.015,
+    4809
    ],
    [
     "an den",
     "nächste",
-    0.067,
-    4011
-   ],
-   [
-    "zu lëtzebuerg",
-    "an",
-    0.042,
-    3773
+    0.064,
+    4251
    ],
    [
     "fir de",
     "liter",
-    0.022,
-    3717
+    0.021,
+    4011
+   ],
+   [
+    "bei der",
+    "police",
+    0.091,
+    3997
    ]
   ]
  },
  "clavier": {
-  "mots_dictionnaire": 38442,
-  "frequence_max": 111367,
+  "mots_dictionnaire": 40788,
+  "frequence_max": 126791,
   "mot_le_plus_frequent": "d",
-  "contextes": 27746,
-  "contextes_deux_mots": 17798,
+  "contextes": 30531,
+  "contextes_deux_mots": 19604,
   "seuil_frequence": 3,
   "seuil_contexte": 20,
-  "octets_dictionnaire": 1273894,
-  "octets_ngrams": 5387581
+  "octets_dictionnaire": 1351033,
+  "octets_ngrams": 5925855
  },
  "prediction": {
   "phrases": 10038,
   "evenements": 135343,
-  "couverture_lexicale": 93.6,
-  "contexte_reconnu": 87.8,
-  "top3": 18.1,
+  "couverture_lexicale": 94.4,
+  "contexte_reconnu": 89.0,
+  "top3": 19.5,
   "jeu": "ZLS Iwwersetzungskorpus (inédits)",
   "recouvrement_entrainement": 6.84
  },
  "prediction_paralux": {
   "phrases": 312,
   "evenements": 2703,
-  "couverture_lexicale": 94.5,
-  "contexte_reconnu": 87.6,
+  "couverture_lexicale": 94.8,
+  "contexte_reconnu": 87.9,
   "top3": 20.8,
   "jeu": "ParaLux"
  }

@@ -9,6 +9,19 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [41.0.0] - 2026-11-21
+
+### ✨ Nouveautés
+
+- **Le clavier connaît la langue de tous les jours** : les suggestions apprennent désormais des 45 000 phrases d'exemple du Lëtzebuerger Online Dictionnaire, écrites par le Zenter fir d'Lëtzebuerger Sprooch. Après « du », il propose « hues » ou « muss » au lieu de mots français ; après « wëlls de », « kanns du », « weess du » ou « looss dech », il a enfin quelque chose à proposer. Mesuré sur des textes qu'il n'a jamais vus : 19,5 % de bonnes suggestions parmi les trois proposées, contre 18,1 %.
+- **Six lieux d'après photos** : la lisière d'épicéas et le troupeau de Conzefenn, la grotte aux meules du Hohllay, la tour du Napoleonsgaart, la faille de la Wollefsschlucht, la passerelle de bois gris du Dumongshaff, et la Passerelle à quatre arches dans la vallée de la Pétrusse, qui remplace la copie du pont Adolphe.
+
+### 🔧 Modifié
+
+- **Des raretés plus justes** : la rareté d'une carte suit la fréquence du mot, qui ne venait jusqu'ici presque que de la presse. Les mots du quotidien deviennent plus communs : « Kaz », « Päerd » et « Hond » sont désormais des cartes communes. Les cartes déjà gagnées prennent leur nouvelle rareté, et avec elle l'heure de leur paysage et la matière de leur cadre.
+- **L'album des paysages reste complet** : chaque case peut toujours être gagnée dans les quatre langues de Wuertplaz.
+- **« Smartphone » perd son dessin** : aucun jeu ne donne plus ce mot.
+
 ## [40.1.0] - 2026-11-16
 
 ### ✨ Nouveautés

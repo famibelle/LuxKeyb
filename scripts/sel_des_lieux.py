@@ -49,6 +49,43 @@ def seuils():
             for n in ("SEUIL_COMMUN", "SEUIL_PEU_COMMUN", "SEUIL_RARE")]
 
 
+def album(choix):
+    """Les cases de l'album : (lieu, rareté), sans la nuit des lieux ajoutés."""
+    return [(l, r) for ls in choix.values() for i, l in enumerate(ls) for r in range(4) if r < 3 or i == 0]
+
+
+def tirage_des_cases():
+    """(cases de l'album, case_de) où case_de(forme) → (lieu, rareté).
+
+    Le calcul de `SeriesPaysagesAssetTest`, pour une forme de grille, avec le
+    sel actuel : `generate_chassecroise.py` s'en sert pour garantir que chaque
+    case reste atteinte par assez de mots.
+    """
+    choix, sel = repartition()
+    familles = json.loads((ACTIFS / "luxemburgish_familles.json").read_text())["familles"]
+    rep = {t: t for t in familles}
+    for t, formes in familles.items():
+        for f in formes.split(" "):
+            if f:
+                rep.setdefault(f, t)
+    blasons = json.loads((ACTIFS / "luxemburgish_blasons.json").read_text())["blasons"]
+    champ = {k: (v.get("c") or None) for k, v in blasons.items()}
+    rang = {}
+    for i, e in enumerate(json.loads((ACTIFS / "luxemburgish_dict.json").read_text())):
+        rang.setdefault(e[0], i)
+    s = seuils()
+
+    def case_de(forme):
+        r = rang.get(forme)
+        r = 3 if r is None else 0 if r < s[0] else 1 if r < s[1] else 2 if r < s[2] else 3
+        tete = rep.get(forme, forme)
+        ls = choix[champ.get(tete)]
+        lieu = ls[0] if len(ls) == 1 or r == 3 else ls[(hachage(sel + tete) >> 1) % len(ls)]
+        return (lieu, r)
+
+    return album(choix), case_de
+
+
 def mots_des_grilles():
     """Par langue : la liste (représentant, champ, rareté) des formes de Wuertplaz."""
     familles = json.loads((ACTIFS / "luxemburgish_familles.json").read_text())["familles"]
@@ -95,16 +132,16 @@ def hachage(texte):
 
 def compter(choix, sel, mots):
     """{langue: {(lieu, rareté): mots}} sur toutes les cases de l'album."""
-    album = [(l, r) for ls in choix.values() for i, l in enumerate(ls) for r in range(4) if r < 3 or i == 0]
+    cases = album(choix)
     resultat = {}
     for suf, liste in mots.items():
-        n = dict.fromkeys(album, 0)
+        n = dict.fromkeys(cases, 0)
         for tete, champ, r in liste:
             ls = choix[champ]
             lieu = ls[0] if len(ls) == 1 or r == 3 else ls[(hachage(sel + tete) >> 1) % len(ls)]
             n[(lieu, r)] += 1
         resultat[suf] = n
-    return album, resultat
+    return cases, resultat
 
 
 def minces(resultat, combien=6):

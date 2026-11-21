@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Les corpus du Lëtzebuergesch Clavier en chiffres</title>
-<meta name="description" content="D'où viennent les suggestions du clavier luxembourgeois : les deux corpus ouverts LuxAlign et LETZ, leur taille, leur vocabulaire, leurs accents, et ce qui en arrive dans l'application.">
+<meta name="description" content="D'où viennent les suggestions du clavier luxembourgeois : la presse de LuxAlign et les phrases d'exemple du dictionnaire (LETZ et le LOD), leur taille, leur vocabulaire, leurs accents, et ce qui en arrive dans l'application.">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="assets/theme.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
@@ -138,21 +138,22 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
   <h1>Les corpus du clavier, en chiffres</h1>
   <p class="lead">
     Les suggestions du Lëtzebuergesch Clavier ne sortent pas d'une intelligence
-    artificielle entraînée ailleurs. Elles viennent de deux corpus de
-    luxembourgeois écrit, publiés en accès libre sur Hugging Face, et comptés
-    mot à mot par un script qu'on peut relancer. Voici ce qu'ils contiennent, et
-    pourquoi il en faut deux.
+    artificielle entraînée ailleurs. Elles viennent de luxembourgeois écrit,
+    publié en accès libre : de la presse d'un côté, les phrases d'exemple du
+    dictionnaire officiel de l'autre, comptées mot à mot par un script qu'on
+    peut relancer. Voici ce qu'elles contiennent, et pourquoi il faut les deux.
   </p>
   <p class="muted" id="maj">Chiffres recalculés depuis les jeux de données publiés.</p>
 </header>
 
 <section id="corpus">
-  <h2>Les deux corpus</h2>
+  <h2>Les sources</h2>
   <p class="muted">
-    Aucun des deux ne remplace l'autre. Le premier apporte le vocabulaire et
-    l'enchaînement des mots, le second la langue de tous les jours. Tous deux
-    sont sous licence Creative&nbsp;Commons et <strong>exigent la citation de
-    leurs auteurs</strong> : la voici, pour chacun.
+    Aucune ne remplace l'autre. La presse apporte le vocabulaire et
+    l'enchaînement des mots, les phrases d'exemple la langue de tous les jours.
+    LuxAlign et LETZ sont sous licence Creative&nbsp;Commons et <strong>exigent
+    la citation de leurs auteurs</strong> : la voici, pour chacun. Le LOD est
+    dans le domaine public, et on le cite quand même.
   </p>
 
   <article class="corpus">
@@ -226,6 +227,28 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
     </div>
   </article>
 
+  <article class="corpus">
+    <div class="body">
+      <div class="top">
+        <h3 class="name">LOD — phrases d'exemple</h3>
+        <span class="lic by">CC0 1.0</span>
+        <span class="role">la langue du quotidien, en entier</span>
+      </div>
+      <p class="meta">
+        Les phrases que le Zenter fir d'Lëtzebuerger Sprooch
+        écrit pour montrer comment s'emploie chaque mot du
+        <a href="https://lod.lu">Lëtzebuerger Online Dictionnaire</a>. LETZ n'en
+        est qu'une sélection : le LOD en porte près de 59&nbsp;000. On en
+        retire celles qui servent à mesurer le clavier (le corpus de traduction
+        du ZLS en reprend la moitié) et celles que LETZ apporte déjà.<br>
+        <a href="https://data.public.lu/fr/organizations/zenter-fir-dletzebuerger-sprooch/">data.public.lu</a>
+        · jeu <code>Linguistesch Daten</code>
+        · depuis le 20 novembre 2026
+      </p>
+      <div class="tiles" id="tiles-lod"></div>
+    </div>
+  </article>
+
   <div class="note">
     <p>
       <strong>Ce que la licence implique pour l'application.</strong> Le code du
@@ -242,11 +265,11 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
 </section>
 
 <section id="complementarite">
-  <h2>Pourquoi deux corpus et pas un</h2>
+  <h2>Pourquoi la presse ne suffit pas</h2>
   <p class="muted">
-    LuxAlign est soixante fois plus gros. On pourrait croire qu'il suffit. Mais
+    LuxAlign est sept fois plus gros que toutes les phrases d'exemple réunies. On pourrait croire qu'il suffit. Mais
     un corpus de presse ne tutoie personne, et un clavier de téléphone ne fait
-    presque que ça. Voici la même mesure sur les deux : la part de mots du
+    presque que ça. Voici la même mesure sur chaque source : la part de mots du
     registre familier (<span class="lux">dech</span>,
     <span class="lux">däin</span>, <span class="lux">hues</span>,
     <span class="lux">bass</span>, <span class="lux">mamm</span>,
@@ -292,7 +315,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
     <p>
       <strong>Un faux ami à ne pas corriger :</strong> <span class="lux">dass</span>
       n'est pas de l'allemand. C'est une variante orthographique luxembourgeoise
-      parfaitement légitime, présente dans les deux corpus retenus à raison d'une
+      parfaitement légitime, présente dans les corpus retenus à raison d'une
       occurrence pour une et demie de <span class="lux">datt</span>. Elle reste
       donc au dictionnaire.
     </p>
@@ -351,7 +374,8 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
     Un n&#8209;gramme, c'est une suite de mots observée dans les textes. En les
     comptant, on obtient un modèle qui répond à une question simple : après ces
     mots-là, qu'est-ce qui vient d'habitude ? C'est ici que LuxAlign compte le
-    plus : ses phrases font dix-sept mots en moyenne, contre neuf pour LETZ, et
+    plus : ses phrases font dix-sept mots en moyenne, contre neuf pour les
+    phrases d'exemple, et
     seul un texte suivi apprend au clavier ce qui suit quoi.
   </p>
   <div class="tiles" id="tiles-ngrams"></div>
@@ -383,7 +407,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
     <div class="step">
       <span class="n">01</span>
       <h3>Dédoublonnage</h3>
-      <p>Chaque phrase n'est comptée qu'une fois : LuxAlign apparie la même phrase à l'anglais et au français, LETZ la réutilise des dizaines de fois.</p>
+      <p>Chaque phrase n'est comptée qu'une fois : LuxAlign apparie la même phrase à l'anglais et au français, LETZ la réutilise des dizaines de fois, et le LOD reprend la plupart des phrases de LETZ. Les phrases du jeu d'évaluation sont écartées.</p>
     </div>
     <div class="step">
       <span class="n">02</span>
@@ -438,10 +462,12 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
       <strong>Ce que ces corpus ne sont pas.</strong> LuxAlign est du
       journalisme : les chiffres, les pourcentages, les parenthèses et les
       guillemets y sont sur-représentés par rapport à ce qu'on tape sur un
-      téléphone, et les points d'exclamation sous-représentés. LETZ est
-      lexicographique : ses phrases sont construites pour illustrer une entrée de
-      dictionnaire, donc riches en vocabulaire rare. Les deux ensemble corrigent
-      une partie de ces biais, aucun ne les corrige seul.
+      téléphone, et les points d'exclamation sous-représentés. LETZ et le LOD
+      sont lexicographiques : leurs phrases sont construites pour illustrer une
+      entrée de dictionnaire, donc riches en vocabulaire rare. C'est pourquoi le
+      mot illustré n'est pas compté dans les fréquences du dictionnaire : il
+      est là par construction, pas parce qu'on l'emploie souvent. Ensemble, ces
+      sources corrigent une partie de ces biais, aucune ne les corrige seule.
     </p>
     <p>
       <strong>Le jeu d'évaluation.</strong> Les chiffres de prédiction sont
@@ -455,8 +481,8 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
       citation, ci-dessus.
     </p>
     <p>
-      Le luxembourgeois reste une langue à faibles ressources : ces deux corpus
-      réunis pèsent trois millions de mots, là où le français ou l'anglais se
+      Le luxembourgeois reste une langue à faibles ressources : ces sources
+      réunies pèsent trois millions et demi de mots, là où le français ou l'anglais se
       comptent en milliards. Le dictionnaire grandira avec eux.
     </p>
   </div>
@@ -464,6 +490,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
     Jeux de données :
     <a href="https://huggingface.co/datasets/fredxlpy/LuxAlign">fredxlpy/LuxAlign</a> ·
     <a href="https://huggingface.co/datasets/fredxlpy/LETZ">fredxlpy/LETZ</a> ·
+    <a href="https://data.public.lu/fr/datasets/letzebuerger-online-dictionnaire-lod-linguistesch-daten/">LOD, Linguistesch Daten</a> ·
     <a href="https://huggingface.co/datasets/fredxlpy/ParaLux">fredxlpy/ParaLux</a> (évaluation)<br>
     Script de calcul :
     <a href="https://github.com/famibelle/LuxKeyb/blob/main/docs/scripts/generate_corpus_stats.py">generate_corpus_stats.py</a> ·
@@ -595,7 +622,7 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
       return r.json();
     })
     .then(function (d) {
-      var la = d.corpus.luxalign, lz = d.corpus.letz, g = d.global;
+      var la = d.corpus.luxalign, lz = d.corpus.letz, lo = d.corpus.lod, g = d.global;
 
       $('maj').textContent =
         'Chiffres recalculés depuis les jeux de données publiés, le ' +
@@ -614,33 +641,42 @@ footer.page{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);fo
         { n: nf.format(lz.formes), k: 'mots différents' },
         { n: lz.longueur_moyenne, k: 'mots par phrase' }
       ]);
+      tuiles('tiles-lod', [
+        { n: nf.format(lo.phrases), k: 'phrases retenues' },
+        { n: nf.format(lo.mots), k: 'mots' },
+        { n: nf.format(lo.formes), k: 'mots différents' },
+        { n: lo.longueur_moyenne, k: 'mots par phrase' }
+      ]);
 
       var un = function (x) { return nf.format(x); };
 
       barres('chart-registre', [
         { l: 'LETZ (dictionnaire)', v: lz.quotidien_pour_10000 },
+        { l: 'LOD (dictionnaire)', v: lo.quotidien_pour_10000 },
         { l: 'LuxAlign (presse)', v: la.quotidien_pour_10000, alt: true }
       ], { mono: false, format: un });
       $('note-registre').textContent =
-        'À taille égale, LETZ est ' +
-        nf.format(Math.round(10 * lz.quotidien_pour_10000 / la.quotidien_pour_10000) / 10) +
-        ' fois plus riche en langue de tous les jours. C’est tout ce qu’il ' +
-        'apporte, et c’est irremplaçable : sans lui, le clavier ne saurait pas ' +
-        'écrire « däin » ni « mamm ».';
+        'À taille égale, les phrases d’exemple du LOD sont ' +
+        nf.format(Math.round(10 * lo.quotidien_pour_10000 / la.quotidien_pour_10000) / 10) +
+        ' fois plus riches en langue de tous les jours que la presse. C’est ' +
+        'irremplaçable : sans elles, le clavier ne saurait pas écrire « däin » ' +
+        'ni « mamm », et proposerait « jour » après « du ».';
 
       var r = d.recouvrement;
       barres('chart-recouvrement', [
         { l: 'Propre à LuxAlign', v: r.luxalign_seul },
         { l: 'Communs aux deux', v: r.communes },
-        { l: 'Propre à LETZ', v: r.letz_seul, alt: true }
+        { l: 'Propre aux phrases d’exemple', v: r.exemples_seul, alt: true }
       ], { mono: false });
       $('note-recouvrement').textContent =
         'Sur ' + nf.format(g.formes) + ' mots différents au total, ' +
-        nf.format(r.communes) + ' seulement figurent dans les deux corpus. ' +
-        'Chacun apporte un vocabulaire que l’autre ignore.';
+        nf.format(r.communes) + ' seulement figurent à la fois dans la presse ' +
+        'et dans les phrases d’exemple. Chacune apporte un vocabulaire que ' +
+        'l’autre ignore.';
 
       barres('chart-germanismes', [
         { l: 'LETZ', v: lz.germanismes_pour_10000 },
+        { l: 'LOD', v: lo.germanismes_pour_10000 },
         { l: 'LuxAlign', v: la.germanismes_pour_10000 },
         { l: 'Corpus retiré (10.15)', v: 272, alt: true }
       ], { mono: false, format: un });
