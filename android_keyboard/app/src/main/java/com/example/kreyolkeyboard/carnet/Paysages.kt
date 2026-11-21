@@ -859,12 +859,19 @@ object Paysages {
         // Le calque [i] porte le plan [i] − 2 du lieu : 0 le lointain, 1 le milieu, 2 le proche.
         // Avec une saison, il dresse aussi le relevé de sa végétation.
         val releves = arrayOfNulls<Bitmap>(n)
+        // Les fils de fer de chaque calque ([Peintre.filDeFer]), qui sortent
+        // de sa silhouette avant la tranche de kraft.
+        val fils = arrayOfNulls<Bitmap>(n)
         fun calque(i: Int, sol: Sol = Sol.SANS) = toile(i) {
             val releve = if (souvenir != null && sol == Sol.SANS) {
                 Bitmap.createBitmap(tailles[i][0], tailles[i][1], Bitmap.Config.ALPHA_8).also { r -> releves[i] = r }
             } else null
+            val fil = if (PAPIER && sol == Sol.SANS) {
+                Bitmap.createBitmap(tailles[i][0], tailles[i][1], Bitmap.Config.ALPHA_8).also { f -> fils[i] = f }
+            } else null
             dessiner(it, lieu, heure, ciel = false, lieuAussi = true, seul = i - 2, sol = sol, vivant = true,
-                facture = Facture.GOUACHE, echelle = ks[i][0], releve = releve?.let { r -> aLEchelle(r, ks[i]) })
+                facture = Facture.GOUACHE, echelle = ks[i][0], releve = releve?.let { r -> aLEchelle(r, ks[i]) },
+                fils = fil?.let { f -> Canvas(f) })
         }
         fun peindre(i: Int, dessin: Peintre.() -> Unit) = toile(i) {
             Peintre(it, heure, facture = Facture.GOUACHE, echelle = ks[i][0]).dessin()
@@ -900,6 +907,11 @@ object Paysages {
         silhouettes[2] = formes[0]
         silhouettes[3] = formes[1]
         silhouettes[4] = formes[2]
+        for (i in 2 until plans.size) {
+            val f = fils[i] ?: continue
+            silhouettes[i] = sansFils(silhouettes[i]!!, f)
+            f.recycle()
+        }
         if (PAPIER) {
             // Le papier découpé : chaque carton a sa tranche de kraft tout
             // autour et son ombre à part, posée à chaque trame ; le plancher
@@ -997,6 +1009,16 @@ object Paysages {
             val a = k / 12f * 2f * PI.toFloat()
             c.drawBitmap(forme, cos(a) * r, sin(a) * r + 0.25f * r, p)
         }
+    }
+
+    /**
+     * Retire de la silhouette [forme] les [fils] de fer qui y ont été
+     * relevés : ce qui en sort n'a ni tranche de kraft ni ombre
+     * ([Peintre.filDeFer]). Rend [forme], modifiée sur place.
+     */
+    private fun sansFils(forme: Bitmap, fils: Bitmap): Bitmap {
+        Canvas(forme).drawBitmap(fils, 0f, 0f, Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT) })
+        return forme
     }
 
     /** La silhouette [forme] floutée, de la même taille : l'ombre portée d'un carton. */
@@ -2181,8 +2203,8 @@ object Paysages {
 
     fun dessiner(c: Canvas, lieu: Lieu, heure: Heure, ciel: Boolean = true, lieuAussi: Boolean = true,
                  seul: Int = -1, sol: Sol = Sol.AVEC, facture: Facture = Facture.VIGNETTE, echelle: Float = 1f,
-                 releve: Canvas? = null, vivant: Boolean = false) {
-        val p = Peintre(c, heure, seul, sol, facture, echelle, releve, vivant)
+                 releve: Canvas? = null, vivant: Boolean = false, fils: Canvas? = null) {
+        val p = Peintre(c, heure, seul, sol, facture, echelle, releve, vivant, fils)
         if (ciel) { if (PAPIER) p.cielPapier() else if (facture == Facture.GOUACHE) p.cielPeint() else p.ciel() }
         if (!lieuAussi) return
         when (lieu) {
@@ -2404,7 +2426,14 @@ object Paysages {
          * ([Vie]) n'y est pas peint, [Vie] le pose à chaque trame. Faux pour
          * la vignette et le paysage à plat, qui le gardent immobile.
          */
-        val vivant: Boolean = false
+        val vivant: Boolean = false,
+        /**
+         * Le relevé des fils de fer, en pixels du calque (sans transformation :
+         * [marquerFil] y recopie celle de [c] à chaque trait). Ce qui y est
+         * posé sort de la silhouette du carton avant sa tranche de kraft
+         * ([rendrePlans]) : voir [filDeFer].
+         */
+        private val fils: Canvas? = null
     ) {
         val p = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
         val BAS = HAUTEUR
@@ -2412,6 +2441,35 @@ object Paysages {
         private val releveP = Paint(Paint.ANTI_ALIAS_FLAG)
         private val vegetaux = HashMap<Int, Boolean>()
         private var mineraux = 0
+        private var enFil = 0
+        private val filP = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = 0xFFFFFFFF.toInt() }
+
+        /**
+         * Peint [dessin] en fil de fer : pylône en treillis, grillage,
+         * barreaux, tout membre plus fin que la tranche de kraft d'un carton.
+         *
+         * Cette tranche fait un tiers d'unité tout autour de la silhouette du
+         * calque ([krafter]). Un fil de deux dixièmes y disparaissait : les
+         * pylônes de l'Ourdall et du Napoleonsgaart, le grillage de la
+         * promenade, les barreaux gris de la passerelle du Dumongshaff
+         * sortaient en laiton (relevé du 2026-11-21). Comme toute petite
+         * pièce sous le seuil de [enCarton], un fil n'a ni tranche ni ombre.
+         * C'est aussi du minéral : la saison n'y fait pas pousser de feuilles.
+         */
+        fun filDeFer(dessin: () -> Unit) {
+            enFil++
+            try { mineral(dessin) } finally { enFil-- }
+        }
+
+        /** Pose sur [fils] ce que trace [trace], dans un [filDeFer], à la place exacte du trait sur [c]. */
+        private fun marquerFil(trace: (Canvas, Paint) -> Unit) {
+            val f = fils ?: return
+            if (enFil == 0 || !actif) return
+            @Suppress("DEPRECATION")
+            f.setMatrix(c.matrix)
+            filP.style = Paint.Style.FILL
+            trace(f, filP)
+        }
 
         /**
          * Peint [dessin] en pierre, bois, enduit ou métal : quelle que soit sa
@@ -2486,6 +2544,7 @@ object Paysages {
             p.style = Paint.Style.FILL; teinte(col, o)
             c.drawCircle(cx, cy, r, p)
             relever(col, o) { rc, rp -> rc.drawCircle(cx, cy, r, rp) }
+            marquerFil { f, fp -> f.drawCircle(cx, cy, r, fp) }
         }
 
         fun forme(d: String, col: Int, o: Float = 1f) {
@@ -2769,6 +2828,7 @@ object Paysages {
             c.drawLine(x1, y1, x2, y2, p)
             p.style = Paint.Style.FILL
             relever(col, o) { r, rp -> rp.style = Paint.Style.STROKE; rp.strokeWidth = largeur; r.drawLine(x1, y1, x2, y2, rp) }
+            marquerFil { f, fp -> fp.style = Paint.Style.STROKE; fp.strokeWidth = largeur; f.drawLine(x1, y1, x2, y2, fp) }
         }
 
         fun anneau(cx: Float, cy: Float, r: Float, col: Int, largeur: Float) {
@@ -7177,7 +7237,7 @@ object Paysages {
                 // ---- Les réverbères, et le pont allumé le soir : c'est
                 // son image de nuit.
                 val fonte = neutre(duJour(0xFF4A4E54.toInt()))
-                for (lx in floatArrayOf(2f, 21f, 40f, 59f, 78f, 97f)) {
+                for (lx in floatArrayOf(2f, 21f, 40f, 59f, 78f, 97f)) filDeFer {
                     ligne(lx, garde + 0.3f, lx + 0.22f, garde - 5.4f, fonte, 0.3f)
                     ligne(lx + 0.22f, garde - 5.4f, lx + 1.8f, garde - 5.8f, fonte, 0.24f)
                     if (P.allume) {
@@ -8015,7 +8075,7 @@ object Paysages {
         }
 
         /** Un pylône en treillis posé en [x] sur [bas], jusqu'à [haut], large de [w] au pied. */
-        fun pylone(x: Float, bas: Float, haut: Float, w: Float, col: Int) {
+        fun pylone(x: Float, bas: Float, haut: Float, w: Float, col: Int) = filDeFer {
             fun g(y: Float) = x - w / 2f + (w * 0.35f) * (bas - y) / (bas - haut)
             fun d(y: Float) = x + w / 2f - (w * 0.35f) * (bas - y) / (bas - haut)
             ligne(g(bas), bas, g(haut), haut, col, 0.35f)
@@ -8276,8 +8336,10 @@ object Paysages {
             val acier = neutre(duJour(0xFF8A9099.toInt()))
             mineral {
                 for (px in floatArrayOf(9f, 23f)) pylone(px, 23.6f - px * 0.025f, 14.4f - px * 0.025f, 2.6f, sombre(acier, 0.35f))
-                ligne(9f, 16.6f, 23f, 16.2f, acier, 0.12f, 0.5f)
-                ligne(23f, 16.2f, 42f, 18.4f, acier, 0.12f, 0.4f)
+                filDeFer {
+                    ligne(9f, 16.6f, 23f, 16.2f, acier, 0.12f, 0.5f)
+                    ligne(23f, 16.2f, 42f, 18.4f, acier, 0.12f, 0.4f)
+                }
             }
             lisiere(-2f, 102f, { x -> 28f + 2f * sin(x * 0.09f + 1.2f) - x * 0.02f }, 2f, 3f, 237, colline)
             plan(1)
@@ -8391,17 +8453,19 @@ object Paysages {
                 }
                 val fil = sombre(bois, 0.58f)
                 var v = 0f
-                while (v < 1f) {
-                    val b = bord(v); val c2 = bord(min(1f, v + 0.035f))
-                    ligne(b[0], b[1] - hautGarde(v), c2[0], c2[1], fil, 0.12f, 0.45f)
-                    ligne(b[0], b[1], c2[0], c2[1] - hautGarde(v), fil, 0.12f, 0.45f)
-                    v += 0.035f
-                }
-                v = 0f
-                while (v < 1f) {
-                    val b = bord(v)
-                    ligne(b[0], b[1], b[0], b[1] - hautGarde(v), sombre(bois, 0.52f), 0.36f - 0.2f * v)
-                    v += 0.1f + 0.05f * v
+                filDeFer {
+                    while (v < 1f) {
+                        val b = bord(v); val c2 = bord(min(1f, v + 0.035f))
+                        ligne(b[0], b[1] - hautGarde(v), c2[0], c2[1], fil, 0.12f, 0.45f)
+                        ligne(b[0], b[1], c2[0], c2[1] - hautGarde(v), fil, 0.12f, 0.45f)
+                        v += 0.035f
+                    }
+                    v = 0f
+                    while (v < 1f) {
+                        val b = bord(v)
+                        ligne(b[0], b[1], b[0], b[1] - hautGarde(v), sombre(bois, 0.52f), 0.36f - 0.2f * v)
+                        v += 0.1f + 0.05f * v
+                    }
                 }
                 val main = Path()
                 var b = bord(0f)
@@ -9419,7 +9483,7 @@ object Paysages {
             val acier = neutre(duJour(0xFF9DA3A8.toInt()))
             fun crete(x: Float) = if (x < 74f) 43f - (x - 44f) * 0.37f else 32f + (x - 74f) * 0.14f
             var gx = 44f
-            while (gx < 103f) {
+            filDeFer { while (gx < 103f) {
                 val y = crete(gx)
                 ligne(gx, y, gx, y - 5.4f, acier, 0.22f, 0.85f)
                 ligne(gx, y - 5.4f, min(103f, gx + 5f), crete(min(103f, gx + 5f)) - 5.4f, acier, 0.18f, 0.8f)
@@ -9430,7 +9494,7 @@ object Paysages {
                     ligne(gx + u, y - 5.4f, gx + u + 2.5f, y, acier, 0.1f, 0.3f)
                 }
                 gx += 5f
-            }
+            } }
             // ---- La tour. Un socle évasé, le fût, la corniche, le parapet.
             val taille = neutre(duJour(0xFF8A8278.toInt()))
             val joint = sombre(taille, 0.42f)
@@ -9466,9 +9530,11 @@ object Paysages {
                 boite3q(74.4f, 2.8f, 8.2f, 2.2f, 4f, sombre(taille, 0.08f), pente = 0.06f)
             }
             // Le garde-corps du belvédère et le petit mât, sur la plate-forme.
-            for (px in floatArrayOf(74.6f, 77.4f, 80.2f, 82.6f)) ligne(px, 2.8f, px, 0.6f, acier, 0.2f)
-            ligne(74.4f, 0.8f, 82.8f, 0.4f, acier, 0.22f)
-            ligne(81f, 0.6f, 81.4f, -3f, acier, 0.25f)
+            filDeFer {
+                for (px in floatArrayOf(74.6f, 77.4f, 80.2f, 82.6f)) ligne(px, 2.8f, px, 0.6f, acier, 0.2f)
+                ligne(74.4f, 0.8f, 82.8f, 0.4f, acier, 0.22f)
+                ligne(81f, 0.6f, 81.4f, -3f, acier, 0.25f)
+            }
             plan(2)
             solNaturel(SolNaturel.HERBE)  // le pré du haut de la butte
             poser(DEVANT)
@@ -9510,7 +9576,7 @@ object Paysages {
             // du champ, et le mât d'antenne qui double la tour.
             pylone(6f, 52f, -4f, 7f, sombre(acier, 0.3f))
             pylone(64f, 36f, 9f, 2.4f, sombre(acier, 0.22f))
-            ligne(64f, 12f, 76f, 16f, sombre(acier, 0.22f), 0.14f, 0.7f)
+            filDeFer { ligne(64f, 12f, 76f, 16f, sombre(acier, 0.22f), 0.14f, 0.7f) }
             touffe(vert(0.4f), 100f, 46f, 5f, 96f, 52f, 4f)
             c.restore()
         }
@@ -10395,10 +10461,12 @@ object Paysages {
                 // Le peigne des barreaux, entre la lisse basse et la lisse
                 // haute. Ils sont serrés : c'est ce qui fait la passerelle.
                 x = 4f
-                while (x < 97f) {
-                    ligne(x, tablierPlat(x) - 8.6f, x, tablierPlat(x) - 0.2f, ton, 0.62f, 0.95f)
-                    ligne(x + 0.34f, tablierPlat(x) - 8.4f, x + 0.34f, tablierPlat(x) - 0.4f, creux, 0.2f, 0.6f)
-                    x += 1.7f
+                filDeFer {
+                    while (x < 97f) {
+                        ligne(x, tablierPlat(x) - 8.6f, x, tablierPlat(x) - 0.2f, ton, 0.62f, 0.95f)
+                        ligne(x + 0.34f, tablierPlat(x) - 8.4f, x + 0.34f, tablierPlat(x) - 0.4f, creux, 0.2f, 0.6f)
+                        x += 1.7f
+                    }
                 }
                 // Les deux lisses, par-dessus les barreaux.
                 for (h in floatArrayOf(9.4f, 3.2f)) {
@@ -10620,16 +10688,18 @@ object Paysages {
                 // Le garde-corps et les lampadaires, qui rapetissent et se
                 // rapprochent vers la droite.
                 fun garde(x: Float) = tablier(x) - 1.4f * fuite(x)
-                ligne(-3f, garde(-3f), 103f, garde(103f), fer, 0.3f)
                 var x = 0f
-                while (x <= 96f) { ligne(x, garde(x), x, tablier(x), fer, 0.12f * fuite(x)); x += 1.6f * fuite(x) }
                 var lx = 22f
-                while (lx < 94f) {
-                    val e = fuite(lx)
-                    ligne(lx, garde(lx), lx, tablier(lx) - 3.6f * e, fer, 0.2f * e)
-                    if (P.allume) halo(lx, tablier(lx) - 3.8f * e, 2.2f * e, P.fenetre, 0.55f)
-                    rond(lx, tablier(lx) - 3.8f * e, 0.5f * e, if (P.allume) 0xFFFFF4C8.toInt() else duJour(0xFFE8E2D0.toInt()))
-                    lx += 15f * e
+                filDeFer {
+                    ligne(-3f, garde(-3f), 103f, garde(103f), fer, 0.3f)
+                    while (x <= 96f) { ligne(x, garde(x), x, tablier(x), fer, 0.12f * fuite(x)); x += 1.6f * fuite(x) }
+                    while (lx < 94f) {
+                        val e = fuite(lx)
+                        ligne(lx, garde(lx), lx, tablier(lx) - 3.6f * e, fer, 0.2f * e)
+                        if (P.allume) halo(lx, tablier(lx) - 3.8f * e, 2.2f * e, P.fenetre, 0.55f)
+                        rond(lx, tablier(lx) - 3.8f * e, 0.5f * e, if (P.allume) 0xFFFFF4C8.toInt() else duJour(0xFFE8E2D0.toInt()))
+                        lx += 15f * e
+                    }
                 }
             }
             touffe(vert(0.55f), 86f, 46f, 8f, 96f, 40f, 8f, 100f, 52f, 6f, 78f, 54f, 6f)
