@@ -54,7 +54,8 @@ Tout vit dans `carnet/Paysages.kt`, classe `Peintre`, en unités de fenêtre
 | **Tôle d'acier rivée** | joints horizontaux des plaques, un rang de rivets sous chaque joint, deux coutures verticales, l'arête du soleil | `tole` ; `cowper` pour une virole cylindrique |
 | **Charpente d'acier** | la découpe **percée** d'un seul tenant (montants, entretoises, le ciel entre les deux), peinte deux fois, la seconde décalée, pour laisser un filet de lumière sur chaque membrure | `charpente` |
 | **Enduit, façade** | socle, chaînes d'angle, corniche, bandeaux, appuis et linteaux | `matiere`, appliquée seule par `rue3q` ; à appeler soi-même pour un mur dessiné à la main |
-| **Ardoise, tuile** | rangs à recouvrement, décalés, teintes voisines | dans `matiere` |
+| **Ardoise, tuile** | rangs à recouvrement décalés d'un demi, le ton changeant d'un **rang** à l'autre et à peine d'une ardoise à sa voisine, et sous chaque rang l'ombre de son recouvrement | `ardoises(q, col, graine, rangs, par)` depuis le 2026-11-21 (les toitures de Vianden) ; et dans `matiere` pour les maisons de `rue3q` |
+| **Platelage de bois** | des lames dans le sens de la longueur, chacune de son ton, sur un fond de joint sombre peint d'abord, et le bout des lames au chant | `platelage(q, col, graine, n)` depuis le 2026-11-21 (le ponton d'Esch-Sauer) |
 | **Grès du Mullerthal** | le **litage** : des bancs d'épaisseurs inégales, de tons voisins mais franchement écartés, un banc sur trois en surplomb (arête au soleil, ombre portée dessous), et des diaclases verticales par-dessus | `strates(masse, haut, bas, col, graine, pas, pente)`, découpé dans la pièce déjà peinte |
 | **Rocher débité en blocs** | des polygones **anguleux et jamais d'équerre**, valeurs écartées d'un bloc à l'autre, les cassures tracées en polylignes brisées qui suivent les blocs | `BLOCS_BAERDREF`, `JOINTS_BAERDREF`, `VALEURS_BAERDREF` |
 | **Verre** | un bleu froid un peu translucide, jamais un blanc | `fenetreVerre` |
@@ -136,6 +137,11 @@ Tout vit dans `carnet/Paysages.kt`, classe `Peintre`, en unités de fenêtre
 - **Deux rideaux de la même nuance n'en font qu'un.** Un feuillage étagé ne
   se lit que par l'écart de **valeur** d'un rideau à l'autre, du clair au
   fond au sombre devant. Mêmes verts, et la vallée redevient un aplat.
+- **`surQuad` ne borne rien.** Une matière déborde toujours un peu sa
+  boîte à plat : un rang d'ardoises commence avant le bord, une lame
+  dépasse. Sur un trapèze effilé, une flèche de clocher par exemple, ce
+  débord part à l'infini de la projection et noie tout le bord de la carte.
+  Peindre dans `surPan(q) { }`, qui découpe au quadrilatère.
 - **La vignette n'a pas la gouache.** `Facture.VIGNETTE` est un aplat avec sa
   seule tranche de kraft : une matière qui ne tient que par ses coups de
   pinceau disparaît dans la grille.
