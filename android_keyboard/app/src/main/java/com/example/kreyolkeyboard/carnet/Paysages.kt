@@ -2940,6 +2940,124 @@ object Paysages {
             if (P.allume) for (lx in lumieres) rect(lx - 0.3f, y + 1f, 0.6f, bas - y - 1.3f, P.fenetre, 0.45f)
         }
 
+        /** Le ruban compris entre les courbes [haut] et [bas], de [x0] à [x1]. */
+        fun ruban(x0: Float, x1: Float, haut: (Float) -> Float, bas: (Float) -> Float,
+                  pas: Float = 2.5f): Path {
+            val t = Path()
+            t.moveTo(x0, haut(x0))
+            var x = x0
+            while (x < x1) { x = min(x1, x + pas); t.lineTo(x, haut(x)) }
+            while (x > x0) { t.lineTo(x, bas(x)); x = max(x0, x - pas) }
+            t.lineTo(x0, bas(x0))
+            t.close()
+            return t
+        }
+
+        /**
+         * Une grande eau claire : l'eau franche au large, le lit visible au
+         * travers du haut-fond.
+         *
+         * Règle du propriétaire (2026-11-21) : « pour les grandes étendues
+         * d'eau, l'eau doit être cristalline, très claire, reflétant la
+         * couleur bleue d'un ciel éclatant ». Les sept grandes eaux de
+         * l'album étaient peintes d'une seule [piece] d'un ton mêlé à
+         * [Heure.eau], qui est pourtant un bleu franc, d'une teinte locale
+         * verte de 45 à 84 % : le Stauséi sortait émeraude et bouché,
+         * l'Alzette olive, l'étang du Dumongshaff vert d'encre.
+         *
+         * Quatre couches, et c'est leur ordre qui fait l'eau :
+         *
+         * 1. **le large**, la découpe de papier ([piece], avec son kraft et
+         *    son ombre), peinte du bleu que l'eau rend au ciel ;
+         * 2. **le haut-fond**, une bande contre la rive lointaine, et elle
+         *    seule : c'est là qu'on voit le lit et ses galets. Un lit étendu
+         *    à toute la nappe a été essayé d'abord (Stauséi, premier rendu) et
+         *    le lac sortait d'un sable laiteux aux quatre heures : une eau
+         *    n'est transparente que là où elle est basse ;
+         * 3. **le voile d'eau par-dessus ce haut-fond**, qui noie le lit sans
+         *    l'effacer ;
+         * 4. **le creux**, des voiles qui partent de plus en plus bas et
+         *    s'accumulent vers nous.
+         *
+         * Le bord bas du haut-fond ondule : droit, il faisait une bande de
+         * papier de plus au lieu d'une profondeur.
+         *
+         * La teinte du lieu ne disparaît pas, elle redescend au fond : une
+         * eau qui n'en garde rien est une piscine, une eau qui n'est qu'elle
+         * est une prairie. [part] règle ce qu'il lui en reste : 22 % pour une
+         * eau ouverte, davantage pour une eau brassée ou une rivière de
+         * ville, qui portent vraiment la couleur de leur fond.
+         *
+         * [nGalets] descend avec la turbulence : sous un barrage ou au fil
+         * d'une rivière, on ne voit pas le fond au travers de l'écume.
+         *
+         * La nuit garde son eau profonde (le lit ne transparaît qu'à 0,3) et
+         * le soir sa teinte rose, puisque [Heure.eau] y est rose. Un ciel
+         * éclatant ne se reflète qu'aux heures où il éclate.
+         *
+         * Tout est **minéral** ([mineral]) : l'eau n'est pas de la
+         * végétation, et les aplats verts d'avant pouvaient être rouillés par
+         * l'automne et blanchis par l'hiver comme un pré.
+         *
+         * Rend la couleur de l'eau : c'est sur elle que chaque lieu assoit
+         * ses traînées de lumière et ses reflets, qui doivent rester de la
+         * même eau.
+         */
+        fun eauClaire(decoupe: Path, rive: (Float) -> Float, bas: (Float) -> Float, teinte: Int,
+                      graine: Int, ombre: Float = 0.4f, nGalets: Int = 46, part: Float = 0.22f,
+                      hautFond: Float = 0.30f): Int {
+            // Le bleu que l'eau rend au ciel : [Heure.eau], le bleu franc de
+            // la palette, à peine éclairci. **Pas** [Heure.cielHaut] : le
+            // zénith de l'après-midi est orange (`#FFA94D`), et mêlé au lac
+            // il le sortait vert sauge, délavé, exactement le défaut qu'on
+            // corrige ici (premier rendu du Stauséi, 2026-11-21).
+            val eau = mix(mix(P.eau, 0xFFFFFFFF.toInt(), if (P.nuit) 0.06f else 0.2f), teinte, part)
+            if (!actif) return eau
+            val r = Alea(graine)
+            val fond = (bas(50f) - rive(50f)).coerceAtLeast(2f)
+            mineral {
+                piece(decoupe, eau, ombre)
+                c.save(); c.clipPath(decoupe)
+                // Le haut-fond, contre la rive lointaine.
+                val creuxDu = { x: Float ->
+                    min(rive(x) + fond * (hautFond + hautFond * (0.3f * sin(x * 0.085f)
+                        + 0.17f * sin(x * 0.21f + 1.4f))), bas(x))
+                }
+                val bande = ruban(-4f, 104f, rive, creuxDu)
+                // Ce que le lit transparaît suit la lumière de l'heure, et
+                // non le seul contraste jour/nuit : au couchant, un sable
+                // posé à sa clarté de midi sous une eau rose sortait kaki.
+                val clarte = if (P.nuit) 0.26f else if (P.allume) 0.42f else 0.62f
+                val lit = neutre(duJour(0xFFC6B994.toInt()))
+                forme(bande, lit, clarte)
+                c.save(); c.clipPath(bande)
+                val galets = intArrayOf(neutre(duJour(0xFFDCD2B8.toInt())), neutre(duJour(0xFFB2A88E.toInt())),
+                    neutre(duJour(0xFFE6DEC6.toInt())), neutre(duJour(0xFF998F78.toInt())))
+                for (k in 0 until nGalets) {
+                    val gx = -4f + r() * 108f
+                    val haut = rive(gx)
+                    val t = r()
+                    val gy = haut + 0.3f + t * (creuxDu(gx) - haut)
+                    val e = (0.45f + t * 1.1f) * (if (P.nuit) 0.6f else 1f)
+                    ovalePapierPlat(gx, gy, (0.6f + r() * 0.9f) * e, (0.35f + r() * 0.4f) * e,
+                        galets[k % 4], clarte * 0.48f)
+                }
+                c.restore()
+                // L'eau par-dessus le haut-fond : c'est elle qui noie le lit
+                // sans l'effacer. Sans ce voile, la bande de galets se lit
+                // comme une grève et la rive paraît découverte.
+                forme(bande, eau, if (P.nuit) 0.62f else if (P.allume) 0.5f else 0.36f)
+                // Le creux.
+                val creux = mix(eau, duJour(0xFF0E3448.toInt()), 0.5f)
+                for (k in 0 until 6) {
+                    val d = fond * (hautFond * 1.4f + k * 0.1f)
+                    forme(ruban(-4f, 104f, { x -> min(rive(x) + d, bas(x)) }, bas), creux, 0.09f)
+                }
+                c.restore()
+            }
+            return eau
+        }
+
         // ------------------------------------------------- le surcadrage naturel
         //
         // Les branches et le pied de la scène ([Surcadre]), dessinés pour le
@@ -4613,17 +4731,6 @@ object Paysages {
                 val t = ((x - bornes[i]) / (bornes[i + 2] - bornes[i])).coerceIn(0f, 1f)
                 return bornes[i + 1] + (bornes[i + 3] - bornes[i + 1]) * t
             }
-            /** Le ruban compris entre les courbes [haut] et [bas], de [x0] à [x1]. */
-            fun ruban(x0: Float, x1: Float, haut: (Float) -> Float, bas: (Float) -> Float): Path {
-                val t = Path()
-                t.moveTo(x0, haut(x0))
-                var x = x0
-                while (x < x1) { x = min(x1, x + 2.5f); t.lineTo(x, haut(x)) }
-                while (x > x0) { t.lineTo(x, bas(x)); x = max(x0, x - 2.5f) }
-                t.lineTo(x0, bas(x0))
-                t.close()
-                return t
-            }
             // ---- Le fond de la retenue : un dernier versant pâle, noyé de
             // lumière, qui ferme le lac au milieu.
             lisiere(-3f, 103f, { x -> 24.4f + 1.4f * sin(x * 0.055f) }, 1.6f, 2.6f, 118,
@@ -4673,24 +4780,20 @@ object Paysages {
             // désature et que l'eau du soir est franchement rose. Ce qui
             // fait l'eau à cette heure-là, ce sont ses traînées et le creux
             // sous les deux rives, pas sa teinte.
-            val lac = calmer(mix(P.eau, duJour(0xFF2E8E78.toInt()), if (P.allume) 0.42f else 0.74f))
-            val large = mix(lac, duJour(0xFF63C9B4.toInt()), if (P.allume) 0.24f else 0.34f)
-            piece(ruban(-4f, 104f, { x -> rive(x) }, { 66f }), lac, 0.4f)
-            // Le haut-fond, clair et turquoise, le long de la rive d'en face.
-            forme(ruban(-4f, 104f, { x -> rive(x) + 1.3f }, { x -> rive(x) + 7f }), large, 0.55f)
+            // Depuis le 2026-11-21, [eauClaire] : l'eau du large rend le
+            // ciel, et le haut-fond le long de la rive d'en face montre
+            // vraiment son lit, là où il n'était qu'une bande turquoise.
+            val vertDuLac = if (P.allume) P.eau else calmer(duJour(0xFF2E8E78.toInt()))
+            val lac = eauClaire(ruban(-4f, 104f, { x -> rive(x) }, { 66f }),
+                { x -> rive(x) }, { 66f }, vertDuLac, 119, hautFond = 0.26f)
             // Le reflet des versants, sombre, collé sous leur rive, et plus
             // profond sous les deux pentes qu'au fond de la retenue : sans
             // lui l'eau est un aplat et la forêt ne tient à rien. C'est aussi
             // ce qui sauve le lac du soir, où l'eau prend le rose du ciel et
             // n'était plus qu'une plaine entre deux versants.
-            forme(ruban(-4f, 104f, { x -> rive(x) }, { x -> rive(x) + 1.6f }), creux(lac, 0.5f), 0.5f)
-            forme(ruban(58f, 104f, { x -> rive(x) }, { x -> rive(x) + 2f + (x - 58f) * 0.13f }), creux(lac, 0.5f), 0.32f)
-            forme(ruban(-4f, 36f, { x -> rive(x) }, { x -> rive(x) + 2f + (36f - x) * 0.07f }), creux(lac, 0.45f), 0.28f)
-            // L'eau s'assombrit en venant vers nous, en cinq voiles minces
-            // aux bords ondulés : trois voiles droits laissaient trois arêtes
-            // en travers du lac, là où le dégradé doit être continu.
-            for (k in 0 until 5) forme(ruban(-4f, 104f, { x -> 33f + k * 5.5f + 1.3f * sin(x * 0.07f + k) }, { 68f }),
-                creux(lac, 0.6f), 0.13f)
+            forme(ruban(-4f, 104f, { x -> rive(x) }, { x -> rive(x) + 1.6f }), creux(lac, 0.5f), 0.3f)
+            forme(ruban(58f, 104f, { x -> rive(x) }, { x -> rive(x) + 2f + (x - 58f) * 0.13f }), creux(lac, 0.5f), 0.2f)
+            forme(ruban(-4f, 36f, { x -> rive(x) }, { x -> rive(x) + 2f + (36f - x) * 0.07f }), creux(lac, 0.45f), 0.18f)
             // Les traînées de lumière, couchées et plus longues en approchant.
             // Elles prennent la couleur de l'astre le soir : c'est à ses
             // traînées, bien plus qu'à sa teinte, qu'on reconnaît une eau.
@@ -5721,7 +5824,13 @@ object Paysages {
             plan(2)
             // L'Alzette, entre les deux quais qui fuient : son bord lointain
             // et le bord du quai d'où l'on regarde montent vers la droite.
-            val eau = mix(P.eau, 0xFF5F7046.toInt(), if (P.nuit) 0.25f else 0.45f)
+            //
+            // Jusqu'au 2026-11-21 elle était un aplat mêlé à `#5F7046`, un
+            // **olive** : la rivière sortait vert chlorophylle sous les
+            // façades roses du Grund. Elle passe par [eauClaire], avec une
+            // part de vert plus forte que celle d'un lac : une rivière de
+            // ville porte vraiment la couleur de son fond, et le reflet des
+            // façades a besoin d'une eau qui ne soit pas que du ciel.
             val g = RUE_GRUND
             val riviere = Path().apply {
                 moveTo(-2f, quaiProche(-2f) + 0.6f); lineTo(-2f, g.eau(-2f))
@@ -5729,7 +5838,9 @@ object Paysages {
                 while (x <= 102f) { lineTo(x, g.eau(x)); x += 4f }
                 lineTo(102f, quaiProche(102f) + 0.6f); close()
             }
-            piece(riviere, eau, 0.4f)
+            val eau = eauClaire(riviere, { x -> g.eau(x) }, { x -> quaiProche(x) + 0.6f },
+                neutre(duJour(0xFF55763E.toInt())), 150, nGalets = 26, part = 0.34f,
+                hautFond = 0.22f)
             // Les façades se reflètent : leurs couleurs tremblent dans l'eau,
             // coupées de rides claires, plus courtes vers le fond.
             c.save()
@@ -5963,19 +6074,23 @@ object Paysages {
             plancher(56f, DEVANT)
             poser(56f)
             val moselle = chemin("M-2 47L-2 32.5L102 32.5L102 47Z")
-            piece(moselle, P.eau, 0.4f)
-            // La Moselle n'est pas un aplat de bleu : la rive d'en face y pose
-            // son ombre, les façades y tremblent en traits couchés, et les rides
-            // s'élargissent en approchant.
+            // La Moselle n'est pas un aplat de bleu : depuis le 2026-11-21
+            // elle passe par [eauClaire], qui lui met un lit sous la rive
+            // d'en face. Un fleuve navigable n'est pas une eau de montagne :
+            // son haut-fond est court et ses galets rares.
+            val eau = eauClaire(moselle, { 32.5f }, { 47f }, P.eau, 157,
+                nGalets = 22, hautFond = 0.2f)
+            // La rive d'en face y pose son ombre, les façades y tremblent en
+            // traits couchés, et les rides s'élargissent en approchant.
             c.save()
             c.clipPath(moselle)
-            rect(-2f, 32.5f, 104f, 2.4f, sombre(P.eau, 0.38f), 0.5f)
+            rect(-2f, 32.5f, 104f, 2.4f, sombre(eau, 0.38f), 0.36f)
             val murs = facades()
             for (k in 0 until 20) {
                 rect(-2f + r() * 104f, 32.8f + r() * 2.6f, 1.4f + r() * 3f, 0.4f + r() * 0.7f,
-                    mix(murs[k % murs.size], P.eau, 0.55f), 0.4f)
+                    mix(murs[k % murs.size], eau, 0.55f), 0.4f)
             }
-            val clair = mix(P.eau, 0xFFFFFFFF.toInt(), if (P.nuit) 0.18f else 0.4f)
+            val clair = mix(eau, 0xFFFFFFFF.toInt(), if (P.nuit) 0.18f else 0.4f)
             for (k in 0 until 30) {
                 val u = r()
                 rect(-2f + r() * 102f, 34f + u * 12.5f, 2f + r() * (3f + u * 9f), 0.2f + u * 0.35f, clair, 0.3f + u * 0.45f)
@@ -7910,13 +8025,24 @@ object Paysages {
             }
             lisiere(-2f, 102f, { x -> 28f + 2f * sin(x * 0.09f + 1.2f) - x * 0.02f }, 2f, 3f, 237, colline)
             plan(1)
-            // ---- Le lac, la pièce la plus large de la carte.
-            val lac = mix(P.eau, neutre(duJour(0xFF4E7A74.toInt())), 0.55f)
-            pieceD("M-3 67L-3 33.4C20 32.2 50 32 78 32.8C90 33.2 98 33.6 103 33.2L103 67Z", lac, 0.4f)
-            // Le reflet de la colline sous sa rive : sans lui l'eau est un
-            // aplat, et la rive ne tient à rien.
-            forme("M-3 39.4L-3 34C20 32.8 50 32.6 78 33.4C90 33.8 98 34.2 103 33.8L103 38.6C70 39.8 30 40 -3 39.4Z",
-                sombre(lac, 0.3f), 0.3f)
+            // ---- Le lac, la pièce la plus large de la carte. « Une grande
+            // eau calme et pâle » : ce que la photo donne n'est pas une
+            // couleur, c'est une clarté, et jusqu'au 2026-11-21 c'était un
+            // aplat gris-vert. Il passe par [eauClaire], dont le haut-fond
+            // tient la bande sous la crête.
+            val bornesLac = floatArrayOf(-4f, 33.4f, 20f, 32.3f, 50f, 32f, 78f, 32.9f, 104f, 33.3f)
+            fun riveLac(x: Float): Float {
+                var i = 0
+                while (i < bornesLac.size - 4 && x > bornesLac[i + 2]) i += 2
+                val t = ((x - bornesLac[i]) / (bornesLac[i + 2] - bornesLac[i])).coerceIn(0f, 1f)
+                return bornesLac[i + 1] + (bornesLac[i + 3] - bornesLac[i + 1]) * t
+            }
+            val lac = eauClaire(ruban(-4f, 104f, { x -> riveLac(x) }, { 67f }),
+                { x -> riveLac(x) }, { 67f }, neutre(duJour(0xFF4E7A74.toInt())), 238)
+            // Le reflet de la colline, un peu sous sa rive : contre la rive
+            // même, l'eau est basse et c'est le fond qu'on voit.
+            forme(ruban(-4f, 104f, { x -> riveLac(x) + 2.2f }, { x -> riveLac(x) + 5.6f }),
+                sombre(lac, 0.3f), 0.2f)
             // Les traînées de lumière : horizontales, et plus longues en
             // approchant. C'est ce qui couche l'eau à plat.
             val brillance = mix(lac, 0xFFFFFFFF.toInt(), if (P.nuit) 0.14f else 0.42f)
@@ -8121,17 +8247,6 @@ object Paysages {
             // gauche un grand pan de terre nue, qui est ce que la photo
             // montre le plus franchement de la retenue.
             fun greveHaut(x: Float) = rive(x) - 0.9f - max(0f, 26f - x) * 0.55f
-            /** Le ruban compris entre les courbes [haut] et [bas], de [x0] à [x1]. */
-            fun ruban(x0: Float, x1: Float, haut: (Float) -> Float, bas: (Float) -> Float): Path {
-                val t = Path()
-                t.moveTo(x0, haut(x0))
-                var x = x0
-                while (x < x1) { x = min(x1, x + 2.5f); t.lineTo(x, haut(x)) }
-                while (x > x0) { t.lineTo(x, bas(x)); x = max(x0, x - 2.5f) }
-                t.lineTo(x0, bas(x0))
-                t.close()
-                return t
-            }
             // ---- Le fond de la vallée : deux crêtes lointaines qui ferment
             // le V, la seconde plus franche que la première.
             lisiere(-3f, 103f, { x -> 15.6f + 2.2f * sin(x * 0.07f) }, 1.8f, 2.8f, 246,
@@ -8182,30 +8297,35 @@ object Paysages {
                         if (r() < 0.5f) sombre(greve, 0.3f) else mix(greve, 0xFFFFFFFF.toInt(), 0.2f), 0.8f)
                 }
             }
-            // ---- Le lac, vert jade. Il descend bien au-dessous du barrage :
-            // les plans glissent l'un sur l'autre, et un lac arrêté sur la
-            // crête découvrirait le ciel sous elle.
-            // Le jade de la retenue. Il passe par [duJour] mais **pas** par
-            // [neutre] : le vert de l'eau est une teinte, pas une matière
-            // bâtie, et neutralisé il tournait au mauve.
+            // ---- Le lac. Il descend bien au-dessous du barrage : les plans
+            // glissent l'un sur l'autre, et un lac arrêté sur la crête
+            // découvrirait le ciel sous elle.
             //
-            // Et il **cède le pas au ciel le soir et la nuit** ([P.allume]).
-            // Une eau se lit à ce qu'elle reflète : de jour c'est le vert du
-            // fond, au couchant c'est le ciel. Forcé au jade aux quatre
-            // heures, le lac du soir devenait une prairie de plus entre deux
-            // versants verts, et c'est exactement ce que la palette de
-            // l'heure disait déjà avec son eau rose.
+            // C'est la plus grande eau de l'album, et jusqu'au 2026-11-21
+            // c'était un aplat de jade opaque. Elle passe par [eauClaire] :
+            // un lit de sable et ses galets, puis l'eau en voile par-dessus.
             //
-            // La saturation est tenue comme celle de la végétation ([nappe]) :
-            // le ravivage des palettes vives sort un vert d'eau franc en vert
-            // pomme, et le lac devenait la chose la plus criarde de la carte,
-            // devant le mot qui est posé dessus.
+            // Du jade il ne reste que l'empreinte que l'eau garde de son
+            // vallon, les 22 % que [eauClaire] laisse à la teinte du lieu.
+            // Il passe par [duJour] mais **pas** par [neutre] : le vert de
+            // l'eau est une teinte, pas une matière bâtie, et neutralisé il
+            // tournait au mauve. Sa saturation est tenue comme celle de la
+            // végétation ([nappe]) : le ravivage des palettes vives sort un
+            // vert d'eau franc en vert pomme.
+            //
+            // Et il **cède tout au ciel le soir et la nuit** ([P.allume]).
+            // Une eau se lit à ce qu'elle reflète : de jour c'est le fond, au
+            // couchant c'est le ciel. Forcé au jade aux quatre heures, le lac
+            // du soir devenait une prairie de plus entre deux versants verts,
+            // et c'est exactement ce que la palette de l'heure disait déjà
+            // avec son eau rose.
             fun calmer(col: Int) = mix(col, neutre(col), 0.45f)
-            val lac = calmer(mix(P.eau, duJour(0xFF2E8269.toInt()), if (P.allume) 0.44f else 0.72f))
-            piece(ruban(-4f, 104f, { x -> rive(x) + 0.2f }, { 60f }), lac, 0.4f)
-            // Le reflet des versants sous leur rive : sans lui l'eau est un
-            // aplat et la grève ne tient à rien.
-            forme(ruban(-4f, 104f, { x -> rive(x) + 0.2f }, { x -> rive(x) + 2.8f }), sombre(lac, 0.32f), 0.32f)
+            val jade = if (P.allume) P.eau else calmer(duJour(0xFF2E8269.toInt()))
+            val lac = eauClaire(ruban(-4f, 104f, { x -> rive(x) + 0.2f }, { 60f }),
+                { x -> rive(x) + 0.2f }, { 60f }, jade, 240)
+            // Le reflet des versants, un peu sous leur rive : contre la rive
+            // même, l'eau est basse et c'est le fond qu'on voit.
+            forme(ruban(-4f, 104f, { x -> rive(x) + 1.4f }, { x -> rive(x) + 3.4f }), sombre(lac, 0.32f), 0.2f)
             // Les traînées de lumière, couchées et plus longues en approchant.
             val brillance = mix(lac, 0xFFFFFFFF.toInt(), if (P.nuit) 0.16f else 0.48f)
             for (k in 0 until 18) {
@@ -8286,9 +8406,14 @@ object Paysages {
                     ux += 3f
                 }
             }
-            // ---- L'eau d'aval, plus sombre et plus verte que le lac.
-            val aval = calmer(mix(P.eau, duJour(0xFF236B57.toInt()), if (P.allume) 0.56f else 0.82f))
-            piece(ruban(-4f, 104f, { x -> piedVoile(x) }, { 62f }), aval, 0.4f)
+            // ---- L'eau d'aval, plus sombre et plus verte que le lac : elle
+            // sort des vannes, et une eau brassée garde la couleur de son
+            // fond là où la retenue rend le ciel. D'où une part de vert
+            // double et presque pas de galets : sous l'écume on ne voit rien.
+            val vertAval = if (P.allume) P.eau else calmer(duJour(0xFF236B57.toInt()))
+            val aval = eauClaire(ruban(-4f, 104f, { x -> piedVoile(x) }, { 62f }),
+                { x -> piedVoile(x) }, { 62f }, vertAval, 241, nGalets = 14, part = 0.44f,
+                hautFond = 0.2f)
             // L'écume au pied du voile, et les rides du courant.
             forme(ruban(-4f, 104f, { x -> piedVoile(x) }, { x -> piedVoile(x) + 1.1f }),
                 mix(aval, 0xFFFFFFFF.toInt(), if (P.nuit) 0.2f else 0.5f), 0.45f)
@@ -8540,17 +8665,6 @@ object Paysages {
             val r = Alea(266)
             /** La ligne d'eau, presque droite : un étang n'a pas de pente. */
             fun rive(x: Float) = 27.5f + (x - 50f) * 0.012f + 0.3f * sin(x * 0.07f)
-            /** Le ruban compris entre les courbes [haut] et [bas], de [x0] à [x1]. */
-            fun ruban(x0: Float, x1: Float, haut: (Float) -> Float, bas: (Float) -> Float): Path {
-                val t = Path()
-                t.moveTo(x0, haut(x0))
-                var x = x0
-                while (x < x1) { x = min(x1, x + 2.5f); t.lineTo(x, haut(x)) }
-                while (x > x0) { t.lineTo(x, bas(x)); x = max(x0, x - 2.5f) }
-                t.lineTo(x0, bas(x0))
-                t.close()
-                return t
-            }
             // ---- Les trois éoliennes du plateau. Peintes avant le bois, qui
             // leur mange le pied : c'est lui qui les plante, et un mât arrêté
             // sur la cime flotterait. Minérales, pour que l'hiver ne les
@@ -8685,22 +8799,23 @@ object Paysages {
             // le soir et la nuit ([P.allume]) : une eau se lit à ce qu'elle
             // reflète, et celle-ci plus que toute autre.
             fun calmer(col: Int) = mix(col, neutre(col), 0.4f)
-            val etang = calmer(mix(P.eau, duJour(0xFF2C6E92.toInt()), if (P.allume) 0.4f else 0.66f))
             // Le creux de l'eau. [sombre] vise un brun mêlé de la couleur du
             // proche, qui est rose au couchant : l'eau du soir n'y fonçait
             // pas d'un cheveu. Le fond d'un étang est froid, à toute heure.
             fun creux(col: Int, t: Float) = mix(col, duJour(0xFF14303E.toInt()), t)
-            piece(ruban(-4f, 104f, { x -> rive(x) }, { 66f }), etang, 0.4f)
+            // Depuis le 2026-11-21, [eauClaire]. Son haut-fond est **court**
+            // (0,14) : cet étang-ci est un miroir avant d'être une eau
+            // claire, et un large banc de galets lui aurait ôté ce qui en
+            // fait le sujet. On ne voit son lit que dans la frange des
+            // roseaux, ce qui est exactement ce que montre la photo.
+            val etang = eauClaire(ruban(-4f, 104f, { x -> rive(x) }, { 66f }),
+                { x -> rive(x) }, { 66f },
+                if (P.allume) P.eau else calmer(duJour(0xFF2C6E92.toInt())), 270,
+                nGalets = 26, hautFond = 0.14f)
             // Le reflet de la lisière, couché sous elle, qui se brouille en
             // descendant : sans lui le bois est posé sur un aplat bleu.
-            forme(ruban(-4f, 104f, { x -> rive(x) }, { x -> rive(x) + 3.6f }), creux(etang, 0.44f), 0.5f)
-            forme(ruban(-4f, 104f, { x -> rive(x) + 3.6f }, { x -> rive(x) + 7f }), creux(etang, 0.4f), 0.24f)
-            // L'eau fonce en venant vers nous, en cinq voiles minces aux
-            // bords ondulés : d'un seul ton, l'étang n'était qu'une aire
-            // bleue au bas de la fenêtre, et trois voiles droits y
-            // laisseraient trois arêtes en travers.
-            for (k in 0 until 5) forme(ruban(-4f, 104f, { x -> 34f + k * 5f + 1.4f * sin(x * 0.07f + k) }, { 68f }),
-                creux(etang, 0.62f), 0.12f)
+            forme(ruban(-4f, 104f, { x -> rive(x) }, { x -> rive(x) + 3.6f }), creux(etang, 0.44f), 0.34f)
+            forme(ruban(-4f, 104f, { x -> rive(x) + 3.6f }, { x -> rive(x) + 7f }), creux(etang, 0.4f), 0.17f)
             // ---- Le reflet de la coque : la même découpe, retournée sous la
             // ligne d'eau et un peu écrasée. Peinte à plat ([forme]) : un
             // reflet n'a ni tranche de kraft ni ombre portée, et le relevé
@@ -9173,17 +9288,6 @@ object Paysages {
          */
         fun kallektuffquell() {
             val r = Alea(287)
-            /** Le ruban compris entre les courbes [haut] et [bas], de [x0] à [x1]. */
-            fun ruban(x0: Float, x1: Float, haut: (Float) -> Float, bas: (Float) -> Float): Path {
-                val t = Path()
-                t.moveTo(x0, haut(x0))
-                var x = x0
-                while (x < x1) { x = min(x1, x + 2f); t.lineTo(x, haut(x)) }
-                while (x > x0) { t.lineTo(x, bas(x)); x = max(x0, x - 2f) }
-                t.lineTo(x0, bas(x0))
-                t.close()
-                return t
-            }
             // ---- La futaie ferme le ciel : deux rideaux, du clair au fond
             // au sombre devant. Le jour n'entre que par le haut à gauche.
             lisiere(-3f, 103f, { x -> 6f + 3.2f * sin(x * 0.062f + 1.2f) }, 2.2f, 3.6f, 286,
@@ -9208,13 +9312,13 @@ object Paysages {
             val noirTuf = neutre(duJour(0xFF2C2A26.toInt()))
             val mousse = nappe(duJour(0xFF63982A.toInt()), 0.58f, 0.3f)
             val mousseClaire = mix(mousse, duJour(0xFFD4E86C.toInt()), 0.3f)
-            val eauClaire = mix(0xFFFFFFFF.toInt(), duJour(0xFF9CC8D8.toInt()), 0.45f)
+            val filetDeau = mix(0xFFFFFFFF.toInt(), duJour(0xFF9CC8D8.toInt()), 0.45f)
             /** Le fond du creux sous le surplomb : au-delà, la paroi ruisselante. */
             fun creuxTuf(x: Float) = souslevreTuf(x) + 5.6f + 2.6f * sin(x * 0.07f + 1f)
             mineral {
                 // La paroi du fond, ruisselante, d'abord : tout le reste se
                 // pose devant elle.
-                piece(ruban(24f, 104f, { x -> souslevreTuf(x) }, { 50f }),
+                piece(ruban(24f, 104f, { x -> souslevreTuf(x) }, { 50f }, 2f),
                     mix(sombre(tuf, 0.34f), mousse, 0.14f), 0.5f)
                 // Les côtes de tuf : l'eau dépose sa pierre en coulées
                 // verticales. Elles ne partent **pas toutes du même niveau**
@@ -9242,12 +9346,12 @@ object Paysages {
                 }
                 // Le creux sous le surplomb : c'est lui, et rien d'autre, qui
                 // dit que la pierre avance au-dessus du vide.
-                piece(ruban(24f, 104f, { x -> souslevreTuf(x) - 0.4f }, { x -> creuxTuf(x) }), noirTuf, 0.5f)
-                forme(ruban(24f, 104f, { x -> creuxTuf(x) - 2.2f }, { x -> creuxTuf(x) }),
+                piece(ruban(24f, 104f, { x -> souslevreTuf(x) - 0.4f }, { x -> creuxTuf(x) }, 2f), noirTuf, 0.5f)
+                forme(ruban(24f, 104f, { x -> creuxTuf(x) - 2.2f }, { x -> creuxTuf(x) }, 2f),
                     mix(noirTuf, tuf, 0.3f), 0.5f)
                 // La lèvre elle-même, pâle et éclairée sur son dessus.
-                piece(ruban(22f, 104f, { x -> levreTuf(x) }, { x -> souslevreTuf(x) }), tuf, 0.5f)
-                forme(ruban(22f, 104f, { x -> levreTuf(x) }, { x -> levreTuf(x) + 1f }),
+                piece(ruban(22f, 104f, { x -> levreTuf(x) }, { x -> souslevreTuf(x) }, 2f), tuf, 0.5f)
+                forme(ruban(22f, 104f, { x -> levreTuf(x) }, { x -> levreTuf(x) + 1f }, 2f),
                     mix(tuf, 0xFFFFFFFF.toInt(), 0.3f), 0.8f)
                 for (i in 0 until 16) {
                     val ax = 24f + r() * 80f
@@ -9259,7 +9363,7 @@ object Paysages {
             // blanc pur jaunirait sur le grain chaud.
             for (i in 0 until 14) {
                 val wx = 24f + r() * 80f
-                ligne(wx, creuxTuf(wx), wx + (r() - 0.5f) * 1.6f, 49f, eauClaire, 0.3f + r() * 0.3f, 0.3f)
+                ligne(wx, creuxTuf(wx), wx + (r() - 0.5f) * 1.6f, 49f, filetDeau, 0.3f + r() * 0.3f, 0.3f)
             }
             // ---- La mousse : des coussins à cheval sur la lèvre, qui
             // débordent dessus et pendent devant le creux. C'est elle la
@@ -9293,8 +9397,8 @@ object Paysages {
                 // Un filet clair doublé d'une ombre : seul, le trait pâle
                 // disparaissait sur le tuf, qui est pâle lui aussi.
                 ligne(gx + 0.3f, gy, gx + 0.3f, gy + h, sombre(tuf, 0.5f), 0.3f, 0.35f)
-                ligne(gx, gy, gx, gy + h, eauClaire, 0.34f, 0.8f)
-                rond(gx, gy + h + 2f + r() * 6f, 0.45f, eauClaire, 0.95f)
+                ligne(gx, gy, gx, gy + h, filetDeau, 0.34f, 0.8f)
+                rond(gx, gy + h + 2f + r() * 6f, 0.45f, filetDeau, 0.95f)
             }
             plan(2)
             solNaturel(SolNaturel.MOUSSE, DEVANT)  // le sol détrempé de la source
@@ -9305,7 +9409,7 @@ object Paysages {
             fun bordBassin(x: Float) = 47.5f - (x - 20f) * 0.02f + 0.7f * sin(x * 0.16f)
             val galet = neutre(duJour(0xFFB4ACA0.toInt()))
             mineral {
-                piece(ruban(-4f, 104f, { x -> bordBassin(x) }, { 62f }), sombre(galet, 0.34f), 0.4f)
+                piece(ruban(-4f, 104f, { x -> bordBassin(x) }, { 62f }, 2f), sombre(galet, 0.34f), 0.4f)
                 for (i in 0 until 30) {
                     val gx = -4f + r() * 108f
                     val gy = bordBassin(gx) + 0.8f + r() * 9f
@@ -9314,13 +9418,16 @@ object Paysages {
                         if (r() < 0.5f) sombre(galet, 0.2f) else mix(galet, 0xFFFFFFFF.toInt(), 0.18f), 0f)
                 }
             }
-            val eau = mix(duJour(0xFF5E9E92.toInt()), P.eau, 0.3f)
-            forme(ruban(-4f, 104f, { x -> bordBassin(x) }, { 62f }), eau, 0.42f)
-            forme(ruban(-4f, 104f, { x -> bordBassin(x) }, { x -> bordBassin(x) + 0.8f }),
-                mix(eau, eauClaire, 0.6f), 0.55f)
+            // Le bleu de l'heure d'abord, la teinte du tuf ensuite : l'eau
+            // d'une source est la plus claire de toutes, et elle était ici
+            // mêlée à 70 % d'un vert-de-gris qui la rendait trouble.
+            val eau = mix(P.eau, duJour(0xFF5E9E92.toInt()), 0.3f)
+            forme(ruban(-4f, 104f, { x -> bordBassin(x) }, { 62f }, 2f), eau, 0.42f)
+            forme(ruban(-4f, 104f, { x -> bordBassin(x) }, { x -> bordBassin(x) + 0.8f }, 2f),
+                mix(eau, filetDeau, 0.6f), 0.55f)
             for (i in 0 until 9) {
                 val wx = -4f + r() * 104f
-                rect(wx, bordBassin(wx) + 2f + r() * 7f, 3f + r() * 7f, 0.3f, eauClaire, 0.4f)
+                rect(wx, bordBassin(wx) + 2f + r() * 7f, 3f + r() * 7f, 0.3f, filetDeau, 0.4f)
             }
             // ---- Les hêtres du bord gauche, ceux au travers desquels on
             // regarde : des fûts clairs et lisses qui sortent de la fenêtre.
@@ -9957,13 +10064,28 @@ object Paysages {
             plan(2)
             solNaturel(SolNaturel.BERGE)  // la rive de l'étang
             poser(DEVANT)
-            // ---- L'eau. Sombre, verte, et c'est elle qui porte le reflet.
-            // Une eau d'étang : verte, **sombre** et calme. Laissée à sa
-            // saturation, le ravivage la sortait en émeraude, et la nappe
-            // sous la passerelle se lisait comme une pelouse.
+            // ---- L'eau. C'est elle qui porte le reflet de la passerelle.
+            //
+            // Jusqu'au 2026-11-21 elle était un vert de forêt poussé à 84 % :
+            // l'étang sortait vert d'encre, presque noir, la plus sourde des
+            // eaux de l'album. Elle passe par [eauClaire], avec une part de
+            // vert forte (une eau dormante porte la couleur de son fond) mais
+            // une eau qui rend enfin le ciel. Laissée à sa saturation, le
+            // ravivage la sortait en émeraude, et la nappe sous la passerelle
+            // se lisait comme une pelouse : d'où [calmer].
             fun calmer(col: Int) = mix(col, neutre(col), 0.5f)
-            val eau = calmer(mix(P.eau, duJour(0xFF27452F.toInt()), if (P.allume) 0.55f else 0.84f))
-            pieceD("M-3 60L-3 41.4C14 40.4 34 42 52 44.6C68 47 84 49.6 103 50L103 60Z", eau, 0.4f)
+            val bornesRive = floatArrayOf(-4f, 41.4f, 14f, 40.4f, 34f, 42f, 52f, 44.6f,
+                68f, 47f, 84f, 49.6f, 104f, 50.1f)
+            fun riveEtang(x: Float): Float {
+                var i = 0
+                while (i < bornesRive.size - 4 && x > bornesRive[i + 2]) i += 2
+                val t = ((x - bornesRive[i]) / (bornesRive[i + 2] - bornesRive[i])).coerceIn(0f, 1f)
+                return bornesRive[i + 1] + (bornesRive[i + 3] - bornesRive[i + 1]) * t
+            }
+            val eau = eauClaire(ruban(-4f, 104f, { x -> riveEtang(x) }, { 60f }),
+                { x -> riveEtang(x) }, { 60f },
+                if (P.allume) P.eau else calmer(duJour(0xFF3C6B44.toInt())), 310,
+                nGalets = 30, part = 0.38f, hautFond = 0.24f)
             // ---- La passerelle, dessinée de face puis posée de trois quarts :
             // son bout proche à droite est grand, l'autre fuit vers la berge
             // de gauche, et ses barreaux se serrent en s'éloignant.
