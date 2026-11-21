@@ -5647,15 +5647,18 @@ object Paysages {
             // ---- Les deux parois du vallon, qui portent les culées. Elles
             // tiennent les colonnes que la plaque du mot laisse libres.
             mineral {
-                pieceD("M103 54L103 -3L84.4 -3L81.6 7L87.4 11L79.6 17L86 24L78.4 31L84.8 38L78 45L84 54Z", paroi)
+                val droite = "M103 54L103 -3L84.4 -3L81.6 7L87.4 11L79.6 17L86 24L78.4 31L84.8 38L78 45L84 54Z"
+                pieceD(droite, paroi)
+                // Le litage : c'est lui qui fait le grès (relevé du
+                // 2026-11-21). Les sept traits qui le tenaient avant ne
+                // rencontraient aucune arête, et la paroi se lisait en plaque
+                // de chocolat.
+                strates(chemin(droite), -3f, 54f, paroi, 136, 3.4f, 0.04f)
                 // Les surplombs : le grès se creuse en abris, et c'est ce
                 // décrochement qui dit la paroi plutôt qu'un pan de mur.
                 for (d in arrayOf("M103 11L87.4 11L79.6 17L88.6 15L103 16Z",
                         "M103 24L86 24L78.4 31L87.6 28L103 29Z", "M103 38L84.8 38L78 45L87 42L103 43Z"))
                     pieceD(d, sombre(paroi, 0.3f), 0.3f)
-                val creux = sombre(paroi, 0.3f)
-                for (y in floatArrayOf(3f, 7.5f, 19f, 26f, 33f, 40f, 48f))
-                    ligne(103f, y - 1f, 83f, y + 0.4f, creux, 0.28f, 0.6f)
             }
             for (d in arrayOf("M103 -3L84.4 -3L83.6 2.8L92 1.2L103 2.2Z",
                     "M103 16L88.6 15L79.6 17L80.4 20L88 18L103 19Z",
@@ -5684,15 +5687,17 @@ object Paysages {
             }
             // ---- Le ressaut : des blocs d'altitudes franchement
             // différentes. Alignés, ils refont une assise de mur.
+            // Chaque bloc a son litage à lui, ses lits décalés de ceux du
+            // voisin : ce sont ces ruptures qui en font des blocs, et non
+            // une assise (skill `matieres-du-decor`, le litage seul).
             mineral {
-                for ((i, d) in ROCHERS_MELLERDALL.withIndex())
-                    pieceD(d, if (i % 2 == 0) bloc else sombre(bloc, 0.2f))
-                val rocheJoint = sombre(bloc, 0.4f)
-                for (y in floatArrayOf(43f, 46.5f, 50f)) {
-                    ligne(14f, y - 0.5f, 22f, y, rocheJoint, 0.28f, 0.7f)
-                    ligne(26f, y - 4.5f, 45f, y - 4f, rocheJoint, 0.3f, 0.7f)
-                    ligne(51f, y - 0.5f, 76f, y, rocheJoint, 0.3f, 0.7f)
-                    ligne(84f, y - 2f, 103f, y - 1.6f, rocheJoint, 0.3f, 0.7f)
+                val borne = RectF()
+                for ((i, d) in ROCHERS_MELLERDALL.withIndex()) {
+                    val ton = if (i % 2 == 0) bloc else sombre(bloc, 0.2f)
+                    val masse = chemin(d)
+                    pieceD(d, ton)
+                    masse.computeBounds(borne, true)
+                    strates(masse, borne.top + 0.6f, borne.bottom, ton, 151 + i, 2.4f, if (i % 2 == 0) 0.03f else -0.04f)
                 }
             }
             for ((i, d) in MOUSSES_MELLERDALL.withIndex())
@@ -5783,12 +5788,12 @@ object Paysages {
             // colonne que la plaque du mot laisse libre.
             val proche = sombre(roche, 0.6f)
             mineral {
-                pieceD("M-3 60L-3 -3L19.4 -3L22.6 7L16.4 12L25 19L17.8 27L26.2 35L19 43L26.4 51L20 60Z", proche)
+                val gauche = "M-3 60L-3 -3L19.4 -3L22.6 7L16.4 12L25 19L17.8 27L26.2 35L19 43L26.4 51L20 60Z"
+                pieceD(gauche, proche)
+                strates(chemin(gauche), -3f, 60f, proche, 160, 3.8f, -0.05f)
                 for (d in arrayOf("M-3 12L16.4 12L25 19L15 16.4L-3 17.4Z", "M-3 27L17.8 27L26.2 35L16 32L-3 33Z",
                         "M-3 43L19 43L26.4 51L16.6 48L-3 49Z"))
                     pieceD(d, sombre(proche, 0.3f), 0.3f)
-                val veine = sombre(proche, 0.28f)
-                for (y in floatArrayOf(3f, 9f, 22f, 31f, 39f, 47f, 55f)) ligne(-3f, y, 24f, y + 1.6f, veine, 0.34f, 0.6f)
             }
             for (d in arrayOf("M-3 -3L19.4 -3L20.2 2.8L9 1.2L-3 2.2Z", "M-3 17.4L15 16.4L25 19L24.2 22.4L15.4 19.4L-3 20.6Z",
                     "M-3 33L16 32L26.2 35L25.4 38.4L16.4 35.4L-3 36.4Z"))
