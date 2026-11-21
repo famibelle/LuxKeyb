@@ -5629,24 +5629,90 @@ object Paysages {
             // ---- Le clocher de Saint-Jean-du-Grund : la flèche d'ardoise
             // qui monte au-dessus des toits est le seul trait qui dise
             // « Grund » du premier coup d'œil.
+            //
+            // La matière avant la découpe (propriétaire, 2026-11-21) : un
+            // enduit badigeonné sur un chaînage de pierre de taille, une
+            // corniche, des bandeaux, des baies encadrées, une flèche en
+            // vraies ardoises. En aplat crème sous un triangle noir, la tour
+            // était un jouet de bois posé devant les toits — la règle déjà
+            // payée au château de Veianen : la matière d'un immeuble se
+            // respecte, fût-il au second plan, et c'est [matiere], celle-là
+            // même dont sont faites les façades du Grund à ses pieds.
             mineral {
-                val tour = neutre(duJour(0xFFE6DCC4.toInt()))
-                pieceD("M30.8 46L30.8 16.6L37.2 16.6L37.2 46Z", tour)
-                pieceD("M29.9 16.6L38.1 16.6L38.1 14.4L29.9 14.4Z", mix(tour, 0xFFFFFFFF.toInt(), 0.22f))
-                for (fx in floatArrayOf(31.6f, 34.6f)) {
-                    pieceD("M$fx 24.6L$fx 21.8C$fx 20.3 ${fx + 1.8f} 20.3 ${fx + 1.8f} 21.8L${fx + 1.8f} 24.6Z",
-                        if (P.allume) P.fenetre else sombre(tour, 0.45f))
+                val creme = duJour(0xFFE6DCC4.toInt())
+                val tour = neutre(creme)
+                val taille = pierreDeTaille()
+                val creux = neutre(ombreFroide(creme, 0.34f))
+                val vitre = if (P.allume) P.fenetre else neutre(duJour(0xFF2B3038.toInt()))
+                // Le flanc gauche, qui fuit vers le point de fuite latéral de
+                // la rue : une tour vue de face reste une planche.
+                val flanc = floatArrayOf(28.4f, 16.9f, 30.8f, 16.6f, 30.8f, 46f, 28.4f, 45.9f)
+                piece(quad(flanc), creux, 0.5f)
+                surPan(flanc) {
+                    rect(0f, 0f, 100f, 3.6f, sombre(taille, 0.26f), 0.9f)
+                    var cy = 6f
+                    while (cy < 94f) { rect(0f, cy, 100f, 1.2f, sombre(taille, 0.3f), 0.4f); cy += 16f }
                 }
-                rond(34f, 29.4f, 1.9f, mix(tour, 0xFFFFFFFF.toInt(), 0.5f))
-                rond(34f, 29.4f, 1.9f, sombre(tour, 0.4f), 0.25f)
-                ligne(34f, 29.4f, 34f, 28.1f, sombre(tour, 0.6f), 0.28f)
-                ligne(34f, 29.4f, 35.1f, 29.9f, sombre(tour, 0.6f), 0.24f)
-                // La flèche : une aiguille, pas un chapeau. Celle de
-                // Saint-Jean est très effilée, avec un petit lanternon.
+                val face = floatArrayOf(30.8f, 16.6f, 37.2f, 16.6f, 37.2f, 46f, 30.8f, 46f)
+                piece(quad(face), tour, 0.6f)
+                surQuad(6.4f, 29.4f, face) {
+                    val clair = mix(tour, 0xFFFFFFFF.toInt(), 0.3f)
+                    val rt = Alea(154)
+                    // Le badigeon : un enduit n'est jamais d'un seul ton.
+                    for (k in 0 until 9) ovalePapierPlat(rt() * 6.4f, 1.4f + rt() * 25f,
+                        0.6f + rt() * 1.3f, 0.5f + rt() * 1f, if (k % 2 == 0) clair else creux, 0.16f)
+                    // Les chaînes d'angle, une pierre longue, une pierre
+                    // courte. Étroites : à la largeur de celles d'une façade
+                    // ([matiere]), elles mangeaient la moitié d'une tour qui
+                    // ne fait que six unités de large, et la tour ressortait
+                    // en pierre de taille d'un bord à l'autre.
+                    var cy = 0.9f
+                    var k = 0
+                    while (cy < 25f) {
+                        val l = if (k % 2 == 0) 0.85f else 0.55f
+                        rect(0f, cy, l, 0.8f, taille)
+                        rect(6.4f - l, cy, l, 0.8f, taille)
+                        cy += 0.95f; k++
+                    }
+                    // Deux bandeaux, et le socle de pierre avec ses joints.
+                    for (by in floatArrayOf(9.2f, 18.4f)) {
+                        rect(0f, by, 6.4f, 0.4f, taille)
+                        rect(0f, by + 0.4f, 6.4f, 0.22f, creux, 0.6f)
+                    }
+                    rect(0f, 25.6f, 6.4f, 3.8f, taille)
+                    rect(0f, 25.38f, 6.4f, 0.22f, creux, 0.6f)
+                    val joint = neutre(sombre(taille, 0.25f))
+                    for (j in 1..2) rect(0f, 25.6f + j * 1.25f, 6.4f, 0.09f, joint, 0.7f)
+                }
+                // La corniche qui porte le beffroi, et l'ombre qu'elle jette.
+                pieceD("M29.9 16.6L38.1 16.6L38.1 14.4L29.9 14.4Z", taille)
+                forme("M29.9 16.6L38.1 16.6L38.1 17.4L29.9 17.4Z", sombre(taille, 0.45f), 0.5f)
+                // Les deux baies du beffroi : encadrement de pierre, abat-son
+                // à lames, appui saillant.
+                for (fx in floatArrayOf(31.5f, 34.5f)) {
+                    pieceD("M${fx - 0.3f} 25.1L${fx - 0.3f} 21.7C${fx - 0.3f} 19.8 ${fx + 2.4f} 19.8 ${fx + 2.4f} 21.7L${fx + 2.4f} 25.1Z", taille)
+                    forme("M$fx 24.6L$fx 21.8C$fx 20.3 ${fx + 1.8f} 20.3 ${fx + 1.8f} 21.8L${fx + 1.8f} 24.6Z", vitre, 0.95f)
+                    if (!P.allume) for (k in 0 until 4)
+                        ligne(fx, 21.9f + k * 0.72f, fx + 1.8f, 21.6f + k * 0.72f, mix(taille, 0xFFFFFFFF.toInt(), 0.22f), 0.2f, 0.7f)
+                    rect(fx - 0.45f, 25.1f, 2.7f, 0.4f, taille, 0.95f)
+                }
+                // L'horloge, dans son cercle de pierre.
+                rond(34f, 28.4f, 2.1f, taille)
+                rond(34f, 28.4f, 1.6f, mix(tour, 0xFFFFFFFF.toInt(), 0.45f))
+                rond(34f, 28.4f, 1.6f, sombre(tour, 0.35f), 0.22f)
+                ligne(34f, 28.4f, 34f, 27.2f, sombre(tour, 0.6f), 0.26f)
+                ligne(34f, 28.4f, 35f, 28.9f, sombre(tour, 0.6f), 0.22f)
+                // La flèche : une aiguille, pas un chapeau, et des rangs
+                // d'ardoises, pas un triangle noir. Le lanternon de pierre
+                // entre les deux.
                 val tuile = sombre(neutre(ardoise()), 0.15f)
-                pieceD("M30.4 14.4L34 11.4L37.6 14.4Z", tuile)
-                pieceD("M31.4 11.4L36.6 11.4L36.6 8.6L31.4 8.6Z", mix(tuile, 0xFFFFFFFF.toInt(), 0.18f))
-                pieceD("M30.6 8.6L34 -1.6L37.4 8.6Z", tuile)
+                ardoises(floatArrayOf(33.8f, 11.4f, 34.2f, 11.4f, 37.6f, 14.4f, 30.4f, 14.4f), tuile, 155, 4, 7)
+                piece(quad(floatArrayOf(31.4f, 8.6f, 36.6f, 8.6f, 36.6f, 11.4f, 31.4f, 11.4f)), mix(taille, tour, 0.4f), 0.5f)
+                for (lx in floatArrayOf(32.2f, 34.9f)) rect(lx, 9.2f, 1.1f, 1.8f, vitre, 0.9f)
+                ardoises(floatArrayOf(33.8f, -1.6f, 34.2f, -1.6f, 37.4f, 8.6f, 30.6f, 8.6f), tuile, 156, 9, 5)
+                // L'arête au jour, à gauche : sans elle, les rangs d'ardoise
+                // font un cône et non une aiguille à quatre pans.
+                forme("M34 -1.6L30.6 8.6L33.3 8.6Z", mix(tuile, 0xFFFFFFFF.toInt(), 0.16f), 0.42f)
                 ligne(34f, -1.6f, 34f, -4.4f, sombre(tuile, 0.3f), 0.3f)
                 ligne(32.9f, -3.2f, 35.1f, -3.2f, sombre(tuile, 0.3f), 0.26f)
             }
