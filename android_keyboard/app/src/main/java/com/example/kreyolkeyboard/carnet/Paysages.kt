@@ -10961,16 +10961,26 @@ object Paysages {
             piece(massif, sombre(taille, 0.42f))
             // Le mur sombre du bâtiment de droite, où court la gouttière.
             pieceD("M92 -3L103 -3L103 62L92 62Z", sombre(enduit, 0.25f))
-            // Les blocs en bossage des piédroits, deux rangs décalés.
+            // Les blocs en bossage des piédroits, deux rangs décalés. Sur la
+            // photo ils vont jusqu'au bord de l'ouverture : celui de gauche
+            // s'arrêtait à dix unités de l'arc, et le piédroit montrait un
+            // aplat (relevé du 2026-11-21). Le second bloc de chaque assise
+            // le prolonge, découpé par le mur.
             val rb = Alea(372)
+            c.save(); c.clipPath(massif)
+            releve?.let { it.save(); it.clipPath(massif) }
             var by = 62f
             while (by > -4f) {
                 val hb = 2.8f + rb() * 1.4f
-                bossage(-4f + rb() * 1.6f, by - hb, 8f + rb() * 5f, hb, taille, rb())
+                val xa = -4f + rb() * 1.6f
+                val wa = 8f + rb() * 5f
+                bossage(xa, by - hb, wa, hb, taille, rb())
+                bossage(xa + wa, by - hb, xg + 4f - (xa + wa), hb, taille, rb())
                 bossage(62f + rb() * 1.4f, by - hb, 9f + rb() * 5f, hb, taille, rb())
                 bossage(75f + rb() * 1.6f, by - hb - rb() * 1.2f, 9f + rb() * 5f, hb, taille, rb())
                 by -= hb
             }
+            releve?.restore(); c.restore()
             // Le linteau de pierre au-dessus de l'arc : des assises plus
             // longues, qui ferment le mur jusqu'au bord haut.
             var ly = 10f
