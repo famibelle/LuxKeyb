@@ -6441,7 +6441,11 @@ object Paysages {
             // matière bâtie : il passe par neutre(), sans quoi raviver() le
             // tirait vers l'orange de signalisation (règle 10) — c'est ce qu'on
             // voyait, trois panneaux de chantier au bord de la Moselle.
-            val corten = neutre(duJour(0xFF8C4A2B.toInt()))
+            // Relevé sur la photo : la tôle au jour fait #993F1A, un rouge
+            // de rouille. Le brun d'avant (#8C4A2B) sortait chocolat, et
+            // avec ses traînées sur toute la hauteur la tôle se lisait en
+            // planche de bois veinée (relevé du 2026-11-21).
+            val corten = neutre(duJour(0xFFA4441E.toInt()))
             val arriere = neutre(duJour(0xFFD9A978.toInt()))   // la tôle de derrière, au soleil
             val coulure = neutre(duJour(0xFF63341A.toInt()))
             val plaque = neutre(duJour(0xFFD9D3C5.toInt()))
@@ -6457,14 +6461,16 @@ object Paysages {
                     val xg = fuite.x(ug); val yg = fuite.y(ug); val eg = fuite.echelle(ug)
                     val hd = yd - HAUT_STELE * ed
                     val hg = yg - HAUT_STELE * eg
-                    // La tôle de derrière : elle dépasse à droite, monte un peu
-                    // plus haut, et c'est elle qu'on voit par l'étoile — d'où sa
-                    // couleur plus claire, elle prend le soleil.
+                    // La tôle de derrière : elle dépasse à droite et monte un peu
+                    // plus haut. Sur la photo, ce qui en dépasse est de la
+                    // rouille à l'ombre, et seule sa face intérieure, qu'on voit
+                    // par l'étoile, prend le soleil. Beige d'un bout à l'autre,
+                    // elle se lisait en planche de bois accolée à chaque stèle.
                     val dx = 4.2f * ed
                     val dy = -1.8f * ed
                     piece(quad(floatArrayOf(
                         xg + dx * eg / ed, hg + dy, xd + dx, hd + dy, xd + dx, yd - 0.8f, xg + dx * eg / ed, yg - 0.8f
-                    )), arriere, 0.6f)
+                    )), sombre(corten, 0.38f), 0.6f)
                     // La tranche de la tôle de devant : c'est elle qui dit le
                     // trois quarts, avec la fuite de la rangée.
                     val tr = 2.2f * ed
@@ -6479,26 +6485,39 @@ object Paysages {
                         // L'étoile est retirée du papier, pas posée dessus.
                         val tole = Path().apply { addRect(0f, 0f, TOLE_L, HAUT_STELE, Path.Direction.CW) }
                         tole.op(etoile(TOLE_L / 2f, ETOILE_Y, 4.8f), Path.Op.DIFFERENCE)
+                        // Ce qu'on voit par l'étoile : la face de la tôle de
+                        // derrière au soleil, et l'ombre de la branche haute.
+                        forme(etoile(TOLE_L / 2f, ETOILE_Y, 5.2f), arriere)
+                        forme(etoile(TOLE_L / 2f + 0.9f, ETOILE_Y - 0.9f, 4.6f), sombre(arriere, 0.3f), 0.45f)
                         piece(tole, corten)
-                        // La rouille ne couvre pas d'un aplat : elle coule en
-                        // traînées verticales, plus sombres au pied où l'eau
-                        // s'accumule, plus claires en haut où la pluie l'a lavée.
+                        // La rouille ne couvre pas d'un aplat, mais elle ne
+                        // file pas non plus : elle **tache**. Des plaques
+                        // rondes de tons voisins, plus sombres au pied où
+                        // l'eau s'accumule, plus claires en haut où la pluie
+                        // l'a lavée, et seulement quelques coulures fines sous
+                        // l'étoile et sous la plaque, là où l'eau s'arrête.
+                        // Des traînées de toute la hauteur font du bois veiné.
                         c.save()
                         c.clipPath(tole)
-                        var tx = 0f
-                        while (tx < TOLE_L) {
-                            val tw = 0.5f + r() * 1.4f
+                        for (k in 0 until 34) {
+                            val ty = r() * HAUT_STELE
                             val d = r()
                             val teinte = when {
-                                d < 0.34f -> sombre(corten, 0.1f + r() * 0.2f)
-                                d < 0.68f -> mix(corten, 0xFFFFFFFF.toInt(), 0.04f + r() * 0.1f)
-                                else -> mix(corten, coulure, 0.45f)
+                                d < 0.4f -> sombre(corten, 0.12f + r() * 0.2f + 0.2f * ty / HAUT_STELE)
+                                d < 0.75f -> mix(corten, 0xFFD27A42.toInt(), 0.18f + r() * 0.2f)
+                                else -> mix(corten, coulure, 0.4f)
                             }
-                            val haut = r() * HAUT_STELE * 0.55f
-                            rect(tx, haut, tw, HAUT_STELE - haut, teinte, 0.4f)
-                            tx += tw
+                            val tr = 0.7f + r() * 1.9f
+                            c.save(); c.scale(1f, 0.55f + r() * 0.5f, 0f, ty)
+                            rond(r() * TOLE_L, ty, tr, teinte, 0.32f)
+                            c.restore()
                         }
-                        rect(0f, HAUT_STELE - 6.5f, TOLE_L, 6.5f, sombre(corten, 0.32f), 0.45f)
+                        for (sx in floatArrayOf(TOLE_L / 2f - 1.2f, TOLE_L / 2f + 0.8f, 3.2f, TOLE_L - 3.6f)) {
+                            val sy = if (sx > 3.3f && sx < TOLE_L - 3.7f) ETOILE_Y + 3.6f else 31.6f
+                            ligne(sx, sy, sx + (r() - 0.5f) * 0.3f, sy + 2.4f + r() * 4f, mix(corten, coulure, 0.6f),
+                                0.24f + r() * 0.18f, 0.5f)
+                        }
+                        rect(0f, HAUT_STELE - 6.5f, TOLE_L, 6.5f, sombre(corten, 0.32f), 0.4f)
                         rect(0f, 0f, TOLE_L, 1.2f, mix(corten, 0xFFFFFFFF.toInt(), 0.14f), 0.4f)
                         c.restore()
                         // La plaque de texte dans son cadre de bronze.
