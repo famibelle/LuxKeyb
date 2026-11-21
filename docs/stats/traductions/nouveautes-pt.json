@@ -1,5 +1,93 @@
 {
   "_comment": "Tradução portuguesa de nouveautes.html, por versão. Mantida à mão: generate_nouveautes.py junta-a em stats/nouveautes-pt.json. Cada versão segue a francesa do CHANGELOG: as mesmas secções, o mesmo número de pontos, pela mesma ordem; o título de uma secção pode faltar quando _sections o traduz. Uma versão que falte aqui, ou que já não tenha a forma da francesa, aparece em francês com um aviso. O texto é HTML: escapar < e &.",
+  "_sections": {
+    "Nouveautés": "Novidades",
+    "Corrections": "Correções",
+    "Changements": "Alterações",
+    "Rapidité": "Rapidez"
+  },
+  "41.1.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Novidades",
+        "points": [
+          {
+            "titre": "O Wierderbuch indica a classe de cada palavra",
+            "texte": "Na lista de resultados, cada palavra mostra a sua classe ao lado («Nome feminino», «Verbo», «Adjetivo»…), e a sua ficha mostra-a por baixo da palavra. Escreva «Haus»: vê logo que é um nome neutro, e que «hausen» é um verbo."
+          },
+          {
+            "titre": "Águas claras",
+            "texte": "Os lagos, os rios e as bacias das cartas têm um azul límpido. Onde a água é baixa vê-se o fundo e os seus seixos, e há trutas a nadar nas bacias do Mëllerdall e da Kallektuffquell."
+          },
+          {
+            "titre": "Seis lugares repintados",
+            "texte": "O lago da Alta Sûre entre as suas encostas arborizadas, com o pontão e o barco; o castelo de Vianden acima da bruma do Our, os seus telhados de ardósia e o campanário da vila; a agulha de arenito do Priedegtstull e a sua passarela; a grande saliência de tufo da Kallektuffquell; o Biodiversum à beira do lago do Haff Réimech; e a cidade alta do Luxemburgo, com Saint-Michel, o parque das casamatas, as torres do Kirchberg e, lá em baixo, o campanário de Saint-Jean no Grund."
+          }
+        ]
+      },
+      {
+        "titre": "Correções",
+        "points": [
+          {
+            "titre": "«Ativar» em vez de «interruptor»",
+            "texte": "As instruções de configuração em francês falavam de um interruptor, uma palavra que algumas pessoas não percebiam. Agora dizem ativar, desativar e reativar."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Animação em três tempos no Wierderbuch. 1. Escreve-se «Haus» no campo de pesquisa, letra a letra. 2. A lista de resultados mostra cada palavra com a sua classe ao lado: Haus, nome neutro, casa; Hausse, nome feminino; hausen, verbo; depois Hausfra, Hauskaz e Hausrat, nomes femininos. 3. Toca-se em «Haus»: abre-se a sua ficha, com a etiqueta «Nome neutro» por baixo da palavra, o significado, duas frases de exemplo e a outra forma, «Haiser».",
+        "legende": "Cada palavra do Wierderbuch mostra a sua classe, na lista e na ficha."
+      },
+      {
+        "alt": "Duas cartas da coleção abertas uma após a outra, marcadas com a marca de água LuxKeyb. 1. «Haus», nome neutro: a casa diante do Stauséi, a sua barragem e a sua água de um azul límpido. 2. «Fësch», nome masculino: o peixe diante da ponte de pedra do Mëllerdall e das suas cascatas, por cima de uma bacia clara onde se veem os seixos.",
+        "legende": "O Stauséi e o Mëllerdall: águas claras onde se vê o fundo."
+      }
+    ]
+  },
+  "41.0.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Novidades",
+        "points": [
+          {
+            "titre": "O teclado conhece a língua do dia a dia",
+            "texte": "As sugestões aprendem agora com as 45 000 frases de exemplo do Lëtzebuerger Online Dictionnaire, escritas pelo Zenter fir d'Lëtzebuerger Sprooch. Depois de «du», propõe «hues» ou «muss» em vez de palavras francesas; depois de «wëlls de», «kanns du», «weess du» ou «looss dech», tem finalmente algo para propor. Medido em textos que nunca viu: 19,5 % de sugestões certas entre as três propostas, contra 18,1 %."
+          },
+          {
+            "titre": "Seis lugares a partir de fotografias",
+            "texte": "A orla de abetos e o rebanho de Conzefenn, a gruta das mós do Hohllay, a torre do Napoleonsgaart, a fenda da Wollefsschlucht, a passarela de madeira cinzenta do Dumongshaff e a Passerelle de quatro arcos no vale da Pétrusse, que substitui a cópia da ponte Adolphe."
+          }
+        ]
+      },
+      {
+        "titre": "Alterações",
+        "points": [
+          {
+            "titre": "Raridades mais justas",
+            "texte": "A raridade de uma carta segue a frequência da palavra, que até agora vinha quase só da imprensa. As palavras do dia a dia tornam-se mais comuns: «Kaz», «Päerd» e «Hond» são agora cartas comuns. As cartas já ganhas recebem a sua nova raridade, e com ela a hora da sua paisagem e a matéria da sua moldura."
+          },
+          {
+            "titre": "O álbum das paisagens continua completo",
+            "texte": "Cada casa pode sempre ser ganha nas quatro línguas do Wuertplaz."
+          },
+          {
+            "titre": "«Smartphone» perde o seu desenho",
+            "texte": "Nenhum jogo dá mais esta palavra."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "O campo de ensaio da ajuda, com o teclado por baixo. 1. Escreve-se «Du» e depois um espaço: a barra acima das letras propõe «hues», «muss» e «jour». 2. Toca-se em «hues»: o texto passa a «Du hues», e a barra já propõe a continuação, «eng» e «dech».",
+        "legende": "Depois de «du», o teclado propõe «hues» ou «muss»."
+      }
+    ]
+  },
   "40.1.0": {
     "intro": "",
     "sections": [
@@ -379,12 +467,6 @@
         "legende": "O ditado, mostrado: o microfone acende, a frase escreve-se, o microfone apaga-se."
       }
     ]
-  },
-  "_sections": {
-    "Nouveautés": "Novidades",
-    "Corrections": "Correções",
-    "Changements": "Alterações",
-    "Rapidité": "Rapidez"
   },
   "37.7.7": {
     "intro": "",

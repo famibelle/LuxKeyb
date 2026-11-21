@@ -1,9 +1,116 @@
 {
- "genere_le": "2026-11-16",
- "derniere_version": "40.1.0",
- "derniere_date": "2026-11-16",
+ "genere_le": "2026-11-21",
+ "derniere_version": "41.1.0",
+ "derniere_date": "2026-11-21",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.0",
+   "date": "2026-11-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Le Wierderbuch dit la nature de chaque mot",
+       "texte": "Dans la liste des résultats, chaque mot porte sa nature à côté de lui (« Nom féminin », « Verbe », « Adjectif »…), et sa fiche l'affiche sous le mot. Tapez « Haus » : vous voyez tout de suite que c'est un nom neutre, et que « hausen » est un verbe."
+      },
+      {
+       "titre": "Des eaux claires",
+       "texte": "Les lacs, les rivières et les bassins des cartes sont d'un bleu limpide. Là où l'eau est basse, on voit le fond et ses galets, et des truites nagent dans les bassins du Mëllerdall et de la Kallektuffquell."
+      },
+      {
+       "titre": "Six lieux repeints",
+       "texte": "Le lac de la Haute-Sûre entre ses versants boisés, avec son ponton et sa barque ; le château de Vianden au-dessus de la brume de l'Our, ses toits d'ardoise et le clocher de la ville ; l'aiguille de grès du Priedegtstull et sa passerelle ; le grand surplomb de tuf de la Kallektuffquell ; le Biodiversum au bord de l'étang du Haff Réimech ; et la ville haute de Luxembourg, avec Saint-Michel, le parc des casemates, les tours du Kirchberg et, en contrebas, le clocher de Saint-Jean du Grund."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Corrections",
+     "points": [
+      {
+       "titre": "« Activer » plutôt qu'« interrupteur »",
+       "texte": "Les consignes de mise en route parlaient d'un interrupteur, un mot que certains ne comprenaient pas. Elles disent maintenant activer, désactiver et réactiver."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_wierderbuch_nature.gif",
+     "alt": "Animation en trois temps dans le Wierderbuch. 1. On tape « Haus » dans le champ de recherche, lettre par lettre. 2. La liste des résultats affiche chaque mot avec sa nature à côté : Haus, nom neutre, maison ; Hausse, nom féminin ; hausen, verbe, crécher ; puis Hausfra, Hauskaz et Hausrat, noms féminins. 3. On touche « Haus » : sa fiche s'ouvre, avec la pastille « Nom neutre » sous le mot, le sens « maison », deux phrases d'exemple et l'autre forme, « Haiser ».",
+     "legende": "Chaque mot du Wierderbuch porte sa nature, dans la liste comme sur sa fiche."
+    },
+    {
+     "image": "Screenshots/lux_cartes_eaux_claires.gif",
+     "alt": "Deux cartes du carnet ouvertes l'une après l'autre, marquées du filigrane LuxKeyb. 1. « Haus », nom neutre : la maison devant le Stauséi, son barrage et son eau d'un bleu limpide. 2. « Fësch », nom masculin : le poisson devant le pont de pierre du Mëllerdall et ses chutes d'eau, au-dessus d'un bassin clair où l'on voit les galets.",
+     "legende": "Le Stauséi et le Mëllerdall : des eaux claires où l'on voit le fond."
+    }
+   ],
+   "image": "Screenshots/lux_wierderbuch_nature.gif",
+   "image_alt": "Animation en trois temps dans le Wierderbuch. 1. On tape « Haus » dans le champ de recherche, lettre par lettre. 2. La liste des résultats affiche chaque mot avec sa nature à côté : Haus, nom neutre, maison ; Hausse, nom féminin ; hausen, verbe, crécher ; puis Hausfra, Hauskaz et Hausrat, noms féminins. 3. On touche « Haus » : sa fiche s'ouvre, avec la pastille « Nom neutre » sous le mot, le sens « maison », deux phrases d'exemple et l'autre forme, « Haiser ».",
+   "image_legende": "Chaque mot du Wierderbuch porte sa nature, dans la liste comme sur sa fiche."
+  },
+  {
+   "version": "41.0.0",
+   "date": "2026-11-21",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Nouveautés",
+     "points": [
+      {
+       "titre": "Le clavier connaît la langue de tous les jours",
+       "texte": "Les suggestions apprennent désormais des 45 000 phrases d'exemple du Lëtzebuerger Online Dictionnaire, écrites par le Zenter fir d'Lëtzebuerger Sprooch. Après « du », il propose « hues » ou « muss » au lieu de mots français ; après « wëlls de », « kanns du », « weess du » ou « looss dech », il a enfin quelque chose à proposer. Mesuré sur des textes qu'il n'a jamais vus : 19,5 % de bonnes suggestions parmi les trois proposées, contre 18,1 %."
+      },
+      {
+       "titre": "Six lieux d'après photos",
+       "texte": "La lisière d'épicéas et le troupeau de Conzefenn, la grotte aux meules du Hohllay, la tour du Napoleonsgaart, la faille de la Wollefsschlucht, la passerelle de bois gris du Dumongshaff, et la Passerelle à quatre arches dans la vallée de la Pétrusse, qui remplace la copie du pont Adolphe."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🔧",
+     "titre": "Modifié",
+     "points": [
+      {
+       "titre": "Des raretés plus justes",
+       "texte": "La rareté d'une carte suit la fréquence du mot, qui ne venait jusqu'ici presque que de la presse. Les mots du quotidien deviennent plus communs : « Kaz », « Päerd » et « Hond » sont désormais des cartes communes. Les cartes déjà gagnées prennent leur nouvelle rareté, et avec elle l'heure de leur paysage et la matière de leur cadre."
+      },
+      {
+       "titre": "L'album des paysages reste complet",
+       "texte": "Chaque case peut toujours être gagnée dans les quatre langues de Wuertplaz."
+      },
+      {
+       "titre": "« Smartphone » perd son dessin",
+       "texte": "Aucun jeu ne donne plus ce mot."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_suggestions_du.gif",
+     "alt": "Le champ d'essai de l'aide, avec le clavier en dessous. 1. On tape « Du » puis une espace : la barre au-dessus des lettres propose « hues », « muss » et « jour ». 2. On touche « hues » : le texte devient « Du hues », et la barre propose déjà la suite, « eng » et « dech ».",
+     "legende": "Après « du », le clavier propose « hues » ou « muss »."
+    }
+   ],
+   "image": "Screenshots/lux_suggestions_du.gif",
+   "image_alt": "Le champ d'essai de l'aide, avec le clavier en dessous. 1. On tape « Du » puis une espace : la barre au-dessus des lettres propose « hues », « muss » et « jour ». 2. On touche « hues » : le texte devient « Du hues », et la barre propose déjà la suite, « eng » et « dech ».",
+   "image_legende": "Après « du », le clavier propose « hues » ou « muss »."
+  },
   {
    "version": "40.1.0",
    "date": "2026-11-16",
@@ -167,132 +274,6 @@
      "tableau": null
     }
    ]
-  },
-  {
-   "version": "39.0.0",
-   "date": "2026-11-13",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Des paysages en papier découpé",
-       "texte": "Chaque carte montre son lieu en feuilles de papier de couleur posées en couches, avec leur grain, une fine tranche de papier kraft et une ombre douce de l'une à l'autre. Quand vous penchez le téléphone, l'ombre de chaque feuille glisse sur celle de derrière, comme dans un vrai théâtre de papier."
-      },
-      {
-       "titre": "Tous les lieux redessinés d'après des photos, vus de trois quarts",
-       "texte": "Le château de Vianden au-dessus de la brume, la tour d'Esch-sur-Sûre et son drapeau, la vue des casemates du Bock, la cascade du Schiessentümpel et son pont, le Grund au bord de l'Alzette, le monument de Schengen au bord de la Moselle, la grande roue et le carrousel de la Schueberfouer, le pont rouge vu d'en bas, la porte de la rue Large et la Gëlle Fra au couchant."
-      },
-      {
-       "titre": "Dix-sept nouveaux lieux",
-       "texte": "Le pont Adolphe et son tram, les hauts fourneaux de Belval, l'arche de grès de Berdorf, les jardins du château d'Ansembourg, l'ascenseur du Pfaffenthal, les rochers et le caillebotis de Felsmillen, la passerelle de l'Ourdall, le barrage de la Haute-Sûre, les moutons de Conzefenn, le pont couvert du Haff Réimech, la grotte Hohllay, la tour du Napoleonsgaart, la source de tuf du Kallektuffquell, la vallée de la Pétrusse, la Wollefsschlucht, la falaise du Priedegtstull et la passerelle du Dumongshaff. L'album des paysages compte maintenant 87 cases. Les cartes déjà gagnées gardent leur paysage."
-      },
-      {
-       "titre": "Des branches et des roseaux au premier plan",
-       "texte": "Sur la plupart des cartes, une branche entre par un coin du haut (un saule au-dessus de l'eau, un bouleau, un sarment de vigne à la Moselle) et des roseaux, des fougères ou de hautes herbes poussent au pied de la scène. Ils encadrent le pont, le château ou la rivière sans les cacher, et creusent la profondeur quand vous penchez le téléphone. Ils changent avec la saison où la carte a été gagnée : feuilles rousses en automne, branches nues sous la neige en hiver. Une brise les fait bouger doucement. Ils remplacent les arbres qui bordaient les cartes rares."
-      },
-      {
-       "titre": "Des paysages qui bougent",
-       "texte": "Sur la carte ouverte, la brume glisse sous le château de Vianden, le drapeau flotte, la grande roue tourne et les chevaux de bois montent et descendent, l'eau coule des chutes, la péniche descend la Moselle, le tram traverse le pont, la cabine de l'ascenseur monte et descend, les moutons broutent, les canards glissent sur l'étang, l'eau goutte de la source et de la grotte. Le soir et la nuit, leurs lumières s'allument."
-      },
-      {
-       "titre": "Secouez le téléphone",
-       "texte": "Chaque paysage répond à sa manière. La roue s'emballe, le drapeau claque, les chutes éclaboussent, le tram et le bus filent en sonnant, des ronds s'élargissent sur l'eau, la source de tuf déborde, des chauves-souris sortent de la grotte Hohllay, une pluie d'éclats d'or court sur la Gëlle Fra, les feuilles tombent sous l'arche de Berdorf, et les branches et les roseaux plient sous le coup de vent."
-      },
-      {
-       "titre": "La ruelle du Breedewee s'anime",
-       "texte": "La flamme de ses lanternes vacille, et un chat roux traverse la ruelle de temps en temps. Secouez : les lanternes tanguent et le chat détale."
-      },
-      {
-       "titre": "La neige s'accumule l'hiver",
-       "texte": "Sur les cartes gagnées en hiver, une couche de neige épaisse couvre les toits, les crêtes et les haies. Secouez le téléphone, elle tombe en paquets, puis se reforme doucement sous les flocons."
-      },
-      {
-       "titre": "Des couleurs plus vives et plus chaleureuses",
-       "texte": "Dans tous les paysages."
-      },
-      {
-       "titre": "Le tracé du mot est centré",
-       "texte": "Sur la carte : les mots courts ne penchent plus d'un côté."
-      },
-      {
-       "titre": "L'image partagée garde tout",
-       "texte": "La roue, le tram, le drapeau ou la péniche restent sur l'image d'une carte qu'on partage."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "38.1.0",
-   "date": "2026-11-02",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Des cartes peintes à la gouache",
-       "texte": "Le paysage de chaque carte est fait de pièces de carton peintes à la main, en couleurs vives, avec leurs coups de pinceau et leur bord de carton. Le matin est bleu et rose, l'après-midi orangé, le soir violet et rose, la nuit bleu profond."
-      },
-      {
-       "titre": "Cinq plans pour toutes les cartes",
-       "texte": "Le ciel, les nuages, le lointain, le milieu et le premier plan glissent chacun à sa vitesse quand vous penchez le téléphone, et des nuages traversent lentement le ciel. Les cartes rares ajoutent de chaque côté des arbres ou des piliers, comme les coulisses d'un théâtre."
-      },
-      {
-       "titre": "Le dessin du mot devient une plaque",
-       "texte": "Il est découpé dans une plaque épaisse, posée sur une tige et un socle de métal. Sa matière dit la rareté : nacre pour une commune ou une peu commune, argent pour une rare, or pour une très rare. Quand vous penchez la carte, un reflet glisse sur la plaque."
-      },
-      {
-       "titre": "Les saisons en papier",
-       "texte": "Les feuilles d'automne, les pétales, les flocons et les confettis sont découpés dans du papier peint, et les oiseaux de l'été se posent sur les nuages."
-      },
-      {
-       "titre": "La ruelle du jeu imprimé en couleurs",
-       "texte": "Les cartes venues du jeu en papier se posent dans une ruelle aux façades colorées du Grund, sous une grande porte où pend un lierre fleuri."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "⚡",
-     "titre": "Rapidité",
-     "points": [
-      {
-       "titre": "Les cartes se feuillettent plus vite",
-       "texte": "La carte suivante est préparée à l'avance, telle qu'elle s'affichera."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_gouache_penchee.gif",
-     "alt": "La carte « Bus », commune, le matin à la Rout Bréck, gagnée en automne, ouverte et penchée lentement de gauche à droite. Le ciel, les nuages, la ville au loin, les collines et le pont rouge sont des cartons peints à la gouache qui glissent chacun à sa vitesse ; des nuages de carton traversent le ciel et des feuilles de papier tombent. Le bus est une plaque de nacre posée sur une tige et un socle de métal : la plaque ne bouge pas, seul un reflet glisse sur elle.",
-     "legende": "Une commune qu'on penche : cinq cartons peints, des nuages qui passent, et la plaque du bus où glisse un reflet."
-    },
-    {
-     "image": "Screenshots/lux_gouache_raretes.gif",
-     "alt": "Quatre cartes de la même ruelle, l'une après l'autre. 1. « Bank », commune : un ciel de matin bleu et rose, une banque en plaque de nacre grise. 2. « Chrëschtdag », peu commune : un ciel d'après-midi orangé, un sapin en plaque de nacre dorée. 3. « Brëll », rare : un soir violet aux fenêtres allumées, des lunettes en plaque d'argent, des piliers sur les côtés. 4. « Alphabet », très rare : une nuit bleu profond, trois cubes A, B et C en plaque d'or. Partout, la ruelle aux façades colorées, sous une grande porte de pierre où pend un lierre fleuri.",
-     "legende": "Matin, après-midi, soir et nuit : l'heure et la matière de la plaque disent la rareté."
-    },
-    {
-     "image": "Screenshots/lux_gouache_saisons.gif",
-     "alt": "Quatre cartes communes au Mëllerdall, entre les rochers de grès, l'une après l'autre. 1. « Bam », gagnée en hiver : la neige sur les crêtes et des flocons de papier. 2. « Hand », au printemps : des fleurs dans les collines et des pétales qui tombent. 3. « Café », en été : des oiseaux posés sur les nuages. 4. « Kapp », en automne : les feuillages roussis et des feuilles de papier aux couleurs vives.",
-     "legende": "La saison du jour où la carte a été gagnée, en papier peint."
-    }
-   ],
-   "image": "Screenshots/lux_gouache_penchee.gif",
-   "image_alt": "La carte « Bus », commune, le matin à la Rout Bréck, gagnée en automne, ouverte et penchée lentement de gauche à droite. Le ciel, les nuages, la ville au loin, les collines et le pont rouge sont des cartons peints à la gouache qui glissent chacun à sa vitesse ; des nuages de carton traversent le ciel et des feuilles de papier tombent. Le bus est une plaque de nacre posée sur une tige et un socle de métal : la plaque ne bouge pas, seul un reflet glisse sur elle.",
-   "image_legende": "Une commune qu'on penche : cinq cartons peints, des nuages qui passent, et la plaque du bus où glisse un reflet."
   }
  ]
 }

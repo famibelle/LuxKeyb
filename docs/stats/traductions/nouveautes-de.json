@@ -1,5 +1,93 @@
 {
   "_comment": "Deutsche Übersetzung von nouveautes.html, nach Version. Von Hand gepflegt: generate_nouveautes.py führt sie in stats/nouveautes-de.json zusammen. Jede Version folgt der französischen aus dem CHANGELOG: dieselben Abschnitte, dieselbe Anzahl Punkte, in derselben Reihenfolge; der Titel eines Abschnitts darf fehlen, wenn _sections ihn übersetzt. Eine Version, die hier fehlt oder nicht mehr die französische Form hat, erscheint auf Französisch mit einem Hinweis. Der Text ist HTML: < und & maskieren.",
+  "_sections": {
+    "Nouveautés": "Neu",
+    "Corrections": "Korrekturen",
+    "Changements": "Änderungen",
+    "Rapidité": "Geschwindigkeit"
+  },
+  "41.1.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Neu",
+        "points": [
+          {
+            "titre": "Das Wierderbuch zeigt die Wortart jedes Wortes",
+            "texte": "In der Ergebnisliste steht neben jedem Wort seine Wortart („Femininum“, „Verb“, „Adjektiv“…), und sein Eintrag zeigt sie unter dem Wort. Tippen Sie „Haus“: Sie sehen sofort, dass es ein Neutrum ist und dass „hausen“ ein Verb ist."
+          },
+          {
+            "titre": "Klares Wasser",
+            "texte": "Seen, Flüsse und Becken auf den Karten sind klar und blau. Wo das Wasser flach ist, sieht man den Grund und seine Kiesel, und in den Becken des Mëllerdall und der Kallektuffquell schwimmen Forellen."
+          },
+          {
+            "titre": "Sechs Orte neu gemalt",
+            "texte": "Der Stausee der Obersauer zwischen seinen bewaldeten Hängen, mit Steg und Boot; die Burg Vianden über dem Nebel der Our, ihre Schieferdächer und der Kirchturm der Stadt; die Sandsteinnadel des Priedegtstull und ihre Brücke; der große Tuffüberhang der Kallektuffquell; das Biodiversum am Teich des Haff Réimech; und die Oberstadt von Luxemburg mit Sankt Michael, dem Park der Kasematten, den Türmen des Kirchbergs und unten dem Kirchturm von Sankt Johann im Grund."
+          }
+        ]
+      },
+      {
+        "titre": "Korrekturen",
+        "points": [
+          {
+            "titre": "„Aktivieren“ statt „Schalter“",
+            "texte": "Die französischen Einrichtungshinweise sprachen von einem Schalter, ein Wort, das manche nicht verstanden. Sie sagen jetzt aktivieren, deaktivieren und wieder aktivieren."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Animation in drei Schritten im Wierderbuch. 1. „Haus“ wird Buchstabe für Buchstabe ins Suchfeld getippt. 2. Die Ergebnisliste zeigt jedes Wort mit seiner Wortart daneben: Haus, Neutrum, maison; Hausse, Femininum; hausen, Verb, crécher; dann Hausfra, Hauskaz und Hausrat, Feminina. 3. „Haus“ wird angetippt: Sein Eintrag öffnet sich, mit dem Etikett „Neutrum“ unter dem Wort, der Bedeutung, zwei Beispielsätzen und der anderen Form „Haiser“.",
+        "legende": "Jedes Wort im Wierderbuch zeigt seine Wortart, in der Liste wie im Eintrag."
+      },
+      {
+        "alt": "Zwei Karten aus der Sammlung, nacheinander geöffnet, mit dem Wasserzeichen LuxKeyb. 1. „Haus“, Neutrum: das Haus vor dem Stausee, seiner Staumauer und seinem klaren blauen Wasser. 2. „Fësch“, Maskulinum: der Fisch vor der Steinbrücke des Mëllerdall und ihren Wasserfällen, über einem klaren Becken, in dem man die Kiesel sieht.",
+        "legende": "Der Stausee und das Mëllerdall: klares Wasser, durch das man den Grund sieht."
+      }
+    ]
+  },
+  "41.0.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Neu",
+        "points": [
+          {
+            "titre": "Die Tastatur kennt die Alltagssprache",
+            "texte": "Die Vorschläge lernen jetzt aus den 45 000 Beispielsätzen des Lëtzebuerger Online Dictionnaire, geschrieben vom Zenter fir d'Lëtzebuerger Sprooch. Nach „du“ schlägt sie „hues“ oder „muss“ vor statt französischer Wörter; nach „wëlls de“, „kanns du“, „weess du“ oder „looss dech“ hat sie endlich etwas vorzuschlagen. Gemessen an Texten, die sie nie gesehen hat: 19,5 % richtige Vorschläge unter den drei angezeigten, gegenüber 18,1 %."
+          },
+          {
+            "titre": "Sechs Orte nach Fotos",
+            "texte": "Der Fichtenwaldrand und die Herde von Conzefenn, die Mühlsteinhöhle des Hohllay, der Turm des Napoleonsgaart, die Felsspalte der Wolfsschlucht, die graue Holzbrücke des Dumongshaff und die vierbogige Passerelle im Petrußtal, die die Kopie der Adolphe-Brücke ersetzt."
+          }
+        ]
+      },
+      {
+        "titre": "Änderungen",
+        "points": [
+          {
+            "titre": "Gerechtere Seltenheiten",
+            "texte": "Die Seltenheit einer Karte folgt der Häufigkeit ihres Wortes, und diese kam bisher fast nur aus der Presse. Alltagswörter werden häufiger: „Kaz“, „Päerd“ und „Hond“ sind jetzt gewöhnliche Karten. Bereits gewonnene Karten erhalten ihre neue Seltenheit und damit die Tageszeit ihrer Landschaft und das Material ihres Rahmens."
+          },
+          {
+            "titre": "Das Landschaftsalbum bleibt vollständig",
+            "texte": "Jedes Feld kann weiterhin in allen vier Sprachen von Wuertplaz gewonnen werden."
+          },
+          {
+            "titre": "„Smartphone“ verliert seine Zeichnung",
+            "texte": "Kein Spiel gibt dieses Wort mehr aus."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Das Übungsfeld der Hilfe, darunter die Tastatur. 1. „Du“ wird getippt, dann ein Leerzeichen: Die Leiste über den Buchstaben schlägt „hues“, „muss“ und „jour“ vor. 2. „hues“ wird angetippt: Der Text lautet „Du hues“, und die Leiste schlägt schon die Fortsetzung vor, „eng“ und „dech“.",
+        "legende": "Nach „du“ schlägt die Tastatur „hues“ oder „muss“ vor."
+      }
+    ]
+  },
   "40.1.0": {
     "intro": "",
     "sections": [
@@ -379,12 +467,6 @@
         "legende": "Das Diktieren, gezeigt: Das Mikrofon leuchtet auf, der Satz wird geschrieben, das Mikrofon geht aus."
       }
     ]
-  },
-  "_sections": {
-    "Nouveautés": "Neu",
-    "Corrections": "Korrekturen",
-    "Changements": "Änderungen",
-    "Rapidité": "Geschwindigkeit"
   },
   "37.7.7": {
     "intro": "",

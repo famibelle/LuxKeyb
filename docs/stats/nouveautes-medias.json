@@ -1,5 +1,28 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "41.1.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_wierderbuch_nature.gif",
+        "alt": "Animation en trois temps dans le Wierderbuch. 1. On tape « Haus » dans le champ de recherche, lettre par lettre. 2. La liste des résultats affiche chaque mot avec sa nature à côté : Haus, nom neutre, maison ; Hausse, nom féminin ; hausen, verbe, crécher ; puis Hausfra, Hauskaz et Hausrat, noms féminins. 3. On touche « Haus » : sa fiche s'ouvre, avec la pastille « Nom neutre » sous le mot, le sens « maison », deux phrases d'exemple et l'autre forme, « Haiser ».",
+        "legende": "Chaque mot du Wierderbuch porte sa nature, dans la liste comme sur sa fiche."
+      },
+      {
+        "image": "Screenshots/lux_cartes_eaux_claires.gif",
+        "alt": "Deux cartes du carnet ouvertes l'une après l'autre, marquées du filigrane LuxKeyb. 1. « Haus », nom neutre : la maison devant le Stauséi, son barrage et son eau d'un bleu limpide. 2. « Fësch », nom masculin : le poisson devant le pont de pierre du Mëllerdall et ses chutes d'eau, au-dessus d'un bassin clair où l'on voit les galets.",
+        "legende": "Le Stauséi et le Mëllerdall : des eaux claires où l'on voit le fond."
+      }
+    ]
+  },
+  "41.0.0": {
+    "images": [
+      {
+        "image": "Screenshots/lux_suggestions_du.gif",
+        "alt": "Le champ d'essai de l'aide, avec le clavier en dessous. 1. On tape « Du » puis une espace : la barre au-dessus des lettres propose « hues », « muss » et « jour ». 2. On touche « hues » : le texte devient « Du hues », et la barre propose déjà la suite, « eng » et « dech ».",
+        "legende": "Après « du », le clavier propose « hues » ou « muss »."
+      }
+    ]
+  },
   "40.1.0": {
     "images": [
       {

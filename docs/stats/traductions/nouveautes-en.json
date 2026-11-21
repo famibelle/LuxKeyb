@@ -1,5 +1,93 @@
 {
   "_comment": "English translation of nouveautes.html, by version. Hand-maintained: generate_nouveautes.py merges it into stats/nouveautes-en.json. Each version mirrors the French one from the CHANGELOG: same sections, same number of points, in the same order; a section's title can be left out when _sections translates it. A version that is missing here, or no longer has the French shape, is shown in French with a notice. Text is HTML: escape < and &.",
+  "_sections": {
+    "Nouveautés": "New",
+    "Corrections": "Fixes",
+    "Changements": "Changes",
+    "Rapidité": "Speed"
+  },
+  "41.1.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "New",
+        "points": [
+          {
+            "titre": "The Wierderbuch shows what kind of word each one is",
+            "texte": "In the list of results, every word carries its part of speech beside it (“Feminine noun”, “Verb”, “Adjective”…), and its entry shows it under the word. Type “Haus”: you see at once that it is a neuter noun, and that “hausen” is a verb."
+          },
+          {
+            "titre": "Clear waters",
+            "texte": "The lakes, rivers and pools on the cards are a limpid blue. Where the water is shallow you can see the bottom and its pebbles, and trout swim in the pools of the Mëllerdall and the Kallektuffquell."
+          },
+          {
+            "titre": "Six places repainted",
+            "texte": "The Upper Sûre lake between its wooded slopes, with its jetty and its boat; Vianden castle above the mist of the Our, its slate roofs and the town's bell tower; the sandstone needle of the Priedegtstull and its footbridge; the great tufa overhang of the Kallektuffquell; the Biodiversum on the edge of the Haff Réimech pond; and Luxembourg's upper town, with Saint-Michel, the casemates park, the Kirchberg towers and, below, the bell tower of Saint-Jean in the Grund."
+          }
+        ]
+      },
+      {
+        "titre": "Fixes",
+        "points": [
+          {
+            "titre": "“Turn on” rather than “switch”",
+            "texte": "The setup instructions in French spoke of a switch, a word some people did not understand. They now say turn on, turn off and turn on again."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "A three-step animation in the Wierderbuch. 1. “Haus” is typed into the search field, letter by letter. 2. The results list shows each word with its part of speech beside it: Haus, neuter noun, house; Hausse, feminine noun; hausen, verb, to dwell; then Hausfra, Hauskaz and Hausrat, feminine nouns. 3. “Haus” is tapped: its entry opens, with the “Neuter noun” tag under the word, the meaning “house”, two example sentences and the other form, “Haiser”.",
+        "legende": "Every Wierderbuch word shows its part of speech, in the list and on its entry."
+      },
+      {
+        "alt": "Two cards from the collection opened one after the other, marked with the LuxKeyb watermark. 1. “Haus”, neuter noun: the house in front of the Stauséi, its dam and its limpid blue water. 2. “Fësch”, masculine noun: the fish in front of the stone bridge of the Mëllerdall and its waterfalls, above a clear pool where the pebbles show.",
+        "legende": "The Stauséi and the Mëllerdall: clear waters where you can see the bottom."
+      }
+    ]
+  },
+  "41.0.0": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "New",
+        "points": [
+          {
+            "titre": "The keyboard knows everyday language",
+            "texte": "Suggestions now learn from the 45,000 example sentences of the Lëtzebuerger Online Dictionnaire, written by the Zenter fir d'Lëtzebuerger Sprooch. After “du”, it suggests “hues” or “muss” instead of French words; after “wëlls de”, “kanns du”, “weess du” or “looss dech”, it finally has something to suggest. Measured on texts it has never seen: 19.5% of correct suggestions among the three shown, against 18.1%."
+          },
+          {
+            "titre": "Six places from photographs",
+            "texte": "The spruce edge and the herd of Conzefenn, the millstone cave of the Hohllay, the tower of the Napoleonsgaart, the cleft of the Wollefsschlucht, the grey wooden footbridge of the Dumongshaff, and the four-arched Passerelle in the Pétrusse valley, which replaces the copy of the Adolphe Bridge."
+          }
+        ]
+      },
+      {
+        "titre": "Changes",
+        "points": [
+          {
+            "titre": "Fairer rarities",
+            "texte": "A card's rarity follows how frequent its word is, and until now that frequency came almost only from the press. Everyday words become more common: “Kaz”, “Päerd” and “Hond” are now common cards. Cards already won take their new rarity, and with it the hour of their landscape and the material of their frame."
+          },
+          {
+            "titre": "The landscape album stays complete",
+            "texte": "Every slot can still be won in all four languages of Wuertplaz."
+          },
+          {
+            "titre": "“Smartphone” loses its drawing",
+            "texte": "No game gives this word any more."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "The help's practice field, with the keyboard below it. 1. “Du” is typed, then a space: the bar above the letters suggests “hues”, “muss” and “jour”. 2. “hues” is tapped: the text becomes “Du hues”, and the bar already suggests what comes next, “eng” and “dech”.",
+        "legende": "After “du”, the keyboard suggests “hues” or “muss”."
+      }
+    ]
+  },
   "40.1.0": {
     "intro": "",
     "sections": [
@@ -379,12 +467,6 @@
         "legende": "Dictation, shown: the microphone lights up, the sentence is written, the microphone switches off."
       }
     ]
-  },
-  "_sections": {
-    "Nouveautés": "New",
-    "Corrections": "Fixes",
-    "Changements": "Changes",
-    "Rapidité": "Speed"
   },
   "37.7.7": {
     "intro": "",
