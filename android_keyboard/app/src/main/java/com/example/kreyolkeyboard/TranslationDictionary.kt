@@ -534,6 +534,24 @@ object TranslationDictionary {
         return categoriesLod[mot]?.let { libelleCategorie(it) }
     }
 
+    /**
+     * Le libellé de [nature] à la longueur d'une ligne serrée : la pastille
+     * de la carte, la ligne d'un résultat du Wierderbuch.
+     *
+     * Seuls les trois genres composés changent (« Nom m. ou f. ») : ils
+     * touchent 284 mots sur 26 241, et ce sont les seuls libellés qui ne
+     * tiennent pas à côté d'un mot. L'abréviation est celle des dictionnaires ;
+     * [libelleCategorie] garde les libellés entiers pour qui a la place, la
+     * fiche notamment.
+     */
+    @StringRes
+    fun categorieCourte(@StringRes nature: Int): Int = when (nature) {
+        R.string.cat_nom_mf -> R.string.cat_nom_mf_court
+        R.string.cat_nom_mn -> R.string.cat_nom_mn_court
+        R.string.cat_nom_fn -> R.string.cat_nom_fn_court
+        else -> nature
+    }
+
     /** `"SUBST F"` → « Nom féminin ». `null` pour un code inconnu. */
     @StringRes
     fun libelleCategorie(code: String): Int? {

@@ -468,21 +468,10 @@ object CarteCarnet {
      *
      * « Nom masculin ou féminin » demande 145 unités là où la pastille en
      * offre 77 : même descendu au plancher, le libellé y serait coupé. Aucune
-     * autre des dix-huit catégories du LOD n'en approche — ces trois-là
-     * touchent 284 mots sur 26 241, et c'est pour eux seuls que la ligne de
-     * type aurait cessé de tenir.
-     *
-     * L'abréviation est celle des dictionnaires, et elle s'arrête à la carte :
-     * `TranslationDictionary.libelleCategorie` garde ses libellés entiers pour
-     * qui aura la place de les écrire.
+     * autre des dix-huit catégories du LOD n'en approche.
      */
     @StringRes
-    private fun abrege(@StringRes nature: Int): Int = when (nature) {
-        R.string.cat_nom_mf -> R.string.cat_nom_mf_court
-        R.string.cat_nom_mn -> R.string.cat_nom_mn_court
-        R.string.cat_nom_fn -> R.string.cat_nom_fn_court
-        else -> nature
-    }
+    private fun abrege(@StringRes nature: Int): Int = TranslationDictionary.categorieCourte(nature)
 
     /**
      * Le corps de l'étiquette de nature : onze, et moins si elle déborde.
