@@ -9,6 +9,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [41.1.1] - 2026-11-22
+
+### ✨ Améliorations
+
+- **Le pont Rouge redessiné d'après photo** : la Rout Bréck retrouve sa vraie silhouette, son garde-corps et ses lampadaires.
+- **Chaque lieu dans sa vraie matière** : les pylônes, grillages et lampadaires sont en acier et non plus dorés ; le grès du Mëllerdall montre ses couches ; les meules de la Hohllay sont creusées dans la roche ; les stèles de Schengen sont en acier rouillé ; le rempart et le rocher du Bock laissent voir leurs pierres ; à Ansembourg, la terrasse est en pierre, avec ses arcades, ses lions et son escalier ; l'abbaye de Neimënster a ses toits d'ardoise ; la Gëlle Fra brille sur son granit rose ; la porte du Breedewee est en grosses pierres jusqu'à l'arc ; la clôture de Conzefenn est en vrai bois, avec ses nœuds.
+
 ## [41.1.0] - 2026-11-21
 
 ### ✨ Nouveautés
