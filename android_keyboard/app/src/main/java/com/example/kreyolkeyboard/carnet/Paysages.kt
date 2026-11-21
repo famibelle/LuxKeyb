@@ -5921,13 +5921,13 @@ object Paysages {
                 }
             }
             mineral {
-                pieceD("M14 52L17 ${crete(17f)}C40 ${crete(40f) - 1.4f} 70 ${crete(70f) - 1.6f} 103 ${crete(103f)}L103 52Z", rocher)
-                // Les strates du grès, et les grandes diaclases verticales
-                // qui font la falaise du Bock plutôt qu'un talus.
-                for (y in floatArrayOf(27f, 32f, 37f, 42f))
-                    trait("M15 ${y}C40 ${y - 2.6f} 70 ${y - 3.2f} 103 ${y - 2.4f}", sombre(rocher, 0.3f), 0.4f, 0.55f)
-                for (x in floatArrayOf(24f, 39f, 52f, 68f, 83f, 96f))
-                    ligne(x, crete(x) + 1.2f, x - 1.4f, 46f, sombre(rocher, 0.34f), 0.35f, 0.5f)
+                val bock = "M14 52L17 ${crete(17f)}C40 ${crete(40f) - 1.4f} 70 ${crete(70f) - 1.6f} 103 ${crete(103f)}L103 52Z"
+                pieceD(bock, rocher)
+                // Le litage du grès et ses diaclases, qui font la falaise du
+                // Bock plutôt qu'un talus. Quatre traits ne rencontraient
+                // aucune arête, et le rocher restait un aplat (relevé du
+                // 2026-11-21).
+                strates(chemin(bock), 21f, 52f, rocher, 361, 3f, -0.03f)
                 // Le rempart qui le couronne, et ses arcades aveugles.
                 appareil(chemin("M17 ${crete(17f)}C40 ${crete(40f) - 1.4f} 70 ${crete(70f) - 1.6f} 103 ${crete(103f)}" +
                     "L103 ${hautRempart(103f)}L17 ${hautRempart(17f)}Z"), rempart, 2.3f, 4.4f, 360, -0.036f)
@@ -5941,9 +5941,17 @@ object Paysages {
                     val w = 10.5f
                     val bas = crete(bx) - 3f
                     val naissance = hautRempart(bx) + 6.4f
-                    pieceD("M$bx ${bas}L$bx ${naissance}C$bx ${naissance - 5.6f} ${bx + w} ${naissance - 5.6f} ${bx + w} ${naissance}L${bx + w} ${bas}Z", creux)
-                    pieceD("M${bx + 0.9f} ${bas}L${bx + 0.9f} ${naissance}C${bx + 0.9f} ${naissance - 4.7f} ${bx + w - 0.9f} ${naissance - 4.7f} ${bx + w - 0.9f} ${naissance}L${bx + w - 0.9f} ${bas}Z",
-                        sombre(rempart, 0.6f), 0.3f)
+                    // Une arcade aveugle est un mur en retrait, pas un trou :
+                    // son ombre est un voile, et l'appareil reparaît dessous.
+                    // Pleine, elle couvrait les trois quarts du rempart, qui
+                    // ne montrait plus une pierre (relevé du 2026-11-21).
+                    forme("M$bx ${bas}L$bx ${naissance}C$bx ${naissance - 5.6f} ${bx + w} ${naissance - 5.6f} ${bx + w} ${naissance}L${bx + w} ${bas}Z", creux, 0.5f)
+                    // L'arc qui les dessine : un joint d'ombre au-dessus de
+                    // l'intrados, comme les claveaux dans un mur appareillé.
+                    trait("M$bx ${naissance}C$bx ${naissance - 5.6f} ${bx + w} ${naissance - 5.6f} ${bx + w} ${naissance}",
+                        sombre(rempart, 0.5f), 0.6f, 0.8f)
+                    forme("M${bx + 0.9f} ${bas}L${bx + 0.9f} ${naissance}C${bx + 0.9f} ${naissance - 4.7f} ${bx + w - 0.9f} ${naissance - 4.7f} ${bx + w - 0.9f} ${naissance}L${bx + w - 0.9f} ${bas}Z",
+                        sombre(rempart, 0.6f), 0.22f)
                 }
                 // L'arête du chemin de ronde.
                 pieceD("M17 ${hautRempart(17f)}L103 ${hautRempart(103f)}L103 ${hautRempart(103f) + 1.4f}L17 ${hautRempart(17f) + 1.4f}Z",
