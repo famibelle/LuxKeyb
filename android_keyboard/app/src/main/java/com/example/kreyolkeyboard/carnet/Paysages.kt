@@ -8137,9 +8137,10 @@ object Paysages {
                 forme(Path().apply { addRect(xa, DEVANT - 6f, xb, DEVANT + 1f, Path.Direction.CW) }, creuxHaie, 0.35f)
                 releve?.restore(); c.restore()
             }
-            // Le grès gris-vert des lions, relevé sur la photo (#696F52 à
-            // l'ombre, #9A9776 au jour).
-            val pierre = neutre(duJour(0xFF8C8C6C.toInt()))
+            // Le bronze des lions, à la patine vert-de-gris relevée sur la
+            // photo du propriétaire (2026-11-22) : #5E6D66 en demi-teinte,
+            // #23302C dans les creux, des reflets pâles tirant au violet.
+            val pierre = neutre(duJour(0xFF6E7E76.toInt()))
             mineral {
                 for ((x, s) in listOf(24f to 1f, 76f to -1f)) lion(x, DEVANT, s, pierre, 209 + s.toInt())
                 // L'escalier qui descend au jardin entre les deux lions :
@@ -8157,19 +8158,23 @@ object Paysages {
         }
 
         /**
-         * Un lion de pierre assis sur son socle, vu de dos, qui regarde le
-         * château comme nous ([s] : 1 pour celui de gauche, -1 pour celui de
-         * droite ; le côté intérieur est vers le centre).
+         * Un lion de bronze assis sur son socle, vu de profil, tête levée.
+         * Les deux lions **se font face** de part et d'autre de l'escalier
+         * ([s] : 1 pour celui de gauche, qui regarde à droite ; -1 pour celui
+         * de droite, qui regarde à gauche).
          *
-         * D'après la photo du propriétaire (relevé du 2026-11-22) : ce sont
-         * de grands lions **assis**, au premier plan, hauts comme un quart de
-         * l'image. De dos on voit la croupe ronde, l'arête du dos qui fait
-         * comme un pli de cape, la cuisse enroulée en bas, la **crinière en
-         * colonne de boucles** qui monte haut, et du côté intérieur la patte
-         * avant et le vase qu'ils tiennent, au col clair. La pierre est un
-         * grès gris-vert (#696F52 à l'ombre, #9A9776 au jour), noirci dans
-         * les creux et piqué de lichen. Ils étaient couchés, trois fois trop
-         * petits, et se lisaient comme deux chats sur des pots.
+         * D'après la photo du propriétaire (2026-11-22) : un lion assis droit,
+         * le poitrail en avant, les pattes avant verticales comme deux
+         * colonnes, la cuisse ronde en arrière, la tête levée en profil, la
+         * gueule entrouverte, et une **crinière lourde qui coule** en mèches
+         * sur les épaules et le poitrail. Bronze à patine vert-de-gris,
+         * reflets pâles un peu violets sur les dessus, noir dans les creux.
+         * Il remplace un lion de grès vu de dos tenant un vase, qui ne
+         * ressemblait pas à la photo.
+         *
+         * Repère : [u] vers l'avant du lion (vers l'escalier), [v] vers le
+         * haut négatif depuis le dessus du socle. La lumière vient d'en haut :
+         * les reflets sont sur les dessus, les mêmes pour les deux lions.
          */
         fun lion(x: Float, bas: Float, s: Float, col: Int, graine: Int) {
             val rr = Alea(graine)
@@ -8178,90 +8183,145 @@ object Paysages {
             fun px(u: Float) = x + u * s * k
             fun py(v: Float) = y0 + v * k
             fun p(u: Float, v: Float) = "${px(u)} ${py(v)}"
-            val jour = mix(col, 0xFFFFFFFF.toInt(), 0.2f)
-            val ombre = sombre(col, 0.38f)
-            val creux = sombre(col, 0.62f)
-            val lichen = neutre(duJour(0xFFB4B48E.toInt()))
-            val pierreSocle = sombre(col, 0.08f)
-            // ---- Le socle : un dé à corniche moulurée, son flanc à l'ombre.
-            feuille(x - 6f, y0, 12f, bas - y0, pierreSocle)
-            rect(if (s > 0) x + 2.6f else x - 6f, y0, 3.4f, bas - y0, ombre, 0.5f)
-            feuille(x - 6.8f, y0 - 0.9f, 13.6f, 1.1f, jour, 0.4f)
-            rect(x - 6.8f, y0 + 0.2f, 13.6f, 0.35f, creux, 0.6f)
-            rect(x - 6f, bas - 1f, 12f, 0.3f, creux, 0.5f)
-            // ---- La patte avant et le vase, du côté intérieur, derrière la croupe.
-            pieceD("M${p(0.4f, -0.9f)}L${p(0.6f, -10.5f)}C${p(1.6f, -11.6f)} ${p(3.4f, -11.2f)} ${p(3.8f, -9.6f)}" +
-                "L${p(4.2f, -0.9f)}Z", sombre(col, 0.12f))
-            forme("M${p(2.6f, -0.9f)}L${p(3f, -9.8f)}C${p(3.4f, -10.6f)} ${p(3.8f, -10.2f)} ${p(3.8f, -9.6f)}L${p(4.2f, -0.9f)}Z", ombre, 0.6f)
-            // Le vase : une coupe ronde sur un pied court, sa panse dans
-            // l'ombre de la crinière, sa lèvre claire.
-            pieceD("M${p(3.9f, -8.6f)}L${p(4.4f, -9.6f)}C${p(3f, -10f)} ${p(2.8f, -11.8f)} ${p(3f, -12.2f)}" +
-                "L${p(6.4f, -12.2f)}C${p(6.6f, -11.8f)} ${p(6.4f, -10f)} ${p(5f, -9.6f)}L${p(5.5f, -8.6f)}Z", ombre)
-            forme("M${p(3f, -12.2f)}C${p(3f, -11f)} ${p(3.6f, -10.2f)} ${p(4.2f, -9.9f)}L${p(4.2f, -12.2f)}Z", jour, 0.5f)
-            pieceD("M${p(2.8f, -12.2f)}C${p(3.2f, -13f)} ${p(6.2f, -13f)} ${p(6.6f, -12.2f)}" +
-                "C${p(6.2f, -11.7f)} ${p(3.2f, -11.7f)} ${p(2.8f, -12.2f)}Z", mix(col, 0xFFC8CCD0.toInt(), 0.45f), 0.3f)
-            // ---- La croupe : la grande masse ronde, assise sur le socle.
-            val croupe = "M${p(-5.6f, -0.6f)}C${p(-6.4f, -4f)} ${p(-6f, -7.6f)} ${p(-3.8f, -9.4f)}" +
-                "C${p(-2f, -10.6f)} ${p(0.6f, -10.2f)} ${p(1.6f, -8.8f)}C${p(2.2f, -6f)} ${p(2.4f, -3f)} ${p(1.8f, -0.6f)}Z"
-            pieceD(croupe, col)
-            val pierre = chemin(croupe)
-            c.save(); c.clipPath(pierre)
-            releve?.let { it.save(); it.clipPath(pierre) }
-            // Le flanc intérieur à l'ombre, le dos au jour.
-            forme("M${p(0f, -10f)}C${p(1.6f, -8f)} ${p(2.4f, -4f)} ${p(1.8f, -0.6f)}L${p(-0.4f, -0.6f)}C${p(0.4f, -4f)} ${p(0.4f, -7f)} ${p(-0.6f, -9.6f)}Z", ombre, 0.55f)
-            // L'arête du dos, comme un pli de cape : un bourrelet au jour et
-            // son ombre portée dessous.
-            trait("M${p(-5.8f, -5.4f)}C${p(-4.8f, -8.4f)} ${p(-2f, -9.4f)} ${p(1.2f, -7.6f)}", creux, 0.9f * k, 0.55f)
-            trait("M${p(-5.8f, -6.2f)}C${p(-4.8f, -9.2f)} ${p(-2f, -10.2f)} ${p(1.2f, -8.4f)}", jour, 0.8f * k, 0.8f)
-            // La cuisse enroulée, en bas : son bord au jour, son creux.
-            pieceD("M${p(-5f, -0.6f)}C${p(-5.4f, -3.4f)} ${p(-3f, -4.6f)} ${p(-1f, -3.6f)}C${p(0.2f, -2.8f)} ${p(0f, -1.2f)} ${p(-0.6f, -0.6f)}Z",
-                mix(col, 0xFFFFFFFF.toInt(), 0.1f), 0.3f)
-            trait("M${p(-4.6f, -1f)}C${p(-4.6f, -3f)} ${p(-2.6f, -3.8f)} ${p(-1.2f, -3.2f)}", creux, 0.4f * k, 0.6f)
-            // Le lichen et les taches noires de la pierre.
-            for (n in 0 until 10) {
-                val u = -5.6f + rr() * 7f; val v = -0.8f - rr() * 8.6f
-                rond(px(u), py(v), (0.25f + rr() * 0.4f) * k, if (n % 3 == 0) creux else lichen, 0.5f)
+            val jour = mix(col, 0xFFD6E2DC.toInt(), 0.42f)
+            val reflet = mix(jour, 0xFFB8A8C8.toInt(), 0.3f)   // le reflet violacé de la patine
+            val ombre = sombre(col, 0.36f)
+            val creux = sombre(col, 0.66f)
+            val loin = sombre(col, 0.22f)                        // ce qui est de l'autre côté
+            val pierreSocle = neutre(duJour(0xFF8C8C6C.toInt()))
+            fun clip(forme: Path, dessin: () -> Unit) {
+                c.save(); c.clipPath(forme)
+                releve?.let { it.save(); it.clipPath(forme) }
+                dessin()
+                releve?.restore(); c.restore()
             }
-            releve?.restore(); c.restore()
-            // ---- La crinière, colonne de boucles qui monte au-dessus du dos,
-            // la tête dressée vers le château.
-            // Des mèches, pas des boules : des ovales en long, de travers,
-            // plus larges en bas où la crinière retombe sur les épaules.
-            // En ronds égaux, elle se lisait comme une pomme de pin.
-            val boucles = Path()
-            val meches = arrayOf(
-                floatArrayOf(-4.2f, -9f, 1.5f, 2.2f, -20f), floatArrayOf(-2.4f, -9.6f, 1.6f, 2.4f, -8f),
-                floatArrayOf(-0.6f, -9.4f, 1.5f, 2.3f, 6f), floatArrayOf(1f, -9.8f, 1.2f, 2f, 18f),
-                floatArrayOf(-3.2f, -12f, 1.4f, 2.3f, -14f), floatArrayOf(-1.4f, -12.4f, 1.5f, 2.4f, 0f),
-                floatArrayOf(0.5f, -12.2f, 1.3f, 2.2f, 14f), floatArrayOf(-2.4f, -14.8f, 1.3f, 2.2f, -10f),
-                floatArrayOf(-0.5f, -15f, 1.4f, 2.3f, 8f), floatArrayOf(-1.6f, -17.2f, 1.2f, 2f, -6f),
-                floatArrayOf(0.2f, -17.4f, 1.1f, 1.9f, 12f), floatArrayOf(-0.8f, -19f, 1f, 1.5f, 0f)
+            // ---- Le socle de pierre : un dé à corniche moulurée.
+            feuille(x - 6.4f, y0, 12.8f, bas - y0, pierreSocle)
+            rect(x - 6.4f, y0, 3.2f, bas - y0, sombre(pierreSocle, 0.3f), 0.45f)
+            feuille(x - 7.2f, y0 - 0.9f, 14.4f, 1.1f, mix(pierreSocle, 0xFFFFFFFF.toInt(), 0.2f), 0.4f)
+            rect(x - 7.2f, y0 + 0.2f, 14.4f, 0.35f, sombre(pierreSocle, 0.6f), 0.6f)
+            rect(x - 6.4f, bas - 1f, 12.8f, 0.3f, sombre(pierreSocle, 0.6f), 0.5f)
+            // ---- Les pattes de l'autre côté, plus sombres, derrière le corps.
+            pieceD("M${p(0.6f, -0.6f)}L${p(0.8f, -8f)}L${p(2.6f, -8f)}L${p(2.6f, -1.6f)}" +
+                "C${p(3.2f, -1.6f)} ${p(3.8f, -1.2f)} ${p(3.8f, -0.6f)}Z", loin, 0.3f)
+            // ---- La cuisse et le corps : la cuisse ronde en arrière, le dos
+            // qui monte aux épaules, le poitrail en avant.
+            val corps = chemin("M${p(-6.4f, -0.6f)}C${p(-7.2f, -4.2f)} ${p(-6.6f, -8.6f)} ${p(-4.2f, -9.8f)}" +
+                "C${p(-2.8f, -10.8f)} ${p(-1.4f, -12.4f)} ${p(0f, -13.6f)}L${p(3.6f, -12.2f)}" +
+                "C${p(4.6f, -9.2f)} ${p(4.2f, -7.2f)} ${p(3.6f, -5.8f)}L${p(3.4f, -0.6f)}Z")
+            piece(corps, col)
+            clip(corps) {
+                // La cuisse : son dessus au jour, le creux qui la cerne.
+                forme("M${p(-6.6f, -4f)}C${p(-6.4f, -7.8f)} ${p(-3.4f, -9f)} ${p(-1.2f, -7.4f)}" +
+                    "C${p(-2.4f, -8.2f)} ${p(-5f, -7.6f)} ${p(-6.6f, -4f)}Z", reflet, 0.75f)
+                trait("M${p(-6.2f, -1.2f)}C${p(-4f, -0.8f)} ${p(-0.8f, -2f)} ${p(-0.6f, -5f)}" +
+                    "C${p(-0.6f, -6.6f)} ${p(-1.4f, -7.6f)} ${p(-2.4f, -8f)}", creux, 0.4f * k, 0.5f)
+                // Le ventre, entre la cuisse et les pattes avant, à l'ombre.
+                forme("M${p(-0.6f, -0.6f)}C${p(-0.2f, -4f)} ${p(0.2f, -6.6f)} ${p(1.4f, -8.4f)}" +
+                    "L${p(3.4f, -8.4f)}L${p(3.4f, -0.6f)}Z", ombre, 0.55f)
+                // Le dos, une ligne de jour.
+                trait("M${p(-6f, -6.4f)}C${p(-5.4f, -9f)} ${p(-3f, -10f)} ${p(-1.2f, -11.6f)}", jour, 0.5f * k, 0.8f)
+            }
+            // ---- La patte avant de notre côté : une colonne droite, le doigt
+            // posé sur le bord du socle.
+            val patte = chemin("M${p(1.8f, -0.6f)}L${p(1.9f, -8.6f)}L${p(4f, -8.6f)}L${p(4.1f, -1.8f)}" +
+                "C${p(4.8f, -1.9f)} ${p(5.6f, -1.4f)} ${p(5.6f, -0.6f)}Z")
+            piece(patte, col)
+            clip(patte) {
+                rect(min(px(1.8f), px(2.5f)), py(-8.6f), abs(px(2.5f) - px(1.8f)), 8f * k, ombre, 0.6f)
+                trait("M${p(3.8f, -8.4f)}L${p(3.9f, -2.2f)}", jour, 0.4f * k, 0.8f)
+                trait("M${p(2f, -8.4f)}L${p(2f, -0.8f)}", creux, 0.35f * k, 0.8f)
+                for (d in floatArrayOf(4.4f, 5f)) trait("M${p(d, -1.5f)}L${p(d, -0.6f)}", creux, 0.25f * k, 0.8f)
+            }
+            // ---- La crinière, lourde, qui coule sur les épaules et le
+            // poitrail : des mèches en langue de feu, la pointe vers le bas
+            // et l'arrière, posées par rangs. Le rang du bas d'abord, chaque
+            // rang recouvrant la racine du suivant, comme sur un bronze.
+            // Des traits verticaux réguliers la faisaient lire comme une
+            // perruque égyptienne.
+            val rangs = arrayOf(
+                floatArrayOf(-12.8f, 4.4f, 1.2f, -2.2f, -0.4f, 1.4f, 3.1f, 4.6f),
+                floatArrayOf(-15.4f, 4.2f, 1.2f, -2.8f, -1f, 0.8f, 2.6f, 4.2f),
+                floatArrayOf(-18f, 3.8f, 1.15f, -2.2f, -0.4f, 1.4f, 3f),
+                floatArrayOf(-20.4f, 3.4f, 1.05f, -0.6f, 1.2f, 2.9f)
             )
-            // La crinière est plus étroite que la croupe et laisse voir
-            // l'arête du dos sous elle, comme sur la photo.
-            for (m in meches) { m[0] = m[0] * 0.8f - 0.6f; m[1] -= 1.3f; m[2] *= 0.85f }
-            fun meche(m: FloatArray) = Path().apply {
-                addOval(px(m[0]) - m[2] * k, py(m[1]) - m[3] * k, px(m[0]) + m[2] * k, py(m[1]) + m[3] * k, Path.Direction.CW)
-                transform(Matrix().apply { setRotate(m[4] * s, px(m[0]), py(m[1])) })
+            fun meche(u: Float, v: Float, l: Float, w: Float, b: Float) = chemin(
+                "M${p(u - w, v)}C${p(u - w, v + l * 0.5f)} ${p(u - w * 0.6f - b, v + l * 0.8f)} ${p(u - b, v + l)}" +
+                "C${p(u + w * 0.4f - b * 0.8f, v + l * 0.7f)} ${p(u + w, v + l * 0.4f)} ${p(u + w, v)}" +
+                "C${p(u + w, v - w * 1.1f)} ${p(u - w, v - w * 1.1f)} ${p(u - w, v)}Z")
+            // Le bas de la crinière est un seul bord ondulé : entre des
+            // pointes de mèches libres, la tranche de kraft faisait des
+            // coches orange sur le dos.
+            val criniere = chemin("M${p(-2f, -9.6f)}C${p(-3f, -13f)} ${p(-2.4f, -17f)} ${p(0.2f, -19.6f)}" +
+                "L${p(3.8f, -19.6f)}L${p(4.8f, -9.4f)}C${p(4.2f, -8.4f)} ${p(3.4f, -8.8f)} ${p(2.8f, -8.6f)}" +
+                "C${p(2f, -8.4f)} ${p(1.2f, -9.2f)} ${p(0.4f, -9f)}C${p(-0.4f, -8.8f)} ${p(-1.2f, -9.6f)} ${p(-2f, -9.6f)}Z")
+            val meches = ArrayList<Triple<Path, Float, Int>>()
+            for ((ri, rg) in rangs.withIndex()) for (j in 3 until rg.size) {
+                val u = rg[j]
+                val avant = (u - rg[3]) / (rg[rg.size - 1] - rg[3])        // 0 à l'arrière, 1 au poitrail
+                val b = 1.7f - 1.2f * avant
+                val m = meche(u + (rr() - 0.5f) * 0.3f, rg[0] + (rr() - 0.5f) * 0.4f, rg[1] * (0.9f + 0.2f * rr()), rg[2], b)
+                criniere.op(m, Path.Op.UNION)
+                meches += Triple(m, u, ri * 10 + j)
             }
-            for (m in meches) boucles.op(meche(m), Path.Op.UNION)
-            piece(boucles, sombre(col, 0.06f))
-            c.save(); c.clipPath(boucles)
-            releve?.let { it.save(); it.clipPath(boucles) }
-            // Chaque mèche : un creux noir en virgule le long de son bord
-            // intérieur, qui se recourbe en bas, et un filet de jour au dos.
-            for ((i, m) in meches.withIndex()) {
-                val u = m[0]; val v = m[1]; val rx = m[2]; val ry = m[3]
-                val h = if (i % 2 == 0) 1f else -1f
-                trait("M${p(u + 0.5f * rx, v - 0.9f * ry)}C${p(u + 0.9f * rx, v)} ${p(u + 0.7f * rx, v + 0.8f * ry)} ${p(u - 0.1f * rx * h, v + 0.95f * ry)}",
-                    creux, 0.42f * k, 0.75f)
-                trait("M${p(u - 0.6f * rx, v - 0.6f * ry)}C${p(u - 0.8f * rx, v - 0.1f * ry)} ${p(u - 0.7f * rx, v + 0.4f * ry)} ${p(u - 0.4f * rx, v + 0.6f * ry)}",
-                    jour, 0.3f * k, 0.7f)
+            piece(criniere, sombre(col, 0.12f))
+            clip(criniere) {
+                for ((m, u, n) in meches) {
+                    // Sous 0,95 : peinte à plein, chaque mèche devenait un
+                    // carton à tranche de kraft, des traits orange.
+                    forme(m, if (n % 2 == 0) col else mix(col, reflet, 0.22f), 0.94f)
+                    // Chaque mèche : son revers creusé de noir, du côté où
+                    // elle se couche, et son bord avant au jour. À la taille
+                    // d'une vignette, c'est cet écart de valeur qui fait les
+                    // mèches ; des traits fins au milieu y faisaient des
+                    // rayures.
+                    c.save(); c.clipPath(m)
+                    val dos = Path(m).apply { offset(0.4f * s * k, -0.2f * k) }
+                    forme(Path(m).apply { op(dos, Path.Op.DIFFERENCE) }, creux, 0.6f)
+                    val face = Path(m).apply { offset(-0.45f * s * k, 0.45f * k) }
+                    forme(Path(m).apply { op(face, Path.Op.DIFFERENCE) }, if (n % 3 == 0) reflet else jour, 0.8f)
+                    c.restore()
+                }
             }
-            for (n in 0 until 5) rond(px(-2.6f + rr() * 3.2f), py(-9.6f - rr() * 8f), (0.25f + rr() * 0.3f) * k, lichen, 0.55f)
-            releve?.restore(); c.restore()
-            // L'oreille, qui dépasse de la crinière au sommet.
-            pieceD("M${p(-0.6f, -20.6f)}L${p(0f, -22f)}L${p(0.6f, -20.8f)}Z", ombre, 0f)
+            // ---- La tête, de profil, levée vers l'escalier : front haut,
+            // museau carré, gueule entrouverte.
+            val tete = chemin("M${p(2.8f, -17.4f)}C${p(2.8f, -19.8f)} ${p(3.8f, -21.2f)} ${p(5.4f, -21.3f)}" +
+                "C${p(6.2f, -21.3f)} ${p(6.7f, -20.9f)} ${p(6.9f, -20.3f)}L${p(8.7f, -19f)}" +
+                "C${p(9.1f, -18.6f)} ${p(9.1f, -18f)} ${p(8.9f, -17.6f)}L${p(8.7f, -17f)}" +
+                "L${p(7.7f, -16.8f)}L${p(8.3f, -16.2f)}C${p(8.1f, -15.6f)} ${p(7.4f, -15.4f)} ${p(6.6f, -15.5f)}" +
+                "C${p(5.4f, -15.4f)} ${p(4.2f, -15.4f)} ${p(3.4f, -16f)}Z")
+            piece(tete, col)
+            clip(tete) {
+                // Le front et le chanfrein au jour, la joue et la mâchoire
+                // à l'ombre.
+                forme("M${p(2.8f, -19f)}C${p(3.6f, -21.4f)} ${p(6.4f, -21.6f)} ${p(9f, -18.6f)}" +
+                    "C${p(7f, -19.6f)} ${p(4.6f, -19.8f)} ${p(2.8f, -19f)}Z", reflet, 0.9f)
+                forme("M${p(2.8f, -16.8f)}C${p(4.2f, -17.8f)} ${p(6f, -17.6f)} ${p(7f, -16.4f)}" +
+                    "L${p(7f, -15.2f)}L${p(2.8f, -15.2f)}Z", ombre, 0.65f)
+                // L'arcade et l'œil enfoncé dessous.
+                trait("M${p(5.2f, -20.1f)}C${p(5.9f, -20.5f)} ${p(6.6f, -20.3f)} ${p(7f, -19.8f)}", creux, 0.4f * k, 0.85f)
+                forme("M${p(5.5f, -19.6f)}C${p(5.9f, -19.9f)} ${p(6.4f, -19.8f)} ${p(6.6f, -19.4f)}" +
+                    "C${p(6.2f, -19.2f)} ${p(5.8f, -19.3f)} ${p(5.5f, -19.6f)}Z", creux, 0.95f)
+                // La truffe, la narine, la babine et la gueule entrouverte.
+                rond(px(8.6f), py(-18.1f), 0.3f * k, creux, 0.9f)
+                trait("M${p(8.7f, -17.1f)}C${p(8f, -17f)} ${p(7.2f, -17.1f)} ${p(6.4f, -17.6f)}", creux, 0.35f * k, 0.9f)
+                forme("M${p(8.6f, -17f)}L${p(7.7f, -16.8f)}L${p(8.2f, -16.3f)}Z", creux, 0.9f)
+                for (n in 0 until 4) rond(px(7.2f + (n % 2) * 0.5f), py(-17.9f + (n / 2) * 0.4f), 0.1f * k, creux, 0.6f)
+                // La joue rejoint la crinière par une frange de mèches.
+                trait("M${p(3.4f, -19.6f)}C${p(4.4f, -18.6f)} ${p(4.4f, -17f)} ${p(3.6f, -15.8f)}", ombre, 0.5f * k, 0.8f)
+            }
+            // L'oreille, à demi prise dans la crinière.
+            pieceD("M${p(3.6f, -20.6f)}C${p(3.4f, -21.9f)} ${p(4.2f, -22.5f)} ${p(4.8f, -21.4f)}Z", ombre, 0f)
+            // ---- La queue, enroulée sur le socle devant la cuisse.
+            trait("M${p(-6.2f, -0.9f)}C${p(-4f, -0.2f)} ${p(-1.4f, -0.4f)} ${p(0.6f, -0.9f)}", ombre, 0.7f * k, 0.95f)
+            rond(px(0.9f), py(-0.95f), 0.55f * k, creux, 0.9f)
+            // ---- Les coulures vertes de la patine, sur les flancs.
+            clip(corps) {
+                for (n in 0 until 6) {
+                    val u = -5.6f + rr() * 8f; val v = -3f - rr() * 6f
+                    trait("M${p(u, v)}L${p(u + 0.1f, v + 1.6f + rr())}", mix(col, 0xFF8FB8A4.toInt(), 0.5f), 0.3f * k, 0.5f)
+                }
+            }
         }
 
         // ---- Pafendall, l'ascenseur panoramique (photo du propriétaire)
