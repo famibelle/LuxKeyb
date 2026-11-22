@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [41.1.4] - 2026-11-22
+
+### ⚡ Rapidité
+
+- **Des cartes plus fluides** : sur les téléphones modestes, les cartes animées ne saccadent plus. La grande roue et les chevaux de bois de la Schueberfouer tournent de nouveau sans à-coups, et passer d'une carte à la suivante d'un glissé du doigt se fait sans temps d'arrêt.
+
 ## [41.1.3] - 2026-11-22
 
 ### ✨ Améliorations
