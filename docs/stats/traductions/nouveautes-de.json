@@ -6,6 +6,58 @@
     "Changements": "Änderungen",
     "Rapidité": "Geschwindigkeit"
   },
+  "41.1.5": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Geschwindigkeit",
+        "points": [
+          {
+            "titre": "Karten öffnen sich ohne Warten",
+            "texte": "Wenn man eine Karte der Sammlung antippte, blieb sie einen Moment hinter dem dunklen Schleier verborgen, bevor sie sich umdrehte. Jetzt dreht sie sich fast sofort um, auch auf einfacheren Handys."
+          }
+        ]
+      }
+    ]
+  },
+  "41.1.4": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Geschwindigkeit",
+        "points": [
+          {
+            "titre": "Flüssigere Karten",
+            "texte": "Auf einfacheren Handys ruckeln die animierten Karten nicht mehr. Das Riesenrad und die Karussellpferde der Schueberfouer drehen sich wieder gleichmäßig, und mit einem Wisch von einer Karte zur nächsten zu blättern geht ohne Stocken."
+          }
+        ]
+      }
+    ]
+  },
+  "41.1.3": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Das Mëllerdall wie auf dem Foto",
+            "texte": "Die Karte des Schéissendëmpel hat wieder ihre kleine moosbedeckte Steinbrücke, ihre drei Wasserfälle, die zwischen zwei großen Felsen aus demselben Becken stürzen, und ihr dunkles Unterholz, in dem das Licht unter dem Bogen hindurchfällt."
+          },
+          {
+            "titre": "Klares Wasser und Schwertlilien",
+            "texte": "Das Becken ist von klarem Blau, und gelbe Schwertlilien stehen mit dem Fuß im Wasser, durch das man hindurchsieht."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Die Landschaft der Mëllerdall-Karte in zwei Ansichten nebeneinander, mit dem Wasserzeichen LuxKeyb. 1. Am Nachmittag: in einem Unterholz aus Efeu und Blättern hinten die kleine bemooste Steinbrücke; davor stürzen drei Wasserfälle zwischen großen grünen Felsen in ein türkisfarbenes Becken, in dem man Kiesel und einige Fische sieht; im Vordergrund stehen gelbe Schwertlilien mit dem Fuß im Wasser. 2. Dieselbe Landschaft bei Nacht, ganz in Blau, die drei Wasserfälle beleuchtet.",
+        "legende": "Der Schéissendëmpel im Mëllerdall, am Nachmittag und bei Nacht."
+      }
+    ]
+  },
   "41.1.2": {
     "intro": "",
     "sections": [

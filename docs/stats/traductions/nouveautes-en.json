@@ -6,6 +6,58 @@
     "Changements": "Changes",
     "Rapidité": "Speed"
   },
+  "41.1.5": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Speed",
+        "points": [
+          {
+            "titre": "Cards open without waiting",
+            "texte": "When you tapped a card in the collection, it stayed hidden behind the dark veil for a moment before turning over. It now turns over almost at once, even on modest phones."
+          }
+        ]
+      }
+    ]
+  },
+  "41.1.4": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Speed",
+        "points": [
+          {
+            "titre": "Smoother cards",
+            "texte": "On modest phones, animated cards no longer stutter. The Ferris wheel and the carousel horses of the Schueberfouer turn smoothly again, and swiping from one card to the next happens without a pause."
+          }
+        ]
+      }
+    ]
+  },
+  "41.1.3": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Improvements",
+        "points": [
+          {
+            "titre": "The Mëllerdall as in the photo",
+            "texte": "The Schéissendëmpel card gets back its small moss-covered stone bridge, its three waterfalls dropping from the same pool between two large rocks, and its dark undergrowth where the light passes under the arch."
+          },
+          {
+            "titre": "Clear water and irises",
+            "texte": "The pool is a limpid blue, and yellow irises stand with their feet in the water, which you can see through."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "The landscape of the Mëllerdall card in two views side by side, marked with the LuxKeyb watermark. 1. In the afternoon: in undergrowth of ivy and leaves, the small mossy stone bridge at the back; in front, three waterfalls drop between large green rocks into a turquoise pool where pebbles and a few fish show; in the foreground, yellow irises stand with their feet in the water. 2. The same landscape at night, all in blues, the three waterfalls lit.",
+        "legende": "The Schéissendëmpel in the Mëllerdall, in the afternoon and at night."
+      }
+    ]
+  },
   "41.1.2": {
     "intro": "",
     "sections": [

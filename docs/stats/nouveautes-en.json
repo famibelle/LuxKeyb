@@ -1,9 +1,80 @@
 {
  "genere_le": "2026-11-22",
- "derniere_version": "41.1.2",
+ "derniere_version": "41.1.5",
  "derniere_date": "2026-11-22",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.5",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Speed",
+     "points": [
+      {
+       "titre": "Cards open without waiting",
+       "texte": "When you tapped a card in the collection, it stayed hidden behind the dark veil for a moment before turning over. It now turns over almost at once, even on modest phones."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "41.1.4",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Speed",
+     "points": [
+      {
+       "titre": "Smoother cards",
+       "texte": "On modest phones, animated cards no longer stutter. The Ferris wheel and the carousel horses of the Schueberfouer turn smoothly again, and swiping from one card to the next happens without a pause."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "41.1.3",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "The Mëllerdall as in the photo",
+       "texte": "The Schéissendëmpel card gets back its small moss-covered stone bridge, its three waterfalls dropping from the same pool between two large rocks, and its dark undergrowth where the light passes under the arch."
+      },
+      {
+       "titre": "Clear water and irises",
+       "texte": "The pool is a limpid blue, and yellow irises stand with their feet in the water, which you can see through."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_mellerdall_photo.png",
+     "alt": "The landscape of the Mëllerdall card in two views side by side, marked with the LuxKeyb watermark. 1. In the afternoon: in undergrowth of ivy and leaves, the small mossy stone bridge at the back; in front, three waterfalls drop between large green rocks into a turquoise pool where pebbles and a few fish show; in the foreground, yellow irises stand with their feet in the water. 2. The same landscape at night, all in blues, the three waterfalls lit.",
+     "legende": "The Schéissendëmpel in the Mëllerdall, in the afternoon and at night."
+    }
+   ],
+   "image": "Screenshots/lux_mellerdall_photo.png",
+   "image_alt": "The landscape of the Mëllerdall card in two views side by side, marked with the LuxKeyb watermark. 1. In the afternoon: in undergrowth of ivy and leaves, the small mossy stone bridge at the back; in front, three waterfalls drop between large green rocks into a turquoise pool where pebbles and a few fish show; in the foreground, yellow irises stand with their feet in the water. 2. The same landscape at night, all in blues, the three waterfalls lit.",
+   "image_legende": "The Schéissendëmpel in the Mëllerdall, in the afternoon and at night."
+  },
   {
    "version": "41.1.2",
    "date": "2026-11-22",
@@ -139,161 +210,6 @@
    "image": "Screenshots/lux_wierderbuch_nature.gif",
    "image_alt": "A three-step animation in the Wierderbuch. 1. “Haus” is typed into the search field, letter by letter. 2. The results list shows each word with its part of speech beside it: Haus, neuter noun, house; Hausse, feminine noun; hausen, verb, to dwell; then Hausfra, Hauskaz and Hausrat, feminine nouns. 3. “Haus” is tapped: its entry opens, with the “Neuter noun” tag under the word, the meaning “house”, two example sentences and the other form, “Haiser”.",
    "image_legende": "Every Wierderbuch word shows its part of speech, in the list and on its entry."
-  },
-  {
-   "version": "41.0.0",
-   "date": "2026-11-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "New",
-     "points": [
-      {
-       "titre": "The keyboard knows everyday language",
-       "texte": "Suggestions now learn from the 45,000 example sentences of the Lëtzebuerger Online Dictionnaire, written by the Zenter fir d'Lëtzebuerger Sprooch. After “du”, it suggests “hues” or “muss” instead of French words; after “wëlls de”, “kanns du”, “weess du” or “looss dech”, it finally has something to suggest. Measured on texts it has never seen: 19.5% of correct suggestions among the three shown, against 18.1%."
-      },
-      {
-       "titre": "Six places from photographs",
-       "texte": "The spruce edge and the herd of Conzefenn, the millstone cave of the Hohllay, the tower of the Napoleonsgaart, the cleft of the Wollefsschlucht, the grey wooden footbridge of the Dumongshaff, and the four-arched Passerelle in the Pétrusse valley, which replaces the copy of the Adolphe Bridge."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Changes",
-     "points": [
-      {
-       "titre": "Fairer rarities",
-       "texte": "A card's rarity follows how frequent its word is, and until now that frequency came almost only from the press. Everyday words become more common: “Kaz”, “Päerd” and “Hond” are now common cards. Cards already won take their new rarity, and with it the hour of their landscape and the material of their frame."
-      },
-      {
-       "titre": "The landscape album stays complete",
-       "texte": "Every slot can still be won in all four languages of Wuertplaz."
-      },
-      {
-       "titre": "“Smartphone” loses its drawing",
-       "texte": "No game gives this word any more."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_suggestions_du.gif",
-     "alt": "The help's practice field, with the keyboard below it. 1. “Du” is typed, then a space: the bar above the letters suggests “hues”, “muss” and “jour”. 2. “hues” is tapped: the text becomes “Du hues”, and the bar already suggests what comes next, “eng” and “dech”.",
-     "legende": "After “du”, the keyboard suggests “hues” or “muss”."
-    }
-   ],
-   "image": "Screenshots/lux_suggestions_du.gif",
-   "image_alt": "The help's practice field, with the keyboard below it. 1. “Du” is typed, then a space: the bar above the letters suggests “hues”, “muss” and “jour”. 2. “hues” is tapped: the text becomes “Du hues”, and the bar already suggests what comes next, “eng” and “dech”.",
-   "image_legende": "After “du”, the keyboard suggests “hues” or “muss”."
-  },
-  {
-   "version": "40.1.0",
-   "date": "2026-11-16",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "New",
-     "points": [
-      {
-       "titre": "The Ourdall promenade, from photographs",
-       "texte": "Lake Our and the long wooded hill that closes it, the pylons of the pumped-storage reservoir on its crest, and the grey wooden boardwalk running along the shore with its wire-mesh railing, through which the water shows."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_carte_ourdall.png",
-     "alt": "The same card window twice, at the Ourdall. 1. Morning: Lake Our, pale and calm, a long wooded hill closing it at the back, a pylon of the reservoir on its crest, reeds and a willow on the left, and on the right the grey wooden boardwalk along the shore, its wire-mesh railing with the water showing through. 2. Night: the same view under a starry sky and a crescent moon, the lake deep blue and the railing in silhouette.",
-     "legende": "The Ourdall promenade, morning and night: the lake, its hill and the wire-mesh railing."
-    }
-   ],
-   "image": "Screenshots/lux_carte_ourdall.png",
-   "image_alt": "The same card window twice, at the Ourdall. 1. Morning: Lake Our, pale and calm, a long wooded hill closing it at the back, a pylon of the reservoir on its crest, reeds and a willow on the left, and on the right the grey wooden boardwalk along the shore, its wire-mesh railing with the water showing through. 2. Night: the same view under a starry sky and a crescent moon, the lake deep blue and the railing in silhouette.",
-   "image_legende": "The Ourdall promenade, morning and night: the lake, its hill and the wire-mesh railing."
-  },
-  {
-   "version": "40.0.0",
-   "date": "2026-11-16",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "New",
-     "points": [
-      {
-       "titre": "Sixteen places redrawn from photographs",
-       "texte": "The Red Bridge, Vianden castle, the tower of Esch-sur-Sûre, the Schengen steles, Neimënster abbey, the Gëlle Fra, the Schueberfouer, the Schiessentümpel, the Grund, the Breedewee alley, the Pfaffenthal lift, Ansembourg castle, the Belval blast furnace, the Berdorf rock shelter, the Adolphe Bridge and the Felsmillen gorges are no longer drawn from memory: each follows a photograph, and shows what makes it recognisable."
-      },
-      {
-       "titre": "Everything is made of its own material",
-       "texte": "Dressed stone and its courses, slate rubble, sandstone with its undercut beds, brick, riveted sheet metal, open steelwork, the voussoirs of an arch, moss on the ledges. A tower, a wall or a rock is no longer a flat colour outlined with three strokes."
-      },
-      {
-       "titre": "The scenery lets its subject show",
-       "texte": "The word sits in the middle of the window, so what matters in a place now holds the top band and the two sides. A bridge gives its deck to the top of the card, a cliff holds a whole column, and foliage no longer stands in front of what you came to look at."
-      },
-      {
-       "titre": "A truly Luxembourgish green",
-       "texte": "The large masses of vegetation are deep and frank instead of turning apple green, and the four seasons read on every place."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "⚡",
-     "titre": "Speed",
-     "points": [
-      {
-       "titre": "The card tilts in one single motion",
-       "texte": "When you tilted the phone, the image advanced at two mixed rates, which made it stutter. It now has only one, and the gesture is smoother."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Fixes",
-     "points": [
-      {
-       "titre": "The Pétrusse valley reads in all four seasons",
-       "texte": "The stone of the bridge took on the colour of the valley behind it, and the arch disappeared."
-      },
-      {
-       "titre": "Reeds under the snow",
-       "texte": "The winter border turned bright orange instead of straw."
-      },
-      {
-       "titre": "Autumn evenings",
-       "texte": "Evening is already orange, and autumn rust on top set the card on fire. It is applied more gently now."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_lieux_v40.png",
-     "alt": "Six card windows side by side. 1. The Breedewee alley: an arched gate of large stone voussoirs, the cobbled lane behind it. 2. Belval: the red brick chimney, the black steelwork of the blast furnace and the pale cylinders of the cowpers. 3. The Mullerthal: the stone bridge of the Schiessentümpel, its three falls and the pool where the pebbles show through. 4. Berdorf: a wide, low rock shelter of bedded sandstone, opening onto a sunlit beech wood. 5. The Adolphe Bridge: its balustraded deck across the top of the window, its great arch and spandrel pierced by arcades, the wooded valley below. 6. The Felsmillen gorges: an overhanging sandstone wall on the left, a wooden boardwalk climbing into the forest on the right.",
-     "legende": "Six of the sixteen places redrawn from photographs, each with the material it is made of."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_lieux_v40.png",
-   "image_alt": "Six card windows side by side. 1. The Breedewee alley: an arched gate of large stone voussoirs, the cobbled lane behind it. 2. Belval: the red brick chimney, the black steelwork of the blast furnace and the pale cylinders of the cowpers. 3. The Mullerthal: the stone bridge of the Schiessentümpel, its three falls and the pool where the pebbles show through. 4. Berdorf: a wide, low rock shelter of bedded sandstone, opening onto a sunlit beech wood. 5. The Adolphe Bridge: its balustraded deck across the top of the window, its great arch and spandrel pierced by arcades, the wooded valley below. 6. The Felsmillen gorges: an overhanging sandstone wall on the left, a wooden boardwalk climbing into the forest on the right.",
-   "image_legende": "Six of the sixteen places redrawn from photographs, each with the material it is made of."
   }
  ]
 }

@@ -1,9 +1,80 @@
 {
  "genere_le": "2026-11-22",
- "derniere_version": "41.1.2",
+ "derniere_version": "41.1.5",
  "derniere_date": "2026-11-22",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.5",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Rapidité",
+     "points": [
+      {
+       "titre": "Les cartes s'ouvrent sans attendre",
+       "texte": "Quand on touchait une carte du carnet, elle restait un instant cachée derrière le voile avant de se retourner. Elle se retourne maintenant presque aussitôt, même sur les téléphones modestes."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "41.1.4",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Rapidité",
+     "points": [
+      {
+       "titre": "Des cartes plus fluides",
+       "texte": "Sur les téléphones modestes, les cartes animées ne saccadent plus. La grande roue et les chevaux de bois de la Schueberfouer tournent de nouveau sans à-coups, et passer d'une carte à la suivante d'un glissé du doigt se fait sans temps d'arrêt."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "41.1.3",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le Mëllerdall comme sur la photo",
+       "texte": "La carte du Schéissendëmpel retrouve son petit pont de pierre couvert de mousse, ses trois cascades qui tombent d'un même bassin entre deux gros rochers, et son sous-bois sombre où la lumière passe sous l'arche."
+      },
+      {
+       "titre": "Une eau claire et des iris",
+       "texte": "Le bassin est d'un bleu limpide, et des iris jaunes y ont le pied dans l'eau, qu'on voit par transparence."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_mellerdall_photo.png",
+     "alt": "Le décor de la carte du Mëllerdall en deux vues côte à côte, marquées du filigrane LuxKeyb. 1. L'après-midi : dans un sous-bois de lierre et de feuilles, le petit pont de pierre moussu au fond ; devant, trois cascades tombent entre de gros rochers verts dans un bassin turquoise où l'on voit les galets et quelques poissons ; au premier plan, des iris jaunes ont le pied dans l'eau. 2. Le même décor la nuit, tout en bleus, les trois cascades éclairées.",
+     "legende": "Le Schéissendëmpel du Mëllerdall, l'après-midi et la nuit."
+    }
+   ],
+   "image": "Screenshots/lux_mellerdall_photo.png",
+   "image_alt": "Le décor de la carte du Mëllerdall en deux vues côte à côte, marquées du filigrane LuxKeyb. 1. L'après-midi : dans un sous-bois de lierre et de feuilles, le petit pont de pierre moussu au fond ; devant, trois cascades tombent entre de gros rochers verts dans un bassin turquoise où l'on voit les galets et quelques poissons ; au premier plan, des iris jaunes ont le pied dans l'eau. 2. Le même décor la nuit, tout en bleus, les trois cascades éclairées.",
+   "image_legende": "Le Schéissendëmpel du Mëllerdall, l'après-midi et la nuit."
+  },
   {
    "version": "41.1.2",
    "date": "2026-11-22",
@@ -139,161 +210,6 @@
    "image": "Screenshots/lux_wierderbuch_nature.gif",
    "image_alt": "Animation en trois temps dans le Wierderbuch. 1. On tape « Haus » dans le champ de recherche, lettre par lettre. 2. La liste des résultats affiche chaque mot avec sa nature à côté : Haus, nom neutre, maison ; Hausse, nom féminin ; hausen, verbe, crécher ; puis Hausfra, Hauskaz et Hausrat, noms féminins. 3. On touche « Haus » : sa fiche s'ouvre, avec la pastille « Nom neutre » sous le mot, le sens « maison », deux phrases d'exemple et l'autre forme, « Haiser ».",
    "image_legende": "Chaque mot du Wierderbuch porte sa nature, dans la liste comme sur sa fiche."
-  },
-  {
-   "version": "41.0.0",
-   "date": "2026-11-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Le clavier connaît la langue de tous les jours",
-       "texte": "Les suggestions apprennent désormais des 45 000 phrases d'exemple du Lëtzebuerger Online Dictionnaire, écrites par le Zenter fir d'Lëtzebuerger Sprooch. Après « du », il propose « hues » ou « muss » au lieu de mots français ; après « wëlls de », « kanns du », « weess du » ou « looss dech », il a enfin quelque chose à proposer. Mesuré sur des textes qu'il n'a jamais vus : 19,5 % de bonnes suggestions parmi les trois proposées, contre 18,1 %."
-      },
-      {
-       "titre": "Six lieux d'après photos",
-       "texte": "La lisière d'épicéas et le troupeau de Conzefenn, la grotte aux meules du Hohllay, la tour du Napoleonsgaart, la faille de la Wollefsschlucht, la passerelle de bois gris du Dumongshaff, et la Passerelle à quatre arches dans la vallée de la Pétrusse, qui remplace la copie du pont Adolphe."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Modifié",
-     "points": [
-      {
-       "titre": "Des raretés plus justes",
-       "texte": "La rareté d'une carte suit la fréquence du mot, qui ne venait jusqu'ici presque que de la presse. Les mots du quotidien deviennent plus communs : « Kaz », « Päerd » et « Hond » sont désormais des cartes communes. Les cartes déjà gagnées prennent leur nouvelle rareté, et avec elle l'heure de leur paysage et la matière de leur cadre."
-      },
-      {
-       "titre": "L'album des paysages reste complet",
-       "texte": "Chaque case peut toujours être gagnée dans les quatre langues de Wuertplaz."
-      },
-      {
-       "titre": "« Smartphone » perd son dessin",
-       "texte": "Aucun jeu ne donne plus ce mot."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_suggestions_du.gif",
-     "alt": "Le champ d'essai de l'aide, avec le clavier en dessous. 1. On tape « Du » puis une espace : la barre au-dessus des lettres propose « hues », « muss » et « jour ». 2. On touche « hues » : le texte devient « Du hues », et la barre propose déjà la suite, « eng » et « dech ».",
-     "legende": "Après « du », le clavier propose « hues » ou « muss »."
-    }
-   ],
-   "image": "Screenshots/lux_suggestions_du.gif",
-   "image_alt": "Le champ d'essai de l'aide, avec le clavier en dessous. 1. On tape « Du » puis une espace : la barre au-dessus des lettres propose « hues », « muss » et « jour ». 2. On touche « hues » : le texte devient « Du hues », et la barre propose déjà la suite, « eng » et « dech ».",
-   "image_legende": "Après « du », le clavier propose « hues » ou « muss »."
-  },
-  {
-   "version": "40.1.0",
-   "date": "2026-11-16",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "La promenade de l'Ourdall d'après photos",
-       "texte": "Le lac de l'Our et la longue colline boisée qui le ferme, les pylônes de la retenue sur sa crête, et le caillebotis de bois gris qui longe la rive avec son garde-corps grillagé, à travers lequel on voit l'eau."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_carte_ourdall.png",
-     "alt": "Deux fois la même fenêtre de carte, à l'Ourdall. 1. Le matin : le lac de l'Our, pâle et calme, une longue colline boisée qui le ferme au fond, un pylône de la retenue sur sa crête, des roseaux et un saule à gauche, et à droite le caillebotis de bois gris qui longe la rive, son garde-corps grillagé à travers lequel on voit l'eau. 2. La nuit : la même vue sous un ciel étoilé et un croissant de lune, le lac bleu profond et le garde-corps en silhouette.",
-     "legende": "La promenade de l'Ourdall, le matin et la nuit : le lac, sa colline et le garde-corps grillagé."
-    }
-   ],
-   "image": "Screenshots/lux_carte_ourdall.png",
-   "image_alt": "Deux fois la même fenêtre de carte, à l'Ourdall. 1. Le matin : le lac de l'Our, pâle et calme, une longue colline boisée qui le ferme au fond, un pylône de la retenue sur sa crête, des roseaux et un saule à gauche, et à droite le caillebotis de bois gris qui longe la rive, son garde-corps grillagé à travers lequel on voit l'eau. 2. La nuit : la même vue sous un ciel étoilé et un croissant de lune, le lac bleu profond et le garde-corps en silhouette.",
-   "image_legende": "La promenade de l'Ourdall, le matin et la nuit : le lac, sa colline et le garde-corps grillagé."
-  },
-  {
-   "version": "40.0.0",
-   "date": "2026-11-16",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Seize lieux redessinés d'après photos",
-       "texte": "Le pont Rouge, le château de Vianden, la tour d'Esch-sur-Sûre, les stèles de Schengen, l'abbaye de Neimënster, la Gëlle Fra, la Schueberfouer, le Schiessentümpel, le Grund, la ruelle du Breedewee, l'ascenseur du Pfaffenthal, le château d'Ansembourg, le haut fourneau de Belval, l'abri sous roche de Berdorf, le pont Adolphe et les gorges de Felsmillen ne sont plus dessinés de mémoire : chacun l'est d'après une photo, et montre ce qui le rend reconnaissable."
-      },
-      {
-       "titre": "Chaque chose est faite de sa matière",
-       "texte": "La pierre de taille et ses assises, le moellon de schiste, le grès et ses bancs creusés en surplomb, la brique, la tôle rivée, les charpentes ajourées, les claveaux d'une arche, la mousse sur les vires. Une tour, un mur ou un rocher ne sont plus un aplat de couleur cerné de trois traits."
-      },
-      {
-       "titre": "Le décor laisse voir son sujet",
-       "texte": "Le mot est au centre de la fenêtre, donc ce qui compte dans un lieu tient désormais la bande du haut et les deux bords. Un pont donne son tablier au haut de la carte, une paroi tient toute une colonne, et le feuillage ne passe plus devant ce qu'on venait regarder."
-      },
-      {
-       "titre": "Un vert vraiment luxembourgeois",
-       "texte": "Les grandes masses de végétation sont profondes et franches au lieu de tirer vers le vert pomme, et les quatre saisons se lisent sur tous les lieux."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "⚡",
-     "titre": "Rapidité",
-     "points": [
-      {
-       "titre": "La carte penche d'un seul mouvement",
-       "texte": "En inclinant le téléphone, l'image avançait à deux cadences mélangées, ce qui donnait un battement. Elle n'en a plus qu'une, et le geste est plus doux."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "La vallée de la Pétrusse se lit aux quatre saisons",
-       "texte": "La pierre du pont y prenait la couleur de la vallée derrière elle, et l'arche disparaissait."
-      },
-      {
-       "titre": "Les roseaux sous la neige",
-       "texte": "Le surcadrage d'hiver virait à l'orange vif au lieu de la paille."
-      },
-      {
-       "titre": "Les soirs d'automne",
-       "texte": "Le soir est déjà orange, et la rouille de l'automne par-dessus mettait le feu à la carte. Elle y va plus doucement."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_lieux_v40.png",
-     "alt": "Six fenêtres de cartes, l'une à côté de l'autre. 1. La ruelle du Breedewee : une porte en arc à gros claveaux de pierre, la ruelle pavée derrière. 2. Belval : la cheminée de brique rouge, la charpente noire du haut fourneau et les cylindres clairs des cowpers. 3. Le Mëllerdall : le pont de pierre du Schiessentümpel, ses trois chutes et le bassin où l'on voit les galets. 4. Berdorf : un abri sous roche de grès lité, large et bas, ouvert sur une hêtraie en plein soleil. 5. Le pont Adolphe : son tablier à balustrade en haut de la fenêtre, sa grande arche et son tympan percé d'arcades, la vallée boisée dessous. 6. Les gorges de Felsmillen : une paroi de grès en surplomb à gauche, un caillebotis de bois qui monte à droite dans la forêt.",
-     "legende": "Six des seize lieux redessinés d'après photos, chacun avec la matière dont il est fait."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_lieux_v40.png",
-   "image_alt": "Six fenêtres de cartes, l'une à côté de l'autre. 1. La ruelle du Breedewee : une porte en arc à gros claveaux de pierre, la ruelle pavée derrière. 2. Belval : la cheminée de brique rouge, la charpente noire du haut fourneau et les cylindres clairs des cowpers. 3. Le Mëllerdall : le pont de pierre du Schiessentümpel, ses trois chutes et le bassin où l'on voit les galets. 4. Berdorf : un abri sous roche de grès lité, large et bas, ouvert sur une hêtraie en plein soleil. 5. Le pont Adolphe : son tablier à balustrade en haut de la fenêtre, sa grande arche et son tympan percé d'arcades, la vallée boisée dessous. 6. Les gorges de Felsmillen : une paroi de grès en surplomb à gauche, un caillebotis de bois qui monte à droite dans la forêt.",
-   "image_legende": "Six des seize lieux redessinés d'après photos, chacun avec la matière dont il est fait."
   }
  ]
 }

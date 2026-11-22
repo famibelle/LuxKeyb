@@ -1,9 +1,80 @@
 {
  "genere_le": "2026-11-22",
- "derniere_version": "41.1.2",
+ "derniere_version": "41.1.5",
  "derniere_date": "2026-11-22",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.5",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Geschwindigkeit",
+     "points": [
+      {
+       "titre": "Karten öffnen sich ohne Warten",
+       "texte": "Wenn man eine Karte der Sammlung antippte, blieb sie einen Moment hinter dem dunklen Schleier verborgen, bevor sie sich umdrehte. Jetzt dreht sie sich fast sofort um, auch auf einfacheren Handys."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "41.1.4",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Geschwindigkeit",
+     "points": [
+      {
+       "titre": "Flüssigere Karten",
+       "texte": "Auf einfacheren Handys ruckeln die animierten Karten nicht mehr. Das Riesenrad und die Karussellpferde der Schueberfouer drehen sich wieder gleichmäßig, und mit einem Wisch von einer Karte zur nächsten zu blättern geht ohne Stocken."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "41.1.3",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Das Mëllerdall wie auf dem Foto",
+       "texte": "Die Karte des Schéissendëmpel hat wieder ihre kleine moosbedeckte Steinbrücke, ihre drei Wasserfälle, die zwischen zwei großen Felsen aus demselben Becken stürzen, und ihr dunkles Unterholz, in dem das Licht unter dem Bogen hindurchfällt."
+      },
+      {
+       "titre": "Klares Wasser und Schwertlilien",
+       "texte": "Das Becken ist von klarem Blau, und gelbe Schwertlilien stehen mit dem Fuß im Wasser, durch das man hindurchsieht."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_mellerdall_photo.png",
+     "alt": "Die Landschaft der Mëllerdall-Karte in zwei Ansichten nebeneinander, mit dem Wasserzeichen LuxKeyb. 1. Am Nachmittag: in einem Unterholz aus Efeu und Blättern hinten die kleine bemooste Steinbrücke; davor stürzen drei Wasserfälle zwischen großen grünen Felsen in ein türkisfarbenes Becken, in dem man Kiesel und einige Fische sieht; im Vordergrund stehen gelbe Schwertlilien mit dem Fuß im Wasser. 2. Dieselbe Landschaft bei Nacht, ganz in Blau, die drei Wasserfälle beleuchtet.",
+     "legende": "Der Schéissendëmpel im Mëllerdall, am Nachmittag und bei Nacht."
+    }
+   ],
+   "image": "Screenshots/lux_mellerdall_photo.png",
+   "image_alt": "Die Landschaft der Mëllerdall-Karte in zwei Ansichten nebeneinander, mit dem Wasserzeichen LuxKeyb. 1. Am Nachmittag: in einem Unterholz aus Efeu und Blättern hinten die kleine bemooste Steinbrücke; davor stürzen drei Wasserfälle zwischen großen grünen Felsen in ein türkisfarbenes Becken, in dem man Kiesel und einige Fische sieht; im Vordergrund stehen gelbe Schwertlilien mit dem Fuß im Wasser. 2. Dieselbe Landschaft bei Nacht, ganz in Blau, die drei Wasserfälle beleuchtet.",
+   "image_legende": "Der Schéissendëmpel im Mëllerdall, am Nachmittag und bei Nacht."
+  },
   {
    "version": "41.1.2",
    "date": "2026-11-22",
@@ -139,161 +210,6 @@
    "image": "Screenshots/lux_wierderbuch_nature.gif",
    "image_alt": "Animation in drei Schritten im Wierderbuch. 1. „Haus“ wird Buchstabe für Buchstabe ins Suchfeld getippt. 2. Die Ergebnisliste zeigt jedes Wort mit seiner Wortart daneben: Haus, Neutrum, maison; Hausse, Femininum; hausen, Verb, crécher; dann Hausfra, Hauskaz und Hausrat, Feminina. 3. „Haus“ wird angetippt: Sein Eintrag öffnet sich, mit dem Etikett „Neutrum“ unter dem Wort, der Bedeutung, zwei Beispielsätzen und der anderen Form „Haiser“.",
    "image_legende": "Jedes Wort im Wierderbuch zeigt seine Wortart, in der Liste wie im Eintrag."
-  },
-  {
-   "version": "41.0.0",
-   "date": "2026-11-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Neu",
-     "points": [
-      {
-       "titre": "Die Tastatur kennt die Alltagssprache",
-       "texte": "Die Vorschläge lernen jetzt aus den 45 000 Beispielsätzen des Lëtzebuerger Online Dictionnaire, geschrieben vom Zenter fir d'Lëtzebuerger Sprooch. Nach „du“ schlägt sie „hues“ oder „muss“ vor statt französischer Wörter; nach „wëlls de“, „kanns du“, „weess du“ oder „looss dech“ hat sie endlich etwas vorzuschlagen. Gemessen an Texten, die sie nie gesehen hat: 19,5 % richtige Vorschläge unter den drei angezeigten, gegenüber 18,1 %."
-      },
-      {
-       "titre": "Sechs Orte nach Fotos",
-       "texte": "Der Fichtenwaldrand und die Herde von Conzefenn, die Mühlsteinhöhle des Hohllay, der Turm des Napoleonsgaart, die Felsspalte der Wolfsschlucht, die graue Holzbrücke des Dumongshaff und die vierbogige Passerelle im Petrußtal, die die Kopie der Adolphe-Brücke ersetzt."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Änderungen",
-     "points": [
-      {
-       "titre": "Gerechtere Seltenheiten",
-       "texte": "Die Seltenheit einer Karte folgt der Häufigkeit ihres Wortes, und diese kam bisher fast nur aus der Presse. Alltagswörter werden häufiger: „Kaz“, „Päerd“ und „Hond“ sind jetzt gewöhnliche Karten. Bereits gewonnene Karten erhalten ihre neue Seltenheit und damit die Tageszeit ihrer Landschaft und das Material ihres Rahmens."
-      },
-      {
-       "titre": "Das Landschaftsalbum bleibt vollständig",
-       "texte": "Jedes Feld kann weiterhin in allen vier Sprachen von Wuertplaz gewonnen werden."
-      },
-      {
-       "titre": "„Smartphone“ verliert seine Zeichnung",
-       "texte": "Kein Spiel gibt dieses Wort mehr aus."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_suggestions_du.gif",
-     "alt": "Das Übungsfeld der Hilfe, darunter die Tastatur. 1. „Du“ wird getippt, dann ein Leerzeichen: Die Leiste über den Buchstaben schlägt „hues“, „muss“ und „jour“ vor. 2. „hues“ wird angetippt: Der Text lautet „Du hues“, und die Leiste schlägt schon die Fortsetzung vor, „eng“ und „dech“.",
-     "legende": "Nach „du“ schlägt die Tastatur „hues“ oder „muss“ vor."
-    }
-   ],
-   "image": "Screenshots/lux_suggestions_du.gif",
-   "image_alt": "Das Übungsfeld der Hilfe, darunter die Tastatur. 1. „Du“ wird getippt, dann ein Leerzeichen: Die Leiste über den Buchstaben schlägt „hues“, „muss“ und „jour“ vor. 2. „hues“ wird angetippt: Der Text lautet „Du hues“, und die Leiste schlägt schon die Fortsetzung vor, „eng“ und „dech“.",
-   "image_legende": "Nach „du“ schlägt die Tastatur „hues“ oder „muss“ vor."
-  },
-  {
-   "version": "40.1.0",
-   "date": "2026-11-16",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Neu",
-     "points": [
-      {
-       "titre": "Die Ourdall-Promenade nach Fotos",
-       "texte": "Der Our-Stausee und der lange bewaldete Hügel, der ihn abschließt, die Masten des Pumpspeichers auf seinem Kamm, und der graue Holzsteg am Ufer mit seinem Drahtgitter-Geländer, durch das man das Wasser sieht."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_carte_ourdall.png",
-     "alt": "Zweimal dasselbe Kartenfenster, an der Ourdall. 1. Morgens: der Our-Stausee, blass und ruhig, ein langer bewaldeter Hügel, der ihn hinten abschließt, ein Mast des Speichers auf seinem Kamm, Schilf und eine Weide links, und rechts der graue Holzsteg am Ufer mit seinem Drahtgitter-Geländer, durch das das Wasser scheint. 2. Nachts: dieselbe Sicht unter Sternenhimmel und Mondsichel, der See tiefblau, das Geländer als Silhouette.",
-     "legende": "Die Ourdall-Promenade, morgens und nachts: der See, sein Hügel und das Drahtgitter-Geländer."
-    }
-   ],
-   "image": "Screenshots/lux_carte_ourdall.png",
-   "image_alt": "Zweimal dasselbe Kartenfenster, an der Ourdall. 1. Morgens: der Our-Stausee, blass und ruhig, ein langer bewaldeter Hügel, der ihn hinten abschließt, ein Mast des Speichers auf seinem Kamm, Schilf und eine Weide links, und rechts der graue Holzsteg am Ufer mit seinem Drahtgitter-Geländer, durch das das Wasser scheint. 2. Nachts: dieselbe Sicht unter Sternenhimmel und Mondsichel, der See tiefblau, das Geländer als Silhouette.",
-   "image_legende": "Die Ourdall-Promenade, morgens und nachts: der See, sein Hügel und das Drahtgitter-Geländer."
-  },
-  {
-   "version": "40.0.0",
-   "date": "2026-11-16",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Neu",
-     "points": [
-      {
-       "titre": "Sechzehn Orte nach Fotos neu gezeichnet",
-       "texte": "Die Rote Brücke, die Burg Vianden, der Turm von Esch-Sauer, die Stelen von Schengen, die Abtei Neumünster, die Gëlle Fra, die Schueberfouer, der Schiessentümpel, das Grundviertel, die Breedewee-Gasse, der Aufzug von Pfaffenthal, Schloss Ansemburg, der Hochofen von Belval, der Felsüberhang von Berdorf, die Adolphe-Brücke und die Felsmillen-Schlucht werden nicht mehr aus dem Gedächtnis gezeichnet: jeder folgt einem Foto und zeigt, was ihn erkennbar macht."
-      },
-      {
-       "titre": "Jedes Ding besteht aus seinem Material",
-       "texte": "Quaderstein und seine Schichten, Schiefer-Bruchstein, Sandstein mit seinen ausgewaschenen Bänken, Ziegel, genietetes Blech, offene Stahlfachwerke, die Keilsteine eines Bogens, Moos auf den Simsen. Ein Turm, eine Mauer oder ein Fels ist keine Farbfläche mit drei Strichen mehr."
-      },
-      {
-       "titre": "Die Kulisse lässt ihr Motiv sehen",
-       "texte": "Das Wort steht in der Mitte des Fensters, also hält das Wichtigste eines Ortes nun das obere Band und die beiden Ränder. Eine Brücke gibt ihre Fahrbahn an den oberen Rand, eine Felswand hält eine ganze Spalte, und das Laub steht nicht mehr vor dem, was man ansehen wollte."
-      },
-      {
-       "titre": "Ein wirklich luxemburgisches Grün",
-       "texte": "Die großen Pflanzenflächen sind tief und klar, statt ins Apfelgrün zu kippen, und die vier Jahreszeiten sind an allen Orten zu erkennen."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "⚡",
-     "titre": "Geschwindigkeit",
-     "points": [
-      {
-       "titre": "Die Karte neigt sich in einer einzigen Bewegung",
-       "texte": "Beim Neigen des Telefons lief das Bild in zwei gemischten Taktraten, was ein Flackern ergab. Jetzt ist es nur noch eine, und die Bewegung ist weicher."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Korrekturen",
-     "points": [
-      {
-       "titre": "Das Petrusstal ist zu allen vier Jahreszeiten lesbar",
-       "texte": "Der Stein der Brücke nahm die Farbe des Tals dahinter an, und der Bogen verschwand."
-      },
-      {
-       "titre": "Schilf unter dem Schnee",
-       "texte": "Die Winterumrahmung wurde leuchtend orange statt strohfarben."
-      },
-      {
-       "titre": "Herbstabende",
-       "texte": "Der Abend ist schon orange, und der Herbstrost darüber setzte die Karte in Brand. Er wird jetzt sanfter aufgetragen."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_lieux_v40.png",
-     "alt": "Sechs Kartenfenster nebeneinander. 1. Die Breedewee-Gasse: ein Bogentor aus großen Keilsteinen, dahinter die gepflasterte Gasse. 2. Belval: der rote Ziegelschornstein, das schwarze Stahlfachwerk des Hochofens und die hellen Zylinder der Winderhitzer. 3. Das Müllerthal: die Steinbrücke am Schiessentümpel, ihre drei Wasserfälle und das Becken, in dem die Kiesel durchscheinen. 4. Berdorf: ein breiter, niedriger Felsüberhang aus geschichtetem Sandstein, der sich zu einem sonnigen Buchenwald öffnet. 5. Die Adolphe-Brücke: ihre Fahrbahn mit Balustrade am oberen Fensterrand, ihr großer Bogen und das von Arkaden durchbrochene Bogenfeld, darunter das bewaldete Tal. 6. Die Felsmillen-Schlucht: links eine überhängende Sandsteinwand, rechts ein hölzerner Bohlenweg, der in den Wald steigt.",
-     "legende": "Sechs der sechzehn nach Fotos neu gezeichneten Orte, jeder mit dem Material, aus dem er besteht."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_lieux_v40.png",
-   "image_alt": "Sechs Kartenfenster nebeneinander. 1. Die Breedewee-Gasse: ein Bogentor aus großen Keilsteinen, dahinter die gepflasterte Gasse. 2. Belval: der rote Ziegelschornstein, das schwarze Stahlfachwerk des Hochofens und die hellen Zylinder der Winderhitzer. 3. Das Müllerthal: die Steinbrücke am Schiessentümpel, ihre drei Wasserfälle und das Becken, in dem die Kiesel durchscheinen. 4. Berdorf: ein breiter, niedriger Felsüberhang aus geschichtetem Sandstein, der sich zu einem sonnigen Buchenwald öffnet. 5. Die Adolphe-Brücke: ihre Fahrbahn mit Balustrade am oberen Fensterrand, ihr großer Bogen und das von Arkaden durchbrochene Bogenfeld, darunter das bewaldete Tal. 6. Die Felsmillen-Schlucht: links eine überhängende Sandsteinwand, rechts ein hölzerner Bohlenweg, der in den Wald steigt.",
-   "image_legende": "Sechs der sechzehn nach Fotos neu gezeichneten Orte, jeder mit dem Material, aus dem er besteht."
   }
  ]
 }

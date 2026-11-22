@@ -6,6 +6,58 @@
     "Changements": "Alterações",
     "Rapidité": "Rapidez"
   },
+  "41.1.5": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Rapidez",
+        "points": [
+          {
+            "titre": "As cartas abrem sem esperar",
+            "texte": "Quando se tocava numa carta da coleção, ela ficava um instante escondida atrás do véu escuro antes de se virar. Agora vira-se quase de imediato, mesmo nos telemóveis mais modestos."
+          }
+        ]
+      }
+    ]
+  },
+  "41.1.4": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Rapidez",
+        "points": [
+          {
+            "titre": "Cartas mais fluidas",
+            "texte": "Nos telemóveis mais modestos, as cartas animadas já não engasgam. A roda-gigante e os cavalinhos do carrossel da Schueberfouer voltam a girar sem solavancos, e passar de uma carta para a seguinte com um deslizar do dedo faz-se sem pausas."
+          }
+        ]
+      }
+    ]
+  },
+  "41.1.3": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Melhorias",
+        "points": [
+          {
+            "titre": "O Mëllerdall como na fotografia",
+            "texte": "A carta do Schéissendëmpel recupera a sua pequena ponte de pedra coberta de musgo, as suas três cascatas que caem de uma mesma bacia entre duas grandes rochas, e o seu sub-bosque escuro onde a luz passa sob o arco."
+          },
+          {
+            "titre": "Água límpida e lírios",
+            "texte": "A bacia é de um azul límpido, e lírios amarelos têm o pé na água, que se vê por transparência."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "A paisagem da carta do Mëllerdall em duas vistas lado a lado, com a marca de água LuxKeyb. 1. À tarde: num sub-bosque de hera e folhas, a pequena ponte de pedra com musgo ao fundo; à frente, três cascatas caem entre grandes rochas verdes numa bacia turquesa onde se veem seixos e alguns peixes; em primeiro plano, lírios amarelos têm o pé na água. 2. A mesma paisagem à noite, toda em azuis, com as três cascatas iluminadas.",
+        "legende": "O Schéissendëmpel no Mëllerdall, à tarde e à noite."
+      }
+    ]
+  },
   "41.1.2": {
     "intro": "",
     "sections": [

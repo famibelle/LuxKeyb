@@ -1,9 +1,80 @@
 {
  "genere_le": "2026-11-22",
- "derniere_version": "41.1.2",
+ "derniere_version": "41.1.5",
  "derniere_date": "2026-11-22",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.5",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Rapidez",
+     "points": [
+      {
+       "titre": "As cartas abrem sem esperar",
+       "texte": "Quando se tocava numa carta da coleção, ela ficava um instante escondida atrás do véu escuro antes de se virar. Agora vira-se quase de imediato, mesmo nos telemóveis mais modestos."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "41.1.4",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "⚡",
+     "titre": "Rapidez",
+     "points": [
+      {
+       "titre": "Cartas mais fluidas",
+       "texte": "Nos telemóveis mais modestos, as cartas animadas já não engasgam. A roda-gigante e os cavalinhos do carrossel da Schueberfouer voltam a girar sem solavancos, e passar de uma carta para a seguinte com um deslizar do dedo faz-se sem pausas."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
+  {
+   "version": "41.1.3",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "O Mëllerdall como na fotografia",
+       "texte": "A carta do Schéissendëmpel recupera a sua pequena ponte de pedra coberta de musgo, as suas três cascatas que caem de uma mesma bacia entre duas grandes rochas, e o seu sub-bosque escuro onde a luz passa sob o arco."
+      },
+      {
+       "titre": "Água límpida e lírios",
+       "texte": "A bacia é de um azul límpido, e lírios amarelos têm o pé na água, que se vê por transparência."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_mellerdall_photo.png",
+     "alt": "A paisagem da carta do Mëllerdall em duas vistas lado a lado, com a marca de água LuxKeyb. 1. À tarde: num sub-bosque de hera e folhas, a pequena ponte de pedra com musgo ao fundo; à frente, três cascatas caem entre grandes rochas verdes numa bacia turquesa onde se veem seixos e alguns peixes; em primeiro plano, lírios amarelos têm o pé na água. 2. A mesma paisagem à noite, toda em azuis, com as três cascatas iluminadas.",
+     "legende": "O Schéissendëmpel no Mëllerdall, à tarde e à noite."
+    }
+   ],
+   "image": "Screenshots/lux_mellerdall_photo.png",
+   "image_alt": "A paisagem da carta do Mëllerdall em duas vistas lado a lado, com a marca de água LuxKeyb. 1. À tarde: num sub-bosque de hera e folhas, a pequena ponte de pedra com musgo ao fundo; à frente, três cascatas caem entre grandes rochas verdes numa bacia turquesa onde se veem seixos e alguns peixes; em primeiro plano, lírios amarelos têm o pé na água. 2. A mesma paisagem à noite, toda em azuis, com as três cascatas iluminadas.",
+   "image_legende": "O Schéissendëmpel no Mëllerdall, à tarde e à noite."
+  },
   {
    "version": "41.1.2",
    "date": "2026-11-22",
@@ -139,161 +210,6 @@
    "image": "Screenshots/lux_wierderbuch_nature.gif",
    "image_alt": "Animação em três tempos no Wierderbuch. 1. Escreve-se «Haus» no campo de pesquisa, letra a letra. 2. A lista de resultados mostra cada palavra com a sua classe ao lado: Haus, nome neutro, casa; Hausse, nome feminino; hausen, verbo; depois Hausfra, Hauskaz e Hausrat, nomes femininos. 3. Toca-se em «Haus»: abre-se a sua ficha, com a etiqueta «Nome neutro» por baixo da palavra, o significado, duas frases de exemplo e a outra forma, «Haiser».",
    "image_legende": "Cada palavra do Wierderbuch mostra a sua classe, na lista e na ficha."
-  },
-  {
-   "version": "41.0.0",
-   "date": "2026-11-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Novidades",
-     "points": [
-      {
-       "titre": "O teclado conhece a língua do dia a dia",
-       "texte": "As sugestões aprendem agora com as 45 000 frases de exemplo do Lëtzebuerger Online Dictionnaire, escritas pelo Zenter fir d'Lëtzebuerger Sprooch. Depois de «du», propõe «hues» ou «muss» em vez de palavras francesas; depois de «wëlls de», «kanns du», «weess du» ou «looss dech», tem finalmente algo para propor. Medido em textos que nunca viu: 19,5 % de sugestões certas entre as três propostas, contra 18,1 %."
-      },
-      {
-       "titre": "Seis lugares a partir de fotografias",
-       "texte": "A orla de abetos e o rebanho de Conzefenn, a gruta das mós do Hohllay, a torre do Napoleonsgaart, a fenda da Wollefsschlucht, a passarela de madeira cinzenta do Dumongshaff e a Passerelle de quatro arcos no vale da Pétrusse, que substitui a cópia da ponte Adolphe."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🔧",
-     "titre": "Alterações",
-     "points": [
-      {
-       "titre": "Raridades mais justas",
-       "texte": "A raridade de uma carta segue a frequência da palavra, que até agora vinha quase só da imprensa. As palavras do dia a dia tornam-se mais comuns: «Kaz», «Päerd» e «Hond» são agora cartas comuns. As cartas já ganhas recebem a sua nova raridade, e com ela a hora da sua paisagem e a matéria da sua moldura."
-      },
-      {
-       "titre": "O álbum das paisagens continua completo",
-       "texte": "Cada casa pode sempre ser ganha nas quatro línguas do Wuertplaz."
-      },
-      {
-       "titre": "«Smartphone» perde o seu desenho",
-       "texte": "Nenhum jogo dá mais esta palavra."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_suggestions_du.gif",
-     "alt": "O campo de ensaio da ajuda, com o teclado por baixo. 1. Escreve-se «Du» e depois um espaço: a barra acima das letras propõe «hues», «muss» e «jour». 2. Toca-se em «hues»: o texto passa a «Du hues», e a barra já propõe a continuação, «eng» e «dech».",
-     "legende": "Depois de «du», o teclado propõe «hues» ou «muss»."
-    }
-   ],
-   "image": "Screenshots/lux_suggestions_du.gif",
-   "image_alt": "O campo de ensaio da ajuda, com o teclado por baixo. 1. Escreve-se «Du» e depois um espaço: a barra acima das letras propõe «hues», «muss» e «jour». 2. Toca-se em «hues»: o texto passa a «Du hues», e a barra já propõe a continuação, «eng» e «dech».",
-   "image_legende": "Depois de «du», o teclado propõe «hues» ou «muss»."
-  },
-  {
-   "version": "40.1.0",
-   "date": "2026-11-16",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Novidades",
-     "points": [
-      {
-       "titre": "O passeio do Ourdall a partir de fotografias",
-       "texte": "O lago do Our e a longa colina arborizada que o fecha, os postes da albufeira na sua crista, e o passadiço de madeira cinzenta que acompanha a margem com o seu guarda-corpos de rede, através do qual se vê a água."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_carte_ourdall.png",
-     "alt": "Duas vezes a mesma janela de cartão, no Ourdall. 1. De manhã: o lago do Our, pálido e calmo, uma longa colina arborizada a fechá-lo ao fundo, um poste da albufeira na crista, juncos e um salgueiro à esquerda, e à direita o passadiço de madeira cinzenta ao longo da margem, com o guarda-corpos de rede através do qual se vê a água. 2. De noite: a mesma vista sob um céu estrelado e um quarto de lua, o lago azul profundo e o guarda-corpos em silhueta.",
-     "legende": "O passeio do Ourdall, de manhã e de noite: o lago, a sua colina e o guarda-corpos de rede."
-    }
-   ],
-   "image": "Screenshots/lux_carte_ourdall.png",
-   "image_alt": "Duas vezes a mesma janela de cartão, no Ourdall. 1. De manhã: o lago do Our, pálido e calmo, uma longa colina arborizada a fechá-lo ao fundo, um poste da albufeira na crista, juncos e um salgueiro à esquerda, e à direita o passadiço de madeira cinzenta ao longo da margem, com o guarda-corpos de rede através do qual se vê a água. 2. De noite: a mesma vista sob um céu estrelado e um quarto de lua, o lago azul profundo e o guarda-corpos em silhueta.",
-   "image_legende": "O passeio do Ourdall, de manhã e de noite: o lago, a sua colina e o guarda-corpos de rede."
-  },
-  {
-   "version": "40.0.0",
-   "date": "2026-11-16",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Novidades",
-     "points": [
-      {
-       "titre": "Dezasseis lugares redesenhados a partir de fotografias",
-       "texte": "A Ponte Vermelha, o castelo de Vianden, a torre de Esch-sur-Sûre, as estelas de Schengen, a abadia de Neimënster, a Gëlle Fra, a Schueberfouer, o Schiessentümpel, o Grund, a viela do Breedewee, o elevador de Pfaffenthal, o castelo de Ansembourg, o alto-forno de Belval, o abrigo rochoso de Berdorf, a ponte Adolphe e as gargantas de Felsmillen já não são desenhados de memória: cada um segue uma fotografia e mostra o que o torna reconhecível."
-      },
-      {
-       "titre": "Cada coisa é feita da sua matéria",
-       "texte": "Cantaria e as suas fiadas, alvenaria de xisto, arenito e os seus bancos escavados, tijolo, chapa rebitada, estruturas de aço vazadas, as aduelas de um arco, musgo nas cornijas. Uma torre, um muro ou uma rocha deixou de ser uma mancha de cor contornada por três traços."
-      },
-      {
-       "titre": "O cenário deixa ver o seu tema",
-       "texte": "A palavra fica no centro da janela, por isso o que importa num lugar ocupa agora a faixa de cima e os dois lados. Uma ponte dá o seu tabuleiro ao topo do cartão, uma parede rochosa ocupa uma coluna inteira, e a folhagem já não se põe à frente daquilo que se vinha ver."
-      },
-      {
-       "titre": "Um verde verdadeiramente luxemburguês",
-       "texte": "As grandes massas de vegetação são profundas e francas em vez de puxarem para o verde-maçã, e as quatro estações leem-se em todos os lugares."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "⚡",
-     "titre": "Rapidez",
-     "points": [
-      {
-       "titre": "O cartão inclina-se num só movimento",
-       "texte": "Ao inclinar o telemóvel, a imagem avançava a duas cadências misturadas, o que produzia um tremor. Agora só tem uma, e o gesto é mais suave."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Correções",
-     "points": [
-      {
-       "titre": "O vale do Pétrusse lê-se nas quatro estações",
-       "texte": "A pedra da ponte tomava a cor do vale por trás dela, e o arco desaparecia."
-      },
-      {
-       "titre": "Os juncos sob a neve",
-       "texte": "A moldura de inverno virava laranja vivo em vez de cor de palha."
-      },
-      {
-       "titre": "As tardes de outono",
-       "texte": "A tarde já é laranja, e a ferrugem do outono por cima punha o cartão a arder. Agora é aplicada com mais suavidade."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_cartes_lieux_v40.png",
-     "alt": "Seis janelas de cartões lado a lado. 1. A viela do Breedewee: um portão em arco de grandes aduelas de pedra, a rua calcetada por trás. 2. Belval: a chaminé de tijolo vermelho, a estrutura negra do alto-forno e os cilindros claros dos recuperadores. 3. O Mullerthal: a ponte de pedra do Schiessentümpel, as suas três quedas e o tanque onde se veem os seixos. 4. Berdorf: um abrigo rochoso largo e baixo, de arenito estratificado, aberto sobre um faial em pleno sol. 5. A ponte Adolphe: o tabuleiro com balaustrada no topo da janela, o grande arco e o tímpano rasgado por arcadas, o vale arborizado por baixo. 6. As gargantas de Felsmillen: à esquerda uma parede de arenito em consola, à direita um passadiço de madeira que sobe para a floresta.",
-     "legende": "Seis dos dezasseis lugares redesenhados a partir de fotografias, cada um com a matéria de que é feito."
-    }
-   ],
-   "image": "Screenshots/lux_cartes_lieux_v40.png",
-   "image_alt": "Seis janelas de cartões lado a lado. 1. A viela do Breedewee: um portão em arco de grandes aduelas de pedra, a rua calcetada por trás. 2. Belval: a chaminé de tijolo vermelho, a estrutura negra do alto-forno e os cilindros claros dos recuperadores. 3. O Mullerthal: a ponte de pedra do Schiessentümpel, as suas três quedas e o tanque onde se veem os seixos. 4. Berdorf: um abrigo rochoso largo e baixo, de arenito estratificado, aberto sobre um faial em pleno sol. 5. A ponte Adolphe: o tabuleiro com balaustrada no topo da janela, o grande arco e o tímpano rasgado por arcadas, o vale arborizado por baixo. 6. As gargantas de Felsmillen: à esquerda uma parede de arenito em consola, à direita um passadiço de madeira que sobe para a floresta.",
-   "image_legende": "Seis dos dezasseis lugares redesenhados a partir de fotografias, cada um com a matéria de que é feito."
   }
  ]
 }

@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "41.1.3": {
+    "images": [
+      {
+        "image": "Screenshots/lux_mellerdall_photo.png",
+        "alt": "Le décor de la carte du Mëllerdall en deux vues côte à côte, marquées du filigrane LuxKeyb. 1. L'après-midi : dans un sous-bois de lierre et de feuilles, le petit pont de pierre moussu au fond ; devant, trois cascades tombent entre de gros rochers verts dans un bassin turquoise où l'on voit les galets et quelques poissons ; au premier plan, des iris jaunes ont le pied dans l'eau. 2. Le même décor la nuit, tout en bleus, les trois cascades éclairées.",
+        "legende": "Le Schéissendëmpel du Mëllerdall, l'après-midi et la nuit."
+      }
+    ]
+  },
   "41.1.2": {
     "images": [
       {
