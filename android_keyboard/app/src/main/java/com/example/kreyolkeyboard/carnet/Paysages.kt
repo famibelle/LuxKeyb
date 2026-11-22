@@ -1329,6 +1329,30 @@ object Paysages {
     private val CHEVAUX = floatArrayOf(86f, 94.5f, 102f)
 
     /** Les pattes d'un cheval de bois : attache, genou, sabot, en unités. */
+    /**
+     * Les pièces d'un cheval de bois, tracées une fois pour toutes autour de
+     * sa barre (0, 0) : le corps, la crinière, la queue et la selle. Le
+     * carrousel tourne à chaque trame de la carte ouverte, et réécrire ces
+     * contours en texte puis les relire coûtait 11 à 14 ms par trame pour
+     * trois chevaux (Galaxy A21s, release, 2026-11-22) : la Schueberfouer
+     * tombait à 15-20 images par seconde. Chaque cheval reprend maintenant
+     * ces chemins, décalés à sa place.
+     */
+    private val CHEVAL: Array<Path> by lazy {
+        arrayOf(
+            chemin("M-4.6 0.4C-5 -1.8 -2.6 -3.2 -0.2 -3.1C1.2 -3.1 1.9 -3.8 2.6 -4.6C3.2 -5.2 4.2 -5.6 5.2 -5.3" +
+                "L6.9 -4.2L6.5 -2.8L4.8 -2.7C4.2 -1.8 3.9 -0.9 3.2 -0.2C1.6 2 -2.8 2.2 -4.6 0.4Z"),
+            chemin("M2.6 -4.6C3.4 -5.4 4.4 -5.8 5.2 -5.4L4.6 -4.2C3.8 -4.4 3.2 -3.8 2.4 -2.8" +
+                "L1.4 -2.3C1.9 -3.3 2.2 -4 2.6 -4.6Z"),
+            chemin("M-4.5 -1.2C-6.2 -1 -7 0.8 -6.4 2.8L-5.2 2.4C-5.6 0.8 -5.2 -0.2 -4.1 -0.4Z"),
+            chemin("M-2.6 -2.6L0.7 -2.9L1.2 -0.4L-2.8 -0.1Z")
+        )
+    }
+    private const val CHEVAL_CORPS = 0
+    private const val CHEVAL_CRINIERE = 1
+    private const val CHEVAL_QUEUE = 2
+    private const val CHEVAL_SELLE = 3
+
     private val PATTES = arrayOf(
         floatArrayOf(-2.6f, 0.6f, -3.8f, 1.8f, -3f, 3.4f),
         floatArrayOf(-1.6f, 0.9f, -2.4f, 2.3f, -1.8f, 3.9f),
@@ -2317,6 +2341,15 @@ object Paysages {
     }
 
     /**
+     * Les jetons d'un chemin SVG : une commande, ou un nombre. Compilée une
+     * fois : recompilée à chaque [chemin], elle coûtait à elle seule plus
+     * d'une milliseconde par trame et par pièce animée sur un Galaxy A21s
+     * (les six bannières de Belval, 6,5 ms par trame ; 2026-11-22), et
+     * autant à chaque contour des lieux quand une carte se prépare.
+     */
+    private val JETONS_SVG by lazy { Regex("[MLHVCQZmlhvcqz]|-?\\d*\\.?\\d+(?:[eE]-?\\d+)?") }
+
+    /**
      * Un chemin écrit comme en SVG, en coordonnées absolues : M, L, H, V, C, Q, Z.
      *
      * Les lieux ont été mis au point en SVG ; recopier leurs contours tels
@@ -2325,7 +2358,7 @@ object Paysages {
      */
     internal fun chemin(d: String): Path {
         val path = Path()
-        val jetons = Regex("[MLHVCQZmlhvcqz]|-?\\d*\\.?\\d+(?:[eE]-?\\d+)?").findAll(d).map { it.value }.toList()
+        val jetons = JETONS_SVG.findAll(d).map { it.value }.toList()
         var i = 0
         var cmd = 'M'
         var x = 0f
@@ -3967,10 +4000,18 @@ object Paysages {
             val etire = 1f + 0.14f * galop
             val hx = x + 3.3f * etire
             val hy = yy - 4.9f
+            // Sur la carte ouverte, le chat est peint à chaque trame en aplat
+            // ([Facture.VIGNETTE]) : ses morceaux, de la même couleur
+            // opaque, se posent l'un sur l'autre et donnent la même
+            // silhouette. Les réunir par `Path.op` coûtait 4 à 5 ms par
+            // trame au Breedewee (A21s, 2026-11-22). La réunion ne sert
+            // qu'à la gouache, qui pose une ombre et une tranche par pièce.
+            val reunir = facture == Facture.GOUACHE
             val sil = Path()
+            val morceaux = ArrayList<Path>(12)
+            fun ajouter(m: Path) { if (reunir) sil.op(m, Path.Op.UNION) else morceaux += m }
             fun masse(cx: Float, cy: Float, rx: Float, ry: Float) {
-                sil.op(Path().apply { addOval(RectF(cx - rx, cy - ry, cx + rx, cy + ry), Path.Direction.CW) },
-                    Path.Op.UNION)
+                ajouter(Path().apply { addOval(RectF(cx - rx, cy - ry, cx + rx, cy + ry), Path.Direction.CW) })
             }
             // Les pattes : deux paires qui se croisent, plus écartées au galop,
             // fuselées de l'épaule au coussinet.
@@ -3978,13 +4019,13 @@ object Paysages {
             for ((dx, ph) in listOf(-2.1f to 0f, -1f to PI.toFloat(), 1.3f to PI.toFloat() * 0.5f, 2.1f to PI.toFloat() * 1.5f)) {
                 val px = x + dx * etire
                 val fx = px + sin(foulee + ph) * ecart * 1.4f
-                sil.op(Path().apply {
+                ajouter(Path().apply {
                     moveTo(px - 0.4f, yy - 3.6f)
                     lineTo(px + 0.4f, yy - 3.6f)
                     lineTo(fx + 0.28f, y)
                     lineTo(fx - 0.28f, y)
                     close()
-                }, Path.Op.UNION)
+                })
             }
             // Le tronc, la croupe ronde, le poitrail, la tête.
             masse(x, yy - 3.6f, 2.9f * etire, 1f)
@@ -3992,13 +4033,13 @@ object Paysages {
             masse(x + 1.9f * etire, yy - 3.8f, 1.2f, 1.2f)
             masse(hx, hy, 1.1f, 0.95f)
             // Les deux oreilles pointues.
-            sil.op(chemin("M${hx - 1f} ${hy - 0.4f}L${hx - 0.5f} ${hy - 2.1f}L${hx + 0.15f} ${hy - 0.8f}Z"), Path.Op.UNION)
-            sil.op(chemin("M${hx + 0.15f} ${hy - 0.9f}L${hx + 0.9f} ${hy - 2f}L${hx + 1.05f} ${hy - 0.3f}Z"), Path.Op.UNION)
+            ajouter(Path().apply { moveTo(hx - 1f, hy - 0.4f); lineTo(hx - 0.5f, hy - 2.1f); lineTo(hx + 0.15f, hy - 0.8f); close() })
+            ajouter(Path().apply { moveTo(hx + 0.15f, hy - 0.9f); lineTo(hx + 0.9f, hy - 2f); lineTo(hx + 1.05f, hy - 0.3f); close() })
             // La queue dressée, qui ondule et s'affine jusqu'au bout.
             val ond = sin(foulee * 0.5f) * 0.6f
-            sil.op(ruban(x - 2.4f * etire, yy - 4f, x - 5.4f * etire, yy - 5.2f + ond,
-                x - 3.8f * etire, yy - 8f + ond * 0.4f, 1.15f, 0.4f), Path.Op.UNION)
-            piece(sil, robe)
+            ajouter(ruban(x - 2.4f * etire, yy - 4f, x - 5.4f * etire, yy - 5.2f + ond,
+                x - 3.8f * etire, yy - 8f + ond * 0.4f, 1.15f, 0.4f))
+            if (reunir) piece(sil, robe) else for (m in morceaux) piece(m, robe)
             if (P.nuit) {
                 // La nuit, rien que la découpe noire et l'œil qui luit.
                 rond(hx + 0.2f, hy - 0.2f, 0.44f, 0xFFE8F070.toInt(), 0.26f)
@@ -7302,6 +7343,9 @@ object Paysages {
             p.style = Paint.Style.FILL
         }
 
+        /** La pièce [i] de [CHEVAL], posée sur le cheval dont la barre est en ([x], [y]). */
+        private fun cheval(i: Int, x: Float, y: Float) = Path(CHEVAL[i]).apply { offset(x, y) }
+
         /** Les chevaux de bois du carrousel, qui montent et descendent au [temps]. */
         fun chevaux(temps: Float) {
             val robe = eclaire(mix(neutre(duJour(0xFFF7F1E4.toInt())), 0xFFFFFFFF.toInt(), 0.4f), 0.4f)
@@ -7324,22 +7368,14 @@ object Paysages {
                         rond(x + j[4], y + j[5], 0.6f, sombre(creux, 0.25f))
                     }
                     // Le corps trapu, l'encolure et la tête, d'un seul tenant.
-                    pieceD("M${x - 4.6f} ${y + 0.4f}C${x - 5f} ${y - 1.8f} ${x - 2.6f} ${y - 3.2f} ${x - 0.2f} ${y - 3.1f}" +
-                        "C${x + 1.2f} ${y - 3.1f} ${x + 1.9f} ${y - 3.8f} ${x + 2.6f} ${y - 4.6f}" +
-                        "C${x + 3.2f} ${y - 5.2f} ${x + 4.2f} ${y - 5.6f} ${x + 5.2f} ${y - 5.3f}" +
-                        "L${x + 6.9f} ${y - 4.2f}L${x + 6.5f} ${y - 2.8f}L${x + 4.8f} ${y - 2.7f}" +
-                        "C${x + 4.2f} ${y - 1.8f} ${x + 3.9f} ${y - 0.9f} ${x + 3.2f} ${y - 0.2f}" +
-                        "C${x + 1.6f} ${y + 2f} ${x - 2.8f} ${y + 2.2f} ${x - 4.6f} ${y + 0.4f}Z", robe, 0.5f)
+                    piece(cheval(CHEVAL_CORPS, x, y), robe, 0.5f)
                     // La crinière, la queue, le harnais et l'œil.
-                    forme("M${x + 2.6f} ${y - 4.6f}C${x + 3.4f} ${y - 5.4f} ${x + 4.4f} ${y - 5.8f} ${x + 5.2f} ${y - 5.4f}" +
-                        "L${x + 4.6f} ${y - 4.2f}C${x + 3.8f} ${y - 4.4f} ${x + 3.2f} ${y - 3.8f} ${x + 2.4f} ${y - 2.8f}" +
-                        "L${x + 1.4f} ${y - 2.3f}C${x + 1.9f} ${y - 3.3f} ${x + 2.2f} ${y - 4f} ${x + 2.6f} ${y - 4.6f}Z", or)
-                    forme("M${x - 4.5f} ${y - 1.2f}C${x - 6.2f} ${y - 1f} ${x - 7f} ${y + 0.8f} ${x - 6.4f} ${y + 2.8f}" +
-                        "L${x - 5.2f} ${y + 2.4f}C${x - 5.6f} ${y + 0.8f} ${x - 5.2f} ${y - 0.2f} ${x - 4.1f} ${y - 0.4f}Z", or)
+                    forme(cheval(CHEVAL_CRINIERE, x, y), or)
+                    forme(cheval(CHEVAL_QUEUE, x, y), or)
                     rond(x + 5.4f, y - 4.2f, 0.3f, sombre(creux, 0.45f))
                     ligne(x + 5.9f, y - 3.9f, x + 6.7f, y - 3.6f, or, 0.3f)
                     // La selle et sa dorure.
-                    pieceD("M${x - 2.6f} ${y - 2.6f}L${x + 0.7f} ${y - 2.9f}L${x + 1.2f} ${y - 0.4f}L${x - 2.8f} ${y - 0.1f}Z", selle, 0.4f)
+                    piece(cheval(CHEVAL_SELLE, x, y), selle, 0.4f)
                     ligne(x - 2.7f, y - 0.5f, x + 1.15f, y - 0.8f, or, 0.35f)
                     if (P.allume) rond(x - 0.8f, y - 1.6f, 0.32f, P.fenetre)
                 }
@@ -7995,7 +8031,11 @@ object Paysages {
         fun banniere(x: Float, vent: Float, k: Int) {
             ligne(x, 25f, x, DEVANT, neutre(duJour(0xFF8C9096.toInt())), 0.35f)
             val toile = duJour(if (k % 2 == 0) 0xFFF4F4F2.toInt() else 0xFFDCE6EE.toInt())
-            pieceD("M${x + 0.3f} 26L${x + 2.7f + vent} 26.4L${x + 2.5f + vent * 1.4f} 39L${x + 0.3f} 39Z", toile, 0.4f)
+            // Le contour se trace directement : écrit en texte puis relu, il
+            // coûtait 3 ms par trame aux six bannières (A21s, 2026-11-22).
+            piece(Path().apply {
+                moveTo(x + 0.3f, 26f); lineTo(x + 2.7f + vent, 26.4f); lineTo(x + 2.5f + vent * 1.4f, 39f); lineTo(x + 0.3f, 39f); close()
+            }, toile, 0.4f)
         }
 
         // ---- Bäerdref, l'arche de grès dans la forêt (photo du propriétaire)
@@ -12378,3 +12418,4 @@ object Paysages {
         }
     }
 }
+

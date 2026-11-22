@@ -3751,11 +3751,28 @@ abstract class Carton(context: Context) : ViewGroup(context), SensorEventListene
      * cadence irrégulière.
      */
     protected fun relancer() {
+        if (enPause) return
         if (!relancePrevue) {
             relancePrevue = true
             postOnAnimationDelayed(relance, 1000L / IMAGES_PAR_SECONDE - 8)
         }
     }
+
+    /**
+     * Vrai pendant que la carte arrive (retournement, feuilletage) : ce qui
+     * vit dans la fenêtre s'arrête, et la carte ne se redessine plus qu'à
+     * la demande. Elle tourne alors d'un bloc dans sa couche, sans la
+     * repeindre à chaque image : sur un Galaxy A21s (2026-11-22, release),
+     * le glissement de la carte voisine coûtait ainsi 15 ms de travail
+     * graphique par image, et 4 ms une fois la carte en pause.
+     * Remis à faux, la carte repart d'elle-même.
+     */
+    var enPause = false
+        set(valeur) {
+            if (field == valeur) return
+            field = valeur
+            if (!valeur) invalidate()
+        }
 
     protected var relancePrevue = false
     protected val relance = Runnable {

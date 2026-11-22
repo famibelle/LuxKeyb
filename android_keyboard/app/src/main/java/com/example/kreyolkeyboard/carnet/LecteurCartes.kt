@@ -209,12 +209,19 @@ internal class LecteurCartes(
         // refaisait tous ses tracés. Sur un Galaxy A21s (2026-10-12), le
         // retournement passait ainsi sous les 25 images par seconde.
         carte.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+        // Pendant qu'elle arrive, la carte ne vit pas : voir [Carton.enPause].
+        (carte as? Carton)?.enPause = true
         val armer = {
             // Une fois posée, la carte suit la main : le suivi ne s'arme qu'ici
             // pour ne pas écrire dans `rotationY` pendant le retournement.
             Inclinaison.suivre(carte)
             (carte as? Carton)?.sensibleAuDoigt = true
+            (carte as? Carton)?.enPause = false
             posee = true
+            // Les voisines se préparent une fois la carte arrivée, et non
+            // pendant qu'elle arrive : leurs paysages prenaient du calcul au
+            // glissement.
+            preparerVoisines(carte.width)
         }
         val lancer = {
             if (sens == 0) {
@@ -259,7 +266,6 @@ internal class LecteurCartes(
                 carte.visibility = View.VISIBLE
                 apresUneImage {
                     lancer()
-                    preparerVoisines(carte.width)
                 }
             }
         } else lancer()
