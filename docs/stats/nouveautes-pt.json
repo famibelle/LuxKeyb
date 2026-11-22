@@ -1,9 +1,58 @@
 {
  "genere_le": "2026-11-22",
- "derniere_version": "41.1.1",
+ "derniere_version": "41.1.2",
  "derniere_date": "2026-11-22",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.2",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "Um outono dourado em todas as cartas",
+       "texte": "As árvores passam do castanho ao dourado e mantêm as folhas bem desenhadas, de dia e de noite, em vez de manchas verdes e laranja misturadas. Os prados e os musgos ficam cor de palha, e os pinheiros continuam verdes."
+      },
+      {
+       "titre": "O castelo de Ansembourg em pormenor",
+       "texte": "A sua sebe de carpino é feita de folhas verdadeiras, que ficam ruivas uma a uma no outono e espalham folhas secas pelo relvado. Os seus dois leões de bronze, sentados frente a frente de cada lado da escadaria, levantam a cabeça, com a juba sobre o crânio."
+      },
+      {
+       "titre": "Juncos em água límpida",
+       "texte": "No lago da Alta Sûre, no Our e no Haff Réimech, vê-se o pé dos juncos debaixo da superfície da água."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Correções",
+     "points": [
+      {
+       "titre": "As casas da Gëlle Fra",
+       "texte": "Estão bem assentes no chão e já não flutuam."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_automne_dore.png",
+     "alt": "Quatro paisagens de cartas no outono, à tarde, marcadas com a marca de água LuxKeyb. 1. Ansembourg: diante do castelo, dois leões de bronze esverdeado estão frente a frente de cada lado da escadaria, com a juba sobre a cabeça, entre duas sebes de folhas amarelas e ruivas; folhas secas cobrem o relvado. 2. Esch-Sauer: o lago turquesa rodeado de florestas ruivas; à direita, o pé dos juncos desvanece-se debaixo da superfície da água. 3. Vianden: o castelo por cima do vale, colinas laranja e douradas. 4. O Mëllerdall: a ponte de pedra e as cascatas, rodeadas de folhagem ruiva e fetos dourados.",
+     "legende": "Ansembourg, Esch-Sauer, Vianden e o Mëllerdall no outono."
+    }
+   ],
+   "image": "Screenshots/lux_automne_dore.png",
+   "image_alt": "Quatro paisagens de cartas no outono, à tarde, marcadas com a marca de água LuxKeyb. 1. Ansembourg: diante do castelo, dois leões de bronze esverdeado estão frente a frente de cada lado da escadaria, com a juba sobre a cabeça, entre duas sebes de folhas amarelas e ruivas; folhas secas cobrem o relvado. 2. Esch-Sauer: o lago turquesa rodeado de florestas ruivas; à direita, o pé dos juncos desvanece-se debaixo da superfície da água. 3. Vianden: o castelo por cima do vale, colinas laranja e douradas. 4. O Mëllerdall: a ponte de pedra e as cascatas, rodeadas de folhagem ruiva e fetos dourados.",
+   "image_legende": "Ansembourg, Esch-Sauer, Vianden e o Mëllerdall no outono."
+  },
   {
    "version": "41.1.1",
    "date": "2026-11-22",
@@ -245,46 +294,6 @@
    "image": "Screenshots/lux_cartes_lieux_v40.png",
    "image_alt": "Seis janelas de cartões lado a lado. 1. A viela do Breedewee: um portão em arco de grandes aduelas de pedra, a rua calcetada por trás. 2. Belval: a chaminé de tijolo vermelho, a estrutura negra do alto-forno e os cilindros claros dos recuperadores. 3. O Mullerthal: a ponte de pedra do Schiessentümpel, as suas três quedas e o tanque onde se veem os seixos. 4. Berdorf: um abrigo rochoso largo e baixo, de arenito estratificado, aberto sobre um faial em pleno sol. 5. A ponte Adolphe: o tabuleiro com balaustrada no topo da janela, o grande arco e o tímpano rasgado por arcadas, o vale arborizado por baixo. 6. As gargantas de Felsmillen: à esquerda uma parede de arenito em consola, à direita um passadiço de madeira que sobe para a floresta.",
    "image_legende": "Seis dos dezasseis lugares redesenhados a partir de fotografias, cada um com a matéria de que é feito."
-  },
-  {
-   "version": "39.2.0",
-   "date": "2026-11-14",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Les bâtiments peints de trois quarts",
-       "texte": "Les maisons du Grund, la ville basse sous la Gëlle Fra, le village d'Esch-sur-Sûre, l'autre rive de la Moselle, la ville haute vue de Neimënster, la Spuerkeess, les châteaux de Vianden et d'Ansembourg, le pont couvert du Haff Réimech, l'ascenseur du Pfaffenthal et le haut fourneau de Belval fuient maintenant en perspective, avec leurs toits, leurs lucarnes et leurs pignons, au lieu de s'aligner de face en bandes."
-      },
-      {
-       "titre": "Les paysages naturels aussi",
-       "texte": "La lisière et la clôture de Conzefenn, le pont du Mëllerdall, la passerelle du Dumongshaff, le pont Adolphe vu de la Pétrusse, le mur de tuf du Kallektuffquell et le rocher de Felsmillen fuient en perspective."
-      },
-      {
-       "titre": "Le Mëllerdall d'après photo",
-       "texte": "Le Schiessentümpel dans sa forêt, son pont de pierre en arche, ses trois chutes animées entre les rochers moussus, une brume d'eau qui monte des points de chute, et un bassin transparent où l'on voit les galets."
-      },
-      {
-       "titre": "Des bâtiments sans dominante jaune",
-       "texte": "Des enduits variés comme au pays (gris perle, vieux rose, blanc cassé, bleu-gris, ocre rouge, vert sauge), des ombres froides, de vraies fenêtres en verre, et la matière des façades : socles et chaînes d'angle en pierre, corniches, appuis de fenêtres, toits d'ardoise."
-      },
-      {
-       "titre": "Un premier plan en vraie matière",
-       "texte": "Pavés, dalles ou gravier sur les cartes de ville et de château, herbe, terre de forêt, mousse ou berge de galets sur les paysages naturels, au lieu du plancher de la scène ; et une Alzette qui reflète les façades du Grund."
-      },
-      {
-       "titre": "Une rangée par lieu dans l'album",
-       "texte": "Chaque heure garde sa colonne, du matin à la nuit, et la place de la nuit reste vide pour les lieux qui n'en ont pas."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "langue": "fr"
   }
  ]
 }

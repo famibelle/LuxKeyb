@@ -1,9 +1,58 @@
 {
  "genere_le": "2026-11-22",
- "derniere_version": "41.1.1",
+ "derniere_version": "41.1.2",
  "derniere_date": "2026-11-22",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.2",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Ein goldener Herbst auf allen Karten",
+       "texte": "Die Bäume färben sich von Braun bis Gold und behalten dabei ihre klar gezeichneten Blätter, bei Tag wie bei Nacht, statt grüner und oranger Flecken durcheinander. Wiesen und Moos werden strohgelb, und die Tannen bleiben grün."
+      },
+      {
+       "titre": "Schloss Ansemburg im Detail",
+       "texte": "Seine Hainbuchenhecke besteht aus echten Blättern, die sich im Herbst eines nach dem anderen rötlich färben und welkes Laub auf den Rasen streuen. Seine zwei Bronzelöwen sitzen sich zu beiden Seiten der Treppe gegenüber und heben den Kopf, die Mähne über dem Schädel."
+      },
+      {
+       "titre": "Schilf im klaren Wasser",
+       "texte": "Am Stausee der Obersauer, an der Our und am Haff Réimech sieht man den Fuß des Schilfs unter der Wasseroberfläche."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    },
+    {
+     "emoji": "🐛",
+     "titre": "Korrekturen",
+     "points": [
+      {
+       "titre": "Die Häuser der Gëlle Fra",
+       "texte": "Sie stehen fest auf dem Boden und schweben nicht mehr."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_automne_dore.png",
+     "alt": "Vier Kartenlandschaften im Herbst, am Nachmittag, mit dem Wasserzeichen LuxKeyb. 1. Ansemburg: vor dem Schloss sitzen sich zwei grünspanige Bronzelöwen zu beiden Seiten der Treppe gegenüber, die Mähne über dem Kopf, zwischen zwei Hecken mit gelben und rotbraunen Blättern; welkes Laub liegt auf dem Rasen. 2. Esch-Sauer: der türkisfarbene See zwischen rotbraunen Wäldern; rechts verblasst der Fuß des Schilfs unter der Wasseroberfläche. 3. Vianden: das Schloss über dem Tal, orange und goldene Hügel. 4. Das Mëllerdall: die Steinbrücke und die Wasserfälle, umrahmt von rotbraunem Laub und goldenen Farnen.",
+     "legende": "Ansemburg, Esch-Sauer, Vianden und das Mëllerdall im Herbst."
+    }
+   ],
+   "image": "Screenshots/lux_automne_dore.png",
+   "image_alt": "Vier Kartenlandschaften im Herbst, am Nachmittag, mit dem Wasserzeichen LuxKeyb. 1. Ansemburg: vor dem Schloss sitzen sich zwei grünspanige Bronzelöwen zu beiden Seiten der Treppe gegenüber, die Mähne über dem Kopf, zwischen zwei Hecken mit gelben und rotbraunen Blättern; welkes Laub liegt auf dem Rasen. 2. Esch-Sauer: der türkisfarbene See zwischen rotbraunen Wäldern; rechts verblasst der Fuß des Schilfs unter der Wasseroberfläche. 3. Vianden: das Schloss über dem Tal, orange und goldene Hügel. 4. Das Mëllerdall: die Steinbrücke und die Wasserfälle, umrahmt von rotbraunem Laub und goldenen Farnen.",
+   "image_legende": "Ansemburg, Esch-Sauer, Vianden und das Mëllerdall im Herbst."
+  },
   {
    "version": "41.1.1",
    "date": "2026-11-22",
@@ -245,46 +294,6 @@
    "image": "Screenshots/lux_cartes_lieux_v40.png",
    "image_alt": "Sechs Kartenfenster nebeneinander. 1. Die Breedewee-Gasse: ein Bogentor aus großen Keilsteinen, dahinter die gepflasterte Gasse. 2. Belval: der rote Ziegelschornstein, das schwarze Stahlfachwerk des Hochofens und die hellen Zylinder der Winderhitzer. 3. Das Müllerthal: die Steinbrücke am Schiessentümpel, ihre drei Wasserfälle und das Becken, in dem die Kiesel durchscheinen. 4. Berdorf: ein breiter, niedriger Felsüberhang aus geschichtetem Sandstein, der sich zu einem sonnigen Buchenwald öffnet. 5. Die Adolphe-Brücke: ihre Fahrbahn mit Balustrade am oberen Fensterrand, ihr großer Bogen und das von Arkaden durchbrochene Bogenfeld, darunter das bewaldete Tal. 6. Die Felsmillen-Schlucht: links eine überhängende Sandsteinwand, rechts ein hölzerner Bohlenweg, der in den Wald steigt.",
    "image_legende": "Sechs der sechzehn nach Fotos neu gezeichneten Orte, jeder mit dem Material, aus dem er besteht."
-  },
-  {
-   "version": "39.2.0",
-   "date": "2026-11-14",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Les bâtiments peints de trois quarts",
-       "texte": "Les maisons du Grund, la ville basse sous la Gëlle Fra, le village d'Esch-sur-Sûre, l'autre rive de la Moselle, la ville haute vue de Neimënster, la Spuerkeess, les châteaux de Vianden et d'Ansembourg, le pont couvert du Haff Réimech, l'ascenseur du Pfaffenthal et le haut fourneau de Belval fuient maintenant en perspective, avec leurs toits, leurs lucarnes et leurs pignons, au lieu de s'aligner de face en bandes."
-      },
-      {
-       "titre": "Les paysages naturels aussi",
-       "texte": "La lisière et la clôture de Conzefenn, le pont du Mëllerdall, la passerelle du Dumongshaff, le pont Adolphe vu de la Pétrusse, le mur de tuf du Kallektuffquell et le rocher de Felsmillen fuient en perspective."
-      },
-      {
-       "titre": "Le Mëllerdall d'après photo",
-       "texte": "Le Schiessentümpel dans sa forêt, son pont de pierre en arche, ses trois chutes animées entre les rochers moussus, une brume d'eau qui monte des points de chute, et un bassin transparent où l'on voit les galets."
-      },
-      {
-       "titre": "Des bâtiments sans dominante jaune",
-       "texte": "Des enduits variés comme au pays (gris perle, vieux rose, blanc cassé, bleu-gris, ocre rouge, vert sauge), des ombres froides, de vraies fenêtres en verre, et la matière des façades : socles et chaînes d'angle en pierre, corniches, appuis de fenêtres, toits d'ardoise."
-      },
-      {
-       "titre": "Un premier plan en vraie matière",
-       "texte": "Pavés, dalles ou gravier sur les cartes de ville et de château, herbe, terre de forêt, mousse ou berge de galets sur les paysages naturels, au lieu du plancher de la scène ; et une Alzette qui reflète les façades du Grund."
-      },
-      {
-       "titre": "Une rangée par lieu dans l'album",
-       "texte": "Chaque heure garde sa colonne, du matin à la nuit, et la place de la nuit reste vide pour les lieux qui n'en ont pas."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "langue": "fr"
   }
  ]
 }

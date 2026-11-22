@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "41.1.2": {
+    "images": [
+      {
+        "image": "Screenshots/lux_automne_dore.png",
+        "alt": "Quatre paysages de cartes en automne, l'après-midi, marqués du filigrane LuxKeyb. 1. Ansembourg : devant le château, deux lions de bronze vert-de-gris se font face de part et d'autre de l'escalier, la crinière sur la tête, entre deux haies aux feuilles jaunes et rousses ; des feuilles mortes parsèment la pelouse. 2. Esch-Sauer : le lac turquoise bordé de forêts rousses ; à droite, le pied des roseaux s'efface sous la surface de l'eau. 3. Vianden : le château au-dessus de la vallée, des collines orange et dorées. 4. Le Mëllerdall : le pont de pierre et les cascades, encadrés de feuillages roux et de fougères dorées.",
+        "legende": "Ansembourg, Esch-Sauer, Vianden et le Mëllerdall en automne."
+      }
+    ]
+  },
   "41.1.1": {
     "images": [
       {
