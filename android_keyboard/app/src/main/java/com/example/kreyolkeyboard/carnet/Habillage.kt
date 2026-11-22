@@ -100,18 +100,18 @@ internal object Habillage {
         val graine = lieu.ordinal * 1009 + s.saison.ordinal * 101 + heure.rang
         val alea = Paysages.Alea(graine)
         val p = Paint(Paint.ANTI_ALIAS_FLAG)
-        for (i in couches.indices) {
+        fun unite(i: Int) = ks[i][0] / PIXELS_MAQUETTE_PAR_UNITE
+        fun passe(i: Int): FloatArray {
             val b = couches[i]
             val w = b.width
             val h = b.height
-            val u = ks[i][0] / PIXELS_MAQUETTE_PAR_UNITE
             val mk = IntArray(w * h)
             masques[i]?.getPixels(mk, 0, w, 0, 0, w, h)
             val px = IntArray(w * h)
             b.getPixels(px, 0, w, 0, 0, w, h)
             val aPart = neiges != null && s.saison == Saison.WANTER && masques[i] != null
             val neige = if (aPart) ByteArray(w * h) else null
-            val fleurs = fond(px, mk, w, h, u, heure, s.saison, alea, lire(releves[i], w, h), neige)
+            val fleurs = fond(px, mk, w, h, unite(i), heure, s.saison, alea, lire(releves[i], w, h), neige)
             b.setPixels(px, 0, w, 0, 0, w, h)
             if (neige != null) neiges!![i] = Bitmap.createBitmap(w, h, Bitmap.Config.ALPHA_8).also { nb ->
                 val ligne = nb.rowBytes
@@ -120,7 +120,20 @@ internal object Habillage {
                 }
                 nb.copyPixelsFromBuffer(java.nio.ByteBuffer.wrap(octets))
             }
-            fleurir(Canvas(b), p, u, alea, fleurs)
+            return fleurs
+        }
+        if (s.saison == Saison.SUMMER || s.saison == Saison.HIERSCHT) {
+            // L'été et l'automne ne tirent aucun hasard dans [fond] : leurs
+            // calques y passent de front, pour le même résultat. Sur une carte
+            // ouverte d'automne, cette passe prenait 80 à 190 ms d'affilée
+            // (Galaxy A21s, 2026-11-22). Le printemps (les fleurs) et l'hiver
+            // (la neige) gardent l'ordre : chaque calque y reprend le tirage
+            // où le précédent l'a laissé.
+            val fleurs = arrayOfNulls<FloatArray>(couches.size)
+            Paysages.deFront(*Array(couches.size) { i -> { fleurs[i] = passe(i) } })
+            for (i in couches.indices) fleurir(Canvas(couches[i]), p, unite(i), alea, fleurs[i]!!)
+        } else for (i in couches.indices) {
+            fleurir(Canvas(couches[i]), p, unite(i), alea, passe(i))
         }
         val devant = couches.last()
         // Sans les oiseaux : sur la carte en plans, ils volent (voir Ambiance).

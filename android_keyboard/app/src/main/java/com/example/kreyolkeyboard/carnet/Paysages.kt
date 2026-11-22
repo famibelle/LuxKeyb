@@ -416,6 +416,61 @@ object Paysages {
     }
 
     /**
+     * Les mains qui finissent une carte ouverte de front ([deFront]) : peindre
+     * ses cartons l'un après l'autre prenait 600 à 700 ms sur un Galaxy A21s
+     * (2026-11-22), et la première carte qu'on ouvrait attendait d'autant,
+     * voile tiré, avant de se retourner. Trois fils, plus celui qui demande.
+     */
+    private val ATELIER by lazy {
+        Executors.newFixedThreadPool(3) { tache -> Thread(tache, "plans").apply { isDaemon = true } }
+    }
+
+    /**
+     * Fait [taches] de front et ne rend la main qu'une fois toutes finies.
+     * Le fil appelant fait la première : jamais il n'attend sans rien faire
+     * un atelier occupé ailleurs. Aucune tâche ne doit elle-même attendre
+     * l'atelier. Une erreur (la mémoire qui manque) remonte telle quelle.
+     *
+     * Chaque tâche tourne à la priorité du fil qui demande : les voisines du
+     * lecteur, préparées en fond pendant que la carte montrée s'anime, ne
+     * passent pas devant son dessin. À priorité normale, elles y faisaient
+     * des accrocs de 150 ms (Galaxy A21s, 2026-11-22).
+     */
+    internal fun deFront(vararg taches: () -> Unit) {
+        val priorite = android.os.Process.getThreadPriority(android.os.Process.myTid())
+        val futurs = taches.drop(1).map { t ->
+            ATELIER.submit(Runnable {
+                val avant = android.os.Process.getThreadPriority(android.os.Process.myTid())
+                prioriser(priorite)
+                try {
+                    t()
+                } finally {
+                    prioriser(avant)
+                }
+            })
+        }
+        try {
+            taches.firstOrNull()?.invoke()
+        } finally {
+            for (f in futurs) {
+                try {
+                    f.get()
+                } catch (e: java.util.concurrent.ExecutionException) {
+                    throw e.cause ?: e
+                }
+            }
+        }
+    }
+
+    /** Un refus d'Android laisse la tâche tourner à la priorité qu'elle a. */
+    private fun prioriser(priorite: Int) {
+        try {
+            android.os.Process.setThreadPriority(priorite)
+        } catch (e: RuntimeException) {
+        }
+    }
+
+    /**
      * Les demandes en vol. Le carnet en dépose aussi depuis son fil de
      * chargement (voir `CarnetFragment.chargerEnFond`) : d'où le verrou. Les
      * rappels, eux, passent toujours sur le fil principal.
@@ -561,12 +616,22 @@ object Paysages {
         if (caches.all { it != null } && ombresOk && brinsOk && neigeOk) return caches.requireNoNulls()
         val ombres = arrayOfNulls<Bitmap>(n)
         val neiges = arrayOfNulls<Bitmap>(n)
-        val rendus = rendrePlans(lieu, heure, largeurPx, hauteurPx, souvenir, ombres, neiges)
+        // Les brins du surcadrage se découpent pendant que les cartons se peignent.
+        val brins = gabarits(lieu, souvenir?.saison)
+        val decoupes = arrayOfNulls<Pair<Bitmap, Bitmap>>(brins.size)
+        var peints: Array<Bitmap>? = null
+        deFront(
+            { peints = rendrePlans(lieu, heure, largeurPx, hauteurPx, souvenir, ombres, neiges) },
+            *brins.mapIndexed { i, g ->
+                { decoupes[i] = rendreBrin(g, heure, echelleDuPlan(g.plan, largeurPx, hauteurPx)) }
+            }.toTypedArray()
+        )
+        val rendus = peints!!
         rendus.forEachIndexed { i, b -> CACHE.put("${cle}_p$i", b) }
         ombres.forEachIndexed { i, b -> if (b != null) CACHE.put("${cle}_o$i", b) }
         neiges.forEachIndexed { i, b -> if (b != null) CACHE.put("${cle}_n$i", b) }
-        gabarits(lieu, souvenir?.saison).forEachIndexed { i, g ->
-            val (image, ombre) = rendreBrin(g, heure, echelleDuPlan(g.plan, largeurPx, hauteurPx))
+        decoupes.forEachIndexed { i, d ->
+            val (image, ombre) = d!!
             CACHE.put("${cle}_b$i", image)
             CACHE.put("${cle}_c$i", ombre)
         }
@@ -819,13 +884,32 @@ object Paysages {
             0f, 0f, contraste * (1f - 0.09f * v), 0f, decale - 4f * v,
             0f, 0f, 0f, 1f, 0f
         )))
-        val copie = b.copy(Bitmap.Config.ARGB_8888, false)
-        val p = Paint().apply {
-            colorFilter = android.graphics.ColorMatrixColorFilter(m)
-            xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC)
+        // La matrice appliquée pixel par pixel, en entiers, comme le ferait
+        // un ColorMatrixColorFilter : sur la couleur non prémultipliée, que
+        // rendent getPixels et que reprend setPixels. Le filtre d'Android
+        // passait 160 ms sur les cinq plans d'une carte ouverte (Galaxy A21s,
+        // 2026-11-22), transparent compris ; ceci saute le transparent.
+        val a = m.array
+        fun q(x: Float) = (x * 65536f).roundToInt()
+        val r0 = q(a[0]); val r1 = q(a[1]); val r2 = q(a[2]); val r4 = q(a[4]) + 32768
+        val g0 = q(a[5]); val g1 = q(a[6]); val g2 = q(a[7]); val g4 = q(a[9]) + 32768
+        val b0 = q(a[10]); val b1 = q(a[11]); val b2 = q(a[12]); val b4 = q(a[14]) + 32768
+        val w = b.width
+        val h = b.height
+        val px = IntArray(w * h)
+        b.getPixels(px, 0, w, 0, 0, w, h)
+        for (i in px.indices) {
+            val c = px[i]
+            if (c ushr 24 == 0) continue
+            val r = (c shr 16) and 0xFF
+            val g = (c shr 8) and 0xFF
+            val bl = c and 0xFF
+            val nr = ((r0 * r + r1 * g + r2 * bl + r4) shr 16).coerceIn(0, 255)
+            val ng = ((g0 * r + g1 * g + g2 * bl + g4) shr 16).coerceIn(0, 255)
+            val nb = ((b0 * r + b1 * g + b2 * bl + b4) shr 16).coerceIn(0, 255)
+            px[i] = (c and 0xFF000000.toInt()) or (nr shl 16) or (ng shl 8) or nb
         }
-        Canvas(b).drawBitmap(copie, 0f, 0f, p)
-        copie.recycle()
+        b.setPixels(px, 0, w, 0, 0, w, h)
     }
 
     /**
@@ -920,13 +1004,28 @@ object Paysages {
         fun peindre(i: Int, dessin: Peintre.() -> Unit) = toile(i) {
             Peintre(it, heure, facture = Facture.GOUACHE, echelle = ks[i][0]).dessin()
         }
-        val ciel = toile(0) { dessiner(it, lieu, heure, ciel = true, lieuAussi = false, facture = Facture.GOUACHE, echelle = ks[0][0]) }
-        val loin = calque(2)
-        val milieu = calque(3)
-        val proche = calque(4)
+        // Les cartons se peignent de front ([deFront]) : aucun ne lit ce que
+        // peint un autre, et chacun tire ses hasards de sa propre graine.
+        val peints = arrayOfNulls<Bitmap>(n)
         // Les silhouettes avant la saison : la neige ou les fleurs que
         // [Habillage] pose par-dessus ne sont pas du carton.
-        val formes = arrayOf(loin.extractAlpha(), milieu.extractAlpha(), proche.extractAlpha())
+        val formesDe = arrayOfNulls<Bitmap>(n)
+        // Le plancher, là où un lieu en a un : il reçoit les ombres sans en
+        // porter, et sans bordure, ce n'est pas un carton.
+        val planchers = arrayOfNulls<Bitmap>(n)
+        fun carton(i: Int): () -> Unit = { peints[i] = calque(i).also { formesDe[i] = it.extractAlpha() } }
+        deFront(
+            carton(3), carton(4), carton(2),
+            { peints[0] = toile(0) { dessiner(it, lieu, heure, ciel = true, lieuAussi = false, facture = Facture.GOUACHE, echelle = ks[0][0]) } },
+            { peints[NUAGES] = nuages(heure, l, h) },
+            *(3..4).filter { aUnPlancher(lieu, it - 2) }.map { i -> { planchers[i] = calque(i, sol = Sol.SEUL) } }
+                .toTypedArray()
+        )
+        val ciel = peints[0]!!
+        val loin = peints[2]!!
+        val milieu = peints[3]!!
+        val proche = peints[4]!!
+        val formes = arrayOf(formesDe[2]!!, formesDe[3]!!, formesDe[4]!!)
         val unite = ks[0][0]
         if (souvenir != null) {
             // Le ciel aussi, sans masque : l'hiver le pâlit, l'été le réchauffe.
@@ -936,43 +1035,52 @@ object Paysages {
             aPart?.forEachIndexed { i, b -> if (b != null) neiges!![i + 1] = b }
         }
         releves.forEach { it?.recycle() }
-        // Après la saison, qui reconnaît la végétation à ses couleurs d'origine.
-        eclaircir(loin, formes[0], heure.cielBas, ESTOMPE[0])
-        eclaircir(milieu, formes[1], heure.cielBas, ESTOMPE[1])
         // Le surcadrage naturel n'est pas peint dans les cartons : ses brins
         // sont découpés à part ([gabarits]) pour bouger à chaque trame.
-        val plans = arrayOf(ciel, nuages(heure, l, h), loin, milieu, proche)
-        // Le plancher, là où un lieu en a un : il reçoit les ombres sans en
-        // porter, et sans bordure, ce n'est pas un carton.
-        val planchers = Array(plans.size) { i ->
-            if (i in 3..4 && aUnPlancher(lieu, i - 2)) calque(i, sol = Sol.SEUL) else null
-        }
+        val plans = arrayOf(ciel, peints[NUAGES]!!, loin, milieu, proche)
         val silhouettes = arrayOfNulls<Bitmap>(plans.size)
         silhouettes[2] = formes[0]
         silhouettes[3] = formes[1]
         silhouettes[4] = formes[2]
+        if (PAPIER) {
+            // Puis chaque carton se finit de son côté, de front lui aussi.
+            // Le papier découpé : chaque carton a sa tranche de kraft tout
+            // autour et son ombre à part, posée à chaque trame ; le plancher
+            // vient dessous, sans tranche ni ombre.
+            deFront(*Array(plans.size) { i ->
+                {
+                    val b = plans[i]
+                    // Après la saison, qui reconnaît la végétation à ses
+                    // couleurs d'origine, et avant que les fils de fer ne
+                    // soient retirés de la silhouette.
+                    if (i == 2 || i == 3) eclaircir(b, formes[i - 2], heure.cielBas, ESTOMPE[i - 2])
+                    fils[i]?.let { f ->
+                        silhouettes[i] = sansFils(silhouettes[i]!!, f)
+                        f.recycle()
+                    }
+                    silhouettes[i]?.let { forme ->
+                        krafter(b, forme, unite, heure)
+                        ombres[i] = flouter(forme, unite)
+                        planchers[i]?.let {
+                            val derriere = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OVER) }
+                            Canvas(b).drawBitmap(it, 0f, 0f, derriere)
+                            it.recycle()
+                        }
+                        forme.recycle()
+                    }
+                    Grain.poser(b)
+                    raviver(b)
+                }
+            })
+            return plans
+        }
+        // Après la saison, qui reconnaît la végétation à ses couleurs d'origine.
+        eclaircir(loin, formes[0], heure.cielBas, ESTOMPE[0])
+        eclaircir(milieu, formes[1], heure.cielBas, ESTOMPE[1])
         for (i in 2 until plans.size) {
             val f = fils[i] ?: continue
             silhouettes[i] = sansFils(silhouettes[i]!!, f)
             f.recycle()
-        }
-        if (PAPIER) {
-            // Le papier découpé : chaque carton a sa tranche de kraft tout
-            // autour et son ombre à part, posée à chaque trame ; le plancher
-            // vient dessous, sans tranche ni ombre.
-            for (devant in 2 until plans.size) {
-                val forme = silhouettes[devant] ?: continue
-                krafter(plans[devant], forme, unite, heure)
-                ombres[devant] = flouter(forme, unite)
-                planchers[devant]?.let {
-                    val derriere = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OVER) }
-                    Canvas(plans[devant]).drawBitmap(it, 0f, 0f, derriere)
-                    it.recycle()
-                }
-            }
-            silhouettes.forEach { it?.recycle() }
-            plans.forEach { Grain.poser(it); raviver(it) }
-            return plans
         }
         // Chaque carton porte son ombre sur tous ceux de derrière : là où un
         // carton intermédiaire la cache, c'est en penchant qu'on la découvre,
