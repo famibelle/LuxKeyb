@@ -7881,19 +7881,89 @@ object Paysages {
             // dans les bandes que le dessin du mot ne prend pas (x < 17 et
             // x > 83) et sous la ligne du toit, en s'abaissant vers le
             // centre comme une charmille taillée en berceau.
+            // Elle est faite de feuilles, pas de peinture (propriétaire,
+            // 2026-11-22, photo à l'appui) : un aplat vert à bord festonné
+            // de ronds se lisait comme un buisson de pâte à modeler. Le bord
+            // est donc découpé en feuilles, et le massif peint de bouquets
+            // de petites feuilles en trois valeurs : le creux sombre entre
+            // eux, le feuillage, et les feuilles qui prennent le jour à
+            // gauche, d'où vient le soleil sur la photo.
             val haie = vert(0.1f)
+            val creuxHaie = sombre(haie, 0.42f)
+            val feuillage = mix(haie, vert(0.45f), 0.5f)
+            val auJour = mix(vert(0.7f), duJour(0xFFD8E89A.toInt()), if (P.nuit) 0.04f else 0.28f)
             for ((bord, dedans) in listOf(-3f to 15f, 103f to 85f)) {
+                val s = if (dedans > bord) 1f else -1f
                 val massif = Path().apply {
                     moveTo(bord, DEVANT + 0.2f); lineTo(bord, 31f); lineTo(dedans, 39f)
                     lineTo(dedans, DEVANT + 0.2f); close()
                 }
-                val feuilles = Path()
-                for (k in 0..12) {
-                    val u = k / 12f
-                    feuilles.addCircle(bord + (dedans - bord) * u, 31f + 8f * u, 1.3f + r() * 1f, Path.Direction.CW)
+                // Le bord : des feuilles qui dépassent, vers le haut le long
+                // du berceau, vers le milieu le long du flanc.
+                val bordFeuillu = Path()
+                for (k in 0..16) {
+                    val u = k / 16f
+                    val ex = bord + (dedans - bord) * u; val ey = 31f + 8f * u
+                    for (n in 0 until 3) bordFeuillu.addPath(amande(ex + (r() - 0.5f) * 1.2f, ey + 0.6f,
+                        1.5f + r() * 0.9f, 0.5f + r() * 0.12f, -PI.toFloat() / 2f + (r() - 0.5f) * 2.2f))
                 }
-                massif.op(feuilles, Path.Op.UNION)
+                var ey = 39.5f
+                while (ey < DEVANT - 1f) {
+                    for (n in 0 until 3) bordFeuillu.addPath(amande(dedans - s * 0.6f, ey + (r() - 0.5f) * 1.2f,
+                        1.5f + r() * 0.9f, 0.5f + r() * 0.12f, (if (s > 0) 0f else PI.toFloat()) + (r() - 0.5f) * 2.4f))
+                    ey += 1.5f
+                }
+                massif.op(bordFeuillu, Path.Op.UNION)
+                // Le carton est découpé dans le vert de la haie, que les
+                // saisons reconnaissent comme de la végétation (fleurs,
+                // rouille, neige) ; la profondeur sombre est un voile posé
+                // dessus. Découpé dans le sombre, il échappait aux saisons.
                 piece(massif, haie)
+                c.save(); c.clipPath(massif)
+                releve?.let { it.save(); it.clipPath(massif) }
+                forme(massif, creuxHaie, 0.85f)
+                // Les bouquets, en quinconce : chacun un éventail de feuilles
+                // au feuillage, et sur son côté gauche et son haut, celles
+                // qui prennent la lumière. Le fond sombre qui reste entre eux
+                // est la profondeur de la haie.
+                // Une grille régulière de bouquets faisait du papier peint :
+                // la haie a ses bosses au soleil et ses poches d'ombre (une
+                // lumière qui varie lentement d'un bouquet à l'autre), et
+                // ses trous, là où il manque un bouquet.
+                val tonOmbre = Path(); val tonFeuillage = Path(); val tonJour = Path()
+                val xa = minOf(bord, dedans) - 1f; val xb = maxOf(bord, dedans) + 2f
+                var by = 29.5f; var rang = 0
+                while (by < DEVANT + 1f) {
+                    var bx = xa + (if (rang % 2 == 0) 0f else 1.3f)
+                    while (bx < xb) {
+                        val cx = bx + (r() - 0.5f) * 1.6f; val cy = by + (r() - 0.5f) * 1.4f
+                        val lumiere = 0.5f + 0.32f * sin(cx * 0.55f + cy * 0.21f + bord) +
+                            0.25f * sin(cy * 0.6f - cx * 0.18f) - 0.012f * (cy - 30f)
+                        if (r() < 0.1f) { bx += 2.6f; continue }
+                        for (n in 0 until 6) {
+                            val a = n * 1.05f + r() * 0.6f
+                            val l = 1.2f + r() * 0.8f
+                            val f = amande(cx, cy, l, 0.3f + r() * 0.12f, a)
+                            // Les feuilles tournées vers le haut et la gauche
+                            // (angles autour de -3π/4) sont au jour, d'autant
+                            // plus que le bouquet est sur une bosse éclairée.
+                            val versJour = cos(a + 3f * PI.toFloat() / 4f)
+                            when {
+                                versJour + lumiere > 1f && r() < 0.9f -> tonJour.addPath(f)
+                                lumiere < 0.25f || (versJour < -0.5f && lumiere < 0.55f) -> tonOmbre.addPath(f)
+                                else -> tonFeuillage.addPath(f)
+                            }
+                        }
+                        bx += 2.6f
+                    }
+                    by += 1.9f; rang++
+                }
+                forme(tonOmbre, mix(creuxHaie, feuillage, 0.45f), 0.92f)
+                forme(tonFeuillage, feuillage, 0.92f)
+                forme(tonJour, auJour, 0.9f)
+                // L'ombre se creuse vers le pied de la haie.
+                forme(Path().apply { addRect(xa, DEVANT - 6f, xb, DEVANT + 1f, Path.Direction.CW) }, creuxHaie, 0.35f)
+                releve?.restore(); c.restore()
             }
             // Le grès gris-vert des lions, relevé sur la photo (#696F52 à
             // l'ombre, #9A9776 au jour).
