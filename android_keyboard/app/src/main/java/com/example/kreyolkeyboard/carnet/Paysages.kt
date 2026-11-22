@@ -4409,7 +4409,14 @@ object Paysages {
         }
 
         fun rue3q(r: Fuite, maisons: Array<FloatArray>, murs: IntArray, rnd: Alea, ecart: Float = 0f, debut: Float = 0f,
-                  froid: Boolean = true) = mineral {
+                  froid: Boolean = true, pavillon: Boolean = false) = mineral {
+            // [froid] ne règle que la couleur. La matière (enduit, corniche,
+            // socle, encadrements, vitres, rangs d'ardoise) est la même pour
+            // tous : le château d'Ansembourg, qui garde son ocre chaud, n'en
+            // avait aucune, et ses fenêtres sortaient en rectangles verts
+            // (propriétaire, 2026-11-22).
+            // [pavillon] : un toit en pavillon, d'ardoise sur ses quatre
+            // pans, sans pignon de mur (le château, ses tours).
             val tl = r.taille
             // [froid] : contre la dominante jaune, des couleurs que le
             // réglage des couleurs vives ne réchauffe pas ([neutre]), des
@@ -4422,8 +4429,7 @@ object Paysages {
             // encadrements : un grès gris, pas le jaune paille.
             val pierreDeTaille = n(duJour(0xFFB9B3A6.toInt()))
             // Froid : des vitres de vrai verre, au lieu des rectangles olive.
-            val vitre: (Float, Float, Float, Float) -> Unit =
-                if (froid) { x, y, w, h -> fenetreVerre(x, y, w, h, rnd) } else { x, y, w, h -> fenetre(x, y, w, h, rnd) }
+            val vitre: (Float, Float, Float, Float) -> Unit = { x, y, w, h -> fenetreVerre(x, y, w, h, rnd) }
             val debuts = FloatArray(maisons.size)
             var u = debut
             // [ecart] : des maisons séparées, dont on voit chaque pignon, comme
@@ -4455,9 +4461,12 @@ object Paysages {
                 val sommetA = floatArrayOf(ax + pa[0] * 0.5f, hautA + pa[1] * 0.5f - toitH * tl * ea)
                 piece(Path().apply {
                     moveTo(ax, hautA); lineTo(sommetA[0], sommetA[1]); lineTo(ax + pa[0], hautA + pa[1]); close()
-                }, pignon, 0.3f)
+                }, if (pavillon) sombre(toit, 0.25f) else pignon, 0.3f)
                 val fin = h * tl * ea < 4.5f
                 if (!fin) surQuad(6f, h, cote) {
+                    // Le flanc d'un pavillon est un mur comme la façade : il
+                    // garde sa matière, à l'ombre.
+                    if (pavillon) matiere(6f, h, pignon, sombre(pierreDeTaille, 0.2f), Alea(500 + i), false)
                     var fy = 3f
                     while (fy < h - 3f) { vitre(2.4f, fy, 1.2f, 2.4f); fy += 5.2f }
                 }
@@ -4465,7 +4474,7 @@ object Paysages {
                 val facade = floatArrayOf(ax, hautA, bx, hautB, bx, by, ax, ay)
                 piece(quad(facade), mur, 0.6f)
                 if (!fin) surQuad(w, h, facade) {
-                    if (froid) matiere(w, h, murs[i % murs.size], pierreDeTaille, Alea(400 + i), m[3] > 0f)
+                    matiere(w, h, if (froid) murs[i % murs.size] else mur, pierreDeTaille, Alea(400 + i), m[3] > 0f)
                     if (m[3] > 0f) {
                         var px = 0.4f
                         while (px <= w) { ligne(px, 0f, px, h, poutre, 0.3f); px += 2.6f }
@@ -4475,12 +4484,10 @@ object Paysages {
                     while (fy < h - 4f) {
                         var fx = 1.6f
                         while (fx < w - 2f) {
-                            if (froid) {
-                                // Le linteau et l'appui de pierre.
-                                rect(fx - 0.3f, fy - 0.62f, 1.9f, 0.36f, pierreDeTaille)
-                                rect(fx - 0.42f, fy + 2.66f, 2.14f, 0.42f, pierreDeTaille)
-                                rect(fx - 0.42f, fy + 3.08f, 2.14f, 0.16f, n(ombreFroide(murs[i % murs.size], 0.5f)), 0.6f)
-                            }
+                            // Le linteau et l'appui de pierre.
+                            rect(fx - 0.3f, fy - 0.62f, 1.9f, 0.36f, pierreDeTaille)
+                            rect(fx - 0.42f, fy + 2.66f, 2.14f, 0.42f, pierreDeTaille)
+                            rect(fx - 0.42f, fy + 3.08f, 2.14f, 0.16f, if (froid) n(ombreFroide(murs[i % murs.size], 0.5f)) else sombre(mur, 0.4f), 0.6f)
                             vitre(fx, fy, 1.3f, 2.4f); fx += 3.3f
                         }
                         fy += 4.8f
@@ -4494,7 +4501,7 @@ object Paysages {
                 piece(quad(pan), toit, 0.6f)
                 ligne(sommetA[0], sommetA[1], sommetB[0], sommetB[1], faitage, 0.35f * tl * (ea + eb))
                 // Les rangs d'ardoises, plus clairs, qui suivent la pente du pan.
-                if (froid && !fin) surQuad(w, 6f, pan) {
+                if (!fin) surQuad(w, 6f, pan) {
                     val rang = n(mix(ardoise(), 0xFFFFFFFF.toInt(), 0.22f))
                     var y = 0.9f
                     while (y < 6f) { ligne(0f, y, w, y, rang, 0.16f, 0.55f); y += 0.95f }
@@ -7814,10 +7821,10 @@ object Paysages {
             // vraiment d'un miel chaud (photo du propriétaire), et la
             // neutraliser rendait le sujet plus terne que le feuillage autour
             // de lui — c'est ce que le propriétaire avait relevé en main.
-            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[0]), intArrayOf(ocre), r, froid = false)
-            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[1]), intArrayOf(ocre), r, debut = CHATEAU_ANSEBUERG[0][0], froid = false)
-            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[2]), intArrayOf(ocre, aile), r, debut = CHATEAU_ANSEBUERG[0][0] + CHATEAU_ANSEBUERG[1][0], froid = false)
-            for (d in floatArrayOf(3f, 24f)) rue3q(f, arrayOf(TOUR_ANSEBUERG), intArrayOf(ocre), r, debut = CHATEAU_ANSEBUERG[0][0] + d, froid = false)
+            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[0]), intArrayOf(ocre), r, froid = false, pavillon = true)
+            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[1]), intArrayOf(ocre), r, debut = CHATEAU_ANSEBUERG[0][0], froid = false, pavillon = true)
+            rue3q(f, arrayOf(CHATEAU_ANSEBUERG[2]), intArrayOf(ocre, aile), r, debut = CHATEAU_ANSEBUERG[0][0] + CHATEAU_ANSEBUERG[1][0], froid = false, pavillon = true)
+            for (d in floatArrayOf(3f, 24f)) rue3q(f, arrayOf(TOUR_ANSEBUERG), intArrayOf(ocre), r, debut = CHATEAU_ANSEBUERG[0][0] + d, froid = false, pavillon = true)
             mineral {
                 val face = Path().apply {
                     moveTo(bord[0], bord[1]); lineTo(bord[2], bord[3]); lineTo(bord[4], bord[5]); lineTo(bord[6], bord[7]); close()
