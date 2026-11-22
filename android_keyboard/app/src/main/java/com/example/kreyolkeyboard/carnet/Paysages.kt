@@ -7911,8 +7911,13 @@ object Paysages {
             // Toutes les feuilles ne tournent pas ensemble : des bouquets
             // déjà dorés parmi les roux.
             val feuillageOr = if (automne) duJour(0xFFD29A38.toInt()) else feuillage
-            val auJour = if (automne) mix(duJour(0xFFEBB848.toInt()), duJour(0xFFF6DC8A.toInt()), if (P.nuit) 0f else 0.3f)
-                else mix(vert(0.7f), duJour(0xFFD8E89A.toInt()), if (P.nuit) 0.04f else 0.28f)
+            // La nuit, l'heure ramène les trois tons vers son bleu et la haie
+            // n'était plus qu'une masse violette : les feuilles que touche la
+            // lune gardent un peu de leur or, sans passer par l'heure.
+            val auJour = if (automne) {
+                if (P.nuit) mix(duJour(0xFFEBB848.toInt()), 0xFFC8B48A.toInt(), 0.45f)
+                else mix(duJour(0xFFEBB848.toInt()), duJour(0xFFF6DC8A.toInt()), 0.3f)
+            } else mix(vert(0.7f), duJour(0xFFD8E89A.toInt()), if (P.nuit) 0.04f else 0.28f)
             for ((bord, dedans) in listOf(-3f to 15f, 103f to 85f)) {
                 val s = if (dedans > bord) 1f else -1f
                 val massif = Path().apply {

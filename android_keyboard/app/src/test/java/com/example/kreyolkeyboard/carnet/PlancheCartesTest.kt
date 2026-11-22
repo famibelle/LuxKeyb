@@ -141,9 +141,11 @@ class PlancheCartesTest {
         val cases = ArrayList<Pair<String, Bitmap>>()
         val lieux = System.getProperty("planche.lieux")?.takeIf { it.isNotBlank() }?.let { lieuxChoisis() }
             ?: listOf(Lieu.NEI_BRECK, Lieu.HAFF_REIMECH, Lieu.CONZEFENN, Lieu.MUSEL, Lieu.MELLERDALL, Lieu.GELLE_FRA)
-        for (lieu in lieux) for (mois in intArrayOf(4, 7, 10, 1)) {
+        // -PplancheRarete=TOUTES : une rangée par heure (la rareté donne l'heure).
+        val raretes = if (System.getProperty("planche.rarete") == "TOUTES") Rarete.values().toList() else listOf(Rarete.COMMUN)
+        for (lieu in lieux) for (rarete in raretes) for (mois in intArrayOf(4, 7, 10, 1)) {
             val souvenir = Souvenir.du(2026, mois, 15)
-            val motif = Motif("Bréck", Rarete.COMMUN, zone, blason(lieu), souvenir).apply { profondeur = true }
+            val motif = Motif("Bréck", rarete, zone, blason(lieu), souvenir).apply { profondeur = true }
             val b = Bitmap.createBitmap((visible.width() * echelle).toInt(), (visible.height() * echelle).toInt(),
                 Bitmap.Config.ARGB_8888)
             val c = Canvas(b)
