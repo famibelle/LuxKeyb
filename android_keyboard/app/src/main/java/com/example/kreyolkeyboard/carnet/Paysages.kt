@@ -484,7 +484,8 @@ object Paysages {
         cc.translate(k[1], k[2])
         cc.scale(k[0], k[0])
         val releve = Bitmap.createBitmap(largeurPx, hauteurPx, Bitmap.Config.ALPHA_8)
-        dessiner(cc, lieu, heure, ciel = false, facture = facture, echelle = k[0], releve = aLEchelle(releve, k))
+        dessiner(cc, lieu, heure, ciel = false, facture = facture, echelle = k[0], releve = aLEchelle(releve, k),
+            saison = souvenir.saison)
         c.drawBitmap(calque, 0f, 0f, null)
         Habillage.appliquer(bitmap, calque, lieu, heure, souvenir, k, releve)
         calque.recycle()
@@ -871,7 +872,7 @@ object Paysages {
             } else null
             dessiner(it, lieu, heure, ciel = false, lieuAussi = true, seul = i - 2, sol = sol, vivant = true,
                 facture = Facture.GOUACHE, echelle = ks[i][0], releve = releve?.let { r -> aLEchelle(r, ks[i]) },
-                fils = fil?.let { f -> Canvas(f) })
+                fils = fil?.let { f -> Canvas(f) }, saison = souvenir?.saison)
         }
         fun peindre(i: Int, dessin: Peintre.() -> Unit) = toile(i) {
             Peintre(it, heure, facture = Facture.GOUACHE, echelle = ks[i][0]).dessin()
@@ -2203,8 +2204,8 @@ object Paysages {
 
     fun dessiner(c: Canvas, lieu: Lieu, heure: Heure, ciel: Boolean = true, lieuAussi: Boolean = true,
                  seul: Int = -1, sol: Sol = Sol.AVEC, facture: Facture = Facture.VIGNETTE, echelle: Float = 1f,
-                 releve: Canvas? = null, vivant: Boolean = false, fils: Canvas? = null) {
-        val p = Peintre(c, heure, seul, sol, facture, echelle, releve, vivant, fils)
+                 releve: Canvas? = null, vivant: Boolean = false, fils: Canvas? = null, saison: Saison? = null) {
+        val p = Peintre(c, heure, seul, sol, facture, echelle, releve, vivant, fils, saison)
         if (ciel) { if (PAPIER) p.cielPapier() else if (facture == Facture.GOUACHE) p.cielPeint() else p.ciel() }
         if (!lieuAussi) return
         when (lieu) {
@@ -2433,7 +2434,14 @@ object Paysages {
          * posé sort de la silhouette du carton avant sa tranche de kraft
          * ([rendrePlans]) : voir [filDeFer].
          */
-        private val fils: Canvas? = null
+        private val fils: Canvas? = null,
+        /**
+         * La saison de la carte, quand elle en a une. Presque tout le décor
+         * l'ignore et laisse [Habillage] la poser par-dessus ; seul ce qui
+         * change de matière avec elle la lit (la charmille d'Ansebuerg,
+         * qui roussit feuille par feuille, voir [ansebuerg]).
+         */
+        val saison: Saison? = null
     ) {
         val p = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
         val BAS = HAUTEUR
@@ -7888,10 +7896,23 @@ object Paysages {
             // de petites feuilles en trois valeurs : le creux sombre entre
             // eux, le feuillage, et les feuilles qui prennent le jour à
             // gauche, d'où vient le soleil sur la photo.
-            val haie = vert(0.1f)
-            val creuxHaie = sombre(haie, 0.42f)
-            val feuillage = mix(haie, vert(0.45f), 0.5f)
-            val auJour = mix(vert(0.7f), duJour(0xFFD8E89A.toInt()), if (P.nuit) 0.04f else 0.28f)
+            // L'automne, la charmille roussit feuille par feuille : de l'or
+            // au jour, du roux au feuillage, du brun dans le creux. Laissée
+            // à [Habillage], elle prenait sa rouille en grandes taches qui
+            // ne suivent pas les feuilles, par-dessus le vert : une tenue de
+            // camouflage (propriétaire, 2026-11-22). Elle est donc peinte
+            // dans ses couleurs d'automne et soustraite à la rouille
+            // ([mineral]) ; les autres saisons la gardent verte et à
+            // [Habillage], qui la fleurit et la blanchit.
+            val automne = saison == Saison.HIERSCHT
+            val haie = if (automne) duJour(0xFF9A5A22.toInt()) else vert(0.1f)
+            val creuxHaie = if (automne) sombre(duJour(0xFF7A4020.toInt()), 0.38f) else sombre(haie, 0.42f)
+            val feuillage = if (automne) duJour(0xFFC0702A.toInt()) else mix(haie, vert(0.45f), 0.5f)
+            // Toutes les feuilles ne tournent pas ensemble : des bouquets
+            // déjà dorés parmi les roux.
+            val feuillageOr = if (automne) duJour(0xFFD29A38.toInt()) else feuillage
+            val auJour = if (automne) mix(duJour(0xFFEBB848.toInt()), duJour(0xFFF6DC8A.toInt()), if (P.nuit) 0f else 0.3f)
+                else mix(vert(0.7f), duJour(0xFFD8E89A.toInt()), if (P.nuit) 0.04f else 0.28f)
             for ((bord, dedans) in listOf(-3f to 15f, 103f to 85f)) {
                 val s = if (dedans > bord) 1f else -1f
                 val massif = Path().apply {
@@ -7918,7 +7939,7 @@ object Paysages {
                 // saisons reconnaissent comme de la végétation (fleurs,
                 // rouille, neige) ; la profondeur sombre est un voile posé
                 // dessus. Découpé dans le sombre, il échappait aux saisons.
-                piece(massif, haie)
+                if (automne) mineral { piece(massif, haie) } else piece(massif, haie)
                 c.save(); c.clipPath(massif)
                 releve?.let { it.save(); it.clipPath(massif) }
                 forme(massif, creuxHaie, 0.85f)
@@ -7930,7 +7951,7 @@ object Paysages {
                 // la haie a ses bosses au soleil et ses poches d'ombre (une
                 // lumière qui varie lentement d'un bouquet à l'autre), et
                 // ses trous, là où il manque un bouquet.
-                val tonOmbre = Path(); val tonFeuillage = Path(); val tonJour = Path()
+                val tonOmbre = Path(); val tonFeuillage = Path(); val tonOr = Path(); val tonJour = Path()
                 val xa = minOf(bord, dedans) - 1f; val xb = maxOf(bord, dedans) + 2f
                 var by = 29.5f; var rang = 0
                 while (by < DEVANT + 1f) {
@@ -7940,6 +7961,7 @@ object Paysages {
                         val lumiere = 0.5f + 0.32f * sin(cx * 0.55f + cy * 0.21f + bord) +
                             0.25f * sin(cy * 0.6f - cx * 0.18f) - 0.012f * (cy - 30f)
                         if (r() < 0.1f) { bx += 2.6f; continue }
+                        val dore = sin(cx * 0.31f - cy * 0.47f + bord * 0.7f) + 0.35f * sin(cx * 0.9f + cy * 0.4f) > 0.25f
                         for (n in 0 until 6) {
                             val a = n * 1.05f + r() * 0.6f
                             val l = 1.2f + r() * 0.8f
@@ -7951,6 +7973,7 @@ object Paysages {
                             when {
                                 versJour + lumiere > 1f && r() < 0.9f -> tonJour.addPath(f)
                                 lumiere < 0.25f || (versJour < -0.5f && lumiere < 0.55f) -> tonOmbre.addPath(f)
+                                dore -> tonOr.addPath(f)
                                 else -> tonFeuillage.addPath(f)
                             }
                         }
@@ -7960,6 +7983,7 @@ object Paysages {
                 }
                 forme(tonOmbre, mix(creuxHaie, feuillage, 0.45f), 0.92f)
                 forme(tonFeuillage, feuillage, 0.92f)
+                forme(tonOr, feuillageOr, 0.92f)
                 forme(tonJour, auJour, 0.9f)
                 // L'ombre se creuse vers le pied de la haie.
                 forme(Path().apply { addRect(xa, DEVANT - 6f, xb, DEVANT + 1f, Path.Direction.CW) }, creuxHaie, 0.35f)
