@@ -1,9 +1,42 @@
 {
- "genere_le": "2026-11-21",
- "derniere_version": "41.1.0",
- "derniere_date": "2026-11-21",
+ "genere_le": "2026-11-22",
+ "derniere_version": "41.1.1",
+ "derniere_date": "2026-11-22",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.1",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le pont Rouge redessiné d'après photo",
+       "texte": "La Rout Bréck retrouve sa vraie silhouette, son garde-corps et ses lampadaires."
+      },
+      {
+       "titre": "Chaque lieu dans sa vraie matière",
+       "texte": "Les pylônes, grillages et lampadaires sont en acier et non plus dorés ; le grès du Mëllerdall montre ses couches ; les meules de la Hohllay sont creusées dans la roche ; les stèles de Schengen sont en acier rouillé ; le rempart et le rocher du Bock laissent voir leurs pierres ; à Ansembourg, la terrasse est en pierre, avec ses arcades, ses lions et son escalier ; l'abbaye de Neimënster a ses toits d'ardoise ; la Gëlle Fra brille sur son granit rose ; la porte du Breedewee est en grosses pierres jusqu'à l'arc ; la clôture de Conzefenn est en vrai bois, avec ses nœuds."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_decors_matieres.png",
+     "alt": "Quatre paysages de cartes, marqués du filigrane LuxKeyb, chacun en deux vues côte à côte : à gauche avant, à droite après. 1. Schengen : les trois stèles, brunes comme du bois, deviennent rouge rouille, en acier. 2. La Gëlle Fra : son obélisque, gris, devient rose comme le granit, et la statue dorée a des reflets. 3. Le Mëllerdall : les parois de grès, lisses, montrent leurs couches de roche. 4. Ansembourg : sous le château, la terrasse jaune et unie devient un mur de pierres percé d'arcades sombres, et devant, les deux lions de pierre encadrent un escalier.",
+     "legende": "Schengen, la Gëlle Fra, le Mëllerdall et Ansembourg, avant et après."
+    }
+   ],
+   "image": "Screenshots/lux_decors_matieres.png",
+   "image_alt": "Quatre paysages de cartes, marqués du filigrane LuxKeyb, chacun en deux vues côte à côte : à gauche avant, à droite après. 1. Schengen : les trois stèles, brunes comme du bois, deviennent rouge rouille, en acier. 2. La Gëlle Fra : son obélisque, gris, devient rose comme le granit, et la statue dorée a des reflets. 3. Le Mëllerdall : les parois de grès, lisses, montrent leurs couches de roche. 4. Ansembourg : sous le château, la terrasse jaune et unie devient un mur de pierres percé d'arcades sombres, et devant, les deux lions de pierre encadrent un escalier.",
+   "image_legende": "Schengen, la Gëlle Fra, le Mëllerdall et Ansembourg, avant et après."
+  },
   {
    "version": "41.1.0",
    "date": "2026-11-21",
@@ -245,29 +278,6 @@
       {
        "titre": "Une rangée par lieu dans l'album",
        "texte": "Chaque heure garde sa colonne, du matin à la nuit, et la place de la nuit reste vide pour les lieux qui n'en ont pas."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ]
-  },
-  {
-   "version": "39.1.0",
-   "date": "2026-11-14",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Un album des paysages en grille de 9 × 3",
-       "texte": "Chaque champ de sens a maintenant trois lieux, et les mots sans champ aussi. On voit d'un coup d'œil ce qui manque (« le troisième lieu du savoir »). La falaise du Priedegtstull rejoint le savoir et la parole, la vallée de la Pétrusse la chose publique, la passerelle du Dumongshaff la société, et la ruelle du Breedewee devient un lieu de la ville que l'on peut gagner en jouant. L'album compte 90 cases, et chacune reste atteignable dans les quatre langues."
-      },
-      {
-       "titre": null,
-       "texte": "Les cartes déjà gagnées gardent leur paysage."
       }
      ],
      "texte": "",

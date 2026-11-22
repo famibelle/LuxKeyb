@@ -6,6 +6,30 @@
     "Changements": "Änderungen",
     "Rapidité": "Geschwindigkeit"
   },
+  "41.1.1": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Die Rote Brücke nach einem Foto neu gezeichnet",
+            "texte": "Die Rout Bréck hat wieder ihre echte Gestalt, mit Geländer und Laternen."
+          },
+          {
+            "titre": "Jeder Ort in seinem echten Material",
+            "texte": "Masten, Zäune und Laternen sind aus Stahl und nicht mehr golden; der Sandstein des Mëllerdall zeigt seine Schichten; die Mühlsteine der Hohllay sind in den Fels gehauen; die Stelen von Schengen sind aus rostigem Stahl; die Festungsmauer und der Bockfelsen zeigen ihre Steine; in Ansemburg ist die Terrasse aus Stein, mit ihren Bögen, ihren Löwen und ihrer Treppe; die Abtei Neimënster hat ihre Schieferdächer; die Gëlle Fra glänzt auf ihrem rosa Granit; das Tor des Breedewee ist bis zum Bogen aus großen Steinen; der Zaun von Conzefenn ist aus echtem Holz, mit seinen Astknoten."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Vier Kartenlandschaften mit dem Wasserzeichen LuxKeyb, jede in zwei Ansichten nebeneinander: links vorher, rechts nachher. 1. Schengen: die drei Stelen, braun wie Holz, werden rostrot, aus Stahl. 2. Die Gëlle Fra: ihr grauer Obelisk wird rosa wie Granit, und die goldene Statue bekommt Glanzlichter. 3. Das Mëllerdall: die glatten Sandsteinwände zeigen ihre Gesteinsschichten. 4. Ansemburg: unter dem Schloss wird die einfarbig gelbe Terrasse zu einer Steinmauer mit dunklen Bögen, und davor rahmen die zwei Steinlöwen eine Treppe ein.",
+        "legende": "Schengen, die Gëlle Fra, das Mëllerdall und Ansemburg, vorher und nachher."
+      }
+    ]
+  },
   "41.1.0": {
     "intro": "",
     "sections": [

@@ -6,6 +6,30 @@
     "Changements": "Changes",
     "Rapidité": "Speed"
   },
+  "41.1.1": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Improvements",
+        "points": [
+          {
+            "titre": "The Red Bridge redrawn from a photo",
+            "texte": "The Rout Bréck has its true outline again, with its railing and its street lamps."
+          },
+          {
+            "titre": "Every place in its true material",
+            "texte": "Pylons, fences and street lamps are steel, no longer gold; the Mëllerdall sandstone shows its layers; the Hohllay millstones are carved into the rock; the Schengen stelae are rusted steel; the ramparts and the Bock rock show their stones; at Ansembourg the terrace is stone, with its arches, its lions and its steps; Neimënster abbey has its slate roofs; the Gëlle Fra shines on her pink granite; the Breedewee gate is made of big stones right up to the arch; the Conzefenn fence is real wood, knots and all."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Four card landscapes, marked with the LuxKeyb watermark, each shown in two views side by side: before on the left, after on the right. 1. Schengen: the three stelae, brown like wood, turn rust red, in steel. 2. The Gëlle Fra: her grey obelisk turns pink like granite, and the golden statue gains highlights. 3. The Mëllerdall: the smooth sandstone walls show their layers of rock. 4. Ansembourg: below the castle, the plain yellow terrace becomes a stone wall pierced with dark arches, and in front the two stone lions frame a flight of steps.",
+        "legende": "Schengen, the Gëlle Fra, the Mëllerdall and Ansembourg, before and after."
+      }
+    ]
+  },
   "41.1.0": {
     "intro": "",
     "sections": [

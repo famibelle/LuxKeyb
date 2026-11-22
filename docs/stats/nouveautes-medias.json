@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "41.1.1": {
+    "images": [
+      {
+        "image": "Screenshots/lux_decors_matieres.png",
+        "alt": "Quatre paysages de cartes, marqués du filigrane LuxKeyb, chacun en deux vues côte à côte : à gauche avant, à droite après. 1. Schengen : les trois stèles, brunes comme du bois, deviennent rouge rouille, en acier. 2. La Gëlle Fra : son obélisque, gris, devient rose comme le granit, et la statue dorée a des reflets. 3. Le Mëllerdall : les parois de grès, lisses, montrent leurs couches de roche. 4. Ansembourg : sous le château, la terrasse jaune et unie devient un mur de pierres percé d'arcades sombres, et devant, les deux lions de pierre encadrent un escalier.",
+        "legende": "Schengen, la Gëlle Fra, le Mëllerdall et Ansembourg, avant et après."
+      }
+    ]
+  },
   "41.1.0": {
     "images": [
       {

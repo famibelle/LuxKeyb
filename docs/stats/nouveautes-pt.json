@@ -1,9 +1,42 @@
 {
- "genere_le": "2026-11-21",
- "derniere_version": "41.1.0",
- "derniere_date": "2026-11-21",
+ "genere_le": "2026-11-22",
+ "derniere_version": "41.1.1",
+ "derniere_date": "2026-11-22",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.1",
+   "date": "2026-11-22",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "A Ponte Vermelha redesenhada a partir de uma foto",
+       "texte": "A Rout Bréck volta a ter a sua verdadeira silhueta, com o seu parapeito e os seus candeeiros."
+      },
+      {
+       "titre": "Cada lugar no seu verdadeiro material",
+       "texte": "Os postes, as vedações e os candeeiros são de aço e já não dourados; o arenito do Mëllerdall mostra as suas camadas; as mós da Hohllay estão escavadas na rocha; as estelas de Schengen são de aço enferrujado; a muralha e o rochedo do Bock deixam ver as suas pedras; em Ansembourg, o terraço é de pedra, com as suas arcadas, os seus leões e a sua escadaria; a abadia de Neimënster tem os seus telhados de ardósia; a Gëlle Fra brilha sobre o seu granito rosa; a porta do Breedewee é de grandes pedras até ao arco; a vedação de Conzefenn é de madeira verdadeira, com os seus nós."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_decors_matieres.png",
+     "alt": "Quatro paisagens de cartas, marcadas com a marca de água LuxKeyb, cada uma em duas vistas lado a lado: à esquerda antes, à direita depois. 1. Schengen: as três estelas, castanhas como madeira, ficam vermelho ferrugem, em aço. 2. A Gëlle Fra: o seu obelisco cinzento fica rosa como o granito, e a estátua dourada ganha reflexos. 3. O Mëllerdall: as paredes lisas de arenito mostram as suas camadas de rocha. 4. Ansembourg: por baixo do castelo, o terraço amarelo e liso torna-se um muro de pedras com arcadas escuras e, à frente, os dois leões de pedra enquadram uma escadaria.",
+     "legende": "Schengen, a Gëlle Fra, o Mëllerdall e Ansembourg, antes e depois."
+    }
+   ],
+   "image": "Screenshots/lux_decors_matieres.png",
+   "image_alt": "Quatro paisagens de cartas, marcadas com a marca de água LuxKeyb, cada uma em duas vistas lado a lado: à esquerda antes, à direita depois. 1. Schengen: as três estelas, castanhas como madeira, ficam vermelho ferrugem, em aço. 2. A Gëlle Fra: o seu obelisco cinzento fica rosa como o granito, e a estátua dourada ganha reflexos. 3. O Mëllerdall: as paredes lisas de arenito mostram as suas camadas de rocha. 4. Ansembourg: por baixo do castelo, o terraço amarelo e liso torna-se um muro de pedras com arcadas escuras e, à frente, os dois leões de pedra enquadram uma escadaria.",
+   "image_legende": "Schengen, a Gëlle Fra, o Mëllerdall e Ansembourg, antes e depois."
+  },
   {
    "version": "41.1.0",
    "date": "2026-11-21",
@@ -245,30 +278,6 @@
       {
        "titre": "Une rangée par lieu dans l'album",
        "texte": "Chaque heure garde sa colonne, du matin à la nuit, et la place de la nuit reste vide pour les lieux qui n'en ont pas."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "langue": "fr"
-  },
-  {
-   "version": "39.1.0",
-   "date": "2026-11-14",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Un album des paysages en grille de 9 × 3",
-       "texte": "Chaque champ de sens a maintenant trois lieux, et les mots sans champ aussi. On voit d'un coup d'œil ce qui manque (« le troisième lieu du savoir »). La falaise du Priedegtstull rejoint le savoir et la parole, la vallée de la Pétrusse la chose publique, la passerelle du Dumongshaff la société, et la ruelle du Breedewee devient un lieu de la ville que l'on peut gagner en jouant. L'album compte 90 cases, et chacune reste atteignable dans les quatre langues."
-      },
-      {
-       "titre": null,
-       "texte": "Les cartes déjà gagnées gardent leur paysage."
       }
      ],
      "texte": "",
