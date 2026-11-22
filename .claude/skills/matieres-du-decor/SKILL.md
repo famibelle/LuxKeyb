@@ -63,7 +63,7 @@ Tout vit dans `carnet/Paysages.kt`, classe `Peintre`, en unités de fenêtre
 | **Eau** | une teinte **en voile** (`forme`, 0,4) sur un lit de galets qu'on voit au travers, ou des reflets en traits couchés | Mëllerdall, Ourdall |
 | **Sol bâti** | `solDePierre(PAVES / DALLES / GRAVIER, haut, pente, bordure)` | — |
 | **Sol naturel** | `solNaturel(HERBE / TERRE / MOUSSE / BERGE, haut, pente)` | reste végétal pour les saisons |
-| **Végétation** | `nappe(couleur déjà adaptée à l'heure, force, calme)` | jamais un littéral brut |
+| **Végétation** | `nappe(couleur déjà adaptée à l'heure, force, calme)` ; une haie dessinée feuille par feuille : la charmille d'Ansebuerg | jamais un littéral brut ; **l'automne** (haie, pelouse, feuilles tombées, nuit) : skill `vegetation-automne` |
 | **Lumière, lueur** | `halo(x, y, rayon, couleur, opacité)` : un vrai dégradé radial | — |
 
 ## 3. La lumière
