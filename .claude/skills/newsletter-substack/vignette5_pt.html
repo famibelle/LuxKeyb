@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap">
+<style>
+html,body{margin:0;width:1200px;height:630px;overflow:hidden}
+body{background:#f3f6f9;font-family:"Bricolage Grotesque",sans-serif;color:#17212b;position:relative}
+.drapeau{position:absolute;left:0;right:0;top:0;height:14px;display:flex}
+.drapeau span{flex:1}.r{background:#ed2939}.w{background:#fff}.b{background:#00a1de}
+.tete{position:absolute;left:52px;right:52px;top:36px;display:flex;justify-content:space-between;font-weight:600;font-size:17px;letter-spacing:.1em;text-transform:uppercase;color:#56636f}
+.tete b{font-weight:700;letter-spacing:0;text-transform:none;font-size:19px;color:#006f9a}
+.panneaux{position:absolute;left:52px;right:52px;top:74px;display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.panneau{display:flex;flex-direction:column;gap:12px}
+h2{font-weight:800;font-size:42px;line-height:1;letter-spacing:-.02em;margin:0;white-space:nowrap}
+h2 em{font-style:normal;color:#ed2939}
+.ecran{display:block;width:100%;border-radius:18px;border:2px solid #dbe3ea;box-shadow:0 10px 26px rgba(15,25,35,.14)}
+.second{position:absolute;left:52px;right:52px;top:458px;height:146px;display:flex;align-items:center;gap:28px}
+.eventail{position:relative;width:250px;height:150px;flex:none}
+.eventail img{position:absolute;width:78px;border-radius:5px/4px;box-shadow:0 6px 14px rgba(15,25,35,.25);transform-origin:50% 120%}
+.c1{left:28px;top:20px;transform:rotate(-14deg)}.c2{left:74px;top:6px;transform:rotate(-5deg)}.c3{left:119px;top:6px;transform:rotate(5deg)}.c4{left:164px;top:20px;transform:rotate(14deg)}
+.second p{margin:0;font-weight:700;font-size:28px;line-height:1.2;color:#2b3742}
+.second p span{color:#006f9a}
+.motif{box-sizing:border-box;height:var(--h);background:#fff;border:2px solid #dbe3ea;border-radius:18px;box-shadow:0 10px 26px rgba(15,25,35,.14);display:flex;align-items:center;gap:30px;padding:0 30px 0 44px}
+.micro{flex:none;width:96px;height:96px;border-radius:50%;background:#ed2939;display:grid;place-items:center;box-shadow:0 0 0 12px rgba(237,41,57,.15),0 0 0 24px rgba(237,41,57,.07)}
+.micro svg{width:48px;height:48px;fill:#fff}
+.bulle{background:#eef4f8;border-radius:18px 18px 18px 6px;padding:18px 22px;font-weight:600;font-style:italic;font-size:26px;line-height:1.28;color:#2b3742}
+.panneaux{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} h2{font-size:37px}</style></head><body style="--h:302px">
+<div class="drapeau"><span class="r"></span><span class="w"></span><span class="b"></span></div>
+<div class="tete"><span>Lëtzebuergesch Clavier · Outubro de 2026</span><b>Fala-o. Agora, escreve-o.</b></div>
+<div class="panneaux">
+  <div class="panneau"><h2>Escreva, ele <em>sugere a palavra</em></h2><img class="ecran" src="k_suggestion.png"></div>
+  <div class="panneau"><h2>Fale, <em>ele escreve</em></h2><div class="motif"><span class="micro"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2Z"/></svg></span><div class="bulle">«&nbsp;Op der Kiermes iessen ech ëmmer Gromperekichelcher&nbsp;»</div></div></div>
+</div>
+<div class="second">
+  <div class="eventail"><img class="c1" src="c_bam.png"><img class="c2" src="c_sonn.png"><img class="c3" src="c_brell.png"><img class="c4" src="c_kran.png"></div>
+  <p>E cartas colecionáveis<br><span>para descobrir a língua</span></p>
+</div>
+</body></html>

@@ -1,0 +1,19 @@
+<!-- Motif « dictée » validé par Medhi le 2026-10-20 (« je suis très fan ») :
+     à réutiliser tel quel sur toutes les créations, existantes et à venir.
+     Grand micro rouge du drapeau avec deux halos, et une phrase luxembourgeoise
+     attestée en bulle (coin bas gauche moins arrondi). Sous un titre
+     « Parlez, il écrit » (« il écrit » en rouge). -->
+<style>
+.motif{box-sizing:border-box;background:#fff;border:2px solid #dbe3ea;border-radius:18px;box-shadow:0 10px 26px rgba(15,25,35,.14);display:flex;align-items:center;gap:30px;padding:0 30px 0 44px}
+.micro{flex:none;width:96px;height:96px;border-radius:50%;background:#ed2939;display:grid;place-items:center;box-shadow:0 0 0 12px rgba(237,41,57,.15),0 0 0 24px rgba(237,41,57,.07)}
+/* Le micro pulse légèrement (Medhi, 2026-10-20), sur toute création animée : page web, vidéo, GIF. Une image fixe le montre au repos. */
+.micro{animation:pulsation 2.4s ease-in-out infinite}
+@keyframes pulsation{0%,100%{transform:scale(1);box-shadow:0 0 0 12px rgba(237,41,57,.15),0 0 0 24px rgba(237,41,57,.07)}50%{transform:scale(1.05);box-shadow:0 0 0 16px rgba(237,41,57,.18),0 0 0 32px rgba(237,41,57,.06)}}
+@media (prefers-reduced-motion: reduce){.micro{animation:none}}
+.micro svg{width:48px;height:48px;fill:#fff}
+.bulle{background:#eef4f8;border-radius:18px 18px 18px 6px;padding:18px 22px;font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-style:italic;font-size:26px;line-height:1.28;color:#2b3742}
+</style>
+<div class="motif">
+  <span class="micro"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2Z"/></svg></span>
+  <div class="bulle">«&nbsp;Op der Kiermes iessen ech ëmmer Gromperekichelcher&nbsp;»</div>
+</div>
