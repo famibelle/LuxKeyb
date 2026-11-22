@@ -8243,7 +8243,8 @@ object Paysages {
                 floatArrayOf(-12.8f, 4.4f, 1.2f, -2.2f, -0.4f, 1.4f, 3.1f, 4.6f),
                 floatArrayOf(-15.4f, 4.2f, 1.2f, -2.8f, -1f, 0.8f, 2.6f, 4.2f),
                 floatArrayOf(-18f, 3.8f, 1.15f, -2.2f, -0.4f, 1.4f, 3f),
-                floatArrayOf(-20.4f, 3.4f, 1.05f, -0.6f, 1.2f, 2.9f)
+                floatArrayOf(-20.4f, 3.4f, 1.05f, -0.6f, 1.2f, 2.9f),
+                floatArrayOf(-23f, 3.4f, 1.1f, -0.4f, 1.4f, 3.2f, 4.8f)
             )
             fun meche(u: Float, v: Float, l: Float, w: Float, b: Float) = chemin(
                 "M${p(u - w, v)}C${p(u - w, v + l * 0.5f)} ${p(u - w * 0.6f - b, v + l * 0.8f)} ${p(u - b, v + l)}" +
@@ -8252,8 +8253,8 @@ object Paysages {
             // Le bas de la crinière est un seul bord ondulé : entre des
             // pointes de mèches libres, la tranche de kraft faisait des
             // coches orange sur le dos.
-            val criniere = chemin("M${p(-2f, -9.6f)}C${p(-3f, -13f)} ${p(-2.4f, -17f)} ${p(0.2f, -19.6f)}" +
-                "L${p(3.8f, -19.6f)}L${p(4.8f, -9.4f)}C${p(4.2f, -8.4f)} ${p(3.4f, -8.8f)} ${p(2.8f, -8.6f)}" +
+            val criniere = chemin("M${p(-2f, -9.6f)}C${p(-3f, -13f)} ${p(-2.8f, -18f)} ${p(-1f, -21.4f)}" +
+                "C${p(0.4f, -23.6f)} ${p(3.6f, -24.4f)} ${p(5.6f, -23f)}L${p(6.4f, -21.2f)}L${p(4.8f, -9.4f)}C${p(4.2f, -8.4f)} ${p(3.4f, -8.8f)} ${p(2.8f, -8.6f)}" +
                 "C${p(2f, -8.4f)} ${p(1.2f, -9.2f)} ${p(0.4f, -9f)}C${p(-0.4f, -8.8f)} ${p(-1.2f, -9.6f)} ${p(-2f, -9.6f)}Z")
             val meches = ArrayList<Triple<Path, Float, Int>>()
             for ((ri, rg) in rangs.withIndex()) for (j in 3 until rg.size) {
@@ -8265,24 +8266,22 @@ object Paysages {
                 meches += Triple(m, u, ri * 10 + j)
             }
             piece(criniere, sombre(col, 0.12f))
-            clip(criniere) {
-                for ((m, u, n) in meches) {
-                    // Sous 0,95 : peinte à plein, chaque mèche devenait un
-                    // carton à tranche de kraft, des traits orange.
-                    forme(m, if (n % 2 == 0) col else mix(col, reflet, 0.22f), 0.94f)
-                    // Chaque mèche : son revers creusé de noir, du côté où
-                    // elle se couche, et son bord avant au jour. À la taille
-                    // d'une vignette, c'est cet écart de valeur qui fait les
-                    // mèches ; des traits fins au milieu y faisaient des
-                    // rayures.
-                    c.save(); c.clipPath(m)
-                    val dos = Path(m).apply { offset(0.4f * s * k, -0.2f * k) }
-                    forme(Path(m).apply { op(dos, Path.Op.DIFFERENCE) }, creux, 0.6f)
-                    val face = Path(m).apply { offset(-0.45f * s * k, 0.45f * k) }
-                    forme(Path(m).apply { op(face, Path.Op.DIFFERENCE) }, if (n % 3 == 0) reflet else jour, 0.8f)
-                    c.restore()
-                }
+            // Une mèche : son aplat, son revers creusé de noir du côté où
+            // elle se couche, et son bord avant au jour. À la taille d'une
+            // vignette, c'est cet écart de valeur qui fait les mèches ; des
+            // traits fins au milieu y faisaient des rayures. Sous l'opacité
+            // 0,95 : peinte à plein, chaque mèche devenait un carton à
+            // tranche de kraft, des traits orange.
+            fun ombrer(m: Path, n: Int) {
+                forme(m, if (n % 2 == 0) col else mix(col, reflet, 0.22f), 0.94f)
+                c.save(); c.clipPath(m)
+                val dos = Path(m).apply { offset(0.4f * s * k, -0.2f * k) }
+                forme(Path(m).apply { op(dos, Path.Op.DIFFERENCE) }, creux, 0.6f)
+                val face = Path(m).apply { offset(-0.45f * s * k, 0.45f * k) }
+                forme(Path(m).apply { op(face, Path.Op.DIFFERENCE) }, if (n % 3 == 0) reflet else jour, 0.8f)
+                c.restore()
             }
+            clip(criniere) { for ((m, _, n) in meches) ombrer(m, n) }
             // ---- La tête, de profil, levée vers l'escalier : front haut,
             // museau carré, gueule entrouverte.
             val tete = chemin("M${p(2.8f, -17.4f)}C${p(2.8f, -19.8f)} ${p(3.8f, -21.2f)} ${p(5.4f, -21.3f)}" +
@@ -8294,8 +8293,10 @@ object Paysages {
             clip(tete) {
                 // Le front et le chanfrein au jour, la joue et la mâchoire
                 // à l'ombre.
-                forme("M${p(2.8f, -19f)}C${p(3.6f, -21.4f)} ${p(6.4f, -21.6f)} ${p(9f, -18.6f)}" +
-                    "C${p(7f, -19.6f)} ${p(4.6f, -19.8f)} ${p(2.8f, -19f)}Z", reflet, 0.9f)
+                // Le chanfrein seul prend le jour : un grand front clair
+                // faisait un lion chauve, la crinière posée derrière.
+                forme("M${p(6.4f, -20.4f)}C${p(7.4f, -20f)} ${p(8.4f, -19.4f)} ${p(9f, -18.6f)}" +
+                    "C${p(8f, -18.9f)} ${p(7f, -19.4f)} ${p(6.4f, -20.4f)}Z", reflet, 0.9f)
                 forme("M${p(2.8f, -16.8f)}C${p(4.2f, -17.8f)} ${p(6f, -17.6f)} ${p(7f, -16.4f)}" +
                     "L${p(7f, -15.2f)}L${p(2.8f, -15.2f)}Z", ombre, 0.65f)
                 // L'arcade et l'œil enfoncé dessous.
@@ -8310,8 +8311,24 @@ object Paysages {
                 // La joue rejoint la crinière par une frange de mèches.
                 trait("M${p(3.4f, -19.6f)}C${p(4.4f, -18.6f)} ${p(4.4f, -17f)} ${p(3.6f, -15.8f)}", ombre, 0.5f * k, 0.8f)
             }
-            // L'oreille, à demi prise dans la crinière.
-            pieceD("M${p(3.6f, -20.6f)}C${p(3.4f, -21.9f)} ${p(4.2f, -22.5f)} ${p(4.8f, -21.4f)}Z", ombre, 0f)
+            // ---- La crinière recouvre le crâne : un toupet de mèches
+            // implanté sur le front, qui retombe vers l'arrière jusqu'à
+            // l'arcade, et une collerette autour de la joue et sous le
+            // menton. Seuls l'œil, le museau et la gueule en sortent : c'est
+            // ce cadre qui donne au lion sa majesté (propriétaire,
+            // 2026-11-22). Posée derrière le crâne, la crinière laissait une
+            // tête ronde et nue, d'ours plus que de lion.
+            val avant = arrayOf(
+                // u, v (racine), longueur, demi-largeur, courbure vers l'arrière
+                // La collerette : trois grosses mèches qui se chevauchent,
+                // pas une rangée sous le menton (cinq pointes égales s'y
+                // lisaient comme les doigts d'une patte).
+                floatArrayOf(5.3f, -15.4f, 3.8f, 1.25f, 0.6f), floatArrayOf(3.8f, -15.9f, 4.6f, 1.45f, 1f),
+                floatArrayOf(2.6f, -17.8f, 4.4f, 1.4f, 1.4f),
+                floatArrayOf(3f, -22.2f, 2.8f, 1f, 1.3f), floatArrayOf(4.4f, -22.3f, 2.6f, 0.95f, 1.1f),
+                floatArrayOf(5.6f, -21.9f, 1.9f, 0.85f, 0.9f)
+            )
+            for ((i, m) in avant.withIndex()) ombrer(meche(m[0], m[1], m[2], m[3], m[4]), i + 1)
             // ---- La queue, enroulée sur le socle devant la cuisse.
             trait("M${p(-6.2f, -0.9f)}C${p(-4f, -0.2f)} ${p(-1.4f, -0.4f)} ${p(0.6f, -0.9f)}", ombre, 0.7f * k, 0.95f)
             rond(px(0.9f), py(-0.95f), 0.55f * k, creux, 0.9f)
