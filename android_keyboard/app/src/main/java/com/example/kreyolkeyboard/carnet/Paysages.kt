@@ -11113,7 +11113,14 @@ object Paysages {
             cumulus(52f, 24f, 30f, 347, mauve)
             cumulus(2f, 29f, 20f, 351, rose)
             plan(1)
-            lisiere(-2f, 102f, { x -> 53f + sin(x * 0.3f) }, 1.4f, 2f, 348, nappe(P.milieu, 0.82f))
+            // Le sol de la ville suit le pied de la rue jusqu'à son point de
+            // fuite, puis l'horizon. Il était plat à 53 : la rue, qui monte
+            // vers 47 en fuyant, laissait ses dernières maisons en l'air,
+            // avec du ciel dessous (propriétaire, 2026-11-22).
+            val rue = RUE_GELLE_FRA
+            fun pied(x: Float) = if (x >= rue.fuite[0]) rue.fuite[1]
+                else rue.proche[1] + (x - rue.proche[0]) / (rue.fuite[0] - rue.proche[0]) * (rue.fuite[1] - rue.proche[1])
+            lisiere(-2f, 102f, { x -> pied(x) - 0.6f + 0.6f * sin(x * 0.3f) }, 1.4f, 2f, 348, nappe(P.milieu, 0.82f))
             val r = Alea(349)
             // La ville basse, en rue qui fuit vers le pied du monument.
             rue3q(RUE_GELLE_FRA, MAISONS_GELLE_FRA, facades(), r)
