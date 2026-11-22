@@ -29,7 +29,12 @@ dedans.
 4. filet de surface : `SRC_ATOP`, ciel éclairci (0,6 de jour, 0,25 la nuit),
    alpha 0x70, épaisseur 0,3 unité, posé sur les tiges seules.
 
-Lieux réglés : **Esch-Sauer, Ourdall, Haff Réimech**, `eau = 54f`.
+Lieux réglés : **Esch-Sauer, Ourdall, Haff Réimech**, `eau = 54f` (roseaux) ;
+**Mëllerdall**, `eau = 54f`, avec des **iris des marais** (`Pied.IRIS`,
+2026-11-22) : feuilles en glaive larges de 2,8 unités au pied (plus fines,
+elles faisaient de l'herbe), deux fleurs jaunes au printemps et en été,
+feuilles sèches couchées l'hiver. Les fougères qu'il avait avant ont été
+retirées : une fougère ne pousse pas dans l'eau.
 Sans eau, et c'est voulu : **Stad** (quai pavé), **Dumongshaff** et
 **Stauséi** (grève de galets) : leurs roseaux poussent sur la berge.
 
@@ -69,7 +74,8 @@ Sans eau, et c'est voulu : **Stad** (quai pavé), **Dumongshaff** et
 ## 4. Pour d'autres brins
 
 `immerger` ne sait rien des roseaux : tout `Gabarit` qui reçoit un `eau`
-l'aura. Une fougère ou une herbe du pied ne pousse pas dans l'eau ; une
+l'aura. Les iris du Mëllerdall (`iris()` dans le `Peintre`) en sont la preuve :
+une nouvelle sorte de pied n'a qu'à s'ajouter à `Surcadre.Pied` et à `pied()`. Une fougère ou une herbe du pied ne pousse pas dans l'eau ; une
 branche de saule qui trempe pourrait, en lui donnant sa propre ligne.
 
 ## Liste de contrôle
