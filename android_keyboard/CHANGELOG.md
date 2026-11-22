@@ -9,6 +9,13 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [41.1.3] - 2026-11-22
+
+### ✨ Améliorations
+
+- **Le Mëllerdall comme sur la photo** : la carte du Schéissendëmpel retrouve son petit pont de pierre couvert de mousse, ses trois cascades qui tombent d'un même bassin entre deux gros rochers, et son sous-bois sombre où la lumière passe sous l'arche.
+- **Une eau claire et des iris** : le bassin est d'un bleu limpide, et des iris jaunes y ont le pied dans l'eau, qu'on voit par transparence.
+
 ## [41.1.2] - 2026-11-22
 
 ### ✨ Améliorations
