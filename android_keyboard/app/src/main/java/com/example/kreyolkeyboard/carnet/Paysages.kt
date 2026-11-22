@@ -2168,7 +2168,11 @@ object Paysages {
                 // milieu et à droite, le feuillage mangeait le château, qui
                 // est tout le lieu.
                 Lieu.VEIANEN -> Surcadre(Essence.FEUILLU, GAUCHE, Pied.FOUGERES, DROITE, portee = 20f)
-                Lieu.OURDALL -> Surcadre(Essence.SAULE, GAUCHE, Pied.ROSEAUX, GAUCHE)
+                // Ourdall et Haff Réimech : l'eau descend jusqu'au bas de la
+                // carte, les roseaux y sont plantés (voir [eau]). À Stad,
+                // Dumongshaff et au Stauséi, ils sont sur le quai ou la
+                // grève : pas de ligne d'eau.
+                Lieu.OURDALL -> Surcadre(Essence.SAULE, GAUCHE, Pied.ROSEAUX, GAUCHE, eau = 54f)
                 // Les coulisses restent à droite, où il n'y a que de l'eau et
                 // de la forêt : à gauche elles couvraient la grève, qui est
                 // la moitié du lieu. Le saule se retient ([portee]) pour
@@ -2177,7 +2181,7 @@ object Paysages {
                 // pied se voit au travers (propriétaire, 2026-11-22).
                 Lieu.ESCH_SAUER -> Surcadre(Essence.SAULE, DROITE, Pied.ROSEAUX, DROITE, portee = 23f, eau = 54f)
                 Lieu.STAD -> Surcadre(Essence.SAULE, GAUCHE, Pied.ROSEAUX, DROITE)
-                Lieu.HAFF_REIMECH -> Surcadre(Essence.SAULE, GAUCHE, Pied.ROSEAUX, DEUX)
+                Lieu.HAFF_REIMECH -> Surcadre(Essence.SAULE, GAUCHE, Pied.ROSEAUX, DEUX, eau = 54f)
                 Lieu.DUMONGSHAFF -> Surcadre(Essence.SAULE, DROITE, Pied.ROSEAUX, DEUX)
                 Lieu.STAUSEI -> Surcadre(Essence.FEUILLU, GAUCHE, Pied.ROSEAUX, GAUCHE)
                 Lieu.MUSEL -> Surcadre(Essence.VIGNE, DROITE, null, 0, portee = 32f)
