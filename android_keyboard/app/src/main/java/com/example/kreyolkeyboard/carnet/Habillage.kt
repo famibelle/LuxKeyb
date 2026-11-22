@@ -130,6 +130,24 @@ internal object Habillage {
 
     private fun objet(mk: IntArray, i: Int) = (mk[i] ushr 24) > SEUIL_MASQUE
 
+    /**
+     * Les deux rampes de l'automne, de la valeur la plus sombre à la plus
+     * claire, par pas égaux : un pixel de végétation prend la couleur de sa
+     * valeur, rousse ou dorée selon la zone. Tons voisins de ceux des
+     * branches et des herbes d'automne de [Paysages] (`feuilles`, `tonsDuPied`).
+     */
+    private const val RAMPE = 6
+
+    /** L'alpha qu'une pièce d'herbe pose sur le relevé (voir `Peintre.herbe`). */
+    const val HERBE_RELEVE = 0xA0
+    private val ROUX = floatArrayOf(
+        42f, 22f, 14f, 104f, 44f, 22f, 162f, 70f, 30f, 206f, 112f, 42f, 234f, 168f, 72f, 248f, 214f, 140f)
+    private val OR = floatArrayOf(
+        46f, 30f, 14f, 112f, 68f, 24f, 176f, 112f, 36f, 218f, 160f, 52f, 238f, 200f, 92f, 250f, 232f, 160f)
+    /** L'herbe passée des prés, de l'olive sombre à la paille. */
+    private val HERBE = floatArrayOf(
+        40f, 38f, 20f, 92f, 86f, 38f, 146f, 132f, 58f, 186f, 168f, 80f, 214f, 198f, 112f, 238f, 228f, 162f)
+
     /** Les pixels d'un relevé de la végétation, ou `null`. */
     private fun lire(releve: Bitmap?, w: Int, h: Int): IntArray? {
         if (releve == null || releve.width != w || releve.height != h) return null
@@ -229,24 +247,31 @@ internal object Habillage {
             return derniereReponse
         }
         fun vegetal(i: Int): Boolean = if (releve != null) (releve[i] ushr 24) > 127 else vegetalPixel(px[i])
-        val rouille = arrayOf(intArrayOf(214, 118, 38), intArrayOf(186, 64, 36), intArrayOf(230, 176, 58), intArrayOf(160, 92, 40))
+        // L'herbe est posée sur le relevé à mi-opacité ([HERBE_RELEVE]) : elle
+        // reste de la végétation pour toutes les saisons.
+        fun herbeux(i: Int): Boolean = releve != null && (releve[i] ushr 24) < 215
+        // L'automne garde la valeur de chaque pixel et n'en change que la
+        // teinte : l'ombre d'une feuille devient brune, son milieu roux, son
+        // bord au soleil doré. Le dessin (feuilles, bosses, coups de
+        // pinceau) reste donc lisible. L'automne d'avant mélangeait le vert,
+        // à moitié, avec quatre roux tirés par taches de deux unités et
+        // demie, plus larges qu'une feuille et sans rapport avec elle : du
+        // vert, de l'olive, de l'orange et du rouge mêlés, une « tenue de
+        // camouflage » (propriétaire, 2026-11-22, sur la charmille
+        // d'Ansebuerg, puis sur toutes les cartes).
         // Le soir et la nuit, la palette est déjà orange : rouiller d'autant
         // par-dessus donnait un incendie où plus rien ne se lisait (carte
         // `Kuch`, Mëllerdall du soir, jugée en main sur un A21s le
-        // 2026-11-15). La rouille y va donc à force réduite.
-        val forceRouille = if (P.rang >= 2) 0.55f else 1f
-        // Les taches de l'automne mesurent deux unités et demie de la boîte,
-        // quelle que soit la taille du rendu : des blocs de quelques pixels se
-        // lisaient en hachures sur la carte et en confettis sur la vignette.
-        val tache = max(3f, 12f * u)
-        // Les deux bruits de l'automne, tirés une fois par nœud de leur grille
-        // plutôt que quatre fois par pixel : la carte ouverte passait la moitié
-        // de son habillage d'automne à refaire les mêmes tirages (Galaxy A21s,
-        // 2026-10-18). Le résultat est le même au bit près.
+        // 2026-11-15). L'automne y va donc à force réduite.
+        val forceAutomne = when (P.rang) { 0, 1 -> 0.76f; 2 -> 0.58f; else -> 0.5f }
+        // Le roux et l'or se partagent la scène en grands dégradés de vingt
+        // unités, bien plus larges qu'un arbre : tout roux, le coteau
+        // n'était plus qu'un aplat orange. Des zones restées vertes ont été
+        // essayées : de près, elles refaisaient des taches de camouflage.
+        val tache = max(24f, 96f * u)
         val grilleX = ((w - 1) / tache).toInt() + 2
         val grilleY = ((h - 1) / tache).toInt() + 2
         val bruit17 = if (saison == Saison.HIERSCHT) noeuds(grilleX, grilleY, 17) else FloatArray(0)
-        val bruit71 = if (saison == Saison.HIERSCHT) noeuds(grilleX, grilleY, 71) else FloatArray(0)
         // Le printemps et l'automne ne touchent que la végétation : le reste
         // du paysage, ciel compris, se saute sans rien recalculer.
         val vegetationSeule = saison == Saison.FREIJOER || saison == Saison.HIERSCHT
@@ -324,16 +349,31 @@ internal object Habillage {
                         if (alea() < probaFleur) { fleurs.add(x.toFloat()); fleurs.add(y.toFloat()) }
                     }
                     Saison.HIERSCHT -> if (veg) {
-                        val o = rangee0 + colonne0[x]
-                        val fx = colonneF[x]
-                        val n = bruitCase(bruit17, grilleX, o, fx, rangeeF) * 3f
-                        val a = rouille[n.toInt().coerceIn(0, 2)]
-                        val b = rouille[(n.toInt() + 1).coerceIn(0, 3)]
-                        val f = n - n.toInt()
-                        val t = (0.38f + 0.2f * bruitCase(bruit71, grilleX, o, fx, rangeeF)) * forceRouille
-                        rr += (a[0] + (b[0] - a[0]) * f - rr) * t
-                        gg += (a[1] + (b[1] - a[1]) * f - gg) * t
-                        bb += (a[2] + (b[2] - a[2]) * f - bb) * t
+                        val zone = bruitCase(bruit17, grilleX, rangee0 + colonne0[x], colonneF[x], rangeeF)
+                        val dore = lisse(((zone - 0.25f) / 0.5f).coerceIn(0f, 1f))
+                        // L'herbe (prés, pelouses), marquée comme telle par le
+                        // lieu, passe à l'olive et à la paille ; le reste
+                        // (arbres, haies, buissons) roussit. Peints tous deux
+                        // en roux, les prés de Rout Bréck sortaient orange vif
+                        // comme les arbres. La couleur ne peut pas les
+                        // départager : ils partagent le même vert.
+                        val pre = if (herbeux(i)) 1f else 0f
+                        val v = ((0.3f * rr + 0.59f * gg + 0.11f * bb) / 255f).coerceIn(0f, 1f) * (RAMPE - 1)
+                        val k = min(v.toInt(), RAMPE - 2)
+                        val f = v - k
+                        val j = k * 3
+                        for (cnl in 0 until 3) {
+                            val roux = ROUX[j + cnl] + (ROUX[j + 3 + cnl] - ROUX[j + cnl]) * f
+                            val or = OR[j + cnl] + (OR[j + 3 + cnl] - OR[j + cnl]) * f
+                            val herbe = HERBE[j + cnl] + (HERBE[j + 3 + cnl] - HERBE[j + cnl]) * f
+                            val arbre = roux + (or - roux) * dore
+                            val cible = arbre + (herbe - arbre) * pre
+                            when (cnl) {
+                                0 -> rr += (cible - rr) * forceAutomne
+                                1 -> gg += (cible - gg) * forceAutomne
+                                else -> bb += (cible - bb) * forceAutomne
+                            }
+                        }
                     }
                     else -> {}
                 }

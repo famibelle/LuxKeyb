@@ -2149,6 +2149,8 @@ object Paysages {
 
     /** Ce qui n'est pas de la végétation efface le relevé : voir [Peintre.relever]. */
     private val EFFACER = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+    /** Pose l'herbe sur le relevé à sa propre opacité, même sur un arbre déjà relevé. */
+    private val REMPLACER = PorterDuffXfermode(PorterDuff.Mode.SRC)
 
     /**
      * La gouache est un peu mince : 84 % d'opacité, le kraft transparaît
@@ -2491,14 +2493,54 @@ object Paysages {
             try { dessin() } finally { mineraux-- }
         }
 
+        /**
+         * Peint [dessin] en herbe : un pré, une pelouse, un talus. C'est de la
+         * végétation pour toutes les saisons, mais l'automne la fait passer
+         * à l'olive et à la paille au lieu de la roussir comme un arbre
+         * ([Habillage]). Le pré et l'arbre ont le même vert : seul le lieu
+         * sait lequel est lequel.
+         */
+        fun herbe(dessin: () -> Unit) {
+            herbes++
+            try { dessin() } finally { herbes-- }
+        }
+        private var herbes = 0
+
+        /**
+         * Peint [dessin] en feuillage persistant : épicéa, if, cyprès, buis.
+         * L'automne, il garde son vert ([mineral]) ; les autres saisons, il
+         * reste à [Habillage] comme avant.
+         */
+        fun persistant(dessin: () -> Unit) = if (saison == Saison.HIERSCHT) mineral(dessin) else dessin()
+
+        /**
+         * Vrai pour un vert franc, qui tire nettement plus vers le vert que
+         * vers le rouge et le bleu. L'automne seulement, en plus de
+         * [Habillage.vegetal] : les verts de [vert] et de [nappe] sont tirés
+         * vers [VERDURE], et l'après-midi et le soir ils sortent des segments
+         * de la palette de l'heure. Ces prés et ces buissons restaient d'un
+         * vert d'été à côté d'arbres roux (Ansebuerg, Rout Bréck, Veianen,
+         * Musel, revue du 2026-11-22). Hors automne, la règle ne change pas,
+         * et les fleurs du printemps et la neige de l'hiver non plus.
+         */
+        private fun verdure(col: Int): Boolean {
+            val r = (col shr 16) and 0xFF; val g = (col shr 8) and 0xFF; val b = col and 0xFF
+            return g > 40 && g * 100 > r * 108 && g * 100 > b * 115
+        }
+
         /** Pose sur le [releve] une pièce de couleur [col], tracée par [trace]. */
         private fun relever(col: Int, o: Float, trace: (Canvas, Paint) -> Unit) {
             val r = releve ?: return
             if (o < 0.95f || !actif) return
-            val vegetal = mineraux == 0 && vegetaux.getOrPut(col) { Habillage.vegetal(col, P) }
+            val vegetal = mineraux == 0 && vegetaux.getOrPut(col) {
+                Habillage.vegetal(col, P) || (saison == Saison.HIERSCHT && verdure(col))
+            }
             releveP.style = Paint.Style.FILL
-            releveP.xfermode = if (vegetal) null else EFFACER
-            releveP.color = 0xFFFFFFFF.toInt()
+            // L'herbe n'est marquée qu'à l'automne : les autres saisons
+            // gardent le relevé d'avant, au pixel près.
+            val pre = vegetal && herbes > 0 && saison == Saison.HIERSCHT
+            releveP.xfermode = if (pre) REMPLACER else if (vegetal) null else EFFACER
+            releveP.color = if (pre) (Habillage.HERBE_RELEVE shl 24) or 0xFFFFFF else 0xFFFFFFFF.toInt()
             trace(r, releveP)
         }
 
@@ -5595,8 +5637,9 @@ object Paysages {
                 }
             }
             // ---- La mousse qui recouvre le pont. Peinte hors de [mineral],
-            // pour que les saisons la trouvent : c'est de la végétation.
-            run {
+            // pour que les saisons la trouvent : c'est de la végétation. Et
+            // en [herbe] : la mousse ne roussit pas l'automne, elle passe.
+            herbe {
                 // La coiffe du couronnement, épaisse et festonnée, qui
                 // déborde du parapet.
                 // Elle court par plaques, interrompue : une bande verte
@@ -5683,7 +5726,7 @@ object Paysages {
             for (d in arrayOf("M103 -3L84.4 -3L83.6 2.8L92 1.2L103 2.2Z",
                     "M103 16L88.6 15L79.6 17L80.4 20L88 18L103 19Z",
                     "M103 29L87.6 28L78.4 31L79.2 34L87 31.6L103 32.6Z"))
-                pieceD(d, mousseClaire, 0.3f)
+                herbe { pieceD(d, mousseClaire, 0.3f) }
             plan(2)
             solNaturel(SolNaturel.BERGE)  // les galets du bord, au premier plan
             poser(DEVANT)
@@ -6251,7 +6294,11 @@ object Paysages {
             }
             fun bord(x: Float) = haut + (x + 2f) * pente
             val sol = Path().apply { moveTo(-2f, BAS + 2f); lineTo(-2f, bord(-2f)); lineTo(102f, bord(102f)); lineTo(102f, BAS + 2f); close() }
-            if (sorte == SolNaturel.TERRE || sorte == SolNaturel.BERGE) mineral { piece(sol, base, 0.3f) } else piece(sol, base, 0.3f)
+            when (sorte) {
+                SolNaturel.TERRE, SolNaturel.BERGE -> mineral { piece(sol, base, 0.3f) }
+                SolNaturel.HERBE -> herbe { piece(sol, base, 0.3f) }
+                SolNaturel.MOUSSE -> piece(sol, base, 0.3f)
+            }
             enPerspective(-2f, haut, pente) {
                 // Une ligne d'éléments par rang ; [t] de 0 (au fond) à 1 (devant).
                 fun rangs(pas0: Float, bloc: (x: Float, y: Float, t: Float) -> Unit) {
@@ -6447,7 +6494,7 @@ object Paysages {
             // La pelouse de la rive, rayée par la tonte : un aplat vert la
             // faisait lire comme du feutre de table.
             val pelouse = nappe(P.milieu, 0.7f)
-            pieceD("M-2 66L-2 46L102 46L102 66Z", pelouse, 0.5f)
+            herbe { pieceD("M-2 66L-2 46L102 46L102 66Z", pelouse, 0.5f) }
             var py = 46.6f
             var bande = true
             while (py < 58f) {
@@ -7789,8 +7836,10 @@ object Paysages {
                 touffe(if (k % 3 == 0) mix(mousse, clair, 0.35f) else mousse,
                     mx, 3f + r() * 4f, 1.2f + r() * 1.4f, mx + 1.8f, 2f + r() * 4f, 1f + r() * 1.2f)
             }
-            touffe(mousse, 85f, 43.8f, 2.2f, 91f, 42.8f, 2.6f, 97f, 44f, 2.2f)
-            touffe(mousse, 0f, 49f, 1.8f, 5f, 48.4f, 1.6f)
+            herbe {
+                touffe(mousse, 85f, 43.8f, 2.2f, 91f, 42.8f, 2.6f, 97f, 44f, 2.2f)
+                touffe(mousse, 0f, 49f, 1.8f, 5f, 48.4f, 1.6f)
+            }
             if (P.nuit) {
                 // La nuit, le dehors est la seule lumière : la lune pose une
                 // flaque claire sur le sable au droit de l'ouverture. Sans
@@ -7871,7 +7920,9 @@ object Paysages {
                     ligne(f.x(-14f), f.y(-14f) - 1.4f, f.x(fin + 8f), f.y(fin + 8f) - 1.4f * f.echelle(fin + 8f), terrasse, 0.4f)
                 }
             }
-            for (x in floatArrayOf(12f, 88f)) {
+            // Deux ifs taillés en fuseau : persistants, ils restent verts à
+            // l'automne.
+            for (x in floatArrayOf(12f, 88f)) persistant {
                 pieceD("M$x 40L${x - 1.6f} 34C${x - 1.4f} 30 ${x - 0.4f} 27 $x 26C${x + 0.4f} 27 ${x + 1.4f} 30 ${x + 1.6f} 34Z", vert(0.15f))
             }
             touffe(vert(0.4f), 4f, 30f, 4f, 96f, 30f, 4f)
@@ -8514,18 +8565,18 @@ object Paysages {
             // pied de la paroi et passe sous le caillebotis.
             val mousse = nappe(duJour(0xFF7FA83C.toInt()), 0.5f, VERT_CALME)
             val mousseClaire = mix(mousse, duJour(0xFFD6EE78.toInt()), if (P.nuit) 0.08f else 0.3f)
-            lisiere(-2f, 102f, { x -> 46f - x * 0.07f }, 2.2f, 3.6f, 228, mousse)
+            herbe { lisiere(-2f, 102f, { x -> 46f - x * 0.07f }, 2.2f, 3.6f, 228, mousse) }
             for (k in 0 until 9) {
                 val mx = -2f + r() * 104f
                 val my = 44f + r() * 13f
-                touffe(mousseClaire, mx, my, 1.3f + r() * 1.2f,
-                    mx + 2.2f, my + 0.5f, 1f + r() * 1f, mx + 4.2f, my - 0.2f, 0.8f + r() * 0.9f)
+                val ta = 1.3f + r() * 1.2f; val tb = 1f + r() * 1f; val tc = 0.8f + r() * 0.9f
+                herbe { touffe(mousseClaire, mx, my, ta, mx + 2.2f, my + 0.5f, tb, mx + 4.2f, my - 0.2f, tc) }
             }
             // Un bloc tombé au bord du chemin, dans la colonne de droite.
             val gres = neutre(duJour(0xFFB3A78C.toInt()))
             val creux = sombre(gres, 0.42f)
             mineral { pieceD("M90 46C91.4 41.6 96 39.6 100 40.4C103 41 104.6 43 105 46Z", mix(gres, 0xFFFFFFFF.toInt(), 0.1f)) }
-            touffe(mousseClaire, 92f, 40.6f, 1.4f, 97f, 39.6f, 1.6f, 102f, 41f, 1.2f)
+            herbe { touffe(mousseClaire, 92f, 40.6f, 1.4f, 97f, 39.6f, 1.6f, 102f, 41f, 1.2f) }
             // ---- La paroi de grès, en trois découpes étagées : la paroi du
             // fond, la corniche qui avance par-dessus, le gros banc qui bombe
             // au pied. D'un seul tenant, litée ou non, elle se lirait comme
@@ -8570,9 +8621,9 @@ object Paysages {
                     val cy = y0 + u * 3.4f
                     t.addOval(cx - 2.6f, cy - 0.6f - r() * 0.5f, cx + 2.6f, cy + 0.7f + r() * 0.6f, Path.Direction.CW)
                 }
-                piece(t, mousse)
+                herbe { piece(t, mousse) }
             }
-            pieceD("M-4 -3L24 -3C22.6 3.6 15 7.6 6 8C0 8.2 -2 7 -4 6Z", mousse, 0.3f)
+            herbe { pieceD("M-4 -3L24 -3C22.6 3.6 15 7.6 6 8C0 8.2 -2 7 -4 6Z", mousse, 0.3f) }
             // ---- Le caillebotis. Il entre par le bas de la colonne de
             // droite, bombe vers le bord, puis repart dans la forêt : c'est
             // ce coup de reins qui le fait vivre, un ruban droit ne dirait
@@ -8703,7 +8754,7 @@ object Paysages {
             val talus = sombre(vert(0.58f), 0.12f)
             val rive = chemin("M104 68L104 61.4C92 59.6 80 54 70 45C65 40.4 61 36.4 57.6 33.6" +
                 "C54.6 38.6 52.4 44.6 50.4 50.6C48.8 55.6 47 61.4 46 68Z")
-            piece(rive, sombre(talus, 0.14f))
+            herbe { piece(rive, sombre(talus, 0.14f)) }
             // Le bord de l'eau, mouillé : il casse la diagonale, qui sans lui
             // se lit comme un mur jeté en travers du lac.
             forme("M57.6 33.6C61 36.4 65 40.4 70 45C80 54 92 59.6 104 61.4L104 63.6C90 62 78 56.4 68 47.4C63 43 59 39 56.6 36.4Z",
@@ -8714,9 +8765,12 @@ object Paysages {
                 val bx = 54f + r() * 52f
                 val by = 38f + r() * 28f
                 val t = r()
-                touffe(if (t < 0.34f) mix(talus, duJour(0xFFDCEE8E.toInt()), 0.3f)
-                       else if (t < 0.72f) vert(0.66f) else sombre(talus, 0.3f),
-                    bx, by, 1.2f + r() * 1.8f, bx + 2.2f, by + 1f, 1f + r() * 1.5f)
+                val ta = 1.2f + r() * 1.8f; val tb = 1f + r() * 1.5f
+                herbe {
+                    touffe(if (t < 0.34f) mix(talus, duJour(0xFFDCEE8E.toInt()), 0.3f)
+                           else if (t < 0.72f) vert(0.66f) else sombre(talus, 0.3f),
+                        bx, by, ta, bx + 2.2f, by + 1f, tb)
+                }
             }
             releve?.restore(); c.restore()
             fun hautGarde(u: Float) = 10f - 7f * u
@@ -9132,7 +9186,7 @@ object Paysages {
             }
             foret.lineTo(103f, f.y(fin) - 2f)
             foret.lineTo(103f, BAS + 2f); foret.close()
-            piece(foret, epiceas)
+            persistant { piece(foret, epiceas) }
             // Deux ou trois arbres de devant, un peu plus clairs : sans écart
             // de valeur, la masse reste un aplat découpé en dents de scie.
             for (k in 0 until 9) {
@@ -9141,20 +9195,22 @@ object Paysages {
                 val h = (7f + r() * 5f) * e
                 val l = (2f + r() * 1.2f) * e
                 val tx = f.x(uu); val ty = f.y(uu) + 1.6f * e
-                pieceD("M${tx - l} $ty L${tx - l * 0.45f} ${ty - h * 0.42f}L${tx - l * 0.72f} ${ty - h * 0.4f}" +
-                    "L${tx - l * 0.3f} ${ty - h * 0.74f}L${tx - l * 0.5f} ${ty - h * 0.72f}L$tx ${ty - h}" +
-                    "L${tx + l * 0.5f} ${ty - h * 0.72f}L${tx + l * 0.3f} ${ty - h * 0.74f}" +
-                    "L${tx + l * 0.72f} ${ty - h * 0.4f}L${tx + l * 0.45f} ${ty - h * 0.42f}L${tx + l} ${ty}Z",
-                    if (k % 3 == 0) mix(epiceas, duJour(0xFF5E8A46.toInt()), 0.26f) else sombre(epiceas, 0.2f), 0.5f)
+                persistant {
+                    pieceD("M${tx - l} $ty L${tx - l * 0.45f} ${ty - h * 0.42f}L${tx - l * 0.72f} ${ty - h * 0.4f}" +
+                        "L${tx - l * 0.3f} ${ty - h * 0.74f}L${tx - l * 0.5f} ${ty - h * 0.72f}L$tx ${ty - h}" +
+                        "L${tx + l * 0.5f} ${ty - h * 0.72f}L${tx + l * 0.3f} ${ty - h * 0.74f}" +
+                        "L${tx + l * 0.72f} ${ty - h * 0.4f}L${tx + l * 0.45f} ${ty - h * 0.42f}L${tx + l} ${ty}Z",
+                        if (k % 3 == 0) mix(epiceas, duJour(0xFF5E8A46.toInt()), 0.26f) else sombre(epiceas, 0.2f), 0.5f)
+                }
             }
             plan(1)
             // ---- La prairie, son bord le long de la lisière.
-            piece(Path().apply {
+            herbe { piece(Path().apply {
                 moveTo(-2f, 66f); lineTo(-2f, f.y(-4f) + 6.5f)
                 var v = 0f
                 while (v <= fin) { lineTo(f.x(v), f.y(v) + 6.5f * f.echelle(v)); v += 8f }
                 lineTo(102f, f.y(fin) + 1f); lineTo(102f, 66f); close()
-            }, mix(mix(vert(0.78f), duJour(0xFF57A33E.toInt()), 0.3f), P.loin, 0.1f), 0.4f)
+            }, mix(mix(vert(0.78f), duJour(0xFF57A33E.toInt()), 0.3f), P.loin, 0.1f), 0.4f) }
             // L'ombre que la lisière porte sur le pré : un pré qui vient
             // buter contre un mur noir sans transition se lit comme un
             // découpage collé.
@@ -9191,7 +9247,7 @@ object Paysages {
             // Le pré du devant. Sa lèvre est douce (0,2) et l'herbe haute
             // l'enjambe : à pleine ombre, sa tranche de kraft faisait une
             // marche en travers du pré.
-            pieceD("M-2 66L-2 47C30 44.5 70 41.5 102 40L102 66Z", vert(0.7f), 0.2f)
+            herbe { pieceD("M-2 66L-2 47C30 44.5 70 41.5 102 40L102 66Z", vert(0.7f), 0.2f) }
             // L'herbe du devant est haute : des touffes dressées, de deux
             // valeurs, de plus en plus drues en approchant. Sans elles, le
             // pré est une moquette et la clôture est plantée dans du feutre.
