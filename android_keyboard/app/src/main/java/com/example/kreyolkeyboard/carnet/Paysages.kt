@@ -639,7 +639,10 @@ object Paysages {
      */
     private class Gabarit(
         val plan: Int, val droite: Boolean, val sorte: Brin.Sorte, val boite: RectF,
-        val px: Float, val py: Float, val phase: Float, val dessin: Peintre.() -> Unit
+        val px: Float, val py: Float, val phase: Float,
+        /** La ligne de flottaison dans la fenêtre, quand le brin pousse dans une eau claire : voir [immerger]. */
+        val eau: Float? = null,
+        val dessin: Peintre.() -> Unit
     )
 
     private fun gabarits(lieu: Lieu, saison: Saison?): List<Gabarit> {
@@ -655,14 +658,17 @@ object Paysages {
             if (pied != null && s.piedCotes and cote != 0) {
                 // Le second rang, à demi-taille, planté dans la rainure du proche.
                 val base = DEVANT + 0.6f
+                // Le second rang est dessiné à demi-taille, remonté : sa ligne
+                // d'eau aussi, ce qui la place un peu plus haut, plus loin.
+                val eauLoin = s.eau?.let { base - PIED_HORS_CHAMP * 0.5f + it * 0.5f }
                 g += Gabarit(4, droite, Brin.Sorte.PIED, boite(9f, 36.5f, 26.5f, base + 1.5f), x(15f), base,
-                    graine * 1.3f + 0.9f) {
+                    graine * 1.3f + 0.9f, eauLoin) {
                     c.translate(12.5f, base - PIED_HORS_CHAMP * 0.5f)
                     c.scale(0.5f, 0.5f)
                     pied(pied, saison, graine + 10, lointain = true)
                 }
                 g += Gabarit(5, droite, Brin.Sorte.PIED, boite(-6f, 23f, 27f, PIED_HORS_CHAMP + 1f), x(5f),
-                    PIED_HORS_CHAMP, graine * 1.3f) { pied(pied, saison, graine, lointain = false) }
+                    PIED_HORS_CHAMP, graine * 1.3f, s.eau) { pied(pied, saison, graine, lointain = false) }
             }
             val haut = s.haut
             if (haut != null && s.hautCotes and cote != 0) {
@@ -703,7 +709,44 @@ object Paysages {
         forme.recycle()
         Grain.poser(b)
         raviver(b)
+        g.eau?.let { immerger(b, ombre, (it - g.boite.top) * k, k, heure) }
         return b to ombre
+    }
+
+    /**
+     * Le pied d'un brin planté dans une eau claire, sous la ligne de
+     * flottaison [y] (en pixels du brin) : il prend un peu de la couleur de
+     * l'eau, perd de plus en plus d'opacité en descendant, et l'eau se voit
+     * au travers ; son ombre portée disparaît presque. Un filet clair marque
+     * la surface là où les tiges la percent. Peints pleins jusqu'en bas, les
+     * roseaux d'Esch-Sauer se lisaient posés sur l'eau, pas dedans
+     * (propriétaire, 2026-11-22).
+     *
+     * Posé **après** le kraft et l'ombre, et pas dans le dessin : la tranche
+     * de kraft est peinte derrière la silhouette (DST_OVER), et elle
+     * rebouchait tout ce que le dessin avait rendu transparent.
+     */
+    private fun immerger(b: Bitmap, ombre: Bitmap, y: Float, k: Float, heure: Heure) {
+        val c = Canvas(b)
+        val bas = b.height.toFloat()
+        if (y >= bas) return
+        val p = Paint()
+        p.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP)
+        p.color = heure.cielBas and 0x00FFFFFF or (0x55 shl 24)
+        c.drawRect(0f, y, b.width.toFloat(), bas, p)
+        p.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
+        p.color = 0xFF000000.toInt()  // l'alpha du pinceau multiplie celui du dégradé
+        // L'eau mange le pied à mesure qu'il descend : il a disparu sept
+        // unités sous la surface, avant que la gerbe ne se resserre en bloc
+        // et avant le bas de la boîte du second rang, qui le couperait net.
+        p.shader = LinearGradient(0f, y, 0f, y + 7f * k, 0x70000000, 0xFF000000.toInt(), Shader.TileMode.CLAMP)
+        c.drawRect(0f, y, b.width.toFloat(), bas, p)
+        p.shader = null
+        p.color = 0xE6000000.toInt()
+        Canvas(ombre).drawRect(0f, y, ombre.width.toFloat(), bas, p)
+        p.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP)
+        p.color = Heure.melange(heure.cielBas, 0xFFFFFFFF.toInt(), if (heure.nuit) 0.25f else 0.6f) and 0x00FFFFFF or (0x70 shl 24)
+        c.drawRect(0f, y - 0.12f * k, b.width.toFloat(), y + 0.18f * k, p)
     }
 
     /**
@@ -2099,7 +2142,14 @@ object Paysages {
         val haut: Essence?, val hautCotes: Int,
         val pied: Pied?, val piedCotes: Int,
         /** Jusqu'où la branche avance vers le milieu, en unités : moins là où un sujet tient le haut. */
-        val portee: Float = 30f
+        val portee: Float = 30f,
+        /**
+         * La ligne de flottaison des roseaux, quand ils poussent dans l'eau :
+         * la hauteur de la surface sur le rang de devant, en unités de la
+         * fenêtre. Le second rang, à demi-taille, la reçoit à la même hauteur
+         * dans son propre dessin, ce qui la remonte d'autant en perspective.
+         */
+        val eau: Float? = null
     ) {
         enum class Essence { FEUILLU, SAULE, BOULEAU, VIGNE }
         enum class Pied { ROSEAUX, FOUGERES, HERBES, LINAIGRETTES, FLEURS }
@@ -2123,7 +2173,9 @@ object Paysages {
                 // de la forêt : à gauche elles couvraient la grève, qui est
                 // la moitié du lieu. Le saule se retient ([portee]) pour
                 // laisser voir la tonnelle du ponton.
-                Lieu.ESCH_SAUER -> Surcadre(Essence.SAULE, DROITE, Pied.ROSEAUX, DROITE, portee = 23f)
+                // Les roseaux sont dans le lac, et son eau est claire : leur
+                // pied se voit au travers (propriétaire, 2026-11-22).
+                Lieu.ESCH_SAUER -> Surcadre(Essence.SAULE, DROITE, Pied.ROSEAUX, DROITE, portee = 23f, eau = 54f)
                 Lieu.STAD -> Surcadre(Essence.SAULE, GAUCHE, Pied.ROSEAUX, DROITE)
                 Lieu.HAFF_REIMECH -> Surcadre(Essence.SAULE, GAUCHE, Pied.ROSEAUX, DEUX)
                 Lieu.DUMONGSHAFF -> Surcadre(Essence.SAULE, DROITE, Pied.ROSEAUX, DEUX)
