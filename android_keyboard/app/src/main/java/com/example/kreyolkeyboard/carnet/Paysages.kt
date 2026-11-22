@@ -7878,7 +7878,43 @@ object Paysages {
             // La pelouse, qui part du pied de la terrasse et fuit avec elle.
             val pente = (bord[5] - bord[7]) / (bord[4] - bord[6])
             fun pied(x: Float) = bord[7] + (x - bord[6]) * pente - 0.4f
-            pieceD("M-2 66L-2 ${pied(-2f)}L102 ${pied(102f)}L102 66Z", nappe(duJour(0xFFA9C566.toInt()), 0.5f), 0.4f)
+            val gazon = "M-2 66L-2 ${pied(-2f)}L102 ${pied(102f)}L102 66Z"
+            if (saison != Saison.HIERSCHT) pieceD(gazon, nappe(duJour(0xFFA9C566.toInt()), 0.5f), 0.4f)
+            else {
+                // L'automne, la pelouse est peinte comme la charmille : une
+                // herbe jaunie, et les feuilles tombées de la haie, plus
+                // serrées à son pied. La rouille de [Habillage] y faisait
+                // les mêmes taches de camouflage (le matin et la nuit), et
+                // l'après-midi et le soir, où l'herbe sort de la palette
+                // des collines, elle restait d'un vert d'été à côté d'une
+                // haie rousse (propriétaire, 2026-11-22).
+                // Un vert passé, tiré vers le gris : pur, l'heure le
+                // rendait acide le matin.
+                val herbe = duJour(0xFF9E9C5E.toInt()).let { mix(it, neutre(it), 0.3f) }
+                mineral { pieceD(gazon, herbe, 0.4f) }
+                val tombees = arrayOf(Path(), Path(), Path())
+                val ombres = Path()
+                val r2 = Alea(733)
+                repeat(200) {
+                    // Six sur dix au pied des massifs, le reste semé partout.
+                    val x = when {
+                        r2() < 0.6f -> if (r2() < 0.5f) 14f + r2() * 14f else 72f + r2() * 14f
+                        else -> 10f + r2() * 80f
+                    }
+                    val haut = pied(x) + 0.6f
+                    val y = haut + r2() * (DEVANT + 0.5f - haut)
+                    // La perspective : plus petites vers le fond.
+                    val e = 0.55f + 0.6f * ((y - haut) / (DEVANT - haut)).coerceIn(0f, 1f)
+                    val a = r2() * 2f * PI.toFloat()
+                    val l = (1.5f + r2() * 0.8f) * e
+                    tombees[(r2() * 3f).toInt().coerceAtMost(2)].addPath(amande(x, y, l, l * 0.24f, a))
+                    ombres.addPath(amande(x + 0.15f * e, y + 0.22f * e, l, l * 0.24f, a))
+                }
+                forme(ombres, sombre(herbe, 0.45f), 0.45f)
+                forme(tombees[0], duJour(0xFFC0702A.toInt()), 0.92f)
+                forme(tombees[1], duJour(0xFFD29A38.toInt()), 0.92f)
+                forme(tombees[2], duJour(0xFF8E4A22.toInt()), 0.92f)
+            }
             plan(2)
             solDePierre(SolDePierre.GRAVIER, DEVANT)  // l'allée du jardin
             poser(DEVANT)
