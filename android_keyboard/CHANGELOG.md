@@ -9,6 +9,18 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [41.1.2] - 2026-11-22
+
+### ✨ Améliorations
+
+- **Un automne doré sur toutes les cartes** : les arbres roussissent du brun à l'or en gardant leurs feuilles bien dessinées, de jour comme de nuit, au lieu de taches vertes et orange mêlées. Les prés et les mousses passent à la paille, et les sapins restent verts.
+- **Le château d'Ansembourg en détail** : sa haie de charmille est faite de vraies feuilles, qui roussissent une à une à l'automne et sèment des feuilles mortes sur la pelouse. Ses deux lions de bronze, assis face à face de part et d'autre de l'escalier, lèvent la tête, la crinière sur le crâne.
+- **Des roseaux dans l'eau claire** : au lac de la Haute-Sûre, à l'Our et au Haff Réimech, on voit le pied des roseaux sous la surface de l'eau.
+
+### 🐛 Corrections
+
+- **Les maisons de la Gëlle Fra** sont bien posées au sol, elles ne flottent plus.
+
 ## [41.1.1] - 2026-11-22
 
 ### ✨ Améliorations
