@@ -211,7 +211,10 @@ def lire_categories(xml_articles, verbeux=True):
 
 
 def _phrase(texte):
-    """Recompose la phrase d'un `<example>`, mot à mot.
+    """Recompose la phrase d'un `<example>`, et dit où est son mot vedette.
+
+    Rend `(phrase, vedettes)`, `vedettes` étant les couples `[début, fin]` du
+    mot illustré dans la phrase recollée.
 
     Le LOD ne stocke pas de phrase : il stocke la suite de ses mots, le mot
     vedette étant balisé à part (`<inflectedHeadword>`) pour que le site le
@@ -222,8 +225,17 @@ def _phrase(texte):
       seule dans le fichier — sans quoi « an d' Ae gekuckt » ;
     - pas d'espace avant une ponctuation isolée, le fichier écrivant tantôt
       « midd, » d'un bloc, tantôt « ! » à part.
+
+    **Les positions sont embarquées parce que la famille ne suffit pas.** La
+    fiche et la carte mettaient en gras les formes de la famille du mot, et
+    8,5 % des 38 360 phrases n'en employaient aucune : l'article « Ae » est
+    illustré par « mir ass eng Méck an d'A geflunn », et le LOD rattache cette
+    graphie-là à un autre article. Le mot vedette, lui, est désigné par la
+    source, sans la moindre heuristique. Même règle de recollage que
+    `lod_source._recoller`, qui calcule les mêmes positions pour la mesure des
+    exemples : les deux doivent rester d'accord.
     """
-    morceaux = []
+    morceaux, vedettes, longueur = [], [], 0
     for enfant in texte:
         if enfant.tag == "attribute":
             continue
@@ -233,12 +245,16 @@ def _phrase(texte):
         if morceaux and not morceaux[-1].endswith(("'", "\u2019")) \
                 and mot[0] not in ",.!?;:)»…":
             morceaux.append(" ")
+            longueur += 1
+        if enfant.tag == "inflectedHeadword":
+            vedettes.append([longueur, longueur + len(mot)])
         morceaux.append(mot)
-    return "".join(morceaux)
+        longueur += len(mot)
+    return "".join(morceaux), vedettes
 
 
 def lire_exemples(xml_articles, traduction_de=None, verbeux=True):
-    """id d'article → [(phrase, traduction ou None)], dans l'ordre des acceptions.
+    """id d'article → [(phrase, traduction ou None, vedettes)], par acception.
 
     Le LOD porte 58 962 phrases d'exemple, écrites par le ZLS pour illustrer
     l'emploi de chaque mot : c'est ce qu'une glose ne donne jamais. « Haus =
@@ -295,17 +311,17 @@ def lire_exemples(xml_articles, traduction_de=None, verbeux=True):
                            if e.tag == "attribute"}
                 if marques & MARQUES_ECARTEES:
                     continue
-                phrase = _phrase(texte)
+                phrase, vedettes = _phrase(texte)
                 if LONGUEUR_MIN_EXEMPLE <= len(phrase) <= LONGUEUR_MAX_EXEMPLE:
-                    phrases.append((rang, phrase))
+                    phrases.append((rang, phrase, vedettes))
 
         affiches = set(sorted(rangs_gloses)[:MAX_GLOSES])
         premier_sens = min(affiches) if affiches else None
         candidates = []
-        for rang, phrase in sorted(phrases, key=lambda p: p[0]):
-            if all(phrase != p for _, p, _ in candidates):
+        for rang, phrase, vedettes in sorted(phrases, key=lambda p: p[0]):
+            if all(phrase != p for _, p, _, _ in candidates):
                 traduction = traduction_de.get(cle_de_comparaison(phrase))
-                candidates.append((rang, phrase, traduction))
+                candidates.append((rang, phrase, traduction, vedettes))
         # Seule une phrase traduite du PREMIER sens passe devant. Promouvoir
         # celles de tous les sens affichés a été essayé et rejeté : « Hond »
         # s'illustrait par « dee falschen Hond » (voyou), « Zuch » par une
@@ -313,8 +329,8 @@ def lire_exemples(xml_articles, traduction_de=None, verbeux=True):
         # la première phrase, elle doit illustrer le sens premier.
         # Tri stable : l'ordre des acceptions tient à l'intérieur de chaque groupe.
         candidates.sort(key=lambda c: 0 if c[2] and c[0] == premier_sens else 1)
-        retenues = [(phrase, traduction if rang in affiches else None)
-                    for rang, phrase, traduction in candidates[:MAX_EXEMPLES]]
+        retenues = [(phrase, traduction if rang in affiches else None, vedettes)
+                    for rang, phrase, traduction, vedettes in candidates[:MAX_EXEMPLES]]
         if identifiant and retenues:
             par_article[identifiant] = retenues
         entree.clear()
@@ -681,19 +697,33 @@ def main():
     # phrases garde ainsi exactement la forme que ses lecteurs attendent.
     exemples = OrderedDict()
     traductions_exemples = OrderedDict()
+    vedettes_exemples = OrderedDict()
     for identifiant, representant in representant_de_article.items():
         paires = exemples_par_article.get(identifiant)
         if paires and representant not in exemples:
-            exemples[representant] = [phrase for phrase, _ in paires]
-            if any(traduction for _, traduction in paires):
+            exemples[representant] = [phrase for phrase, _, _ in paires]
+            if any(traduction for _, traduction, _ in paires):
                 traductions_exemples[representant] = [
-                    traduction or "" for _, traduction in paires]
+                    traduction or "" for _, traduction, _ in paires]
+            # Le mot illustré, tel que le LOD le balise. Aligné phrase par
+            # phrase comme les traductions ; une phrase sans vedette garde un
+            # tableau vide, pour que les rangs ne se décalent jamais.
+            if any(vedettes for _, _, vedettes in paires):
+                vedettes_exemples[representant] = [
+                    vedettes for _, _, vedettes in paires]
     couverture = 100 * len(exemples) / max(1, len(representant_de_article))
     print(f"   💬 {len(exemples)} mots illustrés d'au moins une phrase "
           f"({couverture:.1f} % des articles atteints)")
     part_traduits = 100 * len(traductions_exemples) / max(1, len(exemples))
     print(f"   🇫🇷 {len(traductions_exemples)} mots dont un exemple est traduit "
           f"par le ZLS ({part_traduits:.1f} % des mots illustrés)")
+    phrases_total = sum(len(p) for p in exemples.values())
+    phrases_vedettes = sum(1 for mot, p in exemples.items()
+                           for rang in range(len(p))
+                           if vedettes_exemples.get(mot, [])[rang:rang + 1]
+                           and vedettes_exemples[mot][rang])
+    print(f"   🔎 {phrases_vedettes} phrases sur {phrases_total} désignent "
+          f"leur mot illustré ({100 * phrases_vedettes / max(1, phrases_total):.1f} %)")
 
     # L'identifiant d'article du LOD, pour le bouton « Voir sur le
     # dictionnaire officiel ». Il faut l'embarquer parce que lod.lu ne peut
@@ -724,6 +754,11 @@ def main():
     print(f"   🏷️ {len(categories)} mots affichés portent une catégorie")
 
     if arguments.strict:
+        if len(vedettes_exemples) < 20000:
+            print(f"❌ --strict : seulement {len(vedettes_exemples)} mots dont "
+                  "les phrases désignent leur mot illustré, le gras de la "
+                  "fiche et de la carte retomberait sur la famille")
+            return 1
         if len(categories) < 20000:
             print(f"❌ --strict : seulement {len(categories)} mots catégorisés, "
                   "les cartes perdraient leur catégorie")
@@ -817,6 +852,8 @@ def main():
                               "d'Lëtzebuergescht (ZLS), CC0-1.0",
         "traductions_count": len(traductions_exemples),
         "traductions": traductions_exemples,
+        "vedettes_count": len(vedettes_exemples),
+        "vedettes": vedettes_exemples,
     }
     sauvegarder_precedent(CHEMIN_EXEMPLES)
     CHEMIN_EXEMPLES.write_text(

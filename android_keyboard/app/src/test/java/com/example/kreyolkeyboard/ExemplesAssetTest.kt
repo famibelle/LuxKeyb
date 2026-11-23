@@ -164,6 +164,71 @@ class ExemplesAssetTest {
     }
 
     /**
+     * Les bornes du mot illustré, celles que la fiche et la carte mettent en
+     * gras (`<inflectedHeadword>` du LOD).
+     *
+     * Deux manières de les perdre sans rien casser : un décalage d'un
+     * caractère à la recomposition de la phrase, et le gras se poserait à
+     * côté du mot ; un rang qui glisse, et la phrase 2 porterait les bornes
+     * de la phrase 1. Les deux donnent du gras sur une syllabe au hasard,
+     * personne ne lève d'exception, et aucun autre test ne le verrait.
+     *
+     * Le repli est volontairement permis : une phrase sans bornes retombe sur
+     * la reconnaissance des formes de la famille. Ce qui ne l'est pas, c'est
+     * une borne qui ne tombe pas sur un mot entier de la phrase.
+     */
+    @Test
+    fun lesVedettesDesignentUnMotEntierDeLeurPhrase() {
+        val racine = JSONObject(File("src/main/assets/luxemburgish_exemples.json").readText())
+        val exemples = racine.getJSONObject("exemples")
+        val vedettes = racine.optJSONObject("vedettes")
+        assertTrue(
+            "luxemburgish_exemples.json ne porte plus de vedettes : le gras " +
+                "de la fiche et de la carte retomberait sur la famille",
+            vedettes != null
+        )
+        assertTrue(
+            "Seulement ${vedettes!!.length()} mots dont une phrase désigne son " +
+                "mot illustré, sur ${exemples.length()} illustrés",
+            vedettes.length() >= 20_000
+        )
+
+        val cles = vedettes.keys()
+        while (cles.hasNext()) {
+            val mot = cles.next()
+            assertTrue("« $mot » a des vedettes mais pas de phrases", exemples.has(mot))
+            val phrases = exemples.getJSONArray(mot)
+            val parPhrase = vedettes.getJSONArray(mot)
+            assertTrue(
+                "« $mot » : ${parPhrase.length()} rangs de vedettes pour " +
+                    "${phrases.length()} phrases",
+                parPhrase.length() == phrases.length()
+            )
+            for (rang in 0 until parPhrase.length()) {
+                val phrase = phrases.getString(rang)
+                val bornes = parPhrase.getJSONArray(rang)
+                for (i in 0 until bornes.length()) {
+                    val couple = bornes.getJSONArray(i)
+                    val debut = couple.getInt(0)
+                    val fin = couple.getInt(1)
+                    assertTrue(
+                        "« $mot » : bornes [$debut, $fin] hors de « $phrase »",
+                        debut in 0 until fin && fin <= phrase.length
+                    )
+                    val designe = phrase.substring(debut, fin)
+                    assertTrue(
+                        "« $mot » : la vedette « $designe » n'est pas un mot " +
+                            "entier de « $phrase »",
+                        designe.isNotEmpty() && designe == designe.trim() &&
+                            (debut == 0 || !phrase[debut - 1].isLetter()) &&
+                            (fin == phrase.length || !phrase[fin].isLetter())
+                    )
+                }
+            }
+        }
+    }
+
+    /**
      * Le cas qui a motivé la fonction : lire « Haus = maison » n'apprend pas à
      * employer le mot, et une phrase du LOD, elle, l'emploie.
      */

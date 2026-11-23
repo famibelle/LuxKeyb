@@ -11012,7 +11012,7 @@ class SettingsActivity : AppCompatActivity() {
                 // paraissait continuer la première.
                 exemples.forEachIndexed { rang, exemple ->
                     colonne.addView(TextView(activity).apply {
-                        text = SpannableStringBuilder(phraseIllustree(exemple.phrase, resultat)).apply {
+                        text = SpannableStringBuilder(phraseIllustree(exemple, resultat)).apply {
                             exemple.traduction?.let { francais ->
                                 append("\n")
                                 val debut = length
@@ -11125,35 +11125,15 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         /**
-         * La phrase d'exemple, le mot cherché en gras.
-         *
-         * On met en gras toute forme de la famille : la phrase du LOD emploie
-         * le mot fléchi (« déi Blus passt gutt bei deng blo **Aen** »), et
-         * chercher la seule forme affichée n'en surlignerait presque jamais
-         * aucune. Une flexion que le LOD n'a pas glosée n'est pas dans la
-         * famille : la phrase s'affiche alors sans gras, ce qui reste lisible.
+         * La phrase d'exemple, le mot cherché en gras. Le pourquoi du gras sur
+         * toute la famille est dans [TranslationDictionary.enGras], que la
+         * carte du carnet emploie aussi.
          */
         private fun phraseIllustree(
-            phrase: String,
+            exemple: TranslationDictionary.Exemple,
             resultat: TranslationDictionary.Resultat
-        ): CharSequence {
-            val formes = (resultat.formes + resultat.mot)
-                .mapTo(HashSet()) { AccentTolerantMatcher.normalize(it) }
-            val rendu = SpannableString(phrase)
-            var depuis = 0
-            for (mot in TranslationDictionary.decouperEnMots(phrase)) {
-                val debut = phrase.indexOf(mot, depuis)
-                if (debut < 0) continue
-                depuis = debut + mot.length
-                if (AccentTolerantMatcher.normalize(mot) in formes) {
-                    rendu.setSpan(
-                        StyleSpan(Typeface.BOLD), debut, depuis,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                }
-            }
-            return rendu
-        }
+        ): CharSequence = TranslationDictionary.enGras(
+            exemple.phrase, exemple.phrase, exemple.vedettes, resultat.formes + resultat.mot)
 
         private fun boutonFiche(
             activity: SettingsActivity,

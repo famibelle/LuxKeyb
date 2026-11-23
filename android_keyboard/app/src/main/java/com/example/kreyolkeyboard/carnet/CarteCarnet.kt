@@ -32,6 +32,11 @@ data class ContenuCarte(
     val glose: String,
     val autresFormes: List<String>,
     val exemple: String?,
+    /**
+     * Où est, dans [exemple], le mot que le LOD y illustre. Vide quand la
+     * carte écrit sa propre phrase ou quand elle ne vient pas du LOD.
+     */
+    val vedettesExemple: List<IntRange> = emptyList(),
     val blason: Blasonnement = Blasonnement.AUCUN,
     /** La traduction officielle du ZLS de [exemple], ou `null` s'il n'y en a pas. */
     val traductionExemple: String? = null,
@@ -137,6 +142,7 @@ object CarteCarnet {
                 .distinct()
                 .filter { it != carte.forme },
             exemple = exemple?.phrase,
+            vedettesExemple = exemple?.vedettes.orEmpty(),
             // Le blason se lit sur le représentant, comme la glose : le joueur
             // a gagné « Männer », c'est le rangement de « Mann » qui vaut. La
             // fiche est déjà là, donc cela ne coûte pas une recherche de plus.
@@ -552,7 +558,13 @@ object CarteCarnet {
                 // insécables à l'intérieur, sinon le « » » fermant part seul
                 // à la ligne.
                 val texte = if (c.carte.nombre != null) phrase else context.getString(R.string.citation, phrase)
-                addView(bloc(context, texte, 12f, ENCRE_DOUCE, 2f).apply {
+                // Le mot de la carte en gras dans sa phrase : c'est lui qu'on
+                // vient voir à l'œuvre, et sur la carte imprimée un enfant le
+                // retrouve sans relire la ligne. Toute la famille est mise en
+                // gras, pas la seule forme affichée — voir [TranslationDictionary.enGras].
+                val illustree = TranslationDictionary.enGras(
+                    texte, c.exemple, c.vedettesExemple, c.autresFormes + c.carte.forme)
+                addView(bloc(context, illustree, 12f, ENCRE_DOUCE, 2f).apply {
                     setTypeface(null, Typeface.ITALIC)
                     maxLines = 2
                 })
@@ -635,7 +647,7 @@ object CarteCarnet {
     /** Une ligne du panneau de texte : elle, a le droit de revenir à la ligne. */
     private fun bloc(
         context: Context,
-        contenu: String,
+        contenu: CharSequence,
         taille: Float,
         couleur: Int,
         margeHaute: Float

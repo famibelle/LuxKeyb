@@ -394,6 +394,17 @@ jobs:
           exit 1
         fi
 
+        # Le mot illustré par chaque phrase, tel que le LOD le balise : c'est
+        # lui que la fiche et la carte mettent en gras. S'il disparaît, le
+        # gras retombe sur les formes de la famille, ce qui laisse 8,5 % des
+        # phrases sans aucun repère, sans rien casser ni rien dire.
+        VD_COUNT=$(jq '.vedettes // {} | length' "$A/luxemburgish_exemples.json")
+        echo "🔎 Mots dont les phrases désignent leur mot illustré : $VD_COUNT"
+        if [ "$VD_COUNT" -lt 20000 ]; then
+          echo "::error::Seulement $VD_COUNT mots dont les phrases désignent leur mot illustré : le gras de la fiche et de la carte retomberait sur la famille."
+          exit 1
+        fi
+
         # Sans la table des identifiants, le bouton « Voir sur le
         # dictionnaire officiel » retombe sur la recherche de lod.lu — qui ne
         # répond pas à une ouverture à froid et propose d'ajouter le mot au

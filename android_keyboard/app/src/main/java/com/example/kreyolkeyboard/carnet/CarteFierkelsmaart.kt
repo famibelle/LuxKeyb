@@ -75,6 +75,9 @@ object CarteFierkelsmaart {
                 rarete = Rarete.TRES_RARE,
                 glose = glose,
                 exemple = EXEMPLE,
+                // Sa phrase n'est pas celle du LOD : les bornes du mot
+                // illustré ne valent plus, le gras retombe sur la famille.
+                vedettesExemple = emptyList(),
                 traductionExemple = traduction,
                 categorie = CATEGORIE,
                 blason = contenu.blason.copy(champ = Champ.SOCIETE, meuble = null, nature = Nature.NOM)

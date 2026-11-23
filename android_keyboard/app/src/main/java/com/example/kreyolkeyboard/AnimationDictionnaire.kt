@@ -8,7 +8,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Typeface
 import android.text.Layout
-import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.StaticLayout
 import android.text.TextPaint
@@ -265,15 +265,16 @@ class AnimationDictionnaire(context: Context) : View(context) {
     /** La phrase d'exemple, les formes du mot en gras comme sur la fiche, et sa traduction en gris dessous. */
     @Suppress("DEPRECATION")
     private fun mettreEnPage(dd: Donnees, exemple: TranslationDictionary.Exemple, largeur: Int): StaticLayout {
-        val formes = (dd.fiche.formes + dd.fiche.mot).mapTo(HashSet()) { AccentTolerantMatcher.normalize(it) }
         val traduction = exemple.traduction?.takeIf { it.isNotBlank() }
-        val tout = SpannableString(if (traduction == null) exemple.phrase else exemple.phrase + "\n" + traduction)
-        Regex("\\p{L}+").findAll(exemple.phrase).forEach { m ->
-            if (AccentTolerantMatcher.normalize(m.value) in formes) {
-                tout.setSpan(StyleSpan(Typeface.BOLD), m.range.first, m.range.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            }
-        }
+        // Le gras est posé sur la phrase seule, par le même découpage que la
+        // fiche et la carte, puis la traduction s'ajoute dessous.
+        val tout = SpannableStringBuilder(
+            TranslationDictionary.enGras(
+                exemple.phrase, exemple.phrase, exemple.vedettes,
+                dd.fiche.formes + dd.fiche.mot)
+        )
         if (traduction != null) {
+            tout.append("\n").append(traduction)
             val debut = exemple.phrase.length + 1
             tout.setSpan(RelativeSizeSpan(0.9f), debut, tout.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             tout.setSpan(ForegroundColorSpan(Color.parseColor("#777777")), debut, tout.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)

@@ -1,6 +1,10 @@
 package com.example.kreyolkeyboard
 
 import android.content.Context
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.StyleSpan
 import com.example.kreyolkeyboard.carnet.Essentiels
 import androidx.annotation.StringRes
 import android.util.Log
@@ -144,6 +148,18 @@ object TranslationDictionary {
      * voulu — pas de traduction plutôt qu'une traduction approchée.
      */
     private var traductionsExemples: Map<String, List<String?>> = emptyMap()
+
+    /**
+     * Où se trouve, dans chaque phrase, le mot que le LOD y illustre. Aligné
+     * sur [exemples], une liste vide quand la source ne le désigne pas.
+     *
+     * C'est le `<inflectedHeadword>` du LOD, celui que lod.lu met en gras sur
+     * son site. Sans lui, la fiche et la carte en étaient réduites à
+     * reconnaître les formes de la famille, et 8,5 % des phrases n'en
+     * employaient aucune : « Ae » est illustré par « mir ass eng Méck an d'A
+     * geflunn », et le LOD range cette graphie-là sous un autre article.
+     */
+    private var vedettesExemples: Map<String, List<List<IntRange>>> = emptyMap()
     private var exemplesCharges = false
     private val verrouExemples = Any()
 
@@ -380,13 +396,17 @@ object TranslationDictionary {
         synchronized(verrouExemples) {
             if (exemplesCharges) return
             exemplesCharges = true
-            val (lues, traduites) = exemplesLus(context)
-            exemples = lues
+            val lecture = exemplesLus(context)
+            exemples = lecture.phrases
             // Dans une autre langue, les phrases restent celles-ci (elles
             // sont choisies une fois, sur le français) et seules leurs
-            // traductions viennent de l'actif de la langue.
-            traductionsExemples = traductionsExemplesLangue ?: traduites
-            Log.d(TAG, "${lues.size} mots illustrés, ${traduites.size} traduits")
+            // traductions viennent de l'actif de la langue. Les vedettes,
+            // elles, désignent un mot de la phrase luxembourgeoise : elles ne
+            // dépendent donc pas de la langue d'interface.
+            traductionsExemples = traductionsExemplesLangue ?: lecture.traductions
+            vedettesExemples = lecture.vedettes
+            Log.d(TAG, "${lecture.phrases.size} mots illustrés, " +
+                "${lecture.traductions.size} traduits, ${lecture.vedettes.size} avec vedette")
         }
     }
 
@@ -396,15 +416,22 @@ object TranslationDictionary {
      * tient celui de l'objet puis celui des exemples, et lire sous l'un des
      * deux en attendant l'autre bloquerait les deux fils.
      */
-    private fun exemplesLus(context: Context): Pair<Map<String, List<String>>, Map<String, List<String?>>> =
+    private fun exemplesLus(context: Context): LectureExemples =
         synchronized(verrouLecture) {
             lectureExemples ?: lireExemples(context).also { lectureExemples = it }
         }
 
     private val verrouLecture = Any()
-    private var lectureExemples: Pair<Map<String, List<String>>, Map<String, List<String?>>>? = null
+    private var lectureExemples: LectureExemples? = null
 
-    private fun lireExemples(context: Context): Pair<Map<String, List<String>>, Map<String, List<String?>>> =
+    /** Les trois tables de l'actif des exemples, alignées mot par mot. */
+    private data class LectureExemples(
+        val phrases: Map<String, List<String>>,
+        val traductions: Map<String, List<String?>>,
+        val vedettes: Map<String, List<List<IntRange>>>
+    )
+
+    private fun lireExemples(context: Context): LectureExemples =
         try {
             val contenu = BufferedReader(
                 InputStreamReader(context.assets.open(ASSET_EXEMPLES))
@@ -433,12 +460,29 @@ object TranslationDictionary {
                         .map { francais.getString(it).ifEmpty { null } }
                 }
             }
-            lues to traduites
+            // Facultatives elles aussi : un actif sans elles retombe sur la
+            // reconnaissance des formes de la famille, comme avant.
+            val vedettes = HashMap<String, List<List<IntRange>>>()
+            racine.optJSONObject("vedettes")?.let { v ->
+                val motsVedettes = v.keys()
+                while (motsVedettes.hasNext()) {
+                    val mot = motsVedettes.next()
+                    val parPhrase = v.getJSONArray(mot)
+                    vedettes[mot] = (0 until parPhrase.length()).map { rang ->
+                        val bornes = parPhrase.getJSONArray(rang)
+                        (0 until bornes.length()).map { i ->
+                            val couple = bornes.getJSONArray(i)
+                            couple.getInt(0) until couple.getInt(1)
+                        }
+                    }
+                }
+            }
+            LectureExemples(lues, traduites, vedettes)
         } catch (e: Exception) {
             // Sans exemples la fiche garde son sens et ses formes : la
             // section disparaît, rien d'autre ne change.
             Log.e(TAG, "Actif $ASSET_EXEMPLES illisible: ${e.message}", e)
-            emptyMap<String, List<String>>() to emptyMap()
+            LectureExemples(emptyMap(), emptyMap(), emptyMap())
         }
 
     /**
@@ -613,6 +657,7 @@ object TranslationDictionary {
         chargerExemples(context)
         val phrases = exemples[resultat.mot] ?: return emptyList()
         val traductions = traductionsExemples[resultat.mot]
+        val vedettes = vedettesExemples[resultat.mot]
         val duMot = (resultat.formes + resultat.mot)
             .mapTo(HashSet()) { AccentTolerantMatcher.normalize(it) }
         return phrases.mapIndexedNotNull { rang, phrase ->
@@ -620,16 +665,102 @@ object TranslationDictionary {
                 AccentTolerantMatcher.normalize(mot) !in duMot &&
                     MotsEcartes.estEcarte(mot)
             }
-            if (ecartee) null else Exemple(phrase, traductions?.getOrNull(rang))
+            if (ecartee) null
+            else Exemple(
+                phrase,
+                traductions?.getOrNull(rang),
+                vedettes?.getOrNull(rang).orEmpty()
+            )
         }
     }
 
-    /** Une phrase d'exemple du LOD, et sa traduction officielle s'il y en a une. */
-    data class Exemple(val phrase: String, val traduction: String?)
+    /**
+     * Une phrase d'exemple du LOD, sa traduction officielle s'il y en a une,
+     * et l'emplacement du mot qu'elle illustre si la source le désigne.
+     */
+    data class Exemple(
+        val phrase: String,
+        val traduction: String?,
+        val vedettes: List<IntRange> = emptyList()
+    )
 
     /** Les mots d'une phrase, la ponctuation et les élisions retirées. */
     fun decouperEnMots(phrase: String): List<String> =
         phrase.split(Regex("[^\\p{L}]+")).filter { it.isNotEmpty() }
+
+    /**
+     * [texte] avec en gras le mot que la phrase illustre.
+     *
+     * Sert aux trois endroits qui montrent une phrase du LOD sous un mot : la
+     * fiche du Wierderbuch, le panneau de la carte du carnet (qui est aussi
+     * celui de la carte imprimée) et la bulle du dictionnaire de la visite
+     * guidée. Le gras **s'ajoute** au style du `TextView` (un [StyleSpan]
+     * compose avec lui), donc la phrase de la carte reste en italique et son
+     * mot sort en gras italique.
+     *
+     * **La source désigne son mot, on ne le devine pas.** [vedettes] vient du
+     * `<inflectedHeadword>` du LOD, c'est-à-dire exactement ce que lod.lu met
+     * en gras. [texte] peut encadrer la phrase (les guillemets de la carte) :
+     * les bornes sont comptées sur la phrase seule, d'où [phrase], qu'on y
+     * retrouve pour les décaler.
+     *
+     * Sans vedette, repli sur les formes de la famille, qui était la règle
+     * jusqu'au 2026-11-23 : c'est ce qui sert aux cartes qui écrivent leur
+     * propre phrase (l'accueil, la Fierkelsmaart) et aux nombres de Zuelwuert,
+     * qui ne viennent pas du LOD.
+     */
+    fun enGras(
+        texte: CharSequence,
+        phrase: String?,
+        vedettes: List<IntRange>,
+        formes: Collection<String>
+    ): CharSequence {
+        if (phrase == null || vedettes.isEmpty()) return enGras(texte, formes)
+        val debutPhrase = texte.toString().indexOf(phrase)
+        // La phrase est parfois posée dans un cadre (les guillemets de la
+        // carte) : les bornes du LOD sont comptées sur elle seule.
+        if (debutPhrase < 0) return enGras(texte, formes)
+        val rendu = SpannableString(texte)
+        for (vedette in vedettes) {
+            val debut = debutPhrase + vedette.first
+            val fin = debutPhrase + vedette.last + 1
+            // Un actif désaccordé avec la phrase ne doit pas lever
+            // d'exception au milieu d'une fiche : on laisse la phrase maigre.
+            if (debut < 0 || fin > texte.length || debut >= fin) return enGras(texte, formes)
+            rendu.setSpan(StyleSpan(Typeface.BOLD), debut, fin, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        return rendu
+    }
+
+    /**
+     * [texte] avec en gras toutes les formes de [formes] qu'il emploie.
+     *
+     * Le repli, quand la source ne désigne pas son mot. On met en gras toute
+     * forme de la famille, pas seulement celle qui est affichée : la phrase du
+     * LOD emploie le mot fléchi (« eng Kolonie **Ameisen** » sous « Ameis »),
+     * et chercher la seule forme affichée n'en surlignerait presque jamais
+     * aucune.
+     *
+     * La comparaison passe par [AccentTolerantMatcher.normalize] des deux
+     * côtés, donc la casse et les accents ne font pas rater un mot ; les
+     * limites viennent de [decouperEnMots], si bien qu'une forme incluse dans
+     * un autre mot (« A » dans « Aarbecht ») n'est pas grassée.
+     */
+    fun enGras(texte: CharSequence, formes: Collection<String>): CharSequence {
+        val cherchees = formes.mapTo(HashSet()) { AccentTolerantMatcher.normalize(it) }
+        val plat = texte.toString()
+        val rendu = SpannableString(texte)
+        var depuis = 0
+        for (mot in decouperEnMots(plat)) {
+            val debut = plat.indexOf(mot, depuis)
+            if (debut < 0) continue
+            depuis = debut + mot.length
+            if (AccentTolerantMatcher.normalize(mot) in cherchees) {
+                rendu.setSpan(StyleSpan(Typeface.BOLD), debut, depuis, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+        }
+        return rendu
+    }
 
     /**
      * Un résultat de recherche : le mot, sa glose, et ses autres formes.

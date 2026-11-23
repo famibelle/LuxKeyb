@@ -41,6 +41,9 @@ object CarteAccueil {
             contenu.copy(
                 glose = glose,
                 exemple = EXEMPLE,
+                // Sa phrase n'est pas celle du LOD : les bornes du mot
+                // illustré ne valent plus, le gras retombe sur la famille.
+                vedettesExemple = emptyList(),
                 traductionExemple = traduction,
                 categorie = CATEGORIE
             )
