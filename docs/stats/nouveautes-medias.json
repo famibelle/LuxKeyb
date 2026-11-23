@@ -1,5 +1,14 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "41.1.6": {
+    "images": [
+      {
+        "image": "Screenshots/lux_mot_en_gras.png",
+        "alt": "La carte « Ameis » du carnet, ouverte, marquée du filigrane LuxKeyb. Sous le dessin d'une fourmi dorée devant les façades éclairées d'une ville le soir, la plaque du mot « Ameis », puis le panneau de texte : le sens « fourmi », la phrase d'exemple « ënner dem Fënsterbriet haust eng Kolonie Ameisen » où le mot « Ameisen » est en gras, et sa traduction « une colonie de fourmis s'est installée sous le rebord de la fenêtre ».",
+        "legende": "Le mot de la carte ressort dans sa phrase, même au pluriel."
+      }
+    ]
+  },
   "41.1.3": {
     "images": [
       {

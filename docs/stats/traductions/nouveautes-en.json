@@ -6,6 +6,26 @@
     "Changements": "Changes",
     "Rapidité": "Speed"
   },
+  "41.1.6": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Improvements",
+        "points": [
+          {
+            "titre": "The word stands out in its example sentence",
+            "texte": "On the collection cards, in the dictionary entry and in the guided tour, the word that the sentence illustrates is now written in bold. You spot it at a glance, even when the sentence uses another form of it, and it is the official dictionary itself that says which word it is: every sentence now has one, including those where nothing pointed to it before."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "The « Ameis » card of the collection, open, bearing the LuxKeyb watermark. Under the drawing of a golden ant in front of the lit façades of a town at nightfall, the plate with the word « Ameis », then the text panel: the meaning « fourmi » (ant), the example sentence « ënner dem Fënsterbriet haust eng Kolonie Ameisen » with the word « Ameisen » in bold, and its translation « une colonie de fourmis s'est installée sous le rebord de la fenêtre » (a colony of ants has settled under the window ledge).",
+        "legende": "The card's word stands out in its sentence, even in the plural."
+      }
+    ]
+  },
   "41.1.5": {
     "intro": "",
     "sections": [

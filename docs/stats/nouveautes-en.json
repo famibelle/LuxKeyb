@@ -1,9 +1,38 @@
 {
- "genere_le": "2026-11-22",
- "derniere_version": "41.1.5",
- "derniere_date": "2026-11-22",
+ "genere_le": "2026-11-23",
+ "derniere_version": "41.1.6",
+ "derniere_date": "2026-11-23",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.6",
+   "date": "2026-11-23",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "The word stands out in its example sentence",
+       "texte": "On the collection cards, in the dictionary entry and in the guided tour, the word that the sentence illustrates is now written in bold. You spot it at a glance, even when the sentence uses another form of it, and it is the official dictionary itself that says which word it is: every sentence now has one, including those where nothing pointed to it before."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_mot_en_gras.png",
+     "alt": "The « Ameis » card of the collection, open, bearing the LuxKeyb watermark. Under the drawing of a golden ant in front of the lit façades of a town at nightfall, the plate with the word « Ameis », then the text panel: the meaning « fourmi » (ant), the example sentence « ënner dem Fënsterbriet haust eng Kolonie Ameisen » with the word « Ameisen » in bold, and its translation « une colonie de fourmis s'est installée sous le rebord de la fenêtre » (a colony of ants has settled under the window ledge).",
+     "legende": "The card's word stands out in its sentence, even in the plural."
+    }
+   ],
+   "image": "Screenshots/lux_mot_en_gras.png",
+   "image_alt": "The « Ameis » card of the collection, open, bearing the LuxKeyb watermark. Under the drawing of a golden ant in front of the lit façades of a town at nightfall, the plate with the word « Ameis », then the text panel: the meaning « fourmi » (ant), the example sentence « ënner dem Fënsterbriet haust eng Kolonie Ameisen » with the word « Ameisen » in bold, and its translation « une colonie de fourmis s'est installée sous le rebord de la fenêtre » (a colony of ants has settled under the window ledge).",
+   "image_legende": "The card's word stands out in its sentence, even in the plural."
+  },
   {
    "version": "41.1.5",
    "date": "2026-11-22",
@@ -156,60 +185,6 @@
    "image": "Screenshots/lux_decors_matieres.png",
    "image_alt": "Four card landscapes, marked with the LuxKeyb watermark, each shown in two views side by side: before on the left, after on the right. 1. Schengen: the three stelae, brown like wood, turn rust red, in steel. 2. The Gëlle Fra: her grey obelisk turns pink like granite, and the golden statue gains highlights. 3. The Mëllerdall: the smooth sandstone walls show their layers of rock. 4. Ansembourg: below the castle, the plain yellow terrace becomes a stone wall pierced with dark arches, and in front the two stone lions frame a flight of steps.",
    "image_legende": "Schengen, the Gëlle Fra, the Mëllerdall and Ansembourg, before and after."
-  },
-  {
-   "version": "41.1.0",
-   "date": "2026-11-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "New",
-     "points": [
-      {
-       "titre": "The Wierderbuch shows what kind of word each one is",
-       "texte": "In the list of results, every word carries its part of speech beside it (“Feminine noun”, “Verb”, “Adjective”…), and its entry shows it under the word. Type “Haus”: you see at once that it is a neuter noun, and that “hausen” is a verb."
-      },
-      {
-       "titre": "Clear waters",
-       "texte": "The lakes, rivers and pools on the cards are a limpid blue. Where the water is shallow you can see the bottom and its pebbles, and trout swim in the pools of the Mëllerdall and the Kallektuffquell."
-      },
-      {
-       "titre": "Six places repainted",
-       "texte": "The Upper Sûre lake between its wooded slopes, with its jetty and its boat; Vianden castle above the mist of the Our, its slate roofs and the town's bell tower; the sandstone needle of the Priedegtstull and its footbridge; the great tufa overhang of the Kallektuffquell; the Biodiversum on the edge of the Haff Réimech pond; and Luxembourg's upper town, with Saint-Michel, the casemates park, the Kirchberg towers and, below, the bell tower of Saint-Jean in the Grund."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Fixes",
-     "points": [
-      {
-       "titre": "“Turn on” rather than “switch”",
-       "texte": "The setup instructions in French spoke of a switch, a word some people did not understand. They now say turn on, turn off and turn on again."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_wierderbuch_nature.gif",
-     "alt": "A three-step animation in the Wierderbuch. 1. “Haus” is typed into the search field, letter by letter. 2. The results list shows each word with its part of speech beside it: Haus, neuter noun, house; Hausse, feminine noun; hausen, verb, to dwell; then Hausfra, Hauskaz and Hausrat, feminine nouns. 3. “Haus” is tapped: its entry opens, with the “Neuter noun” tag under the word, the meaning “house”, two example sentences and the other form, “Haiser”.",
-     "legende": "Every Wierderbuch word shows its part of speech, in the list and on its entry."
-    },
-    {
-     "image": "Screenshots/lux_cartes_eaux_claires.gif",
-     "alt": "Two cards from the collection opened one after the other, marked with the LuxKeyb watermark. 1. “Haus”, neuter noun: the house in front of the Stauséi, its dam and its limpid blue water. 2. “Fësch”, masculine noun: the fish in front of the stone bridge of the Mëllerdall and its waterfalls, above a clear pool where the pebbles show.",
-     "legende": "The Stauséi and the Mëllerdall: clear waters where you can see the bottom."
-    }
-   ],
-   "image": "Screenshots/lux_wierderbuch_nature.gif",
-   "image_alt": "A three-step animation in the Wierderbuch. 1. “Haus” is typed into the search field, letter by letter. 2. The results list shows each word with its part of speech beside it: Haus, neuter noun, house; Hausse, feminine noun; hausen, verb, to dwell; then Hausfra, Hauskaz and Hausrat, feminine nouns. 3. “Haus” is tapped: its entry opens, with the “Neuter noun” tag under the word, the meaning “house”, two example sentences and the other form, “Haiser”.",
-   "image_legende": "Every Wierderbuch word shows its part of speech, in the list and on its entry."
   }
  ]
 }

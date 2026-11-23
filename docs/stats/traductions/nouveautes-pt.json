@@ -6,6 +6,26 @@
     "Changements": "Alterações",
     "Rapidité": "Rapidez"
   },
+  "41.1.6": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Melhorias",
+        "points": [
+          {
+            "titre": "A palavra destaca-se na sua frase de exemplo",
+            "texte": "Nas cartas da coleção, na ficha do dicionário e na visita guiada, a palavra que a frase ilustra está agora a negrito. Encontra-se num relance, mesmo quando a frase a emprega noutra forma, e é agora o próprio dicionário oficial que indica qual é: todas as frases têm a sua, incluindo aquelas onde nada a assinalava antes."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "A carta « Ameis » da coleção, aberta, com a marca de água LuxKeyb. Sob o desenho de uma formiga dourada diante das fachadas iluminadas de uma cidade ao anoitecer, a placa com a palavra « Ameis » e depois o painel de texto: o sentido « fourmi » (formiga), a frase de exemplo « ënner dem Fënsterbriet haust eng Kolonie Ameisen » com a palavra « Ameisen » a negrito, e a sua tradução « une colonie de fourmis s'est installée sous le rebord de la fenêtre » (uma colónia de formigas instalou-se sob o parapeito da janela).",
+        "legende": "A palavra da carta destaca-se na sua frase, mesmo no plural."
+      }
+    ]
+  },
   "41.1.5": {
     "intro": "",
     "sections": [

@@ -1,9 +1,38 @@
 {
- "genere_le": "2026-11-22",
- "derniere_version": "41.1.5",
- "derniere_date": "2026-11-22",
+ "genere_le": "2026-11-23",
+ "derniere_version": "41.1.6",
+ "derniere_date": "2026-11-23",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.6",
+   "date": "2026-11-23",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le mot ressort dans sa phrase d'exemple",
+       "texte": "Sur les cartes du carnet, dans la fiche du dictionnaire et dans la visite guidée, le mot que la phrase illustre est écrit en gras. On le retrouve d'un coup d'œil, même quand la phrase l'emploie sous une autre forme, et c'est maintenant le dictionnaire officiel lui-même qui désigne lequel : toutes les phrases ont le leur, y compris celles où rien ne le signalait avant."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_mot_en_gras.png",
+     "alt": "La carte « Ameis » du carnet, ouverte, marquée du filigrane LuxKeyb. Sous le dessin d'une fourmi dorée devant les façades éclairées d'une ville le soir, la plaque du mot « Ameis », puis le panneau de texte : le sens « fourmi », la phrase d'exemple « ënner dem Fënsterbriet haust eng Kolonie Ameisen » où le mot « Ameisen » est en gras, et sa traduction « une colonie de fourmis s'est installée sous le rebord de la fenêtre ».",
+     "legende": "Le mot de la carte ressort dans sa phrase, même au pluriel."
+    }
+   ],
+   "image": "Screenshots/lux_mot_en_gras.png",
+   "image_alt": "La carte « Ameis » du carnet, ouverte, marquée du filigrane LuxKeyb. Sous le dessin d'une fourmi dorée devant les façades éclairées d'une ville le soir, la plaque du mot « Ameis », puis le panneau de texte : le sens « fourmi », la phrase d'exemple « ënner dem Fënsterbriet haust eng Kolonie Ameisen » où le mot « Ameisen » est en gras, et sa traduction « une colonie de fourmis s'est installée sous le rebord de la fenêtre ».",
+   "image_legende": "Le mot de la carte ressort dans sa phrase, même au pluriel."
+  },
   {
    "version": "41.1.5",
    "date": "2026-11-22",
@@ -156,60 +185,6 @@
    "image": "Screenshots/lux_decors_matieres.png",
    "image_alt": "Quatre paysages de cartes, marqués du filigrane LuxKeyb, chacun en deux vues côte à côte : à gauche avant, à droite après. 1. Schengen : les trois stèles, brunes comme du bois, deviennent rouge rouille, en acier. 2. La Gëlle Fra : son obélisque, gris, devient rose comme le granit, et la statue dorée a des reflets. 3. Le Mëllerdall : les parois de grès, lisses, montrent leurs couches de roche. 4. Ansembourg : sous le château, la terrasse jaune et unie devient un mur de pierres percé d'arcades sombres, et devant, les deux lions de pierre encadrent un escalier.",
    "image_legende": "Schengen, la Gëlle Fra, le Mëllerdall et Ansembourg, avant et après."
-  },
-  {
-   "version": "41.1.0",
-   "date": "2026-11-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Nouveautés",
-     "points": [
-      {
-       "titre": "Le Wierderbuch dit la nature de chaque mot",
-       "texte": "Dans la liste des résultats, chaque mot porte sa nature à côté de lui (« Nom féminin », « Verbe », « Adjectif »…), et sa fiche l'affiche sous le mot. Tapez « Haus » : vous voyez tout de suite que c'est un nom neutre, et que « hausen » est un verbe."
-      },
-      {
-       "titre": "Des eaux claires",
-       "texte": "Les lacs, les rivières et les bassins des cartes sont d'un bleu limpide. Là où l'eau est basse, on voit le fond et ses galets, et des truites nagent dans les bassins du Mëllerdall et de la Kallektuffquell."
-      },
-      {
-       "titre": "Six lieux repeints",
-       "texte": "Le lac de la Haute-Sûre entre ses versants boisés, avec son ponton et sa barque ; le château de Vianden au-dessus de la brume de l'Our, ses toits d'ardoise et le clocher de la ville ; l'aiguille de grès du Priedegtstull et sa passerelle ; le grand surplomb de tuf de la Kallektuffquell ; le Biodiversum au bord de l'étang du Haff Réimech ; et la ville haute de Luxembourg, avec Saint-Michel, le parc des casemates, les tours du Kirchberg et, en contrebas, le clocher de Saint-Jean du Grund."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "« Activer » plutôt qu'« interrupteur »",
-       "texte": "Les consignes de mise en route parlaient d'un interrupteur, un mot que certains ne comprenaient pas. Elles disent maintenant activer, désactiver et réactiver."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_wierderbuch_nature.gif",
-     "alt": "Animation en trois temps dans le Wierderbuch. 1. On tape « Haus » dans le champ de recherche, lettre par lettre. 2. La liste des résultats affiche chaque mot avec sa nature à côté : Haus, nom neutre, maison ; Hausse, nom féminin ; hausen, verbe, crécher ; puis Hausfra, Hauskaz et Hausrat, noms féminins. 3. On touche « Haus » : sa fiche s'ouvre, avec la pastille « Nom neutre » sous le mot, le sens « maison », deux phrases d'exemple et l'autre forme, « Haiser ».",
-     "legende": "Chaque mot du Wierderbuch porte sa nature, dans la liste comme sur sa fiche."
-    },
-    {
-     "image": "Screenshots/lux_cartes_eaux_claires.gif",
-     "alt": "Deux cartes du carnet ouvertes l'une après l'autre, marquées du filigrane LuxKeyb. 1. « Haus », nom neutre : la maison devant le Stauséi, son barrage et son eau d'un bleu limpide. 2. « Fësch », nom masculin : le poisson devant le pont de pierre du Mëllerdall et ses chutes d'eau, au-dessus d'un bassin clair où l'on voit les galets.",
-     "legende": "Le Stauséi et le Mëllerdall : des eaux claires où l'on voit le fond."
-    }
-   ],
-   "image": "Screenshots/lux_wierderbuch_nature.gif",
-   "image_alt": "Animation en trois temps dans le Wierderbuch. 1. On tape « Haus » dans le champ de recherche, lettre par lettre. 2. La liste des résultats affiche chaque mot avec sa nature à côté : Haus, nom neutre, maison ; Hausse, nom féminin ; hausen, verbe, crécher ; puis Hausfra, Hauskaz et Hausrat, noms féminins. 3. On touche « Haus » : sa fiche s'ouvre, avec la pastille « Nom neutre » sous le mot, le sens « maison », deux phrases d'exemple et l'autre forme, « Haiser ».",
-   "image_legende": "Chaque mot du Wierderbuch porte sa nature, dans la liste comme sur sa fiche."
   }
  ]
 }

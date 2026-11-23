@@ -6,6 +6,26 @@
     "Changements": "Änderungen",
     "Rapidité": "Geschwindigkeit"
   },
+  "41.1.6": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Das Wort tritt in seinem Beispielsatz hervor",
+            "texte": "Auf den Karten der Sammlung, im Wörterbucheintrag und in der geführten Tour steht das Wort, das der Satz veranschaulicht, jetzt in Fettschrift. Man findet es auf einen Blick, auch wenn der Satz es in einer anderen Form verwendet, und es ist nun das offizielle Wörterbuch selbst, das es bezeichnet: Jeder Satz hat seines, auch die, in denen vorher nichts darauf hinwies."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Die geöffnete Karte « Ameis » der Sammlung, mit dem Wasserzeichen LuxKeyb. Unter der Zeichnung einer goldenen Ameise vor den erleuchteten Fassaden einer Stadt am Abend die Tafel mit dem Wort « Ameis », dann das Textfeld: die Bedeutung « fourmi » (Ameise), der Beispielsatz « ënner dem Fënsterbriet haust eng Kolonie Ameisen », in dem das Wort « Ameisen » fett gedruckt ist, und seine Übersetzung « une colonie de fourmis s'est installée sous le rebord de la fenêtre » (eine Ameisenkolonie hat sich unter dem Fenstersims eingenistet).",
+        "legende": "Das Wort der Karte tritt in seinem Satz hervor, auch im Plural."
+      }
+    ]
+  },
   "41.1.5": {
     "intro": "",
     "sections": [

@@ -1,9 +1,38 @@
 {
- "genere_le": "2026-11-22",
- "derniere_version": "41.1.5",
- "derniere_date": "2026-11-22",
+ "genere_le": "2026-11-23",
+ "derniere_version": "41.1.6",
+ "derniere_date": "2026-11-23",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.6",
+   "date": "2026-11-23",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "A palavra destaca-se na sua frase de exemplo",
+       "texte": "Nas cartas da coleção, na ficha do dicionário e na visita guiada, a palavra que a frase ilustra está agora a negrito. Encontra-se num relance, mesmo quando a frase a emprega noutra forma, e é agora o próprio dicionário oficial que indica qual é: todas as frases têm a sua, incluindo aquelas onde nada a assinalava antes."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_mot_en_gras.png",
+     "alt": "A carta « Ameis » da coleção, aberta, com a marca de água LuxKeyb. Sob o desenho de uma formiga dourada diante das fachadas iluminadas de uma cidade ao anoitecer, a placa com a palavra « Ameis » e depois o painel de texto: o sentido « fourmi » (formiga), a frase de exemplo « ënner dem Fënsterbriet haust eng Kolonie Ameisen » com a palavra « Ameisen » a negrito, e a sua tradução « une colonie de fourmis s'est installée sous le rebord de la fenêtre » (uma colónia de formigas instalou-se sob o parapeito da janela).",
+     "legende": "A palavra da carta destaca-se na sua frase, mesmo no plural."
+    }
+   ],
+   "image": "Screenshots/lux_mot_en_gras.png",
+   "image_alt": "A carta « Ameis » da coleção, aberta, com a marca de água LuxKeyb. Sob o desenho de uma formiga dourada diante das fachadas iluminadas de uma cidade ao anoitecer, a placa com a palavra « Ameis » e depois o painel de texto: o sentido « fourmi » (formiga), a frase de exemplo « ënner dem Fënsterbriet haust eng Kolonie Ameisen » com a palavra « Ameisen » a negrito, e a sua tradução « une colonie de fourmis s'est installée sous le rebord de la fenêtre » (uma colónia de formigas instalou-se sob o parapeito da janela).",
+   "image_legende": "A palavra da carta destaca-se na sua frase, mesmo no plural."
+  },
   {
    "version": "41.1.5",
    "date": "2026-11-22",
@@ -156,60 +185,6 @@
    "image": "Screenshots/lux_decors_matieres.png",
    "image_alt": "Quatro paisagens de cartas, marcadas com a marca de água LuxKeyb, cada uma em duas vistas lado a lado: à esquerda antes, à direita depois. 1. Schengen: as três estelas, castanhas como madeira, ficam vermelho ferrugem, em aço. 2. A Gëlle Fra: o seu obelisco cinzento fica rosa como o granito, e a estátua dourada ganha reflexos. 3. O Mëllerdall: as paredes lisas de arenito mostram as suas camadas de rocha. 4. Ansembourg: por baixo do castelo, o terraço amarelo e liso torna-se um muro de pedras com arcadas escuras e, à frente, os dois leões de pedra enquadram uma escadaria.",
    "image_legende": "Schengen, a Gëlle Fra, o Mëllerdall e Ansembourg, antes e depois."
-  },
-  {
-   "version": "41.1.0",
-   "date": "2026-11-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Novidades",
-     "points": [
-      {
-       "titre": "O Wierderbuch indica a classe de cada palavra",
-       "texte": "Na lista de resultados, cada palavra mostra a sua classe ao lado («Nome feminino», «Verbo», «Adjetivo»…), e a sua ficha mostra-a por baixo da palavra. Escreva «Haus»: vê logo que é um nome neutro, e que «hausen» é um verbo."
-      },
-      {
-       "titre": "Águas claras",
-       "texte": "Os lagos, os rios e as bacias das cartas têm um azul límpido. Onde a água é baixa vê-se o fundo e os seus seixos, e há trutas a nadar nas bacias do Mëllerdall e da Kallektuffquell."
-      },
-      {
-       "titre": "Seis lugares repintados",
-       "texte": "O lago da Alta Sûre entre as suas encostas arborizadas, com o pontão e o barco; o castelo de Vianden acima da bruma do Our, os seus telhados de ardósia e o campanário da vila; a agulha de arenito do Priedegtstull e a sua passarela; a grande saliência de tufo da Kallektuffquell; o Biodiversum à beira do lago do Haff Réimech; e a cidade alta do Luxemburgo, com Saint-Michel, o parque das casamatas, as torres do Kirchberg e, lá em baixo, o campanário de Saint-Jean no Grund."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Correções",
-     "points": [
-      {
-       "titre": "«Ativar» em vez de «interruptor»",
-       "texte": "As instruções de configuração em francês falavam de um interruptor, uma palavra que algumas pessoas não percebiam. Agora dizem ativar, desativar e reativar."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_wierderbuch_nature.gif",
-     "alt": "Animação em três tempos no Wierderbuch. 1. Escreve-se «Haus» no campo de pesquisa, letra a letra. 2. A lista de resultados mostra cada palavra com a sua classe ao lado: Haus, nome neutro, casa; Hausse, nome feminino; hausen, verbo; depois Hausfra, Hauskaz e Hausrat, nomes femininos. 3. Toca-se em «Haus»: abre-se a sua ficha, com a etiqueta «Nome neutro» por baixo da palavra, o significado, duas frases de exemplo e a outra forma, «Haiser».",
-     "legende": "Cada palavra do Wierderbuch mostra a sua classe, na lista e na ficha."
-    },
-    {
-     "image": "Screenshots/lux_cartes_eaux_claires.gif",
-     "alt": "Duas cartas da coleção abertas uma após a outra, marcadas com a marca de água LuxKeyb. 1. «Haus», nome neutro: a casa diante do Stauséi, a sua barragem e a sua água de um azul límpido. 2. «Fësch», nome masculino: o peixe diante da ponte de pedra do Mëllerdall e das suas cascatas, por cima de uma bacia clara onde se veem os seixos.",
-     "legende": "O Stauséi e o Mëllerdall: águas claras onde se vê o fundo."
-    }
-   ],
-   "image": "Screenshots/lux_wierderbuch_nature.gif",
-   "image_alt": "Animação em três tempos no Wierderbuch. 1. Escreve-se «Haus» no campo de pesquisa, letra a letra. 2. A lista de resultados mostra cada palavra com a sua classe ao lado: Haus, nome neutro, casa; Hausse, nome feminino; hausen, verbo; depois Hausfra, Hauskaz e Hausrat, nomes femininos. 3. Toca-se em «Haus»: abre-se a sua ficha, com a etiqueta «Nome neutro» por baixo da palavra, o significado, duas frases de exemplo e a outra forma, «Haiser».",
-   "image_legende": "Cada palavra do Wierderbuch mostra a sua classe, na lista e na ficha."
   }
  ]
 }

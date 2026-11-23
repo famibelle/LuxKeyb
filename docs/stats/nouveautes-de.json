@@ -1,9 +1,38 @@
 {
- "genere_le": "2026-11-22",
- "derniere_version": "41.1.5",
- "derniere_date": "2026-11-22",
+ "genere_le": "2026-11-23",
+ "derniere_version": "41.1.6",
+ "derniere_date": "2026-11-23",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.6",
+   "date": "2026-11-23",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Das Wort tritt in seinem Beispielsatz hervor",
+       "texte": "Auf den Karten der Sammlung, im Wörterbucheintrag und in der geführten Tour steht das Wort, das der Satz veranschaulicht, jetzt in Fettschrift. Man findet es auf einen Blick, auch wenn der Satz es in einer anderen Form verwendet, und es ist nun das offizielle Wörterbuch selbst, das es bezeichnet: Jeder Satz hat seines, auch die, in denen vorher nichts darauf hinwies."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_mot_en_gras.png",
+     "alt": "Die geöffnete Karte « Ameis » der Sammlung, mit dem Wasserzeichen LuxKeyb. Unter der Zeichnung einer goldenen Ameise vor den erleuchteten Fassaden einer Stadt am Abend die Tafel mit dem Wort « Ameis », dann das Textfeld: die Bedeutung « fourmi » (Ameise), der Beispielsatz « ënner dem Fënsterbriet haust eng Kolonie Ameisen », in dem das Wort « Ameisen » fett gedruckt ist, und seine Übersetzung « une colonie de fourmis s'est installée sous le rebord de la fenêtre » (eine Ameisenkolonie hat sich unter dem Fenstersims eingenistet).",
+     "legende": "Das Wort der Karte tritt in seinem Satz hervor, auch im Plural."
+    }
+   ],
+   "image": "Screenshots/lux_mot_en_gras.png",
+   "image_alt": "Die geöffnete Karte « Ameis » der Sammlung, mit dem Wasserzeichen LuxKeyb. Unter der Zeichnung einer goldenen Ameise vor den erleuchteten Fassaden einer Stadt am Abend die Tafel mit dem Wort « Ameis », dann das Textfeld: die Bedeutung « fourmi » (Ameise), der Beispielsatz « ënner dem Fënsterbriet haust eng Kolonie Ameisen », in dem das Wort « Ameisen » fett gedruckt ist, und seine Übersetzung « une colonie de fourmis s'est installée sous le rebord de la fenêtre » (eine Ameisenkolonie hat sich unter dem Fenstersims eingenistet).",
+   "image_legende": "Das Wort der Karte tritt in seinem Satz hervor, auch im Plural."
+  },
   {
    "version": "41.1.5",
    "date": "2026-11-22",
@@ -156,60 +185,6 @@
    "image": "Screenshots/lux_decors_matieres.png",
    "image_alt": "Vier Kartenlandschaften mit dem Wasserzeichen LuxKeyb, jede in zwei Ansichten nebeneinander: links vorher, rechts nachher. 1. Schengen: die drei Stelen, braun wie Holz, werden rostrot, aus Stahl. 2. Die Gëlle Fra: ihr grauer Obelisk wird rosa wie Granit, und die goldene Statue bekommt Glanzlichter. 3. Das Mëllerdall: die glatten Sandsteinwände zeigen ihre Gesteinsschichten. 4. Ansemburg: unter dem Schloss wird die einfarbig gelbe Terrasse zu einer Steinmauer mit dunklen Bögen, und davor rahmen die zwei Steinlöwen eine Treppe ein.",
    "image_legende": "Schengen, die Gëlle Fra, das Mëllerdall und Ansemburg, vorher und nachher."
-  },
-  {
-   "version": "41.1.0",
-   "date": "2026-11-21",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Neu",
-     "points": [
-      {
-       "titre": "Das Wierderbuch zeigt die Wortart jedes Wortes",
-       "texte": "In der Ergebnisliste steht neben jedem Wort seine Wortart („Femininum“, „Verb“, „Adjektiv“…), und sein Eintrag zeigt sie unter dem Wort. Tippen Sie „Haus“: Sie sehen sofort, dass es ein Neutrum ist und dass „hausen“ ein Verb ist."
-      },
-      {
-       "titre": "Klares Wasser",
-       "texte": "Seen, Flüsse und Becken auf den Karten sind klar und blau. Wo das Wasser flach ist, sieht man den Grund und seine Kiesel, und in den Becken des Mëllerdall und der Kallektuffquell schwimmen Forellen."
-      },
-      {
-       "titre": "Sechs Orte neu gemalt",
-       "texte": "Der Stausee der Obersauer zwischen seinen bewaldeten Hängen, mit Steg und Boot; die Burg Vianden über dem Nebel der Our, ihre Schieferdächer und der Kirchturm der Stadt; die Sandsteinnadel des Priedegtstull und ihre Brücke; der große Tuffüberhang der Kallektuffquell; das Biodiversum am Teich des Haff Réimech; und die Oberstadt von Luxemburg mit Sankt Michael, dem Park der Kasematten, den Türmen des Kirchbergs und unten dem Kirchturm von Sankt Johann im Grund."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Korrekturen",
-     "points": [
-      {
-       "titre": "„Aktivieren“ statt „Schalter“",
-       "texte": "Die französischen Einrichtungshinweise sprachen von einem Schalter, ein Wort, das manche nicht verstanden. Sie sagen jetzt aktivieren, deaktivieren und wieder aktivieren."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_wierderbuch_nature.gif",
-     "alt": "Animation in drei Schritten im Wierderbuch. 1. „Haus“ wird Buchstabe für Buchstabe ins Suchfeld getippt. 2. Die Ergebnisliste zeigt jedes Wort mit seiner Wortart daneben: Haus, Neutrum, maison; Hausse, Femininum; hausen, Verb, crécher; dann Hausfra, Hauskaz und Hausrat, Feminina. 3. „Haus“ wird angetippt: Sein Eintrag öffnet sich, mit dem Etikett „Neutrum“ unter dem Wort, der Bedeutung, zwei Beispielsätzen und der anderen Form „Haiser“.",
-     "legende": "Jedes Wort im Wierderbuch zeigt seine Wortart, in der Liste wie im Eintrag."
-    },
-    {
-     "image": "Screenshots/lux_cartes_eaux_claires.gif",
-     "alt": "Zwei Karten aus der Sammlung, nacheinander geöffnet, mit dem Wasserzeichen LuxKeyb. 1. „Haus“, Neutrum: das Haus vor dem Stausee, seiner Staumauer und seinem klaren blauen Wasser. 2. „Fësch“, Maskulinum: der Fisch vor der Steinbrücke des Mëllerdall und ihren Wasserfällen, über einem klaren Becken, in dem man die Kiesel sieht.",
-     "legende": "Der Stausee und das Mëllerdall: klares Wasser, durch das man den Grund sieht."
-    }
-   ],
-   "image": "Screenshots/lux_wierderbuch_nature.gif",
-   "image_alt": "Animation in drei Schritten im Wierderbuch. 1. „Haus“ wird Buchstabe für Buchstabe ins Suchfeld getippt. 2. Die Ergebnisliste zeigt jedes Wort mit seiner Wortart daneben: Haus, Neutrum, maison; Hausse, Femininum; hausen, Verb, crécher; dann Hausfra, Hauskaz und Hausrat, Feminina. 3. „Haus“ wird angetippt: Sein Eintrag öffnet sich, mit dem Etikett „Neutrum“ unter dem Wort, der Bedeutung, zwei Beispielsätzen und der anderen Form „Haiser“.",
-   "image_legende": "Jedes Wort im Wierderbuch zeigt seine Wortart, in der Liste wie im Eintrag."
   }
  ]
 }
