@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [41.1.6] - 2026-11-23
+
+### ✨ Améliorations
+
+- **Le mot ressort dans sa phrase d'exemple** : sur les cartes du carnet, dans la fiche du dictionnaire et dans la visite guidée, le mot que la phrase illustre est écrit en gras. On le retrouve d'un coup d'œil, même quand la phrase l'emploie sous une autre forme, et c'est maintenant le dictionnaire officiel lui-même qui désigne lequel : toutes les phrases ont le leur, y compris celles où rien ne le signalait avant.
+
 ## [41.1.5] - 2026-11-22
 
 ### ⚡ Rapidité
