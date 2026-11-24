@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [41.1.7] - 2026-11-24
+
+### ✨ Améliorations
+
+- **La traduction aussi met son mot en gras** : sous la phrase d'exemple, le mot français qui traduit celui de la carte ou de la fiche ressort à son tour. « ech si vun enger **Bei** gepickt ginn » et « j'ai été piqué par une **abeille** » se répondent d'un coup d'œil. Quand la traduction dit la phrase autrement que mot à mot, elle reste écrite normalement plutôt que de désigner le mauvais mot.
+
 ## [41.1.6] - 2026-11-23
 
 ### ✨ Améliorations
