@@ -1,9 +1,43 @@
 {
- "genere_le": "2026-11-23",
- "derniere_version": "41.1.6",
- "derniere_date": "2026-11-23",
+ "genere_le": "2026-11-24",
+ "derniere_version": "41.1.7",
+ "derniere_date": "2026-11-24",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.7",
+   "date": "2026-11-24",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Improvements",
+     "points": [
+      {
+       "titre": "The translation highlights its word too",
+       "texte": "Under the example sentence, the French word that translates the one on the card or in the dictionary entry now stands out in turn. « ech si vun enger <strong>Bei</strong> gepickt ginn » and « j'ai été piqué par une <strong>abeille</strong> » answer each other at a glance. When the translation renders the sentence other than word for word, it stays in plain type rather than point at the wrong word."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_glose_gras_fiche.gif",
+     "alt": "The entry for the word « Haus » in the app's dictionary: the word in large type, the label « Nom neutre » (neuter noun), the meaning « maison » (house), then the example sentence « mir hunn nach vill Aarbecht ronderëm eist neit Haus » with its translation in grey underneath, « il reste beaucoup de travaux à faire autour de notre maison » (there is still a lot of work to do around our new house), and a second example sentence. A yellow highlighter lights up the word « Haus » in the Luxembourgish sentence first, then the word « maison » in the translation, and both stay lit together.",
+     "legende": "In the dictionary, the translation puts the word it translates in bold."
+    },
+    {
+     "image": "Screenshots/lux_glose_gras_carte.gif",
+     "alt": "The « Beie » card of the collection, open, bearing the LuxKeyb watermark. Under the drawing of a golden bee in front of the lit façades of a town at nightfall, the plate with the word « Beie », then the text panel: the meaning « abeille » (bee), the example sentence « ech si vun enger Bei gepickt ginn » and its translation « j'ai été piqué par une abeille » (I was stung by a bee). A yellow highlighter lights up the word « Bei » in the sentence first, then the word « abeille » in the translation.",
+     "legende": "On the card too, the Luxembourgish word and the French one answer each other."
+    }
+   ],
+   "image": "Screenshots/lux_glose_gras_fiche.gif",
+   "image_alt": "The entry for the word « Haus » in the app's dictionary: the word in large type, the label « Nom neutre » (neuter noun), the meaning « maison » (house), then the example sentence « mir hunn nach vill Aarbecht ronderëm eist neit Haus » with its translation in grey underneath, « il reste beaucoup de travaux à faire autour de notre maison » (there is still a lot of work to do around our new house), and a second example sentence. A yellow highlighter lights up the word « Haus » in the Luxembourgish sentence first, then the word « maison » in the translation, and both stay lit together.",
+   "image_legende": "In the dictionary, the translation puts the word it translates in bold."
+  },
   {
    "version": "41.1.6",
    "date": "2026-11-23",
@@ -152,39 +186,6 @@
    "image": "Screenshots/lux_automne_dore.png",
    "image_alt": "Four card landscapes in autumn, in the afternoon, marked with the LuxKeyb watermark. 1. Ansembourg: in front of the castle, two verdigris bronze lions face each other on either side of the stairs, their manes over their heads, between two hedges of yellow and russet leaves; dead leaves are scattered over the lawn. 2. Esch-Sauer: the turquoise lake bordered by russet forests; on the right, the foot of the reeds fades away under the surface of the water. 3. Vianden: the castle above the valley, orange and golden hills. 4. The Mëllerdall: the stone bridge and the waterfalls, framed by russet foliage and golden ferns.",
    "image_legende": "Ansembourg, Esch-Sauer, Vianden and the Mëllerdall in autumn."
-  },
-  {
-   "version": "41.1.1",
-   "date": "2026-11-22",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Improvements",
-     "points": [
-      {
-       "titre": "The Red Bridge redrawn from a photo",
-       "texte": "The Rout Bréck has its true outline again, with its railing and its street lamps."
-      },
-      {
-       "titre": "Every place in its true material",
-       "texte": "Pylons, fences and street lamps are steel, no longer gold; the Mëllerdall sandstone shows its layers; the Hohllay millstones are carved into the rock; the Schengen stelae are rusted steel; the ramparts and the Bock rock show their stones; at Ansembourg the terrace is stone, with its arches, its lions and its steps; Neimënster abbey has its slate roofs; the Gëlle Fra shines on her pink granite; the Breedewee gate is made of big stones right up to the arch; the Conzefenn fence is real wood, knots and all."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_decors_matieres.png",
-     "alt": "Four card landscapes, marked with the LuxKeyb watermark, each shown in two views side by side: before on the left, after on the right. 1. Schengen: the three stelae, brown like wood, turn rust red, in steel. 2. The Gëlle Fra: her grey obelisk turns pink like granite, and the golden statue gains highlights. 3. The Mëllerdall: the smooth sandstone walls show their layers of rock. 4. Ansembourg: below the castle, the plain yellow terrace becomes a stone wall pierced with dark arches, and in front the two stone lions frame a flight of steps.",
-     "legende": "Schengen, the Gëlle Fra, the Mëllerdall and Ansembourg, before and after."
-    }
-   ],
-   "image": "Screenshots/lux_decors_matieres.png",
-   "image_alt": "Four card landscapes, marked with the LuxKeyb watermark, each shown in two views side by side: before on the left, after on the right. 1. Schengen: the three stelae, brown like wood, turn rust red, in steel. 2. The Gëlle Fra: her grey obelisk turns pink like granite, and the golden statue gains highlights. 3. The Mëllerdall: the smooth sandstone walls show their layers of rock. 4. Ansembourg: below the castle, the plain yellow terrace becomes a stone wall pierced with dark arches, and in front the two stone lions frame a flight of steps.",
-   "image_legende": "Schengen, the Gëlle Fra, the Mëllerdall and Ansembourg, before and after."
   }
  ]
 }

@@ -1,5 +1,19 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "41.1.7": {
+    "images": [
+      {
+        "image": "Screenshots/lux_glose_gras_fiche.gif",
+        "alt": "La fiche du mot « Haus » dans le dictionnaire de l'application : le mot en gros, l'étiquette « Nom neutre », le sens « maison », puis la phrase d'exemple « mir hunn nach vill Aarbecht ronderëm eist neit Haus » avec sa traduction en gris dessous, « il reste beaucoup de travaux à faire autour de notre maison », et une seconde phrase d'exemple. Un surligneur jaune éclaire d'abord le mot « Haus » dans la phrase luxembourgeoise, puis le mot « maison » dans la traduction, et les deux restent éclairés ensemble.",
+        "legende": "Dans le dictionnaire, la traduction met en gras le mot qu'elle traduit."
+      },
+      {
+        "image": "Screenshots/lux_glose_gras_carte.gif",
+        "alt": "La carte « Beie » du carnet, ouverte, marquée du filigrane LuxKeyb. Sous le dessin d'une abeille dorée devant les façades éclairées d'une ville le soir, la plaque du mot « Beie », puis le panneau de texte : le sens « abeille », la phrase d'exemple « ech si vun enger Bei gepickt ginn » et sa traduction « j'ai été piqué par une abeille ». Un surligneur jaune éclaire d'abord le mot « Bei » dans la phrase, puis le mot « abeille » dans la traduction.",
+        "legende": "Sur la carte aussi, le mot luxembourgeois et le mot français se répondent."
+      }
+    ]
+  },
   "41.1.6": {
     "images": [
       {

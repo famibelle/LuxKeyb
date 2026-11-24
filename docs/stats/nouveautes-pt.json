@@ -1,9 +1,43 @@
 {
- "genere_le": "2026-11-23",
- "derniere_version": "41.1.6",
- "derniere_date": "2026-11-23",
+ "genere_le": "2026-11-24",
+ "derniere_version": "41.1.7",
+ "derniere_date": "2026-11-24",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.7",
+   "date": "2026-11-24",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "A tradução também destaca a sua palavra",
+       "texte": "Sob a frase de exemplo, a palavra francesa que traduz a da carta ou da ficha do dicionário destaca-se por sua vez. « ech si vun enger <strong>Bei</strong> gepickt ginn » e « j'ai été piqué par une <strong>abeille</strong> » respondem-se num relance. Quando a tradução diz a frase de outra maneira que não palavra por palavra, fica escrita normalmente em vez de apontar a palavra errada."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_glose_gras_fiche.gif",
+     "alt": "A ficha da palavra « Haus » no dicionário da aplicação: a palavra em grande, a etiqueta « Nom neutre » (substantivo neutro), o sentido « maison » (casa), depois a frase de exemplo « mir hunn nach vill Aarbecht ronderëm eist neit Haus » com a sua tradução a cinzento por baixo, « il reste beaucoup de travaux à faire autour de notre maison » (ainda há muito trabalho a fazer à volta da nossa casa nova), e uma segunda frase de exemplo. Um marcador amarelo ilumina primeiro a palavra « Haus » na frase luxemburguesa, depois a palavra « maison » na tradução, e ambas ficam iluminadas em conjunto.",
+     "legende": "No dicionário, a tradução põe a negrito a palavra que traduz."
+    },
+    {
+     "image": "Screenshots/lux_glose_gras_carte.gif",
+     "alt": "A carta « Beie » da coleção, aberta, com a marca de água LuxKeyb. Sob o desenho de uma abelha dourada diante das fachadas iluminadas de uma cidade ao anoitecer, a placa com a palavra « Beie » e depois o painel de texto: o sentido « abeille » (abelha), a frase de exemplo « ech si vun enger Bei gepickt ginn » e a sua tradução « j'ai été piqué par une abeille » (fui picado por uma abelha). Um marcador amarelo ilumina primeiro a palavra « Bei » na frase, depois a palavra « abeille » na tradução.",
+     "legende": "Na carta também, a palavra luxemburguesa e a francesa respondem-se."
+    }
+   ],
+   "image": "Screenshots/lux_glose_gras_fiche.gif",
+   "image_alt": "A ficha da palavra « Haus » no dicionário da aplicação: a palavra em grande, a etiqueta « Nom neutre » (substantivo neutro), o sentido « maison » (casa), depois a frase de exemplo « mir hunn nach vill Aarbecht ronderëm eist neit Haus » com a sua tradução a cinzento por baixo, « il reste beaucoup de travaux à faire autour de notre maison » (ainda há muito trabalho a fazer à volta da nossa casa nova), e uma segunda frase de exemplo. Um marcador amarelo ilumina primeiro a palavra « Haus » na frase luxemburguesa, depois a palavra « maison » na tradução, e ambas ficam iluminadas em conjunto.",
+   "image_legende": "No dicionário, a tradução põe a negrito a palavra que traduz."
+  },
   {
    "version": "41.1.6",
    "date": "2026-11-23",
@@ -152,39 +186,6 @@
    "image": "Screenshots/lux_automne_dore.png",
    "image_alt": "Quatro paisagens de cartas no outono, à tarde, marcadas com a marca de água LuxKeyb. 1. Ansembourg: diante do castelo, dois leões de bronze esverdeado estão frente a frente de cada lado da escadaria, com a juba sobre a cabeça, entre duas sebes de folhas amarelas e ruivas; folhas secas cobrem o relvado. 2. Esch-Sauer: o lago turquesa rodeado de florestas ruivas; à direita, o pé dos juncos desvanece-se debaixo da superfície da água. 3. Vianden: o castelo por cima do vale, colinas laranja e douradas. 4. O Mëllerdall: a ponte de pedra e as cascatas, rodeadas de folhagem ruiva e fetos dourados.",
    "image_legende": "Ansembourg, Esch-Sauer, Vianden e o Mëllerdall no outono."
-  },
-  {
-   "version": "41.1.1",
-   "date": "2026-11-22",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "A Ponte Vermelha redesenhada a partir de uma foto",
-       "texte": "A Rout Bréck volta a ter a sua verdadeira silhueta, com o seu parapeito e os seus candeeiros."
-      },
-      {
-       "titre": "Cada lugar no seu verdadeiro material",
-       "texte": "Os postes, as vedações e os candeeiros são de aço e já não dourados; o arenito do Mëllerdall mostra as suas camadas; as mós da Hohllay estão escavadas na rocha; as estelas de Schengen são de aço enferrujado; a muralha e o rochedo do Bock deixam ver as suas pedras; em Ansembourg, o terraço é de pedra, com as suas arcadas, os seus leões e a sua escadaria; a abadia de Neimënster tem os seus telhados de ardósia; a Gëlle Fra brilha sobre o seu granito rosa; a porta do Breedewee é de grandes pedras até ao arco; a vedação de Conzefenn é de madeira verdadeira, com os seus nós."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_decors_matieres.png",
-     "alt": "Quatro paisagens de cartas, marcadas com a marca de água LuxKeyb, cada uma em duas vistas lado a lado: à esquerda antes, à direita depois. 1. Schengen: as três estelas, castanhas como madeira, ficam vermelho ferrugem, em aço. 2. A Gëlle Fra: o seu obelisco cinzento fica rosa como o granito, e a estátua dourada ganha reflexos. 3. O Mëllerdall: as paredes lisas de arenito mostram as suas camadas de rocha. 4. Ansembourg: por baixo do castelo, o terraço amarelo e liso torna-se um muro de pedras com arcadas escuras e, à frente, os dois leões de pedra enquadram uma escadaria.",
-     "legende": "Schengen, a Gëlle Fra, o Mëllerdall e Ansembourg, antes e depois."
-    }
-   ],
-   "image": "Screenshots/lux_decors_matieres.png",
-   "image_alt": "Quatro paisagens de cartas, marcadas com a marca de água LuxKeyb, cada uma em duas vistas lado a lado: à esquerda antes, à direita depois. 1. Schengen: as três estelas, castanhas como madeira, ficam vermelho ferrugem, em aço. 2. A Gëlle Fra: o seu obelisco cinzento fica rosa como o granito, e a estátua dourada ganha reflexos. 3. O Mëllerdall: as paredes lisas de arenito mostram as suas camadas de rocha. 4. Ansembourg: por baixo do castelo, o terraço amarelo e liso torna-se um muro de pedras com arcadas escuras e, à frente, os dois leões de pedra enquadram uma escadaria.",
-   "image_legende": "Schengen, a Gëlle Fra, o Mëllerdall e Ansembourg, antes e depois."
   }
  ]
 }

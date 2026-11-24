@@ -6,6 +6,30 @@
     "Changements": "Changes",
     "Rapidité": "Speed"
   },
+  "41.1.7": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Improvements",
+        "points": [
+          {
+            "titre": "The translation highlights its word too",
+            "texte": "Under the example sentence, the French word that translates the one on the card or in the dictionary entry now stands out in turn. « ech si vun enger <strong>Bei</strong> gepickt ginn » and « j'ai été piqué par une <strong>abeille</strong> » answer each other at a glance. When the translation renders the sentence other than word for word, it stays in plain type rather than point at the wrong word."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "The entry for the word « Haus » in the app's dictionary: the word in large type, the label « Nom neutre » (neuter noun), the meaning « maison » (house), then the example sentence « mir hunn nach vill Aarbecht ronderëm eist neit Haus » with its translation in grey underneath, « il reste beaucoup de travaux à faire autour de notre maison » (there is still a lot of work to do around our new house), and a second example sentence. A yellow highlighter lights up the word « Haus » in the Luxembourgish sentence first, then the word « maison » in the translation, and both stay lit together.",
+        "legende": "In the dictionary, the translation puts the word it translates in bold."
+      },
+      {
+        "alt": "The « Beie » card of the collection, open, bearing the LuxKeyb watermark. Under the drawing of a golden bee in front of the lit façades of a town at nightfall, the plate with the word « Beie », then the text panel: the meaning « abeille » (bee), the example sentence « ech si vun enger Bei gepickt ginn » and its translation « j'ai été piqué par une abeille » (I was stung by a bee). A yellow highlighter lights up the word « Bei » in the sentence first, then the word « abeille » in the translation.",
+        "legende": "On the card too, the Luxembourgish word and the French one answer each other."
+      }
+    ]
+  },
   "41.1.6": {
     "intro": "",
     "sections": [

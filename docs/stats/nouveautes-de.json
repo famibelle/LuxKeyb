@@ -1,9 +1,43 @@
 {
- "genere_le": "2026-11-23",
- "derniere_version": "41.1.6",
- "derniere_date": "2026-11-23",
+ "genere_le": "2026-11-24",
+ "derniere_version": "41.1.7",
+ "derniere_date": "2026-11-24",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.7",
+   "date": "2026-11-24",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Auch die Übersetzung hebt ihr Wort hervor",
+       "texte": "Unter dem Beispielsatz tritt nun auch das französische Wort hervor, das jenes der Karte oder des Wörterbucheintrags übersetzt. « ech si vun enger <strong>Bei</strong> gepickt ginn » und « j'ai été piqué par une <strong>abeille</strong> » antworten einander auf einen Blick. Gibt die Übersetzung den Satz nicht Wort für Wort wieder, bleibt sie normal gesetzt, statt auf das falsche Wort zu zeigen."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_glose_gras_fiche.gif",
+     "alt": "Der Wörterbucheintrag zum Wort « Haus » in der App: das Wort groß, das Etikett « Nom neutre » (sächliches Substantiv), die Bedeutung « maison » (Haus), dann der Beispielsatz « mir hunn nach vill Aarbecht ronderëm eist neit Haus » mit seiner Übersetzung in Grau darunter, « il reste beaucoup de travaux à faire autour de notre maison » (rund um unser neues Haus gibt es noch viel Arbeit), und ein zweiter Beispielsatz. Ein gelber Textmarker hebt zuerst das Wort « Haus » im luxemburgischen Satz hervor, dann das Wort « maison » in der Übersetzung, und beide bleiben gemeinsam hervorgehoben.",
+     "legende": "Im Wörterbuch setzt die Übersetzung das Wort fett, das sie übersetzt."
+    },
+    {
+     "image": "Screenshots/lux_glose_gras_carte.gif",
+     "alt": "Die geöffnete Karte « Beie » der Sammlung, mit dem Wasserzeichen LuxKeyb. Unter der Zeichnung einer goldenen Biene vor den erleuchteten Fassaden einer Stadt am Abend die Tafel mit dem Wort « Beie », dann das Textfeld: die Bedeutung « abeille » (Biene), der Beispielsatz « ech si vun enger Bei gepickt ginn » und seine Übersetzung « j'ai été piqué par une abeille » (ich bin von einer Biene gestochen worden). Ein gelber Textmarker hebt zuerst das Wort « Bei » im Satz hervor, dann das Wort « abeille » in der Übersetzung.",
+     "legende": "Auch auf der Karte antworten einander das luxemburgische und das französische Wort."
+    }
+   ],
+   "image": "Screenshots/lux_glose_gras_fiche.gif",
+   "image_alt": "Der Wörterbucheintrag zum Wort « Haus » in der App: das Wort groß, das Etikett « Nom neutre » (sächliches Substantiv), die Bedeutung « maison » (Haus), dann der Beispielsatz « mir hunn nach vill Aarbecht ronderëm eist neit Haus » mit seiner Übersetzung in Grau darunter, « il reste beaucoup de travaux à faire autour de notre maison » (rund um unser neues Haus gibt es noch viel Arbeit), und ein zweiter Beispielsatz. Ein gelber Textmarker hebt zuerst das Wort « Haus » im luxemburgischen Satz hervor, dann das Wort « maison » in der Übersetzung, und beide bleiben gemeinsam hervorgehoben.",
+   "image_legende": "Im Wörterbuch setzt die Übersetzung das Wort fett, das sie übersetzt."
+  },
   {
    "version": "41.1.6",
    "date": "2026-11-23",
@@ -152,39 +186,6 @@
    "image": "Screenshots/lux_automne_dore.png",
    "image_alt": "Vier Kartenlandschaften im Herbst, am Nachmittag, mit dem Wasserzeichen LuxKeyb. 1. Ansemburg: vor dem Schloss sitzen sich zwei grünspanige Bronzelöwen zu beiden Seiten der Treppe gegenüber, die Mähne über dem Kopf, zwischen zwei Hecken mit gelben und rotbraunen Blättern; welkes Laub liegt auf dem Rasen. 2. Esch-Sauer: der türkisfarbene See zwischen rotbraunen Wäldern; rechts verblasst der Fuß des Schilfs unter der Wasseroberfläche. 3. Vianden: das Schloss über dem Tal, orange und goldene Hügel. 4. Das Mëllerdall: die Steinbrücke und die Wasserfälle, umrahmt von rotbraunem Laub und goldenen Farnen.",
    "image_legende": "Ansemburg, Esch-Sauer, Vianden und das Mëllerdall im Herbst."
-  },
-  {
-   "version": "41.1.1",
-   "date": "2026-11-22",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Die Rote Brücke nach einem Foto neu gezeichnet",
-       "texte": "Die Rout Bréck hat wieder ihre echte Gestalt, mit Geländer und Laternen."
-      },
-      {
-       "titre": "Jeder Ort in seinem echten Material",
-       "texte": "Masten, Zäune und Laternen sind aus Stahl und nicht mehr golden; der Sandstein des Mëllerdall zeigt seine Schichten; die Mühlsteine der Hohllay sind in den Fels gehauen; die Stelen von Schengen sind aus rostigem Stahl; die Festungsmauer und der Bockfelsen zeigen ihre Steine; in Ansemburg ist die Terrasse aus Stein, mit ihren Bögen, ihren Löwen und ihrer Treppe; die Abtei Neimënster hat ihre Schieferdächer; die Gëlle Fra glänzt auf ihrem rosa Granit; das Tor des Breedewee ist bis zum Bogen aus großen Steinen; der Zaun von Conzefenn ist aus echtem Holz, mit seinen Astknoten."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_decors_matieres.png",
-     "alt": "Vier Kartenlandschaften mit dem Wasserzeichen LuxKeyb, jede in zwei Ansichten nebeneinander: links vorher, rechts nachher. 1. Schengen: die drei Stelen, braun wie Holz, werden rostrot, aus Stahl. 2. Die Gëlle Fra: ihr grauer Obelisk wird rosa wie Granit, und die goldene Statue bekommt Glanzlichter. 3. Das Mëllerdall: die glatten Sandsteinwände zeigen ihre Gesteinsschichten. 4. Ansemburg: unter dem Schloss wird die einfarbig gelbe Terrasse zu einer Steinmauer mit dunklen Bögen, und davor rahmen die zwei Steinlöwen eine Treppe ein.",
-     "legende": "Schengen, die Gëlle Fra, das Mëllerdall und Ansemburg, vorher und nachher."
-    }
-   ],
-   "image": "Screenshots/lux_decors_matieres.png",
-   "image_alt": "Vier Kartenlandschaften mit dem Wasserzeichen LuxKeyb, jede in zwei Ansichten nebeneinander: links vorher, rechts nachher. 1. Schengen: die drei Stelen, braun wie Holz, werden rostrot, aus Stahl. 2. Die Gëlle Fra: ihr grauer Obelisk wird rosa wie Granit, und die goldene Statue bekommt Glanzlichter. 3. Das Mëllerdall: die glatten Sandsteinwände zeigen ihre Gesteinsschichten. 4. Ansemburg: unter dem Schloss wird die einfarbig gelbe Terrasse zu einer Steinmauer mit dunklen Bögen, und davor rahmen die zwei Steinlöwen eine Treppe ein.",
-   "image_legende": "Schengen, die Gëlle Fra, das Mëllerdall und Ansemburg, vorher und nachher."
   }
  ]
 }

@@ -6,6 +6,30 @@
     "Changements": "Änderungen",
     "Rapidité": "Geschwindigkeit"
   },
+  "41.1.7": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Auch die Übersetzung hebt ihr Wort hervor",
+            "texte": "Unter dem Beispielsatz tritt nun auch das französische Wort hervor, das jenes der Karte oder des Wörterbucheintrags übersetzt. « ech si vun enger <strong>Bei</strong> gepickt ginn » und « j'ai été piqué par une <strong>abeille</strong> » antworten einander auf einen Blick. Gibt die Übersetzung den Satz nicht Wort für Wort wieder, bleibt sie normal gesetzt, statt auf das falsche Wort zu zeigen."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "Der Wörterbucheintrag zum Wort « Haus » in der App: das Wort groß, das Etikett « Nom neutre » (sächliches Substantiv), die Bedeutung « maison » (Haus), dann der Beispielsatz « mir hunn nach vill Aarbecht ronderëm eist neit Haus » mit seiner Übersetzung in Grau darunter, « il reste beaucoup de travaux à faire autour de notre maison » (rund um unser neues Haus gibt es noch viel Arbeit), und ein zweiter Beispielsatz. Ein gelber Textmarker hebt zuerst das Wort « Haus » im luxemburgischen Satz hervor, dann das Wort « maison » in der Übersetzung, und beide bleiben gemeinsam hervorgehoben.",
+        "legende": "Im Wörterbuch setzt die Übersetzung das Wort fett, das sie übersetzt."
+      },
+      {
+        "alt": "Die geöffnete Karte « Beie » der Sammlung, mit dem Wasserzeichen LuxKeyb. Unter der Zeichnung einer goldenen Biene vor den erleuchteten Fassaden einer Stadt am Abend die Tafel mit dem Wort « Beie », dann das Textfeld: die Bedeutung « abeille » (Biene), der Beispielsatz « ech si vun enger Bei gepickt ginn » und seine Übersetzung « j'ai été piqué par une abeille » (ich bin von einer Biene gestochen worden). Ein gelber Textmarker hebt zuerst das Wort « Bei » im Satz hervor, dann das Wort « abeille » in der Übersetzung.",
+        "legende": "Auch auf der Karte antworten einander das luxemburgische und das französische Wort."
+      }
+    ]
+  },
   "41.1.6": {
     "intro": "",
     "sections": [

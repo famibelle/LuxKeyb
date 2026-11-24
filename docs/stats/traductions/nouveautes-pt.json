@@ -6,6 +6,30 @@
     "Changements": "Alterações",
     "Rapidité": "Rapidez"
   },
+  "41.1.7": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Melhorias",
+        "points": [
+          {
+            "titre": "A tradução também destaca a sua palavra",
+            "texte": "Sob a frase de exemplo, a palavra francesa que traduz a da carta ou da ficha do dicionário destaca-se por sua vez. « ech si vun enger <strong>Bei</strong> gepickt ginn » e « j'ai été piqué par une <strong>abeille</strong> » respondem-se num relance. Quando a tradução diz a frase de outra maneira que não palavra por palavra, fica escrita normalmente em vez de apontar a palavra errada."
+          }
+        ]
+      }
+    ],
+    "images": [
+      {
+        "alt": "A ficha da palavra « Haus » no dicionário da aplicação: a palavra em grande, a etiqueta « Nom neutre » (substantivo neutro), o sentido « maison » (casa), depois a frase de exemplo « mir hunn nach vill Aarbecht ronderëm eist neit Haus » com a sua tradução a cinzento por baixo, « il reste beaucoup de travaux à faire autour de notre maison » (ainda há muito trabalho a fazer à volta da nossa casa nova), e uma segunda frase de exemplo. Um marcador amarelo ilumina primeiro a palavra « Haus » na frase luxemburguesa, depois a palavra « maison » na tradução, e ambas ficam iluminadas em conjunto.",
+        "legende": "No dicionário, a tradução põe a negrito a palavra que traduz."
+      },
+      {
+        "alt": "A carta « Beie » da coleção, aberta, com a marca de água LuxKeyb. Sob o desenho de uma abelha dourada diante das fachadas iluminadas de uma cidade ao anoitecer, a placa com a palavra « Beie » e depois o painel de texto: o sentido « abeille » (abelha), a frase de exemplo « ech si vun enger Bei gepickt ginn » e a sua tradução « j'ai été piqué par une abeille » (fui picado por uma abelha). Um marcador amarelo ilumina primeiro a palavra « Bei » na frase, depois a palavra « abeille » na tradução.",
+        "legende": "Na carta também, a palavra luxemburguesa e a francesa respondem-se."
+      }
+    ]
+  },
   "41.1.6": {
     "intro": "",
     "sections": [
