@@ -576,7 +576,12 @@ object CarteCarnet {
             } else if (traduction != null) {
                 // Trois unités d'air : collée à la phrase, la traduction se
                 // lisait comme sa troisième ligne.
-                addView(bloc(context, traduction, 9f, ENCRE_PALE, 3f).apply { maxLines = 2 })
+                //
+                // Le mot français ressort comme le luxembourgeois au-dessus,
+                // quand la traduction l'emploie — voir
+                // [TranslationDictionary.glosEnGras] pour ce « quand ».
+                val dite = TranslationDictionary.glosEnGras(traduction, c.glose)
+                addView(bloc(context, dite, 9f, ENCRE_PALE, 3f).apply { maxLines = 2 })
             } else if (c.autresFormes.isNotEmpty()) {
                 addView(
                     bloc(

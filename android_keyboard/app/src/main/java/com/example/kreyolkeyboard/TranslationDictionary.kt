@@ -763,6 +763,116 @@ object TranslationDictionary {
     }
 
     /**
+     * [texte] avec en gras le mot français que [glose] donne pour sens.
+     *
+     * Le pendant français de [enGras], aux mêmes trois endroits : la carte du
+     * carnet (donc la carte imprimée), la fiche du Wierderbuch et la bulle de
+     * la visite. La phrase luxembourgeoise montre le mot à l'œuvre, la ligne
+     * grise dessous dit ce qu'il veut dire : faire ressortir les deux relie
+     * l'un à l'autre d'un coup d'œil, ce que la lecture seule demande de
+     * reconstituer.
+     *
+     * **Ici la source ne désigne rien, et c'est tout le problème.** Le LOD
+     * balise son mot dans sa phrase (`<inflectedHeadword>`, voir [enGras]),
+     * mais la traduction vient du corpus du ZLS, publiée phrase entière, sans
+     * correspondance mot à mot. Il faut donc retrouver la glose dans la
+     * traduction, et cela ne réussit pas toujours : mesuré sur les 4 218
+     * phrases traduites que portent les actifs, le gras se pose sur **66,2 %**
+     * d'entre elles, s'abstient par ambiguïté sur 1,2 %, et ne trouve rien sur
+     * 32,6 %. Ce dernier tiers n'est pas un défaut à corriger : la traduction
+     * est fidèle à la phrase, pas au mot. « Gedanken » se glose « pensée » et
+     * sa phrase dit « changer les idées » ; « Kutsch » se glose « landau » et
+     * sa phrase dit « poussette » ; « Brennnessel » se glose « ortie » dans une
+     * phrase imagée qui ne parle pas d'orties. Une ligne sans gras ne se
+     * remarque pas ; un gras sur le mauvais mot, si. D'où trois règles :
+     *
+     * - **L'acception se retrouve entière ou pas du tout.** « gëftgréng » se
+     *   glose « vert criard » et sa phrase dit « vert vif » : grasser le seul
+     *   « vert » donnerait une moitié d'expression. Accepter les mots isolés
+     *   d'une acception gagnait 4,8 points et produisait « en couche **très**
+     *   fine » pour « très fin ».
+     * - **Le pluriel passe**, un « s » de plus ou de moins sur un mot d'au
+     *   moins quatre lettres : sans lui « chômeur » manquait « le nombre de
+     *   chômeurs » et « ortie » manquait « tomber dans les orties ». Il vaut
+     *   13 points à lui seul. On ne va pas plus loin : conjuguer les verbes
+     *   français ici serait une grammaire de plus à tenir.
+     * - **Deux acceptions trouvées dans la même phrase, on s'abstient.** La
+     *   glose liste les sens d'un mot, pas d'une phrase, et rien ne dit lequel
+     *   celle-ci emploie.
+     *
+     * Les parenthèses de la glose sont écartées : « tombé (au champ
+     * d'honneur) » se cherche comme « tombé ».
+     */
+    fun glosEnGras(texte: CharSequence, glose: String?): CharSequence {
+        val positions = placesDeLaGlose(texte.toString(), glose)
+        if (positions.isEmpty()) return texte
+        val rendu = SpannableString(texte)
+        for (position in positions) {
+            rendu.setSpan(
+                StyleSpan(Typeface.BOLD), position.first, position.last + 1,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+        return rendu
+    }
+
+    /**
+     * Où mettre le gras dans [texte] pour [glose], vide s'il ne faut pas.
+     *
+     * La décision de [glosEnGras], séparée de la pose du style : les classes de
+     * style d'Android n'existent pas dans la suite de tests, qui vérifie donc
+     * ici ce qui se voit à l'écran là-bas.
+     */
+    fun placesDeLaGlose(texte: String, glose: String?): List<IntRange> {
+        if (glose.isNullOrBlank()) return emptyList()
+        val jetons = jetonsAvecPositions(texte)
+        if (jetons.isEmpty()) return emptyList()
+        val plies = jetons.map { AccentTolerantMatcher.normalize(texte.substring(it.first, it.last + 1)) }
+        var retenues: List<IntRange>? = null
+        for (acception in acceptions(glose)) {
+            val cible = jetonsAvecPositions(acception)
+                .map { AccentTolerantMatcher.normalize(acception.substring(it.first, it.last + 1)) }
+            if (cible.isEmpty()) continue
+            val trouvees = occurrences(plies, jetons, cible)
+            if (trouvees.isEmpty()) continue
+            // Un deuxième sens présent dans la même phrase : on ne tranche pas.
+            if (retenues != null) return emptyList()
+            retenues = trouvees
+        }
+        return retenues.orEmpty()
+    }
+
+    /** Les acceptions d'une glose, leurs précisions entre parenthèses retirées. */
+    private fun acceptions(glose: String): List<String> = glose.split(',')
+        .map { it.replace(Regex("\\([^)]*\\)"), " ").trim() }
+        .filter { it.isNotEmpty() }
+
+    /** Les mots de [texte] avec leur place, pour pouvoir y poser un style. */
+    private fun jetonsAvecPositions(texte: String): List<IntRange> =
+        Regex("\\p{L}+").findAll(texte).map { it.range }.toList()
+
+    /** Où [cible], suite de mots pliés, se lit entière dans la phrase. */
+    private fun occurrences(
+        plies: List<String>,
+        jetons: List<IntRange>,
+        cible: List<String>
+    ): List<IntRange> {
+        if (cible.size > plies.size) return emptyList()
+        val trouvees = mutableListOf<IntRange>()
+        for (depart in 0..plies.size - cible.size) {
+            if (cible.indices.all { memeMot(plies[depart + it], cible[it]) }) {
+                trouvees.add(jetons[depart].first..jetons[depart + cible.size - 1].last)
+            }
+        }
+        return trouvees
+    }
+
+    /** Deux mots pliés égaux, au pluriel français près. */
+    private fun memeMot(mot: String, cible: String): Boolean = mot == cible ||
+        (cible.length >= 4 && mot == cible + "s") ||
+        (mot.length >= 4 && cible == mot + "s")
+
+    /**
      * Un résultat de recherche : le mot, sa glose, et ses autres formes.
      *
      * [formes] est vide quand le mot n'a pas de famille — un nom propre, un

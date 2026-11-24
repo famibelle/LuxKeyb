@@ -11016,7 +11016,10 @@ class SettingsActivity : AppCompatActivity() {
                             exemple.traduction?.let { francais ->
                                 append("\n")
                                 val debut = length
-                                append(francais)
+                                // Le mot français en gras quand la traduction
+                                // l'emploie, comme le luxembourgeois l'est
+                                // au-dessus : voir [glosEnGras].
+                                append(TranslationDictionary.glosEnGras(francais, resultat.glose))
                                 setSpan(RelativeSizeSpan(0.85f), debut, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                                 setSpan(
                                     ForegroundColorSpan(Color.parseColor("#777777")),

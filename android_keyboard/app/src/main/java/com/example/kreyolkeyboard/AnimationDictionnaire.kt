@@ -262,7 +262,7 @@ class AnimationDictionnaire(context: Context) : View(context) {
         c.restore()
     }
 
-    /** La phrase d'exemple, les formes du mot en gras comme sur la fiche, et sa traduction en gris dessous. */
+    /** La phrase d'exemple, le mot en gras comme sur la fiche, et sa traduction en gris dessous, son mot français en gras lui aussi. */
     @Suppress("DEPRECATION")
     private fun mettreEnPage(dd: Donnees, exemple: TranslationDictionary.Exemple, largeur: Int): StaticLayout {
         val traduction = exemple.traduction?.takeIf { it.isNotBlank() }
@@ -274,7 +274,8 @@ class AnimationDictionnaire(context: Context) : View(context) {
                 dd.fiche.formes + dd.fiche.mot)
         )
         if (traduction != null) {
-            tout.append("\n").append(traduction)
+            tout.append("\n")
+                .append(TranslationDictionary.glosEnGras(traduction, dd.fiche.glose))
             val debut = exemple.phrase.length + 1
             tout.setSpan(RelativeSizeSpan(0.9f), debut, tout.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             tout.setSpan(ForegroundColorSpan(Color.parseColor("#777777")), debut, tout.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
