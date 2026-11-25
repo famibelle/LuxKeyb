@@ -1,6 +1,6 @@
 ---
-title: "Guide d'installation et d'utilisation : Lëtzebuergesch Clavier"
-description: "Comment installer, activer et utiliser le Lëtzebuergesch Clavier : installation guidée, diacritiques, suggestions, majuscules automatiques des noms, dictionnaire Wierderbuch, les sept jeux, le carnet de cartes (paysages, saisons, séries, partage et échange) et sa Boîte de Leitner, et la FAQ."
+title: "Guide d'installation et d'utilisation : de Lëtzebuerger Clavier"
+description: "Comment installer, activer et utiliser de Lëtzebuerger Clavier : installation guidée, diacritiques, suggestions, majuscules automatiques des noms, dictionnaire Wierderbuch, les sept jeux, le carnet de cartes (paysages, saisons, séries, partage et échange) et sa Boîte de Leitner, et la FAQ."
 lang: fr
 ---
 
@@ -15,7 +15,7 @@ lang: fr
 
 # Guide d'installation et d'utilisation
 
-*Tout ce qu'il faut savoir pour activer le Lëtzebuergesch Clavier et en tirer le
+*Tout ce qu'il faut savoir pour activer de Lëtzebuerger Clavier et en tirer le
 meilleur, en cinq minutes.*
 
 ## Installation en 3 étapes

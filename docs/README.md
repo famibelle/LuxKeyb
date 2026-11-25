@@ -1,4 +1,4 @@
-**Lëtzebuergesch Clavier** est un clavier intelligent qui répond à un besoin
+**De Lëtzebuerger Clavier** est un clavier intelligent qui répond à un besoin
 simple : écrire facilement en **Lëtzebuergesch**, avec fluidité, authenticité et
 fierté.
 
@@ -27,7 +27,7 @@ marche à suivre est détaillée pas à pas.
 
 ## 🎮 Système de progression et de gamification
 
-**Lëtzebuergesch Clavier** ne se contente pas de fluidifier l'écriture du Lëtzebuergesch : il **suit votre progression** et vous accompagne dans votre maîtrise du luxembourgeois !
+**De Lëtzebuerger Clavier** ne se contente pas de fluidifier l'écriture du Lëtzebuergesch : il **suit votre progression** et vous accompagne dans votre maîtrise du luxembourgeois !
 
 ### 📊 Suivez vos progrès en temps réel
 
@@ -75,7 +75,7 @@ Tirez simplement l'écran vers le bas (**Pull-to-Refresh**) dans l'onglet Statis
 L'application est disponible sur le Play Store : [ouvrir la fiche](https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard) depuis votre téléphone. Installation en un geste et mises à jour automatiques, sans passer par les « sources inconnues ». Détails sur la [page d'accueil](index.html#devenir-testeur).
 
 <div align="center">
-  <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard"><img src="assets/qr-luxkeyb-store.png" alt="QR code ouvrant la fiche de Lëtzebuergesch Clavier sur Google Play" width="200"></a>
+  <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard"><img src="assets/qr-luxkeyb-store.png" alt="QR code ouvrant la fiche de de Lëtzebuerger Clavier sur Google Play" width="200"></a>
 </div>
 
 ### 📱 **Installation Rapide**

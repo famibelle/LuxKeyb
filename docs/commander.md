@@ -249,7 +249,7 @@ nos animations ou d'un stand.
 
 ## Gratuit, pour toujours
 
-- **L'application** Lëtzebuergesch Clavier : le clavier, le Wierderbuch, le
+- **L'application** De Lëtzebuerger Clavier : le clavier, le Wierderbuch, le
   carnet et les jeux. [L'installer](index.html#installer).
 - **Les cartes à imprimer**, pour les écoles, les animations et pour apprendre
   chez soi : [les fichiers](https://github.com/famibelle/LuxKeyb/tree/main/cartes-imprimables).

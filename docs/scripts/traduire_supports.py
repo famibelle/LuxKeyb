@@ -45,36 +45,36 @@ BANDEAU = {
 # (fragment français exact, {langue: traduction})
 T = [
     # ---- En-têtes des pages web (hors impression) ----
-    ("Tract à imprimer · Lëtzebuergesch Clavier", {
-        "lb": "Fluchblat fir ze drécken · Lëtzebuergesch Clavier",
-        "de": "Flyer zum Ausdrucken · Lëtzebuergesch Clavier",
-        "en": "Printable flyer · Lëtzebuergesch Clavier",
-        "pt": "Folheto para imprimir · Lëtzebuergesch Clavier"}),
-    ("Tract éco encre à imprimer · Lëtzebuergesch Clavier", {
-        "lb": "Fluchblat, Spuerversioun · Lëtzebuergesch Clavier",
-        "de": "Flyer, tintensparende Version · Lëtzebuergesch Clavier",
-        "en": "Flyer, ink-saving version · Lëtzebuergesch Clavier",
-        "pt": "Folheto, versão económica · Lëtzebuergesch Clavier"}),
-    ("Affiche à imprimer · Lëtzebuergesch Clavier", {
-        "lb": "Plakat fir ze drécken · Lëtzebuergesch Clavier",
-        "de": "Plakat zum Ausdrucken · Lëtzebuergesch Clavier",
-        "en": "Printable poster · Lëtzebuergesch Clavier",
-        "pt": "Cartaz para imprimir · Lëtzebuergesch Clavier"}),
-    ("Affiche éco encre à imprimer · Lëtzebuergesch Clavier", {
-        "lb": "Plakat, Spuerversioun · Lëtzebuergesch Clavier",
-        "de": "Plakat, tintensparende Version · Lëtzebuergesch Clavier",
-        "en": "Poster, ink-saving version · Lëtzebuergesch Clavier",
-        "pt": "Cartaz, versão económica · Lëtzebuergesch Clavier"}),
-    ("Triptyque à imprimer · Lëtzebuergesch Clavier", {
-        "lb": "Faltblat fir ze drécken · Lëtzebuergesch Clavier",
-        "de": "Faltblatt zum Ausdrucken · Lëtzebuergesch Clavier",
-        "en": "Printable leaflet · Lëtzebuergesch Clavier",
-        "pt": "Desdobrável para imprimir · Lëtzebuergesch Clavier"}),
-    ("Triptyque éco encre à imprimer · Lëtzebuergesch Clavier", {
-        "lb": "Faltblat, Spuerversioun · Lëtzebuergesch Clavier",
-        "de": "Faltblatt, tintensparende Version · Lëtzebuergesch Clavier",
-        "en": "Leaflet, ink-saving version · Lëtzebuergesch Clavier",
-        "pt": "Desdobrável, versão económica · Lëtzebuergesch Clavier"}),
+    ("Tract à imprimer · de Lëtzebuerger Clavier", {
+        "lb": "Fluchblat fir ze drécken · de Lëtzebuerger Clavier",
+        "de": "Flyer zum Ausdrucken · de Lëtzebuerger Clavier",
+        "en": "Printable flyer · de Lëtzebuerger Clavier",
+        "pt": "Folheto para imprimir · de Lëtzebuerger Clavier"}),
+    ("Tract éco encre à imprimer · de Lëtzebuerger Clavier", {
+        "lb": "Fluchblat, Spuerversioun · de Lëtzebuerger Clavier",
+        "de": "Flyer, tintensparende Version · de Lëtzebuerger Clavier",
+        "en": "Flyer, ink-saving version · de Lëtzebuerger Clavier",
+        "pt": "Folheto, versão económica · de Lëtzebuerger Clavier"}),
+    ("Affiche à imprimer · de Lëtzebuerger Clavier", {
+        "lb": "Plakat fir ze drécken · de Lëtzebuerger Clavier",
+        "de": "Plakat zum Ausdrucken · de Lëtzebuerger Clavier",
+        "en": "Printable poster · de Lëtzebuerger Clavier",
+        "pt": "Cartaz para imprimir · de Lëtzebuerger Clavier"}),
+    ("Affiche éco encre à imprimer · de Lëtzebuerger Clavier", {
+        "lb": "Plakat, Spuerversioun · de Lëtzebuerger Clavier",
+        "de": "Plakat, tintensparende Version · de Lëtzebuerger Clavier",
+        "en": "Poster, ink-saving version · de Lëtzebuerger Clavier",
+        "pt": "Cartaz, versão económica · de Lëtzebuerger Clavier"}),
+    ("Triptyque à imprimer · de Lëtzebuerger Clavier", {
+        "lb": "Faltblat fir ze drécken · de Lëtzebuerger Clavier",
+        "de": "Faltblatt zum Ausdrucken · de Lëtzebuerger Clavier",
+        "en": "Printable leaflet · de Lëtzebuerger Clavier",
+        "pt": "Desdobrável para imprimir · de Lëtzebuerger Clavier"}),
+    ("Triptyque éco encre à imprimer · de Lëtzebuerger Clavier", {
+        "lb": "Faltblat, Spuerversioun · de Lëtzebuerger Clavier",
+        "de": "Faltblatt, tintensparende Version · de Lëtzebuerger Clavier",
+        "en": "Leaflet, ink-saving version · de Lëtzebuerger Clavier",
+        "pt": "Desdobrável, versão económica · de Lëtzebuerger Clavier"}),
     ("Tract A5 prêt à imprimer (2 par feuille A4) pour faire connaître le clavier luxembourgeois : à déposer au comptoir d'une boulangerie, d'un café, d'une maison des jeunes. QR code vers la fiche Google Play.", {
         "lb": "A5-Fluchblat fir ze drécken (2 pro A4-Blat), fir d'lëtzebuergesch Tastatur bekannt ze maachen. QR-Code op d'Säit am Google Play.",
         "de": "A5-Flyer zum Ausdrucken (2 pro A4-Blatt), um die luxemburgische Tastatur bekannt zu machen. QR-Code zur Google-Play-Seite.",
@@ -105,11 +105,11 @@ T = [
         "de": "Tintensparende Version des Faltblatts: weiße Flächen, Falzmarken, schwarz-weiß lesbar.",
         "en": "Ink-saving version of the leaflet: white panels, fold marks, readable in black and white.",
         "pt": "Versão económica do desdobrável: fundos brancos, marcas de dobragem, legível a preto e branco."}),
-    ("Lëtzebuergesch Clavier · kit ambassadeur", {
-        "lb": "Lëtzebuergesch Clavier · Ambassadeursmaterial",
-        "de": "Lëtzebuergesch Clavier · Botschafter-Kit",
-        "en": "Lëtzebuergesch Clavier · ambassador kit",
-        "pt": "Lëtzebuergesch Clavier · kit de embaixador"}),
+    ("De Lëtzebuerger Clavier · kit ambassadeur", {
+        "lb": "De Lëtzebuerger Clavier · Ambassadeursmaterial",
+        "de": "De Lëtzebuerger Clavier · Botschafter-Kit",
+        "en": "De Lëtzebuerger Clavier · ambassador kit",
+        "pt": "De Lëtzebuerger Clavier · kit de embaixador"}),
     ("Un tract à distribuer 🪧", {
         "lb": "E Fluchblat fir ze verdeelen 🪧", "de": "Ein Flyer zum Verteilen 🪧",
         "en": "A flyer to hand out 🪧", "pt": "Um folheto para distribuir 🪧"}),
@@ -234,11 +234,11 @@ T = [
     ('alt="Disponible sur Google Play"', {
         "lb": 'alt="Disponible sur Google Play"', "de": 'alt="Jetzt bei Google Play"',
         "en": 'alt="Get it on Google Play"', "pt": 'alt="Disponível no Google Play"'}),
-    ('alt="QR code vers la fiche Google Play du Lëtzebuergesch Clavier"', {
-        "lb": 'alt="QR-Code op d\'Säit vum Lëtzebuergesch Clavier am Google Play"',
-        "de": 'alt="QR-Code zur Google-Play-Seite von Lëtzebuergesch Clavier"',
-        "en": 'alt="QR code to the Lëtzebuergesch Clavier Google Play page"',
-        "pt": 'alt="Código QR para a página do Lëtzebuergesch Clavier no Google Play"'}),
+    ('alt="QR code vers la fiche Google Play de de Lëtzebuerger Clavier"', {
+        "lb": 'alt="QR-Code op d\'Säit vum Lëtzebuerger Clavier am Google Play"',
+        "de": 'alt="QR-Code zur Google-Play-Seite von de Lëtzebuerger Clavier"',
+        "en": 'alt="QR code to de Lëtzebuerger Clavier Google Play page"',
+        "pt": 'alt="Código QR para a página de de Lëtzebuerger Clavier no Google Play"'}),
     ('alt="Drapeau du Luxembourg"', {
         "lb": 'alt="Lëtzebuerger Fändel"', "de": 'alt="Flagge Luxemburgs"',
         "en": 'alt="Flag of Luxembourg"', "pt": 'alt="Bandeira do Luxemburgo"'}),
@@ -538,7 +538,8 @@ T = [
 # Textes visibles qui restent identiques dans toutes les langues : nom de
 # l'application, exemples tapés en luxembourgeois, noms propres.
 INVARIANTS = {
-    "Lëtzebuergesch Clavier", "LËTZEBUERGESCH CLAVIER", "Schreif Lëtzebuergesch.", "Schreif",
+    "Lëtzebuergesch Clavier", "LËTZEBUERGESCH CLAVIER", "de Lëtzebuerger Clavier", "De Lëtzebuerger Clavier",
+    "DE LËTZEBUERGER CLAVIER", "Schreif Lëtzebuergesch.", "Schreif",
     "Lëtzebuergesch.", "ë · ä · é", "é, ä, ë", "Mir schwätze Lëtzebuergesch, elo schreiwe mir et och.",
     "Mir wëlle bleiwe wat mir sinn.", "Däi Lëtzebuergesch, op dengem Telefon.", "famibelle.github.io/LuxKeyb",
     "· famibelle.github.io/LuxKeyb", "Web", "Ufänger", "Sproochemeeschter", "LuxAlign", "LETZ",

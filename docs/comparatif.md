@@ -1,6 +1,6 @@
 ---
-title: "Lëtzebuergesch Clavier, Clavier Samsung, Gboard ou clavier Apple : lequel pour écrire en luxembourgeois ?"
-description: "Comparatif détaillé du Lëtzebuergesch Clavier face au Clavier Samsung, à Gboard et au clavier d'Apple : disposition, dictionnaire, prédiction mesurée sur un Galaxy, mémoire, vie privée, et ce que les autres font mieux."
+title: "De Lëtzebuerger Clavier, Clavier Samsung, Gboard ou clavier Apple : lequel pour écrire en luxembourgeois ?"
+description: "Comparatif détaillé de de Lëtzebuerger Clavier face au Clavier Samsung, à Gboard et au clavier d'Apple : disposition, dictionnaire, prédiction mesurée sur un Galaxy, mémoire, vie privée, et ce que les autres font mieux."
 lang: fr
 ---
 
@@ -25,7 +25,7 @@ lang: fr
   <button type="button" class="theme-toggle" aria-label="Changer de thème">🌙</button>
 </nav>
 
-# Lëtzebuergesch Clavier, Clavier Samsung, Gboard ou clavier Apple ?
+# De Lëtzebuerger Clavier, Clavier Samsung, Gboard ou clavier Apple ?
 
 *Pour écrire en luxembourgeois sur un téléphone, quatre voies : le clavier livré
 avec l'iPhone, celui livré avec les Galaxy, Gboard — celui de Google, installé
@@ -48,7 +48,7 @@ pour vous, sans jargon. Les étoiles se lisent ainsi : ⭐⭐⭐ très bien, ⭐
 
 <div class="table-scroll" markdown="1">
 
-| | 🇱🇺 **Lëtzebuergesch Clavier** | 📱 **Clavier Samsung** | 🔍 **Gboard** (celui de Google) |
+| | 🇱🇺 **De Lëtzebuerger Clavier** | 📱 **Clavier Samsung** | 🔍 **Gboard** (celui de Google) |
 |---|---|---|---|
 | ✍️ **Il devine le mot que vous allez écrire** | ⭐⭐⭐<br>20 fois sur 100 | ⭐⭐⭐<br>18 fois sur 100 | ⭐⭐<br>13 fois sur 100 |
 | 🔤 **Les é, ä, ë sont faciles à taper** | ⭐⭐⭐<br>une touche pour chacun | ⭐⭐<br>il faut rester appuyé | ⭐⭐⭐<br>une touche pour chacun |
@@ -94,7 +94,7 @@ Chaque ligne est un constat, détaillé plus bas avec sa source.
 
 <div class="table-scroll" markdown="1">
 
-| | **🇱🇺 Lëtzebuergesch Clavier** | Clavier Samsung | Gboard (Google) | Clavier Apple (iOS 27) |
+| | **🇱🇺 De Lëtzebuerger Clavier** | Clavier Samsung | Gboard (Google) | Clavier Apple (iOS 27) |
 |---|---|---|---|---|
 | Le luxembourgeois est proposé | ⭐⭐⭐ sa seule langue | ⭐⭐ une langue du catalogue, sur un QWERTZ générique | ⭐⭐⭐ une disposition luxembourgeoise dédiée | ✕ absent jusqu'à iOS 26, annoncé dans iOS 27 |
 | Il propose des mots luxembourgeois pendant la frappe | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | non vérifié |
@@ -170,7 +170,7 @@ l'Université du Luxembourg, et demande une connexion.
 
 <div class="table-scroll" markdown="1">
 
-| | **🇱🇺 Lëtzebuergesch Clavier** | Clavier Samsung | Gboard (Google) | Clavier Apple (iOS) |
+| | **🇱🇺 De Lëtzebuerger Clavier** | Clavier Samsung | Gboard (Google) | Clavier Apple (iOS) |
 |---|---|---|---|---|
 | Luxembourgeois pris en charge | **Oui**, c'est sa seule langue | Oui, une langue parmi 377 | Oui, parmi plus de 900 variétés de langues | **Non** jusqu'à iOS 26 ; annoncé dans iOS 27 |
 | Disposition | **QWERTZ luxembourgeois**, celle des claviers physiques du pays | QWERTZ générique, partagé avec des dizaines de langues | QWERTZ luxembourgeois dédié | Allemand ou français ; disposition lb avec iOS 27 |
@@ -265,11 +265,10 @@ Gboard gagne sur la surface fonctionnelle, et largement : saisie glissée, dict�
 vocale dans les langues qu'elle connaît (le luxembourgeois n'en fait pas partie),
 traduction intégrée, presse-papiers, écriture manuscrite, thèmes, GIF et
 autocollants, et une correction affinée par des milliards de frappes. Le clavier
-Apple gagne sur l'intégration au système. Le Lëtzebuergesch Clavier ne cherche
+Apple gagne sur l'intégration au système. De Lëtzebuerger Clavier ne cherche
 pas à les rattraper sur ce terrain.
 
-Sur la dictée, aucun de ces claviers ne parle luxembourgeois, et c'est là que le
-Lëtzebuergesch Clavier les devance : il dicte en luxembourgeois grâce à
+Sur la dictée, aucun de ces claviers ne parle luxembourgeois, et c'est là que de Lëtzebuerger Clavier les devance : il dicte en luxembourgeois grâce à
 [LuxASR](https://luxasr.uni.lu), le service de l'Université du Luxembourg. Il faut une
 connexion, et la dictée n'est pas infaillible : on relit avant d'envoyer.
 
@@ -340,7 +339,7 @@ changent pas.
 
 | | barre vide | mot juste en 1ʳᵉ position | mot juste dans les 3 |
 |---|---|---|---|
-| **Lëtzebuergesch Clavier 20.3.0** | 11,5 % | 10,2 % | **20,2 %** |
+| **De Lëtzebuerger Clavier 20.3.0** | 11,5 % | 10,2 % | **20,2 %** |
 | Clavier Samsung 5.4.85.4 | 0,0 % | 8,1 % | 17,7 % |
 | Gboard 18.2.4 | 0,0 % | 6,2 % | 13,4 % |
 
@@ -374,7 +373,7 @@ propre application, dont le processus est partagé avec le clavier).
 
 | | latence de la barre (médiane) | processeur par appui | processeur au repos, 30 s | mémoire vive | taille installée |
 |---|---|---|---|---|---|
-| **Lëtzebuergesch Clavier 26.0.3** | **0 ms** | 40 ms | **10 à 20 ms** | 124 Mo | **9,4 Mo** |
+| **De Lëtzebuerger Clavier 26.0.3** | **0 ms** | 40 ms | **10 à 20 ms** | 124 Mo | **9,4 Mo** |
 | Clavier Samsung 5.4.85.4 | 41 ms | 31 ms | 230 à 250 ms | 131 Mo | 110,1 Mo |
 | Gboard 18.2.4 | 34 ms | **23 ms** | 40 à 80 ms | 119 Mo | 130,5 Mo |
 
@@ -409,7 +408,7 @@ réglages par défaut. On compare le texte final à ce qui a été tapé.
 
 | | mots remplacés par un autre mot | noms mis en majuscule à raison | majuscules à tort |
 |---|---|---|---|
-| **Lëtzebuergesch Clavier 26.0.3** | **0 sur 186** | 7 sur 40 (18 %) | 0 |
+| **De Lëtzebuerger Clavier 26.0.3** | **0 sur 186** | 7 sur 40 (18 %) | 0 |
 | Clavier Samsung 5.4.85.4 | 2 sur 186 | 37 sur 40 (92 %) | 1 |
 | Gboard 18.2.4, émulateur, luxembourgeois seul | 2 sur 177 | 31 sur 38 (82 %) | 1 |
 
@@ -479,8 +478,8 @@ avec d'autres compromis — la page d'accueil en donne
 
 ## 🏁 Conclusion
 
-**Verdict :** pour écrire en luxembourgeois sur Android, le Lëtzebuergesch Clavier est un très
-bon choix. Samsung et Gboard restent de bons claviers pour tout le reste. Le Lëtzebuergesch
+**Verdict :** pour écrire en luxembourgeois sur Android, de Lëtzebuerger Clavier est un très
+bon choix. Samsung et Gboard restent de bons claviers pour tout le reste. De Lëtzebuerger
 Clavier respecte la confidentialité des données, il est le seul à dicter en luxembourgeois,
 le clavier pèse 9 Mo, et il y a un dictionnaire, des jeux et un carnet de mots.
 

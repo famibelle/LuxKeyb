@@ -1,6 +1,6 @@
 ---
 title: "O teclado em detalhe"
-description: "Tudo sobre o Lëtzebuergesch Clavier: sugestões, ditado, corretor, jogos e cartas, comparação com outros teclados, origem das palavras e instalação sem o Google Play."
+description: "Tudo sobre de Lëtzebuerger Clavier: sugestões, ditado, corretor, jogos e cartas, comparação com outros teclados, origem das palavras e instalação sem o Google Play."
 image: /assets/og/partage-pt.png
 lang: pt
 ---
@@ -30,7 +30,7 @@ lang: pt
 # O teclado em detalhe
 
 <p class="chapo"><strong>O problema não é a sua escrita em luxemburguês: é
-o seu teclado, que não conhece a língua.</strong> O Lëtzebuergesch
+o seu teclado, que não conhece a língua.</strong> De Lëtzebuerger
 Clavier propõe-lhe as palavras enquanto escreve, põe os acentos e as maiúsculas
 por si e escreve o que lhe diz. As suas palavras luxemburguesas deixam
 finalmente de aparecer sublinhadas a vermelho nas suas mensagens.</p>
@@ -310,7 +310,7 @@ frase.
 
 <div class="essai">
   <iframe src="simulateur.html?embed=1" width="380" height="620" loading="lazy"
-          title="Teclado de teste do Lëtzebuergesch Clavier"
+          title="Teclado de teste de de Lëtzebuerger Clavier"
           style="border:0;max-width:100%;"></iframe>
 </div>
 
@@ -338,7 +338,7 @@ automática e o contador de toques poupados.</p>
   <figure style="margin:0;text-align:center;">
     <a href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&hl=pt-PT&referrer=utm_source%3Dsite%26utm_medium%3Daccueil-pt%26utm_campaign%3Dinstaller">
       <img src="assets/qr-luxkeyb-store.png"
-           alt="Código QR que abre a página do Lëtzebuergesch Clavier no Google Play"
+           alt="Código QR que abre a página de de Lëtzebuerger Clavier no Google Play"
            width="176" height="176"
            style="display:block;width:176px;height:176px;background:#fff;
                   border-radius:8px;padding:6px;box-sizing:border-box;">
@@ -413,7 +413,7 @@ palavras parada desde 2013, sem previsão da palavra seguinte.
 
 <div class="table-scroll" markdown="1">
 
-| | **Lëtzebuergesch Clavier** | Gboard | Teclado Samsung | SwiftKey | HeliBoard | AnySoftKeyboard |
+| | **De Lëtzebuerger Clavier** | Gboard | Teclado Samsung | SwiftKey | HeliBoard | AnySoftKeyboard |
 |---|---|---|---|---|---|---|
 | Luxemburguês disponível | **Sim** | Sim, verificado na aplicação | Sim, verificado no S24 Ultra | Sim, lista oficial da Microsoft | Sim, dicionário a acrescentar | Sim, pacote separado |
 | Pensado para o luxemburguês | **Sim**, é a sua única razão de ser | Uma língua entre 100+ | Uma língua entre 691 | Uma língua entre 700+ | Dicionário a acrescentar | Pacote separado a instalar |
@@ -481,7 +481,7 @@ pode ser instalado à mão.
   <figure style="margin:0;text-align:center;">
     <a href="https://github.com/famibelle/LuxKeyb/releases/latest/download/LetzebuergeschClavier-latest.apk">
       <img src="assets/qr-luxkeyb-apk.png"
-           alt="Código QR que descarrega diretamente o APK da versão mais recente do Lëtzebuergesch Clavier"
+           alt="Código QR que descarrega diretamente o APK da versão mais recente de de Lëtzebuerger Clavier"
            width="150" height="150"
            style="display:block;width:150px;height:150px;background:#fff;
                   border-radius:8px;padding:6px;box-sizing:border-box;">

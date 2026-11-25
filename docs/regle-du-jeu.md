@@ -1,6 +1,6 @@
 ---
 title: "Règle du jeu : la Bataille des mots et le Wuertduell"
-description: "Jouer avec les cartes du Lëtzebuergesch Clavier : la Bataille des mots dès 6 ans, le Wuertduell dès 8 ans. Une règle simple, rien d'autre que les cartes, et chaque carte jouée se lit à voix haute en luxembourgeois."
+description: "Jouer avec les cartes de de Lëtzebuerger Clavier : la Bataille des mots dès 6 ans, le Wuertduell dès 8 ans. Une règle simple, rien d'autre que les cartes, et chaque carte jouée se lit à voix haute en luxembourgeois."
 lang: fr
 ---
 
