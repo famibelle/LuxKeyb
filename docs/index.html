@@ -139,7 +139,12 @@ p{margin:0}
 .dictee figcaption{margin-top:12px;font-size:15px;color:var(--encre-douce);text-align:center;font-style:italic}
 .confiance{margin-top:24px;padding:16px 18px;border-left:4px solid var(--ciel);background:var(--carte);border-radius:0 12px 12px 0;font-size:16px;color:var(--encre-douce)}
 .confiance strong{color:var(--encre)}
-.applis{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.etapes-dictee{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:12px;counter-reset:d}
+.etapes-dictee li{counter-increment:d;display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:baseline;color:var(--encre-douce)}
+.etapes-dictee li::before{content:counter(d);width:30px;height:30px;border-radius:50%;background:var(--rouge);color:#fff;font-family:var(--display);font-weight:700;display:grid;place-items:center;align-self:start;margin-top:-2px}
+.etapes-dictee strong{color:var(--encre)}
+.applis-intro{margin-top:24px;color:var(--encre-douce)}
+.applis{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .applis span{font-size:14px;font-weight:600;padding:6px 12px;border-radius:99px;border:1px solid var(--filet);color:var(--encre-douce);background:var(--carte)}
 
 /* ---------- Cartes ---------- */
@@ -286,16 +291,27 @@ p{margin:0}
   <section class="bande" style="padding-top:0" aria-labelledby="t-dictee">
     <div class="enveloppe duo">
       <div>
-        <h2 id="t-dictee">Dans tous vos messages</h2>
-        <p class="chapo">C'est le clavier de votre téléphone&nbsp;: il vous suit
-        partout où vous écrivez. Une fois le correcteur activé, vos mots
-        luxembourgeois sont reconnus dans vos messages, vos notes et vos mails.</p>
+        <h2 id="t-dictee">Parlez en luxembourgeois, il écrit</h2>
+        <p class="chapo">Plus besoin de chercher l'orthographe&nbsp;: dites
+        votre phrase, le clavier l'écrit pour vous, avec les majuscules et la
+        ponctuation.</p>
+        <ol class="etapes-dictee">
+          <li><span><strong>Touchez le micro</strong>, à droite des suggestions.</span></li>
+          <li><span><strong>Parlez normalement.</strong> Le texte s'écrit pendant que
+          vous parlez, et le micro se referme tout seul quand vous vous
+          arrêtez.</span></li>
+          <li><span><strong>Relisez</strong>, puis envoyez.</span></li>
+        </ol>
+        <p class="applis-intro">Le micro fait partie du clavier&nbsp;: il vous
+        suit partout où vous écrivez.</p>
         <div class="applis" aria-label="Exemples d'applications">
           <span>WhatsApp</span><span>SMS</span><span>Mails</span><span>Facebook</span><span>Notes</span>
         </div>
-        <p class="confiance"><strong>Ce que vous tapez reste sur votre téléphone.</strong>
-        Seule la dictée envoie votre voix, quand vous touchez le micro, au service
-        de l'Université du Luxembourg, qui la transforme en texte sans la garder.</p>
+        <p class="confiance"><strong>Votre voix ne part que lorsque vous touchez
+        le micro</strong>, vers le service de reconnaissance vocale de
+        l'Université du Luxembourg, qui la transforme en texte sans la garder.
+        Il faut donc une connexion Internet pour dicter. Ce que vous tapez, lui,
+        reste sur votre téléphone.</p>
       </div>
       <figure class="dictee">
         <img src="assets/accueil/dictee-mots.gif" width="1080" height="456"
