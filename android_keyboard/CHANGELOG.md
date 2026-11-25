@@ -9,6 +9,12 @@ et ce projet adhère au [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 > est issu. Les entrées antérieures à la 10.9.2 luxembourgeoise décrivent
 > l'évolution de cette base commune, côté créole.
 
+## [41.1.8] - 2026-11-25
+
+### ✨ Améliorations
+
+- **Le clavier s'appelle désormais « De Lëtzebuerger Clavier »** : c'est le nom que vous verrez sous l'icône, dans la liste des claviers de votre téléphone et sur Google Play. Rien d'autre ne change : vos mots, vos cartes, votre progression et vos réglages restent tels quels.
+
 ## [41.1.7] - 2026-11-24
 
 ### ✨ Améliorations
