@@ -6,6 +6,20 @@
     "Changements": "Alterações",
     "Rapidité": "Rapidez"
   },
+  "41.1.8": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Melhorias",
+        "points": [
+          {
+            "titre": "O teclado chama-se agora « De Lëtzebuerger Clavier »",
+            "texte": "É o nome que verá debaixo do ícone, na lista de teclados do telemóvel e no Google Play. Nada mais muda: as suas palavras, as suas cartas, o seu progresso e as suas definições ficam como estão."
+          }
+        ]
+      }
+    ]
+  },
   "41.1.7": {
     "intro": "",
     "sections": [

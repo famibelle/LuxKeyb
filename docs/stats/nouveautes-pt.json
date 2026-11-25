@@ -1,9 +1,28 @@
 {
- "genere_le": "2026-11-24",
- "derniere_version": "41.1.7",
- "derniere_date": "2026-11-24",
+ "genere_le": "2026-11-25",
+ "derniere_version": "41.1.8",
+ "derniere_date": "2026-11-25",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.8",
+   "date": "2026-11-25",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Melhorias",
+     "points": [
+      {
+       "titre": "O teclado chama-se agora « De Lëtzebuerger Clavier »",
+       "texte": "É o nome que verá debaixo do ícone, na lista de teclados do telemóvel e no Google Play. Nada mais muda: as suas palavras, as suas cartas, o seu progresso e as suas definições ficam como estão."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "41.1.7",
    "date": "2026-11-24",
@@ -137,55 +156,6 @@
    "image": "Screenshots/lux_mellerdall_photo.png",
    "image_alt": "A paisagem da carta do Mëllerdall em duas vistas lado a lado, com a marca de água LuxKeyb. 1. À tarde: num sub-bosque de hera e folhas, a pequena ponte de pedra com musgo ao fundo; à frente, três cascatas caem entre grandes rochas verdes numa bacia turquesa onde se veem seixos e alguns peixes; em primeiro plano, lírios amarelos têm o pé na água. 2. A mesma paisagem à noite, toda em azuis, com as três cascatas iluminadas.",
    "image_legende": "O Schéissendëmpel no Mëllerdall, à tarde e à noite."
-  },
-  {
-   "version": "41.1.2",
-   "date": "2026-11-22",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Melhorias",
-     "points": [
-      {
-       "titre": "Um outono dourado em todas as cartas",
-       "texte": "As árvores passam do castanho ao dourado e mantêm as folhas bem desenhadas, de dia e de noite, em vez de manchas verdes e laranja misturadas. Os prados e os musgos ficam cor de palha, e os pinheiros continuam verdes."
-      },
-      {
-       "titre": "O castelo de Ansembourg em pormenor",
-       "texte": "A sua sebe de carpino é feita de folhas verdadeiras, que ficam ruivas uma a uma no outono e espalham folhas secas pelo relvado. Os seus dois leões de bronze, sentados frente a frente de cada lado da escadaria, levantam a cabeça, com a juba sobre o crânio."
-      },
-      {
-       "titre": "Juncos em água límpida",
-       "texte": "No lago da Alta Sûre, no Our e no Haff Réimech, vê-se o pé dos juncos debaixo da superfície da água."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Correções",
-     "points": [
-      {
-       "titre": "As casas da Gëlle Fra",
-       "texte": "Estão bem assentes no chão e já não flutuam."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_automne_dore.png",
-     "alt": "Quatro paisagens de cartas no outono, à tarde, marcadas com a marca de água LuxKeyb. 1. Ansembourg: diante do castelo, dois leões de bronze esverdeado estão frente a frente de cada lado da escadaria, com a juba sobre a cabeça, entre duas sebes de folhas amarelas e ruivas; folhas secas cobrem o relvado. 2. Esch-Sauer: o lago turquesa rodeado de florestas ruivas; à direita, o pé dos juncos desvanece-se debaixo da superfície da água. 3. Vianden: o castelo por cima do vale, colinas laranja e douradas. 4. O Mëllerdall: a ponte de pedra e as cascatas, rodeadas de folhagem ruiva e fetos dourados.",
-     "legende": "Ansembourg, Esch-Sauer, Vianden e o Mëllerdall no outono."
-    }
-   ],
-   "image": "Screenshots/lux_automne_dore.png",
-   "image_alt": "Quatro paisagens de cartas no outono, à tarde, marcadas com a marca de água LuxKeyb. 1. Ansembourg: diante do castelo, dois leões de bronze esverdeado estão frente a frente de cada lado da escadaria, com a juba sobre a cabeça, entre duas sebes de folhas amarelas e ruivas; folhas secas cobrem o relvado. 2. Esch-Sauer: o lago turquesa rodeado de florestas ruivas; à direita, o pé dos juncos desvanece-se debaixo da superfície da água. 3. Vianden: o castelo por cima do vale, colinas laranja e douradas. 4. O Mëllerdall: a ponte de pedra e as cascatas, rodeadas de folhagem ruiva e fetos dourados.",
-   "image_legende": "Ansembourg, Esch-Sauer, Vianden e o Mëllerdall no outono."
   }
  ]
 }

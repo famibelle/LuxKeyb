@@ -1,9 +1,28 @@
 {
- "genere_le": "2026-11-24",
- "derniere_version": "41.1.7",
- "derniere_date": "2026-11-24",
+ "genere_le": "2026-11-25",
+ "derniere_version": "41.1.8",
+ "derniere_date": "2026-11-25",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.8",
+   "date": "2026-11-25",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Améliorations",
+     "points": [
+      {
+       "titre": "Le clavier s'appelle désormais « De Lëtzebuerger Clavier »",
+       "texte": "C'est le nom que vous verrez sous l'icône, dans la liste des claviers de votre téléphone et sur Google Play. Rien d'autre ne change : vos mots, vos cartes, votre progression et vos réglages restent tels quels."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "41.1.7",
    "date": "2026-11-24",
@@ -137,55 +156,6 @@
    "image": "Screenshots/lux_mellerdall_photo.png",
    "image_alt": "Le décor de la carte du Mëllerdall en deux vues côte à côte, marquées du filigrane LuxKeyb. 1. L'après-midi : dans un sous-bois de lierre et de feuilles, le petit pont de pierre moussu au fond ; devant, trois cascades tombent entre de gros rochers verts dans un bassin turquoise où l'on voit les galets et quelques poissons ; au premier plan, des iris jaunes ont le pied dans l'eau. 2. Le même décor la nuit, tout en bleus, les trois cascades éclairées.",
    "image_legende": "Le Schéissendëmpel du Mëllerdall, l'après-midi et la nuit."
-  },
-  {
-   "version": "41.1.2",
-   "date": "2026-11-22",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Améliorations",
-     "points": [
-      {
-       "titre": "Un automne doré sur toutes les cartes",
-       "texte": "Les arbres roussissent du brun à l'or en gardant leurs feuilles bien dessinées, de jour comme de nuit, au lieu de taches vertes et orange mêlées. Les prés et les mousses passent à la paille, et les sapins restent verts."
-      },
-      {
-       "titre": "Le château d'Ansembourg en détail",
-       "texte": "Sa haie de charmille est faite de vraies feuilles, qui roussissent une à une à l'automne et sèment des feuilles mortes sur la pelouse. Ses deux lions de bronze, assis face à face de part et d'autre de l'escalier, lèvent la tête, la crinière sur le crâne."
-      },
-      {
-       "titre": "Des roseaux dans l'eau claire",
-       "texte": "Au lac de la Haute-Sûre, à l'Our et au Haff Réimech, on voit le pied des roseaux sous la surface de l'eau."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Corrections",
-     "points": [
-      {
-       "titre": "Les maisons de la Gëlle Fra",
-       "texte": "Sont bien posées au sol, elles ne flottent plus."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_automne_dore.png",
-     "alt": "Quatre paysages de cartes en automne, l'après-midi, marqués du filigrane LuxKeyb. 1. Ansembourg : devant le château, deux lions de bronze vert-de-gris se font face de part et d'autre de l'escalier, la crinière sur la tête, entre deux haies aux feuilles jaunes et rousses ; des feuilles mortes parsèment la pelouse. 2. Esch-Sauer : le lac turquoise bordé de forêts rousses ; à droite, le pied des roseaux s'efface sous la surface de l'eau. 3. Vianden : le château au-dessus de la vallée, des collines orange et dorées. 4. Le Mëllerdall : le pont de pierre et les cascades, encadrés de feuillages roux et de fougères dorées.",
-     "legende": "Ansembourg, Esch-Sauer, Vianden et le Mëllerdall en automne."
-    }
-   ],
-   "image": "Screenshots/lux_automne_dore.png",
-   "image_alt": "Quatre paysages de cartes en automne, l'après-midi, marqués du filigrane LuxKeyb. 1. Ansembourg : devant le château, deux lions de bronze vert-de-gris se font face de part et d'autre de l'escalier, la crinière sur la tête, entre deux haies aux feuilles jaunes et rousses ; des feuilles mortes parsèment la pelouse. 2. Esch-Sauer : le lac turquoise bordé de forêts rousses ; à droite, le pied des roseaux s'efface sous la surface de l'eau. 3. Vianden : le château au-dessus de la vallée, des collines orange et dorées. 4. Le Mëllerdall : le pont de pierre et les cascades, encadrés de feuillages roux et de fougères dorées.",
-   "image_legende": "Ansembourg, Esch-Sauer, Vianden et le Mëllerdall en automne."
   }
  ]
 }

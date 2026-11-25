@@ -6,6 +6,20 @@
     "Changements": "Änderungen",
     "Rapidité": "Geschwindigkeit"
   },
+  "41.1.8": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Verbesserungen",
+        "points": [
+          {
+            "titre": "Die Tastatur heißt jetzt « De Lëtzebuerger Clavier »",
+            "texte": "Diesen Namen sehen Sie unter dem Symbol, in der Tastaturliste Ihres Handys und bei Google Play. Sonst ändert sich nichts: Ihre Wörter, Ihre Karten, Ihr Fortschritt und Ihre Einstellungen bleiben, wie sie sind."
+          }
+        ]
+      }
+    ]
+  },
   "41.1.7": {
     "intro": "",
     "sections": [

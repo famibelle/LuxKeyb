@@ -6,6 +6,20 @@
     "Changements": "Changes",
     "Rapidité": "Speed"
   },
+  "41.1.8": {
+    "intro": "",
+    "sections": [
+      {
+        "titre": "Improvements",
+        "points": [
+          {
+            "titre": "The keyboard is now called « De Lëtzebuerger Clavier »",
+            "texte": "That is the name you will see under the icon, in your phone's list of keyboards and on Google Play. Nothing else changes: your words, your cards, your progress and your settings stay as they are."
+          }
+        ]
+      }
+    ]
+  },
   "41.1.7": {
     "intro": "",
     "sections": [

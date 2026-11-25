@@ -1,9 +1,28 @@
 {
- "genere_le": "2026-11-24",
- "derniere_version": "41.1.7",
- "derniere_date": "2026-11-24",
+ "genere_le": "2026-11-25",
+ "derniere_version": "41.1.8",
+ "derniere_date": "2026-11-25",
  "depot": "https://github.com/famibelle/LuxKeyb",
  "versions": [
+  {
+   "version": "41.1.8",
+   "date": "2026-11-25",
+   "intro": "",
+   "sections": [
+    {
+     "emoji": "✨",
+     "titre": "Verbesserungen",
+     "points": [
+      {
+       "titre": "Die Tastatur heißt jetzt « De Lëtzebuerger Clavier »",
+       "texte": "Diesen Namen sehen Sie unter dem Symbol, in der Tastaturliste Ihres Handys und bei Google Play. Sonst ändert sich nichts: Ihre Wörter, Ihre Karten, Ihr Fortschritt und Ihre Einstellungen bleiben, wie sie sind."
+      }
+     ],
+     "texte": "",
+     "tableau": null
+    }
+   ]
+  },
   {
    "version": "41.1.7",
    "date": "2026-11-24",
@@ -137,55 +156,6 @@
    "image": "Screenshots/lux_mellerdall_photo.png",
    "image_alt": "Die Landschaft der Mëllerdall-Karte in zwei Ansichten nebeneinander, mit dem Wasserzeichen LuxKeyb. 1. Am Nachmittag: in einem Unterholz aus Efeu und Blättern hinten die kleine bemooste Steinbrücke; davor stürzen drei Wasserfälle zwischen großen grünen Felsen in ein türkisfarbenes Becken, in dem man Kiesel und einige Fische sieht; im Vordergrund stehen gelbe Schwertlilien mit dem Fuß im Wasser. 2. Dieselbe Landschaft bei Nacht, ganz in Blau, die drei Wasserfälle beleuchtet.",
    "image_legende": "Der Schéissendëmpel im Mëllerdall, am Nachmittag und bei Nacht."
-  },
-  {
-   "version": "41.1.2",
-   "date": "2026-11-22",
-   "intro": "",
-   "sections": [
-    {
-     "emoji": "✨",
-     "titre": "Verbesserungen",
-     "points": [
-      {
-       "titre": "Ein goldener Herbst auf allen Karten",
-       "texte": "Die Bäume färben sich von Braun bis Gold und behalten dabei ihre klar gezeichneten Blätter, bei Tag wie bei Nacht, statt grüner und oranger Flecken durcheinander. Wiesen und Moos werden strohgelb, und die Tannen bleiben grün."
-      },
-      {
-       "titre": "Schloss Ansemburg im Detail",
-       "texte": "Seine Hainbuchenhecke besteht aus echten Blättern, die sich im Herbst eines nach dem anderen rötlich färben und welkes Laub auf den Rasen streuen. Seine zwei Bronzelöwen sitzen sich zu beiden Seiten der Treppe gegenüber und heben den Kopf, die Mähne über dem Schädel."
-      },
-      {
-       "titre": "Schilf im klaren Wasser",
-       "texte": "Am Stausee der Obersauer, an der Our und am Haff Réimech sieht man den Fuß des Schilfs unter der Wasseroberfläche."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    },
-    {
-     "emoji": "🐛",
-     "titre": "Korrekturen",
-     "points": [
-      {
-       "titre": "Die Häuser der Gëlle Fra",
-       "texte": "Sie stehen fest auf dem Boden und schweben nicht mehr."
-      }
-     ],
-     "texte": "",
-     "tableau": null
-    }
-   ],
-   "images": [
-    {
-     "image": "Screenshots/lux_automne_dore.png",
-     "alt": "Vier Kartenlandschaften im Herbst, am Nachmittag, mit dem Wasserzeichen LuxKeyb. 1. Ansemburg: vor dem Schloss sitzen sich zwei grünspanige Bronzelöwen zu beiden Seiten der Treppe gegenüber, die Mähne über dem Kopf, zwischen zwei Hecken mit gelben und rotbraunen Blättern; welkes Laub liegt auf dem Rasen. 2. Esch-Sauer: der türkisfarbene See zwischen rotbraunen Wäldern; rechts verblasst der Fuß des Schilfs unter der Wasseroberfläche. 3. Vianden: das Schloss über dem Tal, orange und goldene Hügel. 4. Das Mëllerdall: die Steinbrücke und die Wasserfälle, umrahmt von rotbraunem Laub und goldenen Farnen.",
-     "legende": "Ansemburg, Esch-Sauer, Vianden und das Mëllerdall im Herbst."
-    }
-   ],
-   "image": "Screenshots/lux_automne_dore.png",
-   "image_alt": "Vier Kartenlandschaften im Herbst, am Nachmittag, mit dem Wasserzeichen LuxKeyb. 1. Ansemburg: vor dem Schloss sitzen sich zwei grünspanige Bronzelöwen zu beiden Seiten der Treppe gegenüber, die Mähne über dem Kopf, zwischen zwei Hecken mit gelben und rotbraunen Blättern; welkes Laub liegt auf dem Rasen. 2. Esch-Sauer: der türkisfarbene See zwischen rotbraunen Wäldern; rechts verblasst der Fuß des Schilfs unter der Wasseroberfläche. 3. Vianden: das Schloss über dem Tal, orange und goldene Hügel. 4. Das Mëllerdall: die Steinbrücke und die Wasserfälle, umrahmt von rotbraunem Laub und goldenen Farnen.",
-   "image_legende": "Ansemburg, Esch-Sauer, Vianden und das Mëllerdall im Herbst."
   }
  ]
 }
