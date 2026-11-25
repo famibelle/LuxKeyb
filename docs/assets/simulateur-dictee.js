@@ -11,6 +11,13 @@
  * demande `?asr=1` dans l'adresse, et un consentement explicite avant que le
  * micro ne s'ouvre. Cf. `docs/labs-dictee.html`, qui la présente.
  *
+ * **Exception : la vitrine de l'accueil** (`?embed=1&demo=auto`, classe
+ * `embed-demo`). Le micro y est affiché d'emblée, comme dans l'application :
+ * c'est l'appui sur le micro qui fait partir la voix, le navigateur demande
+ * l'accès au micro, et la page hôte (index.html) dit à côté du cadre où va la
+ * voix. Ni traduction française ni chronométrage : l'application n'en a pas,
+ * et la vitrine montre l'application.
+ *
  * **Un mot s'affiche dès qu'il est engagé**, depuis que le flux est la voie
  * par défaut de `luxasr-client.js` (moteur du 16 septembre 2026) : le champ
  * montre l'aperçu qui se construit pendant qu'on parle, `onPartiel` ci-dessous,
@@ -95,7 +102,8 @@
   function id(x) { return document.getElementById(x); }
 
   function brancherDictee(sim) {
-    if (new URLSearchParams(location.search).get('asr') !== '1') return;
+    var vitrine = document.documentElement.classList.contains('embed-demo');
+    if (new URLSearchParams(location.search).get('asr') !== '1' && !vitrine) return;
 
     var els = {
       avis: id('asr-avis'), activer: id('asr-activer'), note: id('asr-note'),
@@ -104,7 +112,10 @@
     };
     if (!els.micro || !els.avis) return;
 
-    els.avis.hidden = false;
+    // Sans micro dans ce navigateur, la vitrine n'affiche simplement pas le
+    // bouton : pas de panneau d'explication dans un cadre de 380 px.
+    if (vitrine && (!window.LuxAsrClient || !window.LuxAsrClient.disponible())) return;
+    if (!vitrine) els.avis.hidden = false;
 
     if (!window.LuxAsrClient || !window.LuxAsrClient.disponible()) {
       els.activer.disabled = true;
@@ -260,6 +271,7 @@
       },
 
       onPasse: function (secondes, ms) {
+        if (vitrine) return;
         chronoPasse = secondes.toFixed(1) + ' s → ' + ms + ' ms';
         if (!els.bandeau.hidden && client.occupe) bandeauEtat(client.etat);
       },
@@ -296,7 +308,7 @@
           // confondre les deux fait accuser le téléphone à tort.
           : 'Service LuxASR injoignable');
       }
-    }, { traduction: true, langueCible: 'fr' });
+    }, { traduction: !vitrine, langueCible: 'fr' });
 
     // Une frappe pendant la dictée la termine, sans écrire la touche : cf.
     // KeyboardSimulator.processKey().
@@ -315,6 +327,8 @@
       afficherTraduction('');
       client.start();
     });
+
+    if (vitrine) els.micro.hidden = false;
 
     els.activer.addEventListener('click', function () {
       els.avis.classList.add('arme');

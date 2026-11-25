@@ -1091,7 +1091,7 @@
   // ---- ?embed=1&demo=auto : les exemples s'enchaînent tout seuls ----
   // Le visiteur de l'accueil voit le clavier écrire avant d'avoir rien fait.
   // La boucle ne tourne que lorsque le cadre est à l'écran, et s'arrête pour
-  // de bon au premier geste (touche, clavier physique, Effacer, Arrêter) :
+  // de bon au premier geste (touche, clavier physique, micro, Effacer) :
   // le champ est alors vidé, et la lettre touchée s'écrit dans un champ
   // propre. Rien ne démarre seul si le système demande moins d'animations.
   function rejouerEnBoucle(sim, { demo, phrases }) {
@@ -1115,6 +1115,8 @@
     els.keyboard.addEventListener('pointerdown', reprendreLaMain, true);
     document.addEventListener('keydown', reprendreLaMain, true);
     els.resetBtn?.addEventListener('click', reprendreLaMain, true);
+    // Toucher le micro pour dicter, c'est aussi prendre la main.
+    document.getElementById('mic-btn')?.addEventListener('pointerdown', reprendreLaMain, true);
     document.getElementById('demo-stop')?.addEventListener('click', () => { fini = true; }, true);
 
     const dodo = (ms) => new Promise((r) => setTimeout(r, ms));
