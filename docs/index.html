@@ -189,7 +189,12 @@ p{margin:0}
 .etapes strong{color:#fff}
 .qr{text-align:center;color:var(--sur-nuit-doux);font-size:14px}
 .qr img{display:block;width:180px;height:180px;background:#fff;border-radius:14px;padding:8px;margin:0 auto 10px}
-.installer .actions{margin-top:30px}
+.installer .actions{margin-top:30px;justify-content:center}
+/* Le GIF du clavier et le code QR mènent aussi à Google Play. */
+.vers-play{display:block;border-radius:inherit;transition:transform .2s ease}
+.vers-play:hover{transform:translateY(-3px)}
+.telephone .vers-play{border-radius:32px}
+.qr .vers-play{width:max-content;margin:0 auto;border-radius:14px}
 
 /* ---------- Pied ---------- */
 .pied{padding-block:48px 56px;font-size:15px;color:var(--encre-douce)}
@@ -215,7 +220,7 @@ p{margin:0}
   .theme-toggle{margin-left:auto}
   .pied nav{grid-template-columns:minmax(0,1fr)}
 }
-@media (prefers-reduced-motion:reduce){.telephone{transform:none}}
+@media (prefers-reduced-motion:reduce){.telephone{transform:none}.vers-play,.vers-play:hover{transition:none;transform:none}}
 </style>
 </head>
 <body>
@@ -251,8 +256,10 @@ p{margin:0}
         <p class="mention mention-heros">Gratuit · Android 7.0 et plus récent</p>
       </div>
       <figure class="telephone">
+        <a class="vers-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dgif-clavier" aria-label="Installer Lëtzebuergesch Clavier depuis Google Play">
         <img src="Screenshots/lux_clavier_demo.gif" width="480" height="480"
              alt="La phrase « Ech hunn op der Schueberfouer Gromperekichelcher giess » tapée sur le clavier : après « op der », la barre propose la suite, et les mots longs se complètent en un appui">
+        </a>
         <figcaption>«&nbsp;Ech hunn op der Schueberfouer Gromperekichelcher giess&nbsp;»</figcaption>
       </figure>
     </div>
@@ -432,7 +439,9 @@ p{margin:0}
         </div>
       </div>
       <div class="qr">
+        <a class="vers-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dqr-code" aria-label="Ouvrir la page de l'application sur Google Play">
         <img src="assets/qr-luxkeyb-store.png" width="180" height="180" alt="Code QR ouvrant la page de l'application sur Google Play">
+        </a>
         Scannez avec votre téléphone
       </div>
     </div>
