@@ -109,7 +109,10 @@ p{margin:0}
 .heros h1 span{display:block;color:var(--rouge)}
 .heros .chapo{color:var(--sur-nuit-doux);margin-top:24px;font-size:20px}
 .actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:32px}
-.badge-play img{display:block;height:58px;width:auto}
+.badge-play img{display:block;height:80px;width:auto}
+/* Haut de page : le badge Google Play centré sous l'accroche, avec sa mention. */
+.actions-heros{justify-content:center}
+.mention-heros{text-align:center}
 .mention{margin-top:16px;font-size:15px;color:var(--sur-nuit-doux)}
 
 .telephone{justify-self:center;width:min(330px,100%);background:#0B0F14;border-radius:44px;padding:12px;box-shadow:0 30px 60px rgba(0,0,0,.35),0 0 0 2px rgba(255,255,255,.08);transform:rotate(2.5deg)}
@@ -240,12 +243,12 @@ p{margin:0}
         <p class="chapo">Le clavier vous propose les mots luxembourgeois pendant
         que vous tapez, met les ë et les é à leur place, et écrit pour vous ce que
         vous lui dites.</p>
-        <div class="actions">
+        <div class="actions actions-heros">
           <a class="badge-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dinstaller">
-            <img src="assets/google-play-badge-fr.svg" alt="Disponible sur Google Play" width="196" height="58">
+            <img src="assets/google-play-badge-fr.svg" alt="Disponible sur Google Play" width="270" height="80">
           </a>
         </div>
-        <p class="mention">Gratuit · Android 7.0 et plus récent</p>
+        <p class="mention mention-heros">Gratuit · Android 7.0 et plus récent</p>
       </div>
       <figure class="telephone">
         <img src="Screenshots/lux_clavier_demo.gif" width="480" height="480"
@@ -424,7 +427,7 @@ p{margin:0}
         </ol>
         <div class="actions">
           <a class="badge-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil%26utm_campaign%3Dinstaller">
-            <img src="assets/google-play-badge-fr.svg" alt="Disponible sur Google Play" width="196" height="58">
+            <img src="assets/google-play-badge-fr.svg" alt="Disponible sur Google Play" width="270" height="80">
           </a>
         </div>
       </div>
