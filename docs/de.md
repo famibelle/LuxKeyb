@@ -5,7 +5,7 @@ image: /assets/og/partage-de.png
 lang: de
 ---
 
-<!-- Deutsche Fassung von index.md. Gleiche Reihenfolge, gleiche Zahlen,
+<!-- Deutsche Fassung von en-detail.md (früher index.md). Gleiche Reihenfolge, gleiche Zahlen,
      gleiche Bilder: Ändert sich die französische Startseite, ziehen diese
      Seite und en.md nach. Verlinkte Seiten, die es nur auf Französisch gibt,
      sind als solche gekennzeichnet. -->

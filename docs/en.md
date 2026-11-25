@@ -5,7 +5,7 @@ image: /assets/og/partage-en.png
 lang: en
 ---
 
-<!-- English version of index.md. Same order, same figures, same images:
+<!-- English version of en-detail.md (formerly index.md). Same order, same figures, same images:
      when the French homepage changes, this page and de.md follow. Pages
      linked from here that exist only in French say so. -->
 

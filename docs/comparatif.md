@@ -475,7 +475,7 @@ situation normale plutôt que comme une case à cocher parmi 691.
 
 SwiftKey, HeliBoard et AnySoftKeyboard acceptent eux aussi le luxembourgeois,
 avec d'autres compromis — la page d'accueil en donne
-[le tableau complet](index.html#face-aux-autres-claviers).
+[le tableau complet](en-detail.html#face-aux-autres-claviers).
 
 ## 🏁 Conclusion
 

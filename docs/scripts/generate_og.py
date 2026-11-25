@@ -5,7 +5,7 @@
 
 Une image de partage (1200 × 630, balise og:image) est ce qu'affichent
 LinkedIn, WhatsApp ou Facebook quand on colle le lien d'une page : partage.png
-(index.md, français), partage-en.png, partage-de.png et partage-pt.png.
+(index.html, français), partage-en.png, partage-de.png et partage-pt.png.
 
 Depuis le 2026-10-20, la page est composée en HTML et photographiée par
 Chrome sans fenêtre (google-chrome --headless). À droite, les deux atouts au

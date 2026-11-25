@@ -5,7 +5,7 @@ image: /assets/og/partage-pt.png
 lang: pt
 ---
 
-<!-- Versão portuguesa (de Portugal) de index.md. Mesma ordem, mesmos números,
+<!-- Versão portuguesa (de Portugal) de en-detail.md (antigo index.md). Mesma ordem, mesmos números,
      mesmas imagens: quando a página inicial francesa muda, esta página, en.md
      e de.md acompanham. As páginas ligadas a partir daqui que só existem em
      francês estão assinaladas. Diferença voluntária: os cartões não mostram

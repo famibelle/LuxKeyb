@@ -1,12 +1,13 @@
 ---
-title: "Vous le parlez. Maintenant, vous l'écrivez. 🇱🇺"
-description: "🇱🇺 Osez écrire le Lëtzebuergesch ! Tapez ou dictez vos messages en luxembourgeois, directement sur votre téléphone. Installez gratuitement le clavier sur Android."
+title: "Le clavier en détail"
+description: "Tout sur Lëtzebuergesch Clavier : suggestions, dictée, correcteur, jeux et cartes, comparatif avec les autres claviers, origine des mots et installation sans Google Play."
 image: /assets/og/partage.png
 lang: fr
 ---
 
 <nav class="site">
-  <strong>🏠 Accueil</strong> ·
+  <a href="./">🏠 Accueil</a> ·
+  <strong>🔎 En détail</strong> ·
   <a href="#installer">📲 Installer</a> ·
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="regle-du-jeu.html">🃏 Règle du jeu</a> ·
@@ -19,7 +20,10 @@ lang: fr
   <button type="button" class="theme-toggle" aria-label="Passer en mode sombre">🌙</button>
 </nav>
 
-# Osez écrire le Lëtzebuergesch !
+<!-- Ancien accueil, jusqu'au 2026-11-25. L'accueil grand public est
+     maintenant index.html ; cette page garde le détail complet. -->
+
+# Le clavier en détail
 
 <p class="chapo"><strong>Ce n'est pas vous qui écrivez mal le luxembourgeois :
 c'est votre clavier qui ne le connaît pas.</strong> Lëtzebuergesch Clavier vous

@@ -24,7 +24,7 @@ Installez d'abord l'application. Le plus simple est de passer par
 [Google Play](https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard) :
 elle s'y installe et s'y met à jour comme n'importe quelle autre. Si vous
 préférez le fichier d'installation, il est sur la
-[page d'accueil](index.html#installer-sans-passer-par-google-play), et Android
+[page d'accueil](en-detail.html#installer-sans-passer-par-google-play), et Android
 vous demandera alors une autorisation pour cette source.
 
 Une fois installée, l'application doit être activée comme clavier système avant
