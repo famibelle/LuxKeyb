@@ -190,9 +190,11 @@ p{margin:0}
 .qr{text-align:center;color:var(--sur-nuit-doux);font-size:14px}
 .qr img{display:block;width:180px;height:180px;background:#fff;border-radius:14px;padding:8px;margin:0 auto 10px}
 .installer .actions{margin-top:30px;justify-content:center}
-/* Le GIF du clavier et le code QR mènent aussi à Google Play. */
-.vers-play{display:block;border-radius:inherit;transition:transform .2s ease}
-.vers-play:hover{transform:translateY(-3px)}
+/* Tout ce qui mène à Google Play (badges, GIF du clavier, code QR) se
+   soulève légèrement au survol. */
+.vers-play,.badge-play{display:block;border-radius:inherit;transition:transform .2s ease}
+.vers-play:hover,.badge-play:hover{transform:translateY(-3px)}
+.badge-play{border-radius:12px}
 .telephone .vers-play{border-radius:32px}
 .qr .vers-play{width:max-content;margin:0 auto;border-radius:14px}
 
@@ -220,7 +222,7 @@ p{margin:0}
   .theme-toggle{margin-left:auto}
   .pied nav{grid-template-columns:minmax(0,1fr)}
 }
-@media (prefers-reduced-motion:reduce){.telephone{transform:none}.vers-play,.vers-play:hover{transition:none;transform:none}}
+@media (prefers-reduced-motion:reduce){.telephone{transform:none}.vers-play,.vers-play:hover,.badge-play,.badge-play:hover{transition:none;transform:none}}
 </style>
 </head>
 <body>
