@@ -81,6 +81,9 @@ a{color:var(--lien)}
 a:focus-visible,button:focus-visible{outline:3px solid var(--ciel);outline-offset:3px;border-radius:6px}
 h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.08;text-wrap:balance;margin:0}
 h2{font-size:clamp(28px,4.6vw,40px);color:var(--titre)}
+/* Titres bicolores, comme le haut de page : la seconde moitié en rouge du
+   drapeau, réservé aux gros titres (charte : 24 px et plus). */
+h2 .accent{color:var(--rouge)}
 h3{font-size:22px;font-weight:600}
 p{margin:0}
 .enveloppe{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -258,7 +261,7 @@ p{margin:0}
   <section class="bande" aria-labelledby="t-gestes">
     <div class="enveloppe essai">
       <div class="essai-titre">
-        <h2 id="t-gestes">Écrire comme on parle</h2>
+        <h2 id="t-gestes">Écrire <span class="accent">comme on parle</span></h2>
         <p class="chapo">Vous savez le dire, mais l'écrire, c'est autre
         chose&nbsp;: où va le ë, faut-il une majuscule, un e ou deux&nbsp;? Le
         clavier vous répond pendant que vous tapez. Regardez-le écrire, puis
@@ -318,7 +321,7 @@ p{margin:0}
   <section class="bande" style="padding-top:0" aria-labelledby="t-dictee">
     <div class="enveloppe duo">
       <div>
-        <h2 id="t-dictee">Parlez en luxembourgeois, il écrit</h2>
+        <h2 id="t-dictee">Parlez en luxembourgeois, <span class="accent">il écrit</span></h2>
         <p class="chapo">Plus besoin de chercher l'orthographe&nbsp;: dites
         votre phrase, le clavier l'écrit pour vous, avec les majuscules et la
         ponctuation.</p>
