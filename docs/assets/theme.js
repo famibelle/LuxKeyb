@@ -64,6 +64,14 @@
     });
   });
 
+  // Le choix fait dans une autre page du site arrive ici aussi : le clavier
+  // d'essai de l'accueil, chargé dans un cadre, suit le bouton de la page qui
+  // l'accueille, et les autres onglets ouverts changent avec elle.
+  window.addEventListener("storage", function (event) {
+    if (event.key !== STORAGE_KEY && event.key !== null) return;
+    applyTheme(effectiveTheme());
+  });
+
   media.addEventListener("change", function () {
     if (localStorage.getItem(STORAGE_KEY)) return; // préférence explicite, ne pas écraser
     applyTheme(effectiveTheme());

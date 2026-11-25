@@ -32,7 +32,16 @@
      d'inventaire (mots, contextes) : on montre le clavier, pas ses chiffres.
      Une erreur de chargement reste affichée. */
   html.embed-demo, html.embed-demo body { background: transparent !important; }
+  /* Même schéma de couleurs que la page hôte (index.html) : quand le cadre et
+     la page diffèrent, clair d'un côté, sombre de l'autre, le navigateur peint
+     un fond opaque derrière le cadre, et un rectangle blanc apparaît en mode
+     sombre. */
+  html.embed-demo { color-scheme: light; }
+  html.embed-demo[data-theme="dark"] { color-scheme: dark; }
   html.embed-demo .status-line:not(.error) { display: none; }
+  @media (prefers-color-scheme: dark) {
+    html.embed-demo:not([data-theme="light"]) { color-scheme: dark; }
+  }
   /* L'ombre pleine (60 px de flou) déborde du cadre de 380 px et s'y coupe
      net : une ombre courte reste à l'intérieur. */
   html.embed-demo main { padding: 6px 10px 14px; }
