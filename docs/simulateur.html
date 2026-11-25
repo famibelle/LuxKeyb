@@ -261,6 +261,17 @@
   }
   .sugg-row + .sugg-row { padding: 6px 8px 4px; }
   .sugg-row::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+  /* À côté du micro, la rangée perd 46 px : trois puces de 88 px n'y tiennent
+     plus dans le téléphone du simulateur, plus étroit qu'un vrai, et la
+     troisième était tranchée net contre le bouton. Les puces y descendent à
+     64 px ; un mot trop long fait encore défiler la rangée, dont le bord
+     s'estompe alors au lieu d'être coupé (classe posée par le script). */
+  .sugg-bar:has(.mic-btn:not([hidden])) .chip { min-width: 64px; margin: 0 4px; padding: 0 11px; }
+  .sugg-row.deborde {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+            mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+  }
+  .sugg-row.deborde.au-bout { -webkit-mask-image: none; mask-image: none; }
   .sugg-label {
     flex: none;
     display: flex;
@@ -973,6 +984,25 @@
     const caracteres = document.getElementById('demo-chars').parentNode;
     caracteres.firstChild.textContent = t.pour + ' ';
     caracteres.lastChild.textContent = ' ' + t.caracteres;
+  })();
+
+  // ---- rangées de suggestions qui débordent : fondu sur le bord droit ----
+  // Posé sur la rangée tant qu'il reste des puces à droite, retiré quand on a
+  // défilé jusqu'au bout. Surveille le contenu (nouvelles puces), la taille
+  // (rotation, micro qui apparaît) et le défilement.
+  (function fonduDesRangees() {
+    const rangees = ['row-lux', 'row-french'].map((id) => document.getElementById(id)).filter(Boolean);
+    const maj = (r) => {
+      const deborde = r.scrollWidth > r.clientWidth + 1;
+      r.classList.toggle('deborde', deborde);
+      r.classList.toggle('au-bout', deborde && r.scrollLeft + r.clientWidth >= r.scrollWidth - 2);
+    };
+    rangees.forEach((r) => {
+      new MutationObserver(() => maj(r)).observe(r, { childList: true, subtree: true, characterData: true });
+      if ('ResizeObserver' in window) new ResizeObserver(() => maj(r)).observe(r);
+      r.addEventListener('scroll', () => maj(r), { passive: true });
+      maj(r);
+    });
   })();
 
   const statusEl = document.getElementById('status-line');
