@@ -896,8 +896,8 @@
     <div class="demo-groupe">
       <span class="demo-groupe-titre">Se saluer</span>
       <div class="demo-chips">
-        <button type="button" class="demo-chip" data-phrase="Moien, wéi geet et?">Moien, wéi geet et?</button>
-        <button type="button" class="demo-chip" data-phrase="Merci a bis geschwënn">Merci a bis geschwënn</button>
+        <button type="button" class="demo-chip" data-phrase="Moien, wéi geet et?" data-vitrine="non">Moien, wéi geet et?</button>
+        <button type="button" class="demo-chip" data-phrase="Merci a bis geschwënn" data-vitrine="non">Merci a bis geschwënn</button>
       </div>
     </div>
     <div class="demo-groupe">
@@ -1085,7 +1085,12 @@
     els.resetBtn?.addEventListener('click', interrompre);
     document.addEventListener('keydown', interrompre);
 
-    return { demo, phrases: chips.map((c) => c.dataset.phrase) };
+    // La vitrine de l'accueil saute les salutations (data-vitrine="non") :
+    // « Moien » est l'exemple que tout le monde connaît déjà.
+    return {
+      demo,
+      phrases: chips.filter((c) => c.dataset.vitrine !== 'non').map((c) => c.dataset.phrase)
+    };
   }
 
   // ---- ?embed=1&demo=auto : les exemples s'enchaînent tout seuls ----

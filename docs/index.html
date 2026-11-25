@@ -137,6 +137,7 @@ p{margin:0}
 .puce.micro{background:var(--rouge);color:#fff;box-shadow:0 2px 0 #A8121F;display:inline-flex;align-items:center;gap:8px}
 .micro svg{width:16px;height:16px}
 .essai-cadre{justify-self:center;width:100%;max-width:380px}
+.essai-note{margin-top:6px;font-size:14px;color:var(--encre-douce);text-align:center}
 .essai-cadre iframe{display:block;width:100%;height:580px;border:0;background:transparent}
 
 /* ---------- Dictée ---------- */
@@ -258,32 +259,45 @@ p{margin:0}
     <div class="enveloppe essai">
       <div class="essai-titre">
         <h2 id="t-gestes">Écrire comme on parle</h2>
-        <p class="chapo">Regardez-le écrire, puis prenez la main&nbsp;: touchez
-        une lettre du clavier d'essai, ou son micro pour lui parler.</p>
+        <p class="chapo">Vous savez le dire, mais l'écrire, c'est autre
+        chose&nbsp;: où va le ë, faut-il une majuscule, un e ou deux&nbsp;? Le
+        clavier vous répond pendant que vous tapez. Regardez-le écrire, puis
+        prenez la main&nbsp;: touchez une lettre du clavier d'essai, ou son
+        micro pour lui parler.</p>
       </div>
 
       <div class="essai-texte">
 
+        <!-- Exemples vérifiés sur le moteur du simulateur (simulateur-engine.js)
+             le 2026-11-25 : chaque mot proposé arrive en tête de la barre. -->
         <ul class="gestes">
           <li>
-            <p class="exemple" aria-hidden="true"><span class="saisie">Moi</span><span class="fleche">→</span><span class="puce choisie">Moien</span></p>
-            <h3>Il vous souffle les mots</h3>
-            <p>Tapez «&nbsp;Moi&nbsp;», il propose «&nbsp;Moien&nbsp;». Après
-            «&nbsp;op der&nbsp;», il devine déjà la suite de votre phrase.</p>
+            <p class="exemple" aria-hidden="true"><span class="saisie">nach eng</span><span class="fleche">→</span><span class="puce choisie">Kéier</span></p>
+            <h3>Il devine la suite</h3>
+            <p>Après «&nbsp;nach eng&nbsp;», il propose déjà «&nbsp;Kéier&nbsp;».
+            Il tient compte de ce que vous venez d'écrire&nbsp;: un appui, et le
+            mot suivant est posé.</p>
           </li>
           <li>
-            <p class="exemple" aria-hidden="true"><span class="saisie">letzebuergesch</span><span class="fleche">→</span><span class="puce choisie">Lëtzebuergesch</span></p>
-            <h3>Il met les accents</h3>
-            <p>Écrivez sans chercher le ë&nbsp;: le clavier le place pour vous.
-            Et les touches é, ä et ë sont là, sous votre pouce.</p>
+            <p class="exemple" aria-hidden="true"><span class="saisie">schwatzen</span><span class="fleche">→</span><span class="puce choisie">schwätzen</span></p>
+            <h3>Il met les accents à leur place</h3>
+            <p>Tapez sans vous soucier des ä, ë et é&nbsp;: il propose le mot
+            bien écrit. Si vous préférez les taper vous-même, ils ont chacun leur
+            touche.</p>
           </li>
           <li>
-            <p class="exemple" aria-hidden="true"><span class="puce micro"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2Z"/></svg>Schwätzt…</span></p>
-            <h3>Il écrit ce que vous dites</h3>
-            <p>Appuyez sur le micro et parlez&nbsp;: le texte s'écrit pendant
-            que vous parlez, avec la ponctuation. Essayez-le ici&nbsp;: votre
-            voix part alors à l'Université du Luxembourg, qui l'écrit sans la
-            garder.</p>
+            <p class="exemple" aria-hidden="true"><span class="saisie">Schueberfuer</span><span class="fleche">→</span><span class="puce choisie">Schueberfouer</span></p>
+            <h3>Il rattrape les fautes de frappe</h3>
+            <p>Une lettre oubliée, une lettre en trop, une touche voisine&nbsp;:
+            le bon mot arrive quand même.</p>
+          </li>
+          <li>
+            <p class="exemple" aria-hidden="true"><span class="saisie">gromperekichelcher</span><span class="fleche">→</span><span class="puce choisie">Gromperekichelcher</span></p>
+            <h3>Il connaît l'orthographe</h3>
+            <p>Les noms prennent leur majuscule, comme le veut l'orthographe, et
+            les mots longs s'écrivent en un appui. Le clavier s'appuie sur le
+            dictionnaire officiel de la langue&nbsp;: vous n'inventez rien, vous
+            choisissez.</p>
           </li>
         </ul>
       </div>
@@ -295,6 +309,8 @@ p{margin:0}
         <iframe src="simulateur.html?embed=1&amp;demo=auto" width="380" height="580"
                 loading="lazy" allow="microphone"
                 title="Clavier d'essai : il écrit tout seul des phrases en luxembourgeois ; touchez une lettre ou le micro pour écrire à votre tour"></iframe>
+        <p class="essai-note">Le micro envoie votre voix à l'Université du
+        Luxembourg, qui l'écrit sans la garder.</p>
       </div>
     </div>
   </section>
@@ -365,9 +381,9 @@ p{margin:0}
       <h2 id="t-questions">Vos questions</h2>
       <div class="questions">
         <div class="question">
-          <h3>«&nbsp;Je ne suis jamais sûr de l'orthographe.&nbsp;»</h3>
-          <p>Le clavier vous propose les mots du dictionnaire officiel de la
-          langue. Vous n'inventez rien, vous choisissez.</p>
+          <h3>«&nbsp;Mon téléphone souligne mes mots en rouge.&nbsp;»</h3>
+          <p>Activez le correcteur du clavier&nbsp;: vos mots luxembourgeois sont
+          reconnus dans vos messages, vos notes et vos mails.</p>
         </div>
         <div class="question">
           <h3>«&nbsp;Je mélange avec le français.&nbsp;»</h3>
