@@ -53,7 +53,7 @@ TIERS = (
 
 EXTENSIONS = {".png", ".jpg", ".jpeg", ".svg", ".pdf"}
 
-PRODUIT = "Lëtzebuergesch Clavier"
+PRODUIT = "De Lëtzebuerger Clavier"
 ANNEE = date.today().year
 AUTEUR = "Médhi Famibelle"
 MARQUE = AUTEUR  # l'éditeur est une personne, plus une structure

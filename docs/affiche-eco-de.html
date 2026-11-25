@@ -342,16 +342,6 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
    « sans publicité » ne répond à aucune douleur. */
 .stamp{width:auto;height:auto;border:0;border-radius:0;background:none;box-shadow:none;transform:none;}
 .stamp .tampon[class]{font-size:3.4mm;}
-
-/* Bandeau « À faire valider » : ajouté par docs/scripts/traduire_supports.py
-   tant que la traduction n'a pas été relue par un locuteur natif. Il est
-   imprimé exprès : un PDF qui circule doit porter son statut. */
-.a-valider{position:absolute;inset:0;z-index:50;pointer-events:none;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.a-valider div{transform:rotate(-28deg);width:160%;padding:3mm 0;text-align:center;background:rgba(255,212,0,.62);
-  border-top:1.2mm solid rgba(0,0,0,.55);border-bottom:1.2mm solid rgba(0,0,0,.55);color:rgba(0,0,0,.78);
-  font-family:"Fredoka",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.15;}
-.a-valider b{display:block;font-size:30px;letter-spacing:.06em;text-transform:uppercase;}
-.a-valider span{display:block;font-size:15px;font-weight:600;}
 /* 2026-11-18 : la carte Kran (ancien dessin) quitte la capture du
    dictionnaire. Trois cartes du Wuertduell, une par cadre (bronze, argent,
    or), dessinées par l'application et sans filigrane
@@ -364,6 +354,16 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
 .eventail .c2{left:14.5mm;transform:rotate(0deg) translateY(-2mm);z-index:2;}
 .eventail .c3{left:29mm;transform:rotate(10deg);z-index:3;}
 .store .stamp{margin-bottom:1mm;}
+
+/* Bandeau « À faire valider » : ajouté par docs/scripts/traduire_supports.py
+   tant que la traduction n'a pas été relue par un locuteur natif. Il est
+   imprimé exprès : un PDF qui circule doit porter son statut. */
+.a-valider{position:absolute;inset:0;z-index:50;pointer-events:none;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.a-valider div{transform:rotate(-28deg);width:160%;padding:3mm 0;text-align:center;background:rgba(255,212,0,.62);
+  border-top:1.2mm solid rgba(0,0,0,.55);border-bottom:1.2mm solid rgba(0,0,0,.55);color:rgba(0,0,0,.78);
+  font-family:"Fredoka",-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.15;}
+.a-valider b{display:block;font-size:30px;letter-spacing:.06em;text-transform:uppercase;}
+.a-valider span{display:block;font-size:15px;font-weight:600;}
 </style>
 </head>
 <body>
@@ -455,7 +455,7 @@ h1{font-size:clamp(27px,6vw,36px);font-weight:800;line-height:1.1;letter-spacing
           <span class="tampon"><span class="tampon-chiffre">100&nbsp;%</span><span class="tampon-mot">gratis</span></span>
         </div>
         <img class="gp-badge" src="assets/google-play-badge-de.svg" alt="Jetzt bei Google Play">
-        <span>oder suchen Sie<br><b>Lëtzebuergesch Clavier</b></span>
+        <span>oder suchen Sie<br><b>De Lëtzebuerger Clavier</b></span>
       </div>
     </div>
 

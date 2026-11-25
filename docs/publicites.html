@@ -107,7 +107,7 @@ code{font-family:var(--mono);font-size:12.5px;background:var(--stripe);padding:1
 .brand .name b{display:block;font-weight:700;font-size:4cqw;}
 .brand .name span{display:block;opacity:.72;font-size:2.7cqw;letter-spacing:.14em;text-transform:uppercase;}
 /* Le nom du produit disparaît là où le surtitre ou le bouton le porte déjà :
-   sinon « Lëtzebuergesch Clavier » se lit jusqu'à trois fois dans le même
+   sinon « De Lëtzebuerger Clavier » se lit jusqu'à trois fois dans le même
    visuel. Le logo porte alors seul la marque. */
 .brand.mark-only .name{display:none;}
 
@@ -503,7 +503,7 @@ const BADGE = 'assets/google-play-badge-fr.svg';
 const brand = (spec, markOnly) => `
   <div class="brand${markOnly ? ' mark-only' : ''}">
     <span class="mark"><img src="${LOGO}" alt=""></span>
-    <span class="name"><b>Lëtzebuergesch</b><span>Clavier</span></span>
+    <span class="name"><b>De Lëtzebuerger</b><span>Clavier</span></span>
   </div>`;
 
 const cta   = c => `<span class="cta">${c.cta}</span>`;
@@ -580,7 +580,7 @@ const LAYOUTS = {
 
   logo: () => `
     <span class="mark"><img src="${LOGO}" alt=""></span>
-    <span class="name">Lëtzebuergesch<span>Clavier</span></span>`
+    <span class="name">De Lëtzebuerger<span>Clavier</span></span>`
 };
 
 /* ==========================================================================

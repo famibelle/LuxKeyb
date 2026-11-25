@@ -143,7 +143,7 @@ L'application s'ouvre automatiquement et vous guide :
 2. **Appuyez dans la zone de texte** pour faire apparaître le clavier
 3. En bas du clavier, vous verrez une **icône de globe 🌐** ou **d'engrenage ⚙️**
 4. **Appuyez longuement** sur cette icône
-5. **Choisissez "Lëtzebuergesch Clavier"** dans la liste
+5. **Choisissez "De Lëtzebuerger Clavier"** dans la liste
 6. C'est parti ! Vous pouvez maintenant écrire en luxembourgeois ! 🎉
 
 > 💡 **Astuce :** Pour revenir à votre ancien clavier, appuyez à nouveau longuement sur l'icône 🌐 et choisissez votre autre clavier.

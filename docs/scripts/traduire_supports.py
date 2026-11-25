@@ -312,9 +312,9 @@ T = [
     ('<p class="subtitle">📲 Flashez, installez, écrivez</p>', {
         "lb": '<p class="subtitle">📲 Scannen, installéieren, schreiwen</p>', "de": '<p class="subtitle">📲 Scannen, installieren, schreiben</p>',
         "en": '<p class="subtitle">📲 Scan, install, write</p>', "pt": '<p class="subtitle">📲 Aponte, instale, escreva</p>'}),
-    ("<span>ou cherchez<br><b>Lëtzebuergesch Clavier</b></span>", {
-        "lb": "<span>oder sicht<br><b>Lëtzebuergesch Clavier</b></span>", "de": "<span>oder suchen Sie<br><b>Lëtzebuergesch Clavier</b></span>",
-        "en": "<span>or search for<br><b>Lëtzebuergesch Clavier</b></span>", "pt": "<span>ou procure<br><b>Lëtzebuergesch Clavier</b></span>"}),
+    ("<span>ou cherchez<br><b>De Lëtzebuerger Clavier</b></span>", {
+        "lb": "<span>oder sicht<br><b>De Lëtzebuerger Clavier</b></span>", "de": "<span>oder suchen Sie<br><b>De Lëtzebuerger Clavier</b></span>",
+        "en": "<span>or search for<br><b>De Lëtzebuerger Clavier</b></span>", "pt": "<span>ou procure<br><b>De Lëtzebuerger Clavier</b></span>"}),
     ("famibelle.github.io/LuxKeyb · Fait au Luxembourg", {
         "lb": "famibelle.github.io/LuxKeyb · Gemaach zu Lëtzebuerg", "de": "famibelle.github.io/LuxKeyb · Gemacht in Luxemburg",
         "en": "famibelle.github.io/LuxKeyb · Made in Luxembourg", "pt": "famibelle.github.io/LuxKeyb · Feito no Luxemburgo"}),
@@ -399,11 +399,11 @@ T = [
         "de": "<li><b>Aktivieren Sie die Tastatur in den Einstellungen</b>Ein Knopf in der App führt direkt zum richtigen Android-Bildschirm. Das System zeigt dann eine Warnung zur Eingabe: Sie ist allgemein, Android zeigt sie bei <i>jeder</i> Drittanbieter-Tastatur, und diese hier sendet nichts von dem, was Sie tippen.</li>",
         "en": "<li><b>Turn the keyboard on in settings</b>A button in the app goes straight to the right Android screen. The system then shows a warning about typing: it is generic, Android shows it for <i>every</i> third-party keyboard, and this one sends nothing you type.</li>",
         "pt": "<li><b>Ative o teclado nas definições</b>Um botão da aplicação leva diretamente ao ecrã certo do Android. O sistema mostra então um aviso sobre a escrita: é genérico, o Android mostra-o para <i>qualquer</i> teclado de terceiros, e este não envia nada do que escreve.</li>"}),
-    ("<li><b>Choisissez-le et écrivez</b>Le sélecteur de clavier s'ouvre : choisissez Lëtzebuergesch Clavier et tapez votre premier mot.</li>", {
-        "lb": "<li><b>Wielt se a schreift</b>D'Auswiel vun den Tastaturen geet op: Wielt Lëtzebuergesch Clavier a tippt Äert éischt Wuert.</li>",
-        "de": "<li><b>Auswählen und schreiben</b>Die Tastaturauswahl öffnet sich: Wählen Sie Lëtzebuergesch Clavier und tippen Sie Ihr erstes Wort.</li>",
-        "en": "<li><b>Pick it and write</b>The keyboard picker opens: choose Lëtzebuergesch Clavier and type your first word.</li>",
-        "pt": "<li><b>Escolha-o e escreva</b>O seletor de teclado abre-se: escolha Lëtzebuergesch Clavier e escreva a sua primeira palavra.</li>"}),
+    ("<li><b>Choisissez-le et écrivez</b>Le sélecteur de clavier s'ouvre : choisissez de Lëtzebuerger Clavier et tapez votre premier mot.</li>", {
+        "lb": "<li><b>Wielt se a schreift</b>D'Auswiel vun den Tastaturen geet op: Wielt de Lëtzebuerger Clavier a tippt Äert éischt Wuert.</li>",
+        "de": "<li><b>Auswählen und schreiben</b>Die Tastaturauswahl öffnet sich: Wählen Sie de Lëtzebuerger Clavier und tippen Sie Ihr erstes Wort.</li>",
+        "en": "<li><b>Pick it and write</b>The keyboard picker opens: choose de Lëtzebuerger Clavier and type your first word.</li>",
+        "pt": "<li><b>Escolha-o e escreva</b>O seletor de teclado abre-se: escolha de Lëtzebuerger Clavier e escreva a sua primeira palavra.</li>"}),
 
     # ---- Triptyque, volet 5 : fonctionnalités ----
     ('<div class="kicker">Fonctionnalités</div>', {
@@ -437,11 +437,11 @@ T = [
         "pt": '<div class="bloc"><b>📖 Um dicionário PT ↔ LB</b> falta-lhe uma palavra? Traduz nos dois sentidos, sem rede.</div>'}),
     ("<figcaption>Jeux</figcaption>", {"lb": "<figcaption>Spiller</figcaption>", "de": "<figcaption>Spiele</figcaption>", "en": "<figcaption>Games</figcaption>", "pt": "<figcaption>Jogos</figcaption>"}),
     ("<figcaption>Dictionnaire</figcaption>", {"lb": "<figcaption>Dictionnaire</figcaption>", "de": "<figcaption>Wörterbuch</figcaption>", "en": "<figcaption>Dictionary</figcaption>", "pt": "<figcaption>Dicionário</figcaption>"}),
-    ('<div class="txt"><b>Installez maintenant</b><span class="recherche"><span class="recherche-label">Cherchez&nbsp;:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">Lëtzebuergesch Clavier</span></span></span>', {
-        "lb": '<div class="txt"><b>Elo installéieren</b><span class="recherche"><span class="recherche-label">Sicht:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">Lëtzebuergesch Clavier</span></span></span>',
-        "de": '<div class="txt"><b>Jetzt installieren</b><span class="recherche"><span class="recherche-label">Suchen Sie:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">Lëtzebuergesch Clavier</span></span></span>',
-        "en": '<div class="txt"><b>Install now</b><span class="recherche"><span class="recherche-label">Search for:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">Lëtzebuergesch Clavier</span></span></span>',
-        "pt": '<div class="txt"><b>Instale já</b><span class="recherche"><span class="recherche-label">Procure:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">Lëtzebuergesch Clavier</span></span></span>'}),
+    ('<div class="txt"><b>Installez maintenant</b><span class="recherche"><span class="recherche-label">Cherchez&nbsp;:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">De Lëtzebuerger Clavier</span></span></span>', {
+        "lb": '<div class="txt"><b>Elo installéieren</b><span class="recherche"><span class="recherche-label">Sicht:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">De Lëtzebuerger Clavier</span></span></span>',
+        "de": '<div class="txt"><b>Jetzt installieren</b><span class="recherche"><span class="recherche-label">Suchen Sie:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">De Lëtzebuerger Clavier</span></span></span>',
+        "en": '<div class="txt"><b>Install now</b><span class="recherche"><span class="recherche-label">Search for:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">De Lëtzebuerger Clavier</span></span></span>',
+        "pt": '<div class="txt"><b>Instale já</b><span class="recherche"><span class="recherche-label">Procure:</span><span class="recherche-champ"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.2"/><path d="M14.6 14.6 20.5 20.5"/></svg><span class="recherche-texte">De Lëtzebuerger Clavier</span></span></span>'}),
 
     # ---- Triptyque, refonte 2026-10-20 : dos en moments de la journée, volet 5 en démonstration ----
     ("A4 paysage recto-verso, plié en trois. À poser sur un stand, un comptoir d'association ou une table de cours du soir : le premier volet donne envie, le dos montre ce que le clavier change au quotidien, l'intérieur explique l'installation, les fonctions et l'apprentissage.", {
@@ -509,16 +509,28 @@ T = [
         "de": '<p class="demo-legende">Tippen Sie auf das Mikro und sprechen Sie Ihren Satz: Er schreibt sich auf Luxemburgisch.</p>',
         "en": '<p class="demo-legende">Tap the mic and say your sentence: it writes itself in Luxembourgish.</p>',
         "pt": '<p class="demo-legende">Toque no microfone e diga a sua frase: ela escreve-se em luxemburguês.</p>'}),
-    ('alt="Carte très rare « Kran » (grue), cadre d\'or, nuit d\'hiver étoilée"', {
-        "lb": 'alt="Ganz rar Kaart „Kran“, Goldrumm, Wantersnuecht mat Stären"',
-        "de": 'alt="Sehr seltene Karte „Kran“, Goldrahmen, sternklare Winternacht"',
-        "en": 'alt="Very rare card “Kran” (crane), gold frame, starry winter night"',
-        "pt": 'alt="Cartão muito raro «Kran» (grua), moldura de ouro, noite de inverno estrelada"'}),
-    ('alt="Quatre cartes en éventail : Bam (arbre) en étain, Sonn (soleil) en bronze, Brëll (lunettes) en argent, Kran (grue) en or"', {
-        "lb": 'alt="Véier Kaarten an engem Fächer: Bam aus Zënn, Sonn aus Bronze, Brëll aus Sëlwer, Kran aus Gold"',
-        "de": 'alt="Vier Karten als Fächer: Bam (Baum) in Zinn, Sonn (Sonne) in Bronze, Brëll (Brille) in Silber, Kran (Kran) in Gold"',
-        "en": 'alt="Four cards in a fan: Bam (tree) in pewter, Sonn (sun) in bronze, Brëll (glasses) in silver, Kran (crane) in gold"',
-        "pt": 'alt="Quatro cartões em leque: Bam (árvore) em estanho, Sonn (sol) em bronze, Brëll (óculos) em prata, Kran (grua) em ouro"'}),
+    ('alt="Trois cartes en éventail : Hond (chien) en bronze, Kuch (gâteau) en argent, Kaz (chat) en or"', {
+        "lb": 'alt="Dräi Kaarten an engem Fächer: Hond aus Bronze, Kuch aus Sëlwer, Kaz aus Gold"',
+        "de": 'alt="Drei Karten als Fächer: Hond (Hund) in Bronze, Kuch (Kuchen) in Silber, Kaz (Katze) in Gold"',
+        "en": 'alt="Three cards in a fan: Hond (dog) in bronze, Kuch (cake) in silver, Kaz (cat) in gold"',
+        "pt": 'alt="Três cartões em leque: Hond (cão) em bronze, Kuch (bolo) em prata, Kaz (gato) em ouro"'}),
+    # Les trois cartes du Wuertduell (2026-11), traductions reprises des pages
+    # traduites où elles avaient été posées à la main.
+    ('alt="Carte peu commune « Hond » (chien), cadre de bronze"', {
+        "lb": 'alt="Net esou heefeg Kaart „Hond“, Bronzerumm"',
+        "de": 'alt="Ungewöhnliche Karte „Hond“ (Hund), Bronzerahmen"',
+        "en": 'alt="Uncommon card “Hond” (dog), bronze frame"',
+        "pt": 'alt="Cartão pouco comum «Hond» (cão), moldura de bronze"'}),
+    ('alt="Carte rare « Kuch » (gâteau), cadre d\'argent"', {
+        "lb": 'alt="Rar Kaart „Kuch“, Sëlwerrumm"',
+        "de": 'alt="Seltene Karte „Kuch“ (Kuchen), Silberrahmen"',
+        "en": 'alt="Rare card “Kuch” (cake), silver frame"',
+        "pt": 'alt="Cartão raro «Kuch» (bolo), moldura de prata"'}),
+    ('alt="Carte très rare « Kaz » (chat), cadre d\'or"', {
+        "lb": 'alt="Ganz rar Kaart „Kaz“, Goldrumm"',
+        "de": 'alt="Sehr seltene Karte „Kaz“ (Katze), Goldrahmen"',
+        "en": 'alt="Very rare card “Kaz” (cat), gold frame"',
+        "pt": 'alt="Cartão muito raro «Kaz» (gato), moldura de ouro"'}),
     ('<span class="tampon-mot">gratuit</span>', {
         "lb": '<span class="tampon-mot">gratis</span>', "de": '<span class="tampon-mot">gratis</span>',
         "en": '<span class="tampon-mot">free</span>', "pt": '<span class="tampon-mot">grátis</span>'}),

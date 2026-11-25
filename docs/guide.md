@@ -36,7 +36,7 @@ de pouvoir servir dans vos autres applications. Elle vous guide, et coche les
 Ouvrez l'application et touchez **« Activer le clavier »**. Vous arrivez dans
 les paramètres Android, section « Clavier à l'écran » (ou « Langues et saisie »
 selon les téléphones). Activez l'interrupteur en face de
-**« Lëtzebuergesch Clavier »**.
+**« De Lëtzebuerger Clavier »**.
 
 <div align="center" style="margin: 16px 0;">
   <img src="Screenshots/lux_onboarding.png" alt="Parcours d'installation de l'application, avec les étapes cochées et le champ d'essai" width="32%">
@@ -55,7 +55,7 @@ disponible qu'une fois le téléphone déverrouillé. C'est également normal.
 
 Activer ne suffit pas : il faut ensuite le **choisir** comme clavier actif.
 Depuis l'application, touchez **« Ouvrir le sélecteur »** et choisissez
-« Lëtzebuergesch Clavier » dans la liste.
+« De Lëtzebuerger Clavier » dans la liste.
 
 À tout moment ensuite, un appui long d'une seconde sur la barre d'espace ouvre
 ce même sélecteur — le petit 🌐 affiché sur la barre le rappelle.
