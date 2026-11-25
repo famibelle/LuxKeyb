@@ -1,6 +1,6 @@
 ---
-title: "Sie sprechen es. Jetzt schreiben Sie es. 🇱🇺"
-description: "🇱🇺 Trauen Sie sich, Lëtzebuergesch zu schreiben! Tippen oder diktieren Sie Ihre Nachrichten auf Luxemburgisch, direkt auf dem Handy. Installieren Sie die Tastatur kostenlos auf Android."
+title: "Die Tastatur im Detail"
+description: "Alles über Lëtzebuergesch Clavier: Vorschläge, Diktat, Rechtschreibprüfung, Spiele und Karten, Vergleich mit anderen Tastaturen, Herkunft der Wörter und Installation ohne Google Play."
 image: /assets/og/partage-de.png
 lang: de
 ---
@@ -11,17 +11,21 @@ lang: de
      sind als solche gekennzeichnet. -->
 
 <nav class="site">
-  <strong>🏠 Start</strong> ·
+  <a href="de.html">🏠 Start</a> ·
+  <strong>🔎 Im Detail</strong> ·
   <a href="#installieren">📲 Installieren</a> ·
   <a href="simulateur.html">⌨️ Online ausprobieren</a> ·
-  <a href="index.html" hreflang="fr" lang="fr">FR</a> ·
-  <a href="en.html" hreflang="en" lang="en">EN</a> ·
+  <a href="en-detail.html" hreflang="fr" lang="fr">FR</a> ·
+  <a href="en-detail-en.html" hreflang="en" lang="en">EN</a> ·
   <strong>DE</strong> ·
-  <a href="pt.html" hreflang="pt" lang="pt">PT</a> ·
+  <a href="en-detail-pt.html" hreflang="pt" lang="pt">PT</a> ·
   <button type="button" class="theme-toggle" aria-label="Zum dunklen Modus wechseln">🌙</button>
 </nav>
 
-# Trauen Sie sich, Lëtzebuergesch zu schreiben!
+<!-- Frühere deutsche Startseite, bis 2026-11-25. Die Startseite für alle ist
+     jetzt de.html (aus index.html erzeugt); diese Seite behält alle Details. -->
+
+# Die Tastatur im Detail
 
 <p class="chapo"><strong>Nicht Sie schreiben schlecht Luxemburgisch: Ihre
 Tastatur kennt es nur nicht.</strong> Lëtzebuergesch Clavier schlägt Ihnen beim

@@ -1,6 +1,6 @@
 ---
-title: "You speak it. Now you write it. 🇱🇺"
-description: "🇱🇺 Dare to write Lëtzebuergesch! Type or dictate your messages in Luxembourgish, right on your phone. Install the keyboard for free on Android."
+title: "The keyboard in detail"
+description: "Everything about Lëtzebuergesch Clavier: suggestions, dictation, spell checker, games and cards, comparison with other keyboards, where the words come from, and installing without Google Play."
 image: /assets/og/partage-en.png
 lang: en
 ---
@@ -10,17 +10,21 @@ lang: en
      linked from here that exist only in French say so. -->
 
 <nav class="site">
-  <strong>🏠 Home</strong> ·
+  <a href="en.html">🏠 Home</a> ·
+  <strong>🔎 In detail</strong> ·
   <a href="#install">📲 Install</a> ·
   <a href="simulateur.html">⌨️ Try it online</a> ·
-  <a href="index.html" hreflang="fr" lang="fr">FR</a> ·
+  <a href="en-detail.html" hreflang="fr" lang="fr">FR</a> ·
   <strong>EN</strong> ·
-  <a href="de.html" hreflang="de" lang="de">DE</a> ·
-  <a href="pt.html" hreflang="pt" lang="pt">PT</a> ·
+  <a href="en-detail-de.html" hreflang="de" lang="de">DE</a> ·
+  <a href="en-detail-pt.html" hreflang="pt" lang="pt">PT</a> ·
   <button type="button" class="theme-toggle" aria-label="Switch to dark mode">🌙</button>
 </nav>
 
-# Dare to write Lëtzebuergesch!
+<!-- Former English homepage, until 2026-11-25. The general-audience homepage
+     is now en.html (generated from index.html); this page keeps the full detail. -->
+
+# The keyboard in detail
 
 <p class="chapo"><strong>You are not bad at writing Luxembourgish: your keyboard
 just doesn't know it.</strong> Lëtzebuergesch Clavier suggests words as you type,

@@ -42,7 +42,7 @@ description: Écrire ou modifier tout texte que lisent les utilisateurs ou le pu
 - **Les textes lb, de et pt sont écrits par Claude.** Le dire à Medhi à chaque fois, et proposer la relecture par la professeure de luxembourgeois pour le lb.
 - Un nom luxembourgeois inventé (comme `Wuertplaz`) doit être formé de mots attestés par le LOD, et signalé comme non vérifié par un locuteur natif.
 
-**Site** : le français est la source. Les déclinaisons lb, de, en et pt des supports sont **générées** (`docs/scripts/traduire_supports.py`), jamais éditées à la main ; la page Nouveautés se traduit dans `docs/stats/traductions/`. Le français d'abord, puis les traductions.
+**Site** : le français est la source. **L'accueil** est `docs/index.html` ; `en.html`, `de.html` et `pt.html` en sont **générés** par `docs/scripts/generer_accueils.py`, jamais édités à la main : après toute modification de l'accueil français, compléter les tables du script (il s'arrête sur tout texte français qu'il ne sait pas traduire) puis le relancer. L'ancien contenu détaillé vit dans `en-detail.md` et ses traductions `en-detail-en.md`, `en-detail-de.md`, `en-detail-pt.md`. Les déclinaisons lb, de, en et pt des supports sont **générées** (`docs/scripts/traduire_supports.py`), jamais éditées à la main ; la page Nouveautés se traduit dans `docs/stats/traductions/`. Le français d'abord, puis les traductions.
 
 ## 5. Montrer avant d'appliquer
 

@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lëtzebuergesch Clavier · Sie sprechen es. Jetzt schreiben Sie es.</title>
+<meta name="description" content="Die Tastatur, die mit Ihnen Luxemburgisch schreibt: Sie schlägt beim Tippen Wörter vor, setzt ë und é an die richtige Stelle und schreibt, was Sie ihr sagen. Kostenlos für Android.">
+<link rel="canonical" href="https://famibelle.github.io/LuxKeyb/de.html">
+<link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/">
+<link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/en.html">
+<link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/de.html">
+<link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/pt.html">
+<link rel="alternate" hreflang="x-default" href="https://famibelle.github.io/LuxKeyb/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:site_name" content="Lëtzebuergesch Clavier">
+<meta property="og:title" content="Sie sprechen es. Jetzt schreiben Sie es. 🇱🇺">
+<meta property="og:description" content="Tippen oder diktieren Sie Ihre Nachrichten auf Luxemburgisch, direkt auf dem Handy. Kostenlos für Android.">
+<meta property="og:url" content="https://famibelle.github.io/LuxKeyb/de.html">
+<meta property="og:image" content="https://famibelle.github.io/LuxKeyb/assets/og/partage-de.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<!-- Fredoka embarquée (assets/fredoka-embed.css) plutôt que servie par Google
+     Fonts : l'accueil ne contacte aucun service tiers. -->
+<link rel="stylesheet" href="assets/fredoka-embed.css">
+<script>(function(){try{var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script defer src="assets/theme.js"></script>
+<!--
+  GÉNÉRÉ par docs/scripts/generer_accueils.py depuis index.html : ne pas
+  modifier à la main. Traduction écrite par Claude, à faire relire.
+-->
+<style>
+/* Mise en page : bandeau nuit avec le téléphone en action, coupé par la diagonale du drapeau,
+   puis des bandes claires courtes ; la barre de suggestions du clavier sert de motif récurrent. */
+:root{
+  color-scheme:light;
+  --nuit:#003876;      /* fond qui porte du texte clair, titres sur papier */
+  --rouge:#ED2939;     /* aplats, gros titres seulement */
+  --ciel:#00A1DE;      /* filets, puces ; jamais de texte sur clair */
+  --encre:#1C2624;     /* texte courant */
+  --encre-douce:#4A5654;
+  --papier:#F5F5F5;    /* fond clair, celui du clavier */
+  --carte:#FFFFFF;
+  --filet:#DDE3E6;
+  --touche:#FFFFFF;
+  --touche-ombre:#C9D1D6;
+  --lien:#003876;
+  --titre:#003876;
+  /* Les GIF ont un fond blanc qu'on ne peut pas changer : en sombre, un
+     passe-partout de teinte intermédiaire et un blanc un peu atténué
+     adoucissent le saut entre la page et l'image. Sans effet en clair. */
+  --gif-cadre-fond:transparent;
+  --gif-cadre-bord:transparent;
+  --gif-cadre-marge:0px;
+  --gif-luminosite:1;
+  --sur-nuit:#FFFFFF;
+  --sur-nuit-doux:#C8D7EA;
+  --display:"Fredoka","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  --texte:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --nuit:#0A2A57; --encre:#E8EEF2; --encre-douce:#AEBBC4; --papier:#111A22; --carte:#18232D;
+  --filet:#2A3742; --touche:#24313C; --touche-ombre:#0B1117; --lien:#7FD0F0; --titre:#E8EEF2; --gif-cadre-fond:#202D38; --gif-cadre-bord:#34434F; --gif-cadre-marge:12px; --gif-luminosite:.88; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --nuit:#0A2A57; --encre:#E8EEF2; --encre-douce:#AEBBC4; --papier:#111A22; --carte:#18232D;
+  --filet:#2A3742; --touche:#24313C; --touche-ombre:#0B1117; --lien:#7FD0F0; --titre:#E8EEF2; --gif-cadre-fond:#202D38; --gif-cadre-bord:#34434F; --gif-cadre-marge:12px; --gif-luminosite:.88; color-scheme:dark;}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+body{background:var(--papier);color:var(--encre);font-family:var(--texte);font-size:17px;line-height:1.55}
+a{color:var(--lien)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--ciel);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.08;text-wrap:balance;margin:0}
+h2{font-size:clamp(28px,4.6vw,40px);color:var(--titre)}
+/* Titres bicolores, comme le haut de page : la seconde moitié en rouge du
+   drapeau, réservé aux gros titres (charte : 24 px et plus). */
+h2 .accent{color:var(--rouge)}
+h3{font-size:22px;font-weight:600}
+p{margin:0}
+.enveloppe{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bande{padding-block:72px}
+.chapo{font-size:19px;color:var(--encre-douce);max-width:56ch}
+
+/* ---------- Bandeau d'ouverture ---------- */
+.ouverture{background:var(--nuit);color:var(--sur-nuit);position:relative;overflow:hidden;
+  margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px)}
+.entete{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-block:18px}
+.marque{display:flex;align-items:center;gap:10px;color:var(--sur-nuit);text-decoration:none;font-family:var(--display);font-weight:600;font-size:19px;margin-right:auto}
+.marque img{width:40px;height:40px;border-radius:12px;background:#fff;padding:3px}
+.langues{display:flex;gap:4px;font-size:14px}
+.langues a,.langues strong{color:var(--sur-nuit-doux);text-decoration:none;padding:6px 8px;border-radius:6px}
+.langues strong{color:var(--sur-nuit);background:rgba(255,255,255,.12)}
+.langues a:hover{color:#fff}
+.theme-toggle{font:inherit;font-size:14px;cursor:pointer;background:transparent;color:var(--sur-nuit-doux);border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:5px 12px}
+.theme-toggle:hover{color:#fff;border-color:#fff}
+
+.heros{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:48px;align-items:center;padding-block:40px 120px}
+.surtitre{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--ciel);font-weight:700;margin-bottom:18px}
+.heros h1{font-size:clamp(42px,7vw,76px);letter-spacing:-.01em}
+.heros h1 span{display:block;color:var(--rouge)}
+.heros .chapo{color:var(--sur-nuit-doux);margin-top:24px;font-size:20px}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:32px}
+.badge-play img{display:block;height:80px;width:auto}
+/* Haut de page : le badge Google Play centré sous l'accroche, avec sa mention. */
+.actions-heros{justify-content:center}
+.mention-heros{text-align:center}
+.mention{margin-top:16px;font-size:15px;color:var(--sur-nuit-doux)}
+
+.telephone{justify-self:center;width:min(330px,100%);background:#0B0F14;border-radius:44px;padding:12px;box-shadow:0 30px 60px rgba(0,0,0,.35),0 0 0 2px rgba(255,255,255,.08);transform:rotate(2.5deg)}
+.telephone img{display:block;width:100%;height:auto;border-radius:32px;aspect-ratio:1/1;object-fit:cover;background:#fff;filter:brightness(var(--gif-luminosite))}
+.telephone figcaption{color:var(--sur-nuit-doux);font-size:14px;text-align:center;padding:12px 8px 4px;font-style:italic}
+
+/* la diagonale du drapeau, comme sur les supports imprimés */
+.diagonale{position:absolute;left:0;right:0;bottom:0;height:64px;
+  background:linear-gradient(176deg,transparent 0 48%,#fff 48% 56%,var(--rouge) 56% 100%)}
+.diagonale::after{content:"";position:absolute;inset:auto 0 0 0;height:22px;background:var(--papier);clip-path:polygon(0 100%,100% 0,100% 100%)}
+
+/* ---------- La barre de suggestions, motif récurrent ---------- */
+/* Sur ordinateur, le clavier d'essai à droite du titre et des trois points ;
+   sur téléphone, juste sous le titre, pour qu'on le voie écrire sans défiler. */
+.essai{display:grid;grid-template-columns:minmax(0,1fr) 380px;grid-template-areas:"titre cadre" "texte cadre";column-gap:56px;row-gap:34px;align-items:start}
+.essai-titre{grid-area:titre}
+.essai-texte{grid-area:texte}
+.essai-cadre{grid-area:cadre;align-self:center}
+.essai-titre .chapo{margin-top:14px}
+.gestes{list-style:none;padding:0;margin:0;display:grid;gap:26px}
+.gestes li{display:grid;gap:6px}
+.gestes li p:not(.exemple){color:var(--encre-douce)}
+.exemple{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:6px}
+.fleche{color:var(--encre-douce)}
+.saisie{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:16px;color:var(--encre)}
+.puce{font-family:var(--display);font-weight:600;font-size:16px;padding:6px 12px;border-radius:10px;background:var(--touche);box-shadow:0 2px 0 var(--touche-ombre);color:var(--encre)}
+.puce.choisie{background:var(--rouge);color:#fff;box-shadow:0 2px 0 #A8121F}
+.puce.micro{background:var(--rouge);color:#fff;box-shadow:0 2px 0 #A8121F;display:inline-flex;align-items:center;gap:8px}
+.micro svg{width:16px;height:16px}
+.essai-cadre{justify-self:center;width:100%;max-width:380px}
+.essai-note{margin-top:6px;font-size:14px;color:var(--encre-douce);text-align:center}
+.essai-cadre iframe{display:block;width:100%;height:580px;border:0;background:transparent}
+
+/* ---------- Dictée ---------- */
+.duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.duo .chapo{margin-top:18px}
+.dictee{margin:0;width:100%;max-width:560px;justify-self:center}
+.cadre-gif{background:var(--gif-cadre-fond);border:1px solid var(--gif-cadre-bord);border-radius:22px;padding:var(--gif-cadre-marge)}
+.dictee img{display:block;width:100%;height:auto;border-radius:14px;filter:brightness(var(--gif-luminosite))}
+.dictee figcaption{margin-top:12px;font-size:15px;color:var(--encre-douce);text-align:center;font-style:italic}
+.confiance{margin-top:24px;padding:16px 18px;border-left:4px solid var(--ciel);background:var(--carte);border-radius:0 12px 12px 0;font-size:16px;color:var(--encre-douce)}
+.confiance strong{color:var(--encre)}
+.etapes-dictee{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:12px;counter-reset:d}
+.etapes-dictee li{counter-increment:d;display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:baseline;color:var(--encre-douce)}
+.etapes-dictee li::before{content:counter(d);width:30px;height:30px;border-radius:50%;background:var(--rouge);color:#fff;font-family:var(--display);font-weight:700;display:grid;place-items:center;align-self:start;margin-top:-2px}
+.etapes-dictee strong{color:var(--encre)}
+.applis-intro{margin-top:24px;color:var(--encre-douce)}
+.applis{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.applis span{font-size:14px;font-weight:600;padding:6px 12px;border-radius:99px;border:1px solid var(--filet);color:var(--encre-douce);background:var(--carte)}
+
+/* ---------- Cartes ---------- */
+.cartes{background:var(--carte);border-block:1px solid var(--filet)}
+.cartes .duo{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
+.cartes figure{margin:0}
+.cartes figure img{width:100%;height:auto;display:block}
+.surtitre-clair{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--rouge);font-weight:700;margin-bottom:12px}
+.jeux{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.jeux span{font-family:var(--display);font-weight:600;font-size:15px;padding:6px 12px;border-radius:10px;background:var(--papier);border:1px solid var(--filet)}
+.jeux small{font-family:var(--texte);font-weight:400;color:var(--encre-douce);margin-left:4px}
+
+/* ---------- Questions ---------- */
+.questions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 40px;margin-top:40px}
+.question h3{font-size:20px;color:var(--encre)}
+.question p{margin-top:8px;color:var(--encre-douce)}
+
+/* ---------- Installer ---------- */
+.installer{background:var(--nuit);color:#fff}
+.installer h2{color:#fff}
+.installer .grille{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px;align-items:center}
+.installer .chapo{color:var(--sur-nuit-doux);margin-top:16px}
+.etapes{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:12px;counter-reset:e}
+.etapes li{counter-increment:e;display:flex;gap:14px;align-items:baseline;color:var(--sur-nuit-doux)}
+.etapes li::before{content:counter(e);flex:none;width:30px;height:30px;border-radius:50%;background:var(--rouge);color:#fff;font-family:var(--display);font-weight:700;display:grid;place-items:center;transform:translateY(6px)}
+.etapes strong{color:#fff}
+.qr{text-align:center;color:var(--sur-nuit-doux);font-size:14px}
+.qr img{display:block;width:180px;height:180px;background:#fff;border-radius:14px;padding:8px;margin:0 auto 10px}
+.installer .actions{margin-top:30px;justify-content:center}
+/* Tout ce qui mène à Google Play (badges, GIF du clavier, code QR) se
+   soulève légèrement au survol. */
+.vers-play,.badge-play{display:block;border-radius:inherit;transition:transform .2s ease}
+.vers-play:hover,.badge-play:hover{transform:translateY(-3px)}
+.badge-play{border-radius:12px}
+.telephone .vers-play{border-radius:32px}
+.qr .vers-play{width:max-content;margin:0 auto;border-radius:14px}
+
+/* ---------- Pied ---------- */
+.pied{padding-block:48px 56px;font-size:15px;color:var(--encre-douce)}
+.pied nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.pied h4{font-family:var(--display);font-size:16px;font-weight:600;color:var(--encre);margin:0 0 10px}
+.pied ul{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.pied a{color:var(--encre-douce);text-decoration:none}
+.pied a:hover{color:var(--lien);text-decoration:underline}
+.credits{margin-top:36px;padding-top:20px;border-top:1px solid var(--filet);font-size:14px;max-width:80ch}
+
+@media (max-width:860px){
+  .heros,.duo,.cartes .duo,.installer .grille{grid-template-columns:minmax(0,1fr)}
+  .heros{padding-block:16px 100px;gap:36px}
+  .essai{grid-template-columns:minmax(0,1fr);grid-template-areas:"titre" "cadre" "texte";row-gap:28px}
+  .questions{grid-template-columns:minmax(0,1fr)}
+  .pied nav{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .bande{padding-block:56px}
+  .telephone{transform:none;width:min(300px,100%)}
+  .cartes figure{order:-1}
+}
+@media (max-width:480px){
+  .marque{flex-basis:100%}
+  .theme-toggle{margin-left:auto}
+  .pied nav{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){.telephone{transform:none}.vers-play,.vers-play:hover,.badge-play,.badge-play:hover{transition:none;transform:none}}
+.langue-fr{font-size:11px;font-weight:700;letter-spacing:.06em;border:1px solid var(--filet);border-radius:4px;padding:0 4px;margin-left:6px;vertical-align:1px;color:var(--encre-douce)}
+.installer .langue-fr,.ouverture .langue-fr{border-color:rgba(255,255,255,.35);color:var(--sur-nuit-doux)}
+</style>
+</head>
+<body>
+
+<header class="ouverture">
+  <div class="enveloppe">
+    <div class="entete">
+      <a class="marque" href="./">
+        <img src="assets/logo/luxkeyb-logo-192.png" alt="" width="40" height="40">
+        Lëtzebuergesch Clavier
+      </a>
+            <nav class="langues" aria-label="Sprache">
+        <a href="./" hreflang="fr" lang="fr">FR</a>
+        <a href="en.html" hreflang="en" lang="en">EN</a>
+        <strong>DE</strong>
+        <a href="pt.html" hreflang="pt" lang="pt">PT</a>
+      </nav>
+        <button type="button" class="theme-toggle" aria-label="Zum dunklen Modus wechseln">🌙 Dunkel</button>
+    </div>
+
+    <div class="heros">
+      <div>
+        <p class="surtitre">Die luxemburgische Tastatur für Android</p>
+        <h1>Sie sprechen es. <span>Jetzt schreiben Sie es.</span></h1>
+        <p class="chapo">Die Tastatur schlägt Ihnen beim Tippen luxemburgische Wörter vor, setzt ë und é an die richtige Stelle und schreibt für Sie, was Sie ihr sagen.</p>
+        <div class="actions actions-heros">
+          <a class="badge-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;hl=de&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil-de%26utm_campaign%3Dinstaller">
+            <img src="assets/google-play-badge-de.svg" alt="Jetzt bei Google Play" width="270" height="80">
+          </a>
+        </div>
+        <p class="mention mention-heros">Kostenlos · Android 7.0 oder neuer</p>
+      </div>
+      <figure class="telephone">
+        <a class="vers-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;hl=de&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil-de%26utm_campaign%3Dgif-clavier" aria-label="Lëtzebuergesch Clavier bei Google Play installieren">
+        <img src="Screenshots/lux_clavier_demo.gif" width="480" height="480"
+             alt="Der Satz „Ech hunn op der Schueberfouer Gromperekichelcher giess“ wird auf der Tastatur getippt: Nach „op der“ schlägt die Leiste die Fortsetzung vor, und lange Wörter werden mit einem Tippen ergänzt">
+        </a>
+        <figcaption>„Ech hunn op der Schueberfouer Gromperekichelcher giess“</figcaption>
+      </figure>
+    </div>
+  </div>
+  <div class="diagonale" aria-hidden="true"></div>
+</header>
+
+<main>
+  <section class="bande" aria-labelledby="t-gestes">
+    <div class="enveloppe essai">
+      <div class="essai-titre">
+        <h2 id="t-gestes">Schreiben, <span class="accent">wie man spricht</span></h2>
+        <p class="chapo">Sie können es sagen, aber es zu schreiben, ist etwas anderes: Wohin kommt das ë, groß oder klein, ein e oder zwei? Die Tastatur antwortet Ihnen beim Tippen. Sehen Sie ihr beim Schreiben zu und übernehmen Sie dann: Tippen Sie auf einen Buchstaben der Testtastatur oder auf ihr Mikrofon, um mit ihr zu sprechen.</p>
+      </div>
+
+      <div class="essai-texte">
+
+        <!-- Exemples vérifiés sur le moteur du simulateur (simulateur-engine.js)
+             le 2026-11-25 : chaque mot proposé arrive en tête de la barre. -->
+        <ul class="gestes">
+          <li>
+            <p class="exemple" aria-hidden="true"><span class="saisie">nach eng</span><span class="fleche">→</span><span class="puce choisie">Kéier</span></p>
+            <h3>Sie errät, was folgt</h3>
+            <p>Nach „nach eng“ schlägt sie schon „Kéier“ vor. Sie berücksichtigt, was Sie gerade geschrieben haben: ein Tippen, und das nächste Wort steht da.</p>
+          </li>
+          <li>
+            <p class="exemple" aria-hidden="true"><span class="saisie">schwatzen</span><span class="fleche">→</span><span class="puce choisie">schwätzen</span></p>
+            <h3>Sie setzt die Akzente</h3>
+            <p>Tippen Sie, ohne sich um ä, ë und é zu kümmern: Sie schlägt das richtig geschriebene Wort vor. Wenn Sie sie lieber selbst tippen, hat jedes seine eigene Taste.</p>
+          </li>
+          <li>
+            <p class="exemple" aria-hidden="true"><span class="saisie">Schueberfuer</span><span class="fleche">→</span><span class="puce choisie">Schueberfouer</span></p>
+            <h3>Sie fängt Tippfehler ab</h3>
+            <p>Ein vergessener Buchstabe, ein Buchstabe zu viel, eine Nachbartaste: Das richtige Wort kommt trotzdem.</p>
+          </li>
+          <li>
+            <p class="exemple" aria-hidden="true"><span class="saisie">gromperekichelcher</span><span class="fleche">→</span><span class="puce choisie">Gromperekichelcher</span></p>
+            <h3>Sie kennt die Rechtschreibung</h3>
+            <p>Substantive werden großgeschrieben, wie es die Rechtschreibung verlangt, und lange Wörter schreiben sich mit einem Tippen. Die Tastatur stützt sich auf das offizielle Wörterbuch der Sprache: Sie erfinden nichts, Sie wählen aus.</p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Le vrai moteur de suggestions, dans le navigateur. ?demo=auto
+           enchaîne des phrases d'exemple tant que le cadre est à l'écran ;
+           le premier geste du visiteur arrête la boucle et vide le champ. -->
+      <div class="essai-cadre">
+        <iframe src="simulateur.html?embed=1&amp;demo=auto&amp;lang=de" width="380" height="580"
+                loading="lazy" allow="microphone"
+                title="Testtastatur: Sie schreibt von selbst Sätze auf Luxemburgisch; tippen Sie auf einen Buchstaben oder das Mikrofon, um selbst zu schreiben"></iframe>
+        <p class="essai-note">Das Mikrofon schickt Ihre Stimme an die Universität Luxemburg, die sie aufschreibt, ohne sie zu speichern.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bande" style="padding-top:0" aria-labelledby="t-dictee">
+    <div class="enveloppe duo">
+      <div>
+        <h2 id="t-dictee">Sprechen Sie Luxemburgisch, <span class="accent">sie schreibt</span></h2>
+        <p class="chapo">Sie müssen die Schreibweise nicht mehr suchen: Sprechen Sie Ihren Satz, die Tastatur schreibt ihn für Sie, mit Großschreibung und Satzzeichen.</p>
+        <ol class="etapes-dictee">
+          <li><span><strong>Tippen Sie auf das Mikrofon</strong>, rechts neben den Vorschlägen.</span></li>
+          <li><span><strong>Sprechen Sie ganz normal.</strong> Der Text erscheint, während Sie sprechen, und das Mikrofon schließt sich von selbst, wenn Sie aufhören.</span></li>
+          <li><span><strong>Lesen Sie es durch</strong> und senden Sie ab.</span></li>
+        </ol>
+        <p class="applis-intro">Das Mikrofon gehört zur Tastatur: Es begleitet Sie überall, wo Sie schreiben.</p>
+        <div class="applis" aria-label="Beispiele für Apps">
+          <span>WhatsApp</span><span>SMS</span><span>E-Mail</span><span>Facebook</span><span>Notizen</span>
+        </div>
+        <p class="confiance"><strong>Ihre Stimme verlässt das Handy nur, wenn Sie auf das Mikrofon tippen</strong>, und geht an den Spracherkennungsdienst der Universität Luxemburg, der sie in Text umwandelt, ohne sie zu speichern. Zum Diktieren brauchen Sie deshalb eine Internetverbindung. Was Sie tippen, bleibt auf Ihrem Handy.</p>
+      </div>
+      <figure class="dictee">
+        <div class="cadre-gif">
+        <img src="assets/accueil/dictee-mots.gif" width="1080" height="456"
+             alt="Ein rotes Mikrofon pulsiert während des Diktats, und die Wörter des Satzes „Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott.“ erscheinen nacheinander in der Sprechblase">
+        </div>
+        <figcaption>„Auf der Kirmes esse ich immer Kartoffelpuffer mit Apfelmus.“ Der Text erscheint, während man spricht.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="bande cartes" aria-labelledby="t-cartes">
+    <div class="enveloppe duo">
+      <figure>
+        <img src="assets/accueil/cartes-eventail.png" width="964" height="598" loading="lazy"
+             alt="Drei Karten als Fächer: Hond (Hund) in Bronze, Kuch (Kuchen) in Silber, Kaz (Katze) in Gold. Jede zeigt eine Zeichnung vor einem Ort des Landes, das Wort, seine Wortart, seine Bedeutung auf Französisch und einen Beispielsatz">
+      </figure>
+      <div>
+        <p class="surtitre-clair">Als Zugabe</p>
+        <h2 id="t-cartes">Jedes gefundene Wort wird zur Karte</h2>
+        <p class="chapo">Sieben kleine Spiele lassen Sie neue Wörter entdecken. Jedes gewonnene Wort kommt in Ihr Sammelheft, auf eine Karte mit einem Ort des Landes, und kehrt von selbst zurück, bis Sie es sich gemerkt haben.</p>
+        <div class="jeux" aria-label="Die sieben Spiele">
+          <span>Wuertsich <small>Buchstabensalat</small></span>
+          <span>Wuertmix <small>Wörter entwirren</small></span>
+          <span>Wuertriet <small>ein Wort in sechs Versuchen</small></span>
+          <span>Wuertlück <small>das fehlende Wort</small></span>
+          <span>Zuelwuert <small>die Zahlen</small></span>
+          <span>Kräizwuert <small>Kreuzworträtsel</small></span>
+          <span>Wuertplaz <small>das Raster füllen</small></span>
+        </div>
+        <p style="margin-top:22px"><a href="regle-du-jeu.html" hreflang="fr">Die Karten lassen sich auch am Tisch spielen, zu zweit <small class="langue-fr" title="auf Französisch">FR</small></a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bande" aria-labelledby="t-questions">
+    <div class="enveloppe">
+      <h2 id="t-questions">Ihre Fragen</h2>
+      <div class="questions">
+        <div class="question">
+          <h3>„Mein Handy unterstreicht meine Wörter rot.“</h3>
+          <p>Aktivieren Sie die Rechtschreibprüfung der Tastatur: Ihre luxemburgischen Wörter werden in Ihren Nachrichten, Notizen und E-Mails erkannt.</p>
+        </div>
+        <div class="question">
+          <h3>„Ich mische mit Französisch.“</h3>
+          <p>Schalten Sie „Französische Vorschläge“ in den Einstellungen der Tastatur ein: „ech hunn eng réunion muer“ schreibt sich, ohne die Tastatur zu wechseln.</p>
+        </div>
+        <div class="question">
+          <h3>„Android zeigt mir eine Warnung.“</h3>
+          <p>Sie erscheint bei jeder Tastatur, ohne Ausnahme, wenn man sie aktiviert. Diese hier sendet nichts von dem, was Sie tippen.</p>
+        </div>
+        <div class="question">
+          <h3>„Ich habe ein iPhone.“</h3>
+          <p>Die Tastatur gibt es vorerst für Android. Auf dem iPhone oder am Computer probieren Sie sie weiter oben auf dieser Seite aus: Tippen Sie auf einen Buchstaben der Testtastatur.</p>
+        </div>
+      </div>
+      <p style="margin-top:32px"><a href="faq.html" hreflang="fr">Alle Antworten <small class="langue-fr" title="auf Französisch">FR</small></a></p>
+    </div>
+  </section>
+
+  <section class="bande installer" id="installieren" aria-labelledby="t-installer">
+    <a id="devenir-testeur" aria-hidden="true"></a>
+    <div class="enveloppe grille">
+      <div>
+        <h2 id="t-installer">In drei Schritten installieren</h2>
+        <ol class="etapes">
+          <li><span><strong>Installieren Sie die App</strong> über Google Play.</span></li>
+          <li><span><strong>Folgen Sie der Anleitung</strong>: Die App zeigt Ihnen Schritt für Schritt, wie Sie die Tastatur aktivieren.</span></li>
+          <li><span><strong>Probieren Sie sie direkt aus</strong> und schreiben Sie dann Ihre erste Nachricht.</span></li>
+        </ol>
+        <div class="actions">
+          <a class="badge-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;hl=de&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil-de%26utm_campaign%3Dinstaller">
+            <img src="assets/google-play-badge-de.svg" alt="Jetzt bei Google Play" width="270" height="80">
+          </a>
+        </div>
+      </div>
+      <div class="qr">
+        <a class="vers-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;hl=de&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil-de%26utm_campaign%3Dqr-code" aria-label="Die Seite der App bei Google Play öffnen">
+        <img src="assets/qr-luxkeyb-store.png" width="180" height="180" alt="QR-Code, der die Seite der App bei Google Play öffnet">
+        </a>
+        Mit dem Handy scannen
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="enveloppe pied">
+  <nav aria-label="Mehr erfahren">
+    <div>
+      <h4>Erste Schritte</h4>
+      <ul>
+        <li><a href="en-detail-de.html">Die Tastatur im Detail</a></li>
+        <li><a href="guide.html" hreflang="fr">Die Anleitung <small class="langue-fr" title="auf Französisch">FR</small></a></li>
+        <li><a href="faq.html" hreflang="fr">Hilfe <small class="langue-fr" title="auf Französisch">FR</small></a></li>
+        <li><a href="nouveautes-de.html">Neuigkeiten</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Das Projekt</h4>
+      <ul>
+        <li><a href="regle-du-jeu.html" hreflang="fr">Spielregeln der Karten <small class="langue-fr" title="auf Französisch">FR</small></a></li>
+        <li><a href="presse.html" hreflang="fr">Presse <small class="langue-fr" title="auf Französisch">FR</small></a></li>
+        <li><a href="ambassadeurs.html" hreflang="fr">Botschafter <small class="langue-fr" title="auf Französisch">FR</small></a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Für Neugierige</h4>
+      <ul>
+        <li><a href="comparatif.html" hreflang="fr">Im Vergleich mit anderen Tastaturen <small class="langue-fr" title="auf Französisch">FR</small></a></li>
+        <li><a href="corpus.html" hreflang="fr">Woher die Wörter kommen <small class="langue-fr" title="auf Französisch">FR</small></a></li>
+        <li><a href="labs.html" hreflang="fr">Labs <small class="langue-fr" title="auf Französisch">FR</small></a></li>
+        <li><a href="privacy/privacy-policy.html" hreflang="fr">Datenschutz <small class="langue-fr" title="auf Französisch">FR</small></a></li>
+      </ul>
+    </div>
+  </nav>
+  <p class="credits">Lëtzebuergesch Clavier ist ein unabhängiges Projekt. Die Wörter stammen aus dem Lëtzebuerger Online Dictionnaire (Zenter fir d'Lëtzebuerger Sprooch) und aus offenen luxemburgischen Texten; das Diktat läuft über den Spracherkennungsdienst der Universität Luxemburg. Mit FR markierte Seiten sind auf Französisch.</p>
+</footer>
+</body>
+</html>

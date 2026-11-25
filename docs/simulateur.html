@@ -951,6 +951,30 @@
 <script src="assets/simulateur-dictee.js"></script>
 <script>
 (function () {
+  // ---- vitrine traduite (?embed=1&demo=auto&lang=en|de|pt) ----
+  // Les accueils anglais, allemand et portugais (générés par
+  // docs/scripts/generer_accueils.py) intègrent ce clavier : les quelques
+  // textes visibles du cadre suivent leur langue. Le reste (placeholder,
+  // bandeau de dictée) est en luxembourgeois, comme dans l'application.
+  (function traduireVitrine() {
+    if (!document.documentElement.classList.contains('embed-demo')) return;
+    const TEXTES = {
+      en: { effacer: '↺ Clear', frappes: 'taps', pour: 'for', caracteres: 'characters' },
+      de: { effacer: '↺ Löschen', frappes: 'Anschläge', pour: 'für', caracteres: 'Zeichen' },
+      pt: { effacer: '↺ Apagar', frappes: 'toques', pour: 'para', caracteres: 'caracteres' }
+    };
+    const langue = new URLSearchParams(location.search).get('lang');
+    const t = TEXTES[langue];
+    if (!t) return;
+    document.documentElement.lang = langue;
+    document.getElementById('reset-btn').textContent = t.effacer;
+    const frappes = document.getElementById('demo-taps').parentNode;
+    frappes.lastChild.textContent = ' ' + t.frappes;
+    const caracteres = document.getElementById('demo-chars').parentNode;
+    caracteres.firstChild.textContent = t.pour + ' ';
+    caracteres.lastChild.textContent = ' ' + t.caracteres;
+  })();
+
   const statusEl = document.getElementById('status-line');
   const placeholderEl = document.getElementById('screen-placeholder');
 

@@ -41,7 +41,7 @@ MEDIAS = RACINE / "docs" / "stats" / "nouveautes-medias.json"
 
 VERSIONS_AFFICHEES = 6
 
-# Les langues de la page d'accueil (en.md, de.md, pt.md), chacune avec sa page
+# Les langues de la page d'accueil (en.html, de.html, pt.html), chacune avec sa page
 # nouveautes-xx.html et son fichier de textes tenu à la main.
 LANGUES = ("en", "de", "pt")
 TRADUCTIONS = RACINE / "docs" / "stats" / "traductions"

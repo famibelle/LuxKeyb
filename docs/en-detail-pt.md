@@ -1,6 +1,6 @@
 ---
-title: "Fala-o. Agora, escreve-o. 🇱🇺"
-description: "🇱🇺 Atreva-se a escrever em lëtzebuergesch! Escreva ou dite as suas mensagens em luxemburguês, diretamente no telemóvel. Instale gratuitamente o teclado no Android."
+title: "O teclado em detalhe"
+description: "Tudo sobre o Lëtzebuergesch Clavier: sugestões, ditado, corretor, jogos e cartas, comparação com outros teclados, origem das palavras e instalação sem o Google Play."
 image: /assets/og/partage-pt.png
 lang: pt
 ---
@@ -13,17 +13,21 @@ lang: pt
      do Estado (ZLS) não tem português. -->
 
 <nav class="site">
-  <strong>🏠 Início</strong> ·
+  <a href="pt.html">🏠 Início</a> ·
+  <strong>🔎 Em detalhe</strong> ·
   <a href="#instalar">📲 Instalar</a> ·
   <a href="simulateur.html">⌨️ Experimentar online</a> ·
-  <a href="index.html" hreflang="fr" lang="fr">FR</a> ·
-  <a href="en.html" hreflang="en" lang="en">EN</a> ·
-  <a href="de.html" hreflang="de" lang="de">DE</a> ·
+  <a href="en-detail.html" hreflang="fr" lang="fr">FR</a> ·
+  <a href="en-detail-en.html" hreflang="en" lang="en">EN</a> ·
+  <a href="en-detail-de.html" hreflang="de" lang="de">DE</a> ·
   <strong>PT</strong> ·
   <button type="button" class="theme-toggle" aria-label="Mudar para o modo escuro">🌙</button>
 </nav>
 
-# Atreva-se a escrever em lëtzebuergesch!
+<!-- Antiga página inicial portuguesa, até 2026-11-25. A página inicial para
+     todos é agora pt.html (gerada a partir de index.html); esta página guarda o detalhe. -->
+
+# O teclado em detalhe
 
 <p class="chapo"><strong>O problema não é a sua escrita em luxemburguês: é
 o seu teclado, que não conhece a língua.</strong> O Lëtzebuergesch

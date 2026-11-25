@@ -10,7 +10,7 @@
     return media.matches ? "dark" : "light";
   }
 
-  // Les libellés suivent la langue de la page (en.md, de.md, pt.md et les
+  // Les libellés suivent la langue de la page (en.html, de.html, pt.html, leurs pages « en détail » et les
   // pages traduites portent la leur) ; le français reste le défaut.
   var LIBELLES = {
     fr: { clair: "Fond clair", sombre: "Fond sombre",

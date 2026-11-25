@@ -101,6 +101,26 @@
 
   function id(x) { return document.getElementById(x); }
 
+  /**
+   * Messages d'échec, dans la langue de la page. Les accueils traduits
+   * passent `lang` au cadre (cf. simulateur.html) ; les textes anglais,
+   * allemands et portugais sont ceux de l'application (stt_permission_denied,
+   * stt_mic_unavailable, stt_service_unreachable).
+   */
+  var MESSAGES = {
+    fr: { permission: 'Dictée impossible sans accès au micro', micro: 'Micro indisponible',
+          service: 'Service LuxASR injoignable' },
+    en: { permission: 'Voice typing needs access to the microphone', micro: 'Microphone unavailable',
+          service: 'LuxASR service unavailable, try again later' },
+    de: { permission: 'Ohne Mikrofonzugriff ist kein Diktat möglich', micro: 'Mikrofon nicht verfügbar',
+          service: 'Dienst LuxASR nicht erreichbar, versuchen Sie es später erneut' },
+    pt: { permission: 'O ditado precisa de acesso ao microfone', micro: 'Microfone indisponível',
+          service: 'Serviço LuxASR indisponível, tente mais tarde' }
+  };
+  function messages() {
+    return MESSAGES[(document.documentElement.lang || 'fr').slice(0, 2)] || MESSAGES.fr;
+  }
+
   function brancherDictee(sim) {
     var vitrine = document.documentElement.classList.contains('embed-demo');
     if (new URLSearchParams(location.search).get('asr') !== '1' && !vitrine) return;
@@ -300,13 +320,14 @@
         sim.cancelDictation();
         chronoPasse = '';
         teinte(false);
+        var m = messages();
         message(quoi === 'MIC'
           ? (detail === 'NotAllowedError' || detail === 'SecurityError'
-              ? 'Dictée impossible sans accès au micro'
-              : 'Micro indisponible')
+              ? m.permission
+              : m.micro)
           // Un échec de connexion n'est pas une incapacité de l'appareil :
           // confondre les deux fait accuser le téléphone à tort.
-          : 'Service LuxASR injoignable');
+          : m.service);
       }
     }, { traduction: !vitrine, langueCible: 'fr' });
 
