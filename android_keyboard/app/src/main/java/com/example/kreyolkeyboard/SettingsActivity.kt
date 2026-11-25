@@ -312,7 +312,7 @@ class SettingsActivity : AppCompatActivity() {
         // Masquer la barre d'action (bandeau noir)
         supportActionBar?.hide()
         
-        Log.d("SettingsActivity", "Création de l'activité principale Lëtzebuergesch Clavier")
+        Log.d("SettingsActivity", "Création de l'activité principale de Lëtzebuerger Clavier")
         
         // Layout principal vertical : Tabs en haut, puis ViewPager
         val mainLayout = LinearLayout(this).apply {
@@ -923,7 +923,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun showActivationShareDialog(carteOfferte: Boolean) {
         val bravo = getString(R.string.sa_bravo_et_ass_geschafft_le)
         AlertDialog.Builder(this)
-            .setTitle("🎉 Lëtzebuergesch Clavier ass aktivéiert !")
+            .setTitle("🎉 De Lëtzebuerger Clavier ass aktivéiert !")
             .setMessage(if (carteOfferte) getString(R.string.sa_la_carte_moien_est_dans, bravo) else bravo)
             .setPositiveButton(getString(R.string.sa_partager_la_nouvelle)) { _, _ -> shareActivationSuccess() }
             .setNegativeButton(getString(R.string.sa_plus_tard), null)
@@ -1096,7 +1096,7 @@ class SettingsActivity : AppCompatActivity() {
             }
             
             val appTitle = TextView(this@SettingsActivity).apply {
-                text = "Lëtzebuergesch Clavier"
+                text = "De Lëtzebuerger Clavier"
                 textSize = 22f
                 setTextColor(Color.WHITE)
                 setTypeface(null, Typeface.BOLD)
@@ -4989,7 +4989,7 @@ class SettingsActivity : AppCompatActivity() {
             textAlign = Paint.Align.CENTER
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         }
-        canvas.drawText("Lëtzebuergesch Clavier", cx, 1120f, footerBoldPaint)
+        canvas.drawText("De Lëtzebuerger Clavier", cx, 1120f, footerBoldPaint)
 
         val footerPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = Color.parseColor("#A9D4D6")

@@ -2,10 +2,10 @@
 <resources>
     <!-- Portugais (Portugal) -->
     <string name="keyboard_description">Teclado luxemburguês com sugestões de palavras e acentos</string>
-    <string name="settings_title">Definições do Lëtzebuergesch Clavier</string>
+    <string name="settings_title">Definições de de Lëtzebuerger Clavier</string>
     <string name="spell_checker_name">Corretor Lëtzebuergesch</string>
     <string name="spellchecker_name">Corretor Lëtzebuergesch • Luxemburgo</string>
-    <string name="subtype_kreyol">Lëtzebuergesch Clavier Luxemburgo</string>
+    <string name="subtype_kreyol">De Lëtzebuerger Clavier Luxemburgo</string>
     <string name="disposition_suisse_allemand">Suíço-alemão (ü, ö e ä à direita)</string>
     <string name="disposition_luxembourg">Luxemburgo (é, ä e ë em teclas)</string>
     <string name="theme_systeme">Igual ao telemóvel</string>
@@ -259,14 +259,14 @@
     <string name="sa_bravo_et_ass_geschafft_le">Bravo, et ass geschafft! O teclado está pronto para escrever em lëtzebuergesch em todas as suas aplicações.</string>
     <string name="sa_la_carte_moien_est_dans">%1$s\n\nA carta «Moien» está na sua coleção.</string>
     <string name="sa_partager_la_nouvelle">Partilhar a novidade</string>
-    <string name="sa_ech_schreiwen_elo_op_letzebuergesch">Ech schreiwen elo op Lëtzebuergesch! Ativei o Lëtzebuergesch Clavier 🎉\nUm teclado Android gratuito que sugere palavras em luxemburguês.\n\nDescarrega-o gratuitamente:\nhttps://play.google.com/store/apps/details?id=%1$s&amp;referrer=utm_source%%3Dactivation_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
+    <string name="sa_ech_schreiwen_elo_op_letzebuergesch">Ech schreiwen elo op Lëtzebuergesch! Ativei de Lëtzebuerger Clavier 🎉\nUm teclado Android gratuito que sugere palavras em luxemburguês.\n\nDescarrega-o gratuitamente:\nhttps://play.google.com/store/apps/details?id=%1$s&amp;referrer=utm_source%%3Dactivation_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
     <string name="sa_pour_aller_plus_loin_optionnel">🚀 Para ir mais longe (opcional)</string>
     <string name="sa_passer_du_francais_au_luxembourgeois">🔄 Alternar entre o luxemburguês e o seu outro teclado</string>
-    <string name="sa_letzebuergesch_clavier_ne_remplace_pas">O Lëtzebuergesch Clavier não substitui os seus outros teclados: junta-se à lista, e passa de um para o outro em dois segundos, sempre que quiser.</string>
+    <string name="sa_letzebuergesch_clavier_ne_remplace_pas">De Lëtzebuerger Clavier não substitui os seus outros teclados: junta-se à lista, e passa de um para o outro em dois segundos, sempre que quiser.</string>
     <string name="sa_quitter_le_luxembourgeois">➡️ Sair do luxemburguês</string>
     <string name="sa_appuyez_une_seconde_sur_la">Mantenha premida durante um segundo a barra de espaço do teclado luxemburguês; o pequeno 🌐 no canto está lá para o lembrar. O seletor do Android abre-se: toque no Gboard, no Samsung Keyboard ou no teclado que quiser.</string>
     <string name="sa_revenir_au_luxembourgeois">⬅️ Voltar ao luxemburguês</string>
-    <string name="sa_le_geste_est_pas_symetrique">O gesto não funciona nos dois sentidos: no Gboard e na maioria dos outros teclados, o toque longo na barra de espaço só muda o idioma deles. Toque antes no ícone de teclado em baixo no ecrã, na barra de navegação, visível enquanto um teclado está aberto: o seletor volta a aparecer, com o «Lëtzebuergesch Clavier» à espera.</string>
+    <string name="sa_le_geste_est_pas_symetrique">O gesto não funciona nos dois sentidos: no Gboard e na maioria dos outros teclados, o toque longo na barra de espaço só muda o idioma deles. Toque antes no ícone de teclado em baixo no ecrã, na barra de navegação, visível enquanto um teclado está aberto: o seletor volta a aparecer, com «De Lëtzebuerger Clavier» à espera.</string>
     <string name="sa_le_choix_vaut_pour_toutes">A escolha vale para todas as suas aplicações e mantém-se depois de reiniciar. Se não houver ícone de teclado em baixo, o botão abaixo abre o mesmo seletor.</string>
     <string name="sa_ouvrir_le_selecteur_de_claviers_2">Abrir o seletor de teclados</string>
     <string name="sa_astuce_de_la_semaine">Dica da semana</string>
@@ -312,18 +312,18 @@
     <string name="sa_plus_qu_une_etape">Só falta um passo.</string>
     <string name="sa_etapes_pour_taper_en_letzebuergesch">3 passos para escrever em lëtzebuergesch em todo o lado.</string>
     <string name="sa_voir_les_etapes">Ver os 3 passos</string>
-    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Encontre «Lëtzebuergesch Clavier» no ecrã que se abre e ative o interruptor. Depois, a aplicação volta a este ecrã.</string>
+    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Encontre «De Lëtzebuerger Clavier» no ecrã que se abre e ative o interruptor. Depois, a aplicação volta a este ecrã.</string>
     <string name="sa_presque_validez_bien_les_avertissements">💡 Quase! Confirme os 2 avisos do Android, um a seguir ao outro: parar no primeiro cancela a ativação.</string>
-    <string name="sa_android_affiche_un_avertissement_de">ℹ️ O Android mostra um aviso de segurança, o mesmo para todos os teclados de terceiros: toque em OK. O Lëtzebuergesch Clavier não recolhe nada do que escreve.</string>
+    <string name="sa_android_affiche_un_avertissement_de">ℹ️ O Android mostra um aviso de segurança, o mesmo para todos os teclados de terceiros: toque em OK. De Lëtzebuerger Clavier não recolhe nada do que escreve.</string>
     <string name="sa_rouvrir_les_reglages_android">Reabrir as definições do Android ↗</string>
     <string name="sa_ouvrir_les_reglages_android">Abrir as definições do Android ↗</string>
     <string name="sa_activer_le_clavier">Ativar o teclado</string>
     <string name="sa_le_clavier_est_active">O teclado está ativado.</string>
     <string name="sa_dans_les_reglages_android">Nas definições do Android.</string>
-    <string name="sa_choisissez_letzebuergesch_clavier_dans_la">Escolha «Lëtzebuergesch Clavier» na lista de teclados que aparece. Se não o vir, deslize para baixo: costuma estar no fim. Os seus outros teclados continuam instalados.</string>
+    <string name="sa_choisissez_letzebuergesch_clavier_dans_la">Escolha «De Lëtzebuerger Clavier» na lista de teclados que aparece. Se não o vir, deslize para baixo: costuma estar no fim. Os seus outros teclados continuam instalados.</string>
     <string name="sa_ouvrir_le_selecteur_de_claviers">Abrir o seletor de teclados ↗</string>
     <string name="sa_selectionner_le_clavier_2">Selecionar o teclado</string>
-    <string name="sa_letzebuergesch_clavier_est_selectionne">O Lëtzebuergesch Clavier está selecionado.</string>
+    <string name="sa_letzebuergesch_clavier_est_selectionne">De Lëtzebuerger Clavier está selecionado.</string>
     <string name="sa_terminez_abord_etape">Termine primeiro o passo 1.</string>
     <string name="sa_choisissez_le_dans_la_liste">Escolha-o na lista.</string>
     <string name="sa_schreift_op_letzebuergesch_ecrivez_en">Schreift op Lëtzebuergesch... (escreva em luxemburguês)</string>
@@ -355,7 +355,7 @@
     <string name="sa_sources_litteraires">📚 Fontes</string>
     <string name="sa_les_suggestions_de_mots_sont">As sugestões de palavras são construídas a partir de fontes abertas de luxemburguês contemporâneo:\n\n📰 LuxAlign: frases de artigos do RTL.lu, reunidas por Fred Philippy et al. (COLING 2025). Licença CC BY-NC 4.0.\n\n📖 LETZ: frases de exemplo do Lëtzebuerger Online Dictionnaire (lod.lu), reunidas por Fred Philippy et al. (SIGUL 2024). Licença CC BY 4.0.\n\nO primeiro fornece o vocabulário e a sequência das palavras, o segundo a língua do dia a dia.\n\n🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch. Licença CC0 1.0. Fornece as traduções das palavras em português, francês, alemão e inglês, 83 000 formas que a imprensa nunca escreve e 45 000 frases de exemplo que ensinam ao teclado a língua do dia a dia.\n\n🇱🇺 Corpus de tradução do Zenter fir d\'Lëtzebuerger Sprooch (data.public.lu). Licença CC0 1.0. Fornece as traduções francesas, alemãs e inglesas das frases de exemplo, feitas por tradutores profissionais. Não as há em português.\n\n🇫🇷 Lexique 3.83: base lexical do francês de Boris New e Christophe Pallier (lexique.org). Licença CC BY-SA 4.0. Fornece as 125 000 formas da segunda fila de sugestões e evita que o corretor sublinhe francês correto.\n\n🔤 As palavras das cartas da coleção estão compostas em Lora, Cormorant Garamond e EB Garamond, três tipos de letra livres sob a licença SIL Open Font License 1.1.</string>
     <string name="sa_informations">ℹ️ Informações</string>
-    <string name="sa_version_potomitantm_letzebuergesch_clavier_fait">Versão: %1$s\n© Potomitan™ - Lëtzebuergesch Clavier\n\nFeito no Luxemburgo com ❤️\nPreservemos o lëtzebuergesch para as gerações futuras!</string>
+    <string name="sa_version_potomitantm_letzebuergesch_clavier_fait">Versão: %1$s\n© Potomitan™ - de Lëtzebuerger Clavier\n\nFeito no Luxemburgo com ❤️\nPreservemos o lëtzebuergesch para as gerações futuras!</string>
     <string name="sa_confidentialite">🔒 Privacidade</string>
     <string name="sa_zero_collecte_de_donnees_personnelles">Nenhuma recolha de dados pessoais: o que escreve fica no seu telemóvel. Só o ditado, quando toca no microfone, envia a sua voz para a Universidade do Luxemburgo, que a escreve sem a guardar.</string>
     <string name="sa_essayez_le_tout_de_suite">🎹 Experimente já!</string>
@@ -380,13 +380,13 @@
     <string name="sa_installation_et_activation">📲 Instalação e ativação</string>
     <string name="sa_le_clavier_doit_etre_active">O teclado tem de ser ativado e depois selecionado antes de o poder usar, como qualquer teclado de terceiros no Android. Estes passos interativos também estão no separador «Haut»; eis o seu aspeto.</string>
     <string name="sa_ouvrir_les_parametres_de_clavier">1️⃣ Abrir as definições do teclado</string>
-    <string name="sa_depuis_onglet_haut_le_bouton">No separador Haut, o botão «Abrir as definições» leva diretamente ao ecrã do Android «Teclado no ecrã», onde o «Lëtzebuergesch Clavier» aparece ao lado dos outros teclados instalados, com o interruptor desligado.</string>
+    <string name="sa_depuis_onglet_haut_le_bouton">No separador Haut, o botão «Abrir as definições» leva diretamente ao ecrã do Android «Teclado no ecrã», onde «De Lëtzebuerger Clavier» aparece ao lado dos outros teclados instalados, com o interruptor desligado.</string>
     <string name="sa_ecran_systeme_listant_les_claviers">Ecrã do sistema com a lista de teclados, interruptor a ativar</string>
     <string name="sa_valider_les_avertissements_android">2️⃣ Confirmar os avisos do Android</string>
-    <string name="sa_en_activant_interrupteur_android_affiche">Ao ativar o interruptor, o Android mostra um aviso genérico apresentado para todos os teclados de terceiros, seguido de uma segunda nota sobre o reinício do telemóvel. O Lëtzebuergesch Clavier não recolhe nada do que escreve: toque em OK nos dois para continuar e depois volte à aplicação com o botão Voltar.</string>
+    <string name="sa_en_activant_interrupteur_android_affiche">Ao ativar o interruptor, o Android mostra um aviso genérico apresentado para todos os teclados de terceiros, seguido de uma segunda nota sobre o reinício do telemóvel. De Lëtzebuerger Clavier não recolhe nada do que escreve: toque em OK nos dois para continuar e depois volte à aplicação com o botão Voltar.</string>
     <string name="sa_avertissement_systeme_affiche_pour_tout">Aviso do sistema apresentado para qualquer teclado de terceiros</string>
     <string name="sa_selectionner_le_clavier">3️⃣ Selecionar o teclado</string>
-    <string name="sa_de_retour_dans_application_etape">De volta à aplicação, o passo 1 fica marcado automaticamente e o passo 2 desbloqueia-se. O botão «Abrir o seletor» abre a lista de teclados ativos: toque em «Lëtzebuergesch Clavier» para que seja o teclado em uso.</string>
+    <string name="sa_de_retour_dans_application_etape">De volta à aplicação, o passo 1 fica marcado automaticamente e o passo 2 desbloqueia-se. O botão «Abrir o seletor» abre a lista de teclados ativos: toque em «De Lëtzebuerger Clavier» para que seja o teclado em uso.</string>
     <string name="sa_selecteur_systeme_de_mode_de">Seletor do sistema de método de introdução</string>
     <string name="sa_configuration_terminee">✅ Configuração concluída</string>
     <string name="sa_les_deux_etapes_cochees_le">Com os dois passos marcados, o teclado luxemburguês aparece em todo o lado onde escreve, incluindo no campo de teste do separador Haut. Um toque longo na barra de espaço permite voltar a outro teclado a qualquer momento.</string>
@@ -430,7 +430,7 @@
     <string name="sa_impossible_ouvrir_la_politique_de">Não foi possível abrir a política de privacidade</string>
     <string name="sa_play_store_indisponible">Play Store indisponível</string>
     <string name="sa_ech_schreiwen_op_letzebuergesch_op">Ech schreiwen op Lëtzebuergesch op mengem Telefon!\nUm teclado Android gratuito que sugere palavras em luxemburguês.\n\nDescarrega-o gratuitamente:\nhttps://play.google.com/store/apps/details?id=%1$s&amp;referrer=utm_source%%3Din_app_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
-    <string name="sa_partager_le_letzebuergesch_clavier">Partilhar o Lëtzebuergesch Clavier</string>
+    <string name="sa_partager_le_letzebuergesch_clavier">Partilhar de Lëtzebuerger Clavier</string>
     <string name="sa_impossible_ouvrir_le_selecteur_touchez">Não foi possível abrir o seletor. Toque no ícone de teclado em baixo no ecrã, na barra de navegação, enquanto escreve.</string>
     <string name="sa_vous_avez_atteint_le_plus">Atingiu o nível mais alto. 👑</string>
     <string name="sa_partager_ma_carte_de_niveau_2">📤 Partilhar o meu cartão de nível</string>
@@ -449,7 +449,7 @@
     <string name="sa_partager">Partilhar 📤</string>
     <string name="sa_plus_tard">Mais tarde</string>
     <string name="sa_mots_luxembourgeois_decouverts">%1$s palavras luxemburguesas descobertas!</string>
-    <string name="sa_ech_sinn_um_niveau_am">Ech sinn um Niveau %1$s am Lëtzebuergesch Clavier! A du, wéi wäit bass du?\nAtingi o nível %1$s do teclado luxemburguês.\n\nDescarrega-o gratuitamente:\nhttps://play.google.com/store/apps/details?id=%2$s&amp;referrer=utm_source%%3Dlevel_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
+    <string name="sa_ech_sinn_um_niveau_am">Ech sinn um Niveau %1$s am Lëtzebuerger Clavier! A du, wéi wäit bass du?\nAtingi o nível %1$s do teclado luxemburguês.\n\nDescarrega-o gratuitamente:\nhttps://play.google.com/store/apps/details?id=%2$s&amp;referrer=utm_source%%3Dlevel_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
     <string name="sa_partager_ma_carte_de_niveau">Partilhar o meu cartão de nível</string>
     <string name="sa_impossible_de_partager_la_carte">Não foi possível partilhar o cartão</string>
     <string name="sa_correcteur_active_vos_mots_luxembourgeois">✓ Corretor ativado: as suas palavras luxemburguesas são reconhecidas em todo o lado.</string>
@@ -703,7 +703,7 @@
     <string name="recevoir_choix_titre">Receber uma carta</string>
     <string name="recevoir_telephone">📱 De outro telefone</string>
     <string name="recevoir_papier">🃏 O código de uma carta em papel</string>
-    <string name="papier_invalide">Este código não é de uma carta em papel do Lëtzebuergesch Clavier.</string>
+    <string name="papier_invalide">Este código não é de uma carta em papel de de Lëtzebuerger Clavier.</string>
     <string name="papier_deja">Este código já foi usado neste telefone.</string>
     <string name="papier_mettre_a_jour">Este código vem de uma caixa mais recente do que a aplicação: atualize-a e volte a ler o código.</string>
     <string name="papier_une">«%1$s» está no seu caderno</string>

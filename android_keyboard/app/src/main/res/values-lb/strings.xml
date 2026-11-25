@@ -2,10 +2,10 @@
 <resources>
     <!-- Luxembourgeois, à faire relire par un locuteur natif -->
     <string name="keyboard_description">Lëtzebuerger Tastatur mat Wuertvirschléi an Akzenter</string>
-    <string name="settings_title">Astellunge vum Lëtzebuergesch Clavier</string>
+    <string name="settings_title">Astellunge vum Lëtzebuerger Clavier</string>
     <string name="spell_checker_name">Korrektur Lëtzebuergesch</string>
     <string name="spellchecker_name">Korrektur Lëtzebuergesch • Lëtzebuerg</string>
-    <string name="subtype_kreyol">Lëtzebuergesch Clavier Lëtzebuerg</string>
+    <string name="subtype_kreyol">De Lëtzebuerger Clavier Lëtzebuerg</string>
     <string name="disposition_suisse_allemand">Schwäizerdäitsch (ü, ö an ä riets)</string>
     <string name="disposition_luxembourg">Lëtzebuerg (é, ä an ë als Tasten)</string>
     <string name="theme_systeme">Wéi den Handy</string>
@@ -259,14 +259,14 @@
     <string name="sa_bravo_et_ass_geschafft_le">Bravo, et ass geschafft! D\'Tastatur ass prett, fir an all Ären Appen op Lëtzebuergesch ze schreiwen.</string>
     <string name="sa_la_carte_moien_est_dans">%1$s\n\nD\'Kaart „Moien“ ass an Ärem Carnet.</string>
     <string name="sa_partager_la_nouvelle">D\'Neiegkeet deelen</string>
-    <string name="sa_ech_schreiwen_elo_op_letzebuergesch">Ech schreiwen elo op Lëtzebuergesch! Ech hunn de Lëtzebuergesch Clavier aktivéiert 🎉\nEng gratis Android-Tastatur, déi Wierder op Lëtzebuergesch virschléit.\n\nLued se gratis erof:\nhttps://play.google.com/store/apps/details?id=%1$s&amp;referrer=utm_source%%3Dactivation_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
+    <string name="sa_ech_schreiwen_elo_op_letzebuergesch">Ech schreiwen elo op Lëtzebuergesch! Ech hunn de Lëtzebuerger Clavier aktivéiert 🎉\nEng gratis Android-Tastatur, déi Wierder op Lëtzebuergesch virschléit.\n\nLued se gratis erof:\nhttps://play.google.com/store/apps/details?id=%1$s&amp;referrer=utm_source%%3Dactivation_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
     <string name="sa_pour_aller_plus_loin_optionnel">🚀 Fir méi wäit ze goen (fakultativ)</string>
     <string name="sa_passer_du_francais_au_luxembourgeois">🔄 Tëscht dem Lëtzebuergeschen an Ärer anerer Tastatur wiesselen</string>
-    <string name="sa_letzebuergesch_clavier_ne_remplace_pas">De Lëtzebuergesch Clavier ersetzt Är aner Tastaturen net: E kënnt op d\'Lëscht derbäi, an Dir wiesselt an zwou Sekonnen vun där enger op déi aner, sou dacks wéi Dir wëllt.</string>
+    <string name="sa_letzebuergesch_clavier_ne_remplace_pas">De Lëtzebuerger Clavier ersetzt Är aner Tastaturen net: E kënnt op d\'Lëscht derbäi, an Dir wiesselt an zwou Sekonnen vun där enger op déi aner, sou dacks wéi Dir wëllt.</string>
     <string name="sa_quitter_le_luxembourgeois">➡️ D\'Lëtzebuergescht verloossen</string>
     <string name="sa_appuyez_une_seconde_sur_la">Dréckt eng Sekonn op d\'Espace-Tast vun der lëtzebuergescher Tastatur; dee klengen 🌐 am Eck erënnert Iech drun. D\'Auswiel vun Android geet op: Tippt op Gboard, Samsung Keyboard oder déi, déi Dir wëllt.</string>
     <string name="sa_revenir_au_luxembourgeois">⬅️ Zréck op Lëtzebuergesch</string>
-    <string name="sa_le_geste_est_pas_symetrique">D\'Geste funktionéiert net an déi zwou Richtungen: Op Gboard an op deene meeschten anere Tastaturen ännert laang Drécken op d\'Espace-Tast just hir eege Sprooch. Tippt amplaz op d\'Tastatur-Ikon ënnen um Bildschierm, an der Navigatiounsläischt, déi ze gesinn ass, soulaang eng Tastatur op ass: D\'Auswiel kënnt erëm, an do waart de „Lëtzebuergesch Clavier“.</string>
+    <string name="sa_le_geste_est_pas_symetrique">D\'Geste funktionéiert net an déi zwou Richtungen: Op Gboard an op deene meeschten anere Tastaturen ännert laang Drécken op d\'Espace-Tast just hir eege Sprooch. Tippt amplaz op d\'Tastatur-Ikon ënnen um Bildschierm, an der Navigatiounsläischt, déi ze gesinn ass, soulaang eng Tastatur op ass: D\'Auswiel kënnt erëm, an do waart „De Lëtzebuerger Clavier“.</string>
     <string name="sa_le_choix_vaut_pour_toutes">D\'Wiel gëllt fir all Är Appen a bleift och no engem Neistart. Wann ënnen keng Tastatur-Ikon ze gesinn ass, mécht de Knäppchen hei ënnendrënner déiselwecht Auswiel op.</string>
     <string name="sa_ouvrir_le_selecteur_de_claviers_2">Tastaturauswiel opmaachen</string>
     <string name="sa_astuce_de_la_semaine">Tipp vun der Woch</string>
@@ -312,18 +312,18 @@
     <string name="sa_plus_qu_une_etape">Just nach ee Schrëtt.</string>
     <string name="sa_etapes_pour_taper_en_letzebuergesch">3 Schrëtt, fir iwwerall op Lëtzebuergesch ze tippen.</string>
     <string name="sa_voir_les_etapes">D\'3 Schrëtt kucken</string>
-    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Sicht „Lëtzebuergesch Clavier“ um Bildschierm, deen opgeet, a maacht de Schalter un. D\'App bréngt Iech duerno heihinner zréck.</string>
+    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Sicht „De Lëtzebuerger Clavier“ um Bildschierm, deen opgeet, a maacht de Schalter un. D\'App bréngt Iech duerno heihinner zréck.</string>
     <string name="sa_presque_validez_bien_les_avertissements">💡 Bal! Confirméiert déi 2 Android-Warnungen eng no där anerer: Wann Dir bei der éischter ophalt, gëtt d\'Aktivéierung ofgebrach.</string>
-    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android weist eng Sécherheetswarnung, déi selwecht fir all Tastature vun aneren Ubidder: tippt op OK. De Lëtzebuergesch Clavier sammelt näischt vun deem, wat Dir tippt.</string>
+    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android weist eng Sécherheetswarnung, déi selwecht fir all Tastature vun aneren Ubidder: tippt op OK. De Lëtzebuerger Clavier sammelt näischt vun deem, wat Dir tippt.</string>
     <string name="sa_rouvrir_les_reglages_android">Android-Astellungen nach eng Kéier opmaachen ↗</string>
     <string name="sa_ouvrir_les_reglages_android">Android-Astellungen opmaachen ↗</string>
     <string name="sa_activer_le_clavier">Tastatur aktivéieren</string>
     <string name="sa_le_clavier_est_active">D\'Tastatur ass aktivéiert.</string>
     <string name="sa_dans_les_reglages_android">An den Android-Astellungen.</string>
-    <string name="sa_choisissez_letzebuergesch_clavier_dans_la">Wielt „Lëtzebuergesch Clavier“ an der Lëscht vun den Tastaturen, déi erschéngt. Wann Dir en net gesitt, scrollt erof: en ass dacks ganz ënnen. Är aner Tastature bleiwen installéiert.</string>
+    <string name="sa_choisissez_letzebuergesch_clavier_dans_la">Wielt „De Lëtzebuerger Clavier“ an der Lëscht vun den Tastaturen, déi erschéngt. Wann Dir en net gesitt, scrollt erof: en ass dacks ganz ënnen. Är aner Tastature bleiwen installéiert.</string>
     <string name="sa_ouvrir_le_selecteur_de_claviers">Tastaturauswiel opmaachen ↗</string>
     <string name="sa_selectionner_le_clavier_2">Tastatur auswielen</string>
-    <string name="sa_letzebuergesch_clavier_est_selectionne">De Lëtzebuergesch Clavier ass ausgewielt.</string>
+    <string name="sa_letzebuergesch_clavier_est_selectionne">De Lëtzebuerger Clavier ass ausgewielt.</string>
     <string name="sa_terminez_abord_etape">Maacht fir d\'éischt de Schrëtt 1 fäerdeg.</string>
     <string name="sa_choisissez_le_dans_la_liste">Wielt se an der Lëscht aus.</string>
     <string name="sa_schreift_op_letzebuergesch_ecrivez_en">Schreift op Lëtzebuergesch...</string>
@@ -355,7 +355,7 @@
     <string name="sa_sources_litteraires">📚 Quellen</string>
     <string name="sa_les_suggestions_de_mots_sont">D\'Wuertvirschléi baue op oppene Quelle vum haitege Lëtzebuergesch op:\n\n📰 LuxAlign: Sätz aus Artikele vu RTL.lu, zesummegedroe vum Fred Philippy a Co. (COLING 2025). Lizenz CC BY-NC 4.0.\n\n📖 LETZ: Beispillsätz aus dem Lëtzebuerger Online Dictionnaire (lod.lu), zesummegedroe vum Fred Philippy a Co. (SIGUL 2024). Lizenz CC BY 4.0.\n\nDen éischte bréngt de Wuertschatz an d\'Reiefolleg vun de Wierder, deen zweeten d\'Sprooch vum Alldag.\n\n🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch. Lizenz CC0 1.0. Hie bréngt déi franséisch Iwwersetzungen, 83.000 Formen, déi d\'Press ni schreift, an 45.000 Beispillsätz, déi dem Clavier d\'Sprooch vum Alldag bäibréngen.\n\n🇱🇺 Iwwersetzungskorpus vum Zenter fir d\'Lëtzebuerger Sprooch (data.public.lu). Lizenz CC0 1.0. Hie bréngt déi franséisch Iwwersetzunge vun de Beispillsätz, gemaach vu professionellen Iwwersetzer.\n\n🇫🇷 Lexique 3.83: lexikalesch Datebank vum Franséischen, vum Boris New an vum Christophe Pallier (lexique.org). Lizenz CC BY-SA 4.0. Si bréngt déi 125.000 Forme vun der zweeter Rei Virschléi a verhënnert, datt d\'Korrektur richtegt Franséisch ënnerstreecht.\n\n🔤 D\'Wierder op de Kaarte vum Carnet sinn a Lora, Cormorant Garamond an EB Garamond gesat, dräi fräi Schrëften ënner der SIL Open Font License 1.1.</string>
     <string name="sa_informations">ℹ️ Informatiounen</string>
-    <string name="sa_version_potomitantm_letzebuergesch_clavier_fait">Versioun: %1$s\n© Potomitan™ - Lëtzebuergesch Clavier\n\nMat ❤️ zu Lëtzebuerg gemaach\nLoosst eis d\'Lëtzebuergescht fir déi nächst Generatiounen erhalen!</string>
+    <string name="sa_version_potomitantm_letzebuergesch_clavier_fait">Versioun: %1$s\n© Potomitan™ - de Lëtzebuerger Clavier\n\nMat ❤️ zu Lëtzebuerg gemaach\nLoosst eis d\'Lëtzebuergescht fir déi nächst Generatiounen erhalen!</string>
     <string name="sa_confidentialite">🔒 Dateschutz</string>
     <string name="sa_zero_collecte_de_donnees_personnelles">Guer keng perséinlech Donnéeë gesammelt: Wat Dir tippt, bleift op Ärem Handy. Just den Diktat schéckt, wann Dir op de Mikro tippt, Är Stëmm un d\'Universitéit Lëtzebuerg, déi se schreift, ouni se ze späicheren.</string>
     <string name="sa_essayez_le_tout_de_suite">🎹 Probéiert et direkt!</string>
@@ -380,13 +380,13 @@
     <string name="sa_installation_et_activation">📲 Installatioun an Aktivéierung</string>
     <string name="sa_le_clavier_doit_etre_active">D\'Tastatur muss aktivéiert an duerno ausgewielt ginn, ier Dir se benotze kënnt, wéi all Tastatur vun aneren Ubidder op Android. Dës interaktiv Schrëtt fannt Dir och am Tab „Haut“; esou gesi se aus.</string>
     <string name="sa_ouvrir_les_parametres_de_clavier">1️⃣ D\'Tastaturastellungen opmaachen</string>
-    <string name="sa_depuis_onglet_haut_le_bouton">Am Tab Haut féiert de Knäppchen „Astellungen opmaachen“ direkt op de System-Bildschierm vun de Bildschiermtastaturen, wou „Lëtzebuergesch Clavier“ nieft deenen aneren installéierten Tastaturen ze gesinn ass, mam Schalter op aus.</string>
+    <string name="sa_depuis_onglet_haut_le_bouton">Am Tab Haut féiert de Knäppchen „Astellungen opmaachen“ direkt op de System-Bildschierm vun de Bildschiermtastaturen, wou „De Lëtzebuerger Clavier“ nieft deenen aneren installéierten Tastaturen ze gesinn ass, mam Schalter op aus.</string>
     <string name="sa_ecran_systeme_listant_les_claviers">System-Bildschierm mat der Lëscht vun den Tastaturen, Schalter fir unzemaachen</string>
     <string name="sa_valider_les_avertissements_android">2️⃣ D\'Android-Warnunge confirméieren</string>
-    <string name="sa_en_activant_interrupteur_android_affiche">Wann Dir de Schalter umaacht, weist Android eng allgemeng Warnung, déi bei allen Tastature vun aneren Ubidder kënnt, an duerno e weidere Hiweis zum Neistart vum Handy. De Lëtzebuergesch Clavier sammelt näischt vun deem, wat Dir tippt: Tippt bei allebéid op OK, fir weiderzefueren, a kommt dann mam Zréck-Knäppchen an d\'App zréck.</string>
+    <string name="sa_en_activant_interrupteur_android_affiche">Wann Dir de Schalter umaacht, weist Android eng allgemeng Warnung, déi bei allen Tastature vun aneren Ubidder kënnt, an duerno e weidere Hiweis zum Neistart vum Handy. De Lëtzebuerger Clavier sammelt näischt vun deem, wat Dir tippt: Tippt bei allebéid op OK, fir weiderzefueren, a kommt dann mam Zréck-Knäppchen an d\'App zréck.</string>
     <string name="sa_avertissement_systeme_affiche_pour_tout">System-Warnung, déi bei all Tastatur vun aneren Ubidder kënnt</string>
     <string name="sa_selectionner_le_clavier">3️⃣ D\'Tastatur auswielen</string>
-    <string name="sa_de_retour_dans_application_etape">Zréck an der App, gëtt de Schrëtt 1 automatesch ofgehaakt an de Schrëtt 2 fräigeschalt. De Knäppchen „Auswiel opmaachen“ weist d\'Lëscht vun den aktiven Tastaturen: Tippt op „Lëtzebuergesch Clavier“, fir datt et déi benotzt Tastatur gëtt.</string>
+    <string name="sa_de_retour_dans_application_etape">Zréck an der App, gëtt de Schrëtt 1 automatesch ofgehaakt an de Schrëtt 2 fräigeschalt. De Knäppchen „Auswiel opmaachen“ weist d\'Lëscht vun den aktiven Tastaturen: Tippt op „De Lëtzebuerger Clavier“, fir datt et déi benotzt Tastatur gëtt.</string>
     <string name="sa_selecteur_systeme_de_mode_de">System-Auswiel vun der Agabmethod</string>
     <string name="sa_configuration_terminee">✅ Ariichten ofgeschloss</string>
     <string name="sa_les_deux_etapes_cochees_le">Wann déi zwee Schrëtt ofgehaakt sinn, erschéngt déi lëtzebuergesch Tastatur iwwerall, wou Dir tippt, och am Testfeld am Tab Haut. Mat laangem Drécken op d\'Espace-Tast kënnt Dir zu all Moment op eng aner Tastatur wiesselen.</string>
@@ -430,7 +430,7 @@
     <string name="sa_impossible_ouvrir_la_politique_de">D\'Dateschutzerklärung konnt net opgemaach ginn</string>
     <string name="sa_play_store_indisponible">Play Store net disponibel</string>
     <string name="sa_ech_schreiwen_op_letzebuergesch_op">Ech schreiwen op Lëtzebuergesch op mengem Telefon!\nEng gratis Android-Tastatur, déi Wierder op Lëtzebuergesch virschléit.\n\nLued se gratis erof:\nhttps://play.google.com/store/apps/details?id=%1$s&amp;referrer=utm_source%%3Din_app_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
-    <string name="sa_partager_le_letzebuergesch_clavier">De Lëtzebuergesch Clavier deelen</string>
+    <string name="sa_partager_le_letzebuergesch_clavier">De Lëtzebuerger Clavier deelen</string>
     <string name="sa_impossible_ouvrir_le_selecteur_touchez">D\'Auswiel konnt net opgemaach ginn. Tippt beim Schreiwen op d\'Tastatur-Ikon ënnen um Bildschierm, an der Navigatiounsläischt.</string>
     <string name="sa_vous_avez_atteint_le_plus">Dir hutt den héchsten Niveau erreecht. 👑</string>
     <string name="sa_partager_ma_carte_de_niveau_2">📤 Meng Niveaukaart deelen</string>
@@ -449,7 +449,7 @@
     <string name="sa_partager">Deelen 📤</string>
     <string name="sa_plus_tard">Méi spéit</string>
     <string name="sa_mots_luxembourgeois_decouverts">%1$s lëtzebuergesch Wierder entdeckt!</string>
-    <string name="sa_ech_sinn_um_niveau_am">Ech sinn um Niveau %1$s am Lëtzebuergesch Clavier! A du, wéi wäit bass du?\n\nLued en gratis erof:\nhttps://play.google.com/store/apps/details?id=%2$s&amp;referrer=utm_source%%3Dlevel_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
+    <string name="sa_ech_sinn_um_niveau_am">Ech sinn um Niveau %1$s am Lëtzebuerger Clavier! A du, wéi wäit bass du?\n\nLued en gratis erof:\nhttps://play.google.com/store/apps/details?id=%2$s&amp;referrer=utm_source%%3Dlevel_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
     <string name="sa_partager_ma_carte_de_niveau">Meng Niveaukaart deelen</string>
     <string name="sa_impossible_de_partager_la_carte">D\'Kaart konnt net gedeelt ginn</string>
     <string name="sa_correcteur_active_vos_mots_luxembourgeois">✓ Korrektur aktivéiert: Är lëtzebuergesch Wierder ginn iwwerall erkannt.</string>
@@ -703,7 +703,7 @@
     <string name="recevoir_choix_titre">Eng Kaart kréien</string>
     <string name="recevoir_telephone">📱 Vun engem aneren Telefon</string>
     <string name="recevoir_papier">🃏 De Code vun enger Pabeierkaart</string>
-    <string name="papier_invalide">Dëse Code gehéiert zu kenger Pabeierkaart vum Lëtzebuergesch Clavier.</string>
+    <string name="papier_invalide">Dëse Code gehéiert zu kenger Pabeierkaart vum Lëtzebuerger Clavier.</string>
     <string name="papier_deja">Dëse Code gouf op dësem Telefon schonn benotzt.</string>
     <string name="papier_mettre_a_jour">Dëse Code kënnt aus enger méi neier Këscht wéi d\'App: aktualiséiert se a scannt de Code nach eng Kéier.</string>
     <string name="papier_une">„%1$s“ ass an Ärem Carnet</string>
@@ -731,7 +731,7 @@
     <string name="camera_pourquoi_message">D\'Kamera déngt just dozou, e Code ze liesen: dee vun engem aneren Telefon oder vun enger Pabeierkaart. Et gëtt näischt fotograféiert, gespäichert oder geschéckt.</string>
     <string name="camera_pourquoi_ok">Weider</string>
     <string name="reception_impossible">Dës Kaart gëtt et net am Clavier.</string>
-    <string name="carte_partage_message">Ech hunn d\'Kaart „%1$s“ (%2$s) mam Lëtzebuergesch Clavier gewonnen.\n\nGratis eroflueden:\nhttps://play.google.com/store/apps/details?id=%3$s&amp;referrer=utm_source%%3Dcard_share%%26utm_campaign%%3Dlaunch_lu\n\n#LëtzebuergeschClavier</string>
+    <string name="carte_partage_message">Ech hunn d\'Kaart „%1$s“ (%2$s) mam Lëtzebuerger Clavier gewonnen.\n\nGratis eroflueden:\nhttps://play.google.com/store/apps/details?id=%3$s&amp;referrer=utm_source%%3Dcard_share%%26utm_campaign%%3Dlaunch_lu\n\n#LëtzebuergeschClavier</string>
 
     <!-- Dictée vocale luxembourgeoise, par le service LuxASR de l'Université du Luxembourg -->
     <string name="stt_mic_description">Diktat</string>

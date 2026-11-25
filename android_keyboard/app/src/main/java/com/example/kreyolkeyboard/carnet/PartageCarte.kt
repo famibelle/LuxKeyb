@@ -110,7 +110,7 @@ object PartageCarte {
         p.textAlign = Paint.Align.CENTER
         p.typeface = Typeface.DEFAULT_BOLD
         p.textSize = 46f
-        c.drawText("Lëtzebuergesch Clavier", LARGEUR / 2f, pied, p)
+        c.drawText("De Lëtzebuerger Clavier", LARGEUR / 2f, pied, p)
         p.typeface = Typeface.DEFAULT
         p.textSize = 30f
         p.color = 0xCCFFFFFF.toInt()

@@ -219,7 +219,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
         private const val PREF_SHARE_CHIP_SHOWN = "share_invite_chip_shown"
         // Mot-dièse séparé du lien par une espace : ce message s'insère au fil
         // du texte de l'utilisateur, il ne peut pas se permettre de saut de ligne.
-        private const val SHARE_INVITE_MESSAGE = "Geschriwwe mam Lëtzebuergesch Clavier, " +
+        private const val SHARE_INVITE_MESSAGE = "Geschriwwe mam Lëtzebuerger Clavier, " +
             "https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&pcampaignid=web_share" +
             " ${SettingsActivity.SHARE_HASHTAG}"
 
@@ -2286,7 +2286,7 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     /**
      * Confirmation de succès + astuce accents, affichée une seule fois, la
      * première fois que le clavier est réellement utilisé en dehors de
-     * l'écran de test intégré à l'app (Lëtzebuergesch Clavier elle-même) — un
+     * l'écran de test intégré à l'app (de Lëtzebuerger Clavier elle-même) — un
      * utilisateur qui bascule directement vers Messages après avoir
      * sélectionné le clavier ne voyait jusqu'ici aucun signal de succès.
      */

@@ -2,10 +2,10 @@
 <resources>
     <!-- Allemand -->
     <string name="keyboard_description">Luxemburgische Tastatur mit Wortvorschlägen und Akzenten</string>
-    <string name="settings_title">Einstellungen Lëtzebuergesch Clavier</string>
+    <string name="settings_title">Einstellungen von de Lëtzebuerger Clavier</string>
     <string name="spell_checker_name">Lëtzebuergesch-Rechtschreibprüfung</string>
     <string name="spellchecker_name">Lëtzebuergesch-Rechtschreibprüfung • Luxemburg</string>
-    <string name="subtype_kreyol">Lëtzebuergesch Clavier Luxemburg</string>
+    <string name="subtype_kreyol">De Lëtzebuerger Clavier Luxemburg</string>
     <string name="disposition_suisse_allemand">Schweizerdeutsch (ü, ö und ä rechts)</string>
     <string name="disposition_luxembourg">Luxemburg (é, ä und ë als Tasten)</string>
     <string name="theme_systeme">Wie das Telefon</string>
@@ -259,14 +259,14 @@
     <string name="sa_bravo_et_ass_geschafft_le">Bravo, et ass geschafft! Die Tastatur ist bereit, in all Ihren Apps auf Lëtzebuergesch zu schreiben.</string>
     <string name="sa_la_carte_moien_est_dans">%1$s\n\nDie Karte „Moien“ liegt in Ihrer Sammlung.</string>
     <string name="sa_partager_la_nouvelle">Neuigkeit teilen</string>
-    <string name="sa_ech_schreiwen_elo_op_letzebuergesch">Ech schreiwen elo op Lëtzebuergesch! Ich habe Lëtzebuergesch Clavier aktiviert 🎉\nEine kostenlose Android-Tastatur, die Wörter auf Luxemburgisch vorschlägt.\n\nKostenlos herunterladen:\nhttps://play.google.com/store/apps/details?id=%1$s&amp;referrer=utm_source%%3Dactivation_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
+    <string name="sa_ech_schreiwen_elo_op_letzebuergesch">Ech schreiwen elo op Lëtzebuergesch! Ich habe de Lëtzebuerger Clavier aktiviert 🎉\nEine kostenlose Android-Tastatur, die Wörter auf Luxemburgisch vorschlägt.\n\nKostenlos herunterladen:\nhttps://play.google.com/store/apps/details?id=%1$s&amp;referrer=utm_source%%3Dactivation_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
     <string name="sa_pour_aller_plus_loin_optionnel">🚀 Für Fortgeschrittene (optional)</string>
     <string name="sa_passer_du_francais_au_luxembourgeois">🔄 Zwischen Luxemburgisch und Ihrer anderen Tastatur wechseln</string>
-    <string name="sa_letzebuergesch_clavier_ne_remplace_pas">Lëtzebuergesch Clavier ersetzt Ihre anderen Tastaturen nicht: Es kommt zur Liste hinzu, und Sie wechseln in zwei Sekunden von einer zur anderen, so oft Sie wollen.</string>
+    <string name="sa_letzebuergesch_clavier_ne_remplace_pas">De Lëtzebuerger Clavier ersetzt Ihre anderen Tastaturen nicht: Es kommt zur Liste hinzu, und Sie wechseln in zwei Sekunden von einer zur anderen, so oft Sie wollen.</string>
     <string name="sa_quitter_le_luxembourgeois">➡️ Luxemburgisch verlassen</string>
     <string name="sa_appuyez_une_seconde_sur_la">Halten Sie die Leertaste der luxemburgischen Tastatur eine Sekunde lang gedrückt; das kleine 🌐 in ihrer Ecke erinnert Sie daran. Die Android-Auswahl öffnet sich: Tippen Sie auf Gboard, Samsung Keyboard oder die gewünschte Tastatur.</string>
     <string name="sa_revenir_au_luxembourgeois">⬅️ Zurück zu Luxemburgisch</string>
-    <string name="sa_le_geste_est_pas_symetrique">Die Geste funktioniert nicht in beide Richtungen: Bei Gboard und den meisten anderen Tastaturen ändert langes Drücken der Leertaste nur deren eigene Sprache. Tippen Sie stattdessen auf das Tastatursymbol unten auf dem Bildschirm, in der Navigationsleiste, das angezeigt wird, solange eine Tastatur geöffnet ist: Die Auswahl erscheint wieder, und „Lëtzebuergesch Clavier“ wartet darin.</string>
+    <string name="sa_le_geste_est_pas_symetrique">Die Geste funktioniert nicht in beide Richtungen: Bei Gboard und den meisten anderen Tastaturen ändert langes Drücken der Leertaste nur deren eigene Sprache. Tippen Sie stattdessen auf das Tastatursymbol unten auf dem Bildschirm, in der Navigationsleiste, das angezeigt wird, solange eine Tastatur geöffnet ist: Die Auswahl erscheint wieder, und „De Lëtzebuerger Clavier“ wartet darin.</string>
     <string name="sa_le_choix_vaut_pour_toutes">Die Auswahl gilt für alle Ihre Apps und bleibt nach einem Neustart erhalten. Wenn unten kein Tastatursymbol zu sehen ist, öffnet die Schaltfläche unten dieselbe Auswahl.</string>
     <string name="sa_ouvrir_le_selecteur_de_claviers_2">Tastaturauswahl öffnen</string>
     <string name="sa_astuce_de_la_semaine">Tipp der Woche</string>
@@ -312,18 +312,18 @@
     <string name="sa_plus_qu_une_etape">Nur noch ein Schritt.</string>
     <string name="sa_etapes_pour_taper_en_letzebuergesch">3 Schritte, um überall auf Lëtzebuergesch zu tippen.</string>
     <string name="sa_voir_les_etapes">Die 3 Schritte ansehen</string>
-    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Suchen Sie „Lëtzebuergesch Clavier“ auf dem Bildschirm, der sich öffnet, und aktivieren Sie den Schalter. Die App bringt Sie danach hierher zurück.</string>
+    <string name="sa_trouvez_letzebuergesch_clavier_dans_ecran">Suchen Sie „De Lëtzebuerger Clavier“ auf dem Bildschirm, der sich öffnet, und aktivieren Sie den Schalter. Die App bringt Sie danach hierher zurück.</string>
     <string name="sa_presque_validez_bien_les_avertissements">💡 Fast geschafft! Bestätigen Sie beide Android-Warnungen nacheinander: Wer bei der ersten aufhört, bricht die Aktivierung ab.</string>
-    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android zeigt eine Sicherheitswarnung an, dieselbe für alle Tastaturen von Drittanbietern: Tippen Sie auf OK. Lëtzebuergesch Clavier sammelt nichts von dem, was Sie tippen.</string>
+    <string name="sa_android_affiche_un_avertissement_de">ℹ️ Android zeigt eine Sicherheitswarnung an, dieselbe für alle Tastaturen von Drittanbietern: Tippen Sie auf OK. De Lëtzebuerger Clavier sammelt nichts von dem, was Sie tippen.</string>
     <string name="sa_rouvrir_les_reglages_android">Android-Einstellungen erneut öffnen ↗</string>
     <string name="sa_ouvrir_les_reglages_android">Android-Einstellungen öffnen ↗</string>
     <string name="sa_activer_le_clavier">Tastatur aktivieren</string>
     <string name="sa_le_clavier_est_active">Die Tastatur ist aktiviert.</string>
     <string name="sa_dans_les_reglages_android">In den Android-Einstellungen.</string>
-    <string name="sa_choisissez_letzebuergesch_clavier_dans_la">Wählen Sie „Lëtzebuergesch Clavier“ in der angezeigten Liste der Tastaturen. Wenn Sie sie nicht sehen, scrollen Sie nach unten: Sie steht oft ganz unten. Ihre anderen Tastaturen bleiben installiert.</string>
+    <string name="sa_choisissez_letzebuergesch_clavier_dans_la">Wählen Sie „De Lëtzebuerger Clavier“ in der angezeigten Liste der Tastaturen. Wenn Sie sie nicht sehen, scrollen Sie nach unten: Sie steht oft ganz unten. Ihre anderen Tastaturen bleiben installiert.</string>
     <string name="sa_ouvrir_le_selecteur_de_claviers">Tastaturauswahl öffnen ↗</string>
     <string name="sa_selectionner_le_clavier_2">Tastatur auswählen</string>
-    <string name="sa_letzebuergesch_clavier_est_selectionne">Lëtzebuergesch Clavier ist ausgewählt.</string>
+    <string name="sa_letzebuergesch_clavier_est_selectionne">De Lëtzebuerger Clavier ist ausgewählt.</string>
     <string name="sa_terminez_abord_etape">Schließen Sie zuerst Schritt 1 ab.</string>
     <string name="sa_choisissez_le_dans_la_liste">Wählen Sie sie in der Liste aus.</string>
     <string name="sa_schreift_op_letzebuergesch_ecrivez_en">Schreift op Lëtzebuergesch... (schreiben Sie auf Luxemburgisch)</string>
@@ -355,7 +355,7 @@
     <string name="sa_sources_litteraires">📚 Quellen</string>
     <string name="sa_les_suggestions_de_mots_sont">Die Wortvorschläge beruhen auf offenen Quellen des heutigen Luxemburgischen:\n\n📰 LuxAlign: Sätze aus Artikeln von RTL.lu, zusammengestellt von Fred Philippy u. a. (COLING 2025). Lizenz CC BY-NC 4.0.\n\n📖 LETZ: Beispielsätze aus dem Lëtzebuerger Online Dictionnaire (lod.lu), zusammengestellt von Fred Philippy u. a. (SIGUL 2024). Lizenz CC BY 4.0.\n\nDas erste liefert den Wortschatz und die Abfolge der Wörter, das zweite die Alltagssprache.\n\n🇱🇺 Lëtzebuerger Online Dictionnaire (lod.lu), Zenter fir d\'Lëtzebuerger Sprooch. Lizenz CC0 1.0. Er liefert die Übersetzungen der Wörter ins Deutsche, Französische, Englische und Portugiesische, 83.000 Formen, die die Presse nie schreibt, und 45.000 Beispielsätze, die der Tastatur die Alltagssprache beibringen.\n\n🇱🇺 Übersetzungskorpus des Zenter fir d\'Lëtzebuerger Sprooch (data.public.lu). Lizenz CC0 1.0. Er liefert die deutschen, französischen und englischen Übersetzungen der Beispielsätze, angefertigt von professionellen Übersetzern.\n\n🇫🇷 Lexique 3.83: lexikalische Datenbank des Französischen von Boris New und Christophe Pallier (lexique.org). Lizenz CC BY-SA 4.0. Sie liefert die 125.000 Formen der zweiten Vorschlagsreihe und verhindert, dass die Rechtschreibprüfung korrektes Französisch unterstreicht.\n\n🔤 Die Wörter der Sammelkarten sind in Lora, Cormorant Garamond und EB Garamond gesetzt, drei freien Schriften unter der SIL Open Font License 1.1.</string>
     <string name="sa_informations">ℹ️ Informationen</string>
-    <string name="sa_version_potomitantm_letzebuergesch_clavier_fait">Version: %1$s\n© Potomitan™ - Lëtzebuergesch Clavier\n\nMit ❤️ in Luxemburg gemacht\nBewahren wir Lëtzebuergesch für kommende Generationen!</string>
+    <string name="sa_version_potomitantm_letzebuergesch_clavier_fait">Version: %1$s\n© Potomitan™ - de Lëtzebuerger Clavier\n\nMit ❤️ in Luxemburg gemacht\nBewahren wir Lëtzebuergesch für kommende Generationen!</string>
     <string name="sa_confidentialite">🔒 Datenschutz</string>
     <string name="sa_zero_collecte_de_donnees_personnelles">Keinerlei Erfassung personenbezogener Daten: Was Sie tippen, bleibt auf Ihrem Telefon. Nur das Diktat sendet, wenn Sie auf das Mikrofon tippen, Ihre Stimme an die Universität Luxemburg, die sie aufschreibt, ohne sie zu speichern.</string>
     <string name="sa_essayez_le_tout_de_suite">🎹 Probieren Sie es gleich aus!</string>
@@ -380,13 +380,13 @@
     <string name="sa_installation_et_activation">📲 Installation und Aktivierung</string>
     <string name="sa_le_clavier_doit_etre_active">Die Tastatur muss aktiviert und dann ausgewählt werden, bevor Sie sie verwenden können, wie jede Tastatur von Drittanbietern unter Android. Diese interaktiven Schritte finden Sie auch im Tab „Haut“; so sehen sie aus.</string>
     <string name="sa_ouvrir_les_parametres_de_clavier">1️⃣ Tastatureinstellungen öffnen</string>
-    <string name="sa_depuis_onglet_haut_le_bouton">Im Tab Haut führt die Schaltfläche „Einstellungen öffnen“ direkt zum Android-Bildschirm „Bildschirmtastatur“, wo „Lëtzebuergesch Clavier“ neben den anderen installierten Tastaturen erscheint, mit ausgeschaltetem Schalter.</string>
+    <string name="sa_depuis_onglet_haut_le_bouton">Im Tab Haut führt die Schaltfläche „Einstellungen öffnen“ direkt zum Android-Bildschirm „Bildschirmtastatur“, wo „De Lëtzebuerger Clavier“ neben den anderen installierten Tastaturen erscheint, mit ausgeschaltetem Schalter.</string>
     <string name="sa_ecran_systeme_listant_les_claviers">Systembildschirm mit der Liste der Tastaturen, Schalter zum Aktivieren</string>
     <string name="sa_valider_les_avertissements_android">2️⃣ Android-Warnungen bestätigen</string>
-    <string name="sa_en_activant_interrupteur_android_affiche">Wenn Sie den Schalter aktivieren, zeigt Android eine allgemeine Warnung an, die bei allen Tastaturen von Drittanbietern erscheint, gefolgt von einem zweiten Hinweis zum Neustart des Telefons. Lëtzebuergesch Clavier sammelt nichts von dem, was Sie tippen: Tippen Sie bei beiden auf OK, um fortzufahren, und kehren Sie dann mit der Zurück-Taste zur App zurück.</string>
+    <string name="sa_en_activant_interrupteur_android_affiche">Wenn Sie den Schalter aktivieren, zeigt Android eine allgemeine Warnung an, die bei allen Tastaturen von Drittanbietern erscheint, gefolgt von einem zweiten Hinweis zum Neustart des Telefons. De Lëtzebuerger Clavier sammelt nichts von dem, was Sie tippen: Tippen Sie bei beiden auf OK, um fortzufahren, und kehren Sie dann mit der Zurück-Taste zur App zurück.</string>
     <string name="sa_avertissement_systeme_affiche_pour_tout">Systemwarnung, die bei jeder Tastatur von Drittanbietern erscheint</string>
     <string name="sa_selectionner_le_clavier">3️⃣ Tastatur auswählen</string>
-    <string name="sa_de_retour_dans_application_etape">Zurück in der App wird Schritt 1 automatisch abgehakt und Schritt 2 freigeschaltet. Die Schaltfläche „Auswahl öffnen“ öffnet die Liste der aktiven Tastaturen: Tippen Sie auf „Lëtzebuergesch Clavier“, um sie zur verwendeten Tastatur zu machen.</string>
+    <string name="sa_de_retour_dans_application_etape">Zurück in der App wird Schritt 1 automatisch abgehakt und Schritt 2 freigeschaltet. Die Schaltfläche „Auswahl öffnen“ öffnet die Liste der aktiven Tastaturen: Tippen Sie auf „De Lëtzebuerger Clavier“, um sie zur verwendeten Tastatur zu machen.</string>
     <string name="sa_selecteur_systeme_de_mode_de">Systemauswahl der Eingabemethode</string>
     <string name="sa_configuration_terminee">✅ Einrichtung abgeschlossen</string>
     <string name="sa_les_deux_etapes_cochees_le">Sind beide Schritte abgehakt, erscheint die luxemburgische Tastatur überall, wo Sie tippen, auch im Testfeld im Tab Haut. Langes Drücken der Leertaste wechselt jederzeit zu einer anderen Tastatur.</string>
@@ -430,7 +430,7 @@
     <string name="sa_impossible_ouvrir_la_politique_de">Die Datenschutzerklärung konnte nicht geöffnet werden</string>
     <string name="sa_play_store_indisponible">Play Store nicht verfügbar</string>
     <string name="sa_ech_schreiwen_op_letzebuergesch_op">Ech schreiwen op Lëtzebuergesch op mengem Telefon!\nEine kostenlose Android-Tastatur, die Wörter auf Luxemburgisch vorschlägt.\n\nKostenlos herunterladen:\nhttps://play.google.com/store/apps/details?id=%1$s&amp;referrer=utm_source%%3Din_app_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
-    <string name="sa_partager_le_letzebuergesch_clavier">Lëtzebuergesch Clavier teilen</string>
+    <string name="sa_partager_le_letzebuergesch_clavier">De Lëtzebuerger Clavier teilen</string>
     <string name="sa_impossible_ouvrir_le_selecteur_touchez">Die Auswahl konnte nicht geöffnet werden. Tippen Sie beim Schreiben auf das Tastatursymbol unten auf dem Bildschirm, in der Navigationsleiste.</string>
     <string name="sa_vous_avez_atteint_le_plus">Sie haben die höchste Stufe erreicht. 👑</string>
     <string name="sa_partager_ma_carte_de_niveau_2">📤 Meine Stufenkarte teilen</string>
@@ -449,7 +449,7 @@
     <string name="sa_partager">Teilen 📤</string>
     <string name="sa_plus_tard">Später</string>
     <string name="sa_mots_luxembourgeois_decouverts">%1$s luxemburgische Wörter entdeckt!</string>
-    <string name="sa_ech_sinn_um_niveau_am">Ech sinn um Niveau %1$s am Lëtzebuergesch Clavier! A du, wéi wäit bass du?\nIch habe die Stufe %1$s der luxemburgischen Tastatur erreicht.\n\nKostenlos herunterladen:\nhttps://play.google.com/store/apps/details?id=%2$s&amp;referrer=utm_source%%3Dlevel_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
+    <string name="sa_ech_sinn_um_niveau_am">Ech sinn um Niveau %1$s am Lëtzebuerger Clavier! A du, wéi wäit bass du?\nIch habe die Stufe %1$s der luxemburgischen Tastatur erreicht.\n\nKostenlos herunterladen:\nhttps://play.google.com/store/apps/details?id=%2$s&amp;referrer=utm_source%%3Dlevel_share%%26utm_campaign%%3Dlaunch_lu\n\n</string>
     <string name="sa_partager_ma_carte_de_niveau">Meine Stufenkarte teilen</string>
     <string name="sa_impossible_de_partager_la_carte">Die Karte konnte nicht geteilt werden</string>
     <string name="sa_correcteur_active_vos_mots_luxembourgeois">✓ Rechtschreibprüfung aktiv: Ihre luxemburgischen Wörter werden überall erkannt.</string>
@@ -703,7 +703,7 @@
     <string name="recevoir_choix_titre">Eine Karte empfangen</string>
     <string name="recevoir_telephone">📱 Von einem anderen Telefon</string>
     <string name="recevoir_papier">🃏 Der Code einer Papierkarte</string>
-    <string name="papier_invalide">Dieser Code gehört zu keiner Papierkarte von Lëtzebuergesch Clavier.</string>
+    <string name="papier_invalide">Dieser Code gehört zu keiner Papierkarte von de Lëtzebuerger Clavier.</string>
     <string name="papier_deja">Dieser Code wurde auf diesem Telefon schon benutzt.</string>
     <string name="papier_mettre_a_jour">Dieser Code stammt aus einer neueren Schachtel als die App: Aktualisieren Sie sie und scannen Sie den Code erneut.</string>
     <string name="papier_une">„%1$s“ ist in Ihrem Heft</string>
