@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="assets/theme.css">
 <script>(function(){var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
 <script defer src="assets/theme.js"></script>
-<script>(function(){if(new URLSearchParams(location.search).get('embed')==='1')document.documentElement.classList.add('embed-mode');})();</script>
+<script>(function(){var q=new URLSearchParams(location.search);if(q.get('embed')==='1'){document.documentElement.classList.add('embed-mode');if(q.get('demo')==='auto')document.documentElement.classList.add('embed-demo');}})();</script>
 <style>
   * { box-sizing: border-box; }
   body { font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; }
@@ -27,6 +27,19 @@
   html.embed-mode main { max-width: 420px; padding: 8px; }
   html.embed-mode .phone-shell { margin: 4px auto; }
   html.embed-mode body { padding-bottom: 0 !important; }
+  /* ---- ?embed=1&demo=auto : la vitrine de l'accueil (index.html) ----
+     Fond transparent pour se fondre dans la page hôte, et pas de ligne
+     d'inventaire (mots, contextes) : on montre le clavier, pas ses chiffres.
+     Une erreur de chargement reste affichée. */
+  html.embed-demo, html.embed-demo body { background: transparent !important; }
+  html.embed-demo .status-line:not(.error) { display: none; }
+  /* L'ombre pleine (60 px de flou) déborde du cadre de 380 px et s'y coupe
+     net : une ombre courte reste à l'intérieur. */
+  html.embed-demo main { padding: 6px 10px 14px; }
+  html.embed-demo .phone { box-shadow: 0 6px 18px rgba(0,0,0,.14); }
+  /* Toucher une lettre suffit à reprendre la main : pas de bouton Arrêter,
+     qui dépasserait du cadre. */
+  html.embed-demo .demo-stop { display: none !important; }
 
   header.hero { text-align: center; padding: 28px 0 8px; }
   .eyebrow { color: var(--sea); font-weight: 700; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 8px; }
@@ -984,7 +997,10 @@
       engine.loadFrenchDictionary(french);
 
       const sim = new window.KreyolKeyboardSimulator(engine, els);
-      brancherExemples(sim);
+      const exemples = brancherExemples(sim);
+      if (exemples && document.documentElement.classList.contains('embed-demo')) {
+        rejouerEnBoucle(sim, exemples);
+      }
       // Dictée en ligne : ne fait rien sans ?asr=1 dans l'adresse.
       if (window.brancherDictee) window.brancherDictee(sim);
 
@@ -1059,6 +1075,65 @@
     els.keyboard.addEventListener('pointerdown', interrompre);
     els.resetBtn?.addEventListener('click', interrompre);
     document.addEventListener('keydown', interrompre);
+
+    return { demo, phrases: chips.map((c) => c.dataset.phrase) };
+  }
+
+  // ---- ?embed=1&demo=auto : les exemples s'enchaînent tout seuls ----
+  // Le visiteur de l'accueil voit le clavier écrire avant d'avoir rien fait.
+  // La boucle ne tourne que lorsque le cadre est à l'écran, et s'arrête pour
+  // de bon au premier geste (touche, clavier physique, Effacer, Arrêter) :
+  // le champ est alors vidé, et la lettre touchée s'écrit dans un champ
+  // propre. Rien ne démarre seul si le système demande moins d'animations.
+  function rejouerEnBoucle(sim, { demo, phrases }) {
+    if (!phrases.length) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const PAUSE_ENTRE_PHRASES = 2200;
+    let fini = false;
+    let visible = false;
+    let enBoucle = false;
+    let i = 0;
+
+    const reprendreLaMain = () => {
+      if (fini) return;
+      fini = true;
+      demo.arreter();
+      sim.reset();
+      document.body.classList.remove('demo-joue');
+    };
+    // En capture : le champ est vidé avant que la touche n'écrive sa lettre.
+    els.keyboard.addEventListener('pointerdown', reprendreLaMain, true);
+    document.addEventListener('keydown', reprendreLaMain, true);
+    els.resetBtn?.addEventListener('click', reprendreLaMain, true);
+    document.getElementById('demo-stop')?.addEventListener('click', () => { fini = true; }, true);
+
+    const dodo = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    async function boucle() {
+      if (enBoucle) return;
+      enBoucle = true;
+      while (!fini && visible) {
+        await demo.jouer(phrases[i % phrases.length]);
+        if (fini || !visible) break;
+        i++;
+        await dodo(PAUSE_ENTRE_PHRASES);
+      }
+      enBoucle = false;
+    }
+
+    // Hors de l'écran, la phrase en cours est abandonnée et reprend au
+    // retour, depuis le début.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entrees) => {
+        visible = entrees.some((e) => e.isIntersecting);
+        if (visible) boucle();
+        else if (!fini) demo.arreter();
+      }, { threshold: 0.4 }).observe(document.querySelector('.phone-shell'));
+    } else {
+      visible = true;
+      boucle();
+    }
   }
 
   init();

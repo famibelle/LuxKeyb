@@ -95,6 +95,7 @@
           frappes++;
           this.majCompteur(frappes, this.sim.screenText, false);
           await dodo(DELAI.lettre);
+          if (!vivant()) return;
           if (jeton === ',' || jeton === '.' || jeton === '?' || jeton === '!') {
             this.sim.processKey(' ');
             await dodo(DELAI.contexte);
@@ -137,6 +138,7 @@
             }
           }
         }
+        if (!vivant()) return;
         if (!pose) {
           this.sim.processKey(' '); // valider le mot compte aussi une frappe
           frappes++;
