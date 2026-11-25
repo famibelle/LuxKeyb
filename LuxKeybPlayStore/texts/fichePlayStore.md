@@ -1,4 +1,4 @@
-# Fiche Play Store — Lëtzebuergesch Clavier
+# Fiche Play Store — de Lëtzebuerger Clavier
 
 Les textes à coller dans la Play Console (Développer la présence → Fiche
 Play Store principale, puis une traduction par langue) sont rangés **un dossier
@@ -29,11 +29,13 @@ sont déjà en texte brut, émojis compris.
 *30 caractères maximum.*
 
 ```
-Lëtzebuergesch Clavier
+De Lëtzebuerger Clavier
 ```
 
-22 caractères. Identique à `app_name` dans `strings.xml`, donc le nom sous
-l'icône du téléphone et le nom sur le Store coïncident.
+23 caractères. Nouvelle écriture du nom (2026-11-25), la même que sur le site.
+**Attention :** `app_name` dans `strings.xml` vaut encore « Lëtzebuergesch Clavier » :
+tant qu'il n'est pas changé, le nom sous l'icône du téléphone et le nom sur le
+Store ne coïncident plus.
 
 Les 8 caractères restants ne sont pas utilisés volontairement : le mot-clé
 recherché — « clavier luxembourgeois » — est couvert par la brève description

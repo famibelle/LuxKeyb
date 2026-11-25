@@ -1,6 +1,6 @@
 # LuxKeybPlayStore
 
-Tout ce qui part vers la Play Console pour **Lëtzebuergesch Clavier**
+Tout ce qui part vers la Play Console pour **de Lëtzebuerger Clavier**
 (`com.potomitan.luxkeyboard`), plus le flyer imprimable. Rien ici n'entre dans
 l'APK : ce dossier ne déclenche aucun build.
 

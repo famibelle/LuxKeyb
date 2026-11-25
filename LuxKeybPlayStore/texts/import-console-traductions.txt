@@ -1,7 +1,7 @@
 ===== Language: German (de-DE) =====
 
 App name:
-Lëtzebuergesch Clavier
+De Lëtzebuerger Clavier
 
 Short description:
 Luxemburgische Tastatur: Wortvorschläge, ë ä é Tasten, Sprachdiktat
@@ -9,7 +9,7 @@ Luxemburgische Tastatur: Wortvorschläge, ë ä é Tasten, Sprachdiktat
 Full description:
 Sie sprechen es. Jetzt schreiben Sie es.
 
-Lëtzebuergesch Clavier ist eine kostenlose Android-Tastatur, gemacht für eine einzige Sprache: Lëtzebuergesch.
+De Lëtzebuerger Clavier ist eine kostenlose Android-Tastatur, gemacht für eine einzige Sprache: Lëtzebuergesch.
 
 🛠️ Ihr Luxemburgisch ist etwas eingerostet?
 😤 Ihr Handy unterstreicht jedes Ihrer Wörter rot?
@@ -84,7 +84,7 @@ Melden Sie es: github.com/famibelle/LuxKeyb. Das Wörterbuch wächst mit jeder V
 ===== Language: English (United States) (en-US) =====
 
 App name:
-Lëtzebuergesch Clavier
+De Lëtzebuerger Clavier
 
 Short description:
 Luxembourgish keyboard: word suggestions, ë ä é keys, voice typing
@@ -92,7 +92,7 @@ Luxembourgish keyboard: word suggestions, ë ä é keys, voice typing
 Full description:
 You speak it. Now you write it.
 
-Lëtzebuergesch Clavier is a free Android keyboard made for one language only: Lëtzebuergesch.
+De Lëtzebuerger Clavier is a free Android keyboard made for one language only: Lëtzebuergesch.
 
 🛠️ Is your Luxembourgish a little rusty?
 😤 Does your phone underline every word you type in red?
@@ -167,7 +167,7 @@ Let us know: github.com/famibelle/LuxKeyb. The dictionary grows with every versi
 ===== Language: Portuguese (Portugal) (pt-PT) =====
 
 App name:
-Lëtzebuergesch Clavier
+De Lëtzebuerger Clavier
 
 Short description:
 Teclado luxemburguês: sugestões de palavras, teclas ë ä é, ditado por voz
@@ -175,7 +175,7 @@ Teclado luxemburguês: sugestões de palavras, teclas ë ä é, ditado por voz
 Full description:
 Fala-o. Agora, escreve-o.
 
-Lëtzebuergesch Clavier é um teclado Android gratuito, feito para uma só língua: o lëtzebuergesch.
+De Lëtzebuerger Clavier é um teclado Android gratuito, feito para uma só língua: o lëtzebuergesch.
 
 🛠️ O seu luxemburguês está um pouco enferrujado?
 😤 O seu telemóvel sublinha a vermelho todas as suas palavras?
@@ -250,7 +250,7 @@ Diga-nos: github.com/famibelle/LuxKeyb. O dicionário cresce a cada versão.
 ===== Language: Luxembourgish (lb) =====
 
 App name:
-Lëtzebuergesch Clavier
+De Lëtzebuerger Clavier
 
 Short description:
 Lëtzebuergesch Tastatur: Wuertvirschléi, ë ä é Tasten, Spriechdiktat
@@ -258,7 +258,7 @@ Lëtzebuergesch Tastatur: Wuertvirschléi, ë ä é Tasten, Spriechdiktat
 Full description:
 Dir schwätzt et. Elo schreift Dir et.
 
-Lëtzebuergesch Clavier ass eng gratis Android-Tastatur, gemaach fir eng eenzeg Sprooch: d'Lëtzebuergescht.
+De Lëtzebuerger Clavier ass eng gratis Android-Tastatur, gemaach fir eng eenzeg Sprooch: d'Lëtzebuergescht.
 
 🛠️ Äert Lëtzebuergesch ass e bësse verrascht?
 😤 Ären Handy ënnersträicht all Är Wierder rout?
