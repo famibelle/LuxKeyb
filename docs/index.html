@@ -53,6 +53,13 @@
   --touche-ombre:#C9D1D6;
   --lien:#003876;
   --titre:#003876;
+  /* Les GIF ont un fond blanc qu'on ne peut pas changer : en sombre, un
+     passe-partout de teinte intermédiaire et un blanc un peu atténué
+     adoucissent le saut entre la page et l'image. Sans effet en clair. */
+  --gif-cadre-fond:transparent;
+  --gif-cadre-bord:transparent;
+  --gif-cadre-marge:0px;
+  --gif-luminosite:1;
   --sur-nuit:#FFFFFF;
   --sur-nuit-doux:#C8D7EA;
   --display:"Fredoka","Trebuchet MS","Segoe UI",system-ui,sans-serif;
@@ -60,10 +67,10 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --nuit:#0A2A57; --encre:#E8EEF2; --encre-douce:#AEBBC4; --papier:#111A22; --carte:#18232D;
-  --filet:#2A3742; --touche:#24313C; --touche-ombre:#0B1117; --lien:#7FD0F0; --titre:#E8EEF2; color-scheme:dark;}}
+  --filet:#2A3742; --touche:#24313C; --touche-ombre:#0B1117; --lien:#7FD0F0; --titre:#E8EEF2; --gif-cadre-fond:#202D38; --gif-cadre-bord:#34434F; --gif-cadre-marge:12px; --gif-luminosite:.88; color-scheme:dark;}}
 :root[data-theme="dark"]{
   --nuit:#0A2A57; --encre:#E8EEF2; --encre-douce:#AEBBC4; --papier:#111A22; --carte:#18232D;
-  --filet:#2A3742; --touche:#24313C; --touche-ombre:#0B1117; --lien:#7FD0F0; --titre:#E8EEF2; color-scheme:dark;}
+  --filet:#2A3742; --touche:#24313C; --touche-ombre:#0B1117; --lien:#7FD0F0; --titre:#E8EEF2; --gif-cadre-fond:#202D38; --gif-cadre-bord:#34434F; --gif-cadre-marge:12px; --gif-luminosite:.88; color-scheme:dark;}
 
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -103,7 +110,7 @@ p{margin:0}
 .mention{margin-top:16px;font-size:15px;color:var(--sur-nuit-doux)}
 
 .telephone{justify-self:center;width:min(330px,100%);background:#0B0F14;border-radius:44px;padding:12px;box-shadow:0 30px 60px rgba(0,0,0,.35),0 0 0 2px rgba(255,255,255,.08);transform:rotate(2.5deg)}
-.telephone img{display:block;width:100%;height:auto;border-radius:32px;aspect-ratio:1/1;object-fit:cover;background:#fff}
+.telephone img{display:block;width:100%;height:auto;border-radius:32px;aspect-ratio:1/1;object-fit:cover;background:#fff;filter:brightness(var(--gif-luminosite))}
 .telephone figcaption{color:var(--sur-nuit-doux);font-size:14px;text-align:center;padding:12px 8px 4px;font-style:italic}
 
 /* la diagonale du drapeau, comme sur les supports imprimés */
@@ -136,7 +143,8 @@ p{margin:0}
 .duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
 .duo .chapo{margin-top:18px}
 .dictee{margin:0;width:100%;max-width:560px;justify-self:center}
-.dictee img{display:block;width:100%;height:auto;border-radius:14px}
+.cadre-gif{background:var(--gif-cadre-fond);border:1px solid var(--gif-cadre-bord);border-radius:22px;padding:var(--gif-cadre-marge)}
+.dictee img{display:block;width:100%;height:auto;border-radius:14px;filter:brightness(var(--gif-luminosite))}
 .dictee figcaption{margin-top:12px;font-size:15px;color:var(--encre-douce);text-align:center;font-style:italic}
 .confiance{margin-top:24px;padding:16px 18px;border-left:4px solid var(--ciel);background:var(--carte);border-radius:0 12px 12px 0;font-size:16px;color:var(--encre-douce)}
 .confiance strong{color:var(--encre)}
@@ -315,8 +323,10 @@ p{margin:0}
         reste sur votre téléphone.</p>
       </div>
       <figure class="dictee">
+        <div class="cadre-gif">
         <img src="assets/accueil/dictee-mots.gif" width="1080" height="456"
              alt="Un micro rouge pulse pendant la dictée, et les mots de la phrase « Op der Kiermes iessen ech ëmmer Gromperekichelcher mat Äppelkompott. » apparaissent dans la bulle, un à un">
+        </div>
         <figcaption>«&nbsp;À la kermesse, je mange toujours des galettes de pommes de terre avec de la compote.&nbsp;» Le texte s'écrit pendant qu'on parle.</figcaption>
       </figure>
     </div>
