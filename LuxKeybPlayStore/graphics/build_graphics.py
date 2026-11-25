@@ -541,7 +541,7 @@ TABLETTE_TEMPLATE = """<meta charset="utf-8">
     <div class="kicker">{kicker}</div>
     <h1>{title}</h1>
     <div class="sub">{sub}</div>
-    <footer><img src="data:image/png;base64,{icon}">Lëtzebuergesch Clavier · {pied}</footer>
+    <footer><img src="data:image/png;base64,{icon}">De Lëtzebuerger Clavier · {pied}</footer>
   </div>
   <div class="stage"><img class="{classe}" src="data:image/png;base64,{shot}"></div>
 </main>
@@ -592,7 +592,7 @@ SHOT_TEMPLATE = """<meta charset="utf-8">
   <div class="sub">{sub}</div>
 </header>
 <div class="stage"><img class="{classe}" src="data:image/png;base64,{shot}"></div>
-<footer><img src="data:image/png;base64,{icon}">Lëtzebuergesch Clavier · {pied}</footer>
+<footer><img src="data:image/png;base64,{icon}">De Lëtzebuerger Clavier · {pied}</footer>
 """
 
 

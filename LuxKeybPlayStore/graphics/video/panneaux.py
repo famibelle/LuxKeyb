@@ -37,13 +37,13 @@ h1{font-size:96px;font-weight:700;line-height:1.08;margin-top:22px}
 def html_scene(s, logo):
     corps = f"""<div class="txt"><div class="kicker">{s['kicker']}</div><h1>{s['titre']}</h1>
 <div class="sub">{s['sous']}</div></div>
-<div class="pied"><img src="data:image/png;base64,{logo}">Lëtzebuergesch Clavier</div>"""
+<div class="pied"><img src="data:image/png;base64,{logo}">De Lëtzebuerger Clavier</div>"""
     return BASE.format(papier=PAPIER, encre=ENCRE, rouge=ROUGE, bleu=BLEU,
                        css=CSS_SCENE.replace("{w}", str(s["largeur_texte"])), corps=corps)
 
 
 def html_titre(s, logo):
-    corps = f"""<div class="c"><img src="data:image/png;base64,{logo}"><div class="nom">Lëtzebuergesch Clavier</div>
+    corps = f"""<div class="c"><img src="data:image/png;base64,{logo}"><div class="nom">De Lëtzebuerger Clavier</div>
 <h1>{s['titre']}</h1><div class="sub">{s['sous']}</div></div>"""
     return BASE.format(papier=PAPIER, encre=ENCRE, rouge=ROUGE, bleu=BLEU, css=CSS_TITRE, corps=corps)
 

@@ -90,7 +90,7 @@ def calque_entete():
     """Logo et nom en haut, présents sur les scènes d'écran."""
     c = Image.new("RGBA", (W, 140))
     c.alpha_composite(icone(72), (80, 50))
-    ImageDraw.Draw(c).text((170, 66), "Lëtzebuergesch Clavier", font=police(36, True), fill=GRIS)
+    ImageDraw.Draw(c).text((170, 66), "De Lëtzebuerger Clavier", font=police(36, True), fill=GRIS)
     return c
 
 
@@ -321,7 +321,7 @@ class Accroche:
     def __init__(self, duree, dossier):
         self.duree = duree
         self.calques = [icone(180)]
-        for texte, f, coul, il in (("Lëtzebuergesch Clavier", police(44, True), GRIS, 56),
+        for texte, f, coul, il in (("De Lëtzebuerger Clavier", police(44, True), GRIS, 56),
                                    ("Vous le parlez.\nMaintenant, vous l'écrivez.", police(78, True), ENCRE, 88),
                                    ("Le clavier luxembourgeois pour Android", police(46, True), BLEU, 58)):
             c = Image.new("RGBA", (W, 400))
@@ -352,7 +352,7 @@ class Appel:
     barre de recherche tape le nom à chercher dans le Play Store : la vidéo se
     suffit à elle-même, sans lien dans la bio."""
 
-    NOM = "Lëtzebuergesch Clavier"
+    NOM = "De Lëtzebuerger Clavier"
 
     def __init__(self, duree):
         self.duree = duree
