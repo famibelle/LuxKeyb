@@ -18,6 +18,16 @@
           }
         ]
       }
+    ],
+    "images": [
+      {
+        "alt": "The app's home screen: a blue bar carrying the name « De Lëtzebuerger Clavier », the four tabs Haut, Spiller, Wierderbuch and Mäi Lëtzebuergesch, then the « Configuration rapide » card where step 1, « Activer le clavier » (turn the keyboard on), is ticked and step 2, « Sélectionner le clavier » (pick the keyboard), reads: « Choisissez « De Lëtzebuerger Clavier » dans la liste des claviers qui s'affiche. » (Choose « De Lëtzebuerger Clavier » in the list of keyboards that appears.) A yellow line unrolls under the name in the bar, then a yellow highlighter lights up the same name quoted in step 2: it is the same everywhere.",
+        "legende": "The name in the bar is the one the app asks you to look for on your phone."
+      },
+      {
+        "alt": "The phone's « Clavier à l'écran » (on-screen keyboard) settings screen: the Gboard row with its switch off, then the row « 🇱🇺 De Lëtzebuerger Clavier », its red lion icon, switch on in blue.",
+        "legende": "In the phone's list of keyboards, the name shows in full."
+      }
     ]
   },
   "41.1.7": {
