@@ -38,7 +38,7 @@ JEU = (0, 540, 1080, 2330)  # sous les onglets, au-dessus de la barre de navigat
 
 TEXTES = {
     "fr": dict(
-        accroche=("Écrivez le luxembourgeois\ncomme vous le parlez.", "Le clavier luxembourgeois pour Android"),
+        accroche=("Écrivez le luxembourgeois\ncomme vous le parlez.", "Le clavier luxembourgeois"),
         ecriture=("Écrire", "Tapez, il devine vos mots",
                   "Tapez « schue », il propose « Schueberfouer ». Après un espace, il devine la suite."),
         accents=("Écrire", "ë, ä, é sous le pouce",
@@ -52,7 +52,7 @@ TEXTES = {
         appel=("100 % gratuit", "Cherchez :"),
     ),
     "en": dict(
-        accroche=("Write Luxembourgish\nthe way you speak it.", "The Luxembourgish keyboard for Android"),
+        accroche=("Write Luxembourgish\nthe way you speak it.", "The Luxembourgish keyboard"),
         ecriture=("Write", "Type, and it guesses your words",
                   "Type “schue” and it offers “Schueberfouer”. After a space, it guesses the next word."),
         accents=("Write", "ë, ä, é under your thumb",

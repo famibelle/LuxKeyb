@@ -323,7 +323,7 @@ class Accroche:
         self.calques = [icone(180)]
         for texte, f, coul, il in (("De Lëtzebuerger Clavier", police(44, True), GRIS, 56),
                                    ("Vous le parlez.\nMaintenant, vous l'écrivez.", police(78, True), ENCRE, 88),
-                                   ("Le clavier luxembourgeois pour Android", police(46, True), BLEU, 58)):
+                                   ("Le clavier luxembourgeois", police(46, True), BLEU, 58)):
             c = Image.new("RGBA", (W, 400))
             bas = bloc_texte(ImageDraw.Draw(c), 0, texte, f, coul, il, centre=True, largeur=940)
             self.calques.append(c.crop((0, 0, W, bas)))
