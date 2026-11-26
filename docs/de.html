@@ -203,6 +203,9 @@ p{margin:0}
 
 /* ---------- Pied ---------- */
 .pied{padding-block:48px 56px;font-size:15px;color:var(--encre-douce)}
+/* L'inscription à la newsletter, en tête du pied de page (formulaire
+   monté par assets/inscription-lettre.js, comme sur les pages newsletter). */
+.pied .inscription-lettre{--doux:var(--encre-douce);max-width:640px;margin:0 0 44px;font-family:var(--texte)}
 .pied nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
 .pied h4{font-family:var(--display);font-size:16px;font-weight:600;color:var(--encre);margin:0 0 10px}
 .pied ul{list-style:none;padding:0;margin:0;display:grid;gap:6px}
@@ -424,6 +427,8 @@ p{margin:0}
 </main>
 
 <footer class="enveloppe pied">
+  <div class="inscription-lettre"><noscript><p><a href="https://59665626.sibforms.com/v2/serve/MUIFALrEewAgsgtfo-dwb_9JQPAch_GA_70rnty6I5FXP1G8XZkCKnFCXg2jgbkS3kMxU71nj9W0CD8pnV7LMwFctUPH42j0f48L7aRdz58oUqOC19FIoqG05SL6y2RPcSddU_pNkSYPkjZOEjbUowpBz8TWutOi3x84W_0KjrMg3YZPWlc-_HEFW8y9bUJagnxca5aTIfl63dqXAw==">Newsletter abonnieren</a></p></noscript></div>
+  <script defer src="assets/inscription-lettre.js"></script>
   <nav aria-label="Mehr erfahren">
     <div>
       <h4>Erste Schritte</h4>
