@@ -107,12 +107,9 @@ p{margin:0}
 .heros .chapo{color:var(--sur-nuit-doux);margin-top:24px;font-size:20px}
 .actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:32px}
 .badge-play img{display:block;height:80px;width:auto}
-/* À côté du badge Google Play : l'annonce de la version iPhone et iPad.
-   Pastille à nous, sans le logo ni le dessin du badge Apple, que ses règles
-   réservent aux applications déjà disponibles. Même hauteur que le badge. */
-.bientot{display:flex;flex-direction:column;justify-content:center;height:80px;padding:0 26px;border:2px dashed rgba(255,255,255,.45);border-radius:12px;color:var(--sur-nuit);line-height:1.15;text-align:left}
-.bientot span{font-size:15px;color:var(--sur-nuit-doux)}
-.bientot strong{font-size:23px;font-weight:600}
+/* À côté du badge Google Play : l'annonce de la version iPhone et iPad,
+   même hauteur. Image, sans lien tant que l'app n'est pas sur l'App Store. */
+.badge-app-store{display:block;height:80px;width:auto}
 /* Haut de page : le badge Google Play centré sous l'accroche, avec sa mention. */
 .actions-heros{justify-content:center}
 .mention-heros{text-align:center}
@@ -260,7 +257,7 @@ p{margin:0}
           <a class="badge-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;hl=de&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil-de%26utm_campaign%3Dinstaller">
             <img src="assets/google-play-badge-de.svg" alt="Jetzt bei Google Play" width="270" height="80">
           </a>
-          <p class="bientot"><span>Demnächst für</span> <strong>iPhone und iPad</strong></p>
+          <img class="badge-app-store" src="assets/app-store-bientot.png" alt="Demnächst im App Store" width="262" height="80">
         </div>
         <p class="mention mention-heros">Kostenlos · Android 7.0 oder neuer</p>
       </div>
@@ -413,7 +410,7 @@ p{margin:0}
           <a class="badge-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;hl=de&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil-de%26utm_campaign%3Dinstaller">
             <img src="assets/google-play-badge-de.svg" alt="Jetzt bei Google Play" width="270" height="80">
           </a>
-          <p class="bientot"><span>Demnächst für</span> <strong>iPhone und iPad</strong></p>
+          <img class="badge-app-store" src="assets/app-store-bientot.png" alt="Demnächst im App Store" width="262" height="80">
         </div>
       </div>
       <div class="qr">
