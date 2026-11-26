@@ -17,8 +17,8 @@
   var NB = " ";
   var TEXTES = {
     fr: {
-      titre: "Recevez la prochaine lettre",
-      chapo: "Les nouveautés du clavier, directement dans votre boîte mail.",
+      titre: "La newsletter",
+      chapo: "Recevez les dernières nouveautés et suivez les évolutions du projet.",
       champ: "Votre adresse e-mail",
       bouton: "Je m'inscris",
       mention: "Gratuit. Chaque lettre a un lien pour vous désabonner.",
@@ -26,8 +26,8 @@
       erreur: "L'inscription n'a pas abouti. Vérifiez votre adresse et réessayez."
     },
     en: {
-      titre: "Get the next newsletter",
-      chapo: "What's new in the keyboard, straight to your inbox.",
+      titre: "The newsletter",
+      chapo: "Get the latest news and follow the project as it evolves.",
       champ: "Your email address",
       bouton: "Sign me up",
       mention: "Free. Every newsletter has a link to unsubscribe.",
@@ -35,8 +35,8 @@
       erreur: "The sign-up didn't go through. Check your address and try again."
     },
     de: {
-      titre: "Den nächsten Newsletter erhalten",
-      chapo: "Die Neuigkeiten der Tastatur direkt in Ihrem Postfach.",
+      titre: "Der Newsletter",
+      chapo: "Erhalten Sie die neuesten Neuigkeiten und verfolgen Sie, wie sich das Projekt entwickelt.",
       champ: "Ihre E-Mail-Adresse",
       bouton: "Anmelden",
       mention: "Kostenlos. Jeder Newsletter enthält einen Link zum Abmelden.",
@@ -44,8 +44,8 @@
       erreur: "Die Anmeldung hat nicht geklappt. Prüfen Sie Ihre Adresse und versuchen Sie es erneut."
     },
     pt: {
-      titre: "Receba a próxima newsletter",
-      chapo: "As novidades do teclado, diretamente na sua caixa de correio.",
+      titre: "A newsletter",
+      chapo: "Receba as últimas novidades e acompanhe a evolução do projeto.",
       champ: "O seu endereço de e-mail",
       bouton: "Inscrever-me",
       mention: "Gratuito. Cada newsletter tem uma ligação para cancelar a inscrição.",
