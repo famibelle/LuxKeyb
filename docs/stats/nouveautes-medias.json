@@ -1,5 +1,19 @@
 {
   "_comment": "Illustrations de la page nouveautes.html, par version. Fichier tenu à la main : generate_nouveautes.py le fusionne dans nouveautes.json sans jamais l'écraser. Chemins relatifs à docs/.",
+  "41.1.8": {
+    "images": [
+      {
+        "image": "Screenshots/lux_nom_appli.gif",
+        "alt": "L'accueil de l'application : un bandeau bleu portant le nom « De Lëtzebuerger Clavier », les quatre onglets Haut, Spiller, Wierderbuch et Mäi Lëtzebuergesch, puis la carte « Configuration rapide » où l'étape 1 « Activer le clavier » est cochée et l'étape 2 « Sélectionner le clavier » dit : « Choisissez « De Lëtzebuerger Clavier » dans la liste des claviers qui s'affiche. » Un trait jaune se déroule sous le nom dans le bandeau, puis un surligneur jaune éclaire le même nom cité dans l'étape 2 : c'est le même partout.",
+        "legende": "Le nom du bandeau est celui que l'application vous demande de chercher dans votre téléphone."
+      },
+      {
+        "image": "Screenshots/lux_nom_claviers.png",
+        "alt": "L'écran « Clavier à l'écran » des paramètres du téléphone : la ligne Gboard, interrupteur éteint, puis la ligne « 🇱🇺 De Lëtzebuerger Clavier », son icône au lion rouge, interrupteur allumé en bleu.",
+        "legende": "Dans la liste des claviers du téléphone, le nom s'affiche en entier."
+      }
+    ]
+  },
   "41.1.7": {
     "images": [
       {

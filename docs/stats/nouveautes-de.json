@@ -21,7 +21,22 @@
      "texte": "",
      "tableau": null
     }
-   ]
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_nom_appli.gif",
+     "alt": "Der Startbildschirm der App: ein blauer Balken mit dem Namen « De Lëtzebuerger Clavier », die vier Reiter Haut, Spiller, Wierderbuch und Mäi Lëtzebuergesch, dann die Karte « Configuration rapide » (schnelle Einrichtung), in der Schritt 1, « Activer le clavier » (Tastatur aktivieren), abgehakt ist und Schritt 2, « Sélectionner le clavier » (Tastatur auswählen), sagt: « Choisissez « De Lëtzebuerger Clavier » dans la liste des claviers qui s'affiche. » (Wählen Sie « De Lëtzebuerger Clavier » in der angezeigten Tastaturliste.) Ein gelber Strich rollt sich unter dem Namen im Balken aus, dann hebt ein gelber Marker denselben Namen in Schritt 2 hervor: überall derselbe.",
+     "legende": "Der Name im Balken ist der, den die App Sie auf Ihrem Handy suchen heißt."
+    },
+    {
+     "image": "Screenshots/lux_nom_claviers.png",
+     "alt": "Der Handy-Einstellungsbildschirm « Clavier à l'écran » (Bildschirmtastatur): die Zeile Gboard mit ausgeschaltetem Schalter, dann die Zeile « 🇱🇺 De Lëtzebuerger Clavier » mit ihrem Symbol mit rotem Löwen, Schalter blau eingeschaltet.",
+     "legende": "In der Tastaturliste des Handys steht der Name vollständig."
+    }
+   ],
+   "image": "Screenshots/lux_nom_appli.gif",
+   "image_alt": "Der Startbildschirm der App: ein blauer Balken mit dem Namen « De Lëtzebuerger Clavier », die vier Reiter Haut, Spiller, Wierderbuch und Mäi Lëtzebuergesch, dann die Karte « Configuration rapide » (schnelle Einrichtung), in der Schritt 1, « Activer le clavier » (Tastatur aktivieren), abgehakt ist und Schritt 2, « Sélectionner le clavier » (Tastatur auswählen), sagt: « Choisissez « De Lëtzebuerger Clavier » dans la liste des claviers qui s'affiche. » (Wählen Sie « De Lëtzebuerger Clavier » in der angezeigten Tastaturliste.) Ein gelber Strich rollt sich unter dem Namen im Balken aus, dann hebt ein gelber Marker denselben Namen in Schritt 2 hervor: überall derselbe.",
+   "image_legende": "Der Name im Balken ist der, den die App Sie auf Ihrem Handy suchen heißt."
   },
   {
    "version": "41.1.7",

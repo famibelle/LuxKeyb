@@ -21,7 +21,22 @@
      "texte": "",
      "tableau": null
     }
-   ]
+   ],
+   "images": [
+    {
+     "image": "Screenshots/lux_nom_appli.gif",
+     "alt": "O ecrã inicial da aplicação: uma barra azul com o nome « De Lëtzebuerger Clavier », os quatro separadores Haut, Spiller, Wierderbuch e Mäi Lëtzebuergesch, depois o cartão « Configuration rapide » (configuração rápida), onde o passo 1, « Activer le clavier » (activar o teclado), está assinalado e o passo 2, « Sélectionner le clavier » (seleccionar o teclado), diz: « Choisissez « De Lëtzebuerger Clavier » dans la liste des claviers qui s'affiche. » (Escolha « De Lëtzebuerger Clavier » na lista de teclados que aparece.) Um traço amarelo desenrola-se sob o nome na barra, depois um marcador amarelo ilumina o mesmo nome citado no passo 2: é o mesmo em todo o lado.",
+     "legende": "O nome da barra é aquele que a aplicação lhe pede para procurar no telemóvel."
+    },
+    {
+     "image": "Screenshots/lux_nom_claviers.png",
+     "alt": "O ecrã de definições « Clavier à l'écran » (teclado no ecrã) do telemóvel: a linha Gboard com o interruptor desligado, depois a linha « 🇱🇺 De Lëtzebuerger Clavier », com o seu ícone do leão vermelho, interruptor ligado a azul.",
+     "legende": "Na lista de teclados do telemóvel, o nome aparece por inteiro."
+    }
+   ],
+   "image": "Screenshots/lux_nom_appli.gif",
+   "image_alt": "O ecrã inicial da aplicação: uma barra azul com o nome « De Lëtzebuerger Clavier », os quatro separadores Haut, Spiller, Wierderbuch e Mäi Lëtzebuergesch, depois o cartão « Configuration rapide » (configuração rápida), onde o passo 1, « Activer le clavier » (activar o teclado), está assinalado e o passo 2, « Sélectionner le clavier » (seleccionar o teclado), diz: « Choisissez « De Lëtzebuerger Clavier » dans la liste des claviers qui s'affiche. » (Escolha « De Lëtzebuerger Clavier » na lista de teclados que aparece.) Um traço amarelo desenrola-se sob o nome na barra, depois um marcador amarelo ilumina o mesmo nome citado no passo 2: é o mesmo em todo o lado.",
+   "image_legende": "O nome da barra é aquele que a aplicação lhe pede para procurar no telemóvel."
   },
   {
    "version": "41.1.7",
