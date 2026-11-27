@@ -8,16 +8,22 @@ import org.junit.Test
 import java.io.File
 
 /**
- * La série « Niveau A1 » (`luxemburgish_niveau_a1.json`, écrit par
- * `Dictionnaires/generate_niveaux.py`) : le vocabulaire du manuel A1 de
- * l'INLL tel que le LOD le marque, et la preuve que la série se finit.
+ * Les séries « Niveau A1 » et « Niveau A2 » (`luxemburgish_niveau_a1.json`,
+ * `luxemburgish_niveau_a2.json`, écrits par `Dictionnaires/generate_niveaux.py`) :
+ * le vocabulaire des manuels A1 et A2 de l'INLL tel que le LOD le marque, et
+ * la preuve que chaque série se finit.
  *
  * Comme pour les essentiels, une case impossible ne se verrait pas : elle
  * resterait vide pour toujours. D'où ce test, mot par mot.
  */
 class NiveauxAssetTest {
 
-    private val donnees by lazy { Essentiels.lire(File("src/main/assets/luxemburgish_niveau_a1.json").readText()) }
+    private fun niveau(code: String) =
+        Essentiels.lire(File("src/main/assets/luxemburgish_niveau_${code.lowercase()}.json").readText())
+
+    private val donnees by lazy { niveau("A1") }
+    private val a2 by lazy { niveau("A2") }
+    private val niveaux by lazy { listOf(donnees, a2) }
 
     private fun traductions(langue: String): Map<String, String> {
         val nom = if (langue == "fr") "luxemburgish_translations.json" else "luxemburgish_translations_$langue.json"
@@ -31,7 +37,29 @@ class NiveauxAssetTest {
     fun laSerieAPresQueTousLesMotsDuManuel() {
         // 845 lemmes marqués A1 ; quelques-uns restent dehors (contractions
         // sans sens, mots écartés, noms propres).
-        assertTrue("Seulement ${donnees.mots.size} mots", donnees.mots.size >= 780)
+        assertTrue("Seulement ${donnees.mots.size} mots", donnees.mots.size >= 820)
+        val mots = donnees.mots.toSet()
+        for (m in listOf("Famill", "Mamm", "Apel", "Kaffi", "kommen", "schwätzen", "gréng", "Auto", "Moien", "Tëlee")) {
+            assertTrue("« $m » manque", m in mots)
+        }
+    }
+
+    @Test
+    fun laSerieA2APresQueTousLesMotsDuManuel() {
+        // 1 257 lemmes dans la liste A2 du LOD (25 novembre 2026), dont une
+        // vingtaine de noms propres et quelques contractions.
+        assertTrue("Seulement ${a2.mots.size} mots", a2.mots.size >= 1150)
+        val mots = a2.mots.toSet()
+        // « besat », « gepacst », « miwweléiert » : plus récents que le LOD
+        // ouvert, leurs sens sont écrits dans le générateur.
+        for (m in listOf("Haus", "Gaart", "akafen", "ënnerschreiwen", "besat", "gepacst", "miwweléiert")) {
+            assertTrue("« $m » manque", m in mots)
+        }
+        assertEquals("occupé", a2.gloses.getValue("fr")["besat"])
+    }
+
+    @Test
+    fun lesPagesSontBienFaites() = niveaux.forEach { donnees ->
         assertEquals("mot en double", donnees.mots.size, donnees.themes.sumOf { it.mots.size })
         assertEquals("ids en double", donnees.themes.size, donnees.themes.map { it.id }.toSet().size)
         for (t in donnees.themes) {
@@ -41,14 +69,10 @@ class NiveauxAssetTest {
                 assertTrue("« ${t.id} » n'a pas de titre en $l", !t.titres[l].isNullOrBlank())
             }
         }
-        val mots = donnees.mots.toSet()
-        for (m in listOf("Famill", "Mamm", "Apel", "Kaffi", "kommen", "schwätzen", "gréng", "Auto", "Moien")) {
-            assertTrue("« $m » manque", m in mots)
-        }
     }
 
     @Test
-    fun chaqueMotADuSensDansLesQuatreLangues() {
+    fun chaqueMotADuSensDansLesQuatreLangues() = niveaux.forEach { donnees ->
         for (l in listOf("fr", "de", "en", "pt")) {
             val propres = donnees.gloses[l].orEmpty() + essentiels.gloses[l].orEmpty()
             val table = traductions(l)
@@ -65,14 +89,16 @@ class NiveauxAssetTest {
         // « sauer » est aigre, pas la Sûre ; « Band » le groupe, pas le ruban.
         assertTrue("sauer" in donnees.mots && "Sauer" !in donnees.mots)
         assertEquals("groupe de musique", donnees.gloses.getValue("fr")["Band"])
-        for (m in donnees.isoles) {
+        // « Rand » (A2) est le bord, pas le bovin.
+        assertEquals("bord", a2.gloses.getValue("fr")["Rand"])
+        for (donnees in niveaux) for (m in donnees.isoles) {
             assertTrue("« $m » isolé mais sans sens propre", donnees.gloses.values.all { m in it })
             assertTrue("« $m » isolé mais sans catégorie", m in donnees.categories)
         }
     }
 
     @Test
-    fun chaqueCaseAUnJeuQuiLaDonne() {
+    fun chaqueCaseAUnJeuQuiLaDonne() = niveaux.forEach { donnees ->
         for (m in donnees.mots) {
             assertTrue("« $m » : aucun jeu ne peut le donner, la série ne se finirait pas",
                 Essentiels.chemins(m).isNotEmpty())
@@ -80,7 +106,7 @@ class NiveauxAssetTest {
     }
 
     @Test
-    fun aucunMotNEstTenuALEcart() {
+    fun aucunMotNEstTenuALEcart() = niveaux.forEach { donnees ->
         for (m in donnees.mots.filterNot { Essentiels.estExpression(it) }) {
             assertTrue("« $m » est dans MotsEcartes : les jeux ne devraient pas le proposer", !MotsEcartes.estEcarte(m))
         }

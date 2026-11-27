@@ -6,12 +6,21 @@ le diplôme LAF (A2 à C1) et le Sproochentest (A2 à l'oral, B1 à l'écoute),
 sans vocabulaire officiel. La source la plus proche est celle du LOD, qui
 marque les mots des deux manuels de cours de l'INLL : catégories `GWS A1`
 (« Schwätzt Dir Lëtzebuergesch? – Niveau A1 (Wuertschatz) », 867 articles)
-et `GWS A2` (1 278 articles). Le LOD les dit purement didactiques, faits pour
+et `GWS A2` (1 281 articles). Le LOD les dit purement didactiques, faits pour
 travailler avec les manuels : l'appli parle donc du vocabulaire des niveaux
-A1 et A2, jamais des « mots de l'examen ». Les données sont celles du LOD
-(data.public.lu, CC0), déjà en cache pour `generate_translations.py`.
+A1 et A2, jamais des « mots de l'examen ».
 
-La liste A2 complète la liste A1 au lieu de la répéter (107 mots en commun).
+La liste des articles d'un niveau est celle que la recherche avancée du LOD
+exporte (`Dictionnaires/niveaux/gws_a1.csv` et `gws_a2.csv`, listes du
+25 novembre 2026, colonnes de l'export) ; les sens et les catégories viennent
+du jeu de données ouvert du LOD (data.public.lu, CC0), déjà en cache pour
+`generate_translations.py`. Le jeu ouvert n'est publié que de loin en loin :
+un article de la liste qu'il n'a pas encore prend ses sens dans [MANUELS].
+Pour mettre une liste à jour : réexporter la recherche avancée du LOD
+(catégorie « GWS A1 » ou « GWS A2 »), réécrire le CSV, relancer.
+
+La liste A2 complète la liste A1 au lieu de la répéter (une centaine de mots
+en commun).
 Chaque niveau est une série à lui, rangée en pages comme les essentiels :
 
 - d'abord des **thèmes**, tirés des catégories du LOD (famille, métiers,
@@ -41,8 +50,15 @@ main après une mise à jour du LOD, puis `./gradlew testDebugUnitTest --rerun`
 (`NiveauxAssetTest`).
 
     python Dictionnaires/generate_niveaux.py --niveau A1
+    python Dictionnaires/generate_niveaux.py --niveau A2
+
+Un autre classement, à la main, est proposé dans `niveaux/themes_proposes.py`
+(une quarantaine de thèmes communs aux deux niveaux) : `--classement propose`
+l'applique, et `--apercu` écrit seulement `niveaux/classement_a1.md` (ou a2)
+pour le relire, sans toucher à l'actif.
 """
 import argparse
+import csv
 import datetime
 import json
 import os
@@ -114,13 +130,53 @@ EXCLUS = {'Chrëschtin', 'Do'}
 # l'adverbe « du » (alors), mais c'est le pronom que le manuel enseigne.
 TABLE_GARDEE = {'du'}
 
-# Les sens écrits ici, là où la table mêle un homographe ou un nom propre
-# (fr, de, en, pt). « Enkel » est en plus isolé : sa carte ne prend ni la
-# famille ni les phrases de la cheville.
+# Les sens écrits ici (fr, de, en, pt), là où la table mêle un homographe ou
+# un nom propre, où l'article du LOD n'a pas de traduction dans les quatre
+# langues, ou n'est pas encore dans le jeu de données ouvert. Écrits par
+# Claude d'après l'article du LOD, à faire relire.
 MANUELS = {
     'Enkel': ('petit-fils', 'Enkel', 'grandson', 'neto'),               # LOD ENKEL1
     'Fra': ('femme, épouse', 'Frau, Ehefrau', 'woman, wife', 'mulher, esposa'),  # LOD FRA1
+    # A1 : articles sans traduction dans une des langues.
+    'Aarbechter': ('ouvrier', 'Arbeiter', 'worker', 'operário'),
+    'Aarbechterin': ('ouvrière', 'Arbeiterin', '(female) worker', 'operária'),
+    'Botzmann': ('agent d\'entretien, homme de ménage', 'Putzmann, Reinigungskraft', 'cleaner',
+                 'empregado de limpeza'),
+    'Direktesch': ('directrice', 'Direktorin', '(female) director, headmistress', 'diretora'),
+    'Disko': ('discothèque', 'Disko, Diskothek', 'disco, nightclub', 'discoteca'),
+    'Dëppchen': ('petit pot, gobelet', 'Becher', 'pot, tub', 'pote, copo'),
+    'Enkelkand': ('petit-enfant', 'Enkelkind', 'grandchild', 'neto, neta'),
+    'Estheticien': ('esthéticien', 'Kosmetiker', 'beautician', 'esteticista'),
+    'Groussherzogin': ('grande-duchesse', 'Großherzogin', 'Grand Duchess', 'grã-duquesa'),
+    'Receptionnistin': ('réceptionniste', 'Rezeptionistin, Empfangsdame', 'receptionist', 'rececionista'),
+    'Tëlee': ('télé, télévision', 'Fernsehen, Fernseher', 'TV, television', 'televisão'),
+    'Uni': ('fac, université', 'Uni, Universität', 'university', 'universidade'),
+    'ofschmaachen': ('assaisonner (en goûtant)', 'abschmecken', 'to season to taste', 'temperar a gosto'),
+    'dono': ('après, ensuite', 'danach', 'afterwards, then', 'depois, a seguir'),
+    'duerno': ('après, ensuite', 'danach', 'afterwards, then', 'depois, a seguir'),
+    # A2 : les mêmes raisons.
+    'Disco': ('discothèque', 'Disko, Diskothek', 'disco, nightclub', 'discoteca'),
+    'Dugend': ('qualité, vertu', 'Tugend', 'virtue', 'virtude'),
+    'emol': ('un jour, une fois', 'einmal, mal', 'once, some day', 'um dia, uma vez'),
+    'Info': ('info, information', 'Info, Information', 'info, information', 'informação'),
+    'opspären': ('ouvrir (à clé), déverrouiller', 'aufschließen', 'to unlock', 'destrancar, abrir'),
+    'Rand': ('bord', 'Rand', 'edge, rim', 'borda, margem'),            # LOD RAND3, pas Rand (bovin)
+    'WG': ('colocation', 'WG, Wohngemeinschaft', 'shared flat', 'casa partilhada'),
+    'domat': ('avec ça', 'damit', 'with it, with that', 'com isso'),
+    'dovun': ('de cela, en', 'davon', 'of it, from it', 'disso'),
+    'drop': ('dessus, là-dessus', 'darauf', 'on it, on that', 'em cima disso'),
+    'drun': ('à cela, y', 'daran', 'on it, about it', 'nisso'),
+    'heimat': ('avec ceci', 'hiermit', 'with this, herewith', 'com isto'),
+    # A2 : participes devenus adjectifs, plus récents que le LOD ouvert ; la
+    # table donne le sens du verbe (« besat » : occuper).
+    'besat': ('occupé', 'besetzt', 'occupied, taken', 'ocupado'),
+    'gepacst': ('pacsé', 'eingetragen verpartnert', 'in a civil partnership', 'em união de facto'),
+    'miwweléiert': ('meublé', 'möbliert', 'furnished', 'mobilado'),
 }
+
+# Les mots de MANUELS dont la carte ne prend ni la famille ni les phrases de
+# l'homographe : la cheville pour « Enkel », le bovin pour « Rand ».
+ISOLES_MANUELS = {'Enkel', 'Rand'}
 
 # Les noms propres qui restent : une fête que tout le pays célèbre.
 NOMS_PROPRES_GARDES = {'Nationalfeierdag'}
@@ -150,15 +206,35 @@ def _sens(el, avec_locutions):
     return sens
 
 
+# Les listes du LOD, exportées de sa recherche avancée (« Schwätzt Dir
+# Lëtzebuergesch? – Niveau A1 (Wuertschatz) », liste du 25 novembre 2026) :
+# elles font foi, car le jeu de données ouvert (data.public.lu) n'est publié
+# que de loin en loin et ignore les articles ajoutés depuis.
+LISTES = os.path.join(ICI, 'niveaux')
+
+# La nature d'un article que le jeu de données ouvert n'a pas encore, d'après
+# la colonne « Wuertaart » de la liste.
+WUERTAART = {'Adjektiv': 'ADJ', 'onverännerbaart Adjektiv': 'ADJ', 'Verb': 'VRB', 'Adverb': 'ADV',
+             'Substantiv': 'SUBST', 'Prepositioun': 'PREP', 'Konjunktioun': 'CONJ', 'Interjektioun': 'INTERJ'}
+
+
+def liste(niveau):
+    """Les articles de la liste du LOD : {id: (lemme, nature)}, dans l'ordre."""
+    with open(os.path.join(LISTES, f'gws_{niveau.lower()}.csv'), encoding='utf-8') as f:
+        return {r['LOD-Artikel']: (r['Grondformen'], r['Wuertaart']) for r in csv.DictReader(f)}
+
+
 def articles(niveau):
-    """Les articles du LOD marqués pour le niveau, dans l'ordre du fichier.
+    """Les articles de la liste du niveau, dans l'ordre du fichier du LOD.
 
     Un article sans traduction renvoie souvent à sa variante (« genau » →
     « genee ») : il en prend les sens. Une contraction (« am » = an + dem)
-    n'en a pas, et reste sans sens.
+    n'en a pas, et reste sans sens. Un article plus récent que le jeu de
+    données ouvert n'a que son lemme et sa nature : ses sens sont dans
+    MANUELS.
     """
-    marque = f'GWS {niveau}'
-    tous, retenus = {}, []
+    marque, ids = f'GWS {niveau}', liste(niveau)
+    tous, retenus, vus = {}, [], set()
     for _, el in ET.iterparse(LOD):
         if el.tag != 'entry':
             continue
@@ -166,7 +242,8 @@ def articles(niveau):
         variante = next((l.get('idRef') for l in el.iter('internalLink') if l.get('relation') == 'Variant'), None)
         tous[el.get('id')] = sens
         categories = [c.text for c in el.iter('category')]
-        if marque in categories:
+        if el.get('id') in ids:
+            vus.add(el.get('id'))
             pos_el = el.find('.//partOfSpeech')
             pos = pos_el.text if pos_el is not None else None
             retenus.append({
@@ -174,7 +251,14 @@ def articles(niveau):
                 'genre': pos_el.get('gen') if pos_el is not None and pos == 'SUBST' else None,
                 'categories': set(categories), 'sens': sens, 'variante': variante,
             })
+        elif marque in categories:
+            print(f'  {el.get("id")} est marqué {marque} dans le LOD ouvert, mais pas dans la liste : laissé dehors')
         el.clear()
+    for i, (lemme, wuertaart) in ids.items():
+        if i not in vus:
+            print(f'  {i} ({lemme}) : plus récent que le LOD ouvert, sens écrits à la main')
+            retenus.append({'id': i, 'lemme': lemme, 'pos': WUERTAART.get(wuertaart), 'genre': None,
+                            'categories': set(), 'sens': {}, 'variante': None})
     for a in retenus:
         if len(a['sens']) < len(LANGUES) and a['variante'] in tous:
             a['sens'] = {**tous[a['variante']], **a['sens']}
@@ -192,10 +276,47 @@ def couper(ident, titres, mots):
              'mots': mots[k * taille:(k + 1) * taille]} for k in range(n)]
 
 
+# Le plus petit thème qui fait une page dans un niveau.
+THEME_MIN = 3
+
+
+def themes_proposes():
+    """Le classement de niveaux/themes_proposes.py : [(id, titres, {mots})] et les replis."""
+    sys.path.insert(0, LISTES)
+    from themes_proposes import THEMES as PROPOSES, REPLI
+    return [(i, titres, {m.replace('_', ' ') for m in mots.split()}) for i, titres, mots in PROPOSES], REPLI
+
+
+def apercu(niveau, pages, gloses, traductions):
+    """Les pages d'un niveau, en Markdown, avec le sens français de chaque mot."""
+    def sens(m):
+        t = traductions['fr']
+        g = gloses['fr'].get(m) or t.get(m) or t.get(m.lower()) or ''
+        return g.split(',')[0].strip()
+    total = sum(len(p['mots']) for p in pages)
+    lignes = [f'# Niveau {niveau} : classement proposé', '',
+              f'{len(pages)} pages, {total} mots. Écrit par `generate_niveaux.py --niveau {niveau} '
+              '--classement propose --apercu` ; les thèmes sont dans `themes_proposes.py`.', '']
+    for p in pages:
+        lignes += [f"## {p['titres']['fr']} ({len(p['mots'])})", '',
+                   ' · '.join(f'**{m}** {sens(m)}' for m in p['mots']), '']
+    chemin = os.path.join(LISTES, f'classement_{niveau.lower()}.md')
+    with open(chemin, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(lignes))
+    print(f'{chemin} : {len(pages)} pages, {total} mots')
+    for p in pages:
+        print(f"  {p['titres']['fr']:<32} {len(p['mots']):>3}")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--niveau', choices=('A1', 'A2'), required=True)
-    niveau = parser.parse_args().niveau
+    parser.add_argument('--classement', choices=('lod', 'propose'), default='lod',
+                        help="lod : thèmes tirés des catégories du LOD ; propose : niveaux/themes_proposes.py")
+    parser.add_argument('--apercu', action='store_true',
+                        help="écrit niveaux/classement_<niveau>.md pour relecture, sans toucher à l'actif")
+    args = parser.parse_args()
+    niveau = args.niveau
     sortie_nom = f'luxemburgish_niveau_{niveau.lower()}.json'
 
     dico = {m for m, _ in charger('luxemburgish_dict.json')}
@@ -231,13 +352,17 @@ def main():
     def forme_de_carte(article):
         """Le lemme, ou la carte connue qui ne s'en distingue que par la casse
         et dit le même mot : « moien » est « Moien », mais « sauer » (aigre)
-        n'est pas « Sauer » (la Sûre)."""
+        n'est pas « Sauer » (la Sûre). Un nom ne devient jamais une carte en
+        minuscules : « Grouss » (salutation) n'est pas « grouss » (grand),
+        « Hunn » (poule) n'est pas « hunn » (avoir)."""
         lemme = article['lemme']
         if lemme in dico or lemme in essentiels:
             return lemme
         autres = connues.get(lemme.lower(), set())
         if len(autres) == 1:
             autre = next(iter(autres))
+            if lemme[0].isupper() and autre[0].islower():
+                return lemme
             if autre in essentiels or meme_mot(autre, article):
                 return autre
         return lemme
@@ -265,7 +390,7 @@ def main():
         if forme in MANUELS:
             for i, l in enumerate(LANGUES):
                 gloses[l][forme] = MANUELS[forme][i]
-            if forme == 'Enkel':
+            if forme in ISOLES_MANUELS:
                 isoles.append(forme)
             code = a['pos'] or 'PREP'
             categories[forme] = code + (' ' + a['genre'].upper() if code == 'SUBST' and a['genre'] else '')
@@ -288,11 +413,28 @@ def main():
         retenus.append((forme, a))
 
     pages, places = [], set()
-    for ident, titres, cats in THEMES:
-        mots = [f for f, a in retenus if f not in places and f not in HORS_THEME and a['categories'] & cats]
-        places.update(mots)
-        if mots:
-            pages += couper(ident, titres, mots)
+    if args.classement == 'propose':
+        proposes, repli = themes_proposes()
+        prises = {}
+        for ident, _, mots in proposes:
+            prises[ident] = [f for f, a in retenus if f in mots and all(f not in v for v in prises.values())]
+        # Un thème de deux mots à ce niveau ne fait pas une page : ils vont au
+        # thème voisin (le mois de mai, seul en A2, aux jours), sinon à leur
+        # nature.
+        for ident, cible in repli.items():
+            if 0 < len(prises[ident]) < THEME_MIN:
+                prises[cible] += prises[ident]
+                prises[ident] = []
+        for ident, titres, _ in proposes:
+            if len(prises[ident]) >= THEME_MIN:
+                places.update(prises[ident])
+                pages += couper(ident, titres, prises[ident])
+    else:
+        for ident, titres, cats in THEMES:
+            mots = [f for f, a in retenus if f not in places and f not in HORS_THEME and a['categories'] & cats]
+            places.update(mots)
+            if mots:
+                pages += couper(ident, titres, mots)
     for ident, titres, natures in NATURES:
         mots = [f for f, a in retenus if f not in places and (natures is None or a['pos'] in natures)]
         places.update(mots)
@@ -311,6 +453,9 @@ def main():
         'categories': categories,
         'isoles': sorted(isoles),
     }
+    if args.apercu:
+        apercu(niveau, pages, gloses, traductions)
+        return
     with open(os.path.join(ASSETS, sortie_nom), 'w', encoding='utf-8') as f:
         json.dump(sortie, f, ensure_ascii=False, indent=1)
 

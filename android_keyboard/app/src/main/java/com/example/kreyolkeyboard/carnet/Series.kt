@@ -15,7 +15,7 @@ import org.json.JSONObject
  * terminer, et une collection sans emplacement vide n'a pas de « encore
  * trois ». Voir `GAMIFICATION-CARNET.md` à la racine du dépôt.
  *
- * Cinq séries, toutes connues d'avance et **prouvées complétables** :
+ * Sept séries, toutes connues d'avance et **prouvées complétables** :
  *
  * - [NOMBRES] : les cent un nombres de 0 à 100, ceux que Zuelwuert sait
  *   écrire (de 35.0.0 à 36.x, seulement les dix-huit produits composés des
@@ -34,8 +34,9 @@ import org.json.JSONObject
  * - [ESSENTIELS] : le vocabulaire de base, une page par thème (voir
  *   [Essentiels]). Les jeux font passer devant les mots qui y manquent, et
  *   `EssentielsAssetTest` vérifie que chacun a un jeu qui le donne ;
- * - [NIVEAU_A1] : le vocabulaire du manuel A1 de l'INLL, tel que le LOD le
- *   marque, en pages comme les essentiels (`NiveauxAssetTest`).
+ * - [NIVEAU_A1] et [NIVEAU_A2] : le vocabulaire des manuels A1 et A2 de
+ *   l'INLL, tel que le LOD le marque, en pages comme les essentiels
+ *   (`NiveauxAssetTest`).
  *
  * Deux règles, qui valent pour toutes :
  *
@@ -70,16 +71,23 @@ enum class Serie(val id: String, @StringRes val titre: Int) {
 
     /** Le vocabulaire du niveau A1, en pages : voir [Essentiels.niveau]. */
     NIVEAU_A1("niveau_a1", R.string.serie_niveau_a1),
+
+    /** Le vocabulaire du niveau A2, juste après le A1 : voir [Essentiels.niveau]. */
+    NIVEAU_A2("niveau_a2", R.string.serie_niveau_a2),
     NOMBRES("nombres_101", R.string.serie_nombres),
     ENLUMINURES("enluminures", R.string.serie_enluminures),
     JEUX("jeux", R.string.serie_jeux);
 
     /** Une série en plusieurs pages, une par thème, lues dans [Essentiels.pages]. */
-    val parPages: Boolean get() = this == ESSENTIELS || this == NIVEAU_A1
+    val parPages: Boolean get() = this == ESSENTIELS || this == NIVEAU_A1 || this == NIVEAU_A2
 
     /** Le titre de la fête d'une page : « Les essentiels · %s ». */
     @get:StringRes
-    val titrePage: Int get() = if (this == NIVEAU_A1) R.string.serie_niveau_a1_theme else R.string.serie_essentiels_theme
+    val titrePage: Int get() = when (this) {
+        NIVEAU_A1 -> R.string.serie_niveau_a1_theme
+        NIVEAU_A2 -> R.string.serie_niveau_a2_theme
+        else -> R.string.serie_essentiels_theme
+    }
 }
 
 /**
@@ -241,7 +249,7 @@ object Series {
             }
             // La forme exacte : la carte « mee » (mais) ne remplit pas la case
             // « Mee » (mai).
-            Serie.ESSENTIELS, Serie.NIVEAU_A1 -> essentiels.map { m ->
+            Serie.ESSENTIELS, Serie.NIVEAU_A1, Serie.NIVEAU_A2 -> essentiels.map { m ->
                 Emplacement(m, ordonnees.filter { carte(it).forme == m })
             }
         }
@@ -285,7 +293,7 @@ object Series {
                 Serie.NOMBRES -> neuves.any { it.nombre in NOMBRES }
                 Serie.JEUX, Serie.PAYSAGES -> true
                 Serie.ENLUMINURES -> dessins.isNotEmpty() && neuves.any { meuble(it) in dessins }
-                Serie.ESSENTIELS, Serie.NIVEAU_A1 -> false     // page par page, ci-dessous
+                Serie.ESSENTIELS, Serie.NIVEAU_A1, Serie.NIVEAU_A2 -> false     // page par page, ci-dessous
             }
         }
         // Les séries en pages se fêtent thème par thème : seulement ceux où

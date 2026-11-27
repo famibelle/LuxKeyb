@@ -165,6 +165,8 @@
     <string name="serie_essentiels_theme">Les essentiels · %1$s</string>
     <string name="serie_niveau_a1">Niveau A1</string>
     <string name="serie_niveau_a1_theme">Niveau A1 · %1$s</string>
+    <string name="serie_niveau_a2">Niveau A2</string>
+    <string name="serie_niveau_a2_theme">Niveau A2 · %1$s</string>
     <string name="serie_jeux">Les sept jeux</string>
     <string name="serie_paysages">Les paysages</string>
     <string name="series_resume">%1$d emplacements remplis sur %2$d. Une série est complète quand chaque emplacement porte sa carte.</string>

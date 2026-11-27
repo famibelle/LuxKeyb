@@ -99,6 +99,7 @@ object Essentiels {
     fun pages(context: Context, serie: Serie): Donnees = when (serie) {
         Serie.ESSENTIELS -> donnees(context)
         Serie.NIVEAU_A1 -> niveau(context, "A1")
+        Serie.NIVEAU_A2 -> niveau(context, "A2")
         else -> VIDE
     }
 
@@ -106,7 +107,8 @@ object Essentiels {
      * Toutes les listes, la plus prioritaire d'abord : ses sens et ses
      * catégories passent avant ceux des suivantes.
      */
-    fun listes(context: Context): List<Donnees> = listOf(donnees(context), niveau(context, "A1"))
+    fun listes(context: Context): List<Donnees> =
+        listOf(donnees(context), niveau(context, "A1"), niveau(context, "A2"))
 
     /** Sans `Context`, pour le test d'actif. */
     fun lire(json: String): Donnees {
@@ -178,7 +180,8 @@ object Essentiels {
 
     /**
      * Les mots que le carnet n'a pas encore : les essentiels d'abord, puis
-     * ceux du niveau A1, chaque liste dans un ordre tiré au hasard.
+     * ceux du niveau A1, puis ceux du A2, chaque liste dans un ordre tiré au
+     * hasard.
      */
     fun manquants(context: Context): List<String> =
         listes(context).flatMap { d -> d.mots.filterNot { Carnet.contient(context, it) }.shuffled() }.distinct()
