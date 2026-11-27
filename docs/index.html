@@ -171,6 +171,11 @@ p{margin:0}
 .cartes .duo{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
 .cartes figure{margin:0}
 .cartes figure img{width:100%;height:auto;display:block}
+/* Les cartes à jouer : texte à gauche, photo de la maquette à droite. */
+.jeu-papier figure{margin:0}
+.jeu-papier figure img{width:100%;height:auto;display:block;border-radius:14px}
+.jeu-papier figcaption{font-size:15px;color:var(--encre-douce);margin-top:10px}
+.jeu-papier .liens{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:22px}
 .surtitre-clair{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--rouge);font-weight:700;margin-bottom:12px}
 .jeux{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
 .jeux span{font-family:var(--display);font-weight:600;font-size:15px;padding:6px 12px;border-radius:10px;background:var(--papier);border:1px solid var(--filet)}
@@ -426,6 +431,27 @@ p{margin:0}
         </div>
       </div>
       <p style="margin-top:32px"><a href="faq.html">Toutes les réponses</a></p>
+    </div>
+  </section>
+
+  <section class="bande jeu-papier" aria-labelledby="t-jeu-papier">
+    <div class="enveloppe duo">
+      <div>
+        <p class="surtitre-clair">Sur la table</p>
+        <h2 id="t-jeu-papier">Les cartes, bientôt en vrai</h2>
+        <p class="chapo">Le projet prépare un jeu de cartes en luxembourgeois, le
+        Wuertduell, à jouer à deux autour d'une table. Chaque boîte oppose deux
+        familles de mots, et un code dans la boîte ajoutera ses cartes à votre
+        carnet dans l'application. Rien n'est encore fixé : dites-nous si le jeu
+        vous donne envie.</p>
+        <p class="liens"><a href="sondage-cartes.html">Donner mon avis en une minute</a>
+        <a href="regle-du-jeu.html">Lire la règle du jeu</a></p>
+      </div>
+      <figure>
+        <img src="assets/accueil/boite-ouverte.webp" width="1400" height="898" loading="lazy"
+             alt="Maquette de la boîte de départ du Wuertduell, ouverte, bleu nuit et or. À côté, posés sur la table : le dos d'une carte, la carte de règle et trois cartes, Hond (chien), Kaz (chat) et Kéis (fromage)">
+        <figcaption>Une maquette de la boîte de départ : les cartes, leur dos et la carte de règle.</figcaption>
+      </figure>
     </div>
   </section>
 
