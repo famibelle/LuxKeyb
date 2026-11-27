@@ -176,6 +176,21 @@ p{margin:0}
 /* Le bouton vers la vitrine des boîtes, rouge comme celui de precommande.html. */
 .jeu-papier .reserver{display:inline-block;text-decoration:none;font-weight:700;color:#fff;background:var(--rouge);border-radius:10px;padding:12px 22px;transition:transform .15s ease,box-shadow .15s ease}
 .jeu-papier .reserver:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(237,41,57,.35)}
+/* Ce que le jeu apporte, avant le prix. */
+.atouts{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:14px}
+.atouts li{position:relative;padding-left:36px;color:var(--encre-douce)}
+.atouts li::before{content:"✓";position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:var(--rouge);color:#fff;font-weight:700;font-size:14px;line-height:1;display:grid;place-items:center}
+.atouts strong{display:block;color:var(--encre)}
+.offre{margin-top:22px;font-size:19px;color:var(--encre)}
+.offre strong{color:var(--titre)}
+/* ---------- Annonce de la précommande, tout en haut ---------- */
+.annonce{display:block;background:#0E1621;color:#fff;text-decoration:none;font-size:15px;line-height:1.45;text-align:center;
+  padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));padding-top:max(10px,env(safe-area-inset-top,0px))}
+.annonce + .ouverture{margin-top:0;padding-top:0}
+.annonce-nouveau{display:inline-block;background:var(--rouge);color:#fff;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:2px 9px;margin-right:8px;vertical-align:1px}
+.annonce-lien{font-weight:700;color:#7FD0F0;white-space:nowrap;margin-left:6px}
+.annonce:hover .annonce-lien{text-decoration:underline}
+.annonce .langue-fr{border-color:rgba(255,255,255,.5);color:#C8D7EA}
 /* Sur les accueils traduits, la marque « FR » du bouton passe en blanc. */
 .jeu-papier .reserver .langue-fr{border-color:rgba(255,255,255,.6);color:#fff}
 .surtitre-clair{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--rouge);font-weight:700;margin-bottom:12px}
@@ -241,6 +256,8 @@ p{margin:0}
 </style>
 </head>
 <body>
+
+<a class="annonce" href="precommande.html"><span class="annonce-nouveau">Novo</span>Pré-encomende o Wuertduell, o jogo de cartas para aprender luxemburguês a jogar.<span class="annonce-lien">Reservar sem pagar&nbsp;→ <small class="langue-fr" title="em francês">FR</small></span></a>
 
 <header class="ouverture">
   <div class="enveloppe">
@@ -409,11 +426,16 @@ p{margin:0}
   <section class="bande jeu-papier" aria-labelledby="t-jeu-papier">
     <div class="enveloppe duo">
       <div>
-        <p class="surtitre-clair">Na mesa</p>
-        <h2 id="t-jeu-papier">As cartas, em breve de verdade</h2>
-        <p class="chapo">O Wuertduell é um jogo de cartas em luxemburguês, para jogar a dois à volta de uma mesa. Quatro caixas de 54 cartas, a 9,90 € a caixa: a caixa inicial, a extensão, Nível A1 e Nível A2. Um código em cada caixa junta as suas cartas ao seu caderno na aplicação.</p>
-        <p class="chapo" style="margin-top:14px">Reserve as suas caixas sem pagar nada: a impressão começa assim que 350 caixas estiverem reservadas.</p>
-        <p class="liens"><a class="reserver" href="precommande.html" hreflang="fr">Ver as caixas e reservar <small class="langue-fr" title="em francês">FR</small></a>
+        <p class="surtitre-clair">Pré-encomenda</p>
+        <h2 id="t-jeu-papier">Pré-encomende o seu jogo de cartas</h2>
+        <p class="chapo">O Wuertduell é o luxemburguês que se aprende a jogar, a dois à volta de uma mesa.</p>
+        <ul class="atouts">
+          <li><strong>Palavras que ficam.</strong> Lê-as em voz alta, joga-as e memoriza-as.</li>
+          <li><strong>Uma coleção que continua no telemóvel.</strong> O código da caixa junta as suas cartas ao seu caderno na aplicação.</li>
+          <li><strong>Nada a pagar hoje.</strong> Reserve agora e pague só quando a impressão estiver a ser preparada.</li>
+        </ul>
+        <p class="offre">Quatro caixas de 54 cartas, <strong>9,90 € a caixa</strong>.</p>
+        <p class="liens"><a class="reserver" href="precommande.html" hreflang="fr">Pré-encomendar o meu jogo <small class="langue-fr" title="em francês">FR</small></a>
         <a href="regle-du-jeu.html" hreflang="fr">Ler as regras do jogo <small class="langue-fr" title="em francês">FR</small></a></p>
       </div>
       <figure>
