@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les boîtes du Wuertduell · Précommande</title>
+<meta name="description" content="Le Wuertduell, le jeu de cartes en luxembourgeois : quatre boîtes de 54 cartes à 9,90 € la boîte, à réserver sans rien payer.">
+<!-- Pas encore annoncée : la page reste hors des moteurs de recherche tant
+     que la précommande n'est pas ouverte (même règle que commander.md). -->
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="assets/fredoka-embed.css">
+<script>(function(){try{var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script defer src="assets/theme.js"></script>
+<!--
+  Vitrine des boîtes en précommande, en grille de fiches produit (bandeau
+  « Précommande » et date de sortie, photo de la boîte, pastille d'état, nom,
+  prix, bouton). Le bouton mène au formulaire de réservation de
+  commander.html, qui reste la page qui prend les réservations.
+  Prix : skill business-modele § 2 (9,90 €, validé le 2026-11-01).
+-->
+<style>
+:root{
+  color-scheme:light;
+  --nuit:#003876; --rouge:#ED2939; --ciel:#00A1DE; --vert:#1E8E4E;
+  --encre:#1C2624; --encre-douce:#4A5654; --papier:#F5F5F5; --carte:#FFFFFF;
+  --filet:#DDE3E6; --lien:#003876; --titre:#003876;
+  --sur-nuit:#FFFFFF; --sur-nuit-doux:#C8D7EA;
+  --photo:#EFE7D6;
+  --display:"Fredoka","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  --texte:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --nuit:#0A2A57; --encre:#E8EEF2; --encre-douce:#AEBBC4; --papier:#111A22; --carte:#18232D;
+  --filet:#2A3742; --lien:#7FD0F0; --titre:#E8EEF2; --photo:#2A2F33; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --nuit:#0A2A57; --encre:#E8EEF2; --encre-douce:#AEBBC4; --papier:#111A22; --carte:#18232D;
+  --filet:#2A3742; --lien:#7FD0F0; --titre:#E8EEF2; --photo:#2A2F33; color-scheme:dark;}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--papier);color:var(--encre);font-family:var(--texte);font-size:17px;line-height:1.55}
+img{max-width:100%}
+a{color:var(--lien)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--ciel);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.1;margin:0}
+p{margin:0}
+.enveloppe{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* ---------- En-tête ---------- */
+.ouverture{background:var(--nuit);color:var(--sur-nuit)}
+.entete{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-block:18px}
+.marque{display:flex;align-items:center;gap:10px;color:var(--sur-nuit);text-decoration:none;font-family:var(--display);font-weight:600;font-size:19px;margin-right:auto}
+.marque img{width:40px;height:40px;border-radius:12px;background:#fff;padding:3px}
+.theme-toggle{font:inherit;font-size:14px;cursor:pointer;background:transparent;color:var(--sur-nuit-doux);border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:5px 12px}
+.theme-toggle:hover{color:#fff;border-color:#fff}
+.titre{padding-block:28px 48px}
+.surtitre{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--ciel);font-weight:700;margin-bottom:12px}
+.titre h1{font-size:clamp(34px,5.5vw,56px)}
+.titre .chapo{color:var(--sur-nuit-doux);font-size:19px;max-width:60ch;margin-top:16px}
+
+/* ---------- Grille des boîtes ---------- */
+.vitrine{padding-block:48px 24px}
+.grille{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.fiche{display:flex;flex-direction:column;background:var(--carte);border:1px solid var(--filet);border-radius:14px;overflow:hidden}
+/* Le bandeau du haut : l'état et la date de sortie, la langue des sens. */
+.bandeau{display:flex;align-items:center;gap:12px;background:#0E1621;color:#fff;padding:10px 14px}
+.bandeau p{line-height:1.25;margin-right:auto}
+.bandeau strong{display:block;font-size:15px;letter-spacing:.04em;text-transform:uppercase}
+.bandeau span{font-size:13px;color:#C9D3DC}
+.langue{flex:none;font-size:13px;font-weight:700;letter-spacing:.06em;border:1.5px solid #fff;border-radius:99px;padding:2px 9px}
+.photo{position:relative;background:var(--photo);aspect-ratio:340/400;overflow:hidden}
+.photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 40%}
+.etat{position:absolute;left:12px;bottom:12px;font-size:14px;font-weight:700;color:#fff;background:var(--vert);border-radius:99px;padding:5px 14px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.corps{display:flex;flex-direction:column;flex:1;padding:16px 16px 18px}
+.corps h2{font-size:20px;font-weight:600;color:var(--encre)}
+.couleur{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px;vertical-align:1px}
+.detail{margin-top:6px;font-size:15px;color:var(--encre-douce)}
+.prix{margin-top:auto;padding-top:16px;text-align:right;font-family:var(--display);font-size:26px;font-weight:700;color:var(--titre)}
+.bouton{display:block;margin-top:14px;text-align:center;text-decoration:none;font-weight:700;color:#fff;background:var(--rouge);border-radius:10px;padding:12px 16px;transition:transform .15s ease,box-shadow .15s ease}
+.bouton:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(237,41,57,.35)}
+
+/* ---------- Comment ça marche ---------- */
+.explications{padding-block:24px 64px}
+.encart{background:var(--carte);border:1px solid var(--filet);border-left:4px solid var(--ciel);border-radius:0 12px 12px 0;padding:18px 20px;color:var(--encre-douce);max-width:80ch}
+.encart strong{color:var(--encre)}
+.encart p+p{margin-top:10px}
+
+.pied{padding-block:28px 48px;border-top:1px solid var(--filet);font-size:15px;color:var(--encre-douce)}
+.pied a{color:var(--encre-douce)}
+
+@media (max-width:1000px){.grille{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Sur téléphone, deux fiches par ligne, comme en boutique : tout se voit
+   d'un coup d'œil, sans faire défiler quatre grandes photos. */
+@media (max-width:520px){
+  .grille{gap:12px}
+  .bandeau{padding:8px 10px;gap:6px}
+  .bandeau strong{font-size:12px}
+  .bandeau span{font-size:11.5px}
+  .langue{font-size:11px;padding:1px 6px}
+  .etat{left:8px;bottom:8px;font-size:12px;padding:4px 10px}
+  .corps{padding:12px 12px 14px}
+  .corps h2{font-size:17px}
+  .couleur{width:10px;height:10px;margin-right:6px}
+  .detail{font-size:13.5px;line-height:1.45}
+  .prix{font-size:22px;padding-top:10px}
+  .bouton{padding:10px 8px;margin-top:10px}
+  .marque{flex-basis:100%}
+  .theme-toggle{margin-left:auto}
+}
+@media (prefers-reduced-motion:reduce){.bouton,.bouton:hover{transition:none;transform:none}}
+</style>
+</head>
+<body>
+
+<header class="ouverture">
+  <div class="enveloppe">
+    <div class="entete">
+      <a class="marque" href="./">
+        <img src="assets/logo/luxkeyb-logo-192.png" alt="" width="40" height="40">
+        de Lëtzebuerger Clavier
+      </a>
+      <button type="button" class="theme-toggle" aria-label="Passer en mode sombre">🌙 Fond sombre</button>
+    </div>
+    <div class="titre">
+      <p class="surtitre">Précommande</p>
+      <h1>Les boîtes du Wuertduell</h1>
+      <p class="chapo">Le jeu de cartes en luxembourgeois, à jouer à deux.
+      Réservez vos boîtes sans rien payer&nbsp;: l'impression part dès que
+      350&nbsp;boîtes sont réservées.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="vitrine" aria-label="Les quatre boîtes">
+    <div class="enveloppe">
+      <ul class="grille">
+        <li class="fiche">
+          <div class="bandeau"><p><strong>Précommande</strong><span>Sortie&nbsp;: date à venir</span></p><span class="langue" title="Sens des mots en français">FR</span></div>
+          <div class="photo">
+            <img src="assets/boutique/etui-depart.webp" width="340" height="480" alt="La boîte de départ du Wuertduell, bleu nuit, avec son bandeau rouge et les cartes Hond, Kaz et Brout">
+            <span class="etat">Réservation ouverte</span>
+          </div>
+          <div class="corps">
+            <h2><span class="couleur" style="background:#E3262F" aria-hidden="true"></span>La boîte de départ</h2>
+            <p class="detail">Déieren contre Iessen, les animaux contre ce qu'on mange. 54&nbsp;cartes.</p>
+            <p class="prix">9,90&nbsp;€</p>
+            <a class="bouton" href="commander.html#reservation">Réserver</a>
+          </div>
+        </li>
+        <li class="fiche">
+          <div class="bandeau"><p><strong>Précommande</strong><span>Sortie&nbsp;: date à venir</span></p><span class="langue" title="Sens des mots en français">FR</span></div>
+          <div class="photo">
+            <img src="assets/boutique/etui-extension.webp" width="340" height="480" alt="L'extension du Wuertduell, bleu nuit, avec son bandeau vert et les cartes Buch, Mound et Sonn">
+            <span class="etat">Réservation ouverte</span>
+          </div>
+          <div class="corps">
+            <h2><span class="couleur" style="background:#2E9E4F" aria-hidden="true"></span>L'extension</h2>
+            <p class="detail">Schoul contre Natur, l'école contre la nature. 54&nbsp;cartes.</p>
+            <p class="prix">9,90&nbsp;€</p>
+            <a class="bouton" href="commander.html#reservation">Réserver</a>
+          </div>
+        </li>
+        <li class="fiche">
+          <div class="bandeau"><p><strong>Précommande</strong><span>Sortie&nbsp;: date à venir</span></p><span class="langue" title="Sens des mots en français">FR</span></div>
+          <div class="photo">
+            <img src="assets/boutique/etui-niveau-a1.webp" width="340" height="480" alt="La boîte Niveau A1 du Wuertduell, bleu nuit, avec son bandeau bleu et les cartes Kaffi, Apel et Bus">
+            <span class="etat">Réservation ouverte</span>
+          </div>
+          <div class="corps">
+            <h2><span class="couleur" style="background:#1D8FD8" aria-hidden="true"></span>Niveau A1</h2>
+            <p class="detail">Doheem contre Dobaussen, les premiers mots, à la maison et dehors. 54&nbsp;cartes.</p>
+            <p class="prix">9,90&nbsp;€</p>
+            <a class="bouton" href="commander.html#reservation">Réserver</a>
+          </div>
+        </li>
+        <li class="fiche">
+          <div class="bandeau"><p><strong>Précommande</strong><span>Sortie&nbsp;: date à venir</span></p><span class="langue" title="Sens des mots en français">FR</span></div>
+          <div class="photo">
+            <img src="assets/boutique/etui-niveau-a2.webp" width="340" height="480" alt="La boîte Niveau A2 du Wuertduell, bleu nuit, avec son bandeau violet et trois cartes, dont Schnéi (neige)">
+            <span class="etat">Réservation ouverte</span>
+          </div>
+          <div class="corps">
+            <h2><span class="couleur" style="background:#8A4FD6" aria-hidden="true"></span>Niveau A2</h2>
+            <p class="detail">Doheem contre Dobaussen, la suite, pour aller plus loin. 54&nbsp;cartes.</p>
+            <p class="prix">9,90&nbsp;€</p>
+            <a class="bouton" href="commander.html#reservation">Réserver</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="explications" aria-label="Comment marche la précommande">
+    <div class="enveloppe">
+      <div class="encart">
+        <p><strong>Vous ne payez rien aujourd'hui.</strong> Dès que 350&nbsp;boîtes
+        sont réservées, nous vous écrivons pour confirmer et payer votre
+        réservation. Le port s'ajoute au prix de la boîte.</p>
+        <p>Chaque boîte se joue seule, dès qu'on l'ouvre, ou avec les autres. Un
+        code dans la boîte ajoute ses cartes à votre carnet dans l'application.
+        <a href="commander.html">Tout savoir sur la précommande</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="pied">
+  <div class="enveloppe">
+    <p><a href="./">Accueil</a> · <a href="regle-du-jeu.html">Règle du jeu</a> · <a href="faq.html">Aide</a></p>
+  </div>
+</footer>
+</body>
+</html>
