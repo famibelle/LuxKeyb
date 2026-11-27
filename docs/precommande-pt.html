@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>As caixas do Wuertduell · Pré-encomenda</title>
+<meta name="description" content="O Wuertduell, o jogo de cartas em luxemburguês: quatro caixas de 54 cartas a 9,90 € a caixa, para reservar sem pagar nada.">
+<!-- Pas encore annoncée : la page reste hors des moteurs de recherche tant
+     que la précommande n'est pas ouverte (même règle que commander.md). -->
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="assets/fredoka-embed.css">
+<script>(function(){try{var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script defer src="assets/theme.js"></script>
+<!--
+  GÉNÉRÉ par docs/scripts/generer_precommande.py depuis precommande.html :
+  ne pas modifier à la main. Traduction écrite par Claude, à faire relire.
+-->
+<style>
+:root{
+  color-scheme:light;
+  --nuit:#003876; --rouge:#ED2939; --ciel:#00A1DE; --vert:#1E8E4E;
+  --encre:#1C2624; --encre-douce:#4A5654; --papier:#F5F5F5; --carte:#FFFFFF;
+  --filet:#DDE3E6; --lien:#003876; --titre:#003876;
+  --sur-nuit:#FFFFFF; --sur-nuit-doux:#C8D7EA;
+  --photo:#EFE7D6;
+  --display:"Fredoka","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  --texte:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --nuit:#0A2A57; --encre:#E8EEF2; --encre-douce:#AEBBC4; --papier:#111A22; --carte:#18232D;
+  --filet:#2A3742; --lien:#7FD0F0; --titre:#E8EEF2; --photo:#2A2F33; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --nuit:#0A2A57; --encre:#E8EEF2; --encre-douce:#AEBBC4; --papier:#111A22; --carte:#18232D;
+  --filet:#2A3742; --lien:#7FD0F0; --titre:#E8EEF2; --photo:#2A2F33; color-scheme:dark;}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--papier);color:var(--encre);font-family:var(--texte);font-size:17px;line-height:1.55}
+img{max-width:100%}
+a{color:var(--lien)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--ciel);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.1;margin:0}
+p{margin:0}
+.enveloppe{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* ---------- En-tête ---------- */
+.ouverture{background:var(--nuit);color:var(--sur-nuit)}
+.entete{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-block:18px}
+.marque{display:flex;align-items:center;gap:10px;color:var(--sur-nuit);text-decoration:none;font-family:var(--display);font-weight:600;font-size:19px;margin-right:auto}
+.marque img{width:40px;height:40px;border-radius:12px;background:#fff;padding:3px}
+.langues{display:flex;gap:4px;font-size:14px}
+.langues a,.langues strong{color:var(--sur-nuit-doux);text-decoration:none;padding:6px 8px;border-radius:6px}
+.langues strong{color:var(--sur-nuit);background:rgba(255,255,255,.12)}
+.langues a:hover{color:#fff}
+.theme-toggle{font:inherit;font-size:14px;cursor:pointer;background:transparent;color:var(--sur-nuit-doux);border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:5px 12px}
+.theme-toggle:hover{color:#fff;border-color:#fff}
+.titre{padding-block:28px 48px}
+.surtitre{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--ciel);font-weight:700;margin-bottom:12px}
+.titre h1{font-size:clamp(34px,5.5vw,56px)}
+.titre .chapo{color:var(--sur-nuit-doux);font-size:19px;max-width:60ch;margin-top:16px}
+
+/* ---------- Grille des boîtes ---------- */
+.vitrine{padding-block:48px 24px}
+.grille{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.fiche{display:flex;flex-direction:column;background:var(--carte);border:1px solid var(--filet);border-radius:14px;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
+/* Au survol, la fiche se soulève légèrement, comme les liens vers Google Play de l'accueil. */
+.fiche:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,30,70,.12)}
+/* Le bandeau du haut : l'état et la date de sortie, la langue des sens. */
+.bandeau{display:flex;align-items:center;gap:12px;background:#0E1621;color:#fff;padding:10px 14px}
+.bandeau p{line-height:1.25;margin-right:auto}
+.bandeau strong{display:block;font-size:15px;letter-spacing:.04em;text-transform:uppercase}
+.bandeau span{font-size:13px;color:#C9D3DC}
+.langue{flex:none;font-size:13px;font-weight:700;letter-spacing:.06em;border:1.5px solid #fff;border-radius:99px;padding:2px 9px}
+.photo{display:block;position:relative;background:var(--photo);aspect-ratio:340/400;overflow:hidden}
+.photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 40%}
+.etat{position:absolute;left:12px;bottom:12px;font-size:14px;font-weight:700;color:#fff;background:var(--vert);border-radius:99px;padding:5px 14px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.corps{display:flex;flex-direction:column;flex:1;padding:16px 16px 18px}
+.corps h2{font-size:20px;font-weight:600;color:var(--encre)}
+.couleur{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px;vertical-align:1px}
+.detail{margin-top:6px;font-size:15px;color:var(--encre-douce)}
+.prix{margin-top:auto;padding-top:16px;text-align:right;font-family:var(--display);font-size:26px;font-weight:700;color:var(--titre)}
+.bouton{display:block;margin-top:14px;text-align:center;text-decoration:none;font-weight:700;color:#fff;background:var(--rouge);border-radius:10px;padding:12px 16px;transition:box-shadow .2s ease}
+.bouton:hover{box-shadow:0 4px 12px rgba(237,41,57,.35)}
+
+/* La collection complète : une fiche sur toute la largeur, photo à gauche. */
+.fiche-large{grid-column:1/-1}
+.fiche-large .contenu{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
+.fiche-large .photo{aspect-ratio:1000/414}
+.fiche-large .photo img{object-position:center}
+.fiche-large .corps{padding:22px 24px 24px;justify-content:center}
+.fiche-large .corps h2{font-size:24px}
+.fiche-large .detail{font-size:16px}
+.economie{position:absolute;right:12px;bottom:12px;font-size:14px;font-weight:700;color:#fff;background:var(--rouge);border-radius:99px;padding:5px 14px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.prix s{font-family:var(--texte);font-size:17px;font-weight:400;color:var(--encre-douce);margin-right:10px}
+
+/* ---------- Le présentoir, pour les commerces ---------- */
+.commerces{padding-block:16px 24px}
+.commerces .boite-commerce{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:32px;align-items:center;background:var(--carte);border:1px solid var(--filet);border-radius:14px;padding:24px}
+.commerces img{display:block;width:100%;height:auto;border-radius:10px;background:var(--photo)}
+.commerces h2{font-size:clamp(24px,3.4vw,30px);color:var(--titre)}
+.commerces p{margin-top:12px;color:var(--encre-douce);max-width:56ch}
+.commerces .bouton{display:inline-block;margin-top:20px;padding:12px 22px}
+
+/* ---------- La réservation qui s'ouvre dans la fiche ---------- */
+.grille{align-items:start}
+.detail{min-height:calc(3 * 1.55em)}
+.fiche.ouverte:hover{transform:none;box-shadow:none}
+.bouton[aria-expanded="true"]{background:transparent;color:var(--encre);box-shadow:inset 0 0 0 2px var(--filet)}
+.quantite input::-webkit-inner-spin-button,.quantite input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.quantite input{-moz-appearance:textfield;appearance:textfield}
+.panneau{margin-top:14px;padding-top:14px;border-top:1px solid var(--filet);font-size:15px}
+.panneau[hidden]{display:none}
+.panneau label,.panneau legend{display:block;font-weight:600;color:var(--encre);margin:12px 0 6px;padding:0}
+.panneau fieldset{border:0;margin:0;padding:0;min-width:0}
+.panneau .choix label{display:flex;gap:8px;align-items:baseline;font-weight:400;color:var(--encre-douce);margin:4px 0}
+.quantite{display:flex;align-items:center;gap:6px}
+.quantite button{flex:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--filet);background:var(--papier);color:var(--encre);font:inherit;font-size:20px;line-height:1;cursor:pointer}
+.quantite input{width:56px;height:38px;text-align:center;font:inherit;font-size:17px;border:1px solid var(--filet);border-radius:10px;background:var(--carte);color:var(--encre)}
+.panneau input[type=email],.panneau select{width:100%;padding:9px 10px;font:inherit;font-size:16px;border:1px solid var(--filet);border-radius:10px;background:var(--carte);color:var(--encre)}
+.panneau .total{margin-top:12px;font-weight:700;color:var(--encre)}
+.panneau .envoyer{display:block;width:100%;margin-top:14px;border:0;cursor:pointer;font:inherit;font-weight:700;color:#fff;background:var(--rouge);border-radius:10px;padding:12px 16px}
+.panneau .envoyer:disabled{opacity:.6;cursor:wait}
+.panneau .message{margin-top:10px;font-weight:600;color:var(--encre)}
+.panneau .note{margin-top:10px;font-size:13px;line-height:1.45;color:var(--encre-douce)}
+.panneau.fait form{display:none}
+
+/* ---------- Comment ça marche ---------- */
+.explications{padding-block:24px 64px}
+.encart{background:var(--carte);border:1px solid var(--filet);border-left:4px solid var(--ciel);border-radius:0 12px 12px 0;padding:18px 20px;color:var(--encre-douce);max-width:80ch}
+.encart strong{color:var(--encre)}
+.encart p+p{margin-top:10px}
+
+.pied{padding-block:28px 48px;border-top:1px solid var(--filet);font-size:15px;color:var(--encre-douce)}
+.pied a{color:var(--encre-douce)}
+
+@media (max-width:1000px){.grille{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.fiche-large .contenu,.commerces .boite-commerce{grid-template-columns:minmax(0,1fr)}.commerces .boite-commerce{padding:18px}}
+/* Sur téléphone, deux fiches par ligne, comme en boutique : tout se voit
+   d'un coup d'œil, sans faire défiler quatre grandes photos. */
+@media (max-width:520px){
+  .grille{gap:12px}
+  /* La fiche ouverte prend toute la largeur : le formulaire a la place de respirer. */
+  .fiche.ouverte{grid-column:1/-1}
+  .bandeau{padding:8px 10px;gap:6px}
+  .bandeau strong{font-size:12px}
+  .bandeau span{font-size:11.5px}
+  .langue{font-size:11px;padding:1px 6px}
+  .etat{left:8px;bottom:8px;font-size:12px;padding:4px 10px}
+  .corps{padding:12px 12px 14px}
+  .corps h2{font-size:17px}
+  .couleur{width:10px;height:10px;margin-right:6px}
+  .detail{font-size:13.5px;line-height:1.45}
+  .prix{font-size:22px;padding-top:10px}
+  .bouton{padding:10px 8px;margin-top:10px}
+  .marque{flex-basis:100%}
+  .theme-toggle{margin-left:auto}
+}
+@media (prefers-reduced-motion:reduce){.fiche,.fiche:hover,.panneau,.bouton,.bouton:hover{transition:none;transform:none}}
+</style>
+</head>
+<body>
+
+<header class="ouverture">
+  <div class="enveloppe">
+    <div class="entete">
+      <a class="marque" href="pt.html">
+        <img src="assets/logo/luxkeyb-logo-192.png" alt="" width="40" height="40">
+        de Lëtzebuerger Clavier
+      </a>
+      <nav class="langues" aria-label="Idioma">
+        <a href="precommande.html" hreflang="fr" lang="fr">FR</a>
+        <a href="precommande-en.html" hreflang="en" lang="en">EN</a>
+        <a href="precommande-de.html" hreflang="de" lang="de">DE</a>
+        <strong>PT</strong>
+      </nav>
+      <button type="button" class="theme-toggle" aria-label="Mudar para o modo escuro">🌙 Escuro</button>
+    </div>
+    <div class="titre">
+      <p class="surtitre">Pré-encomenda</p>
+      <h1>As caixas do Wuertduell</h1>
+      <p class="chapo">O jogo de cartas em luxemburguês, para jogar a dois. Reserve as suas caixas sem pagar nada: a impressão começa assim que 350 caixas estiverem reservadas.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="vitrine" aria-label="As quatro caixas">
+    <div class="enveloppe">
+      <ul class="grille">
+        <li class="fiche">
+          <div class="bandeau"><p><strong>Pré-encomenda</strong><span>Data de lançamento a anunciar</span></p><span class="langue" title="Significados das palavras em francês">FR</span></div>
+          <a class="photo" href="commander.html?boite=boite_depart#reservation" data-boite="boite_depart" tabindex="-1">
+            <img src="assets/boutique/etui-depart.webp" width="340" height="480" alt="A caixa inicial do Wuertduell, azul-noite, com a faixa vermelha e as cartas Hond, Kaz e Brout">
+            <span class="etat">Reservas abertas</span>
+          </a>
+          <div class="corps">
+            <h2><span class="couleur" style="background:#E3262F" aria-hidden="true"></span>A caixa inicial</h2>
+            <p class="detail">Déieren contra Iessen, os animais contra o que se come. 54 cartas.</p>
+            <p class="prix">9,90&nbsp;€</p>
+            <a class="bouton" href="commander.html?boite=boite_depart#reservation" data-boite="boite_depart">Reservar</a>
+          </div>
+        </li>
+        <li class="fiche">
+          <div class="bandeau"><p><strong>Pré-encomenda</strong><span>Data de lançamento a anunciar</span></p><span class="langue" title="Significados das palavras em francês">FR</span></div>
+          <a class="photo" href="commander.html?boite=extension#reservation" data-boite="extension" tabindex="-1">
+            <img src="assets/boutique/etui-extension.webp" width="340" height="480" alt="A extensão do Wuertduell, azul-noite, com a faixa verde e as cartas Buch, Mound e Sonn">
+            <span class="etat">Reservas abertas</span>
+          </a>
+          <div class="corps">
+            <h2><span class="couleur" style="background:#2E9E4F" aria-hidden="true"></span>A extensão</h2>
+            <p class="detail">Schoul contra Natur, a escola contra a natureza. 54 cartas.</p>
+            <p class="prix">9,90&nbsp;€</p>
+            <a class="bouton" href="commander.html?boite=extension#reservation" data-boite="extension">Reservar</a>
+          </div>
+        </li>
+        <li class="fiche">
+          <div class="bandeau"><p><strong>Pré-encomenda</strong><span>Data de lançamento a anunciar</span></p><span class="langue" title="Significados das palavras em francês">FR</span></div>
+          <a class="photo" href="commander.html?boite=niveau_a1#reservation" data-boite="niveau_a1" tabindex="-1">
+            <img src="assets/boutique/etui-niveau-a1.webp" width="340" height="480" alt="A caixa Nível A1 do Wuertduell, azul-noite, com a faixa azul e as cartas Kaffi, Apel e Bus">
+            <span class="etat">Reservas abertas</span>
+          </a>
+          <div class="corps">
+            <h2><span class="couleur" style="background:#1D8FD8" aria-hidden="true"></span>Nível A1</h2>
+            <p class="detail">Doheem contra Dobaussen, as primeiras palavras, em casa e lá fora. 54 cartas.</p>
+            <p class="prix">9,90&nbsp;€</p>
+            <a class="bouton" href="commander.html?boite=niveau_a1#reservation" data-boite="niveau_a1">Reservar</a>
+          </div>
+        </li>
+        <li class="fiche">
+          <div class="bandeau"><p><strong>Pré-encomenda</strong><span>Data de lançamento a anunciar</span></p><span class="langue" title="Significados das palavras em francês">FR</span></div>
+          <a class="photo" href="commander.html?boite=niveau_a2#reservation" data-boite="niveau_a2" tabindex="-1">
+            <img src="assets/boutique/etui-niveau-a2.webp" width="340" height="480" alt="A caixa Nível A2 do Wuertduell, azul-noite, com a faixa violeta e três cartas, entre elas Schnéi (neve)">
+            <span class="etat">Reservas abertas</span>
+          </a>
+          <div class="corps">
+            <h2><span class="couleur" style="background:#8A4FD6" aria-hidden="true"></span>Nível A2</h2>
+            <p class="detail">Doheem contra Dobaussen, a continuação, para ir mais longe. 54 cartas.</p>
+            <p class="prix">9,90&nbsp;€</p>
+            <a class="bouton" href="commander.html?boite=niveau_a2#reservation" data-boite="niveau_a2">Reservar</a>
+          </div>
+        </li>
+        <li class="fiche fiche-large">
+          <div class="bandeau"><p><strong>Pré-encomenda</strong><span>Data de lançamento a anunciar</span></p><span class="langue" title="Significados das palavras em francês">FR</span></div>
+          <div class="contenu">
+            <a class="photo" href="commander.html?boite=collection#reservation" data-boite="collection" tabindex="-1">
+              <img src="assets/boutique/collection.webp" width="1000" height="414" loading="lazy" alt="As quatro caixas do Wuertduell lado a lado, com faixas vermelha, verde, azul e violeta">
+              <span class="etat">Reservas abertas</span>
+              <span class="economie">Poupe 4,70 €</span>
+            </a>
+            <div class="corps">
+              <h2>A coleção completa</h2>
+              <p class="detail">As quatro caixas, 216 cartas: a caixa inicial, a extensão, Nível A1 e Nível A2. Para quem quer tudo, já.</p>
+              <p class="prix"><s>39,60 €</s>34,90 €</p>
+              <a class="bouton" href="commander.html?boite=collection#reservation" data-boite="collection">Reservar a coleção</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="commerces" aria-labelledby="t-commerces">
+    <div class="enveloppe">
+      <div class="boite-commerce">
+        <img src="assets/boutique/presentoir.webp" width="640" height="654" loading="lazy" alt="Maquete do expositor de balcão em cartão azul-noite: em cima, o painel WUERTDUELL com quatro cartas e um código para ler as regras; em baixo, doze caixas em quatro colunas de cor">
+        <div>
+          <p class="surtitre" style="color:var(--rouge)">Lojas e associações</p>
+          <h2 id="t-commerces">O expositor de balcão</h2>
+          <p>Doze caixas, três de cada tipo, num expositor de cartão pronto a pousar num balcão: para uma livraria, uma loja, uma biblioteca ou um stand.</p>
+          <p>O preço é definido consigo, conforme o número de expositores.</p>
+          <a class="bouton" href="mailto:medhi.famibelle@gmail.com?subject=Pr%C3%A9sentoir%20Wuertduell">Escreva-nos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="explications" aria-label="Como funciona a pré-encomenda">
+    <div class="enveloppe">
+      <div class="encart">
+        <p><strong>Hoje não paga nada.</strong> Assim que 350 caixas estiverem reservadas, escrevemos-lhe para confirmar e pagar a sua reserva. O envio acresce ao preço da caixa.</p>
+        <p>Cada caixa joga-se sozinha, assim que se abre, ou com as outras. Um código na caixa junta as suas cartas ao seu caderno na aplicação. Os significados das palavras nas cartas estão em francês. <a href="commander.html" hreflang="fr">Tudo sobre a pré-encomenda (em francês)</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="pied">
+  <div class="enveloppe">
+    <p><a href="pt.html">Início</a> · <a href="regle-du-jeu.html" hreflang="fr">Regras (em francês)</a> · <a href="faq.html" hreflang="fr">Ajuda (em francês)</a></p>
+  </div>
+</footer>
+<template id="modele-reservation">
+  <div class="panneau" hidden>
+    <form action="https://formspree.io/f/mvgwnlky" method="POST">
+      <input type="hidden" name="_subject" value="Réservation : Wuertduell">
+      <input type="hidden" name="liste" value="precommande-wuertduell">
+      <input type="hidden" name="page" value="vitrine-pt">
+      <label data-pour="quantite">Quantas?</label>
+      <div class="quantite">
+        <button type="button" data-pas="-1" aria-label="Menos uma">−</button>
+        <input data-id="quantite" type="number" min="1" max="20" step="1" value="1" inputmode="numeric">
+        <button type="button" data-pas="1" aria-label="Mais uma">+</button>
+      </div>
+      <label data-pour="email">O seu e-mail</label>
+      <input data-id="email" type="email" name="email" required autocomplete="email">
+      <label data-pour="pays">País de entrega</label>
+      <select data-id="pays" name="pays">
+        <option>Luxemburgo</option><option>Bélgica</option><option>França</option><option>Alemanha</option><option>Outro país</option>
+      </select>
+      <fieldset class="choix">
+        <legend>Como quer receber as suas caixas?</legend>
+        <label><input type="radio" name="reception" value="livraison" checked> Entregues em casa (envio à parte)</label>
+        <label><input type="radio" name="reception" value="retrait"> Levantadas numa animação ou num stand no Luxemburgo (sem custos)</label>
+      </fieldset>
+      <p class="total" role="status"></p>
+      <button type="submit" class="envoyer">Reservar, sem pagar</button>
+      <p class="note">Nada a pagar hoje, e reservar não o compromete a nada. O seu endereço serve apenas para lhe escrevermos quando a impressão estiver a ser preparada, e depois é apagado. Formulário alojado pela
+      <a href="https://formspree.io/legal/privacy-policy">Formspree</a>.</p>
+    </form>
+    <p class="message" role="status"></p>
+  </div>
+</template>
+<script>
+/* « Réserver » ouvre le formulaire dans la fiche même. Les réservations
+   arrivent au même endroit et sous les mêmes noms de champs que celles de
+   commander.html (boite_depart, extension, niveau_a1, niveau_a2, collection). */
+(function () {
+  var modele = document.getElementById('modele-reservation');
+  if (!modele || !window.fetch) return;   // sans JavaScript, les liens mènent à commander.html
+  var BOITES = ['boite_depart', 'extension', 'niveau_a1', 'niveau_a2', 'collection'];
+  var PRIX = { collection: 34.90 }, PRIX_BOITE = 9.90, PAR_LOT = { collection: 4 };
+  var n = 0;
+
+  // Les textes du script dans les quatre langues de la page (en, de, pt écrits
+  // par Claude, à faire relire).
+  var TEXTES = {
+    fr: { boite: ' boîte', boites: ' boîtes', collection: ' collection', collections: ' collections',
+          suite: ' hors port, à payer plus tard.', envoi: 'Envoi…',
+          merci: 'C\'est réservé ! Nous vous écrirons quand l\'impression se prépare. Merci !',
+          echec: 'L\'envoi n\'a pas marché. Réessayez dans un instant.',
+          euros: function (x) { return x.toFixed(2).replace('.', ',') + ' €'; } },
+    en: { boite: ' box', boites: ' boxes', collection: ' collection', collections: ' collections',
+          suite: ' plus shipping, to pay later.', envoi: 'Sending…',
+          merci: 'Reserved! We will write to you when printing is being prepared. Thank you!',
+          echec: 'Sending failed. Please try again in a moment.',
+          euros: function (x) { return '€' + x.toFixed(2); } },
+    de: { boite: ' Schachtel', boites: ' Schachteln', collection: ' Sammlung', collections: ' Sammlungen',
+          suite: ' zuzüglich Versand, später zu bezahlen.', envoi: 'Wird gesendet…',
+          merci: 'Reserviert! Wir schreiben Ihnen, wenn der Druck vorbereitet wird. Vielen Dank!',
+          echec: 'Das Senden hat nicht geklappt. Versuchen Sie es gleich noch einmal.',
+          euros: function (x) { return x.toFixed(2).replace('.', ',') + ' €'; } },
+    pt: { boite: ' caixa', boites: ' caixas', collection: ' coleção', collections: ' coleções',
+          suite: ' sem envio, a pagar mais tarde.', envoi: 'A enviar…',
+          merci: 'Está reservado! Vamos escrever-lhe quando a impressão estiver a ser preparada. Obrigado!',
+          echec: 'O envio não funcionou. Tente de novo daqui a pouco.',
+          euros: function (x) { return x.toFixed(2).replace('.', ',') + ' €'; } }
+  };
+  var LANGUE = (document.documentElement.lang || 'fr').slice(0, 2);
+  var T = TEXTES[LANGUE] || TEXTES.fr;
+  function euros(x) { return T.euros(x); }
+
+  function panneau(fiche, boite) {
+    var p = fiche.querySelector('.panneau');
+    if (p) return p;
+    p = modele.content.firstElementChild.cloneNode(true);
+    n += 1;
+    // identifiants uniques pour relier chaque libellé à son champ
+    p.querySelectorAll('[data-id]').forEach(function (c) { c.id = 'r' + n + '-' + c.dataset.id; });
+    p.querySelectorAll('[data-pour]').forEach(function (l) { l.htmlFor = 'r' + n + '-' + l.dataset.pour; });
+    var form = p.querySelector('form');
+    var q = p.querySelector('[data-id="quantite"]');
+    q.name = boite;
+    var hl = document.createElement('input'); hl.type = 'hidden'; hl.name = 'langue'; hl.value = LANGUE; form.appendChild(hl);
+    BOITES.forEach(function (b) {   // les autres sortes à zéro, comme dans commander.html
+      if (b === boite) return;
+      var h = document.createElement('input'); h.type = 'hidden'; h.name = b; h.value = '0'; form.appendChild(h);
+    });
+    var total = p.querySelector('.total');
+    function maj() {
+      var v = Math.max(1, Math.min(20, parseInt(q.value, 10) || 1));
+      var nb = v * (PAR_LOT[boite] || 1);
+      total.textContent = (boite === 'collection'
+        ? v + (v > 1 ? T.collections : T.collection) + ' (' + nb + T.boites + '), '
+        : nb + (nb > 1 ? T.boites : T.boite) + ', ')
+        + euros(v * (PRIX[boite] || PRIX_BOITE)) + T.suite;
+    }
+    p.querySelectorAll('[data-pas]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        q.value = Math.max(1, Math.min(20, (parseInt(q.value, 10) || 1) + parseInt(b.dataset.pas, 10))); maj();
+      });
+    });
+    q.addEventListener('input', maj);
+    maj();
+    var message = p.querySelector('.message');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      q.value = Math.max(1, Math.min(20, parseInt(q.value, 10) || 1));
+      var envoyer = form.querySelector('.envoyer');
+      envoyer.disabled = true;
+      message.textContent = T.envoi;
+      fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          p.classList.add('fait');
+          message.textContent = T.merci;
+        })
+        .catch(function () {
+          envoyer.disabled = false;
+          message.textContent = T.echec;
+        });
+    });
+    fiche.querySelector('.corps').appendChild(p);
+    return p;
+  }
+
+  document.querySelectorAll('.fiche [data-boite]').forEach(function (lien) {
+    var fiche = lien.closest('.fiche');
+    var bouton = fiche.querySelector('.bouton');
+    bouton.setAttribute('aria-expanded', 'false');
+    lien.addEventListener('click', function (e) {
+      e.preventDefault();
+      var p = panneau(fiche, lien.dataset.boite);
+      var ouvrir = p.hidden;
+      // une seule fiche ouverte à la fois
+      document.querySelectorAll('.fiche.ouverte').forEach(function (f) {
+        if (f === fiche) return;
+        f.classList.remove('ouverte'); f.querySelector('.panneau').hidden = true;
+        f.querySelector('.bouton').setAttribute('aria-expanded', 'false');
+      });
+      p.hidden = !ouvrir;
+      fiche.classList.toggle('ouverte', ouvrir);
+      bouton.setAttribute('aria-expanded', String(ouvrir));
+      if (ouvrir) {
+        p.querySelector('[data-id="quantite"]').focus({ preventScroll: true });
+        p.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
