@@ -118,6 +118,38 @@ class InputProcessor(private val inputMethodService: InputMethodService) {
         }
 
         /**
+         * La longueur de mot qu'un champ exige, 0 quand il n'exige rien.
+         *
+         * La grille de Wuertriet veut cinq lettres, et la barre lui proposait
+         * des mots de toutes les longueurs : une joueuse a touché une pastille
+         * de sept lettres, n'a pas compris le refus et a arrêté de jouer
+         * (retour du 27 novembre 2026). Neuf pastilles sur dix ne menaient
+         * nulle part. Le champ le dit maintenant par `privateImeOptions`, que
+         * le cadre transmet tel quel au clavier.
+         *
+         * **Seuls nos propres champs sont écoutés** : `privateImeOptions` est
+         * une chaîne libre que n'importe quelle application peut poser, et
+         * façonner les suggestions de quelqu'un d'autre n'appartient qu'à
+         * nous. D'où la comparaison des paquets, qui est aussi la raison pour
+         * laquelle le marqueur porte le nom du nôtre.
+         *
+         * La valeur est bornée : une longueur absurde viderait la barre sans
+         * que rien ne le signale.
+         */
+        internal fun longueurExigeeParLeChamp(
+            notrePaquet: String,
+            paquetDuChamp: String?,
+            options: String?
+        ): Int {
+            if (paquetDuChamp != notrePaquet || options == null) return 0
+            val marqueur = "$notrePaquet.motDe="
+            val debut = options.indexOf(marqueur)
+            if (debut < 0) return 0
+            val valeur = options.substring(debut + marqueur.length).takeWhile { it.isDigit() }
+            return valeur.toIntOrNull()?.takeIf { it in 2..24 } ?: 0
+        }
+
+        /**
          * La majuscule de début de phrase ne vaut que pour du texte courant.
          *
          * Reprend les exclusions de l'ancien test `inputType and

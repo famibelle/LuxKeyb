@@ -481,6 +481,10 @@
     <string name="sa_essai_2">Essai 1/%1$s</string>
     <string name="sa_lettres_deja_jouees">Lettres déjà jouées :</string>
     <string name="sa_votre_mot_de_lettres">Votre mot de %1$s lettres</string>
+    <!-- Wuertriet : pourquoi une proposition est refusée. Une pastille du clavier écrit un mot entier, qui ne fait pas toujours cinq lettres. -->
+    <string name="sa_wuertriet_pas_la_longueur">« %1$s » n\'est pas un mot de %2$d lettres.</string>
+    <string name="sa_wuertriet_suggestion_longueur">Les mots que le clavier propose ne font pas tous %1$d lettres.</string>
+    <string name="sa_wuertriet_inconnu">« %1$s » n\'est pas dans le dictionnaire luxembourgeois.</string>
     <string name="sa_valider">✅ Valider</string>
     <string name="sa_devine_le_mot_luxembourgeois_de">Devine le mot luxembourgeois de %1$s lettres en %2$s essais maximum.\n\nAprès chaque essai, la couleur des lettres t\'indique :\n🟩 Vert : bonne lettre, bonne position\n🟨 Orange : la lettre est dans le mot, mais mal placée\n⬜ Gris : la lettre n\'est pas dans le mot\n\nLe mot proposé doit exister dans le dictionnaire luxembourgeois.</string>
     <string name="sa_essai">Essai %1$s/%2$s</string>

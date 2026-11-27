@@ -2096,7 +2096,14 @@ class KreyolInputMethodServiceRefactored : InputMethodService(),
     override fun onStartInput(info: EditorInfo?, restarting: Boolean) {
         super.onStartInput(info, restarting)
         Log.d(TAG, "onStartInput - restarting: $restarting")
-        
+
+        // Un champ à nous peut n'accepter qu'une forme de mot : la grille de
+        // Wuertriet veut cinq lettres. Relu à chaque ouverture, donc remis à
+        // zéro en quittant le champ. Voir InputProcessor.longueurExigeeParLeChamp.
+        suggestionEngine.longueurExigeeDuChamp = InputProcessor.longueurExigeeParLeChamp(
+            packageName, info?.packageName, info?.privateImeOptions
+        )
+
         inputProcessor.resetState()
         suggestionEngine.clearHistory()
         displaySuggestions(emptyList())

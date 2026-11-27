@@ -481,6 +481,10 @@
     <string name="sa_essai_2">Tentativa 1/%1$s</string>
     <string name="sa_lettres_deja_jouees">Letras já jogadas:</string>
     <string name="sa_votre_mot_de_lettres">A sua palavra de %1$s letras</string>
+    <!-- Wuertriet : pourquoi une proposition est refusée. Une pastille du clavier écrit un mot entier, qui ne fait pas toujours cinq lettres. -->
+    <string name="sa_wuertriet_pas_la_longueur">«%1$s» não é uma palavra de %2$d letras.</string>
+    <string name="sa_wuertriet_suggestion_longueur">As palavras que o teclado sugere não têm todas %1$d letras.</string>
+    <string name="sa_wuertriet_inconnu">«%1$s» não está no dicionário luxemburguês.</string>
     <string name="sa_valider">✅ Validar</string>
     <string name="sa_devine_le_mot_luxembourgeois_de">Adivinha a palavra luxemburguesa de %1$s letras em %2$s tentativas no máximo.\n\nDepois de cada tentativa, a cor das letras indica-te:\n🟩 Verde: letra certa, posição certa\n🟨 Laranja: a letra está na palavra, mas no sítio errado\n⬜ Cinzento: a letra não está na palavra\n\nA palavra proposta tem de existir no dicionário luxemburguês.</string>
     <string name="sa_essai">Tentativa %1$s/%2$s</string>

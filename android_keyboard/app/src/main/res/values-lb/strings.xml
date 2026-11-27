@@ -481,6 +481,10 @@
     <string name="sa_essai_2">Versuch 1/%1$s</string>
     <string name="sa_lettres_deja_jouees">Scho gespillt Buschtawen:</string>
     <string name="sa_votre_mot_de_lettres">Äert Wuert mat %1$s Buschtawen</string>
+    <!-- Wuertriet : pourquoi une proposition est refusée. Une pastille du clavier écrit un mot entier, qui ne fait pas toujours cinq lettres. -->
+    <string name="sa_wuertriet_pas_la_longueur">„%1$s“ ass kee Wuert mat %2$d Buschtawen.</string>
+    <string name="sa_wuertriet_suggestion_longueur">D\'Wierder, déi de Clavier proposéiert, hu net all %1$d Buschtawen.</string>
+    <string name="sa_wuertriet_inconnu">„%1$s“ steet net am Wierderbuch.</string>
     <string name="sa_valider">✅ Kontrolléieren</string>
     <string name="sa_devine_le_mot_luxembourgeois_de">Rot dat lëtzebuergescht Wuert mat %1$s Buschtawen a maximal %2$s Versich.\n\nNo all Versuch weist d\'Faarf vun de Buschtawen dir:\n🟩 Gréng: richtege Buschtaf, richteg Plaz\n🟨 Orange: De Buschtaf ass am Wuert, mä op der falscher Plaz\n⬜ Gro: De Buschtaf ass net am Wuert\n\nDat Wuert, dat s du virschléis, muss am lëtzebuergeschen Dictionnaire stoen.</string>
     <string name="sa_essai">Versuch %1$s/%2$s</string>

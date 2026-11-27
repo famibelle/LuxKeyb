@@ -149,4 +149,44 @@ class ChampDeSaisieTest {
         assertTrue(InputProcessor.majusculeAttendue(mots, "Jean "))
         assertFalse(InputProcessor.majusculeAttendue(sans, ""))
     }
+
+    private val nous = "com.potomitan.luxkeyboard"
+
+    @Test
+    fun unChampANousPeutDemanderDesMotsDUneLongueur() {
+        assertEquals(5, InputProcessor.longueurExigeeParLeChamp(nous, nous, "$nous.motDe=5"))
+        // `privateImeOptions` est une liste : le marqueur peut y être n'importe où.
+        assertEquals(5, InputProcessor.longueurExigeeParLeChamp(
+            nous, nous, "autreChose,$nous.motDe=5,encore"))
+        assertEquals(12, InputProcessor.longueurExigeeParLeChamp(nous, nous, "$nous.motDe=12"))
+    }
+
+    @Test
+    fun unChampSansDemandeNEnImposeAucune() {
+        assertEquals(0, InputProcessor.longueurExigeeParLeChamp(nous, nous, null))
+        assertEquals(0, InputProcessor.longueurExigeeParLeChamp(nous, nous, ""))
+        assertEquals(0, InputProcessor.longueurExigeeParLeChamp(nous, nous, "$nous.autreOption=5"))
+        assertEquals(0, InputProcessor.longueurExigeeParLeChamp(nous, nous, "$nous.motDe="))
+        assertEquals(0, InputProcessor.longueurExigeeParLeChamp(nous, nous, "$nous.motDe=abc"))
+    }
+
+    @Test
+    fun seulesNosApplicationsSontEcoutees() {
+        // Façonner la barre de suggestions de quelqu'un d'autre n'appartient
+        // qu'à nous : `privateImeOptions` est une chaîne libre que n'importe
+        // quelle application peut poser.
+        assertEquals(0, InputProcessor.longueurExigeeParLeChamp(
+            nous, "com.exemple.appli", "$nous.motDe=5"))
+        assertEquals(0, InputProcessor.longueurExigeeParLeChamp(
+            nous, "com.exemple.appli", "com.exemple.appli.motDe=5"))
+        assertEquals(0, InputProcessor.longueurExigeeParLeChamp(nous, null, "$nous.motDe=5"))
+    }
+
+    @Test
+    fun uneLongueurAbsurdeNEteintPasLaBarre() {
+        // Une valeur hors bornes viderait la barre sans que rien ne le dise.
+        assertEquals(0, InputProcessor.longueurExigeeParLeChamp(nous, nous, "$nous.motDe=0"))
+        assertEquals(0, InputProcessor.longueurExigeeParLeChamp(nous, nous, "$nous.motDe=1"))
+        assertEquals(0, InputProcessor.longueurExigeeParLeChamp(nous, nous, "$nous.motDe=99"))
+    }
 }

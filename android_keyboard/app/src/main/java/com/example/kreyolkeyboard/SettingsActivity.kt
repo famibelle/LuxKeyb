@@ -6606,6 +6606,15 @@ class SettingsActivity : AppCompatActivity() {
         private lateinit var btnSubmit: Button
         private lateinit var tvAttempts: TextView
         private lateinit var legendContainer: LinearLayout
+        private lateinit var tvMessage: TextView
+
+        /**
+         * Le champ vient d'être rempli d'un bloc, et non lettre à lettre :
+         * c'est une pastille du clavier. Un refus de longueur dit alors d'où
+         * vient le piège, ce qu'une joueuse n'avait pas compris (retour du
+         * 27 novembre 2026).
+         */
+        private var venuDUneSuggestion = false
 
         /**
          * Ce qui doit survivre à une rotation : le mot à trouver et les essais
@@ -6765,6 +6774,24 @@ class SettingsActivity : AppCompatActivity() {
                     }
                     addView(legendRow)
 
+                    // Le refus s'écrit juste sous le champ et y reste jusqu'à
+                    // la frappe suivante. Le bandeau en haut de la fenêtre,
+                    // lui, s'affichait une seconde et demie à l'autre bout de
+                    // l'écran, alors que les yeux sont sur la grille et le
+                    // clavier : une joueuse ne l'a pas lu (27 novembre 2026).
+                    tvMessage = TextView(activity).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply { bottomMargin = 16 }
+                        textSize = 14f
+                        // 5,16:1 sur le fond du jeu, là où le rouge habituel
+                        // de l'appli (#E53935) n'atteint que 3,88:1.
+                        setTextColor(Color.parseColor("#C62828"))
+                        setLineSpacing(0f, 1.2f)
+                        visibility = View.GONE
+                    }
+
                     // Saisie de la proposition (le champ porte directement son propre libellé en hint)
                     val inputRow = LinearLayout(activity).apply {
                         layoutParams = LinearLayout.LayoutParams(
@@ -6795,8 +6822,22 @@ class SettingsActivity : AppCompatActivity() {
                                 setColor(Color.WHITE)
                                 setStroke(4, Color.parseColor("#2196F3"))
                             }
-                            filters = arrayOf(android.text.InputFilter.LengthFilter(WuertrietData.WORD_LENGTH))
+                            // Pas de filtre de longueur. Une pastille du
+                            // clavier écrit le mot entier suivi d'une espace,
+                            // et un filtre à cinq caractères le coupait sans
+                            // rien dire : « Gromperen » devenait « Gromp »,
+                            // refusé ensuite comme inconnu du dictionnaire,
+                            // sur un mot que la joueuse n'avait pas écrit. Le
+                            // mot arrive maintenant en entier, et le message
+                            // peut le nommer.
                             setSingleLine(true)
+                            // Le clavier ne proposera que des mots de cinq
+                            // lettres ici : chaque pastille devient un coup
+                            // jouable, et son vocabulaire est exactement celui
+                            // que le jeu accepte. Voir
+                            // InputProcessor.longueurExigeeParLeChamp.
+                            privateImeOptions =
+                                "${activity.packageName}.motDe=${WuertrietData.WORD_LENGTH}"
                             isAllCaps = true // après setSingleLine() : sinon la transformation majuscules est écrasée
                             imeOptions = android.view.inputmethod.EditorInfo.IME_ACTION_DONE
                             // Entrée sur un clavier physique n'arrive pas comme
@@ -6810,6 +6851,24 @@ class SettingsActivity : AppCompatActivity() {
                                     true
                                 } else false
                             }
+                            // Une frappe change le texte d'un caractère, une
+                            // pastille le remplace d'un bloc : de quoi dire à
+                            // qui vient d'en toucher une pourquoi son mot est
+                            // refusé, sans rien demander au clavier.
+                            addTextChangedListener(object : android.text.TextWatcher {
+                                override fun beforeTextChanged(s: CharSequence?, debut: Int, avant: Int, apres: Int) {}
+                                override fun onTextChanged(s: CharSequence?, debut: Int, avant: Int, nombre: Int) {
+                                    // Plusieurs caractères d'un coup : une
+                                    // pastille. Un seul : une frappe, et le
+                                    // champ n'est plus celui d'une pastille.
+                                    if (nombre > 1) venuDUneSuggestion = true
+                                    else if (nombre == 1) venuDUneSuggestion = false
+                                }
+                                override fun afterTextChanged(s: android.text.Editable?) {
+                                    if (s.isNullOrEmpty()) venuDUneSuggestion = false
+                                    effacerMessage()
+                                }
+                            })
                         }
                         addView(editGuess)
 
@@ -6827,6 +6886,7 @@ class SettingsActivity : AppCompatActivity() {
                         addView(btnSubmit)
                     }
                     addView(inputRow)
+                    addView(tvMessage)
 
                     // Bouton nouvelle partie
                     val btnNewGame = Button(activity).apply {
@@ -6883,6 +6943,12 @@ class SettingsActivity : AppCompatActivity() {
                     // changé d'onglet, le fragment n'est plus attaché.
                     if (isAdded) {
                         if (targetWord.isEmpty()) startNewGame() else reprendre()
+                        // Les mots acceptés en plus du dictionnaire : 1,8 Mo à
+                        // lire, pendant qu'elle lit la règle et tape cinq
+                        // lettres. Le contexte de l'application, jamais le
+                        // fragment : le fil survit à l'onglet.
+                        val applicatif = activity.applicationContext
+                        Thread { WuertrietData.chargerMotsAcceptes(applicatif) }.start()
                     }
                 }
             }
@@ -6957,21 +7023,44 @@ class SettingsActivity : AppCompatActivity() {
             btnSubmit.isEnabled = true
             tvAttempts.text = getString(R.string.sa_essai, currentAttempt + 1, WuertrietData.MAX_ATTEMPTS)
             legendContainer.removeAllViews()
+            effacerMessage()
+            venuDUneSuggestion = false
         }
 
         private fun submitGuess() {
             if (gameOver) return
             val activity = requireActivity()
-            val guess = editGuess.text.toString().trim().lowercase()
+            val saisie = editGuess.text.toString().trim()
+            val guess = saisie.lowercase()
 
-            if (guess.length != WuertrietData.WORD_LENGTH) {
-                showTopMessage("D'Wuert muss ${WuertrietData.WORD_LENGTH} Buschtawen hunn")
+            if (guess.isEmpty()) {
+                afficherMessage(getString(R.string.sa_votre_mot_de_lettres, WuertrietData.WORD_LENGTH))
+                return
+            }
+            if (guess.length != WuertrietData.WORD_LENGTH || !guess.all { it.isLetter() }) {
+                // Le champ est vidé avant le message : le texte qui change
+                // efface le message précédent, celui-ci y compris.
+                val pastille = venuDUneSuggestion
+                editGuess.setText("")
+                var message = getString(
+                    R.string.sa_wuertriet_pas_la_longueur, saisie, WuertrietData.WORD_LENGTH
+                )
+                if (pastille) {
+                    message += "\n" + getString(
+                        R.string.sa_wuertriet_suggestion_longueur, WuertrietData.WORD_LENGTH
+                    )
+                }
+                afficherMessage(message)
                 return
             }
             if (!WuertrietData.isValidWord(activity, guess)) {
-                showTopMessage("❌ Dëst Wuert ass net am Wierderbuch")
+                // Le mot reste dans le champ : il a la bonne longueur, une
+                // lettre à changer suffit peut-être.
+                afficherMessage(getString(R.string.sa_wuertriet_inconnu, saisie))
                 return
             }
+            effacerMessage()
+            venuDUneSuggestion = false
 
             val states = WuertrietData.evaluateGuess(targetWord, guess)
             rows[currentAttempt] = WuertrietRow(guess.toList(), states)
@@ -6997,11 +7086,16 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        // Toast.setGravity() est ignoré depuis Android 11 : ancré en haut par un
-        // bandeau pour ne pas se faire masquer par le clavier virtuel (même piste
-        // que WordSearchFragment).
-        private fun showTopMessage(message: String) {
-            bandeauEnHaut(requireView(), message, longue = false)
+        private fun afficherMessage(message: String) {
+            tvMessage.text = message
+            tvMessage.visibility = View.VISIBLE
+        }
+
+        private fun effacerMessage() {
+            if (tvMessage.visibility != View.GONE) {
+                tvMessage.text = ""
+                tvMessage.visibility = View.GONE
+            }
         }
 
         private fun updateLegend(guess: String, states: List<LetterState>) {
