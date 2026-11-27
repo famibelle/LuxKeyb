@@ -84,6 +84,25 @@ p{margin:0}
 .bouton{display:block;margin-top:14px;text-align:center;text-decoration:none;font-weight:700;color:#fff;background:var(--rouge);border-radius:10px;padding:12px 16px;transition:box-shadow .2s ease}
 .bouton:hover{box-shadow:0 4px 12px rgba(237,41,57,.35)}
 
+/* La collection complète : une fiche sur toute la largeur, photo à gauche. */
+.fiche-large{grid-column:1/-1}
+.fiche-large .contenu{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
+.fiche-large .photo{aspect-ratio:1000/414}
+.fiche-large .photo img{object-position:center}
+.fiche-large .corps{padding:22px 24px 24px;justify-content:center}
+.fiche-large .corps h2{font-size:24px}
+.fiche-large .detail{font-size:16px}
+.economie{position:absolute;right:12px;bottom:12px;font-size:14px;font-weight:700;color:#fff;background:var(--rouge);border-radius:99px;padding:5px 14px;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.prix s{font-family:var(--texte);font-size:17px;font-weight:400;color:var(--encre-douce);margin-right:10px}
+
+/* ---------- Le présentoir, pour les commerces ---------- */
+.commerces{padding-block:16px 24px}
+.commerces .boite-commerce{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:32px;align-items:center;background:var(--carte);border:1px solid var(--filet);border-radius:14px;padding:24px}
+.commerces img{display:block;width:100%;height:auto;border-radius:10px;background:var(--photo)}
+.commerces h2{font-size:clamp(24px,3.4vw,30px);color:var(--titre)}
+.commerces p{margin-top:12px;color:var(--encre-douce);max-width:56ch}
+.commerces .bouton{display:inline-block;margin-top:20px;padding:12px 22px}
+
 /* ---------- Comment ça marche ---------- */
 .explications{padding-block:24px 64px}
 .encart{background:var(--carte);border:1px solid var(--filet);border-left:4px solid var(--ciel);border-radius:0 12px 12px 0;padding:18px 20px;color:var(--encre-douce);max-width:80ch}
@@ -94,6 +113,7 @@ p{margin:0}
 .pied a{color:var(--encre-douce)}
 
 @media (max-width:1000px){.grille{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.fiche-large .contenu,.commerces .boite-commerce{grid-template-columns:minmax(0,1fr)}.commerces .boite-commerce{padding:18px}}
 /* Sur téléphone, deux fiches par ligne, comme en boutique : tout se voit
    d'un coup d'œil, sans faire défiler quatre grandes photos. */
 @media (max-width:520px){
@@ -192,7 +212,40 @@ p{margin:0}
             <a class="bouton" href="commander.html?boite=niveau_a2#reservation">Réserver</a>
           </div>
         </li>
+        <li class="fiche fiche-large">
+          <div class="bandeau"><p><strong>Précommande</strong><span>Sortie : date à venir</span></p><span class="langue" title="Sens des mots en français">FR</span></div>
+          <div class="contenu">
+            <a class="photo" href="commander.html?boite=collection#reservation" tabindex="-1">
+              <img src="assets/boutique/collection.webp" width="1000" height="414" loading="lazy" alt="Les quatre boîtes du Wuertduell côte à côte, bandeaux rouge, vert, bleu et violet">
+              <span class="etat">Réservation ouverte</span>
+              <span class="economie">4,70 € d'économie</span>
+            </a>
+            <div class="corps">
+              <h2>La collection complète</h2>
+              <p class="detail">Les quatre boîtes, 216 cartes : la boîte de départ, l'extension, Niveau A1 et Niveau A2. Pour ceux qui veulent tout, tout de suite.</p>
+              <p class="prix"><s>39,60 €</s>34,90 €</p>
+              <a class="bouton" href="commander.html?boite=collection#reservation">Réserver la collection</a>
+            </div>
+          </div>
+        </li>
       </ul>
+    </div>
+  </section>
+
+  <section class="commerces" aria-labelledby="t-commerces">
+    <div class="enveloppe">
+      <div class="boite-commerce">
+        <img src="assets/boutique/presentoir.webp" width="640" height="654" loading="lazy" alt="Maquette du présentoir de comptoir en carton bleu nuit : en haut, le panneau WUERTDUELL avec quatre cartes et un code pour lire la règle ; en bas, douze boîtes en quatre colonnes de couleur">
+        <div>
+          <p class="surtitre" style="color:var(--rouge)">Commerces et associations</p>
+          <h2 id="t-commerces">Le présentoir de comptoir</h2>
+          <p>Douze boîtes, trois de chaque sorte, dans un présentoir en carton prêt
+          à poser sur un comptoir : pour une librairie, un magasin, une
+          bibliothèque ou un stand.</p>
+          <p>Le prix se fixe avec vous, selon le nombre de présentoirs.</p>
+          <a class="bouton" href="mailto:medhi.famibelle@gmail.com?subject=Pr%C3%A9sentoir%20Wuertduell">Nous écrire</a>
+        </div>
+      </div>
     </div>
   </section>
 

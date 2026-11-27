@@ -19,6 +19,9 @@ mode: "reservation"
 # jamais l'impression à la demande (BOUTIQUE-CARTES.md § 5).
 prix: "9,90 €"
 prix_nombre: 9.90
+# La collection complète : les quatre boîtes (décision du propriétaire, 2026-11-27).
+prix_collection: "34,90 €"
+prix_collection_nombre: 34.90
 # Objectif : l'équilibre d'un tirage de 500 boîtes dans le cas pessimiste
 # (skill business-modele § 3 : 221–347 boîtes). Toutes boîtes confondues.
 objectif: 350
@@ -117,6 +120,8 @@ qu'on mange.
 (*Haus*, *Gaart*, *Hand*, *Häerz*, *Schong*…) et dehors (*Gare*, *Tram*,
 *Duerf*, *Rees*, *Schnéi*…).
 
+**📦 La collection complète** : les quatre boîtes, {{ page.prix_collection }} au lieu de 39,60 €.
+
 Toutes les cartes sont au format poker (63 × 88 mm). Les mots, leurs sens et
 leurs phrases viennent du [Lëtzebuerger Online Dictionnaire](https://lod.lu),
 le dictionnaire officiel du Zenter fir d'Lëtzebuerger Sprooch.
@@ -147,11 +152,11 @@ renoncer à votre achat dans les 14 jours qui suivent la réception.
   <input type="hidden" name="liste" value="precommande-wuertduell">
   <fieldset style="margin:0 0 14px;padding:0;border:0;">
     <legend style="padding:0;font-weight:600;">Combien de boîtes ?</legend>
-    <p class="note" style="margin:4px 0 10px;">{{ page.prix }} la boîte, port en plus. Rien à payer aujourd'hui.</p>
-    {% assign boites = "boite_depart|🔴 La boîte de départ,extension|🟢 L'extension Schoul et Natur,niveau_a1|🔵 Niveau A1,niveau_a2|🟣 Niveau A2" | split: "," %}
+    <p class="note" style="margin:4px 0 10px;">{{ page.prix }} la boîte, {{ page.prix_collection }} la collection complète des quatre boîtes, port en plus. Rien à payer aujourd'hui.</p>
+    {% assign boites = "boite_depart|🔴 La boîte de départ,extension|🟢 L'extension Schoul et Natur,niveau_a1|🔵 Niveau A1,niveau_a2|🟣 Niveau A2,collection|📦 La collection complète (les quatre boîtes)" | split: "," %}
     {% for b in boites %}{% assign champ = b | split: "|" %}
     <p style="margin:0 0 8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-      <input id="q-{{ champ[0] }}" class="quantite" type="number" name="{{ champ[0] }}" min="0" max="20" step="1" inputmode="numeric" value="{% if forloop.first %}1{% else %}0{% endif %}"
+      <input id="q-{{ champ[0] }}" class="quantite" type="number"{% if champ[0] == "collection" %} data-prix="{{ page.prix_collection_nombre }}" data-boites="4"{% endif %} name="{{ champ[0] }}" min="0" max="20" step="1" inputmode="numeric" value="{% if forloop.first %}1{% else %}0{% endif %}"
              style="width:72px;padding:8px;font-size:17px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);">
       <label for="q-{{ champ[0] }}">{{ champ[1] }}</label>
     </p>
@@ -198,13 +203,23 @@ des avis sur l'application.</p>
   var champs = form.querySelectorAll('.quantite');
   var prix = {{ page.prix_nombre }};
 
+  // La collection complète compte pour quatre boîtes, à son propre prix.
   function nombreDeBoites() {
     var n = 0;
     champs.forEach(function (c) {
       var v = parseInt(c.value, 10);
-      if (v > 0) n += v;
+      if (v > 0) n += v * (parseInt(c.dataset.boites, 10) || 1);
     });
     return n;
+  }
+
+  function montant() {
+    var m = 0;
+    champs.forEach(function (c) {
+      var v = parseInt(c.value, 10);
+      if (v > 0) m += v * (parseFloat(c.dataset.prix) || prix);
+    });
+    return m;
   }
 
   function majTotal() {
@@ -212,7 +227,7 @@ des avis sur l'application.</p>
     total.textContent = n === 0
       ? 'Choisissez au moins une boîte.'
       : n + (n > 1 ? ' boîtes, ' : ' boîte, ') +
-        (n * prix).toFixed(2).replace('.', ',') + ' € hors port, à payer plus tard.';
+        montant().toFixed(2).replace('.', ',') + ' € hors port, à payer plus tard.';
   }
 
   champs.forEach(function (c) { c.addEventListener('input', majTotal); });

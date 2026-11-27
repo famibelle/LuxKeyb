@@ -35,6 +35,18 @@ Sur 10 à 15 stands et animations, cela fait **20 à 30 boîtes par événement*
 Le tarif de 200 € par animation est une **hypothèse** : il se fixe en demandant
 aux communes ce qu'elles paient d'habitude.
 
+### Décisions de prix du 2026-11-27 (propriétaire)
+
+- **La collection complète, les quatre boîtes : 34,90 €** au lieu de
+  4 × 9,90 € = 39,60 € (4,70 € d'économie, −12 %). Coût offset estimé 12 à
+  18 € (4 × 3 à 4,50 €) : marge directe 16,90 à 22,90 €. La boîte seule reste
+  l'entrée la moins chère. À ne pas confondre avec le coffret complet de
+  248 cartes à 29 € (skill business-modele § 2), prévu plus tard.
+- **Le présentoir de comptoir** (12 boîtes, 3 de chaque sorte) : **sur
+  demande**, sans prix affiché tant que le tarif revendeur n'est pas fixé.
+- Reporté dans `docs/precommande.html` et `docs/commander.md`. À aligner :
+  skill business-modele § 2, `BOUTIQUE-CARTES.md` § 5, skill imprimeur § 7.
+
 ## 2. Les trois paliers
 
 | Palier | Ce qui est payé | Chiffre d'affaires | En boîtes à 9,90 € |
