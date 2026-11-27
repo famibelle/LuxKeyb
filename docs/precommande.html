@@ -103,6 +103,29 @@ p{margin:0}
 .commerces p{margin-top:12px;color:var(--encre-douce);max-width:56ch}
 .commerces .bouton{display:inline-block;margin-top:20px;padding:12px 22px}
 
+/* ---------- La réservation qui s'ouvre dans la fiche ---------- */
+.grille{align-items:start}
+.detail{min-height:calc(3 * 1.55em)}
+.fiche.ouverte:hover{transform:none;box-shadow:none}
+.bouton[aria-expanded="true"]{background:transparent;color:var(--encre);box-shadow:inset 0 0 0 2px var(--filet)}
+.quantite input::-webkit-inner-spin-button,.quantite input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.quantite input{-moz-appearance:textfield;appearance:textfield}
+.panneau{margin-top:14px;padding-top:14px;border-top:1px solid var(--filet);font-size:15px}
+.panneau[hidden]{display:none}
+.panneau label,.panneau legend{display:block;font-weight:600;color:var(--encre);margin:12px 0 6px;padding:0}
+.panneau fieldset{border:0;margin:0;padding:0;min-width:0}
+.panneau .choix label{display:flex;gap:8px;align-items:baseline;font-weight:400;color:var(--encre-douce);margin:4px 0}
+.quantite{display:flex;align-items:center;gap:6px}
+.quantite button{flex:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--filet);background:var(--papier);color:var(--encre);font:inherit;font-size:20px;line-height:1;cursor:pointer}
+.quantite input{width:56px;height:38px;text-align:center;font:inherit;font-size:17px;border:1px solid var(--filet);border-radius:10px;background:var(--carte);color:var(--encre)}
+.panneau input[type=email],.panneau select{width:100%;padding:9px 10px;font:inherit;font-size:16px;border:1px solid var(--filet);border-radius:10px;background:var(--carte);color:var(--encre)}
+.panneau .total{margin-top:12px;font-weight:700;color:var(--encre)}
+.panneau .envoyer{display:block;width:100%;margin-top:14px;border:0;cursor:pointer;font:inherit;font-weight:700;color:#fff;background:var(--rouge);border-radius:10px;padding:12px 16px}
+.panneau .envoyer:disabled{opacity:.6;cursor:wait}
+.panneau .message{margin-top:10px;font-weight:600;color:var(--encre)}
+.panneau .note{margin-top:10px;font-size:13px;line-height:1.45;color:var(--encre-douce)}
+.panneau.fait form{display:none}
+
 /* ---------- Comment ça marche ---------- */
 .explications{padding-block:24px 64px}
 .encart{background:var(--carte);border:1px solid var(--filet);border-left:4px solid var(--ciel);border-radius:0 12px 12px 0;padding:18px 20px;color:var(--encre-douce);max-width:80ch}
@@ -118,6 +141,8 @@ p{margin:0}
    d'un coup d'œil, sans faire défiler quatre grandes photos. */
 @media (max-width:520px){
   .grille{gap:12px}
+  /* La fiche ouverte prend toute la largeur : le formulaire a la place de respirer. */
+  .fiche.ouverte{grid-column:1/-1}
   .bandeau{padding:8px 10px;gap:6px}
   .bandeau strong{font-size:12px}
   .bandeau span{font-size:11.5px}
@@ -132,7 +157,7 @@ p{margin:0}
   .marque{flex-basis:100%}
   .theme-toggle{margin-left:auto}
 }
-@media (prefers-reduced-motion:reduce){.fiche,.fiche:hover,.bouton,.bouton:hover{transition:none;transform:none}}
+@media (prefers-reduced-motion:reduce){.fiche,.fiche:hover,.panneau,.bouton,.bouton:hover{transition:none;transform:none}}
 </style>
 </head>
 <body>
@@ -162,7 +187,7 @@ p{margin:0}
       <ul class="grille">
         <li class="fiche">
           <div class="bandeau"><p><strong>Précommande</strong><span>Sortie&nbsp;: date à venir</span></p><span class="langue" title="Sens des mots en français">FR</span></div>
-          <a class="photo" href="commander.html?boite=boite_depart#reservation" tabindex="-1">
+          <a class="photo" href="commander.html?boite=boite_depart#reservation" data-boite="boite_depart" tabindex="-1">
             <img src="assets/boutique/etui-depart.webp" width="340" height="480" alt="La boîte de départ du Wuertduell, bleu nuit, avec son bandeau rouge et les cartes Hond, Kaz et Brout">
             <span class="etat">Réservation ouverte</span>
           </a>
@@ -170,12 +195,12 @@ p{margin:0}
             <h2><span class="couleur" style="background:#E3262F" aria-hidden="true"></span>La boîte de départ</h2>
             <p class="detail">Déieren contre Iessen, les animaux contre ce qu'on mange. 54&nbsp;cartes.</p>
             <p class="prix">9,90&nbsp;€</p>
-            <a class="bouton" href="commander.html?boite=boite_depart#reservation">Réserver</a>
+            <a class="bouton" href="commander.html?boite=boite_depart#reservation" data-boite="boite_depart">Réserver</a>
           </div>
         </li>
         <li class="fiche">
           <div class="bandeau"><p><strong>Précommande</strong><span>Sortie&nbsp;: date à venir</span></p><span class="langue" title="Sens des mots en français">FR</span></div>
-          <a class="photo" href="commander.html?boite=extension#reservation" tabindex="-1">
+          <a class="photo" href="commander.html?boite=extension#reservation" data-boite="extension" tabindex="-1">
             <img src="assets/boutique/etui-extension.webp" width="340" height="480" alt="L'extension du Wuertduell, bleu nuit, avec son bandeau vert et les cartes Buch, Mound et Sonn">
             <span class="etat">Réservation ouverte</span>
           </a>
@@ -183,12 +208,12 @@ p{margin:0}
             <h2><span class="couleur" style="background:#2E9E4F" aria-hidden="true"></span>L'extension</h2>
             <p class="detail">Schoul contre Natur, l'école contre la nature. 54&nbsp;cartes.</p>
             <p class="prix">9,90&nbsp;€</p>
-            <a class="bouton" href="commander.html?boite=extension#reservation">Réserver</a>
+            <a class="bouton" href="commander.html?boite=extension#reservation" data-boite="extension">Réserver</a>
           </div>
         </li>
         <li class="fiche">
           <div class="bandeau"><p><strong>Précommande</strong><span>Sortie&nbsp;: date à venir</span></p><span class="langue" title="Sens des mots en français">FR</span></div>
-          <a class="photo" href="commander.html?boite=niveau_a1#reservation" tabindex="-1">
+          <a class="photo" href="commander.html?boite=niveau_a1#reservation" data-boite="niveau_a1" tabindex="-1">
             <img src="assets/boutique/etui-niveau-a1.webp" width="340" height="480" alt="La boîte Niveau A1 du Wuertduell, bleu nuit, avec son bandeau bleu et les cartes Kaffi, Apel et Bus">
             <span class="etat">Réservation ouverte</span>
           </a>
@@ -196,12 +221,12 @@ p{margin:0}
             <h2><span class="couleur" style="background:#1D8FD8" aria-hidden="true"></span>Niveau A1</h2>
             <p class="detail">Doheem contre Dobaussen, les premiers mots, à la maison et dehors. 54&nbsp;cartes.</p>
             <p class="prix">9,90&nbsp;€</p>
-            <a class="bouton" href="commander.html?boite=niveau_a1#reservation">Réserver</a>
+            <a class="bouton" href="commander.html?boite=niveau_a1#reservation" data-boite="niveau_a1">Réserver</a>
           </div>
         </li>
         <li class="fiche">
           <div class="bandeau"><p><strong>Précommande</strong><span>Sortie&nbsp;: date à venir</span></p><span class="langue" title="Sens des mots en français">FR</span></div>
-          <a class="photo" href="commander.html?boite=niveau_a2#reservation" tabindex="-1">
+          <a class="photo" href="commander.html?boite=niveau_a2#reservation" data-boite="niveau_a2" tabindex="-1">
             <img src="assets/boutique/etui-niveau-a2.webp" width="340" height="480" alt="La boîte Niveau A2 du Wuertduell, bleu nuit, avec son bandeau violet et trois cartes, dont Schnéi (neige)">
             <span class="etat">Réservation ouverte</span>
           </a>
@@ -209,13 +234,13 @@ p{margin:0}
             <h2><span class="couleur" style="background:#8A4FD6" aria-hidden="true"></span>Niveau A2</h2>
             <p class="detail">Doheem contre Dobaussen, la suite, pour aller plus loin. 54&nbsp;cartes.</p>
             <p class="prix">9,90&nbsp;€</p>
-            <a class="bouton" href="commander.html?boite=niveau_a2#reservation">Réserver</a>
+            <a class="bouton" href="commander.html?boite=niveau_a2#reservation" data-boite="niveau_a2">Réserver</a>
           </div>
         </li>
         <li class="fiche fiche-large">
           <div class="bandeau"><p><strong>Précommande</strong><span>Sortie : date à venir</span></p><span class="langue" title="Sens des mots en français">FR</span></div>
           <div class="contenu">
-            <a class="photo" href="commander.html?boite=collection#reservation" tabindex="-1">
+            <a class="photo" href="commander.html?boite=collection#reservation" data-boite="collection" tabindex="-1">
               <img src="assets/boutique/collection.webp" width="1000" height="414" loading="lazy" alt="Les quatre boîtes du Wuertduell côte à côte, bandeaux rouge, vert, bleu et violet">
               <span class="etat">Réservation ouverte</span>
               <span class="economie">4,70 € d'économie</span>
@@ -224,7 +249,7 @@ p{margin:0}
               <h2>La collection complète</h2>
               <p class="detail">Les quatre boîtes, 216 cartes : la boîte de départ, l'extension, Niveau A1 et Niveau A2. Pour ceux qui veulent tout, tout de suite.</p>
               <p class="prix"><s>39,60 €</s>34,90 €</p>
-              <a class="bouton" href="commander.html?boite=collection#reservation">Réserver la collection</a>
+              <a class="bouton" href="commander.html?boite=collection#reservation" data-boite="collection">Réserver la collection</a>
             </div>
           </div>
         </li>
@@ -268,5 +293,129 @@ p{margin:0}
     <p><a href="./">Accueil</a> · <a href="regle-du-jeu.html">Règle du jeu</a> · <a href="faq.html">Aide</a></p>
   </div>
 </footer>
+<template id="modele-reservation">
+  <div class="panneau" hidden>
+    <form action="https://formspree.io/f/mvgwnlky" method="POST">
+      <input type="hidden" name="_subject" value="Réservation : Wuertduell">
+      <input type="hidden" name="liste" value="precommande-wuertduell">
+      <input type="hidden" name="page" value="vitrine">
+      <label data-pour="quantite">Combien ?</label>
+      <div class="quantite">
+        <button type="button" data-pas="-1" aria-label="Une de moins">−</button>
+        <input data-id="quantite" type="number" min="1" max="20" step="1" value="1" inputmode="numeric">
+        <button type="button" data-pas="1" aria-label="Une de plus">+</button>
+      </div>
+      <label data-pour="email">Votre e-mail</label>
+      <input data-id="email" type="email" name="email" required autocomplete="email">
+      <label data-pour="pays">Pays de livraison</label>
+      <select data-id="pays" name="pays">
+        <option>Luxembourg</option><option>Belgique</option><option>France</option><option>Allemagne</option><option>Un autre pays</option>
+      </select>
+      <fieldset class="choix">
+        <legend>Comment recevoir vos boîtes&nbsp;?</legend>
+        <label><input type="radio" name="reception" value="livraison" checked> Livrées chez moi (port en plus)</label>
+        <label><input type="radio" name="reception" value="retrait"> Retirées lors d'une animation ou d'un stand au Luxembourg (sans frais)</label>
+      </fieldset>
+      <p class="total" role="status"></p>
+      <button type="submit" class="envoyer">Réserver, sans payer</button>
+      <p class="note">Rien à payer aujourd'hui, et réserver ne vous engage à rien.
+      Votre adresse sert seulement à vous écrire quand l'impression se prépare,
+      puis elle est effacée. Formulaire hébergé par
+      <a href="https://formspree.io/legal/privacy-policy">Formspree</a>.</p>
+    </form>
+    <p class="message" role="status"></p>
+  </div>
+</template>
+<script>
+/* « Réserver » ouvre le formulaire dans la fiche même. Les réservations
+   arrivent au même endroit et sous les mêmes noms de champs que celles de
+   commander.html (boite_depart, extension, niveau_a1, niveau_a2, collection). */
+(function () {
+  var modele = document.getElementById('modele-reservation');
+  if (!modele || !window.fetch) return;   // sans JavaScript, les liens mènent à commander.html
+  var BOITES = ['boite_depart', 'extension', 'niveau_a1', 'niveau_a2', 'collection'];
+  var PRIX = { collection: 34.90 }, PRIX_BOITE = 9.90, PAR_LOT = { collection: 4 };
+  var n = 0;
+
+  function euros(x) { return x.toFixed(2).replace('.', ',') + ' €'; }
+
+  function panneau(fiche, boite) {
+    var p = fiche.querySelector('.panneau');
+    if (p) return p;
+    p = modele.content.firstElementChild.cloneNode(true);
+    n += 1;
+    // identifiants uniques pour relier chaque libellé à son champ
+    p.querySelectorAll('[data-id]').forEach(function (c) { c.id = 'r' + n + '-' + c.dataset.id; });
+    p.querySelectorAll('[data-pour]').forEach(function (l) { l.htmlFor = 'r' + n + '-' + l.dataset.pour; });
+    var form = p.querySelector('form');
+    var q = p.querySelector('[data-id="quantite"]');
+    q.name = boite;
+    BOITES.forEach(function (b) {   // les autres sortes à zéro, comme dans commander.html
+      if (b === boite) return;
+      var h = document.createElement('input'); h.type = 'hidden'; h.name = b; h.value = '0'; form.appendChild(h);
+    });
+    var total = p.querySelector('.total');
+    function maj() {
+      var v = Math.max(1, Math.min(20, parseInt(q.value, 10) || 1));
+      var nb = v * (PAR_LOT[boite] || 1);
+      total.textContent = (boite === 'collection'
+        ? v + (v > 1 ? ' collections' : ' collection') + ' (' + nb + ' boîtes), '
+        : nb + (nb > 1 ? ' boîtes, ' : ' boîte, '))
+        + euros(v * (PRIX[boite] || PRIX_BOITE)) + ' hors port, à payer plus tard.';
+    }
+    p.querySelectorAll('[data-pas]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        q.value = Math.max(1, Math.min(20, (parseInt(q.value, 10) || 1) + parseInt(b.dataset.pas, 10))); maj();
+      });
+    });
+    q.addEventListener('input', maj);
+    maj();
+    var message = p.querySelector('.message');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      q.value = Math.max(1, Math.min(20, parseInt(q.value, 10) || 1));
+      var envoyer = form.querySelector('.envoyer');
+      envoyer.disabled = true;
+      message.textContent = 'Envoi…';
+      fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          p.classList.add('fait');
+          message.textContent = 'C\'est réservé ! Nous vous écrirons quand l\'impression se prépare. Merci !';
+        })
+        .catch(function () {
+          envoyer.disabled = false;
+          message.textContent = 'L\'envoi n\'a pas marché. Réessayez dans un instant.';
+        });
+    });
+    fiche.querySelector('.corps').appendChild(p);
+    return p;
+  }
+
+  document.querySelectorAll('.fiche [data-boite]').forEach(function (lien) {
+    var fiche = lien.closest('.fiche');
+    var bouton = fiche.querySelector('.bouton');
+    bouton.setAttribute('aria-expanded', 'false');
+    lien.addEventListener('click', function (e) {
+      e.preventDefault();
+      var p = panneau(fiche, lien.dataset.boite);
+      var ouvrir = p.hidden;
+      // une seule fiche ouverte à la fois
+      document.querySelectorAll('.fiche.ouverte').forEach(function (f) {
+        if (f === fiche) return;
+        f.classList.remove('ouverte'); f.querySelector('.panneau').hidden = true;
+        f.querySelector('.bouton').setAttribute('aria-expanded', 'false');
+      });
+      p.hidden = !ouvrir;
+      fiche.classList.toggle('ouverte', ouvrir);
+      bouton.setAttribute('aria-expanded', String(ouvrir));
+      if (ouvrir) {
+        p.querySelector('[data-id="quantite"]').focus({ preventScroll: true });
+        p.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>
