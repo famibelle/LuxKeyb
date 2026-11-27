@@ -168,6 +168,11 @@ p{margin:0}
 .cartes .duo{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
 .cartes figure{margin:0}
 .cartes figure img{width:100%;height:auto;display:block}
+/* Les cartes à jouer : texte à gauche, photo de la maquette à droite. */
+.jeu-papier figure{margin:0}
+.jeu-papier figure img{width:100%;height:auto;display:block;border-radius:14px}
+.jeu-papier figcaption{font-size:15px;color:var(--encre-douce);margin-top:10px}
+.jeu-papier .liens{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:22px}
 .surtitre-clair{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--rouge);font-weight:700;margin-bottom:12px}
 .jeux{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
 .jeux span{font-family:var(--display);font-weight:600;font-size:15px;padding:6px 12px;border-radius:10px;background:var(--papier);border:1px solid var(--filet)}
@@ -393,6 +398,23 @@ p{margin:0}
         </div>
       </div>
       <p style="margin-top:32px"><a href="faq.html" hreflang="fr">Todas as respostas <small class="langue-fr" title="em francês">FR</small></a></p>
+    </div>
+  </section>
+
+  <section class="bande jeu-papier" aria-labelledby="t-jeu-papier">
+    <div class="enveloppe duo">
+      <div>
+        <p class="surtitre-clair">Na mesa</p>
+        <h2 id="t-jeu-papier">As cartas, em breve de verdade</h2>
+        <p class="chapo">O projeto está a preparar um jogo de cartas em luxemburguês, o Wuertduell, para jogar a dois à volta de uma mesa. Cada caixa opõe duas famílias de palavras, e um código na caixa vai juntar as suas cartas ao seu caderno na aplicação. Ainda nada está decidido: diga-nos se o jogo lhe agrada.</p>
+        <p class="liens"><a href="sondage-cartes-pt.html">Dar a minha opinião num minuto</a>
+        <a href="regle-du-jeu.html" hreflang="fr">Ler as regras do jogo <small class="langue-fr" title="em francês">FR</small></a></p>
+      </div>
+      <figure>
+        <img src="assets/accueil/boite-ouverte.webp" width="1400" height="898" loading="lazy"
+             alt="Maquete da caixa inicial do Wuertduell, aberta, em azul-noite e dourado. Ao lado, na mesa: o verso de uma carta, a carta de regras e três cartas, Hond (cão), Kaz (gato) e Kéis (queijo)">
+        <figcaption>Uma maquete da caixa inicial: as cartas, o verso e a carta de regras.</figcaption>
+      </figure>
     </div>
   </section>
 
