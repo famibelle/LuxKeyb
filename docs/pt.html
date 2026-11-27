@@ -174,8 +174,11 @@ p{margin:0}
 .jeu-papier figcaption{font-size:15px;color:var(--encre-douce);margin-top:10px}
 .jeu-papier .liens{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;margin-top:24px}
 /* Le bouton vers la vitrine des boîtes, rouge comme celui de precommande.html. */
-.jeu-papier .reserver{display:inline-block;text-decoration:none;font-weight:700;color:#fff;background:var(--rouge);border-radius:10px;padding:12px 22px;transition:transform .15s ease,box-shadow .15s ease}
-.jeu-papier .reserver:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(237,41,57,.35)}
+.jeu-papier .reserver{display:inline-block;text-decoration:none;font-weight:700;color:#fff;background:var(--rouge);border-radius:10px;padding:12px 22px;transition:transform .2s ease,box-shadow .2s ease}
+.jeu-papier .reserver:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(237,41,57,.35)}
+/* La photo mène aussi à la vitrine, et se soulève comme les liens vers Google Play. */
+.vers-precommande{display:block;border-radius:14px;transition:transform .2s ease}
+.vers-precommande:hover{transform:translateY(-3px)}
 /* Ce que le jeu apporte, avant le prix. */
 .atouts{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:14px}
 .atouts li{position:relative;padding-left:36px;color:var(--encre-douce)}
@@ -250,7 +253,7 @@ p{margin:0}
   .theme-toggle{margin-left:auto}
   .pied nav{grid-template-columns:minmax(0,1fr)}
 }
-@media (prefers-reduced-motion:reduce){.telephone{transform:none}.vers-play,.vers-play:hover,.badge-play,.badge-play:hover,.jeu-papier .reserver,.jeu-papier .reserver:hover{transition:none;transform:none}}
+@media (prefers-reduced-motion:reduce){.telephone{transform:none}.vers-play,.vers-play:hover,.badge-play,.badge-play:hover,.jeu-papier .reserver,.jeu-papier .reserver:hover,.vers-precommande,.vers-precommande:hover{transition:none;transform:none}}
 .langue-fr{font-size:11px;font-weight:700;letter-spacing:.06em;border:1px solid var(--filet);border-radius:4px;padding:0 4px;margin-left:6px;vertical-align:1px;color:var(--encre-douce)}
 .installer .langue-fr,.ouverture .langue-fr{border-color:rgba(255,255,255,.35);color:var(--sur-nuit-doux)}
 </style>
@@ -439,8 +442,10 @@ p{margin:0}
         <a href="regle-du-jeu.html" hreflang="fr">Ler as regras do jogo <small class="langue-fr" title="em francês">FR</small></a></p>
       </div>
       <figure>
+        <a class="vers-precommande" href="precommande.html" aria-label="Ver as caixas e reservar">
         <img src="assets/accueil/boite-ouverte.webp" width="1400" height="898" loading="lazy"
              alt="Maquete da caixa inicial do Wuertduell, aberta, em azul-noite e dourado. Ao lado, na mesa: o verso de uma carta, a carta de regras e três cartas, Hond (cão), Kaz (gato) e Kéis (queijo)">
+        </a>
         <figcaption>Uma maquete da caixa inicial: as cartas, o verso e a carta de regras.</figcaption>
       </figure>
     </div>
