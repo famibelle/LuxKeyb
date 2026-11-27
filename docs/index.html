@@ -175,7 +175,10 @@ p{margin:0}
 .jeu-papier figure{margin:0}
 .jeu-papier figure img{width:100%;height:auto;display:block;border-radius:14px}
 .jeu-papier figcaption{font-size:15px;color:var(--encre-douce);margin-top:10px}
-.jeu-papier .liens{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:22px}
+.jeu-papier .liens{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;margin-top:24px}
+/* Le bouton vers la vitrine des boîtes, rouge comme celui de precommande.html. */
+.jeu-papier .reserver{display:inline-block;text-decoration:none;font-weight:700;color:#fff;background:var(--rouge);border-radius:10px;padding:12px 22px;transition:transform .15s ease,box-shadow .15s ease}
+.jeu-papier .reserver:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(237,41,57,.35)}
 .surtitre-clair{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--rouge);font-weight:700;margin-bottom:12px}
 .jeux{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
 .jeux span{font-family:var(--display);font-weight:600;font-size:15px;padding:6px 12px;border-radius:10px;background:var(--papier);border:1px solid var(--filet)}
@@ -233,7 +236,7 @@ p{margin:0}
   .theme-toggle{margin-left:auto}
   .pied nav{grid-template-columns:minmax(0,1fr)}
 }
-@media (prefers-reduced-motion:reduce){.telephone{transform:none}.vers-play,.vers-play:hover,.badge-play,.badge-play:hover{transition:none;transform:none}}
+@media (prefers-reduced-motion:reduce){.telephone{transform:none}.vers-play,.vers-play:hover,.badge-play,.badge-play:hover,.jeu-papier .reserver,.jeu-papier .reserver:hover{transition:none;transform:none}}
 </style>
 </head>
 <body>
@@ -439,12 +442,14 @@ p{margin:0}
       <div>
         <p class="surtitre-clair">Sur la table</p>
         <h2 id="t-jeu-papier">Les cartes, bientôt en vrai</h2>
-        <p class="chapo">Le projet prépare un jeu de cartes en luxembourgeois, le
-        Wuertduell, à jouer à deux autour d'une table. Chaque boîte oppose deux
-        familles de mots, et un code dans la boîte ajoutera ses cartes à votre
-        carnet dans l'application. Rien n'est encore fixé : dites-nous si le jeu
-        vous donne envie.</p>
-        <p class="liens"><a href="sondage-cartes.html">Donner mon avis en une minute</a>
+        <p class="chapo">Le Wuertduell est un jeu de cartes en luxembourgeois, à
+        jouer à deux autour d'une table. Quatre boîtes de 54 cartes, à
+        9,90 € la boîte : la boîte de départ, l'extension, Niveau A1 et
+        Niveau A2. Un code dans chaque boîte ajoute ses cartes à votre carnet
+        dans l'application.</p>
+        <p class="chapo" style="margin-top:14px">Réservez vos boîtes sans rien payer :
+        l'impression part dès que 350 boîtes sont réservées.</p>
+        <p class="liens"><a class="reserver" href="precommande.html">Voir les boîtes et réserver</a>
         <a href="regle-du-jeu.html">Lire la règle du jeu</a></p>
       </div>
       <figure>
