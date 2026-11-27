@@ -216,6 +216,12 @@ des avis sur l'application.</p>
   }
 
   champs.forEach(function (c) { c.addEventListener('input', majTotal); });
+  // Arrivée depuis la vitrine (precommande.html?boite=extension) : la boîte
+  // cliquée est présélectionnée, les autres remises à zéro.
+  var choisie = new URLSearchParams(location.search).get('boite');
+  if (choisie && form.elements[choisie] && form.elements[choisie].classList.contains('quantite')) {
+    champs.forEach(function (c) { c.value = c.name === choisie ? 1 : 0; });
+  }
   majTotal();
 
   form.addEventListener('submit', function (e) {
