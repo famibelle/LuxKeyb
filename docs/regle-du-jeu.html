@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Règle du jeu : la Bataille des mots et le Wuertduell</title>
+<meta name="description" content="La règle des deux jeux de cartes du Wuertduell, pour apprendre le luxembourgeois à deux : la Bataille des mots en 5 minutes, le Wuertduell en 15. Rien d'autre que les cartes, et chaque mot se lit à voix haute.">
+<link rel="canonical" href="https://famibelle.github.io/LuxKeyb/regle-du-jeu.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="De Lëtzebuerger Clavier">
+<meta property="og:title" content="Règle du jeu : la Bataille des mots et le Wuertduell">
+<meta property="og:description" content="Deux jeux de cartes à deux pour apprendre le luxembourgeois. La règle en quelques étapes.">
+<meta property="og:url" content="https://famibelle.github.io/LuxKeyb/regle-du-jeu.html">
+<meta property="og:image" content="https://famibelle.github.io/LuxKeyb/assets/og/precommande.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="assets/fredoka-embed.css">
+<script>(function(){try{var t=localStorage.getItem('kreyol-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script defer src="assets/theme.js"></script>
+<!--
+  Règle des deux jeux de cartes (Bataille des mots, Wuertduell).
+  Page HTML autonome depuis le 2026-11-28 (avant : regle-du-jeu.md sous le
+  thème Jekyll par défaut), même habillage que precommande.html.
+  Les illustrations sont dans assets/regle/ et tutoient le joueur : la
+  règle tutoie aussi ; le reste du site vouvoie.
+-->
+<style>
+:root{
+  color-scheme:light;
+  --nuit:#003876; --rouge:#ED2939; --ciel:#00A1DE; --vert:#1E8E4E;
+  --encre:#1C2624; --encre-douce:#4A5654; --papier:#F5F5F5; --carte:#FFFFFF;
+  --filet:#DDE3E6; --lien:#003876; --titre:#003876; --doux:#EEF3F8;
+  --sur-nuit:#FFFFFF; --sur-nuit-doux:#C8D7EA;
+  --display:"Fredoka","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  --texte:-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --nuit:#0A2A57; --encre:#E8EEF2; --encre-douce:#AEBBC4; --papier:#111A22; --carte:#18232D;
+  --filet:#2A3742; --lien:#7FD0F0; --titre:#E8EEF2; --doux:#1D2A36; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --nuit:#0A2A57; --encre:#E8EEF2; --encre-douce:#AEBBC4; --papier:#111A22; --carte:#18232D;
+  --filet:#2A3742; --lien:#7FD0F0; --titre:#E8EEF2; --doux:#1D2A36; color-scheme:dark;}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--papier);color:var(--encre);font-family:var(--texte);font-size:17px;line-height:1.6}
+img{max-width:100%}
+a{color:var(--lien)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--ciel);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.15;margin:0}
+p{margin:0}
+ul,ol{margin:0}
+.enveloppe{max-width:880px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.mot{font-style:italic}
+
+/* ---------- En-tête ---------- */
+.ouverture{background:var(--nuit);color:var(--sur-nuit)}
+.entete{display:flex;align-items:center;gap:12px 16px;flex-wrap:wrap;padding-block:18px}
+.marque{display:flex;align-items:center;gap:10px;color:var(--sur-nuit);text-decoration:none;font-family:var(--display);font-weight:600;font-size:19px;margin-right:auto}
+.marque img{width:40px;height:40px;border-radius:12px;background:#fff;padding:3px}
+.liens-tete{display:flex;gap:4px;font-size:15px;flex-wrap:wrap}
+.liens-tete a{color:var(--sur-nuit-doux);text-decoration:none;padding:6px 8px;border-radius:6px}
+.liens-tete a:hover{color:#fff;background:rgba(255,255,255,.1)}
+.theme-toggle{font:inherit;font-size:14px;cursor:pointer;background:transparent;color:var(--sur-nuit-doux);border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:5px 12px}
+.theme-toggle:hover{color:#fff;border-color:#fff}
+.titre{padding-block:22px 40px}
+.surtitre{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--ciel);font-weight:700;margin-bottom:10px}
+.titre h1{font-size:clamp(34px,6vw,54px)}
+.titre h1 span{display:block;color:var(--rouge)}
+.chapo{color:var(--sur-nuit-doux);font-size:19px;max-width:56ch;margin-top:14px}
+.essentiel{list-style:none;padding:0;margin-top:24px;display:flex;flex-wrap:wrap;gap:10px}
+.essentiel li{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:99px;padding:6px 14px;font-size:15px}
+.essentiel strong{color:#fff}
+
+/* ---------- Sommaire ---------- */
+.sommaire{background:var(--carte);border-bottom:1px solid var(--filet);position:sticky;top:0;z-index:5}
+.sommaire ol{list-style:none;padding:0;display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+.sommaire ol::-webkit-scrollbar{display:none}
+.sommaire a{display:block;white-space:nowrap;text-decoration:none;font-size:15px;font-weight:600;color:var(--titre);background:var(--doux);border-radius:99px;padding:7px 14px}
+.sommaire a:hover{background:var(--filet)}
+
+/* ---------- Sections ---------- */
+section{padding-block:44px 8px}
+section > .enveloppe > h2{font-size:clamp(28px,4.5vw,38px);color:var(--titre)}
+.fiche-jeu{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.fiche-jeu span{font-size:14px;font-weight:700;color:var(--encre-douce);background:var(--carte);border:1px solid var(--filet);border-radius:99px;padding:4px 12px}
+.intro{margin-top:14px;font-size:18px;color:var(--encre-douce);max-width:60ch}
+h3{font-size:23px;color:var(--titre);margin-top:36px}
+h3 + p,h3 + ul,h3 + ol{margin-top:10px}
+.texte{margin-top:10px;max-width:62ch}
+figure{margin:20px 0 0}
+figure img{display:block;width:100%;height:auto;border-radius:16px}
+figcaption{margin-top:8px;font-size:15px;color:var(--encre-douce);text-align:center}
+.glisser{display:none}
+/* La carte annotée : sur téléphone, on ne garde que la carte, et sa légende
+   passe en texte (celle du dessin deviendrait illisible). */
+.legende{display:none;list-style:none;padding:0;margin-top:14px;gap:8px;counter-reset:num}
+.legende li{counter-increment:num;position:relative;padding-left:36px}
+.legende li::before{content:counter(num);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:#E0242F;color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center}
+.legende strong{color:var(--titre)}
+
+/* La règle d'or, mise à part */
+.regle-or{display:flex;gap:14px;align-items:center;margin-top:28px;background:#FFF4D6;color:#3A2E05;border:2px solid #F2C75C;border-radius:14px;padding:16px 18px;font-size:18px}
+.regle-or strong{font-family:var(--display);font-weight:600}
+.regle-or svg{flex:none}
+:root[data-theme="dark"] .regle-or{background:#3A3216;color:#FFF1C9;border-color:#8A7230}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .regle-or{background:#3A3216;color:#FFF1C9;border-color:#8A7230}}
+
+/* Le reste de la carte, en trois lignes */
+.aussi{list-style:none;padding:0;margin-top:14px;display:grid;gap:8px}
+.aussi li{background:var(--carte);border:1px solid var(--filet);border-radius:10px;padding:10px 14px}
+.aussi strong{color:var(--titre)}
+
+/* Étapes numérotées */
+.etapes{list-style:none;padding:0;counter-reset:etape;display:grid;gap:12px;margin-top:16px}
+.etapes > li{counter-increment:etape;position:relative;background:var(--carte);border:1px solid var(--filet);border-radius:14px;padding:16px 18px 16px 64px}
+.etapes > li::before{content:counter(etape);position:absolute;left:16px;top:14px;width:34px;height:34px;border-radius:50%;background:var(--nuit);color:#fff;font-family:var(--display);font-weight:700;font-size:19px;display:flex;align-items:center;justify-content:center}
+.etapes > li > strong:first-child{display:block;font-family:var(--display);font-weight:600;font-size:20px;color:var(--titre);margin-bottom:2px}
+.etapes .sous{margin-top:10px;padding-left:20px;display:grid;gap:6px}
+
+/* La mise en place : trésor, main, pioche */
+.trois{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.case{background:var(--carte);border:1px solid var(--filet);border-radius:14px;padding:14px 16px}
+.case b{display:block;font-family:var(--display);font-size:30px;line-height:1;color:var(--rouge)}
+.case strong{display:block;font-family:var(--display);font-weight:600;font-size:19px;color:var(--titre);margin-top:6px}
+.case p{font-size:15px;color:var(--encre-douce);margin-top:4px}
+
+/* Les quatre sortes de cartes */
+.sortes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.sorte{display:flex;gap:12px;align-items:flex-start;background:var(--doux);border-radius:12px;padding:12px 14px}
+.sorte svg{flex:none;margin-top:2px}
+.sorte strong{display:block;color:var(--titre)}
+.sorte p{font-size:15px;line-height:1.45}
+
+/* Les bonus : +1 */
+.bonus{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.bonus .case b{color:var(--vert)}
+
+/* Encadrés */
+.gagner{margin-top:28px;background:var(--nuit);color:var(--sur-nuit);border-radius:16px;padding:20px 22px}
+.gagner h3{margin:0;color:#fff;font-size:22px}
+.gagner p{margin-top:6px;color:var(--sur-nuit-doux)}
+.gagner strong{color:#fff}
+.memo{margin-top:28px;border:2px dashed var(--filet);border-radius:16px;padding:18px 20px}
+.memo h3{margin:0;font-size:20px}
+.memo ol{margin-top:10px;padding-left:22px;display:grid;gap:4px}
+
+/* Les paquets */
+.paquets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}
+.paquet{background:var(--carte);border:1px solid var(--filet);border-radius:14px;padding:16px 18px}
+.paquet h3{margin:0;font-size:21px}
+.paquet p,.paquet ul{margin-top:8px;font-size:15.5px;line-height:1.5}
+.paquet ul{padding-left:18px;display:grid;gap:4px}
+
+/* Fin : les deux actions */
+.fin{padding-block:52px 56px}
+.fin .boite-fin{background:var(--carte);border:1px solid var(--filet);border-radius:18px;padding:26px 24px;text-align:center}
+.fin h2{font-size:clamp(26px,4vw,34px);color:var(--titre)}
+.fin p{margin:10px auto 0;max-width:52ch;color:var(--encre-douce)}
+.actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:20px}
+.bouton{display:inline-block;text-decoration:none;font-weight:700;color:#fff;background:var(--rouge);border-radius:10px;padding:13px 22px}
+.bouton.vert{background:#17773F}
+.bouton:hover{box-shadow:0 4px 12px rgba(0,0,0,.2)}
+
+.pied{padding-block:28px 48px;border-top:1px solid var(--filet);font-size:15px;color:var(--encre-douce)}
+.pied a{color:var(--encre-douce)}
+
+@media (max-width:700px){
+  body{font-size:16.5px}
+  .trois,.bonus,.paquets,.sortes{grid-template-columns:minmax(0,1fr)}
+  .etapes > li{padding:14px 14px 14px 58px}
+  .etapes > li::before{left:12px}
+  .liens-tete{order:3;width:100%}
+  .carte-annotee .cadre{overflow:hidden;border-radius:16px;max-width:300px;margin:0 auto;aspect-ratio:350/470}
+  .carte-annotee .cadre img{width:217%;max-width:none;border-radius:0}
+  .legende{display:grid}
+  figure.defile{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:16px}
+  figure.defile img{width:660px;max-width:none}
+  figure.defile figcaption{position:sticky;left:0;width:calc(100vw - 32px)}
+  .glisser{display:inline}
+}
+</style>
+</head>
+<body>
+
+<header class="ouverture">
+  <div class="enveloppe">
+    <div class="entete">
+      <a class="marque" href="./">
+        <img src="assets/logo/luxkeyb-logo-192.png" alt="" width="40" height="40">
+        de Lëtzebuerger Clavier
+      </a>
+      <nav class="liens-tete" aria-label="Site">
+        <a href="./">Accueil</a>
+        <a href="guide.html">Guide</a>
+        <a href="precommande.html">La boutique</a>
+        <a href="faq.html">Aide</a>
+      </nav>
+      <button type="button" class="theme-toggle" aria-label="Passer en mode sombre">🌙 Fond sombre</button>
+    </div>
+    <div class="titre">
+      <p class="surtitre">Le Wuertduell</p>
+      <h1>Règle du jeu <span>deux jeux, mêmes cartes</span></h1>
+      <p class="chapo">Les cartes du Wuertduell se jouent à deux, sur la table. La Bataille des mots s'apprend en une minute&nbsp;; le Wuertduell ajoute un peu de stratégie.</p>
+      <ul class="essentiel">
+        <li><strong>2 joueurs</strong></li>
+        <li><strong>Les cartes</strong>, rien d'autre</li>
+        <li>Chaque mot <strong>se lit à voix haute</strong></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<nav class="sommaire" aria-label="Sommaire">
+  <div class="enveloppe">
+    <ol>
+      <li><a href="#carte">Lire une carte</a></li>
+      <li><a href="#bataille">La Bataille des mots</a></li>
+      <li><a href="#wuertduell">Le Wuertduell</a></li>
+      <li><a href="#tour-en-bref">Le tour en bref</a></li>
+      <li><a href="#les-paquets">Les paquets</a></li>
+    </ol>
+  </div>
+</nav>
+
+<main>
+
+<section id="carte">
+  <div class="enveloppe">
+    <h2>Lire une carte</h2>
+    <p class="intro">Tout ce qui sert à jouer est écrit sur la carte. Ni dé, ni jeton, ni crayon&nbsp;: et tout ce qu'on gagne, ce sont des cartes.</p>
+    <figure class="carte-annotee">
+      <div class="cadre"><img src="assets/regle/carte-annotee.svg" width="760" height="470" alt="La carte « Kaz » annotée : 1, la Force 3 en haut à gauche, le nombre de lettres du mot ; 2, le dessin du chat ; 3, le mot, à lire à voix haute ; 4, la pastille « Nom féminin » ; 5, le sens « chat », que l'adversaire peut vérifier ; 6, le coût, une pièce sur quatre places ; 7, le type, un personnage, donc un nom"></div>
+      <ol class="legende" aria-hidden="true">
+        <li><strong>La Force</strong>&nbsp;: le nombre de lettres du mot. K-a-z, 3.</li>
+        <li><strong>Le dessin</strong>&nbsp;: il montre ce que le mot veut dire.</li>
+        <li><strong>Le mot</strong>, à lire à voix haute pour jouer la carte.</li>
+        <li><strong>La nature et le genre</strong>&nbsp;: nom, verbe, adjectif ou nombre&nbsp;; ici féminin.</li>
+        <li><strong>Le sens</strong>&nbsp;: la réponse, que l'adversaire peut vérifier.</li>
+        <li><strong>Le coût</strong>&nbsp;: on compte les pièces d'or. Kaz coûte 1.</li>
+        <li><strong>Le type</strong>&nbsp;: ce que fait la carte. Un personnage, c'est un nom.</li>
+      </ol>
+    </figure>
+    <p class="texte">Sur la carte, on trouve aussi&nbsp;:</p>
+    <ul class="aussi">
+      <li><strong>La phrase d'exemple</strong>&nbsp;: un bonus pour qui la lit (voir <a href="#bonus">les bonus</a>).</li>
+      <li><strong>Le médaillon</strong>, en bas au milieu&nbsp;: le paquet de la carte, pour la ranger après la partie.</li>
+      <li><strong>Les étoiles</strong>, de ★☆☆☆☆ à ★★★★★&nbsp;: la rareté. Elles ne comptent pas dans le jeu.</li>
+    </ul>
+    <p class="texte">Tous les mots, leurs sens, leurs genres et leurs phrases viennent du <a href="https://lod.lu">Lëtzebuerger Online Dictionnaire</a>, le dictionnaire officiel du Zenter fir d'Lëtzebuerger Sprooch.</p>
+
+    <div class="regle-or">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>
+      <p><strong>La règle d'or, dans les deux jeux&nbsp;:</strong> pour jouer une carte, on lit son mot à voix haute.</p>
+    </div>
+  </div>
+</section>
+
+<section id="bataille">
+  <div class="enveloppe">
+    <h2>Jeu 1&nbsp;: la Bataille des mots</h2>
+    <div class="fiche-jeu"><span>2 joueurs</span><span>5 minutes</span><span>Le plus simple</span></div>
+    <p class="intro">Le mot le plus long gagne. Idéal pour une première partie.</p>
+    <ol class="etapes">
+      <li><strong>Partagez les cartes</strong>Mélangez les cartes, par exemple les 52 de la boîte, et faites deux paquets, faces cachées. Un paquet chacun.</li>
+      <li><strong>Retournez une carte</strong>Chacun retourne la première carte de son paquet et lit le mot à voix haute.</li>
+      <li><strong>Le mot le plus long gagne</strong>Son joueur prend les deux cartes et les glisse sous son paquet. La Force, en haut à gauche, compte les lettres pour vous.</li>
+      <li><strong>Égalité&nbsp;?</strong>Le premier qui dit le sens du mot en français emporte les deux cartes.</li>
+    </ol>
+    <figure>
+      <img src="assets/regle/bataille.svg" width="760" height="400" alt="Deux cartes retournées : Kaz, Force 3, contre Päerd, Force 5. Päerd gagne et emporte les deux cartes">
+      <figcaption>Une manche&nbsp;: Päerd a deux lettres de plus que Kaz.</figcaption>
+    </figure>
+    <div class="gagner">
+      <h3>Pour gagner</h3>
+      <p>Avoir <strong>toutes les cartes</strong>. Ou, pour une partie courte, en avoir <strong>le plus au bout de dix manches</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="wuertduell">
+  <div class="enveloppe">
+    <h2>Jeu 2&nbsp;: le Wuertduell</h2>
+    <div class="fiche-jeu"><span>2 joueurs</span><span>15 minutes</span><span>Avec un peu de stratégie</span></div>
+    <p class="intro">Posez des noms, renforcez-les avec des verbes et des adjectifs, et prenez le trésor de l'adversaire.</p>
+
+    <h3>La mise en place</h3>
+    <p class="texte">Chaque joueur prend un paquet de <strong>26&nbsp;cartes</strong> et le mélange&nbsp;: l'un des deux paquets de la boîte, ou celui qu'il a composé (voir <a href="#les-paquets">les paquets</a>).</p>
+    <div class="trois">
+      <div class="case"><b>5</b><strong>Le trésor</strong><p>Les 5 premières cartes, posées faces cachées devant toi, sans les regarder. C'est ce que l'adversaire veut prendre.</p></div>
+      <div class="case"><b>5</b><strong>La main</strong><p>Les 5 cartes suivantes, que tu prends en main.</p></div>
+      <div class="case"><b>16</b><strong>La pioche</strong><p>Le reste du paquet, face cachée.</p></div>
+    </div>
+    <figure class="defile">
+      <img src="assets/regle/table.svg" width="760" height="625" alt="Le côté d'un joueur : le trésor de cinq cartes faces cachées, la réserve de trois cartes faces cachées, la pioche, deux noms posés, Hond avec l'adjectif grouss glissé dessous et Fësch, et la main : drénken, Brout et le nombre véier">
+      <figcaption>Ton côté de la table, au troisième tour. <span class="glisser">Faites glisser l'image pour tout voir.</span></figcaption>
+    </figure>
+
+    <h3>À ton tour, quatre étapes</h3>
+    <ol class="etapes">
+      <li><strong>Pioche</strong>Prends une carte de ta pioche. Si elle est vide, continue sans piocher.</li>
+      <li><strong>Remplis ta réserve</strong>Pose une carte de ta main face cachée sur le côté&nbsp;: c'est ta réserve. Une seule par tour. Chaque carte de la réserve te donne <strong>1 pièce</strong> à dépenser, à chaque tour.</li>
+      <li><strong>Pose des cartes</strong>Autant que tes pièces le permettent&nbsp;: une carte coûte le nombre de pièces d'or qu'elle montre, de 1 à 4. Lis le mot à voix haute.
+        <div class="sortes">
+          <div class="sorte">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="#C21F2E" aria-hidden="true"><circle cx="12" cy="7" r="4.5"/><path d="M3 22c0-5 4-8.5 9-8.5s9 3.5 9 8.5z"/></svg>
+            <div><strong>Un nom</strong><p>Un personnage. Il se pose devant toi. Trois au plus.</p></div>
+          </div>
+          <div class="sorte">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="#E8A317" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
+            <div><strong>Un verbe</strong><p>Une action&nbsp;: +3 de Force à l'un de tes noms pour ce tour. Puis la carte est défaussée.</p></div>
+          </div>
+          <div class="sorte">
+            <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z" fill="#1D5FB0"/><path d="M12 8v8M8 12h8" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+            <div><strong>Un adjectif</strong><p>Se glisse sous l'un de tes noms&nbsp;: +2 de Force pour toujours. <span class="mot" lang="lb">grouss</span> sous <span class="mot" lang="lb">Hond</span>, et voilà un grand chien.</p></div>
+          </div>
+          <div class="sorte">
+            <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="5" width="22" height="14" rx="3" fill="#1E7A44"/><text x="12" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="Arial,sans-serif">123</text></svg>
+            <div><strong>Un nombre</strong><p>Ne coûte rien. Dis-le en luxembourgeois&nbsp;: il te donne 1 pièce de plus pour ce tour. Puis il est défaussé.</p></div>
+          </div>
+        </div>
+      </li>
+      <li><strong>Attaque</strong>Avec chacun des noms que tu avais déjà posés au tour d'avant.
+        <ul class="sous">
+          <li><strong>L'adversaire bloque</strong> avec l'un de ses noms&nbsp;: la plus grande Force gagne, l'autre carte est défaussée. En cas d'égalité, les deux le sont.</li>
+          <li><strong>Personne ne bloque</strong>&nbsp;: tu prends une carte du trésor de l'adversaire, sans la regarder, et tu la poses à côté de toi.</li>
+        </ul>
+      </li>
+    </ol>
+    <figure class="defile">
+      <img src="assets/regle/combat.svg" width="760" height="430" alt="Hond attaque : Force 4, plus 2 pour l'adjectif grouss, plus 1 pour le sens dit à voix haute, soit 7. Fësch bloque avec 5. Hond gagne et Fësch est défaussé">
+      <figcaption>Un combat&nbsp;: 7 contre 5. <span class="glisser">Faites glisser l'image pour tout voir.</span></figcaption>
+    </figure>
+
+    <h3 id="bonus">Les bonus, +1 chacun</h3>
+    <div class="bonus">
+      <div class="case"><b>+1</b><strong>La famille</strong><p>Deux de tes noms ont le même genre, écrit sur leur pastille&nbsp;: chacun gagne +1. <span class="mot" lang="lb">d'Kaz</span> et <span class="mot" lang="lb">d'Ameis</span> sont féminines. Un nom à deux genres, comme <span class="mot" lang="lb">Krokodil</span>, est des deux familles.</p></div>
+      <div class="case"><b>+1</b><strong>Le sens</strong><p>Tu dis le sens du nom qui attaque. Ton adversaire vérifie sur la carte.</p></div>
+      <div class="case"><b>+1</b><strong>La phrase</strong><p>Tu lis à voix haute la phrase d'exemple du nom qui attaque.</p></div>
+    </div>
+
+    <h3>Les cartes spéciales</h3>
+    <p class="texte">Les cartes des sept jeux ont chacune un pouvoir écrit dessus. La carte ultra rare de la <strong>Fierkelsmaart</strong> prend une carte du trésor de l'adversaire, une fois par partie.</p>
+
+    <div class="gagner">
+      <h3>Pour gagner</h3>
+      <p>Prends <strong>les 5 cartes du trésor</strong> de ton adversaire. Celui qui n'a plus de trésor a perdu.</p>
+    </div>
+
+    <div class="memo" id="tour-en-bref">
+      <h3>Le tour en bref</h3>
+      <ol>
+        <li><strong>Pioche</strong> une carte.</li>
+        <li><strong>Réserve</strong>&nbsp;: une carte de ta main, face cachée. 1 carte = 1 pièce par tour.</li>
+        <li><strong>Pose</strong> ce que tes pièces paient, en lisant chaque mot. Nom&nbsp;: se pose. Verbe&nbsp;: +3 ce tour. Adjectif&nbsp;: +2 pour toujours. Nombre&nbsp;: +1 pièce.</li>
+        <li><strong>Attaque</strong> avec les noms posés avant ce tour. Bloqué&nbsp;: la plus grande Force gagne. Pas bloqué&nbsp;: une carte du trésor.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="les-paquets">
+  <div class="enveloppe">
+    <h2>Les paquets</h2>
+    <div class="paquets">
+      <div class="paquet">
+        <h3>La boîte</h3>
+        <p><strong>52 cartes à jouer</strong> en deux paquets de 26, prêts à jouer&nbsp;:</p>
+        <ul>
+          <li><strong lang="lb">Déieren</strong>, les animaux&nbsp;: <span class="mot" lang="lb">Kaz, Hond, Päerd, Elefant…</span></li>
+          <li><strong lang="lb">Iessen</strong>, ce qu'on mange&nbsp;: <span class="mot" lang="lb">Brout, Kéis, Banann, Hieselnoss…</span></li>
+        </ul>
+        <p>Chaque paquet&nbsp;: 14 noms, 5 verbes, 4 adjectifs et 3 nombres. Chaque nom a son jumeau de même Force dans l'autre paquet.</p>
+        <p>Deux cartes de plus résument la règle. L'une porte un <strong>code</strong> qui ajoute les 52 cartes au carnet de l'application («&nbsp;Recevoir&nbsp;», puis «&nbsp;Le code d'une carte en papier&nbsp;»).</p>
+      </div>
+      <div class="paquet">
+        <h3>L'extension</h3>
+        <p><strong>54 cartes</strong>, faites comme la boîte&nbsp;:</p>
+        <ul>
+          <li><strong lang="lb">Schoul</strong>, l'école&nbsp;: <span class="mot" lang="lb">Buch, Heft, Schoulsak…</span></li>
+          <li><strong lang="lb">Natur</strong>&nbsp;: <span class="mot" lang="lb">Bam, Sonn, Mound, Gletscher…</span></li>
+        </ul>
+        <p>Elle se joue seule, Schoul contre Natur, ou avec la boîte&nbsp;: ses paquets tiennent tête à Déieren comme à Iessen. Aucun mot n'est dans les deux boîtes.</p>
+      </div>
+      <div class="paquet">
+        <h3>Composer son paquet</h3>
+        <p>Avec plusieurs boîtes, chacun compose le sien&nbsp;:</p>
+        <ul>
+          <li><strong>26 cartes</strong> exactement&nbsp;;</li>
+          <li><strong>au moins la moitié de noms</strong>&nbsp;;</li>
+          <li><strong>un seul exemplaire</strong> de chaque mot.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fin">
+  <div class="enveloppe">
+    <div class="boite-fin">
+      <h2>Envie d'y jouer&nbsp;?</h2>
+      <p>Le jeu imprimé est en précommande&nbsp;: quatre boîtes de 54 cartes, 9,90&nbsp;€ la boîte ou 34,90&nbsp;€ les quatre. L'impression part dès que 350 boîtes sont réservées. Et le code de chaque boîte ajoute ses cartes à votre carnet dans l'application.</p>
+      <div class="actions">
+        <a class="bouton" href="precommande.html">Réserver mes boîtes sans payer</a>
+        <a class="bouton vert" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Dregle%26utm_campaign%3Dinstaller">Installer l'appli</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="pied">
+  <div class="enveloppe">
+    <p><a href="./">Accueil</a> · <a href="precommande.html">La boutique du Wuertduell</a> · <a href="guide.html">Le guide</a> · <a href="faq.html">Aide</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
