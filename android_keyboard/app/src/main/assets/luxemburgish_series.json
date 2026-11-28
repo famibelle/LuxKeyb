@@ -14,6 +14,7 @@
   "baignoire",
   "balance",
   "ballons",
+  "banane",
   "banc",
   "banque",
   "bateau",
@@ -37,6 +38,7 @@
   "camera",
   "camion",
   "canape",
+  "cartable",
   "carte",
   "casque",
   "casquette",
@@ -51,10 +53,13 @@
   "chien",
   "cigarette",
   "coeur",
+  "coffre",
+  "colle",
   "coucher_soleil",
   "couple",
   "couteau",
   "crayon",
+  "crepe",
   "danseurs",
   "dent",
   "des",
@@ -80,6 +85,7 @@
   "flocon",
   "foret",
   "fourmi",
+  "framboise",
   "fromage",
   "fruits",
   "garcon",
@@ -88,6 +94,7 @@
   "globe",
   "grand_mere",
   "grand_pere",
+  "guepe",
   "helicoptere",
   "homme",
   "hopital",
@@ -98,6 +105,7 @@
   "journal",
   "lait",
   "lampe",
+  "lapin",
   "legumes",
   "lettre",
   "lever_soleil",
@@ -122,6 +130,7 @@
   "mur",
   "nageur",
   "nez",
+  "noisette",
   "note",
   "oeil",
   "oeuf",
@@ -135,6 +144,7 @@
   "parking",
   "passeport",
   "pere",
+  "petit_pain",
   "pharmacie",
   "photo",
   "piece",
@@ -153,6 +163,7 @@
   "pouce_haut",
   "printemps",
   "prison",
+  "prune",
   "question",
   "qui",
   "quille",
@@ -179,6 +190,7 @@
   "ticket",
   "tiroir",
   "tomate",
+  "tour_eiffel",
   "train",
   "tram",
   "tunnel",
@@ -192,7 +204,6 @@
   "village",
   "ville",
   "vin",
-  "virus",
   "voiture"
  ],
  "exclus": {
@@ -211,50 +222,13 @@
     "pt"
    ]
   },
-  "banane": {
-   "Banann": [
-    "fr",
-    "de",
-    "en",
-    "pt"
-   ]
-  },
   "calcul": {
    "Calcul": [
     "fr"
    ]
   },
-  "cartable": {
-   "Schoulsak": [
-    "fr",
-    "de",
-    "en",
-    "pt"
-   ]
-  },
-  "coffre": {
-   "Safe": [
-    "de"
-   ]
-  },
-  "colle": {
-   "Koll": [
-    "fr",
-    "de",
-    "en",
-    "pt"
-   ]
-  },
   "coquelicot": {
    "Feierblumm": [
-    "fr",
-    "de",
-    "en",
-    "pt"
-   ]
-  },
-  "crepe": {
-   "Paangech": [
     "fr",
     "de",
     "en",
@@ -282,33 +256,14 @@
     "pt"
    ]
   },
-  "framboise": {
-   "Hammbier": [
-    "fr",
-    "de",
-    "en",
-    "pt"
-   ]
-  },
   "glacier": {
    "Gletscher": [
-    "fr",
-    "de",
-    "en",
-    "pt"
+    "de"
    ]
   },
   "grue": {
    "Kran": [
     "de"
-   ]
-  },
-  "guepe": {
-   "Harespel": [
-    "fr",
-    "de",
-    "en",
-    "pt"
    ]
   },
   "hetre": {
@@ -327,50 +282,24 @@
     "pt"
    ]
   },
-  "lapin": {
-   "Kanéngchen": [
-    "fr",
-    "de",
-    "en",
-    "pt"
-   ]
-  },
   "mathematiques": {
    "Mathematik": [
     "de"
    ]
   },
-  "noisette": {
-   "Hieselnoss": [
-    "fr",
-    "de",
-    "en",
-    "pt"
-   ]
-  },
   "or": {
    "Gold": [
-    "de"
+    "de",
+    "en"
    ]
   },
   "orage": {
    "Donner": [
-    "fr",
-    "de",
-    "en",
-    "pt"
+    "de"
    ]
   },
-  "petit_pain": {
-   "Bréitchen": [
-    "fr",
-    "de",
-    "en",
-    "pt"
-   ]
-  },
-  "prune": {
-   "Promm": [
+  "virus": {
+   "Coronavirus": [
     "fr",
     "de",
     "en",
@@ -378,7 +307,7 @@
    ]
   }
  },
- "generated": "2026-10-31",
+ "generated": "2026-11-28",
  "langues": [
   "fr",
   "de",
