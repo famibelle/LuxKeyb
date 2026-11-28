@@ -1,0 +1,89 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maquette de campagne · Wuertduell</title>
+<link rel="stylesheet" href="../../docs/assets/fredoka-embed.css">
+<style>
+:root{--nuit:#003876;--rouge:#ED2939;--ciel:#00A1DE;--vert:#1E8E4E;--encre:#1C2624;--doux:#4A5654;--papier:#F5F5F5;--carte:#fff;--filet:#DDE3E6;--display:"Fredoka","Trebuchet MS",sans-serif;--texte:-apple-system,"Segoe UI",Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--papier);color:var(--encre);font:17px/1.55 var(--texte)}
+h1,h2,h3{font-family:var(--display);line-height:1.15;margin:0}p{margin:0}
+.e{max-width:1180px;margin:0 auto;padding:0 20px}
+.maquette{background:#FFF4C2;color:#5A4500;text-align:center;font-size:14px;font-weight:600;padding:8px}
+.plateforme{background:#fff;border-bottom:1px solid var(--filet);padding:12px 0;font-size:14px;color:var(--doux)}
+.plateforme .e{display:flex;gap:24px;align-items:center}.plateforme b{color:var(--encre);margin-right:auto;font-family:var(--display);font-size:18px}
+.tete{padding:34px 0 10px;text-align:center}.tete .cat{font-size:14px;color:var(--doux)}.tete h1{font-size:40px;color:var(--nuit);margin-top:8px}.tete .sous{font-size:19px;color:var(--doux);margin-top:10px}
+.haut{display:grid;grid-template-columns:1.6fr 1fr;gap:32px;margin-top:26px}
+.video{position:relative;border-radius:14px;overflow:hidden;background:#000}.video img{display:block;width:100%;opacity:.88}
+.play{position:absolute;inset:0;display:grid;place-items:center}.play span{width:84px;height:84px;border-radius:50%;background:rgba(237,41,57,.95);display:grid;place-items:center;color:#fff;font-size:34px;padding-left:6px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.video .duree{position:absolute;right:12px;bottom:12px;background:rgba(0,0,0,.7);color:#fff;font-size:13px;border-radius:6px;padding:3px 8px}
+.chiffres .montant{font-family:var(--display);font-size:42px;font-weight:700;color:var(--vert)}.chiffres .sur{color:var(--doux)}
+.barre{height:10px;border-radius:5px;background:#E3E9EC;margin:14px 0 18px;overflow:hidden}.barre div{height:100%;width:71%;background:var(--vert)}
+.stat{display:flex;gap:28px;margin-bottom:20px}.stat b{display:block;font-family:var(--display);font-size:28px}.stat span{font-size:14px;color:var(--doux)}
+.soutenir{display:block;text-align:center;background:var(--rouge);color:#fff;font-weight:700;font-size:19px;border-radius:10px;padding:16px;text-decoration:none}
+.tout{margin-top:14px;font-size:14px;color:var(--doux)}
+.onglets{display:flex;gap:26px;border-bottom:1px solid var(--filet);margin-top:34px;font-weight:600;color:var(--doux)}.onglets span{padding:12px 0}.onglets .actif{color:var(--encre);border-bottom:3px solid var(--rouge)}
+.corps{display:grid;grid-template-columns:1.6fr 1fr;gap:32px;margin:30px auto 60px}
+.recit h2{font-size:28px;color:var(--nuit);margin:34px 0 12px}.recit h2:first-child{margin-top:0}.recit p+p{margin-top:12px}.recit img{display:block;width:100%;border-radius:12px;margin:16px 0}
+.recit ul,.recit ol{padding-left:22px;margin:10px 0}.recit li{margin:5px 0}
+.note{background:#FFF4C2;color:#5A4500;font-size:14px;border-radius:8px;padding:8px 12px;margin-top:12px}
+.budget{display:grid;gap:8px;margin-top:14px}.budget div{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:var(--carte);border:1px solid var(--filet);border-radius:10px;padding:10px 14px}.budget i{display:block;grid-column:1/-1;height:8px;border-radius:4px;background:var(--ciel)}
+.paliers li{background:var(--carte);border:1px solid var(--filet);border-left:4px solid var(--ciel);border-radius:0 10px 10px 0;padding:10px 14px;list-style:none;margin-left:-22px}
+.agenda{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;font-size:14px}.agenda div{background:var(--carte);border:1px solid var(--filet);border-radius:10px;padding:10px}.agenda b{display:block;color:var(--nuit)}
+.contreparties h2{font-size:22px;margin-bottom:14px}
+.cp{background:var(--carte);border:1px solid var(--filet);border-radius:12px;padding:18px;margin-bottom:14px}
+.cp .prix{font-family:var(--display);font-size:26px;font-weight:700;color:var(--nuit)}.cp h3{font-size:19px;margin:4px 0 8px}.cp p{font-size:15px;color:var(--doux)}
+.cp .meta{display:flex;justify-content:space-between;font-size:13px;color:var(--doux);margin-top:12px;border-top:1px solid var(--filet);padding-top:10px}
+.cp .choisir{display:block;text-align:center;margin-top:12px;border:2px solid var(--rouge);color:var(--rouge);font-weight:700;border-radius:8px;padding:9px}
+.cp.vedette{border:2px solid var(--vert)}.badge{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--vert);border-radius:99px;padding:3px 10px;margin-bottom:6px}
+.cp img{display:block;width:100%;border-radius:8px;margin-bottom:10px}
+.propose{color:#8A6A00;font-size:12px;font-weight:700}
+</style></head><body>
+<div class="maquette">MAQUETTE · les chiffres de collecte sont fictifs, les prix marqués « proposé » ne sont pas décidés</div>
+<div class="plateforme"><div class="e"><b>la plateforme choisie</b><span>Découvrir</span><span>Lancer un projet</span><span>Se connecter</span></div></div>
+<div class="e">
+ <div class="tete"><p class="cat">Jeux · Luxembourg</p><h1>Wuertduell, le jeu de cartes pour apprendre le luxembourgeois</h1>
+ <p class="sous">Quatre boîtes de cartes pour jouer à deux et retenir les mots. Les cartes continuent dans une application gratuite.</p></div>
+ <div class="haut">
+  <div class="video"><img src="../../docs/assets/accueil/boite-ouverte.webp" alt=""><div class="play"><span>▶</span></div><span class="duree">1:10</span></div>
+  <div class="chiffres">
+   <p class="montant">2&nbsp;480&nbsp;€</p><p class="sur">collectés sur un objectif de 3&nbsp;500&nbsp;€</p>
+   <div class="barre"><div></div></div>
+   <div class="stat"><p><b>71&nbsp;%</b><span>de l'objectif</span></p><p><b>164</b><span>contributeurs</span></p><p><b>19</b><span>jours restants</span></p></div>
+   <a class="soutenir" href="#">Soutenir le projet</a>
+   <p class="tout"><b>Tout ou rien.</b> Personne n'est prélevé si l'objectif n'est pas atteint au 31&nbsp;janvier.</p>
+   <p class="tout">Porté par l'association De Lëtzebuerger Clavier asbl, Luxembourg.</p>
+  </div>
+ </div>
+ <div class="onglets"><span class="actif">Le projet</span><span>Contreparties</span><span>Actualités · 3</span><span>Questions · 8</span><span>Commentaires · 41</span></div>
+ <div class="corps">
+  <div class="recit">
+   <h2>Le luxembourgeois, ça se joue</h2>
+   <p>Beaucoup d'entre nous comprennent le luxembourgeois, le parlent un peu, mais n'osent pas. Les mots s'oublient quand on ne les utilise pas. Le Wuertduell les fait sortir de la bouche&nbsp;: à deux, autour d'une table, on lit les mots à voix haute, on les joue, et ils restent.</p>
+   <p>Ce jeu prolonge De Lëtzebuerger Clavier, une application gratuite pour Android qui aide à écrire en luxembourgeois et fait gagner des cartes de mots.</p>
+   <img src="../../docs/assets/boutique/collection.webp" alt="">
+   <h2>Ce qu'il y a dans une boîte</h2>
+   <ul><li>52 cartes à jouer, en deux paquets de 26 prêts à s'affronter, et 2 cartes de règle&nbsp;;</li>
+   <li>deux jeux&nbsp;: la Bataille des mots (5 minutes) et le Wuertduell (15 minutes)&nbsp;;</li>
+   <li>un code qui ajoute les 52 cartes au carnet de l'application&nbsp;;</li>
+   <li>des mots, des sens et des phrases tirés du Lëtzebuerger Online Dictionnaire.</li></ul>
+   <h2>À quoi servira l'argent</h2>
+   <div class="budget"><div>Impression de 500 boîtes <b>… €</b><i style="width:68%"></i></div><div>Envoi des contreparties <b>… €</b><i style="width:14%"></i></div><div>Commission de la plateforme et frais de paiement <b>… €</b><i style="width:8%"></i></div><div>Réserve pour le tirage suivant <b>… €</b><i style="width:10%"></i></div></div>
+   <p class="note">À remplir avec le devis de l'imprimeur et la commission de la plateforme retenue.</p>
+   <p style="margin-top:12px">L'association ne distribue aucun bénéfice&nbsp;: ce qui reste sert à baisser le prix des boîtes, à améliorer l'application et à créer de nouvelles cartes.</p>
+   <h2>Paliers bonus</h2>
+   <ul class="paliers"><li><b>500 boîtes</b> · une carte rare offerte dans chaque boîte</li><li><b>800 boîtes</b> · la règle aussi en allemand et en anglais</li><li><b>1&nbsp;200 boîtes</b> · une cinquième boîte mise en chantier</li></ul>
+   <p class="note">Paliers proposés, à décider&nbsp;: chacun a un coût à vérifier avant de le promettre.</p>
+   <h2>Calendrier</h2>
+   <div class="agenda"><div><b>Janvier</b>Campagne, 30 jours</div><div><b>Février</b>Épreuves et bon à tirer</div><div><b>Mars</b>Impression</div><div><b>Avril</b>Envoi des boîtes</div></div>
+   <p class="note">Dates d'exemple : elles dépendent de la création de l'association et du délai de l'imprimeur.</p>
+   <h2>Qui sommes-nous</h2>
+   <p>De Lëtzebuerger Clavier est un projet indépendant, né au Luxembourg, qui fait l'application du même nom. Photo et quelques mots de l'équipe ici.</p>
+  </div>
+  <aside class="contreparties">
+   <h2>Choisir une contrepartie</h2>
+   <div class="cp"><p class="prix">5&nbsp;€ <span class="propose">proposé</span></p><h3>Merci&nbsp;!</h3><p>Votre nom dans la liste des soutiens sur le site. Sans boîte.</p><div class="meta"><span>12 contributeurs</span><span>Pas d'envoi</span></div><span class="choisir">Choisir</span></div>
+   <div class="cp"><img src="../../docs/assets/boutique/etui-depart.webp" alt="" style="max-height:220px;object-fit:cover"><p class="prix">9,90&nbsp;€</p><h3>Une boîte</h3><p>La boîte de votre choix&nbsp;: départ, extension, Niveau A1 ou Niveau A2. Port en plus, ou retrait gratuit lors d'une animation.</p><div class="meta"><span>58 contributeurs</span><span>Envoi avril</span></div><span class="choisir">Choisir</span></div>
+   <div class="cp vedette"><span class="badge">Le meilleur prix</span><img src="../../docs/assets/boutique/collection.webp" alt=""><p class="prix">34,90&nbsp;€</p><h3>La collection complète</h3><p>Les quatre boîtes, 216 cartes, au lieu de 39,60&nbsp;€.</p><div class="meta"><span>81 contributeurs</span><span>Envoi avril</span></div><span class="choisir">Choisir</span></div>
+   <div class="cp"><p class="prix">… €</p><h3>Le présentoir de comptoir</h3><p>Douze boîtes dans un présentoir en carton, pour une librairie, un commerce ou une bibliothèque.</p><div class="meta"><span>Prix à fixer</span><span>Envoi avril</span></div><span class="choisir">Choisir</span></div>
+   <div class="cp"><p class="prix">… €</p><h3>Une animation</h3><p>Une découverte du jeu et de l'application dans votre école, votre commune ou votre association, avec une collection offerte.</p><div class="meta"><span>Prix à fixer</span><span>Au Luxembourg</span></div><span class="choisir">Choisir</span></div>
+  </aside>
+ </div>
+</div></body></html>

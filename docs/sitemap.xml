@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Plan du site pour les moteurs de recherche (à déclarer dans Google Search Console). Tenu à la main. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://famibelle.github.io/LuxKeyb/</loc><lastmod>2026-11-28</lastmod><priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/en.html</loc><lastmod>2026-11-28</lastmod><priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/de.html</loc><lastmod>2026-11-28</lastmod><priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/pt.html</loc><lastmod>2026-11-28</lastmod><priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/precommande.html</loc><lastmod>2026-11-28</lastmod><priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/precommande.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/precommande-en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/precommande-de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/precommande-pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/precommande-en.html</loc><lastmod>2026-11-28</lastmod><priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/precommande.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/precommande-en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/precommande-de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/precommande-pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/precommande-de.html</loc><lastmod>2026-11-28</lastmod><priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/precommande.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/precommande-en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/precommande-de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/precommande-pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/precommande-pt.html</loc><lastmod>2026-11-28</lastmod><priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/precommande.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/precommande-en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/precommande-de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/precommande-pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/nouveautes.html</loc><lastmod>2026-11-28</lastmod><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/nouveautes.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/nouveautes-en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/nouveautes-de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/nouveautes-pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/nouveautes-en.html</loc><lastmod>2026-11-28</lastmod><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/nouveautes.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/nouveautes-en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/nouveautes-de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/nouveautes-pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/nouveautes-de.html</loc><lastmod>2026-11-28</lastmod><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/nouveautes.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/nouveautes-en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/nouveautes-de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/nouveautes-pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/nouveautes-pt.html</loc><lastmod>2026-11-28</lastmod><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/nouveautes.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/nouveautes-en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/nouveautes-de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/nouveautes-pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/en-detail.html</loc><lastmod>2026-11-28</lastmod><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/en-detail.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/en-detail-en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/en-detail-de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/en-detail-pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/en-detail-en.html</loc><lastmod>2026-11-28</lastmod><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/en-detail.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/en-detail-en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/en-detail-de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/en-detail-pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/en-detail-de.html</loc><lastmod>2026-11-28</lastmod><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/en-detail.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/en-detail-en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/en-detail-de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/en-detail-pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/en-detail-pt.html</loc><lastmod>2026-11-28</lastmod><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/en-detail.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/en-detail-en.html"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/en-detail-de.html"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/en-detail-pt.html"/>
+  </url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/regle-du-jeu.html</loc><lastmod>2026-11-28</lastmod><priority>0.8</priority></url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/faq.html</loc><lastmod>2026-11-28</lastmod><priority>0.8</priority></url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/guide.html</loc><lastmod>2026-11-28</lastmod><priority>0.5</priority></url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/simulateur.html</loc><lastmod>2026-11-28</lastmod><priority>0.8</priority></url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/comparatif.html</loc><lastmod>2026-11-28</lastmod><priority>0.5</priority></url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/presse.html</loc><lastmod>2026-11-28</lastmod><priority>0.5</priority></url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/labs.html</loc><lastmod>2026-11-28</lastmod><priority>0.5</priority></url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/labs-en.html</loc><lastmod>2026-11-28</lastmod><priority>0.5</priority></url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/labs-dictee.html</loc><lastmod>2026-11-28</lastmod><priority>0.5</priority></url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/labs-transcription.html</loc><lastmod>2026-11-28</lastmod><priority>0.5</priority></url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/corpus.html</loc><lastmod>2026-11-28</lastmod><priority>0.5</priority></url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/historique.html</loc><lastmod>2026-11-28</lastmod><priority>0.5</priority></url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/ambassadeurs.html</loc><lastmod>2026-11-28</lastmod><priority>0.5</priority></url>
+  <url><loc>https://famibelle.github.io/LuxKeyb/supports-communication.html</loc><lastmod>2026-11-28</lastmod><priority>0.5</priority></url>
+</urlset>

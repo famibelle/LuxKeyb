@@ -10,6 +10,7 @@ lang: fr
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="guide.html">📘 Guide</a> ·
   <strong>🃏 Règle du jeu</strong> ·
+  <a href="precommande.html">📦 Précommander</a> ·
   <a href="faq.html">❓ Aide</a> ·
   <button type="button" class="theme-toggle" aria-label="Passer en mode sombre">🌙</button>
 </nav>
@@ -25,8 +26,10 @@ Tous les mots, leurs sens, leurs genres et leurs phrases d'exemple viennent du
 Zenter fir d'Lëtzebuerger Sprooch : des milliers de mots à jouer, de *Kaz* à
 *Krokodil*.
 
-Le jeu imprimé est à l'étude : voici la règle, pour l'essayer et nous dire
-ce qu'elle vaut. [Donnez votre avis](sondage-cartes.html) en une minute.
+**Le jeu imprimé est en précommande** : quatre boîtes de 54 cartes, à
+9,90 € la boîte ou 34,90 € les quatre. [Réservez les vôtres sans
+payer](precommande.html), l'impression part dès que 350 boîtes sont
+réservées.
 
 ## Il te faut
 
@@ -180,3 +183,9 @@ Avec la boîte et l'extension, chacun peut composer le sien :
 - **26 cartes** exactement ;
 - **au moins la moitié de noms** ;
 - **un seul exemplaire** de chaque mot.
+
+---
+
+**Envie d'y jouer ?** [Réservez vos boîtes sans payer](precommande.html), et
+[installez l'application](https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&referrer=utm_source%3Dsite%26utm_medium%3Dregle%26utm_campaign%3Dinstaller) :
+le code de chaque boîte y ajoute ses cartes à votre carnet.
