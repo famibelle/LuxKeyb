@@ -114,6 +114,14 @@ class WuertrietAcceptationTest {
      * rangée parmi les plus rares) et de forme canonique (« mango » à côté
      * d'un futur « Mango »). Élargir le tirage se fait en leur donnant
      * d'abord ces deux choses.
+     *
+     * La liste des neuf est un plafond, pas une égalité : la CI régénère le
+     * dictionnaire depuis le corpus vivant à chaque build, et un de ces mots
+     * peut passer le seuil de fréquence et devenir tirable du jour au
+     * lendemain. C'est exactement ce qui est arrivé au premier build après
+     * l'ajout de ce test (run 46082568189). Ce qui doit rester vrai, et que
+     * la liste garde : aucun **autre** mot de la liste A1 ne manque au
+     * dictionnaire sans qu'on l'ait vu.
      */
     @Test
     fun `les essentiels sans frequence ne sont pas tirables`() {
@@ -128,10 +136,11 @@ class WuertrietAcceptationTest {
         val horsDico = mots
             .filter { it.length == longueur && it.all { c -> c.isLetter() } }
             .filter { it.lowercase() !in tires }
+        val connus = listOf("Awuer", "Drauf", "Fritt", "Härin", "Kraut", "Mango", "Muert", "Müsli", "Tomat")
         assertEquals(
             "la liste A1 a changé : revoir le tirage des cartes manquantes",
-            listOf("Awuer", "Drauf", "Fritt", "Härin", "Kraut", "Mango", "Muert", "Müsli", "Tomat"),
-            horsDico.sorted()
+            emptyList<String>(),
+            horsDico.sorted().filter { it !in connus }
         )
         val acceptes = tires + palierLod()
         for (mot in horsDico) {
