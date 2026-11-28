@@ -87,6 +87,31 @@ NOMBRES = {
            ('véierzeg', 40), ('fofzeg', 50), ('honnert', 100)],
 }
 
+# Les paquets retenus après relecture (2026-11-28), à la place du choix
+# automatique de [boite] : mots enseignés et employés dans le manuel A2 de
+# l'INLL (d'après ses corrigés, voir Dictionnaires/niveaux/corriges_a2.md),
+# concrets, dessinés quand c'est possible, chaque remplacement de même
+# longueur et de même coût que le mot qu'il remplace pour garder les noms
+# jumelés. Retirés : les mots qui s'écrivent comme en français (Pizza,
+# Baguette, Classeur), « akafen » qui doublait « kafen », « riets » dont la
+# phrase parle des partis de droite, « Metro » (le pays n'en a pas),
+# « Aendokter » ou « Kamillentéi », trop pointus. Sans entrée ici, un niveau
+# reprend le choix automatique.
+RETENUS = {
+    'A1': {
+        'Doheem': '''Fra Apel Kand Bett Kaddo Kaffi Dusch Famill Geméis Telefon Duechter Kannapee Schockela
+                     Gebuertsdag kafen feieren kënnen maachen schwätzen gutt richteg laang krank''',
+        'Dobaussen': '''Bus Auto Büro Vëlo Kaart Sport Noper Apdikt Dokter Strooss Bäckerei Ausfluch Haaptstad
+                        Supermarché wunnen fueren kucken bezuelen schaffen bestuet flott brong kuerz''',
+    },
+    'A2': {
+        'Doheem': '''Box Hand Haus Rack Gaart Häerz Fouss Schong Kichen Wunneng Toilette Gesiicht Schlëssel
+                     Staubsauger gesinn reesen joggen botzen besichen gro einfach beige modern''',
+        'Dobaussen': '''Séi Rees Tram Gare Arrêt Duerf Grenz Schnéi Schëff Kolleeg Autobunn Serveuse Flughafen
+                        Bibliothéik héieren freeën liewen beweegen probéieren elegant roueg kloer propper''',
+    },
+}
+
 A = CC.A
 
 
@@ -198,6 +223,33 @@ def boite(code, deja):
     return meilleur[1], {p: len(v) for p, v in viviers.items()}
 
 
+def retenus(code, deja):
+    """Les paquets de [RETENUS], vérifiés comme le choix automatique les fait :
+    14 noms jumelés par longueur, 5 verbes, 4 adjectifs, 3 nombres, aucun mot
+    de la boîte, de l'extension ou de l'autre niveau."""
+    gloses = niveau(code)['gloses']
+    nombres = [CC.carte_nombre(m, v) for m, v in NOMBRES[code]]
+    paquets = {}
+    for k, (nom, mots) in enumerate(RETENUS[code].items()):
+        cartes = []
+        for m in mots.split():
+            f = fiche(m, gloses)
+            if f is None:
+                sys.exit(f'{code} {nom} : « {m} » n\'est pas une carte du niveau')
+            if m in deja:
+                sys.exit(f'{code} {nom} : « {m} » est déjà dans une autre boîte')
+            f['theme'] = nom
+            cartes.append(f)
+        natures = [sum(c['nature'] == n for c in cartes) for n in ('nom', 'verbe', 'adjectif')]
+        if natures != [14, 5, 4]:
+            sys.exit(f'{code} {nom} : {natures} noms, verbes, adjectifs au lieu de 14, 5, 4')
+        paquets[nom] = cartes + nombres[3 * k:3 * k + 3]
+    longueurs = [sorted(len(c['mot']) for c in p if c['nature'] == 'nom') for p in paquets.values()]
+    if longueurs[0] != longueurs[1]:
+        sys.exit(f'{code} : noms mal jumelés, {longueurs}')
+    return paquets
+
+
 def victoires(paquets, parties):
     texte = CC.simuler(paquets, 'Doheem', 'Dobaussen', parties)
     return int(texte.split(' gagne ')[1].split('%')[0]) / 100
@@ -209,6 +261,8 @@ def main():
     boites, viviers, equilibre = {}, {}, {}
     for code in ('A1', 'A2'):
         boites[code], viviers[code] = boite(code, deja)
+        if code in RETENUS:
+            boites[code] = retenus(code, deja)
         deja |= {c['mot'] for p in boites[code].values() for c in p}
         equilibre[code] = CC.simuler(boites[code], 'Doheem', 'Dobaussen')
 
