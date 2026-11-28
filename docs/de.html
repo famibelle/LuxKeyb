@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>De Lëtzebuerger Clavier · Sie sprechen es. Jetzt schreiben Sie es.</title>
-<meta name="description" content="Die Tastatur, die mit Ihnen Luxemburgisch schreibt: Sie schlägt beim Tippen Wörter vor, setzt ë und é an die richtige Stelle und schreibt, was Sie ihr sagen. Kostenlos für Android.">
+<title>Kostenlose luxemburgische Tastatur für Android · De Lëtzebuerger Clavier</title>
+<meta name="description" content="Die kostenlose luxemburgische Tastatur für Android: Sie schlägt beim Tippen die Wörter vor, setzt ë und é an die richtige Stelle und schreibt, was Sie sagen. Und das Wuertduell, das Kartenspiel zum Luxemburgischlernen, jetzt vorbestellbar.">
 <link rel="canonical" href="https://famibelle.github.io/LuxKeyb/de.html">
 <link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/">
 <link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/en.html">
@@ -21,6 +21,14 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"MobileApplication","name":"De Lëtzebuerger Clavier",
+ "operatingSystem":"Android 7.0","applicationCategory":"UtilitiesApplication","inLanguage":"lb",
+ "description":"Tippen oder diktieren Sie Ihre Nachrichten auf Luxemburgisch, direkt auf dem Handy. Kostenlos für Android.",
+ "url":"https://famibelle.github.io/LuxKeyb/","image":"https://famibelle.github.io/LuxKeyb/assets/logo/luxkeyb-logo-192.png",
+ "installUrl":"https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard",
+ "offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"}}
+</script>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -254,6 +262,23 @@ p{margin:0}
   .pied nav{grid-template-columns:minmax(0,1fr)}
 }
 @media (prefers-reduced-motion:reduce){.telephone{transform:none}.vers-play,.vers-play:hover,.badge-play,.badge-play:hover,.jeu-papier .reserver,.jeu-papier .reserver:hover,.vers-precommande,.vers-precommande:hover{transition:none;transform:none}}
+
+/* ---- 2026-11-28 : les deux actions à égalité, installer et réserver ---- */
+.vers-jeu{display:flex;align-items:center;gap:14px;margin:22px auto 0;max-width:520px;padding:10px 14px 10px 10px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);color:var(--sur-nuit-doux,#C8D7EA);text-decoration:none;font-size:15px;line-height:1.4;transition:transform .2s ease,background .2s ease}
+.vers-jeu:hover{transform:translateY(-3px);background:rgba(255,255,255,.13)}
+.vers-jeu img{flex:none;width:112px;height:auto;border-radius:8px;background:#EFE7D6}
+.vers-jeu strong{display:block;color:#fff;font-size:16px}
+.vers-jeu .fleche-jeu{color:#fff;font-weight:700;white-space:nowrap}
+.barre-actions{display:none}
+@media (max-width:760px){
+  .barre-actions{display:flex;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:50;padding:10px max(12px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px));background:rgba(0,30,60,.94);backdrop-filter:blur(6px);transform:translateY(110%);transition:transform .25s ease}
+  .barre-actions.visible{transform:none}
+  .barre-actions a{flex:1;text-align:center;font-weight:700;font-size:15px;text-decoration:none;border-radius:10px;padding:12px 8px;color:#fff}
+  .barre-actions .ba-installer{background:#17773F}
+  .barre-actions .ba-cartes{background:#ED2939}
+  body{padding-bottom:72px}
+}
+@media (prefers-reduced-motion:reduce){.vers-jeu,.barre-actions{transition:none}.vers-jeu:hover{transform:none}}
 .langue-fr{font-size:11px;font-weight:700;letter-spacing:.06em;border:1px solid var(--filet);border-radius:4px;padding:0 4px;margin-left:6px;vertical-align:1px;color:var(--encre-douce)}
 .installer .langue-fr,.ouverture .langue-fr{border-color:rgba(255,255,255,.35);color:var(--sur-nuit-doux)}
 </style>
@@ -290,6 +315,10 @@ p{margin:0}
           <img class="badge-app-store" src="assets/app-store-bientot.png" alt="Demnächst im App Store" width="262" height="80">
         </div>
         <p class="mention mention-heros">Kostenlos · Android 7.0 oder neuer</p>
+        <a class="vers-jeu" href="precommande-de.html">
+          <img src="assets/boutique/collection.webp" width="1000" height="414" alt="">
+          <span><strong>Neu: das Kartenspiel</strong>Das Wuertduell, um Luxemburgisch spielend zu lernen. <span class="fleche-jeu">Ohne Bezahlung reservieren&nbsp;→</span></span>
+        </a>
       </div>
       <figure class="telephone">
         <a class="vers-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;hl=de&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil-de%26utm_campaign%3Dgif-clavier" aria-label="De Lëtzebuerger Clavier bei Google Play installieren">
@@ -511,5 +540,24 @@ p{margin:0}
   </nav>
   <p class="credits">De Lëtzebuerger Clavier ist ein unabhängiges Projekt. Die Wörter stammen aus dem Lëtzebuerger Online Dictionnaire (Zenter fir d'Lëtzebuerger Sprooch) und aus offenen luxemburgischen Texten; das Diktat läuft über den Spracherkennungsdienst der Universität Luxemburg. Mit FR markierte Seiten sind auf Französisch.</p>
 </footer>
+<nav class="barre-actions" aria-label="Schnellzugriff">
+  <a class="ba-installer" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;hl=de&amp;referrer=utm_source%3Dsite%26utm_medium%3Daccueil-de%26utm_campaign%3Dbarre">App installieren</a>
+  <a class="ba-cartes" href="precommande-de.html">Karten reservieren</a>
+</nav>
+<script>
+/* Sur téléphone, la barre du bas paraît dès que le haut de page est passé,
+   et s'efface quand les boutons d'installation sont déjà à l'écran. */
+(function () {
+  var barre = document.querySelector('.barre-actions');
+  var cibles = [document.querySelector('.ouverture'), document.querySelector('.installer')].filter(Boolean);
+  if (!barre || !('IntersectionObserver' in window)) return;
+  var vues = new Set();
+  var obs = new IntersectionObserver(function (entrees) {
+    entrees.forEach(function (e) { e.isIntersecting ? vues.add(e.target) : vues.delete(e.target); });
+    barre.classList.toggle('visible', vues.size === 0);
+  });
+  cibles.forEach(function (c) { obs.observe(c); });
+})();
+</script>
 </body>
 </html>

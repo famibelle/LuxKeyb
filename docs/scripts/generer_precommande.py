@@ -34,9 +34,9 @@ LANGUES = {
         "theme": ("Switch to dark mode", "🌙 Dark"),
         "langue": "Language",
         "textes": [
-            ("Les boîtes du Wuertduell · Précommande", "Wuertduell boxes · Pre-order"),
-            ("Le Wuertduell, le jeu de cartes en luxembourgeois : quatre boîtes de 54 cartes à 9,90 € la boîte, à réserver sans rien payer.",
-             "The Wuertduell, the card game in Luxembourgish: four boxes of 54 cards at €9.90 a box, to reserve without paying anything."),
+            ("Wuertduell, le jeu de cartes pour apprendre le luxembourgeois · Précommande", "Wuertduell, the card game to learn Luxembourgish · Pre-order"),
+            ("Le Wuertduell, le jeu de cartes pour apprendre le luxembourgeois en jouant à deux : quatre boîtes de 54 cartes à 9,90 €, ou 34,90 € les quatre. Réservez sans rien payer.",
+             "The Wuertduell, the card game to learn Luxembourgish by playing, for two: four boxes of 54 cards at €9.90, or €34.90 for all four. Reserve without paying anything."),
             ('<p class="surtitre">Précommande</p>', '<p class="surtitre">Pre-order</p>'),
             ("<h1>Les boîtes <span>du Wuertduell</span></h1>", "<h1>The <span>Wuertduell boxes</span></h1>"),
             (f"<strong>Précommande</strong><span>Sortie{NB}: date à venir</span>", "<strong>Pre-order</strong><span>Release date to be announced</span>"),
@@ -101,9 +101,9 @@ LANGUES = {
         "theme": ("Zum dunklen Modus wechseln", "🌙 Dunkel"),
         "langue": "Sprache",
         "textes": [
-            ("Les boîtes du Wuertduell · Précommande", "Die Schachteln des Wuertduell · Vorbestellung"),
-            ("Le Wuertduell, le jeu de cartes en luxembourgeois : quatre boîtes de 54 cartes à 9,90 € la boîte, à réserver sans rien payer.",
-             "Das Wuertduell, das Kartenspiel auf Luxemburgisch: vier Schachteln mit je 54 Karten zu 9,90 € die Schachtel, ohne Bezahlung zu reservieren."),
+            ("Wuertduell, le jeu de cartes pour apprendre le luxembourgeois · Précommande", "Wuertduell, das Kartenspiel zum Luxemburgischlernen · Vorbestellung"),
+            ("Le Wuertduell, le jeu de cartes pour apprendre le luxembourgeois en jouant à deux : quatre boîtes de 54 cartes à 9,90 €, ou 34,90 € les quatre. Réservez sans rien payer.",
+             "Das Wuertduell, das Kartenspiel, um Luxemburgisch zu zweit spielend zu lernen: vier Schachteln mit je 54 Karten zu 9,90 €, oder 34,90 € für alle vier. Ohne Bezahlung reservieren."),
             ('<p class="surtitre">Précommande</p>', '<p class="surtitre">Vorbestellung</p>'),
             ("<h1>Les boîtes <span>du Wuertduell</span></h1>", "<h1>Die Schachteln <span>des Wuertduell</span></h1>"),
             (f"<strong>Précommande</strong><span>Sortie{NB}: date à venir</span>", "<strong>Vorbestellung</strong><span>Erscheinungsdatum folgt</span>"),
@@ -163,9 +163,9 @@ LANGUES = {
         "theme": ("Mudar para o modo escuro", "🌙 Escuro"),
         "langue": "Idioma",
         "textes": [
-            ("Les boîtes du Wuertduell · Précommande", "As caixas do Wuertduell · Pré-encomenda"),
-            ("Le Wuertduell, le jeu de cartes en luxembourgeois : quatre boîtes de 54 cartes à 9,90 € la boîte, à réserver sans rien payer.",
-             "O Wuertduell, o jogo de cartas em luxemburguês: quatro caixas de 54 cartas a 9,90 € a caixa, para reservar sem pagar nada."),
+            ("Wuertduell, le jeu de cartes pour apprendre le luxembourgeois · Précommande", "Wuertduell, o jogo de cartas para aprender luxemburguês · Pré-encomenda"),
+            ("Le Wuertduell, le jeu de cartes pour apprendre le luxembourgeois en jouant à deux : quatre boîtes de 54 cartes à 9,90 €, ou 34,90 € les quatre. Réservez sans rien payer.",
+             "O Wuertduell, o jogo de cartas para aprender luxemburguês a jogar a dois: quatro caixas de 54 cartas a 9,90 €, ou 34,90 € as quatro. Reserve sem pagar nada."),
             ('<p class="surtitre">Précommande</p>', '<p class="surtitre">Pré-encomenda</p>'),
             ("<h1>Les boîtes <span>du Wuertduell</span></h1>", "<h1>As caixas <span>do Wuertduell</span></h1>"),
             (f"<strong>Précommande</strong><span>Sortie{NB}: date à venir</span>", "<strong>Pré-encomenda</strong><span>Data de lançamento a anunciar</span>"),
@@ -228,6 +228,11 @@ LANGUES = {
 # Refonte du 2026-11-27 : en-tête avec photo, jeux, étapes, appli, argent, partage.
 # Passées avant les autres paires (des textes plus longs qui contiennent « Réserver »).
 FR_REFONTE = [
+    '<link rel="canonical" href="https://famibelle.github.io/LuxKeyb/precommande.html">',
+    '"url":"https://famibelle.github.io/LuxKeyb/precommande.html"',
+    'aria-label="Raccourcis"',
+    '>Réserver mes boîtes</a>',
+    ">Installer l'appli</a>",
     'content="Le Wuertduell, le jeu de cartes en luxembourgeois"',
     "content=\"Le luxembourgeois qui s'apprend en jouant, à deux. Réservez vos boîtes sans rien payer.\"",
     'content="https://famibelle.github.io/LuxKeyb/precommande.html"',
@@ -274,6 +279,11 @@ FR_REFONTE = [
 ]
 TRADUCTIONS_REFONTE = {
     "en": [
+        '<link rel="canonical" href="https://famibelle.github.io/LuxKeyb/precommande-en.html">',
+        '"url":"https://famibelle.github.io/LuxKeyb/precommande-en.html"',
+        'aria-label="Shortcuts"',
+        '>Reserve my boxes</a>',
+        ">Install the app</a>",
         'content="The Wuertduell, the card game in Luxembourgish"',
         'content="Luxembourgish you learn by playing, for two. Reserve your boxes without paying anything."',
         'content="https://famibelle.github.io/LuxKeyb/precommande-en.html"',
@@ -319,6 +329,11 @@ TRADUCTIONS_REFONTE = {
         ">Share…</button>",
     ],
     "de": [
+        '<link rel="canonical" href="https://famibelle.github.io/LuxKeyb/precommande-de.html">',
+        '"url":"https://famibelle.github.io/LuxKeyb/precommande-de.html"',
+        'aria-label="Schnellzugriff"',
+        '>Meine Schachteln reservieren</a>',
+        ">App installieren</a>",
         'content="Das Wuertduell, das Kartenspiel auf Luxemburgisch"',
         'content="Luxemburgisch spielend lernen, zu zweit. Reservieren Sie Ihre Schachteln, ohne etwas zu bezahlen."',
         'content="https://famibelle.github.io/LuxKeyb/precommande-de.html"',
@@ -364,6 +379,11 @@ TRADUCTIONS_REFONTE = {
         ">Teilen…</button>",
     ],
     "pt": [
+        '<link rel="canonical" href="https://famibelle.github.io/LuxKeyb/precommande-pt.html">',
+        '"url":"https://famibelle.github.io/LuxKeyb/precommande-pt.html"',
+        'aria-label="Atalhos"',
+        '>Reservar as minhas caixas</a>',
+        ">Instalar a app</a>",
         'content="O Wuertduell, o jogo de cartas em luxemburguês"',
         'content="O luxemburguês que se aprende a jogar, a dois. Reserve as suas caixas sem pagar nada."',
         'content="https://famibelle.github.io/LuxKeyb/precommande-pt.html"',

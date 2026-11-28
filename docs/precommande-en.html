@@ -3,11 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Wuertduell boxes · Pre-order</title>
-<meta name="description" content="The Wuertduell, the card game in Luxembourgish: four boxes of 54 cards at €9.90 a box, to reserve without paying anything.">
-<!-- Pas encore annoncée : la page reste hors des moteurs de recherche tant
-     que la précommande n'est pas ouverte (même règle que commander.md). -->
-<meta name="robots" content="noindex">
+<title>Wuertduell, the card game to learn Luxembourgish · Pre-order</title>
+<meta name="description" content="The Wuertduell, the card game to learn Luxembourgish by playing, for two: four boxes of 54 cards at €9.90, or €34.90 for all four. Reserve without paying anything.">
+<!-- Précommande ouverte et annoncée (2026-11-27) : la page est indexée. -->
+<link rel="canonical" href="https://famibelle.github.io/LuxKeyb/precommande-en.html">
+<link rel="alternate" hreflang="fr" href="https://famibelle.github.io/LuxKeyb/precommande.html">
+<link rel="alternate" hreflang="en" href="https://famibelle.github.io/LuxKeyb/precommande-en.html">
+<link rel="alternate" hreflang="de" href="https://famibelle.github.io/LuxKeyb/precommande-de.html">
+<link rel="alternate" hreflang="pt" href="https://famibelle.github.io/LuxKeyb/precommande-pt.html">
+<link rel="alternate" hreflang="x-default" href="https://famibelle.github.io/LuxKeyb/precommande.html">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Product","name":"Wuertduell",
+ "description":"The Wuertduell, the card game to learn Luxembourgish by playing, for two: four boxes of 54 cards at €9.90, or €34.90 for all four. Reserve without paying anything.",
+ "image":["https://famibelle.github.io/LuxKeyb/assets/og/precommande.jpg","https://famibelle.github.io/LuxKeyb/assets/boutique/collection.webp"],
+ "brand":{"@type":"Brand","name":"De Lëtzebuerger Clavier"},
+ "url":"https://famibelle.github.io/LuxKeyb/precommande-en.html",
+ "offers":{"@type":"AggregateOffer","priceCurrency":"EUR","lowPrice":"9.90","highPrice":"34.90","offerCount":"5","availability":"https://schema.org/PreOrder"}}
+</script>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="De Lëtzebuerger Clavier">
 <meta property="og:title" content="The Wuertduell, the card game in Luxembourgish">
@@ -223,6 +235,18 @@ p{margin:0}
 .panneau .partage{font-size:14px;padding:7px 12px}
 @media (max-width:860px){.heros{grid-template-columns:minmax(0,1fr)}.photo-heros{order:-1;max-width:560px}.etapes3,.jeux2{grid-template-columns:minmax(0,1fr)}.boite-appli{grid-template-columns:minmax(0,1fr);padding:22px}}
 @media (prefers-reduced-motion:reduce){.actions-titre .bouton,.badge-play,.partage{transition:none}.actions-titre .bouton:hover,.badge-play:hover,.partage:hover{transform:none}}
+
+/* ---- 2026-11-28 : barre d'actions sur téléphone (réserver, installer) ---- */
+.barre-actions{display:none}
+@media (max-width:760px){
+  .barre-actions{display:flex;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:50;padding:10px max(12px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px));background:rgba(0,30,60,.94);backdrop-filter:blur(6px);transform:translateY(110%);transition:transform .25s ease}
+  .barre-actions.visible{transform:none}
+  .barre-actions a{flex:1;text-align:center;font-weight:700;font-size:15px;text-decoration:none;border-radius:10px;padding:12px 8px;color:#fff}
+  .barre-actions .ba-cartes{background:#ED2939}
+  .barre-actions .ba-installer{background:#17773F}
+  body{padding-bottom:72px}
+}
+@media (prefers-reduced-motion:reduce){.barre-actions{transition:none}}
 </style>
 </head>
 <body>
@@ -441,6 +465,26 @@ p{margin:0}
     <p><a href="en.html">Home</a> · <a href="regle-du-jeu.html" hreflang="fr">Rules (in French)</a> · <a href="faq.html" hreflang="fr">Help (in French)</a></p>
   </div>
 </footer>
+<nav class="barre-actions" aria-label="Shortcuts">
+  <a class="ba-cartes" href="#boites">Reserve my boxes</a>
+  <a class="ba-installer" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Dprecommande-en%26utm_campaign%3Dbarre">Install the app</a>
+</nav>
+<script>
+/* La barre paraît quand l'en-tête et les boîtes ne sont plus à l'écran,
+   et s'efface pendant qu'une réservation est ouverte. */
+(function () {
+  var barre = document.querySelector('.barre-actions');
+  if (!barre || !('IntersectionObserver' in window)) return;
+  var vues = new Set();
+  function maj() { barre.classList.toggle('visible', vues.size === 0 && !document.querySelector('.fiche.ouverte')); }
+  var obs = new IntersectionObserver(function (entrees) {
+    entrees.forEach(function (e) { e.isIntersecting ? vues.add(e.target) : vues.delete(e.target); });
+    maj();
+  });
+  [document.querySelector('.ouverture'), document.getElementById('boites')].forEach(function (c) { if (c) obs.observe(c); });
+  document.addEventListener('click', function () { setTimeout(maj, 0); });
+})();
+</script>
 <template id="modele-reservation">
   <div class="panneau" hidden>
     <form action="https://formspree.io/f/mvgwnlky" method="POST">
