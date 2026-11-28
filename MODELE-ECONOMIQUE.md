@@ -47,6 +47,12 @@ aux communes ce qu'elles paient d'habitude.
 - Reporté dans `docs/precommande.html` et `docs/commander.md`. À aligner :
   skill business-modele § 2, `BOUTIQUE-CARTES.md` § 5, skill imprimeur § 7.
 
+### Financement participatif (mis de côté le 2026-11-28)
+
+Le propriétaire veut financer le tirage par une campagne sur une plateforme
+de financement participatif, au nom de l'asbl une fois créée. Notes,
+maquette validée et décisions à prendre : [`CAMPAGNE-FINANCEMENT.md`](CAMPAGNE-FINANCEMENT.md).
+
 ## 2. Les trois paliers
 
 | Palier | Ce qui est payé | Chiffre d'affaires | En boîtes à 9,90 € |
