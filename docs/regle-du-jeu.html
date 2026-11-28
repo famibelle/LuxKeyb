@@ -147,6 +147,27 @@ figcaption{margin-top:8px;font-size:15px;color:var(--encre-douce);text-align:cen
 .memo h3{margin:0;font-size:20px}
 .memo ol{margin-top:10px;padding-left:22px;display:grid;gap:4px}
 
+/* Le but du Wuertduell, en tête de section */
+.but{margin-top:18px;background:var(--carte);border:2px solid var(--rouge);border-radius:16px;padding:16px 20px}
+.but-titre{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--rouge)}
+.but p + p{margin-top:4px;font-size:18px}
+/* Les pièces qui augmentent d'un tour à l'autre */
+.echelle{list-style:none;padding:0;margin-top:14px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;max-width:560px}
+.echelle li{background:var(--carte);border:1px solid var(--filet);border-radius:12px;padding:10px;text-align:center}
+.echelle span{display:block;font-size:14px;font-weight:700;color:var(--encre-douce)}
+.echelle b{display:flex;justify-content:center;gap:3px;margin-top:6px;min-height:18px}
+.echelle i{width:16px;height:16px;border-radius:50%;background:#E8B419;box-shadow:inset 0 -2px 0 #B58A0C}
+/* Bloquer ou non */
+.duel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.duel strong{margin-top:0}
+/* L'exemple, tour par tour */
+.exemple{list-style:none;padding:0;margin-top:14px;display:grid;gap:10px;border-left:3px solid var(--filet);padding-left:18px}
+.exemple li{position:relative}
+.exemple li::before{content:"";position:absolute;left:-26px;top:6px;width:13px;height:13px;border-radius:50%;background:var(--nuit);border:2px solid var(--papier)}
+.ex-tour{font-family:var(--display);font-weight:600;font-size:19px;color:var(--titre)}
+.ex-tour span{font-family:var(--texte);font-size:14px;font-weight:700;color:#7A5A00;background:#FFF1C2;border-radius:99px;padding:2px 10px;margin-left:8px;vertical-align:2px}
+.exemple li p + p{margin-top:2px}
+
 /* Les paquets */
 .paquets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}
 .paquet{background:var(--carte);border:1px solid var(--filet);border-radius:14px;padding:16px 18px}
@@ -169,7 +190,7 @@ figcaption{margin-top:8px;font-size:15px;color:var(--encre-douce);text-align:cen
 
 @media (max-width:700px){
   body{font-size:16.5px}
-  .trois,.bonus,.paquets,.sortes{grid-template-columns:minmax(0,1fr)}
+  .trois,.bonus,.paquets,.sortes,.duel{grid-template-columns:minmax(0,1fr)}
   .etapes > li{padding:14px 14px 14px 58px}
   .etapes > li::before{left:12px}
   .liens-tete{order:3;width:100%}
@@ -219,6 +240,7 @@ figcaption{margin-top:8px;font-size:15px;color:var(--encre-douce);text-align:cen
       <li><a href="#carte">Lire une carte</a></li>
       <li><a href="#bataille">La Bataille des mots</a></li>
       <li><a href="#wuertduell">Le Wuertduell</a></li>
+      <li><a href="#exemple">Un exemple</a></li>
       <li><a href="#tour-en-bref">Le tour en bref</a></li>
       <li><a href="#les-paquets">Les paquets</a></li>
     </ol>
@@ -284,62 +306,98 @@ figcaption{margin-top:8px;font-size:15px;color:var(--encre-douce);text-align:cen
   <div class="enveloppe">
     <h2>Jeu 2&nbsp;: le Wuertduell</h2>
     <div class="fiche-jeu"><span>2 joueurs</span><span>15 minutes</span><span>Avec un peu de stratégie</span></div>
-    <p class="intro">Posez des noms, renforcez-les avec des verbes et des adjectifs, et prenez le trésor de l'adversaire.</p>
 
-    <h3>La mise en place</h3>
-    <p class="texte">Chaque joueur prend un paquet de <strong>26&nbsp;cartes</strong> et le mélange&nbsp;: l'un des deux paquets de la boîte, ou celui qu'il a composé (voir <a href="#les-paquets">les paquets</a>).</p>
-    <div class="trois">
-      <div class="case"><b>5</b><strong>Le trésor</strong><p>Les 5 premières cartes, posées faces cachées devant toi, sans les regarder. C'est ce que l'adversaire veut prendre.</p></div>
-      <div class="case"><b>5</b><strong>La main</strong><p>Les 5 cartes suivantes, que tu prends en main.</p></div>
-      <div class="case"><b>16</b><strong>La pioche</strong><p>Le reste du paquet, face cachée.</p></div>
+    <div class="but">
+      <p class="but-titre">Le but</p>
+      <p><strong>Prendre les 5 cartes du trésor de ton adversaire.</strong> Pour cela, tu poses des noms, tes personnages, et tu attaques avec eux. Chaque attaque que l'adversaire ne bloque pas te rapporte une carte de son trésor.</p>
     </div>
+
+    <h3>Ce que tu as devant toi</h3>
+    <p class="texte">Chaque joueur prend un paquet de <strong>26&nbsp;cartes</strong> et le mélange&nbsp;: l'un des deux paquets de la boîte, ou celui qu'il a composé (voir <a href="#les-paquets">les paquets</a>). Puis il le partage en trois tas&nbsp;:</p>
+    <div class="trois">
+      <div class="case"><b>5</b><strong>Le trésor</strong><p>Les 5 premières cartes, faces cachées, sans les regarder. C'est ce que l'adversaire veut te prendre.</p></div>
+      <div class="case"><b>5</b><strong>La main</strong><p>Les 5 cartes suivantes, que tu prends en main.</p></div>
+      <div class="case"><b>16</b><strong>La pioche</strong><p>Le reste, face cachée. Tu y prends une carte par tour.</p></div>
+    </div>
+    <p class="texte">Pendant la partie, deux autres zones se remplissent devant toi&nbsp;: <strong>ta réserve</strong>, qui te donne des pièces, et <strong>tes noms posés</strong>, trois au plus, qui attaquent et bloquent.</p>
     <figure class="defile">
       <img src="assets/regle/table.svg" width="760" height="625" alt="Le côté d'un joueur : le trésor de cinq cartes faces cachées, la réserve de trois cartes faces cachées, la pioche, deux noms posés, Hond avec l'adjectif grouss glissé dessous et Fësch, et la main : drénken, Brout et le nombre véier">
       <figcaption>Ton côté de la table, au troisième tour. <span class="glisser">Faites glisser l'image pour tout voir.</span></figcaption>
     </figure>
 
+    <h3>Les pièces&nbsp;: ta réserve</h3>
+    <p class="texte">Poser une carte coûte des pièces&nbsp;: autant que de pièces d'or dessinées sur la carte, de 0 à 4. Ces pièces viennent de ta <strong>réserve</strong>.</p>
+    <p class="texte">À chaque tour, tu prends une carte de ta main et tu la poses face cachée dans ta réserve. Elle ne sera plus jouée, mais elle te donne <strong>1 pièce à chaque tour</strong>, jusqu'à la fin de la partie. Ta réserve grandit d'une carte par tour, et tes pièces avec elle&nbsp;:</p>
+    <ol class="echelle" aria-label="Pièces disponibles selon le tour">
+      <li><span>Tour 1</span><b aria-label="1 pièce"><i></i></b></li>
+      <li><span>Tour 2</span><b aria-label="2 pièces"><i></i><i></i></b></li>
+      <li><span>Tour 3</span><b aria-label="3 pièces"><i></i><i></i><i></i></b></li>
+      <li><span>Tour 4</span><b aria-label="4 pièces"><i></i><i></i><i></i><i></i></b></li>
+    </ol>
+    <p class="texte">Le choix de chaque tour&nbsp;: quelle carte sacrifier pour la réserve. Les pièces se recomptent à chaque tour&nbsp;; celles que tu ne dépenses pas ne se gardent pas.</p>
+
     <h3>À ton tour, quatre étapes</h3>
     <ol class="etapes">
       <li><strong>Pioche</strong>Prends une carte de ta pioche. Si elle est vide, continue sans piocher.</li>
-      <li><strong>Remplis ta réserve</strong>Pose une carte de ta main face cachée sur le côté&nbsp;: c'est ta réserve. Une seule par tour. Chaque carte de la réserve te donne <strong>1 pièce</strong> à dépenser, à chaque tour.</li>
-      <li><strong>Pose des cartes</strong>Autant que tes pièces le permettent&nbsp;: une carte coûte le nombre de pièces d'or qu'elle montre, de 1 à 4. Lis le mot à voix haute.
+      <li><strong>Remplis ta réserve</strong>Pose une carte de ta main face cachée dans ta réserve. Compte tes pièces&nbsp;: une par carte de la réserve.</li>
+      <li><strong>Pose des cartes</strong>Autant que tes pièces le permettent, en lisant chaque mot à voix haute. Chaque sorte de carte fait une chose différente&nbsp;:
         <div class="sortes">
           <div class="sorte">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="#C21F2E" aria-hidden="true"><circle cx="12" cy="7" r="4.5"/><path d="M3 22c0-5 4-8.5 9-8.5s9 3.5 9 8.5z"/></svg>
-            <div><strong>Un nom</strong><p>Un personnage. Il se pose devant toi. Trois au plus.</p></div>
+            <div><strong>Un nom</strong><p>Un personnage. Il se pose devant toi et y reste. Trois au plus. Sa Force, c'est son nombre de lettres.</p></div>
           </div>
           <div class="sorte">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="#E8A317" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
-            <div><strong>Un verbe</strong><p>Une action&nbsp;: +3 de Force à l'un de tes noms pour ce tour. Puis la carte est défaussée.</p></div>
+            <div><strong>Un verbe</strong><p>Une action&nbsp;: +3 de Force à l'un de tes noms, pour ce tour seulement. Puis la carte est défaussée.</p></div>
           </div>
           <div class="sorte">
             <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z" fill="#1D5FB0"/><path d="M12 8v8M8 12h8" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
-            <div><strong>Un adjectif</strong><p>Se glisse sous l'un de tes noms&nbsp;: +2 de Force pour toujours. <span class="mot" lang="lb">grouss</span> sous <span class="mot" lang="lb">Hond</span>, et voilà un grand chien.</p></div>
+            <div><strong>Un adjectif</strong><p>Se glisse sous l'un de tes noms&nbsp;: +2 de Force, pour toujours. <span class="mot" lang="lb">grouss</span> sous <span class="mot" lang="lb">Hond</span>, et voilà un grand chien.</p></div>
           </div>
           <div class="sorte">
             <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="5" width="22" height="14" rx="3" fill="#1E7A44"/><text x="12" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="Arial,sans-serif">123</text></svg>
-            <div><strong>Un nombre</strong><p>Ne coûte rien. Dis-le en luxembourgeois&nbsp;: il te donne 1 pièce de plus pour ce tour. Puis il est défaussé.</p></div>
+            <div><strong>Un nombre</strong><p>Gratuit. Dis-le en luxembourgeois&nbsp;: il te donne 1 pièce de plus pour ce tour. Puis il est défaussé.</p></div>
           </div>
         </div>
       </li>
-      <li><strong>Attaque</strong>Avec chacun des noms que tu avais déjà posés au tour d'avant.
-        <ul class="sous">
-          <li><strong>L'adversaire bloque</strong> avec l'un de ses noms&nbsp;: la plus grande Force gagne, l'autre carte est défaussée. En cas d'égalité, les deux le sont.</li>
-          <li><strong>Personne ne bloque</strong>&nbsp;: tu prends une carte du trésor de l'adversaire, sans la regarder, et tu la poses à côté de toi.</li>
-        </ul>
-      </li>
+      <li><strong>Attaque</strong>Tes noms qui étaient déjà là au début de ton tour peuvent attaquer. Un nom posé ce tour-ci doit attendre ton tour suivant.</li>
     </ol>
+
+    <h3>L'attaque</h3>
+    <p class="texte">Tu annonces tes attaquants. Pour chacun, l'adversaire choisit&nbsp;:</p>
+    <div class="duel">
+      <div class="case"><strong>Il bloque</strong><p>avec l'un de ses noms posés. On compare les Forces&nbsp;: la plus grande gagne, l'autre carte est défaussée. En cas d'égalité, les deux sont défaussées.</p></div>
+      <div class="case"><strong>Il ne bloque pas</strong><p>Tu prends une carte de son trésor, sans la regarder, et tu la poses à côté de toi. Il lui en reste une de moins.</p></div>
+    </div>
     <figure class="defile">
       <img src="assets/regle/combat.svg" width="760" height="430" alt="Hond attaque : Force 4, plus 2 pour l'adjectif grouss, plus 1 pour le sens dit à voix haute, soit 7. Fësch bloque avec 5. Hond gagne et Fësch est défaussé">
       <figcaption>Un combat&nbsp;: 7 contre 5. <span class="glisser">Faites glisser l'image pour tout voir.</span></figcaption>
     </figure>
 
     <h3 id="bonus">Les bonus, +1 chacun</h3>
+    <p class="texte">Ils s'ajoutent à la Force, et récompensent ce qu'on sait du mot.</p>
     <div class="bonus">
-      <div class="case"><b>+1</b><strong>La famille</strong><p>Deux de tes noms ont le même genre, écrit sur leur pastille&nbsp;: chacun gagne +1. <span class="mot" lang="lb">d'Kaz</span> et <span class="mot" lang="lb">d'Ameis</span> sont féminines. Un nom à deux genres, comme <span class="mot" lang="lb">Krokodil</span>, est des deux familles.</p></div>
-      <div class="case"><b>+1</b><strong>Le sens</strong><p>Tu dis le sens du nom qui attaque. Ton adversaire vérifie sur la carte.</p></div>
-      <div class="case"><b>+1</b><strong>La phrase</strong><p>Tu lis à voix haute la phrase d'exemple du nom qui attaque.</p></div>
+      <div class="case"><b>+1</b><strong>La famille</strong><p>Tant que deux de tes noms posés ont le même genre (écrit sur leur pastille), chacun gagne +1. <span class="mot" lang="lb">d'Kaz</span> et <span class="mot" lang="lb">d'Ameis</span> sont féminines. Un nom à deux genres, comme <span class="mot" lang="lb">Krokodil</span>, est des deux familles.</p></div>
+      <div class="case"><b>+1</b><strong>Le sens</strong><p>Quand un de tes noms attaque, dis son sens en français. L'adversaire vérifie sur la carte.</p></div>
+      <div class="case"><b>+1</b><strong>La phrase</strong><p>Quand un de tes noms attaque, lis à voix haute sa phrase d'exemple.</p></div>
     </div>
+
+    <h3 id="exemple">Un exemple, tour par tour</h3>
+    <p class="texte">Tes trois premiers tours, avec les cartes des illustrations.</p>
+    <ol class="exemple">
+      <li>
+        <p class="ex-tour">Tour 1 <span>1 pièce</span></p>
+        <p>Tu mets une carte en réserve&nbsp;: 1 pièce. Tu poses <span class="mot" lang="lb">Hond</span> (coût 1, Force 4) et tu lis «&nbsp;Hond&nbsp;». Il vient d'arriver&nbsp;: il n'attaque pas encore.</p>
+      </li>
+      <li>
+        <p class="ex-tour">Tour 2 <span>2 pièces</span></p>
+        <p>Deuxième carte en réserve&nbsp;: 2 pièces. Tu glisses <span class="mot" lang="lb">grouss</span> sous <span class="mot" lang="lb">Hond</span> (coût 2)&nbsp;: sa Force passe à 6, pour toujours. <span class="mot" lang="lb">Hond</span> attaque. Ton adversaire n'a encore posé aucun nom&nbsp;: il ne peut pas bloquer. Tu prends une carte de son trésor&nbsp;; il lui en reste 4.</p>
+      </li>
+      <li>
+        <p class="ex-tour">Tour 3 <span>3 pièces</span></p>
+        <p>Troisième carte en réserve&nbsp;: 3 pièces. Tu poses <span class="mot" lang="lb">Kaz</span> (coût 1)&nbsp;; elle attaquera au tour suivant. <span class="mot" lang="lb">Hond</span> attaque et tu dis «&nbsp;chien&nbsp;»&nbsp;: +1, Force 7. Ton adversaire a posé <span class="mot" lang="lb">Fësch</span> entre-temps et bloque avec lui&nbsp;: 7 contre 5. <span class="mot" lang="lb">Hond</span> gagne, <span class="mot" lang="lb">Fësch</span> est défaussé.</p>
+      </li>
+    </ol>
 
     <h3>Les cartes spéciales</h3>
     <p class="texte">Les cartes des sept jeux ont chacune un pouvoir écrit dessus. La carte ultra rare de la <strong>Fierkelsmaart</strong> prend une carte du trésor de l'adversaire, une fois par partie.</p>
@@ -353,9 +411,9 @@ figcaption{margin-top:8px;font-size:15px;color:var(--encre-douce);text-align:cen
       <h3>Le tour en bref</h3>
       <ol>
         <li><strong>Pioche</strong> une carte.</li>
-        <li><strong>Réserve</strong>&nbsp;: une carte de ta main, face cachée. 1 carte = 1 pièce par tour.</li>
-        <li><strong>Pose</strong> ce que tes pièces paient, en lisant chaque mot. Nom&nbsp;: se pose. Verbe&nbsp;: +3 ce tour. Adjectif&nbsp;: +2 pour toujours. Nombre&nbsp;: +1 pièce.</li>
-        <li><strong>Attaque</strong> avec les noms posés avant ce tour. Bloqué&nbsp;: la plus grande Force gagne. Pas bloqué&nbsp;: une carte du trésor.</li>
+        <li><strong>Réserve</strong>&nbsp;: une carte de ta main, face cachée. 1 carte en réserve = 1 pièce par tour.</li>
+        <li><strong>Pose</strong> ce que tes pièces paient, en lisant chaque mot. Nom&nbsp;: reste devant toi. Verbe&nbsp;: +3 ce tour. Adjectif&nbsp;: +2 pour toujours. Nombre&nbsp;: +1 pièce.</li>
+        <li><strong>Attaque</strong> avec les noms posés avant ce tour. Bloqué&nbsp;: la plus grande Force gagne. Pas bloqué&nbsp;: une carte de son trésor.</li>
       </ol>
     </div>
   </div>
