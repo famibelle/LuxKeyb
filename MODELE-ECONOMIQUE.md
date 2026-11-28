@@ -97,7 +97,9 @@ est donc :
 **Préalable à toute recette, animation comprise : le statut.** Facturer une
 commune ou vendre une boîte demande une autorisation d'établissement ou une
 asbl (skill `asbl-administratif`). Vendre une boîte demande en plus les essais
-de sécurité des jouets (EN 71).
+de sécurité des jouets (EN 71) : étapes et points ouverts dans
+[`CONFORMITE-JOUET.md`](CONFORMITE-JOUET.md). Le choix du paiement en ligne
+(Stripe ou Shopify) : [`BOUTIQUE-SHOPIFY.md`](BOUTIQUE-SHOPIFY.md).
 
 Démarcher les communes et préparer les animations : skill
 `animations-communes`. Chercher des financements : skill `subventions`. Seules

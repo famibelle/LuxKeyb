@@ -211,7 +211,7 @@ cloud est effacée après usage.
 | Novembre 2026 | Choisir la forme. Trouver le deuxième membre fondateur. Écrire les statuts et les faire relire. |
 | Novembre–décembre | Dépôt au RCS, compte bancaire, RBE si nécessaire, assurance RC. Licence des visuels du propriétaire à l'asbl. Questions de TVA et d'autorisation d'établissement posées à l'AED et à la House of Entrepreneurship. |
 | Dès l'asbl créée | Premières factures d'animation (skill `animations-communes`). Demande de subvention annuelle à la commune du siège (skill `subventions`). |
-| Avant d'ouvrir la boutique | Autorisation d'établissement si elle est nécessaire, essais EN 71, conditions de vente (`BOUTIQUE-CARTES.md` § 8 et § 11). |
+| Avant d'ouvrir la boutique | Autorisation d'établissement si elle est nécessaire, essais EN 71 (`CONFORMITE-JOUET.md`, skill `conformite-jouet`), conditions de vente (`BOUTIQUE-CARTES.md` § 8 et § 11 ; Shopify : `BOUTIQUE-SHOPIFY.md`). |
 
 ---
 

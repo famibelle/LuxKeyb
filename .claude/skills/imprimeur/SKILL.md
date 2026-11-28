@@ -454,7 +454,9 @@ Tout est dans `BOUTIQUE-CARTES.md` ; l'essentiel :
   6** (hasard et pochette scellée impossibles à la demande).
 - Avant d'ouvrir : statut, TVA de l'envoi depuis un autre pays (AED),
   conditions de vente, mentions légales, **marquage CE et EN 71** (jouet dès
-  6 ans), notice des données de la boutique.
+  6 ans, âge à confirmer), notice des données de la boutique. Certificats
+  EN 71-3 à demander dans chaque devis : `CONFORMITE-JOUET.md` § 3 et § 9
+  (skill `conformite-jouet`).
 
 ## 10. Comment répondre
 

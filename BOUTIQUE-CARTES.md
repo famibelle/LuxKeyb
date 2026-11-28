@@ -31,6 +31,10 @@ la **réservation sans paiement**, en ligne dès le 2026-11-01, puis la
 demande des § 2 à § 7 et § 10 reste écrite pour les prototypes. Elle est à
 revoir pour la précommande : envoi depuis le stock, codes dans les boîtes.
 
+**Option étudiée le 2026-11-28 : Shopify** à la place des liens Stripe, rien
+de décidé : [`BOUTIQUE-SHOPIFY.md`](BOUTIQUE-SHOPIFY.md) (skill
+`boutique-en-ligne`).
+
 ## 2. La chaîne, de la commande à la boîte
 
 ```
@@ -275,7 +279,9 @@ personnelles sont détaillés dans la skill `asbl-administratif`.
    règlement sur la sécurité générale des produits (GPSR) demande en plus,
    sur la page de vente, le fabricant avec son adresse postale et
    électronique (`fabricant:` dans `docs/commander.md`). Un règlement européen
-   adopté fin 2025 remplacera la directive dans quelques années.
+   adopté fin 2025 remplacera la directive dans quelques années. Le détail,
+   l'âge à trancher et la liste à cocher : [`CONFORMITE-JOUET.md`](CONFORMITE-JOUET.md)
+   (skill `conformite-jouet`).
 6. **Données personnelles** : la boutique traite noms, adresses, e-mails et
    téléphones. La politique de confidentialité de l'appli reste vraie (l'appli
    n'envoie rien) ; la boutique a besoin de sa propre notice

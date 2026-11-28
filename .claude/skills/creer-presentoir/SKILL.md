@@ -109,7 +109,9 @@ ignoré par git) :
   2026-11-01). Pas de « … € », pas de « [à compléter] », pas de faux code-barres.
   Ce qui manque n'est pas imprimé et n'apparaît que sur le BAT, en magenta.
   Les mentions de l'éditeur, du pays de fabrication, du marquage CE et les EAN
-  sont des paramètres en tête de `emballage.py`.
+  sont des paramètres en tête de `emballage.py`. Le présentoir n'est pas un
+  jouet, les étuis si : `CONFORMITE-JOUET.md` § 5 et § 7 (skill
+  `conformite-jouet`).
 - **Les cartes montrées sont de vraies cartes** exportées par l'appli
   (`impression/<boîte>/recto/` ou, avant assemblage, `export/`), jamais un
   dessin refait.

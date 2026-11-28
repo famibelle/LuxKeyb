@@ -92,7 +92,10 @@ l'appli).
 - **Les prix** : toutes les maquettes disent « Prix à fixer ».
 - **La vente** : pas avant l'asbl (voir `CAMPAGNE-FINANCEMENT.md` et le skill
   `asbl-administratif`). Certains objets pourraient devenir des contreparties
-  de la campagne de financement participatif.
+  de la campagne de financement participatif. Vente en ligne et impression à
+  la demande : [`BOUTIQUE-SHOPIFY.md`](BOUTIQUE-SHOPIFY.md) § 5. Un objet qui
+  vise aussi les enfants suit la sécurité des jouets :
+  [`CONFORMITE-JOUET.md`](CONFORMITE-JOUET.md) § 7.
 - **Relecture du luxembourgeois** par une personne qui parle la langue, avant
   toute impression : les phrases d'exemple viennent du LOD, mais leurs
   traductions et les en-têtes (« Haut léieren ech », « Wuert vum Dag »,
