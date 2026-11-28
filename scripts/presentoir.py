@@ -319,7 +319,7 @@ def fronton(cartes):
         x, y = hasard.uniform(12, l - 12), hasard.uniform(12, h - 12)
         s.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{hasard.uniform(.25, .7):.2f}" fill="#e9dcb0"/>')
     s.append(cadre_grand(6, 6, l - 6, h - 6, 2.6))
-    s.append(E.texte(cx, 24, 'LËTZEBUERGESCH CLAVIER', 5.2, E.OR_HI, 700, extra='letter-spacing="1.3"'))
+    s.append(E.texte(cx, 24, 'DE LËTZEBUERGER CLAVIER', 5.2, E.OR_HI, 700, extra='letter-spacing="1.3"'))
     s.append(E.texte(cx, 51, 'WUERTDUELL', 27, 'url(#or_fronton)', famille='EBG', extra='letter-spacing="1.6"'))
     s.append(E.texte(cx, 62.5, 'Le duel des mots luxembourgeois', 7.2, E.CREME, 400, 'italic'))
 
@@ -335,7 +335,10 @@ def fronton(cartes):
                  f'width="{lc}" height="{hc}"/></g>')
 
     yy = 86
-    for titre, sous in (('2 joueurs', 'face à face'), ('dès 8 ans', 'dès 6 ans : la Bataille des mots'),
+    # L'âge a laissé la place au nombre de cartes (propriétaire, 2026-11-27,
+    # repris ici du visuel retouché de la vitrine) : la boîte porte deux jeux
+    # d'âges différents, « dès 8 ans » seul trompait le passant.
+    for titre, sous in (('2 joueurs', 'face à face'), ('54 cartes', 'par boîte'),
                         ('15 min', 'la partie')):
         s.append(E.texte(36, yy, titre, 7.4, E.OR_HI, 700))
         s.append(E.texte(36, yy + 5.4, sous, 3.3, E.CREME, 400, 'italic'))
@@ -379,7 +382,7 @@ def dos_exterieur():
     s.append(VL.rosace(LE / 2, DOS_H / 2, 40, 3, 26, 6, '#1d2b5c', .25))
     s.append(E.lion(LE / 2, 34, 18))
     s.append(E.texte(LE / 2, 70, 'WUERTDUELL', 12, 'url(#or_dos_p)', famille='EBG', extra='letter-spacing=".8"'))
-    s.append(E.texte(LE / 2, 80, 'Lëtzebuergesch Clavier', 4.4, E.CREME, 400, 'italic'))
+    s.append(E.texte(LE / 2, 80, 'De Lëtzebuerger Clavier', 4.4, E.CREME, 400, 'italic'))
     return ''.join(s)
 
 
@@ -855,7 +858,7 @@ def produire():
         fh.write(E.page_html(E.svg(defs_, corps, lb, hb, 0, 0), lb, hb))
     E.chrome_pdf(f, os.path.join(SORTIE, 'presentoir_bat.pdf'))
     os.remove(f)
-    E.raster(os.path.join(SORTIE, 'presentoir_bat.pdf'), os.path.join(SORTIE, 'presentoir_plat.png'), 60)
+    E.raster(os.path.join(SORTIE, 'presentoir_bat.pdf'), os.path.join(SORTIE, 'presentoir_plat.png'), 150)
 
     # Le volume : les textures, les étapes de la notice, la maquette garnie.
     tmp = os.path.join(SORTIE, '_tmp')
@@ -878,7 +881,7 @@ def produire():
     E.chrome_pdf(f, os.path.join(SORTIE, 'presentoir_notice.pdf'))
     os.remove(f)
     sortie = rendre({**PLIE, 'cloisons': 0, 'fronton': 0}, os.path.join(SORTIE, 'presentoir_maquette.png'), tmp, tex,
-                    etuis, k=2.6, largeur=1500, hauteur=1080, rx=-14, ry=204, centre=(X0 + LE / 2, YF + BP / 2, -140))
+                    etuis, k=5.2, largeur=3000, hauteur=2160, rx=-14, ry=204, centre=(X0 + LE / 2, YF + BP / 2, -140))
     shutil.rmtree(tmp)
     return sortie
 

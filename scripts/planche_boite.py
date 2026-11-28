@@ -68,11 +68,11 @@ def carte_regle(x, y, titre, age, lignes):
 
 
 REGLES = [
-    ('Bataille des mots', 'dès 6 ans · 2 joueurs', [
+    ('Bataille des mots', '2 joueurs', [
         'Chacun retourne une carte', 'et lit son mot à voix haute.', '',
         'Le mot le plus long gagne', 'les deux cartes.', '',
         'Égalité : le premier qui dit', 'le sens les emporte.']),
-    ('Wuertduell', 'dès 8 ans · 2 joueurs', [
+    ('Wuertduell', '2 joueurs', [
         'Trésor : 5 cartes cachées.', 'Main : 5 cartes.', '',
         'Pioche · réserve · pose · attaque.', 'Verbe +3 · adjectif +2', 'Nombre : gratuit, +1 pièce.',
         'Gagne : prends les 5 cartes', 'du trésor adverse.']),
