@@ -485,6 +485,10 @@
     <string name="sa_essai_2">Try 1/%1$s</string>
     <string name="sa_lettres_deja_jouees">Letters already played:</string>
     <string name="sa_votre_mot_de_lettres">Your %1$s-letter word</string>
+    <!-- Wuertriet : pourquoi une proposition est refusée. Une pastille du clavier écrit un mot entier, qui ne fait pas toujours cinq lettres. -->
+    <string name="sa_wuertriet_pas_la_longueur">“%1$s” is not a %2$d-letter word.</string>
+    <string name="sa_wuertriet_suggestion_longueur">The words the keyboard suggests are not all %1$d letters long.</string>
+    <string name="sa_wuertriet_inconnu">“%1$s” is not in the Luxembourgish dictionary.</string>
     <string name="sa_valider">✅ Check</string>
     <string name="sa_devine_le_mot_luxembourgeois_de">Guess the %1$s-letter Luxembourgish word in at most %2$s tries.\n\nAfter each try, the colour of the letters tells you:\n🟩 Green: right letter, right place\n🟨 Orange: the letter is in the word, but in the wrong place\n⬜ Grey: the letter is not in the word\n\nYour guess must be a word in the Luxembourgish dictionary.</string>
     <string name="sa_essai">Try %1$s/%2$s</string>

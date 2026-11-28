@@ -481,6 +481,10 @@
     <string name="sa_essai_2">Versuch 1/%1$s</string>
     <string name="sa_lettres_deja_jouees">Bereits gespielte Buchstaben:</string>
     <string name="sa_votre_mot_de_lettres">Ihr Wort mit %1$s Buchstaben</string>
+    <!-- Wuertriet : pourquoi une proposition est refusée. Une pastille du clavier écrit un mot entier, qui ne fait pas toujours cinq lettres. -->
+    <string name="sa_wuertriet_pas_la_longueur">„%1$s“ ist kein Wort mit %2$d Buchstaben.</string>
+    <string name="sa_wuertriet_suggestion_longueur">Die Wörter, die die Tastatur vorschlägt, haben nicht alle %1$d Buchstaben.</string>
+    <string name="sa_wuertriet_inconnu">„%1$s“ steht nicht im luxemburgischen Wörterbuch.</string>
     <string name="sa_valider">✅ Prüfen</string>
     <string name="sa_devine_le_mot_luxembourgeois_de">Errate das luxemburgische Wort mit %1$s Buchstaben in höchstens %2$s Versuchen.\n\nNach jedem Versuch zeigt dir die Farbe der Buchstaben:\n🟩 Grün: richtiger Buchstabe, richtige Stelle\n🟨 Orange: Der Buchstabe kommt im Wort vor, steht aber an der falschen Stelle\n⬜ Grau: Der Buchstabe kommt im Wort nicht vor\n\nDas vorgeschlagene Wort muss im luxemburgischen Wörterbuch stehen.</string>
     <string name="sa_essai">Versuch %1$s/%2$s</string>

@@ -57,6 +57,10 @@ img{max-width:100%}
 a{color:var(--lien)}
 a:focus-visible,button:focus-visible{outline:3px solid var(--ciel);outline-offset:3px;border-radius:6px}
 h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.1;margin:0}
+/* Titres bicolores, comme l'accueil : la seconde moitié en rouge du drapeau,
+   réservé aux gros titres (charte : 24 px et plus). */
+h2 .accent{color:var(--rouge)}
+.titre h1 span{display:block;color:var(--rouge)}
 p{margin:0}
 .enveloppe{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
@@ -246,7 +250,7 @@ p{margin:0}
     <div class="titre heros">
       <div>
         <p class="surtitre">Précommande</p>
-        <h1>Les boîtes du Wuertduell</h1>
+        <h1>Les boîtes <span>du Wuertduell</span></h1>
         <p class="chapo">Le luxembourgeois qui s'apprend en jouant, à deux autour
         d'une table. Réservez vos boîtes aujourd'hui sans rien payer&nbsp;:
         l'impression part dès que 350&nbsp;boîtes sont réservées.</p>
@@ -269,7 +273,7 @@ p{margin:0}
 <main>
   <section class="vitrine" id="boites" aria-labelledby="t-boites">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-boites">Choisissez vos boîtes</h2>
+      <h2 class="titre-section" id="t-boites">Choisissez <span class="accent">vos boîtes</span></h2>
       <p class="intro-section">Chaque boîte se joue seule, dès qu'on l'ouvre, ou
       avec les autres&nbsp;: aucun mot n'est dans deux boîtes. Touchez
       «&nbsp;Réserver&nbsp;», tout se fait ici, en une minute.</p>
@@ -348,7 +352,7 @@ p{margin:0}
 
   <section class="section" id="jouer" aria-labelledby="t-jouer">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-jouer">Deux jeux dans chaque boîte</h2>
+      <h2 class="titre-section" id="t-jouer">Deux jeux <span class="accent">dans chaque boîte</span></h2>
       <p class="intro-section">On joue à deux, sans rien préparer. On lit les
       mots à voix haute, et ils restent.</p>
       <div class="jeux2">
@@ -371,7 +375,7 @@ p{margin:0}
 
   <section class="section" aria-labelledby="t-etapes">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-etapes">Comment marche la précommande</h2>
+      <h2 class="titre-section" id="t-etapes">Comment marche <span class="accent">la précommande</span></h2>
       <ol class="etapes3">
         <li><strong>Vous réservez</strong> en une minute, sans payer.
         Réserver ne vous engage à rien.</li>
@@ -392,7 +396,7 @@ p{margin:0}
       <div class="boite-appli">
         <div>
           <p class="surtitre">Gratuit sur Android</p>
-          <h2 id="t-appli">Vos cartes continuent sur le téléphone</h2>
+          <h2 id="t-appli">Vos cartes continuent <span class="accent">sur le téléphone</span></h2>
           <p>Dans chaque boîte, un code ajoute ses cartes à votre carnet dans
           l'application De Lëtzebuerger Clavier. Installez-la dès
           aujourd'hui&nbsp;: sept petits jeux vous font déjà gagner des cartes,
@@ -410,7 +414,7 @@ p{margin:0}
   <section class="section argent" aria-labelledby="t-argent">
     <div class="enveloppe">
       <div class="encart">
-        <h2 id="t-argent">Où va l'argent&nbsp;?</h2>
+        <h2 id="t-argent">Où va <span class="accent">l'argent&nbsp;?</span></h2>
         <p>De Lëtzebuerger Clavier deviendra une association sans but lucratif
         (asbl) avant la première vente. Personne ne touche de part des
         bénéfices&nbsp;: tout reste dans le projet. Ce que rapporte une boîte
@@ -427,7 +431,7 @@ p{margin:0}
 
   <section class="section partager" id="partager" aria-labelledby="t-partager">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-partager">Aidez l'impression à partir plus vite</h2>
+      <h2 class="titre-section" id="t-partager">Aidez l'impression <span class="accent">à partir plus vite</span></h2>
       <p class="intro-section">Plus il y a de réservations, plus vite les boîtes
       arrivent. Envoyez cette page à quelqu'un qui apprend le luxembourgeois, ou
       qui aimerait s'y mettre.</p>
@@ -446,7 +450,7 @@ p{margin:0}
         <img src="assets/boutique/presentoir.webp" width="640" height="654" loading="lazy" alt="Maquette du présentoir de comptoir en carton bleu nuit : en haut, le panneau WUERTDUELL avec quatre cartes et un code pour lire la règle ; en bas, douze boîtes en quatre colonnes de couleur">
         <div>
           <p class="surtitre" style="color:var(--rouge)">Commerces et associations</p>
-          <h2 id="t-commerces">Le présentoir de comptoir</h2>
+          <h2 id="t-commerces">Le présentoir <span class="accent">de comptoir</span></h2>
           <p>Douze boîtes, trois de chaque sorte, dans un présentoir en carton prêt
           à poser sur un comptoir : pour une librairie, un magasin, une
           bibliothèque ou un stand.</p>

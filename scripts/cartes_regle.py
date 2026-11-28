@@ -19,14 +19,17 @@ Sortie dans impression/cartes_regle/ (privé) : regle_<carte>.pdf (69 × 94 mm),
 regle_<carte>_600dpi.png, et regles_bat.png (les deux, zone du code marquée).
 
 À lancer depuis la racine du dépôt : python3 scripts/cartes_regle.py
-Demande puppeteer-core (ou playwright) et Chrome, comme les autres planches.
+Demande Chrome, et rien d'autre : voir [rendre].
 """
 import base64
 import html
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
+
+from PIL import Image
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import emballage as E  # noqa: E402
@@ -131,32 +134,36 @@ def page(contenu, px=None):
             f'{taille} viewBox="-3 -3 69 94">{contenu}</svg></body>')
 
 
+PX = (1630, 2220)       # 600 dpi sur 69 × 94 mm, fond perdu compris
+
+
 def rendre(pages):
-    """[(html, pdf ou None, png ou None)] : Chrome sans interface, par puppeteer."""
+    """[(html, pdf ou None, png ou None)] : Chrome sans interface, directement.
+
+    C'était puppeteer-core, qui n'est pas installé sur la machine et bloquait
+    toute reprise des cartes de règle. Chrome sait faire les deux tout seul,
+    comme pour les étuis : `--print-to-pdf` pour le PDF (le format vient du
+    `@page` de la feuille de style) et `--screenshot` pour le PNG. Sa fenêtre
+    sans interface rend 87 px de moins que la hauteur demandée, d'où le
+    surplus puis le recadrage, exactement comme dans emballage.maquette.
+    """
     d = tempfile.mkdtemp()
-    taches = []
+    base = ['google-chrome', '--headless=new', '--disable-gpu', '--no-sandbox',
+            '--allow-file-access-from-files', '--virtual-time-budget=10000']
     for i, (h, pdf, png) in enumerate(pages):
         f = os.path.join(d, f'{i}.html')
         open(f, 'w', encoding='utf-8').write(h)
-        taches.append([f, pdf, png])
-    js = os.path.join(d, 'rendu.js')
-    open(js, 'w').write('''
-const puppeteer = require('puppeteer-core');
-(async () => {
-  const b = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', headless: 'new', args: ['--no-sandbox', '--allow-file-access-from-files'] });
-  for (const [f, pdf, png] of %s) {
-    const p = await b.newPage();
-    if (png) await p.setViewport({ width: 1630, height: 2220 });
-    await p.goto('file://' + f, { waitUntil: 'load' });
-    await p.evaluate(() => document.fonts.ready);
-    if (pdf) await p.pdf({ path: pdf, width: '69mm', height: '94mm', printBackground: true, pageRanges: '1' });
-    if (png) await p.screenshot({ path: png });
-    await p.close();
-  }
-  await b.close();
-})();
-''' % repr(taches).replace('None', 'null').replace("'", '"'))
-    subprocess.run(['node', js], check=True, env=dict(os.environ))
+        if pdf:
+            subprocess.run(base + ['--no-pdf-header-footer', f'--print-to-pdf={pdf}', f'file://{f}'],
+                           check=True, capture_output=True, timeout=180)
+        if png:
+            subprocess.run(base + ['--hide-scrollbars', f'--window-size={PX[0]},{PX[1] + 87}',
+                                   f'--screenshot={png}', f'file://{f}'],
+                           check=True, capture_output=True, timeout=180)
+            im = Image.open(png)
+            assert im.size[0] >= PX[0] and im.size[1] >= PX[1], f'{png} rendu en {im.size}'
+            im.crop((0, 0, *PX)).save(png)
+    shutil.rmtree(d, ignore_errors=True)
 
 
 def main():
@@ -165,12 +172,11 @@ def main():
     pages = []
     for nom, titre, age, lignes, code in cartes:
         pages.append((page(recto(titre, age, lignes, code)), os.path.join(SORTIE, f'regle_{nom}.pdf'), None))
-        pages.append((page(recto(titre, age, lignes, code), px=(1630, 2220)), None,
+        pages.append((page(recto(titre, age, lignes, code), px=PX), None,
                       os.path.join(SORTIE, f'regle_{nom}_600dpi.png')))
-        pages.append((page(recto(titre, age, lignes, code, bat=True), px=(1630, 2220)), None,
+        pages.append((page(recto(titre, age, lignes, code, bat=True), px=PX), None,
                       os.path.join(SORTIE, f'regle_{nom}_bat.png')))
     rendre(pages)
-    from PIL import Image
     ims = [Image.open(os.path.join(SORTIE, f'regle_{n}_bat.png')) for n in ('bataille', 'wuertduell')]
     w, h = ims[0].width // 3, ims[0].height // 3
     planche = Image.new('RGB', (2 * w + 30, h + 20), '#e6e2d8')

@@ -8,6 +8,13 @@ boîte (rouge pour la boîte de départ, vert pour l'extension, bleu et violet
 pour les niveaux) dit le produit en rayon, et les emblèmes de ses deux paquets
 sont ceux du médaillon des cartes (CadreOrne.emblemeDuPaquet).
 
+Deux textes ont changé le 2026-11-28, pour que l'étui dise la même chose que
+la vitrine de précommande, dont les photos avaient été retouchées à la main :
+le nom de l'application, **« De Lëtzebuerger Clavier »** depuis la 41.1.8, et
+l'âge, retiré de la face et du côté. Il restait « dès 8 ans » alors que la
+boîte contient aussi la Bataille des mots, qui se joue dès 6 ans ; les deux
+âges sont dits sur la carte de règle de chaque jeu et sur le site.
+
 Le gabarit (en mm, intérieur 64,5 × 89,5 × 19) :
 
     [côté A][  face  ][côté B][  dos   ][colle]
@@ -24,7 +31,8 @@ d'impression) :
   page 2 le tracé de découpe et de rainage seul, aux mêmes cotes ;
 - etui_bat.pdf : le visuel avec le tracé, les zones de sécurité et le
   cartouche, pour relire ;
-- etui_plat.png, etui_maquette.png : aperçus ;
+- etui_plat.png, etui_maquette.png, etui_vitrine.png : aperçus (le dernier,
+  l'étui seul de trois quarts, sert les fiches produit du site) ;
 et, pour les quatre ensemble, impression/emballage/etuis_gamme.png.
 
 Le PDF passe par Chromium : pas de transparence avant un dégradé, pas de
@@ -146,15 +154,40 @@ _logo = None
 
 
 def logo_lion():
-    """Le lion du logo dans ses couleurs d'origine (propriétaire, 2026-11-19)."""
+    """Le lion du logo dans ses couleurs d'origine (propriétaire, 2026-11-19),
+    recadré sur son dessin et mesuré.
+
+    Le PNG d'origine est carré, avec de la marge blanche autour du lion et un
+    reste d'antialiasing presque transparent jusque dans les coins : le
+    recadrer sur sa seule encre (alpha > 40) donne un dessin dont on connaît
+    les proportions. Rend (image, largeur/hauteur, rayon du dessin pour une
+    boîte de hauteur 1), ce dont [lion] a besoin pour l'inscrire au juste dans
+    son cœur crème.
+
+    Rendu à 1024 px et non 600 : à 7 mm de rayon sur l'étui, 600 px ne
+    laissaient que 1 800 dpi, et l'aperçu à plat le montrait.
+    """
     global _logo
     if _logo is None:
-        _logo = VL.logo_couleurs(LOGO, 600)
+        import numpy as np
+        im = Image.open(io.BytesIO(base64.b64decode(VL.logo_couleurs(LOGO, 1024))))
+        a = np.asarray(im)[:, :, 3]
+        ys, xs = np.nonzero(a > 40)
+        im = im.crop((int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1))
+        a = np.asarray(im)[:, :, 3]
+        ys, xs = np.nonzero(a > 40)
+        ratio = im.width / im.height
+        dx, dy = (xs + .5) / im.width - .5, (ys + .5) / im.height - .5
+        _logo = (png64(im, optimize=True), ratio, float(np.hypot(dx * ratio, dy).max()))
     return _logo
 
 
-def carte_png(dossier, mot, largeur_px=520):
-    """Le recto exporté par l'appli, sans fond perdu, coins arrondis (3 mm)."""
+def carte_png(dossier, mot, largeur_px=900):
+    """Le recto exporté par l'appli, sans fond perdu, coins arrondis (3 mm).
+
+    900 px pour 23 mm de large sur la face : environ 990 dpi, de quoi lire le
+    mot sur l'étui imprimé. À 520 px l'éventail plafonnait à 570 dpi.
+    """
     fichiers = (glob.glob(os.path.join(RACINE, 'impression', dossier, 'recto', f'*_{mot}.png'))
                 or glob.glob(os.path.join(RACINE, 'impression', dossier, 'export', f'{mot}.png')))
     if not fichiers:
@@ -223,18 +256,31 @@ def medaillon(cx, cy, r, forme, couleur, ident):
             f'<g transform="translate({cx} {cy}) scale({r * .82 / 10.5})">{embleme(forme, couleur)}</g>')
 
 
+RAYON_LION = .62     # le rayon du dessin, en parts du rayon du médaillon
+
+
 def lion(cx, cy, r):
-    """Le médaillon du dos : anneau d'or, cœur ivoire, lion en couleurs.
+    """Le médaillon du lion : anneau d'or, cœur crème guilloché, lion en couleurs.
 
     Le cœur était bleu nuit et le lion recoloré en or. Dans ses couleurs
     d'origine (propriétaire, 2026-11-19), son tracé vert très sombre s'y
     perdait : il lui faut un fond clair, le même que sur le dos des cartes.
+
+    Le lion était posé dans un carré de 1,24 r, sans tenir compte de la marge
+    du PNG : son dessin montait alors à 0,70 r, mordait sur le guilloché et
+    venait buter contre l'anneau d'or, surtout les deux angles du drapeau. Il
+    est maintenant inscrit exactement, dessin mesuré (voir [logo_lion]), dans
+    un rayon de [RAYON_LION], et le guilloché crème lui fait un halo complet
+    entre 0,645 r et 0,735 r.
     """
+    png, ratio, mesure = logo_lion()
+    h = RAYON_LION * r / mesure
+    w = h * ratio
     return (f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="url(#or_anneau)" stroke="{OR_TRAIT}" stroke-width="{r * .04}"/>'
             f'<circle cx="{cx}" cy="{cy}" r="{r * .8}" fill="url(#coeur_lion)" stroke="{OR_TRAIT}" stroke-width="{r * .03}"/>'
-            + VL.rosace(cx, cy, r * .66, r * .05, 16, 6, VL.GUILLOCHE_CREME, r * .008)
-            + f'<image href="data:image/png;base64,{logo_lion()}" x="{cx - r * .62}" y="{cy - r * .63}" '
-              f'width="{r * 1.24}" height="{r * 1.24}"/>')
+            + VL.rosace(cx, cy, r * .69, r * .045, 16, 6, VL.GUILLOCHE_CREME, r * .008)
+            + f'<image href="data:image/png;base64,{png}" x="{cx - w / 2:.3f}" y="{cy - h / 2:.3f}" '
+              f'width="{w:.3f}" height="{h:.3f}"/>')
 
 
 def qr(x, y, cote, url):
@@ -323,6 +369,41 @@ def cadre(x0, y0, x1, y1):
 # Chaque panneau se dessine dans son repère (0, 0 en haut à gauche, en mm).
 
 
+# L'éventail de la face : angle, décalage horizontal et vertical de chaque
+# carte, en mm depuis le milieu de la face. La troisième franchit le pli de
+# droite et continue sur le côté B, où [cote_b] la redessine dans le même
+# repère : sur la boîte montée elle fait le tour du coin, comme une carte
+# posée sur l'arête (propriétaire, 2026-11-28). Elle déborde de 4 mm sur les
+# 19 du côté, et le texte vertical de ce côté a reculé d'autant.
+EVENTAIL = ((-12, -10.7, 2.4), (0, 0, 0), (16, 16.3, 2.4))
+LC = 23.0                   # la largeur d'une carte de l'éventail
+HC = LC * 88 / 63
+Y_EVENTAIL = 31.0           # le haut de la carte du milieu
+
+
+def eventail(p, ids, decalage=0.0, cartes=(0, 1, 2)):
+    """Les cartes de la face, vraies images exportées par l'appli.
+
+    [decalage] déplace tout le repère : le côté B le met à -W pour redessiner
+    la carte qui passe le pli exactement dans son prolongement.
+    """
+    s = []
+    cx = W / 2 + decalage
+    for k in cartes:
+        angle, dx, dy = EVENTAIL[k]
+        img = ids['cartes'][k]
+        x, y = cx + dx - LC / 2, Y_EVENTAIL + dy
+        rot = f'rotate({angle} {cx + dx} {y + HC})'
+        ombre = f'<path d="{CA.roundrect(x + .5, y + .7, x + LC + .5, y + HC + .7, 1.3)}" fill="#050a1f"/>'
+        if img:
+            s.append(f'<g transform="{rot}">{ombre}<image href="data:image/png;base64,{img}" x="{x}" y="{y}" '
+                     f'width="{LC}" height="{HC}"/></g>')
+        else:
+            s.append(f'<g transform="{rot}">{ombre}<path d="{CA.roundrect(x, y, x + LC, y + HC, 1.3)}" fill="#3a4a7a"/>'
+                     + texte(x + LC / 2, y + HC / 2, p['eventail'][k], 3, '#ffffff', 700) + '</g>')
+    return ''.join(s)
+
+
 def face(p, ids):
     s = []
     cx = W / 2
@@ -336,26 +417,21 @@ def face(p, ids):
         s.append(f'<circle cx="{x:.2f}" cy="{y:.2f}" r="{hasard.uniform(.12, .3):.2f}" fill="#e9dcb0"/>')
     s.append(cadre(2.6, 2.6, W - 2.6, H - 2.6))
 
-    s.append(texte(cx, 10.2, 'LËTZEBUERGESCH CLAVIER', 1.95, OR_HI, 700, extra='letter-spacing=".42"'))
-    s.append(texte(cx, 18.4, 'WUERTDUELL', 7.4, 'url(#or_titre)', famille='EBG', extra='letter-spacing=".5"'))
-    s.append(texte(cx, 22.8, 'Le duel des mots luxembourgeois', 2.45, CREME, 400, 'italic'))
+    # Le lion, en grand, dans le coin que personne n'occupait (propriétaire,
+    # 2026-11-28) : c'est l'emblème du jeu, il doit se voir en rayon. Le titre
+    # descend de 4,6 mm pour lui laisser la place, et l'éventail se resserre
+    # d'autant : les cartes passent de 25 à 23 mm de large et se chevauchent
+    # un peu plus, ce qui les ramène aussi à l'intérieur du filet d'or — la
+    # carte de droite en dépassait de 2 mm et se faisait couper au bord.
+    s.append(lion(10.4, 10.3, 6.6))
+    s.append(texte(35.4, 11.4, 'DE LËTZEBUERGER CLAVIER', 1.7, OR_HI, 700, extra='letter-spacing=".26"'))
+    s.append(texte(cx, 23.0, 'WUERTDUELL', 7.4, 'url(#or_titre)', famille='EBG', extra='letter-spacing=".5"'))
+    s.append(texte(cx, 27.4, 'Le duel des mots luxembourgeois', 2.45, CREME, 400, 'italic'))
     # « FR » : l'édition, puisque les sens sont écrits en français.
-    s.append(f'<rect x="{W - 11.2}" y="5.2" width="7.4" height="3.6" rx="1.8" fill="none" stroke="{OR_MID}" stroke-width=".3"/>')
-    s.append(texte(W - 7.5, 7.88, 'FR', 2.2, OR_HI, 700))
+    s.append(f'<rect x="{W - 11.2}" y="9.0" width="7.4" height="3.6" rx="1.8" fill="none" stroke="{OR_MID}" stroke-width=".3"/>')
+    s.append(texte(W - 7.5, 11.68, 'FR', 2.2, OR_HI, 700))
 
-    # L'éventail : trois vraies cartes, exportées par l'appli.
-    lc, hc = 25.0, 25.0 * 88 / 63
-    for k, (mot, angle, dx, dy) in enumerate(zip(p['eventail'], (-12, 0, 12), (-13, 0, 13), (2.4, 0, 2.4))):
-        img = ids['cartes'][k]
-        x, y = cx + dx - lc / 2, 27.4 + dy
-        rot = f'rotate({angle} {cx + dx} {y + hc})'
-        ombre = f'<path d="{CA.roundrect(x + .5, y + .7, x + lc + .5, y + hc + .7, 1.3)}" fill="#050a1f"/>'
-        if img:
-            s.append(f'<g transform="{rot}">{ombre}<image href="data:image/png;base64,{img}" x="{x}" y="{y}" '
-                     f'width="{lc}" height="{hc}"/></g>')
-        else:
-            s.append(f'<g transform="{rot}">{ombre}<path d="{CA.roundrect(x, y, x + lc, y + hc, 1.3)}" fill="#3a4a7a"/>'
-                     + texte(x + lc / 2, y + hc / 2, mot, 3, '#ffffff', 700) + '</g>')
+    s.append(eventail(p, ids))
 
     # Le bandeau du produit, et ses deux paquets.
     y0 = 66.4
@@ -370,7 +446,7 @@ def face(p, ids):
     s.append(texte(14.2, yp + 1.0, n1, 2.85, CREME, 700, ancre='start'))
     s.append(texte(W - 14.2, yp + 1.0, n2, 2.85, CREME, 700, ancre='end'))
     s.append(f'<path d="M{cx} {yp - 1.6} L{cx + 1.2} {yp} L{cx} {yp + 1.6} L{cx - 1.2} {yp} Z" fill="{OR_MID}"/>')
-    s.append(texte(cx, 86.0, '2 joueurs · dès 8 ans · 15 min · 54 cartes', 2.12, OR_HI, 400))
+    s.append(texte(cx, 86.0, '2 joueurs · 15 min · 54 cartes', 2.12, OR_HI, 400))
     return ''.join(s)
 
 
@@ -404,7 +480,7 @@ def dos(p, ids):
     if p.get('mots'):
         paragraphes.append((p['mots'], TEXTE_DOS, 'normal'))
     paragraphes.append(('La carte code ajoute aussi les 52 cartes au carnet de l’application gratuite '
-                        'Lëtzebuergesch Clavier.', CREME, 'italic'))
+                        'De Lëtzebuerger Clavier.', CREME, 'italic'))
     for txt, coul, style in paragraphes:
         rangs = coupe(txt, 47)
         s.append(lignes(x0, y, rangs, 2.2, coul, 2.75, style=style))
@@ -416,7 +492,7 @@ def dos(p, ids):
     s.append(qr(x0, yb + 1.2, 15.5, URL_REGLE))
     s.append(texte(x0 + 7.75, yb + 19.6, 'La règle complète', 1.95, CREME, 700))
     xm = x0 + 18.6
-    rangs = ['© Lëtzebuergesch Clavier', 'Mots et sens : Lëtzebuerger', 'Online Dictionnaire (ZLS), CC0']
+    rangs = ['© De Lëtzebuerger Clavier', 'Mots et sens : Lëtzebuerger', 'Online Dictionnaire (ZLS), CC0']
     if EDITEUR:
         rangs += coupe(f'Éditeur : {EDITEUR}', 30)
     if PAYS_FABRICATION:
@@ -442,18 +518,26 @@ def cote_a(p, ids):
 
 
 def cote_b(p, ids):
-    """L'autre côté : pour qui, combien de temps, deux jeux dans la boîte."""
+    """L'autre côté : pour qui, combien de temps, deux jeux dans la boîte.
+
+    Et le bout de la carte qui vient de la face, redessiné ici dans son
+    prolongement : voir [EVENTAIL]. Elle occupe les 4 premiers millimètres du
+    côté, contre le pli, d'où le texte vertical reculé (il était centré sur
+    6,3 mm du pli, il l'est maintenant sur 10,5) et ses lignes un peu
+    resserrées, pour rester à 2,5 mm de l'autre pli.
+    """
     s = [f'<rect x="{-FP}" y="{-FP}" width="{D + 2 * FP}" height="{H + 2 * FP}" fill="url(#nuit_cote)"/>']
+    s.append(eventail(p, ids, decalage=-W, cartes=(2,)))
     s.append(lion(D / 2, 9.4, 6.4))
-    rangs = [('2 joueurs · dès 8 ans · 15 min', 2.5, 700, OR_HI),
-             ('Deux jeux : la Bataille des mots dès 6 ans,', 2.15, 400, CREME),
-             ('le Wuertduell dès 8 ans', 2.15, 400, CREME),
-             ('54 cartes · les sens sont en français', 2.15, 400, CREME)]
-    g = f'<g transform="translate({D / 2} {H / 2 + 7.5}) rotate(-90)">'
-    yy = -6.6
+    rangs = [('2 joueurs · 15 min', 2.4, 700, OR_HI),
+             ('Deux jeux : la Bataille des mots', 2.05, 400, CREME),
+             ('et le Wuertduell', 2.05, 400, CREME),
+             ('54 cartes · les sens sont en français', 2.05, 400, CREME)]
+    g = f'<g transform="translate(6.33 {H / 2 + 7.5}) rotate(-90)">'
+    yy = 0.0
     for txt, taille, poids, coul in rangs:
         g += texte(0, yy, txt, taille, coul, poids)
-        yy += 3.9 if taille > 2.3 else 3.2
+        yy += 3.7 if taille > 2.3 else 3.0
     s.append(g + '</g>')
     return ''.join(s)
 
@@ -689,7 +773,7 @@ def maquette(dossier, plat_png, dpi):
         f = os.path.join(dossier, f'_face_{nom}.png')
         z.save(f)
         chemins[nom] = f
-    k = 6.2   # px par mm
+    k = 12.4   # px par mm : 3000 × 1800, deux fois l'ancienne maquette
     w, h, d = W * k, H * k, D * k
 
     def boite(rx, ry, x):
@@ -703,30 +787,33 @@ def maquette(dossier, plat_png, dpi):
 </div><div class="ombre"></div></div>"""
 
     page = f"""<!doctype html><html><head><meta charset="utf-8"><style>
-html,body {{ margin:0; width:1500px; height:900px; background: radial-gradient(ellipse at 50% 35%, #fbf7ee 0%, #e9e1cf 70%, #d9cfb8 100%); overflow:hidden; }}
-.scene {{ position:absolute; top:150px; width:{w}px; height:{h}px; perspective: 1700px; }}
+html,body {{ margin:0; width:3000px; height:1800px; background: radial-gradient(ellipse at 50% 35%, #fbf7ee 0%, #e9e1cf 70%, #d9cfb8 100%); overflow:hidden; }}
+.scene {{ position:absolute; top:300px; width:{w}px; height:{h}px; perspective: 3400px; }}
 .boite {{ position:relative; width:{w}px; height:{h}px; transform-style: preserve-3d; }}
 .f {{ position:absolute; background-size: 100% 100%; backface-visibility: hidden; }}
-.ombre {{ position:absolute; left:-30px; top:{h + 26}px; width:{w + 90}px; height:46px; border-radius:50%;
-  background: radial-gradient(ellipse, rgba(60,45,20,.45), rgba(60,45,20,0) 70%); transform: translateZ(-200px); }}
-</style></head><body>{boite(-16, -32, 210)}{boite(-16, 148, 900)}</body></html>"""
+.ombre {{ position:absolute; left:-60px; top:{h + 52}px; width:{w + 180}px; height:92px; border-radius:50%;
+  background: radial-gradient(ellipse, rgba(60,45,20,.45), rgba(60,45,20,0) 70%); transform: translateZ(-400px); }}
+</style></head><body>{boite(-16, -32, 420)}{boite(-16, 148, 1800)}</body></html>"""
     f = os.path.join(dossier, '_maquette.html')
     with open(f, 'w', encoding='utf-8') as fh:
         fh.write(page)
     sortie = os.path.join(dossier, 'etui_maquette.png')
     subprocess.run(['google-chrome', '--headless=new', '--disable-gpu', '--no-sandbox', '--hide-scrollbars',
-                    '--allow-file-access-from-files', '--virtual-time-budget=6000', '--window-size=1500,990',
-                    f'--screenshot={sortie}', f'file://{f}'], check=True, capture_output=True, timeout=120)
+                    '--allow-file-access-from-files', '--virtual-time-budget=6000', '--window-size=3000,1887',
+                    f'--screenshot={sortie}', f'file://{f}'], check=True, capture_output=True, timeout=240)
     for c in list(chemins.values()) + [f]:
         os.remove(c)
     # La fenêtre sans interface de Chromium rend 87 px de moins que sa hauteur : on recadre.
-    Image.open(sortie).crop((0, 0, 1500, 900)).save(sortie)
+    Image.open(sortie).crop((0, 0, 3000, 1800)).save(sortie)
     return sortie
 
 
-def gamme(dpi=200):
-    """Les quatre étuis côte à côte, de trois quarts : etuis_gamme.png."""
-    k = 4.4
+def gamme(dpi=400):
+    """Les quatre étuis côte à côte, de trois quarts : etuis_gamme.png.
+
+    3000 × 1400 : de quoi illustrer une fiche produit ou une affiche.
+    """
+    k = 8.8
     w, h, d = W * k, H * k, D * k
     boites, temp = [], []
     for i, code in enumerate(PRODUITS):
@@ -745,19 +832,19 @@ def gamme(dpi=200):
             f[nom] = os.path.join(SORTIE, f'_gamme_{code}_{nom}.png')
             z.save(f[nom])
         temp += list(f.values()) + [plat]
-        x = 120 + i * 330
+        x = 240 + i * 660
         boites.append(f"""<div class="scene" style="left:{x}px"><div class="boite">
 <div class="f" style="width:{w}px;height:{h}px;background-image:url('file://{f['face']}');transform: translateZ({d / 2}px);"></div>
 <div class="f" style="width:{d}px;height:{h}px;left:{(w - d) / 2}px;background-image:url('file://{f['droite']}');transform: rotateY(90deg) translateZ({w / 2}px);"></div>
 <div class="f" style="width:{w}px;height:{d}px;top:{(h - d) / 2}px;background-image:url('file://{f['dessus']}');transform: rotateX(90deg) translateZ({h / 2}px);"></div>
 </div><div class="ombre"></div></div>""")
     page = f"""<!doctype html><html><head><meta charset="utf-8"><style>
-html,body {{ margin:0; width:1500px; height:700px; overflow:hidden;
+html,body {{ margin:0; width:3000px; height:1400px; overflow:hidden;
   background: radial-gradient(ellipse at 50% 30%, #fbf7ee 0%, #e9e1cf 70%, #d9cfb8 100%); }}
-.scene {{ position:absolute; top:150px; width:{w}px; height:{h}px; perspective: 1600px; }}
+.scene {{ position:absolute; top:300px; width:{w}px; height:{h}px; perspective: 3200px; }}
 .boite {{ position:relative; width:{w}px; height:{h}px; transform-style: preserve-3d; transform: rotateX(-14deg) rotateY(-26deg); }}
 .f {{ position:absolute; background-size: 100% 100%; backface-visibility: hidden; }}
-.ombre {{ position:absolute; left:-20px; top:{h + 18}px; width:{w + 70}px; height:36px; border-radius:50%;
+.ombre {{ position:absolute; left:-40px; top:{h + 36}px; width:{w + 140}px; height:72px; border-radius:50%;
   background: radial-gradient(ellipse, rgba(60,45,20,.42), rgba(60,45,20,0) 70%); }}
 </style></head><body>{''.join(boites)}</body></html>"""
     f = os.path.join(SORTIE, '_gamme.html')
@@ -765,15 +852,68 @@ html,body {{ margin:0; width:1500px; height:700px; overflow:hidden;
         fh.write(page)
     sortie = os.path.join(SORTIE, 'etuis_gamme.png')
     subprocess.run(['google-chrome', '--headless=new', '--disable-gpu', '--no-sandbox', '--hide-scrollbars',
-                    '--allow-file-access-from-files', '--virtual-time-budget=6000', '--window-size=1500,787',
-                    f'--screenshot={sortie}', f'file://{f}'], check=True, capture_output=True, timeout=120)
-    Image.open(sortie).crop((0, 0, 1500, 700)).save(sortie)
+                    '--allow-file-access-from-files', '--virtual-time-budget=6000', '--window-size=3000,1487',
+                    f'--screenshot={sortie}', f'file://{f}'], check=True, capture_output=True, timeout=240)
+    Image.open(sortie).crop((0, 0, 3000, 1400)).save(sortie)
     for c in temp + [f]:
         os.remove(c)
     return sortie
 
 
-def planche(code, dpi=203.2):
+def vitrine(code, dpi=600, taille=(1020, 1440), k=12.5):
+    """Un étui seul, de trois quarts : etui_vitrine.png, pour la fiche du site.
+
+    La gamme ne suffisait pas à en tirer une fiche produit : à 660 px de pas
+    pour des boîtes qui en font 600 de large, un recadrage un peu aéré fait
+    entrer le voisin. Ici la boîte est seule au milieu de sa page, dans la
+    proportion des vignettes du site (340 × 480), et le rendu est trois fois
+    plus fin qu'elles : de quoi changer leur taille sans tout refaire.
+    """
+    dossier = os.path.join(SORTIE, PRODUITS[code]['dossier'])
+    plat = os.path.join(dossier, '_vitrine.png')
+    raster(os.path.join(dossier, 'etui_impression.pdf'), plat, dpi)
+    im = Image.open(plat).convert('RGB')
+    u = dpi / 25.4
+    w, h, d = W * k, H * k, D * k
+
+    def zone(x, y, l, hh, rot=0):
+        z = im.crop((round((x + FP) * u), round((y + FP) * u), round((x + l + FP) * u), round((y + hh + FP) * u)))
+        return z.rotate(rot, expand=True) if rot else z
+
+    f = {}
+    for nom, z in (('face', zone(XF, T, W, H)), ('droite', zone(XB, T, D, H)), ('dessus', zone(XD, T - D, W, D, 180))):
+        f[nom] = os.path.join(dossier, f'_vitrine_{nom}.png')
+        z.save(f[nom])
+    lp, hp = taille
+    page = f"""<!doctype html><html><head><meta charset="utf-8"><style>
+html,body {{ margin:0; width:{lp}px; height:{hp}px; overflow:hidden;
+  background: radial-gradient(ellipse at 50% 30%, #fbf7ee 0%, #e9e1cf 70%, #d9cfb8 100%); }}
+.scene {{ position:absolute; left:{(lp - w) / 2:.0f}px; top:{(hp - h) / 2 - 30:.0f}px;
+  width:{w}px; height:{h}px; perspective: {4.2 * h:.0f}px; }}
+.boite {{ position:relative; width:{w}px; height:{h}px; transform-style: preserve-3d; transform: rotateX(-14deg) rotateY(-26deg); }}
+.f {{ position:absolute; background-size: 100% 100%; backface-visibility: hidden; }}
+.ombre {{ position:absolute; left:-55px; top:{h + 44}px; width:{w + 190}px; height:96px; border-radius:50%;
+  background: radial-gradient(ellipse, rgba(60,45,20,.42), rgba(60,45,20,0) 70%); }}
+</style></head><body><div class="scene"><div class="boite">
+<div class="f" style="width:{w}px;height:{h}px;background-image:url('file://{f['face']}');transform: translateZ({d / 2}px);"></div>
+<div class="f" style="width:{d}px;height:{h}px;left:{(w - d) / 2}px;background-image:url('file://{f['droite']}');transform: rotateY(90deg) translateZ({w / 2}px);"></div>
+<div class="f" style="width:{w}px;height:{d}px;top:{(h - d) / 2}px;background-image:url('file://{f['dessus']}');transform: rotateX(90deg) translateZ({h / 2}px);"></div>
+</div><div class="ombre"></div></div></body></html>"""
+    fh_ = os.path.join(dossier, '_vitrine.html')
+    with open(fh_, 'w', encoding='utf-8') as fh:
+        fh.write(page)
+    sortie = os.path.join(dossier, 'etui_vitrine.png')
+    subprocess.run(['google-chrome', '--headless=new', '--disable-gpu', '--no-sandbox', '--hide-scrollbars',
+                    '--allow-file-access-from-files', '--virtual-time-budget=6000',
+                    f'--window-size={lp},{hp + 87}', f'--screenshot={sortie}', f'file://{fh_}'],
+                   check=True, capture_output=True, timeout=240)
+    Image.open(sortie).crop((0, 0, lp, hp)).save(sortie)
+    for c in list(f.values()) + [plat, fh_]:
+        os.remove(c)
+    return sortie
+
+
+def planche(code, dpi=400):
     """L'emballage complet d'une boîte sur une image : la boîte en volume, face
     et dos, puis ses six faces dépliées en croix, chacune dans le sens où elle
     se lit une fois montée : etui_complet.png."""
@@ -792,24 +932,24 @@ def planche(code, dpi=203.2):
 
     faces = {'côté A': zone(XA, T, D, H), 'face': zone(XF, T, W, H), 'côté B': zone(XB, T, D, H),
              'dos': zone(XD, T, W, H), 'dessus': zone(XD, T - D, W, D, 180), 'dessous': zone(XD, T + H, W, D)}
-    vol = Image.open(os.path.join(dossier, 'etui_maquette.png')).convert('RGB').crop((150, 90, 1350, 790))
-    ecart, marge = 26, 40
+    vol = Image.open(os.path.join(dossier, 'etui_maquette.png')).convert('RGB').crop((300, 180, 2700, 1580))
+    ecart, marge = 52, 80
     lw, lh, ld = faces['face'].width, faces['face'].height, faces['côté A'].width
     largeur = max(vol.width, 2 * ld + 2 * lw + 3 * ecart) + 2 * marge
-    y_net = marge + 70 + vol.height + 70
-    hauteur = y_net + ld + lh + ld + 2 * ecart + 60 + marge
+    y_net = marge + 140 + vol.height + 140
+    hauteur = y_net + ld + lh + ld + 2 * ecart + 120 + marge
     fond = Image.new('RGB', (largeur, hauteur), '#f4efe4')
     d = ImageDraw.Draw(fond)
     try:
-        gras = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 34)
-        petit = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 20)
+        gras = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 68)
+        petit = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 40)
     except OSError:
         gras = petit = ImageFont.load_default()
     d.text((marge, marge), f'Wuertduell · {p["nom"]} · l’étui du jeu de 54 cartes', fill='#1b2340', font=gras)
     cotes = ' × '.join(f'{v:g}'.replace('.', ',') for v in (W, H, D))
-    d.text((marge, marge + 44), f'{cotes} mm · 52 cartes à jouer, {p["contenu"]}, et 2 cartes de règle',
+    d.text((marge, marge + 88), f'{cotes} mm · 52 cartes à jouer, {p["contenu"]}, et 2 cartes de règle',
            fill='#5b5446', font=petit)
-    fond.paste(vol, ((largeur - vol.width) // 2, marge + 70))
+    fond.paste(vol, ((largeur - vol.width) // 2, marge + 140))
     x0 = (largeur - (2 * ld + 2 * lw + 3 * ecart)) // 2
     xs = {'côté A': x0, 'face': x0 + ld + ecart, 'côté B': x0 + ld + lw + 2 * ecart, 'dos': x0 + 2 * ld + lw + 3 * ecart}
     y_corps = y_net + ld + ecart
@@ -821,8 +961,8 @@ def planche(code, dpi=203.2):
                            'face': (xs['face'], y_corps, lw), 'côté B': (xs['côté B'], y_corps, ld),
                            'dos': (xs['dos'], y_corps, lw), 'dessous': (xs['face'], y_corps + lh + ecart, lw)}.items():
         h = faces[nom].height
-        d.text((x + l / 2, y + h + 4), nom, fill='#5b5446', font=petit, anchor='mt') if nom not in ('dessus',) else \
-            d.text((x - 10, y + h / 2), nom, fill='#5b5446', font=petit, anchor='rm')
+        d.text((x + l / 2, y + h + 8), nom, fill='#5b5446', font=petit, anchor='mt') if nom not in ('dessus',) else \
+            d.text((x - 20, y + h / 2), nom, fill='#5b5446', font=petit, anchor='rm')
     sortie = os.path.join(dossier, 'etui_complet.png')
     fond.save(sortie)
     return sortie
@@ -862,11 +1002,12 @@ def produire(code):
     chrome_pdf(f, os.path.join(dossier, 'etui_bat.pdf'))
     os.remove(f)
 
-    raster(os.path.join(dossier, 'etui_bat.pdf'), os.path.join(dossier, 'etui_plat.png'), 150)
-    plat = os.path.join(dossier, '_plat300.png')
-    raster(os.path.join(dossier, 'etui_impression.pdf'), plat, 300)
-    maquette(dossier, plat, 300)
+    raster(os.path.join(dossier, 'etui_bat.pdf'), os.path.join(dossier, 'etui_plat.png'), 300)
+    plat = os.path.join(dossier, '_plat600.png')
+    raster(os.path.join(dossier, 'etui_impression.pdf'), plat, 600)
+    maquette(dossier, plat, 600)
     os.remove(plat)
+    vitrine(code)
     return planche(code)
 
 

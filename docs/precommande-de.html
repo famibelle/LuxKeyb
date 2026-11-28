@@ -52,6 +52,10 @@ img{max-width:100%}
 a{color:var(--lien)}
 a:focus-visible,button:focus-visible{outline:3px solid var(--ciel);outline-offset:3px;border-radius:6px}
 h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.1;margin:0}
+/* Titres bicolores, comme l'accueil : la seconde moitié en rouge du drapeau,
+   réservé aux gros titres (charte : 24 px et plus). */
+h2 .accent{color:var(--rouge)}
+.titre h1 span{display:block;color:var(--rouge)}
 p{margin:0}
 .enveloppe{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
@@ -241,7 +245,7 @@ p{margin:0}
     <div class="titre heros">
       <div>
         <p class="surtitre">Vorbestellung</p>
-        <h1>Die Schachteln des Wuertduell</h1>
+        <h1>Die Schachteln <span>des Wuertduell</span></h1>
         <p class="chapo">Luxemburgisch spielend lernen, zu zweit am Tisch. Reservieren Sie Ihre Schachteln heute, ohne etwas zu bezahlen: Der Druck beginnt, sobald 350 Schachteln reserviert sind.</p>
         <ul class="garanties">
           <li>Heute nichts zu bezahlen</li>
@@ -262,7 +266,7 @@ p{margin:0}
 <main>
   <section class="vitrine" id="boites" aria-labelledby="t-boites">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-boites">Wählen Sie Ihre Schachteln</h2>
+      <h2 class="titre-section" id="t-boites">Wählen Sie <span class="accent">Ihre Schachteln</span></h2>
       <p class="intro-section">Jede Schachtel lässt sich allein spielen, sobald man sie öffnet, oder mit den anderen: Kein Wort steht in zwei Schachteln. Die Wortbedeutungen auf den Karten sind auf Französisch. Tippen Sie auf „Reservieren“, alles geht hier, in einer Minute.</p>
       <ul class="grille">
         <li class="fiche fiche-large">
@@ -339,7 +343,7 @@ p{margin:0}
 
   <section class="section" id="jouer" aria-labelledby="t-jouer">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-jouer">Zwei Spiele in jeder Schachtel</h2>
+      <h2 class="titre-section" id="t-jouer">Zwei Spiele <span class="accent">in jeder Schachtel</span></h2>
       <p class="intro-section">Zu zweit, ohne Vorbereitung. Man liest die Wörter laut vor, und sie bleiben hängen.</p>
       <div class="jeux2">
         <div class="jeu">
@@ -359,7 +363,7 @@ p{margin:0}
 
   <section class="section" aria-labelledby="t-etapes">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-etapes">So funktioniert die Vorbestellung</h2>
+      <h2 class="titre-section" id="t-etapes">So funktioniert <span class="accent">die Vorbestellung</span></h2>
       <ol class="etapes3">
         <li><strong>Sie reservieren</strong> in einer Minute, ohne zu bezahlen. Die Reservierung verpflichtet Sie zu nichts.</li>
         <li><strong>Wir schreiben Ihnen</strong>, sobald 350 Schachteln reserviert sind, damit Sie Ihre Reservierung bestätigen und bezahlen. Der Versand kommt zum Preis der Schachtel hinzu.</li>
@@ -375,7 +379,7 @@ p{margin:0}
       <div class="boite-appli">
         <div>
           <p class="surtitre">Kostenlos für Android</p>
-          <h2 id="t-appli">Ihre Karten gehen auf dem Handy weiter</h2>
+          <h2 id="t-appli">Ihre Karten gehen <span class="accent">auf dem Handy weiter</span></h2>
           <p>In jeder Schachtel fügt ein Code ihre Karten Ihrem Heft in der App De Lëtzebuerger Clavier hinzu. Installieren Sie sie schon heute: Mit sieben kleinen Spielen gewinnen Sie bereits Karten, und die Tastatur hilft Ihnen, auf Luxemburgisch zu schreiben.</p>
           <a class="badge-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Dprecommande-de%26utm_campaign%3Dinstaller">
             <img src="assets/google-play-badge-de.svg" alt="Jetzt bei Google Play" width="216" height="64">
@@ -390,7 +394,7 @@ p{margin:0}
   <section class="section argent" aria-labelledby="t-argent">
     <div class="enveloppe">
       <div class="encart">
-        <h2 id="t-argent">Wohin geht das Geld?</h2>
+        <h2 id="t-argent">Wohin geht <span class="accent">das Geld?</span></h2>
         <p>De Lëtzebuerger Clavier wird vor dem ersten Verkauf ein gemeinnütziger Verein (asbl). Niemand erhält einen Anteil am Gewinn: Alles bleibt im Projekt. Was eine Schachtel einbringt, dient in dieser Reihenfolge dazu,</p>
         <ol>
           <li>den Druck zu bezahlen und genug für die nächste Auflage zurückzulegen;</li>
@@ -404,7 +408,7 @@ p{margin:0}
 
   <section class="section partager" id="partager" aria-labelledby="t-partager">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-partager">Helfen Sie, dass der Druck früher startet</h2>
+      <h2 class="titre-section" id="t-partager">Helfen Sie, <span class="accent">dass der Druck früher startet</span></h2>
       <p class="intro-section">Je mehr Reservierungen, desto schneller kommen die Schachteln. Schicken Sie diese Seite an jemanden, der Luxemburgisch lernt oder gern damit anfangen würde.</p>
       <div class="partage-boutons">
         <a class="partage" data-partage="whatsapp" href="#partager">WhatsApp</a>
@@ -421,7 +425,7 @@ p{margin:0}
         <img src="assets/boutique/presentoir.webp" width="640" height="654" loading="lazy" alt="Modell des Thekendisplays aus nachtblauem Karton: oben die Tafel WUERTDUELL mit vier Karten und einem Code zu den Spielregeln; unten zwölf Schachteln in vier farbigen Reihen">
         <div>
           <p class="surtitre" style="color:var(--rouge)">Geschäfte und Vereine</p>
-          <h2 id="t-commerces">Das Thekendisplay</h2>
+          <h2 id="t-commerces">Das <span class="accent">Thekendisplay</span></h2>
           <p>Zwölf Schachteln, drei von jeder Sorte, in einem Display aus Karton, bereit für die Theke: für eine Buchhandlung, ein Geschäft, eine Bibliothek oder einen Stand.</p>
           <p>Den Preis legen wir mit Ihnen fest, je nach Anzahl der Displays.</p>
           <a class="bouton" href="mailto:medhi.famibelle@gmail.com?subject=Pr%C3%A9sentoir%20Wuertduell">Schreiben Sie uns</a>

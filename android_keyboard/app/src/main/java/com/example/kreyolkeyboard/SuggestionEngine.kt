@@ -786,7 +786,12 @@ class SuggestionEngine(private val context: Context) {
         val luxSuggestions = getLuxSuggestions(input)
         
         // 2. 🔵 Obtenir suggestions françaises SEULEMENT si 3+ lettres
-        val frenchSuggestions = if (bilingualConfig.shouldActivateFrench(input)) {
+        // Un champ qui impose une forme de mot n'attend pas de français : la
+        // rangée bleue sert à insérer un mot français dans une phrase, jamais
+        // à répondre à une grille. Un mot français de la bonne longueur
+        // passerait le filtre et serait refusé par le jeu.
+        val frenchSuggestions = if (longueurExigeeDuChamp == 0 &&
+            bilingualConfig.shouldActivateFrench(input)) {
             getFrenchSuggestions(input)
         } else {
             Log.d(TAG, "Français désactivé pour '$input' (${input.length} < ${bilingualConfig.frenchActivationThreshold} lettres)")
@@ -797,6 +802,26 @@ class SuggestionEngine(private val context: Context) {
         return mergeSuggestionsLuxFirst(luxSuggestions, frenchSuggestions)
     }
     
+    /**
+     * La longueur de mot que le champ en cours exige, 0 quand il n'exige rien.
+     *
+     * Posée par le service à chaque `onStartInput`, d'après le champ lui-même
+     * (voir [InputProcessor.longueurExigeeParLeChamp]). Elle ne touche pas au
+     * classement : elle écarte des candidats avant que le classement ne garde
+     * les trois premiers, et c'est tout l'intérêt de la poser ici plutôt qu'à
+     * l'affichage. Dans la fenêtre de [CANDIDATE_POOL_SIZE] candidats, il
+     * reste 3 mots de cinq lettres en médiane à deux lettres tapées, 2 à
+     * trois lettres ; la barre s'éteint pour 3 % des préfixes de deux
+     * lettres, ce qui est alors l'information juste : aucun mot de cette
+     * longueur ne commence ainsi.
+     */
+    internal var longueurExigeeDuChamp: Int = 0
+
+    /** Le mot a-t-il la forme que le champ en cours accepte ? */
+    private fun retenuParLeChamp(mot: String): Boolean =
+        longueurExigeeDuChamp == 0 ||
+            (mot.length == longueurExigeeDuChamp && mot.all { it.isLetter() })
+
     /**
      * Obtient les suggestions luxembourgeoises (existant + adapté)
      */
@@ -827,6 +852,9 @@ class SuggestionEngine(private val context: Context) {
         
         // Convertir en BilingualSuggestion et appliquer boost luxembourgeois + casse
         return allLux.entries
+            // Avant le classement, qui ne garde que les trois premiers : une
+            // pastille écartée ici laisse la place à une autre, jouable.
+            .filter { retenuParLeChamp(it.key) }
             .map { (word, score) ->
                 val casedWord = applyCasingPattern(input, word)
                 val adjustedScore = bilingualConfig.adjustScoreByLanguage(score, SuggestionLanguage.LUXEMBOURGISH)
