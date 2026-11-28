@@ -307,3 +307,20 @@ REPLI = {
     'nature': 'meteo',
     'idees': 'travail',
 }
+
+# L'ordre des pages A2 : celui des chapitres du manuel « Schwätzt Dir
+# Lëtzebuergesch? – A2 » de l'INLL, d'après les mots de chaque thème que les
+# corrigés des huit chapitres emploient le plus (relevé du 2026-11-28, voir
+# corriges_a2.md). Le chapitre 8 prépare l'examen et n'a pas de thème à lui.
+# Un thème absent de cette liste garde sa place, après les chapitres.
+CHAPITRES_A2 = [
+    (0, 'Pour commencer', ['salut', 'questions', 'nombres']),
+    (1, 'An der Stad', ['ville', 'transports', 'courses', 'societe', 'repas', 'boissons', 'aliments', 'cuisine',
+                        'jours']),
+    (2, 'Wunnen', ['logement', 'meubles', 'menage']),
+    (3, 'Mäin Dag', ['journee', 'quand', 'ecole', 'loisirs', 'sport']),
+    (4, 'Kleeder a Charakter', ['vetements', 'couleurs', 'corps', 'caractere', 'sentiments', 'fetes']),
+    (5, 'Vakanz a Weekend', ['voyage', 'meteo', 'nature', 'famille', 'mois']),
+    (6, 'Am Quartier', ['directions', 'gens', 'pays']),
+    (7, 'Gesondheet a Beruff', ['sante', 'communication', 'metiers', 'travail']),
+]

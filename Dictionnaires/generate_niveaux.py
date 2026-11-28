@@ -283,11 +283,17 @@ THEME_MIN = 3
 def themes_proposes():
     """Le classement de niveaux/themes_proposes.py : [(id, titres, {mots})] et les replis."""
     sys.path.insert(0, LISTES)
-    from themes_proposes import THEMES as PROPOSES, REPLI
-    return [(i, titres, {m.replace('_', ' ') for m in mots.split()}) for i, titres, mots in PROPOSES], REPLI
+    from themes_proposes import THEMES as PROPOSES, REPLI, CHAPITRES_A2
+    return [(i, titres, {m.replace('_', ' ') for m in mots.split()}) for i, titres, mots in PROPOSES], REPLI, CHAPITRES_A2
 
 
-def apercu(niveau, pages, gloses, traductions):
+def chapitre(ident, chapitres):
+    """Le chapitre du manuel d'un thème (sans son numéro de page), ou None."""
+    base = ident.rsplit('_', 1)[0] if ident[-1].isdigit() else ident
+    return next(((n, titre) for n, titre, ids in chapitres if base in ids), None)
+
+
+def apercu(niveau, pages, gloses, traductions, chapitres=()):
     """Les pages d'un niveau, en Markdown, avec le sens français de chaque mot."""
     def sens(m):
         t = traductions['fr']
@@ -297,7 +303,14 @@ def apercu(niveau, pages, gloses, traductions):
     lignes = [f'# Niveau {niveau} : classement proposé', '',
               f'{len(pages)} pages, {total} mots. Écrit par `generate_niveaux.py --niveau {niveau} '
               '--classement propose --apercu` ; les thèmes sont dans `themes_proposes.py`.', '']
+    vu = None
     for p in pages:
+        c = chapitre(p['id'], chapitres)
+        if c and c != vu:
+            lignes += [f'# Kapitel {c[0]} : {c[1]}' if c[0] else f'# {c[1]}', '']
+        elif not c and vu:
+            lignes += ['# Les autres pages', '']
+        vu = c
         lignes += [f"## {p['titres']['fr']} ({len(p['mots'])})", '',
                    ' · '.join(f'**{m}** {sens(m)}' for m in p['mots']), '']
     chemin = os.path.join(LISTES, f'classement_{niveau.lower()}.md')
@@ -414,7 +427,11 @@ def main():
 
     pages, places = [], set()
     if args.classement == 'propose':
-        proposes, repli = themes_proposes()
+        proposes, repli, chapitres = themes_proposes()
+        if niveau == 'A2':
+            # L'ordre des chapitres du manuel A2, les autres thèmes après.
+            rang = {i: k for k, i in enumerate(i for _, _, ids in chapitres for i in ids)}
+            proposes = sorted(proposes, key=lambda t: rang.get(t[0], len(rang)))
         prises = {}
         for ident, _, mots in proposes:
             prises[ident] = [f for f, a in retenus if f in mots and all(f not in v for v in prises.values())]
@@ -454,7 +471,7 @@ def main():
         'isoles': sorted(isoles),
     }
     if args.apercu:
-        apercu(niveau, pages, gloses, traductions)
+        apercu(niveau, pages, gloses, traductions, themes_proposes()[2] if niveau == 'A2' else ())
         return
     with open(os.path.join(ASSETS, sortie_nom), 'w', encoding='utf-8') as f:
         json.dump(sortie, f, ensure_ascii=False, indent=1)
