@@ -52,6 +52,10 @@ img{max-width:100%}
 a{color:var(--lien)}
 a:focus-visible,button:focus-visible{outline:3px solid var(--ciel);outline-offset:3px;border-radius:6px}
 h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.1;margin:0}
+/* Titres bicolores, comme l'accueil : la seconde moitié en rouge du drapeau,
+   réservé aux gros titres (charte : 24 px et plus). */
+h2 .accent{color:var(--rouge)}
+.titre h1 span{display:block;color:var(--rouge)}
 p{margin:0}
 .enveloppe{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
@@ -241,7 +245,7 @@ p{margin:0}
     <div class="titre heros">
       <div>
         <p class="surtitre">Pré-encomenda</p>
-        <h1>As caixas do Wuertduell</h1>
+        <h1>As caixas <span>do Wuertduell</span></h1>
         <p class="chapo">O luxemburguês que se aprende a jogar, a dois, à volta de uma mesa. Reserve hoje as suas caixas sem pagar nada: a impressão arranca assim que 350 caixas estiverem reservadas.</p>
         <ul class="garanties">
           <li>Nada a pagar hoje</li>
@@ -262,7 +266,7 @@ p{margin:0}
 <main>
   <section class="vitrine" id="boites" aria-labelledby="t-boites">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-boites">Escolha as suas caixas</h2>
+      <h2 class="titre-section" id="t-boites">Escolha <span class="accent">as suas caixas</span></h2>
       <p class="intro-section">Cada caixa joga-se sozinha, assim que se abre, ou com as outras: nenhuma palavra está em duas caixas. Os significados das palavras nas cartas estão em francês. Toque em «Reservar», tudo se faz aqui, num minuto.</p>
       <ul class="grille">
         <li class="fiche fiche-large">
@@ -339,7 +343,7 @@ p{margin:0}
 
   <section class="section" id="jouer" aria-labelledby="t-jouer">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-jouer">Dois jogos em cada caixa</h2>
+      <h2 class="titre-section" id="t-jouer">Dois jogos <span class="accent">em cada caixa</span></h2>
       <p class="intro-section">Joga-se a dois, sem preparar nada. Lêem-se as palavras em voz alta, e elas ficam.</p>
       <div class="jeux2">
         <div class="jeu">
@@ -359,7 +363,7 @@ p{margin:0}
 
   <section class="section" aria-labelledby="t-etapes">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-etapes">Como funciona a pré-encomenda</h2>
+      <h2 class="titre-section" id="t-etapes">Como funciona <span class="accent">a pré-encomenda</span></h2>
       <ol class="etapes3">
         <li><strong>Reserva</strong> num minuto, sem pagar. Reservar não o compromete a nada.</li>
         <li><strong>Escrevemos-lhe</strong> assim que 350 caixas estiverem reservadas, para confirmar e pagar a sua reserva. O envio acresce ao preço da caixa.</li>
@@ -375,7 +379,7 @@ p{margin:0}
       <div class="boite-appli">
         <div>
           <p class="surtitre">Grátis para Android</p>
-          <h2 id="t-appli">As suas cartas continuam no telemóvel</h2>
+          <h2 id="t-appli">As suas cartas continuam <span class="accent">no telemóvel</span></h2>
           <p>Em cada caixa, um código junta as suas cartas ao seu caderno na aplicação De Lëtzebuerger Clavier. Instale-a já hoje: sete pequenos jogos já o deixam ganhar cartas, e o teclado ajuda-o a escrever em luxemburguês.</p>
           <a class="badge-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Dprecommande-pt%26utm_campaign%3Dinstaller">
             <img src="assets/google-play-badge-pt.svg" alt="Disponível no Google Play" width="216" height="64">
@@ -390,7 +394,7 @@ p{margin:0}
   <section class="section argent" aria-labelledby="t-argent">
     <div class="enveloppe">
       <div class="encart">
-        <h2 id="t-argent">Para onde vai o dinheiro?</h2>
+        <h2 id="t-argent">Para onde vai <span class="accent">o dinheiro?</span></h2>
         <p>De Lëtzebuerger Clavier vai tornar-se uma associação sem fins lucrativos (asbl) antes da primeira venda. Ninguém recebe uma parte dos lucros: tudo fica no projeto. O que uma caixa rende serve, por esta ordem, para:</p>
         <ol>
           <li>pagar a impressão, e guardar o necessário para lançar a tiragem seguinte;</li>
@@ -404,7 +408,7 @@ p{margin:0}
 
   <section class="section partager" id="partager" aria-labelledby="t-partager">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-partager">Ajude a impressão a arrancar mais cedo</h2>
+      <h2 class="titre-section" id="t-partager">Ajude a impressão <span class="accent">a arrancar mais cedo</span></h2>
       <p class="intro-section">Quanto mais reservas, mais depressa chegam as caixas. Envie esta página a alguém que está a aprender luxemburguês, ou que gostaria de começar.</p>
       <div class="partage-boutons">
         <a class="partage" data-partage="whatsapp" href="#partager">WhatsApp</a>
@@ -421,7 +425,7 @@ p{margin:0}
         <img src="assets/boutique/presentoir.webp" width="640" height="654" loading="lazy" alt="Maquete do expositor de balcão em cartão azul-noite: em cima, o painel WUERTDUELL com quatro cartas e um código para ler as regras; em baixo, doze caixas em quatro colunas de cor">
         <div>
           <p class="surtitre" style="color:var(--rouge)">Lojas e associações</p>
-          <h2 id="t-commerces">O expositor de balcão</h2>
+          <h2 id="t-commerces">O expositor <span class="accent">de balcão</span></h2>
           <p>Doze caixas, três de cada tipo, num expositor de cartão pronto a pousar num balcão: para uma livraria, uma loja, uma biblioteca ou um stand.</p>
           <p>O preço é definido consigo, conforme o número de expositores.</p>
           <a class="bouton" href="mailto:medhi.famibelle@gmail.com?subject=Pr%C3%A9sentoir%20Wuertduell">Escreva-nos</a>

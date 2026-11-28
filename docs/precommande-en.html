@@ -52,6 +52,10 @@ img{max-width:100%}
 a{color:var(--lien)}
 a:focus-visible,button:focus-visible{outline:3px solid var(--ciel);outline-offset:3px;border-radius:6px}
 h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.1;margin:0}
+/* Titres bicolores, comme l'accueil : la seconde moitié en rouge du drapeau,
+   réservé aux gros titres (charte : 24 px et plus). */
+h2 .accent{color:var(--rouge)}
+.titre h1 span{display:block;color:var(--rouge)}
 p{margin:0}
 .enveloppe{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
@@ -241,7 +245,7 @@ p{margin:0}
     <div class="titre heros">
       <div>
         <p class="surtitre">Pre-order</p>
-        <h1>The Wuertduell boxes</h1>
+        <h1>The <span>Wuertduell boxes</span></h1>
         <p class="chapo">Luxembourgish you learn by playing, two people around a table. Reserve your boxes today without paying anything: printing starts as soon as 350 boxes are reserved.</p>
         <ul class="garanties">
           <li>Nothing to pay today</li>
@@ -262,7 +266,7 @@ p{margin:0}
 <main>
   <section class="vitrine" id="boites" aria-labelledby="t-boites">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-boites">Choose your boxes</h2>
+      <h2 class="titre-section" id="t-boites">Choose <span class="accent">your boxes</span></h2>
       <p class="intro-section">Each box can be played on its own, as soon as you open it, or with the others: no word is in two boxes. The word meanings on the cards are in French. Tap “Reserve”, everything happens here, in one minute.</p>
       <ul class="grille">
         <li class="fiche fiche-large">
@@ -339,7 +343,7 @@ p{margin:0}
 
   <section class="section" id="jouer" aria-labelledby="t-jouer">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-jouer">Two games in every box</h2>
+      <h2 class="titre-section" id="t-jouer">Two games <span class="accent">in every box</span></h2>
       <p class="intro-section">Two players, nothing to prepare. You read the words out loud, and they stay with you.</p>
       <div class="jeux2">
         <div class="jeu">
@@ -359,7 +363,7 @@ p{margin:0}
 
   <section class="section" aria-labelledby="t-etapes">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-etapes">How the pre-order works</h2>
+      <h2 class="titre-section" id="t-etapes">How <span class="accent">the pre-order works</span></h2>
       <ol class="etapes3">
         <li><strong>You reserve</strong> in one minute, without paying. Reserving does not commit you to anything.</li>
         <li><strong>We write to you</strong> as soon as 350 boxes are reserved, to confirm and pay for your reservation. Shipping is added to the price of the box.</li>
@@ -375,7 +379,7 @@ p{margin:0}
       <div class="boite-appli">
         <div>
           <p class="surtitre">Free on Android</p>
-          <h2 id="t-appli">Your cards carry on in your phone</h2>
+          <h2 id="t-appli">Your cards carry on <span class="accent">in your phone</span></h2>
           <p>In every box, a code adds its cards to your notebook in the De Lëtzebuerger Clavier app. Install it today: seven little games already let you win cards, and the keyboard helps you write in Luxembourgish.</p>
           <a class="badge-play" href="https://play.google.com/store/apps/details?id=com.potomitan.luxkeyboard&amp;referrer=utm_source%3Dsite%26utm_medium%3Dprecommande-en%26utm_campaign%3Dinstaller">
             <img src="assets/google-play-badge-en.svg" alt="Get it on Google Play" width="216" height="64">
@@ -390,7 +394,7 @@ p{margin:0}
   <section class="section argent" aria-labelledby="t-argent">
     <div class="enveloppe">
       <div class="encart">
-        <h2 id="t-argent">Where does the money go?</h2>
+        <h2 id="t-argent">Where does <span class="accent">the money go?</span></h2>
         <p>De Lëtzebuerger Clavier will become a non-profit association (asbl) before the first sale. Nobody receives a share of the profits: everything stays in the project. What a box brings in is used, in this order:</p>
         <ol>
           <li>to pay for printing, and keep enough to start the next print run;</li>
@@ -404,7 +408,7 @@ p{margin:0}
 
   <section class="section partager" id="partager" aria-labelledby="t-partager">
     <div class="enveloppe">
-      <h2 class="titre-section" id="t-partager">Help printing start sooner</h2>
+      <h2 class="titre-section" id="t-partager">Help printing <span class="accent">start sooner</span></h2>
       <p class="intro-section">The more reservations, the sooner the boxes arrive. Send this page to someone who is learning Luxembourgish, or would like to start.</p>
       <div class="partage-boutons">
         <a class="partage" data-partage="whatsapp" href="#partager">WhatsApp</a>
@@ -421,7 +425,7 @@ p{margin:0}
         <img src="assets/boutique/presentoir.webp" width="640" height="654" loading="lazy" alt="Mock-up of the midnight-blue cardboard counter display: at the top, the WUERTDUELL panel with four cards and a code to read the rules; at the bottom, twelve boxes in four coloured columns">
         <div>
           <p class="surtitre" style="color:var(--rouge)">Shops and associations</p>
-          <h2 id="t-commerces">The counter display</h2>
+          <h2 id="t-commerces">The counter <span class="accent">display</span></h2>
           <p>Twelve boxes, three of each kind, in a cardboard display ready to place on a counter: for a bookshop, a shop, a library or a stand.</p>
           <p>We set the price with you, depending on the number of displays.</p>
           <a class="bouton" href="mailto:medhi.famibelle@gmail.com?subject=Pr%C3%A9sentoir%20Wuertduell">Write to us</a>
