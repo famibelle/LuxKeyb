@@ -53,6 +53,13 @@ Le propriétaire veut financer le tirage par une campagne sur une plateforme
 de financement participatif, au nom de l'asbl une fois créée. Notes,
 maquette validée et décisions à prendre : [`CAMPAGNE-FINANCEMENT.md`](CAMPAGNE-FINANCEMENT.md).
 
+### Produits dérivés (pistes du 2026-11-28, rien de décidé)
+
+Calendrier éphéméride, bloc « Wuert vum Dag », mug ardoise, poster à gratter
+des 208 mots, carnet, enveloppe mensuelle de 30 cartes : chaque objet apporte
+un mot nouveau chaque jour et renvoie vers l'appli ou les cartes. Notes,
+séries écartées et décisions à prendre : [`MERCHANDISING.md`](MERCHANDISING.md).
+
 ## 2. Les trois paliers
 
 | Palier | Ce qui est payé | Chiffre d'affaires | En boîtes à 9,90 € |
