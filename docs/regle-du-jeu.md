@@ -10,7 +10,7 @@ lang: fr
   <a href="simulateur.html">⌨️ Essayer en ligne</a> ·
   <a href="guide.html">📘 Guide</a> ·
   <strong>🃏 Règle du jeu</strong> ·
-  <a href="precommande.html">📦 Précommander</a> ·
+  <a href="precommande.html">🛍️ La boutique</a> ·
   <a href="faq.html">❓ Aide</a> ·
   <button type="button" class="theme-toggle" aria-label="Passer en mode sombre">🌙</button>
 </nav>
